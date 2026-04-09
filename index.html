@@ -16,6 +16,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
+    <!-- Librerías para QR (Paso 3) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
     <style>
         /* ==========================================================================
        1. PALETA DE COLORES (MODO OSCURO) Y RESETEO
@@ -1484,7 +1488,60 @@
             /* Para alinear el título si no hay descripción */
         }
 
-        /* Estilos para la nueva galería de proyectos */
+        /* Estilos para Paso 3: Asistencia QR */
+        #qr-canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            margin: 20px auto;
+            width: fit-content;
+        }
+        #qr-canvas-container h5 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        #reader {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--accent-orange);
+        }
+        .qr-btn-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .btn-qr {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-qr-generate {
+            background-color: var(--accent-orange);
+            color: white;
+        }
+        .btn-qr-scan {
+            background-color: var(--accent-teal);
+            color: white;
+        }
+        .btn-qr:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+        /* ========================================================================== */
         .project-link-card {
             display: flex;
             align-items: center;
@@ -2932,9 +2989,19 @@
                     </div>
 
                     <!-- SUB-PANEL: SISTEMA -->
-                    <div id="sub-panel-sistema" class="admin-sub-panel" style="display: none;">
-                        <h5 style="color: var(--accent-orange); margin-bottom: 15px;"><i class="fas fa-sliders-h"></i> Ajustes del Ciclo</h5>
-                        <div class="input-group">
+                        <div id="sub-panel-sistema" class="admin-sub-panel" style="display: none;">
+                            <h5 style="color: var(--accent-orange); margin-bottom: 15px;"><i class="fas fa-sliders-h"></i> Ajustes del Ciclo</h5>
+                            
+                            <!-- NUEVA SECCION ASISTENCIA QR (DOCENTE) -->
+                            <div style="background: rgba(232, 122, 61, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(232, 122, 61, 0.2); margin-bottom: 20px;">
+                                <h6 style="color: var(--accent-orange); margin-bottom: 10px; font-size: 0.9rem;">Sistema de Asistencia QR</h6>
+                                <p style="font-size: 0.75rem; margin-bottom: 12px; color: var(--text-muted-light);">Configura la pregunta del día y genera el código para que los alumnos lo escaneen.</p>
+                                <button class="btn-qr btn-qr-generate" style="width: 100%; justify-content: center; background: var(--accent-orange);" onclick="openQRConfig()">
+                                    <i class="fas fa-qrcode"></i> Configurar Pregunta y QR
+                                </button>
+                            </div>
+
+                            <div class="input-group">
                             <label style="font-size: 0.75rem;">Código de Invitación</label>
                             <input type="text" id="admin-student-invite-code" placeholder="Ej: NUTRI2024" style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 10px; border-radius: 6px;">
                         </div>
@@ -3345,62 +3412,64 @@
     </div>
     <!-- FIN: NUEVO MODAL -->
 
-    <footer class="site-footer"
-        style="padding: 40px 0; background: rgba(0,0,0,0.3); margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.05);">
-        <div class="container" style="text-align: center;">
-            <div class="footer-branding" style="margin-bottom: 20px;">
-                <img src="iconos/favicon-96x96.png" class="logo" alt="Logo Nutrición Infantil"
-                    style="width: 50px; height: 50px; opacity: 0.6; filter: grayscale(1);">
-                <div style="font-size: 0.9rem; color: var(--text-muted-light); margin-top: 10px;">
-                    © 2026 Plataforma de Nutrición Infantil - Gamificada
-                </div>
-            </div>
-
-            <!-- ACCESO OCULTO PARA DOCENTE -->
-            <div id="teacher-access-trigger" title="Panel de Control Docente"
-                style="display: inline-block; cursor: pointer; color: rgba(255,255,255,0.1); transition: color 0.3s;">
-                <i class="fas fa-lock" style="font-size: 0.7rem;"></i>
-            </div>
-        </div>
-    </footer>
-
-    <!-- MODAL ADMINISTRATIVO PARA EL DOCENTE -->
-    <div class="modal" id="teacher-admin-modal">
-        <div class="modal-content" style="max-width: 600px;">
+    <!-- Modal para Configurar QR (Docente) -->
+    <div id="qr-config-modal" class="modal modal-sm">
+        <div class="modal-content">
             <div class="modal-header">
-                <h4><i class="fas fa-user-shield"></i> Panel de Control Docente</h4>
+                <h4>Configurar Asistencia</h4>
                 <button class="close-modal">&times;</button>
             </div>
-            <div class="modal-body">
-                <div id="master-key-section">
-                    <p style="font-size: 0.9rem; margin-bottom: 20px; color: var(--text-muted-light);">Ingresa la clave
-                        maestra para configurar fechas de entrega globales.</p>
-                    <div class="input-group">
-                        <label>Clave Maestra</label>
-                        <input type="password" id="global-master-key"
-                            style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 12px; border-radius: 8px;">
-                    </div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button type="button" id="verify-master-key-btn" class="nav-button active"
-                            style="width: 100%;">Acceder al Panel</button>
-                    </div>
-                    <div id="master-key-status" style="margin-top: 10px; text-align: center; font-size: 0.85rem;"></div>
-                </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label style="color: var(--accent-teal); font-weight: 600;">1. Selecciona la Clase/Sesión:</label>
+                <select id="qr-session-select" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: #1c1d21; color: white; margin-top: 5px; margin-bottom: 15px;">
+                    <!-- Se carga dinámicamente -->
+                </select>
 
-                <div id="global-config-section" style="display: none;">
-                    <h5 style="color: var(--accent-teal); margin-bottom: 15px;"><i class="fas fa-calendar-alt"></i>
-                        Configuración de Trabajos Prácticos</h5>
-                    <div id="global-tp-list"
-                        style="max-height: 400px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;">
-                        <!-- Se generará aquí -->
-                    </div>
-                    <div style="text-align: right; margin-top: 20px;">
-                        <button type="button" id="save-global-tp-config" class="nav-button active"><i
-                                class="fas fa-save"></i> Guardar Configuración Global</button>
-                    </div>
-                    <div id="global-config-status" style="margin-top: 10px; text-align: center;"></div>
-                </div>
+                <label style="color: var(--accent-teal); font-weight: 600;">2. Escribe la pregunta para la clase:</label>
+                <input type="text" id="qr-question-input" placeholder="Ej: ¿Qué aprendimos hoy?" 
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.1); color: white; margin-top: 5px;">
             </div>
+            <button class="btn-qr btn-qr-generate" style="width: 100%; margin-top: 20px; justify-content: center;" onclick="generateQRWithQuestion()">
+                Generar Código QR
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal para Mostrar QR (Docente) -->
+    <div id="qr-display-modal" class="modal modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Asistencia QR de Hoy</h4>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="qr-canvas-container" style="background: white; padding: 20px; border-radius: 12px; display: flex; justify-content: center;">
+                <div id="qrcode-main"></div>
+            </div>
+            <p id="qr-active-question" style="text-align: center; color: var(--accent-orange); font-weight: 600; margin-top: 15px;"></p>
+        </div>
+    </div>
+
+    <!-- Modal Formulario de Asistencia (Alumno) -->
+    <div id="student-attendance-modal" class="modal modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Registrar mi Asistencia</h4>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <p id="student-form-question" style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent-orange); padding-left: 10px;"></p>
+                
+                <label style="color: var(--accent-teal);">N° de Alumno (UP/Legajo):</label>
+                <input type="text" id="student-up-input" placeholder="Ingresa tu UP" 
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background:  rgba(255,255,255,0.1); color: white; margin-bottom: 15px;">
+                
+                <label style="color: var(--accent-teal);">Tu respuesta:</label>
+                <textarea id="student-answer-input" placeholder="Escribe tu respuesta aquí..." rows="3"
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background:  rgba(255,255,255,0.1); color: white;"></textarea>
+            </div>
+            <button class="btn-qr btn-qr-generate" style="width: 100%; margin-top: 20px; justify-content: center;" onclick="submitStudentAttendance()">
+                Enviar mi Presente
+            </button>
         </div>
     </div>
 
@@ -3471,81 +3540,56 @@
 
             async function initializeApp() {
                 try {
-                    // Iniciar la carga de clases y datos de alumnos en paralelo
-                    // Iniciar la carga de clases y datos de alumnos desde Firestore
-                    const dataPromise = db.collection('app_state').doc('main').get().then(doc => {
-                        if (!doc.exists) {
-                            console.warn("No se encontraron datos en Firestore 'app_state/main'. Intentando carga local...");
-                            return fetch('respaldo_asistencias (1).json').then(res => res.json());
-                        }
-                        return doc.data();
-                    }).catch(err => {
-                        console.error("Error cargando desde Firebase:", err);
-                        return fetch('respaldo_asistencias (1).json').then(res => res.json());
-                    });
-                    const classesPromise = generateAndDisplayClasses();
-                    const toolsPromise = generateTools();
-
-                    // Esperar a que los datos de los alumnos lleguen
-                    const firestoreData = await dataPromise;
-                    if (firestoreData) {
-                        fullData = firestoreData;
+                    // Carga única inicial
+                    const doc = await db.collection('app_state').doc('main').get();
+                    if (doc.exists) {
+                        fullData = doc.data();
                         window.fullData = fullData;
-                        console.log("Datos cargados correctamente:", fullData.students?.length, "alumnos.");
                     }
 
-                    // Pre-cargar fotos y perfiles de alumnos desde Firestore
-                    try {
-                        const photosSnap = await db.collection('student_photos').get();
-                        photosSnap.forEach(doc => {
-                            sharedStudentPhotos[doc.id] = doc.data().photo;
-                        });
-                        
-                        const profilesSnap = await db.collection('student_profiles').get();
-                        profilesSnap.forEach(doc => {
-                            if (doc.data().photo) sharedStudentPhotos[doc.id] = doc.data().photo;
-                        });
-                        console.log("Fotos de alumnos cargadas:", Object.keys(sharedStudentPhotos).length);
-                    } catch (e) { console.warn("No se pudieron cargar fotos de alumnos:", e); }
+                    // Pre-cargar fotos y perfiles
+                    const photosSnap = await db.collection('student_photos').get();
+                    photosSnap.forEach(doc => sharedStudentPhotos[doc.id] = doc.data().photo);
+                    
+                    const profilesSnap = await db.collection('student_profiles').get();
+                    profilesSnap.forEach(doc => { if (doc.data().photo) sharedStudentPhotos[doc.id] = doc.data().photo; });
 
-                    // Pre-cargar metadatos de grupos para contadores (videos, etc.)
-                    try {
-                        await fetchGroupsMetadata();
-                    } catch (e) { console.warn("No se pudieron cargar metadatos de grupos:", e); }
-
-                    // Inicializar paneles con protección contra errores
-                    try { displayGlobalStats(); } catch (e) { console.error("Error en Stats:", e); }
-                    try { createOverallAttendanceChart(); } catch (e) { console.error("Error en Chart:", e); }
-
-                    // VERIFICAR SI HAY UN ALUMNO EN LA URL
-                    const hash = window.location.hash;
-                    if (hash && hash.startsWith('#UP=')) {
-                        const upFromUrl = hash.substring(4).toUpperCase();
-                        const student = fullData.students.find(s => s.up.toUpperCase() === upFromUrl);
-                        if (student) {
-                            displayStudentPortalView(student);
-                        } else {
-                            switchDashboardTab('alumnos');
+                    await fetchGroupsMetadata();
+                    
+                    // LLAMADA VITAL: Activar el escucha en TIEMPO REAL
+                    db.collection('app_state').doc('main').onSnapshot(doc => {
+                        if (doc.exists) {
+                            fullData = doc.data();
+                            window.fullData = fullData;
+                            
+                            // Redibujar todo el Dashboard
+                            try { displayGlobalStats(); } catch(e){}
+                            try { displayRanking(); } catch(e){}
+                            try { displayGroups(); } catch(e){}
+                            try { createOverallAttendanceChart(); } catch(e){}
+                            try { generateAndDisplayClasses(); } catch(e){}
                         }
-                    } else {
-                        switchDashboardTab('alumnos');
-                    }
+                    });
 
-                    try { initializeShop(); } catch (e) { console.error("Error en Shop:", e); }
+                    // Inicializar navegación y eventos
+                    switchDashboardTab('alumnos');
+                    try { initializeShop(); } catch (e) {}
 
                     document.getElementById('search-rank-btn').addEventListener('click', handleStudentSearch);
                     document.getElementById('student-up-search').addEventListener('keypress', (e) => {
                         if (e.key === 'Enter') handleStudentSearch();
                     });
                     document.getElementById('generate-pdf-report-btn').addEventListener('click', generatePdfReport);
-                    attachModalListeners('#session-stats-modal');
-
-                    // No bloquear el inicio por las clases o herramientas si fallan
-                    classesPromise.catch(e => console.warn("Clases no cargadas:", e));
-                    toolsPromise.catch(e => console.warn("Herramientas no cargadas:", e));
+                    
+                    // RE-ACTIVAR CERRADO DE MODALES
+                    document.querySelectorAll('.close-modal').forEach(btn => {
+                        btn.onclick = () => {
+                            btn.closest('.modal').classList.remove('active');
+                        };
+                    });
 
                 } catch (error) {
-                    console.error('Error crítico durante la inicialización:', error);
+                    console.error('Error crítico:', error);
                 }
             }
 
@@ -3640,7 +3684,7 @@
                 const reportData = fullData.students.map(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
-                    const studentRecords = fullData.attendanceRecords.filter(r => r.up === student.up);
+                    const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
 
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
@@ -3974,7 +4018,7 @@
                 fullData.students.forEach(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
-                    const studentRecords = fullData.attendanceRecords.filter(r => r.up === student.up);
+                    const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
                     const approvedTPsCount = studentRecords.filter(r => r.tpNote !== null && typeof r.tpNote === 'number' && r.tpNote >= 4).length;
@@ -4014,11 +4058,6 @@
                     <i class="fas fa-user-check stat-icon" style="color: var(--success-color);"></i>
                     <div class="stat-value">${regularityPercentage}</div>
                     <div class="stat-label">Alumnos Regulares</div>
-                </button>
-                <button class="stat-card" data-dashboard-tab="asistencia" title="Asistencia en la última sesión registrada. Haz clic para ver análisis.">
-                    <i class="fas fa-user-clock stat-icon" style="color: var(--accent-orange);"></i>
-                    <div class="stat-value">${lastSessionAttendance}</div>
-                    <div class="stat-label">Asistencia Última Clase</div>
                 </button>
             `;
 
@@ -4358,7 +4397,7 @@
                 // Asegurar que los ausentes estén registrados para esta sesión
                 const studentsForSession = fullData.students.filter(s => !lastSession.group || s.group === "" || s.group === lastSession.group);
                 studentsForSession.forEach(student => {
-                    const hasRecord = fullData.attendanceRecords.some(r => r.sessionId === lastSession.id && r.up === student.up);
+                    const hasRecord = fullData.attendanceRecords.some(r => r.sessionId === lastSession.id && r.up == student.up);
                     if (!hasRecord) {
                         // Solo añade en memoria para el cálculo, no modifica los datos guardados.
                         fullData.attendanceRecords.push({
@@ -4376,7 +4415,7 @@
 
                 const groupAttendance = {};
                 records.forEach(r => {
-                    const student = fullData.students.find(s => s.up === r.up);
+                    const student = fullData.students.find(s => s.up == r.up);
                     if (student && student.group) {
                         if (!groupAttendance[student.group]) {
                             groupAttendance[student.group] = { present: 0, total: 0 };
@@ -4579,7 +4618,7 @@
                 fullData.students.forEach(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
-                    const studentRecords = fullData.attendanceRecords.filter(r => r.up === student.up);
+                    const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
 
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
@@ -4756,7 +4795,7 @@
                 container.innerHTML = listHTML;
                 studentsToDisplay.forEach(student => { findImage(student.up, (photoHTML) => { const photoDiv = document.getElementById(`photo-stu-${student.up}`); if (photoDiv) photoDiv.innerHTML = photoHTML; }); });
 
-                container.querySelectorAll('.group-member-item').forEach(item => { item.addEventListener('click', () => { const s = fullData.students.find(st => st.up === item.dataset.up); if (s) displayStudentPortalView(s); }); });
+                container.querySelectorAll('.group-member-item').forEach(item => { item.addEventListener('click', () => { const s = fullData.students.find(st => st.up == item.dataset.up); if (s) displayStudentPortalView(s); }); });
                 const showAllBtn = document.getElementById('show-all-students-btn');
                 if (showAllBtn) { showAllBtn.addEventListener('click', () => displayExtendedStudentRanking(true)); }
             }
@@ -4842,7 +4881,7 @@
                 const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                 const totalSessionsForStudent = relevantSessions.length;
 
-                const studentRecords = fullData.attendanceRecords.filter(r => r.up === student.up);
+                const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
 
                 const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                 const absentCount = totalSessionsForStudent - presentCount;
@@ -5170,6 +5209,8 @@
                         <div class="modal-body" id="last-session-breakdown-content"></div>
                     </div>
                 </div>
+
+
                 `;
 
                 let portalHTML = `
@@ -5230,20 +5271,7 @@
                                 </button>
                             </div>
 
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
-                                <div class="stat-block" style="background: rgba(0,0,0,0.15); padding: 25px; border-radius: 15px;">
-                                    <h4 style="margin-bottom: 20px;"><i class="fas fa-award"></i> Reconocimientos</h4>
-                                    <div class="achievement-showcase" style="display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
-                                        ${tournamentWins > 0 ? `<div class="trophy-item" style="position: relative;"><img src="./grupos/premios grupales/ganador torneo.png" style="width: 80px; height: auto;" alt="Trofeo"><div class="trophy-count" style="position: absolute; bottom: 0; right: 0; background: var(--accent-teal); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; items-center; justify-content: center; font-size: 0.8rem; font-weight: bold; border: 2px solid white;">${tournamentWins}</div></div>` : ''}
-                                        ${challengeWins > 0 ? `<div class="trophy-item" style="position: relative; display: flex; flex-direction: column; align-items: center; background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);"><i class="fas fa-fist-raised" style="font-size: 35px; color: #ef4444;"></i><span style="font-size: 0.7rem; margin-top: 5px; font-weight: bold;">DESAFÍOS</span><div class="trophy-count" style="position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; items-center; justify-content: center; font-size: 0.75rem;">${challengeWins}</div></div>` : ''}
-                                        ${tournamentWins === 0 && challengeWins === 0 ? '<div style="text-align: center; width: 100%; opacity: 0.5;"><i class="fas fa-lock" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i><p>Completa TPs para ganar logros</p></div>' : ''}
-                                    </div>
-                                </div>
-                                <div class="stat-block" style="background: rgba(0,0,0,0.15); padding: 25px; border-radius: 15px;">
-                                    <h4 style="margin-bottom: 20px;"><i class="fas fa-microchip"></i> Proyectos Activos</h4>
-                                    <div id="group-projects-container-${groupId}" style="display: flex; flex-direction: column; gap: 12px;"></div>
-                                </div>
-                            </div>
+
                         </div>
 
                         <!-- TAB 2: TPs -->
@@ -5481,18 +5509,18 @@
 
                 let listHTML = '<ul class="ranking-list">';
                 members.forEach(member => {
-                    const record = fullData.attendanceRecords.find(r => r.sessionId === lastRelevantSession.id && r.up === member.up);
+                    const record = fullData.attendanceRecords.find(r => r.sessionId === lastRelevantSession.id && r.up == member.up);
                     const status = record ? record.status : 'absent';
                     const statusMap = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' };
                     const iconMap = { onTime: 'fa-check-circle', late: 'fa-clock', absent: 'fa-times-circle' };
 
-                    listHTML += `< li class="ranking-list-item" style = "padding: 0.5rem 0.25rem;" >
+                    listHTML += `<li class="ranking-list-item" style="padding: 0.5rem 0.25rem;">
                     <div class="rank-photo" id="photo-breakdown-${member.up}"></div>
                     <div class="rank-name">${member.lastName}, ${member.firstName}</div>
                     <div class="rank-xp status-${status}" style="margin-left: auto; font-size: 1rem;">
                         <i class="fas ${iconMap[status]}"></i> ${statusMap[status]}
                     </div>
-                </li > `;
+                </li>`;
                 });
                 listHTML += `</ul > `;
                 container.innerHTML = listHTML;
@@ -5704,7 +5732,7 @@
                 // Click en Miembros
                 document.querySelectorAll('.group-mate-item').forEach(item => {
                     item.onclick = () => {
-                        const student = fullData.students.find(s => s.up === item.dataset.up);
+                        const student = fullData.students.find(s => s.up == item.dataset.up);
                         if (student) displayStudentPortalView(student);
                     };
                 });
@@ -5999,7 +6027,7 @@
                     try {
                         // 1. Intentar obtener contraseña personalizada en 'student_auth'
                         const authDoc = await db.collection('student_auth').doc(currentEditingStudentUp).get();
-                        const studentData = fullData.students.find(s => s.up === currentEditingStudentUp);
+                        const studentData = fullData.students.find(s => s.up == currentEditingStudentUp);
                         
                         let isAuthorized = false;
                         let errorMsg = 'Contraseña incorrecta.';
@@ -6275,7 +6303,7 @@
                                 profileImg.src = photoData;
                             }
 
-                            const student = fullData.students.find(s => s.up === currentEditingStudentUp);
+                            const student = fullData.students.find(s => s.up == currentEditingStudentUp);
                             if (student) displayStudentPortalView(student);
                         }, 1500);
                     } catch (error) {
@@ -7081,9 +7109,14 @@
                             <div style="font-size: 0.8rem; font-weight: 600; color: #fff;">${s.name}</div>
                             <div style="font-size: 0.65rem; color: var(--text-muted-light);">${s.date}</div>
                         </div>
-                        <button onclick="prepareSessForCSV('${s.id}', '${s.name}')" class="nav-button" style="padding: 4px 8px; font-size: 0.7rem; border-color: var(--accent-teal); color: var(--accent-teal);">
-                            <i class="fas fa-file-import"></i> Asistencia
-                        </button>
+                        <div style="display: flex; gap: 5px;">
+                            <button onclick="downloadClassAnswers('${s.id}', '${s.name}')" class="nav-button" style="padding: 4px 8px; font-size: 0.7rem; border-color: var(--accent-orange); color: var(--accent-orange);">
+                                <i class="fas fa-download"></i> Respuestas
+                            </button>
+                            <button onclick="prepareSessForCSV('${s.id}', '${s.name}')" class="nav-button" style="padding: 4px 8px; font-size: 0.7rem; border-color: var(--accent-teal); color: var(--accent-teal);">
+                                <i class="fas fa-file-import"></i> Asistencia
+                            </button>
+                        </div>
                     </div>
                 `).join('');
             }
@@ -7092,6 +7125,38 @@
                 window.activeSessId = id;
                 document.getElementById('target-sess-display').innerText = name;
                 document.getElementById('csv-import-box').style.display = 'block';
+            };
+
+            window.downloadClassAnswers = (sessionId, sessionName) => {
+                const records = window.fullData.attendanceRecords || [];
+                const sessionRecords = records.filter(r => r.sessionId === sessionId && r.answer);
+                
+                if (sessionRecords.length === 0) {
+                    alert("No hay respuestas registradas para esta clase.");
+                    return;
+                }
+
+                let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                csvContent += "Legajo;Apellido;Nombre;Respuesta;Fecha de envio\n";
+
+                sessionRecords.forEach(record => {
+                    const student = window.fullData.students.find(s => s.up == record.up);
+                    const apellido = student ? student.lastName : "Desconocido";
+                    const nombre = student ? student.firstName : "Desconocido";
+                    const legajo = record.up;
+                    const respuesta = '"' + (record.answer || "").replace(/"/g, '""') + '"';
+                    const fecha = record.timestamp ? new Date(record.timestamp).toLocaleString() : "";
+                    
+                    csvContent += `${legajo};"${apellido}";"${nombre}";${respuesta};"${fecha}"\n`;
+                });
+
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", `Respuestas_${sessionName.replace(/\s+/g, "_")}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             };
 
             window.handleCSVProcessing = (input) => {
@@ -7187,8 +7252,94 @@
                 } catch(e) { alert("Error al reiniciar."); }
             };
 
+            // ==========================================================================
+            // 10. PASO 3: SISTEMA DE ASISTENCIA QR (FLUJO DOCENTE -> ENCUESTA)
+            // ==========================================================================
+            
+            // Función para que el docente abra el configurador
+            // Ejecución de detección de URL para asistencia QR
             initializeApp();
         });
+    </script>
+
+    <script>
+        // ==========================================================================
+        // SISTEMA DE ASISTENCIA QR (FUNCIONES GLOBALES INDEPENDIENTES)
+        // ==========================================================================
+        window.openQRConfig = function() {
+            const select = document.getElementById('qr-session-select');
+            if (!select) return;
+            select.innerHTML = "";
+            const sessions = window.fullData ? (window.fullData.sessions || []) : [];
+            if (sessions.length === 0) {
+                alert("No hay sesiones creadas. Primero crea una clase en la pestaña de Asistencia.");
+                return;
+            }
+            sessions.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.id;
+                opt.textContent = s.name || s.id;
+                select.appendChild(opt);
+            });
+            document.getElementById('qr-config-modal').classList.add('active');
+        };
+
+        window.generateQRWithQuestion = function() {
+            const sid = document.getElementById('qr-session-select').value;
+            const question = document.getElementById('qr-question-input').value.trim();
+            if (!sid || !question) return alert("Completa todos los campos.");
+            
+            const sessionIdx = window.fullData.sessions.findIndex(s => s.id === sid);
+            if (sessionIdx !== -1) {
+                window.fullData.sessions[sessionIdx].question = question;
+                firebase.firestore().collection('app_state').doc('main').set(window.fullData);
+            }
+            const attendanceUrl = `${window.location.origin}${window.location.pathname}?asistencia=${sid}&q=${encodeURIComponent(question)}`;
+            document.getElementById('qr-config-modal').classList.remove('active');
+            document.getElementById('qr-active-question').innerText = `Sesión: ${sid} | Pregunta: ${question}`;
+            document.getElementById('qr-display-modal').classList.add('active');
+            const container = document.getElementById("qrcode-main");
+            container.innerHTML = "";
+            setTimeout(() => {
+                new QRCode(container, { text: attendanceUrl, width: 300, height: 300 });
+            }, 100);
+        };
+
+        window.checkAttendanceFromURL = function() {
+            const params = new URLSearchParams(window.location.search);
+            const sid = params.get('asistencia');
+            const q = params.get('q');
+            if (sid && q) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                document.getElementById('student-form-question').innerText = decodeURIComponent(q);
+                document.getElementById('student-attendance-modal').dataset.sessionId = sid;
+                const savedUP = localStorage.getItem('userUP');
+                if (savedUP) document.getElementById('student-up-input').value = savedUP;
+                document.getElementById('student-attendance-modal').classList.add('active');
+            }
+        };
+
+        window.submitStudentAttendance = async function() {
+            const modal = document.getElementById('student-attendance-modal');
+            const sid = modal.dataset.sessionId;
+            const up = document.getElementById('student-up-input').value.trim();
+            const ans = document.getElementById('student-answer-input').value.trim();
+            if (!up || !ans) return alert("Completa UP y respuesta.");
+            localStorage.setItem('userUP', up);
+            const sessions = window.fullData.attendanceRecords || [];
+            if (sessions.some(r => r.sessionId === sid && r.up === String(up))) {
+                alert("Ya registrado.");
+                return modal.classList.remove('active');
+            }
+            window.fullData.attendanceRecords.push({ sessionId: sid, up: String(up), answer: ans, status: 'onTime', timestamp: new Date().toISOString() });
+            try {
+                await firebase.firestore().collection('app_state').doc('main').set(window.fullData);
+                alert("✅ Enviado.");
+                modal.classList.remove('active');
+            } catch (e) { alert("Error al enviar."); }
+        };
+
+        setTimeout(window.checkAttendanceFromURL, 2000);
     </script>
 </body>
 
