@@ -3456,6 +3456,9 @@
                 <h4>Registrar mi Asistencia</h4>
                 <button class="close-modal">&times;</button>
             </div>
+            <div id="student-session-info" style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 0.85rem; color: var(--accent-teal); display:none;">
+                <i class="fas fa-calendar-check"></i> <span id="student-session-name-display"></span>
+            </div>
             <div class="form-group" style="margin-top: 15px;">
                 <p id="student-form-question" style="color: var(--text-light); font-size: 1.1rem; margin-bottom: 15px; border-left: 4px solid var(--accent-orange); padding-left: 10px;"></p>
                 
@@ -3568,6 +3571,89 @@
                             try { displayGroups(); } catch(e){}
                             try { createOverallAttendanceChart(); } catch(e){}
                             try { generateAndDisplayClasses(); } catch(e){}
+                            
+                            // MIGRACIÓN DE GRUPOS AUTOMÁTICA
+                            if (!fullData.groupsAssignedV4) {
+                                fullData.groupsAssignedV4 = true;
+                                const groupsData = [
+                                    ["Gianluca Vargiu", "Luca Delani", "344098", "Santiago Vázquez", "Rodrigo Lescano"], // Massimo Santucci = 344098
+                                    ["Josefina Padilla", "Luciano Dip", "Ariana Salon", "Florencia Cortez", "Agustina Salazar"],
+                                    ["Lucía Rossi", "Milagros Waunous", "Agostina Mukdise", "Juliana Gentile", "Luz Fernandez Murga"],
+                                    ["Alaina Fatima Bilbao", "Belen Gerez", "Juan Albornoz", "Maria Sol Gomez", "344025"], // Mariana Godoy = 344025
+                                    ["Tapia Daniela", "Perez Martinez Micaela", "Usandivaras constanza", "Llanos Vanesa", "Rivas Mirta"],
+                                    ["Marianella Giuliano", "Felicitas Gallardo", "Juan Martin Paz", "Thiara Bazan", "Guadalupe Avila"],
+                                    ["Zumaeta Rocío", "Santos Camila", "Lastra Nicolas", "Ocaranza Laureana", "Antich Facundo"],
+                                    ["Lourdes Paez de la Torre", "Nicole Jennifer Cuevas", "Sofía Abigail Barros", "Lucia Emilia Ruiz", "Tomás Vidal"],
+                                    ["Álvarez Romano Santiago Leonel", "Carrizo Fabricio", "Ibáñez Tomás", "Lazarte Maximo Daniel", "Elías Joaquín"],
+                                    ["344037", "344077", "344165", "344038", "344048"],
+                                    ["Matias Jerez", "Lai Franco", "Rodriguez Juan Pablo", "Lazarte Tomas", "Antonella Avila Lucena"],
+                                    ["Amparo viaña", "Amparo Colombres garmendia", "Martina Villarreal", "Sol Morandini", "Pilar Padilla"],
+                                    ["344031", "344044", "344032", "344012", "344011"],
+                                    ["Ignacio Miguel Altamiranda", "Joaquin Emiliano Guzman Siner", "Lautaro Ibarra Goñi", "María Sofía Díaz Romero", "Román Augusto Cordoba Diaz"],
+                                    ["Juan Pablo Zavaleta", "Augusto Mercado", "Joaquin Cerviño", "Fabrizzio Belluscio", "Benjamín Amayo"],
+                                    ["344085", "344073", "343783", "344105", "341726"], // Luisana Alcorta UP is 344085
+                                    ["Lisandro Geronimo Albornoz", "David Velardez", "343731", "Sofía Adorni"], // Sofía Herrmann = 343731
+                                    ["343992", "343997", "343891", "343850", "343870"]
+                                ];
+
+                                const normalize = str => {
+                                    if(!str) return '';
+                                    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '');
+                                };
+                                
+                                // Clean any existing groups
+                                fullData.students.forEach(s => s.group = "");
+
+                                let gid = 1;
+                                let notFound = [];
+                                groupsData.forEach(members => {
+                                    const groupKey = 'g_' + gid;
+                                    if(!fullData.sharedGroupMetadata) fullData.sharedGroupMetadata = {};
+                                    if(!fullData.sharedGroupMetadata[groupKey]) {
+                                        fullData.sharedGroupMetadata[groupKey] = { name: "Grupo " + gid, xp: 0, level: 1 };
+                                    }
+                                    
+                                    members.forEach(member => {
+                                        const isUP = /^\d+$/.test(member);
+                                        const normM = normalize(member);
+                                        let student = null;
+                                        if (isUP) {
+                                            student = fullData.students.find(s => s.up == member);
+                                        } else {
+                                            let bestMatch = null;
+                                            let maxMatchLen = 0;
+                                            fullData.students.forEach(s => {
+                                                 const n1 = normalize(s.firstName + s.lastName);
+                                                 let nameParts = member.split(' ').map(normalize).filter(x=>x);
+                                                 let hasAllParts = nameParts.length > 0 && nameParts.every(p => n1.includes(p));
+                                                 if (hasAllParts && n1.length > maxMatchLen) {
+                                                     bestMatch = s;
+                                                     maxMatchLen = n1.length;
+                                                 }
+                                            });
+                                            if(bestMatch) student = bestMatch;
+                                            else {
+                                                student = fullData.students.find(s => {
+                                                    const n1 = normalize(s.firstName + s.lastName);
+                                                    return n1.includes(normM);
+                                                });
+                                            }
+                                        }
+                                        
+                                        if (student) {
+                                            student.group = groupKey;
+                                        } else {
+                                            notFound.push(member);
+                                        }
+                                    });
+                                    gid++;
+                                });
+
+                                db.collection('app_state').doc('main').set(fullData).then(() => {
+                                    if(notFound.length > 0) alert("Grupos migrados. Los siguientes alumnos NO fueron encontrados.\n¡Esto significa que todavía no se han registrado en la web!\n\nAlumnos faltantes: " + notFound.join(', '));
+                                    else alert("¡Los 18 grupos fueron armados y asignados automáticamente sin errores!");
+                                });
+                            }
                         }
                     });
 
@@ -4054,10 +4140,10 @@
                     <div class="stat-value">${totalGroups}</div>
                     <div class="stat-label">Grupos Activos</div>
                 </button>
-                <button class="stat-card" data-dashboard-tab="regularidad" title="Porcentaje de alumnos que cumplen las condiciones para regularizar.">
-                    <i class="fas fa-user-check stat-icon" style="color: var(--success-color);"></i>
-                    <div class="stat-value">${regularityPercentage}</div>
-                    <div class="stat-label">Alumnos Regulares</div>
+                <button class="stat-card" data-dashboard-tab="regularidad" title="Estado actual de la condición de los alumnos en la cursada.">
+                    <i class="fas fa-chart-pie stat-icon" style="color: var(--success-color);"></i>
+                    <div class="stat-value" style="font-size: 1.4rem; padding-top: 5px;">Análisis</div>
+                    <div class="stat-label">Estadísticas</div>
                 </button>
             `;
 
@@ -4609,11 +4695,12 @@
                 const container = document.getElementById('regularity-charts-container');
                 if (!container) return;
 
+                let promocionCount = 0;
                 let regularCount = 0;
-                let nonRegularCount = 0;
-                const failsAttendanceOnly = [];
-                const failsTPsOnly = [];
-                const failsBoth = [];
+                let libreCount = 0;
+                const libresAttendanceOnly = [];
+                const libresTPsOnly = [];
+                const libresBoth = [];
 
                 fullData.students.forEach(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
@@ -4624,29 +4711,63 @@
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
                     const gradableTpRecords = studentRecords.filter(r => r.tpNote !== 'Pendiente');
-                    const approvedTPsCount = gradableTpRecords.filter(r => typeof r.tpNote === 'number' && r.tpNote >= 4).length;
                     const denominator = gradableTpRecords.length;
-                    const tpPercentage = denominator > 0 ? (approvedTPsCount / denominator) * 100 : 0;
 
-                    const attendanceOk = attendancePercentage >= 50;
-                    const tpOk = tpPercentage >= 75;
+                    // Presentados (cualquier nota o string no nulo excluyendo pendiente)
+                    const presentedTPsCount = gradableTpRecords.filter(r => r.tpNote !== null && r.tpNote !== 'Pendiente').length;
+                    const tpPresentedPercentage = denominator > 0 ? (presentedTPsCount / denominator) * 100 : 0;
 
-                    if (attendanceOk && tpOk) {
+                    // Aprobados (nota >= 4)
+                    const approvedTPsCount = gradableTpRecords.filter(r => typeof r.tpNote === 'number' && r.tpNote >= 4).length;
+                    const tpApprovedPercentage = denominator > 0 ? (approvedTPsCount / denominator) * 100 : 0;
+
+                    const promoOk = attendancePercentage >= 75 && tpPresentedPercentage >= 100;
+                    const regOk = attendancePercentage >= 50 && tpPresentedPercentage >= 75;
+
+                    student.calculatedCondition = promoOk ? 'Promoción' : (regOk ? 'Regular' : 'Libre');
+                    student.calculatedAttendance = attendancePercentage;
+                    student.calculatedTpApproved = tpApprovedPercentage;
+                    student.calculatedTpPresented = tpPresentedPercentage;
+
+                    if (promoOk) {
+                        promocionCount++;
+                    } else if (regOk) {
                         regularCount++;
                     } else {
-                        nonRegularCount++;
-                        const studentData = { student, attendancePercentage, tpPercentage };
-                        if (!attendanceOk && !tpOk) {
-                            failsBoth.push(studentData);
-                        } else if (!attendanceOk) {
-                            failsAttendanceOnly.push(studentData);
-                        } else {
-                            failsTPsOnly.push(studentData);
-                        }
+                        libreCount++;
+                        const studentData = { student, attendancePercentage, tpPercentage: tpPresentedPercentage };
+                        const attOk = attendancePercentage >= 50;
+                        const tOk = tpPresentedPercentage >= 75;
+                        if (!attOk && !tOk) libresBoth.push(studentData);
+                        else if (!attOk) libresAttendanceOnly.push(studentData);
+                        else libresTPsOnly.push(studentData);
                     }
                 });
 
+                if(!window.downloadGeneralAttendanceReport) {
+                    window.downloadGeneralAttendanceReport = () => {
+                        let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+                        csvContent += "Legajo;Apellido;Nombre;% Asistencia;% TPs Presentados;% TPs Aprobados;Condición\n";
+                        const sortedStudents = [...window.fullData.students].sort((a,b) => (b.calculatedAttendance || 0) - (a.calculatedAttendance || 0));
+                        sortedStudents.forEach(s => {
+                            csvContent += `${s.up};"${s.lastName}";"${s.firstName}";${Math.round(s.calculatedAttendance||0)}%;${Math.round(s.calculatedTpPresented||0)}%;${Math.round(s.calculatedTpApproved||0)}%;${s.calculatedCondition}\n`;
+                        });
+                        const encodedUri = encodeURI(csvContent);
+                        const link = document.createElement("a");
+                        link.setAttribute("href", encodedUri);
+                        link.setAttribute("download", "Planilla_Cursada.csv");
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    };
+                }
+
                 container.innerHTML = `
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <h3 style="color: var(--accent-teal); font-size: 1.8rem; margin-bottom: 5px;">Análisis de Regularidad</h3>
+                    <p style="color: var(--text-muted-light); font-size: 0.95rem; margin-bottom: 15px;">Estado actual de la condición de los alumnos en la cursada.</p>
+                    <button onclick="downloadGeneralAttendanceReport()" class="nav-button active" style="margin: 0 auto 10px auto; display: block; border-radius: 8px; font-size: 0.9rem; padding: 10px 20px;"><i class="fas fa-file-excel"></i> Descargar Planilla de Cursada</button>
+                </div>
                 <div class="extended-rankings-wrapper" style="margin-top:0; grid-template-columns: 1fr 1fr;">
                     <div class="ranking-list-container">
                         <canvas id="regularityDonutChart"></canvas>
@@ -4660,10 +4781,10 @@
                 regularityDonutChart = new Chart(document.getElementById('regularityDonutChart'), {
                     type: 'doughnut',
                     data: {
-                        labels: ['Regulares', 'No Regulares'],
+                        labels: ['Promoción', 'Regular', 'Libre'],
                         datasets: [{
-                            data: [regularCount, nonRegularCount],
-                            backgroundColor: ['rgba(34, 197, 94, 0.8)', 'rgba(239, 68, 68, 0.8)'],
+                            data: [promocionCount, regularCount, libreCount],
+                            backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(34, 197, 94, 0.8)', 'rgba(239, 68, 68, 0.8)'],
                             borderColor: 'var(--primary-dark)',
                             borderWidth: 4
                         }]
@@ -4683,9 +4804,9 @@
                     data: {
                         labels: ['Solo por Asistencia', 'Solo por TPs', 'Por Ambos Motivos'],
                         datasets: [{
-                            label: 'N° de Alumnos',
-                            data: [failsAttendanceOnly.length, failsTPsOnly.length, failsBoth.length],
-                            backgroundColor: ['#f59e0b', '#3b82f6', '#ef4444'],
+                            label: 'N° de Alumnos Libres',
+                            data: [libresAttendanceOnly.length, libresTPsOnly.length, libresBoth.length],
+                            backgroundColor: ['#f59e0b', '#8b5cf6', '#ef4444'],
                             borderRadius: 5
                         }]
                     },
@@ -4694,16 +4815,16 @@
                         onClick: (event, elements) => {
                             if (elements.length === 0) return;
                             const index = elements[0].index;
-                            if (index === 0) showRegularityBreakdownModal(failsAttendanceOnly, 'Alumnos Libres por Asistencia', 'attendance');
-                            else if (index === 1) showRegularityBreakdownModal(failsTPsOnly, 'Alumnos Libres por TPs', 'tp');
-                            else if (index === 2) showRegularityBreakdownModal(failsBoth, 'Alumnos Libres por Ambos Motivos', 'both');
+                            if (index === 0) showRegularityBreakdownModal(libresAttendanceOnly, 'Libres por Asistencia', 'attendance');
+                            else if (index === 1) showRegularityBreakdownModal(libresTPsOnly, 'Libres por TPs', 'tp');
+                            else if (index === 2) showRegularityBreakdownModal(libresBoth, 'Libres por Ambos Motivos', 'both');
                         },
                         onHover: (event, chartElement) => {
                             event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
                         },
                         plugins: {
                             legend: { display: false },
-                            title: { display: true, text: 'Causas de Pérdida de Regularidad', color: 'white', font: { size: 18 } }
+                            title: { display: true, text: 'Motivo de Libre', color: 'white', font: { size: 18 } }
                         },
                         scales: {
                             y: { ticks: { color: 'white', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.1)' } },
@@ -4910,6 +5031,26 @@
 
                 const isRegular = attendancePercentage >= 50 && tpPercentage >= 75;
 
+                // Build group options safely (no nested template literals)
+                let groupOptsSelectorHTML = '<option value="">(Sin Grupo)</option>';
+                const gMetaRef = fullData.sharedGroupMetadata || {};
+                Object.keys(gMetaRef)
+                    .map(gId => ({ id: gId, num: parseInt(gId.replace('g_','')) }))
+                    .sort((a,b) => a.num - b.num)
+                    .forEach(g => {
+                        const sel = student.group === g.id ? ' selected' : '';
+                        groupOptsSelectorHTML += '<option value="' + g.id + '"' + sel + '>' + (gMetaRef[g.id].name || g.id) + '</option>';
+                    });
+
+                const groupSelectorHTML = '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border);">'
+                    + '<p style="font-size: 0.9em; margin-bottom: 8px; color: var(--text-color);">Seleccionar o Cambiar Grupo:</p>'
+                    + '<form id="student-group-selection-form" style="display: flex; gap: 10px; flex-wrap: wrap;">'
+                    + '<select id="student-group-selector" style="flex-grow: 1; padding: 8px; border-radius: 4px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border);">'
+                    + groupOptsSelectorHTML
+                    + '</select>'
+                    + '<button type="submit" class="nav-button active" style="padding: 5px 15px; min-width: auto;"><i class="fas fa-save"></i> Guardar</button>'
+                    + '</form></div>';
+
                 let groupCardHTML = '';
                 if (student.group) {
                     const groupData = { xp: 0 };
@@ -4930,12 +5071,14 @@
                             </div>
                             <i class="fas fa-chevron-right"></i>
                         </div>
+                        ${groupSelectorHTML}
                     </div>`;
                 } else {
                     groupCardHTML = `
                     <div class="stat-block">
                          <h4><i class="fas fa-users"></i> Mi Grupo</h4>
-                         <p class="text-muted-light text-sm">Este alumno no tiene un grupo asignado.</p>
+                         <p class="text-muted-light text-sm" style="margin-bottom: 10px;">Visualiza y únete a un grupo aquí.</p>
+                         ${groupSelectorHTML}
                     </div>`;
                 }
 
@@ -5084,6 +5227,32 @@
 
                 showHonorPanelView('student');
                 attachPortalEventListeners();
+
+                const groupForm = document.getElementById('student-group-selection-form');
+                if (groupForm) {
+                    groupForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const newGroup = document.getElementById('student-group-selector').value;
+                        const studentIndex = fullData.students.findIndex(s => s.up === student.up);
+                        
+                        if (studentIndex !== -1) {
+                            fullData.students[studentIndex].group = newGroup;
+                            const originalText = groupForm.querySelector('button').innerHTML;
+                            groupForm.querySelector('button').innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...';
+                            groupForm.querySelector('button').disabled = true;
+                            try {
+                                await db.collection('app_state').doc('main').set(fullData);
+                                alert('Tu grupo fue actualizado y guardado correctamente.');
+                                displayStudentPortalView(fullData.students[studentIndex]);
+                            } catch (err) {
+                                console.error("Error asignando grupo:", err);
+                                alert('Ocurrió un error al intentar cambiar de grupo.');
+                                groupForm.querySelector('button').innerHTML = originalText;
+                                groupForm.querySelector('button').disabled = false;
+                            }
+                        }
+                    });
+                }
             }
             async function displayGroupPortalView(groupId) {
                 const cleanGroupId = String(groupId).trim();
@@ -6940,12 +7109,27 @@
                 container.style.display = 'block';
                 container.innerHTML = '<div class="loading-spinner"></div>';
 
-                // Buscar datos extendidos (foto, bio)
+                // Buscar datos extendidos (foto, bio) desde student_photos
                 let profileExtra = {};
                 try {
-                    const extraDoc = await db.collection('student_profiles').doc(student.up).get();
+                    const extraDoc = await db.collection('student_photos').doc(String(student.up)).get();
                     if (extraDoc.exists) profileExtra = extraDoc.data();
+                    // Fallback: también intenta student_profiles si no hay foto
+                    if (!profileExtra.photo) {
+                        const fallbackDoc = await db.collection('student_profiles').doc(String(student.up)).get();
+                        if (fallbackDoc.exists) profileExtra = { ...fallbackDoc.data(), ...profileExtra };
+                    }
                 } catch (e) {}
+
+                // Pre-build group options to avoid nested template literal
+                let groupOptionsHTML = '<option value="">(Sin Grupo)</option>';
+                const gMeta = fullData.sharedGroupMetadata || {};
+                Object.keys(gMeta).map(gId => ({ id: gId, num: parseInt(gId.replace('g_','')) }))
+                    .sort((a,b) => a.num - b.num)
+                    .forEach(g => {
+                        const sel = student.group === g.id ? ' selected' : '';
+                        groupOptionsHTML += '<option value="' + g.id + '"' + sel + '>' + (gMeta[g.id].name || g.id) + '</option>';
+                    });
 
                 container.innerHTML = `
                     <div style="background: linear-gradient(135deg, rgba(232, 122, 61, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%); padding: 40px; border-bottom: 1px solid var(--glass-border);">
@@ -6985,10 +7169,30 @@
                             <div style="font-size: 0.75rem; color: var(--xp-color); font-weight: 800; letter-spacing: 1px; margin-bottom: 10px;">TOKENS ASISTENCIA</div>
                             <div style="font-size: 2.5rem; font-weight: 800; color: white;">${student.bonusAttendanceTokens || 0}</div>
                         </div>
+                        <div class="stat-card" id="group-selector-card" style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); border-left: 5px solid #8b5cf6; backdrop-filter: blur(10px); grid-column: 1 / -1;">
+                            <div style="font-size: 0.75rem; color: #8b5cf6; font-weight: 800; letter-spacing: 1px; margin-bottom: 15px;"><i class="fas fa-users"></i> MI GRUPO</div>
+                            <div id="current-group-label" style="color: white; font-size: 1.1rem; font-weight: 600; margin-bottom: 15px;"></div>
+                            <form id="auth-profile-group-form" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                <select id="auth-profile-group-selector" style="flex-grow: 1; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.3); color: white; border: 1px solid rgba(139,92,246,0.4); font-size: 0.9rem;">${groupOptionsHTML}</select>
+                                <button type="submit" style="padding: 10px 20px; background: #8b5cf6; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; white-space: nowrap;">
+                                    <i class="fas fa-save"></i> Guardar Grupo
+                                </button>
+                            </form>
+                            <p style="font-size: 0.75rem; color: var(--text-muted-light); margin-top: 10px;"><i class="fas fa-info-circle"></i> Podés cambiar tu grupo cuando quieras.</p>
+                        </div>
                     </div>
                 `;
 
-                // --- ATAR EVENTOS DINÁMICOS ---
+                // Populate group label (done in JS to avoid nested template literals)
+                const groupLabelEl = document.getElementById('current-group-label');
+                if (groupLabelEl) {
+                    if (student.group && gMeta[student.group]) {
+                        groupLabelEl.innerHTML = 'Actualmente en: <span style="color:#8b5cf6;font-weight:800;">' + (gMeta[student.group].name || student.group) + '</span>';
+                    } else {
+                        groupLabelEl.innerHTML = '<span style="color:var(--text-muted-light);font-weight:400;">No tenés grupo asignado aún.</span>';
+                    }
+                }
+
                 const adjustBtn = document.getElementById('trigger-photo-adjust');
 
                 if (adjustBtn) {
@@ -7013,6 +7217,30 @@
                         currentStudentData = null;
                     });
                 }
+
+                const groupForm = document.getElementById('auth-profile-group-form');
+                if (groupForm) {
+                    groupForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const newGroup = document.getElementById('auth-profile-group-selector').value;
+                        const studentIndex = fullData.students.findIndex(s => s.up == student.up);
+                        if (studentIndex !== -1) {
+                            const btn = groupForm.querySelector('button');
+                            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...';
+                            btn.disabled = true;
+                            fullData.students[studentIndex].group = newGroup;
+                            try {
+                                await db.collection('app_state').doc('main').set(fullData);
+                                // Reload the profile with updated student data
+                                loadProfileContent(fullData.students[studentIndex]);
+                            } catch (err) {
+                                alert('Error al guardar el grupo. Intentá de nuevo.');
+                                btn.innerHTML = '<i class="fas fa-save"></i> Guardar Grupo';
+                                btn.disabled = false;
+                            }
+                        }
+                    });
+                }
             }
 
             window.editBio = async () => {
@@ -7020,7 +7248,11 @@
                 const text = prompt("Escribe tu biografía o frase personal:", currentBio === '¡Haz clic en el botón de abajo para contar algo sobre ti o poner tu frase favorita!' ? '' : currentBio);
                 if (text !== null) {
                     try {
-                        await db.collection('student_profiles').doc(currentStudentUP).set({
+                        await db.collection('student_photos').doc(String(currentStudentUP)).set({
+                            bio: text
+                        }, { merge: true });
+                        // También en student_profiles por compatibilidad
+                        await db.collection('student_profiles').doc(String(currentStudentUP)).set({
                             bio: text
                         }, { merge: true });
                         document.getElementById('profile-bio-text').innerText = text || '¡Haz clic en el botón de abajo para contar algo sobre ti o poner tu frase favorita!';
@@ -7315,29 +7547,84 @@
                 document.getElementById('student-attendance-modal').dataset.sessionId = sid;
                 const savedUP = localStorage.getItem('userUP');
                 if (savedUP) document.getElementById('student-up-input').value = savedUP;
+
+                // Mostrar nombre de la sesión para que el alumno pueda verificar
+                const sessionInfoEl = document.getElementById('student-session-info');
+                const sessionNameEl = document.getElementById('student-session-name-display');
+                if (sessionInfoEl && sessionNameEl) {
+                    const sessions = window.fullData ? (window.fullData.sessions || []) : [];
+                    const session = sessions.find(s => String(s.id) === String(sid));
+                    const sessionLabel = session ? (session.name || sid) : sid;
+                    sessionNameEl.textContent = 'Clase: ' + sessionLabel + ' (ID: ' + sid + ')';
+                    sessionInfoEl.style.display = 'block';
+                }
+
                 document.getElementById('student-attendance-modal').classList.add('active');
             }
         };
 
         window.submitStudentAttendance = async function() {
             const modal = document.getElementById('student-attendance-modal');
-            const sid = modal.dataset.sessionId;
+            const sid = String(modal.dataset.sessionId || '').trim();
             const up = document.getElementById('student-up-input').value.trim();
             const ans = document.getElementById('student-answer-input').value.trim();
-            if (!up || !ans) return alert("Completa UP y respuesta.");
+            if (!up || !ans || !sid) return alert("Completa todos los campos.");
             localStorage.setItem('userUP', up);
-            const sessions = window.fullData.attendanceRecords || [];
-            if (sessions.some(r => r.sessionId === sid && r.up === String(up))) {
-                alert("Ya registrado.");
-                return modal.classList.remove('active');
-            }
-            window.fullData.attendanceRecords.push({ sessionId: sid, up: String(up), answer: ans, status: 'onTime', timestamp: new Date().toISOString() });
+
+            const btn = modal.querySelector('button[onclick="submitStudentAttendance()"]');
+            if (btn) { btn.disabled = true; btn.innerText = 'Enviando...'; }
+
             try {
-                await firebase.firestore().collection('app_state').doc('main').set(window.fullData);
-                alert("✅ Enviado.");
+                // Leer datos frescos de Firestore para evitar falsos "ya registrado"
+                const freshDoc = await firebase.firestore().collection('app_state').doc('main').get();
+                if (!freshDoc.exists) throw new Error('No se pudo obtener datos.');
+                const freshData = freshDoc.data();
+                window.fullData = freshData; // actualizar cache local
+
+                const records = freshData.attendanceRecords || [];
+                if (records.some(r => String(r.sessionId) === sid && String(r.up) === String(up))) {
+                    alert("Ya registraste tu asistencia en esta clase.");
+                    modal.classList.remove('active');
+                    return;
+                }
+
+                // Registrar asistencia
+                if (!freshData.attendanceRecords) freshData.attendanceRecords = [];
+                freshData.attendanceRecords.push({
+                    sessionId: sid,
+                    up: String(up),
+                    answer: ans,
+                    status: 'onTime',
+                    timestamp: new Date().toISOString()
+                });
+
+                // Sumar 2 XP al alumno
+                const studentIdx = freshData.students.findIndex(s => String(s.up) === String(up));
+                if (studentIdx !== -1) {
+                    const student = freshData.students[studentIdx];
+                    const xpGained = 2;
+                    student.xp = (student.xp || 0) + xpGained;
+                    if (!student.xpHistory) student.xpHistory = [];
+                    student.xpHistory.push({
+                        timestamp: new Date().toISOString(),
+                        amount: xpGained,
+                        reason: 'Asistencia registrada (QR)',
+                        newXP: student.xp
+                    });
+                }
+
+                await firebase.firestore().collection('app_state').doc('main').set(freshData);
+                window.fullData = freshData;
+                alert("✅ ¡Presente enviado! +2 XP 🌟");
                 modal.classList.remove('active');
-            } catch (e) { alert("Error al enviar."); }
+            } catch (e) {
+                console.error(e);
+                alert("Error al enviar. Intentá de nuevo.");
+                if (btn) { btn.disabled = false; btn.innerText = 'Enviar mi Presente'; }
+            }
         };
+
+
 
         setTimeout(window.checkAttendanceFromURL, 2000);
     </script>
