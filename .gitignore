@@ -21,3 +21,6 @@ firestore.rules
 # Archivos de sistema
 .DS_Store
 Thumbs.db
+
+# Carpeta temporal
+tmp/
