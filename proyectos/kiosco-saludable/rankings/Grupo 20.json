@@ -1,0 +1,39 @@
+{
+  "grupoEvaluador": 20,
+  "clasificacion": {
+    "S": [
+      "snack-de-garbanzo"
+    ],
+    "A": [
+      "bombones-proteicos"
+    ],
+    "B": [
+      "sandwich-arcoiris"
+    ],
+    "C": [
+      "trufas-de-avena-con-banana-cacao-y-coco"
+    ],
+    "D": [
+      "mousse-de-frutilla"
+    ],
+    "Pool": [
+      "bolitas-energ-ticas-de-d-til",
+      "barritas-de-avena-y-manzana",
+      "pancakes-de-banana",
+      "muffins-de-avena-cacao-y-banana",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "bud-n-integral-de-lim-n",
+      "d-tiles-rellenos",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "helado-de-banana",
+      "barrita-de-quinoa"
+    ]
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "mousse-de-frutilla",
+      "analisis": "Cuando hablamos del snack de garbanzos, es la mejor opción en cuanto al mousse de frutilla no solo por tener un alto contenido en fibras y proteinas, sino porque esta hecho a base de legumbres los cuales ayudan en la saciedad donde estudios demuestran que un consumo frecuente se asocia con una mejor calidad de vida a largo plazo y a la prevención de enfermedades. En cambio el mousse de frutilla fue ubicado en el tier D porque puede PARECER menos dañino pero su consumo con frecuencia esta relacionado a problemas en la salud a largo plazo como asi tambien es un alimento el cual tiene un bajo valor nutritivo"
+    }
+  ]
+}

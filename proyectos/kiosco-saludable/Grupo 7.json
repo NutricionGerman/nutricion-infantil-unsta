@@ -1,0 +1,191 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Budín integral de limón",
+    "grupo": "Grupo 7",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://img.lagaceta.com.ar/fotos/notas/2024/06/14/1200x800_budin-amapolas-limon-para-disfrutar-desayuno-1039058-084216.webp",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Harina integral",
+      "gramos": 180,
+      "urlImagen": "https://totemg.cl/wp-content/uploads/2020/07/HARINA-DE-TRIGO-INTEGRAL.jpeg",
+      "puntosClave": [
+        {
+          "texto": "1-Es rica en fibra: La harina integral es una excelente fuente de fibra, lo que ayuda a mantener la digestión regular y reduce el riesgo de enfermedades del corazón y la diabetes.\n2-Contiene nutrientes esenciales: La harina integral contiene vitaminas y minerales esenciales, como hierro, magnesio y zinc.\n3-Reduce el riesgo de enfermedades crónicas:puede reducir el riesgo de enfermedades crónicas, como la obesidad, la diabetes y las enfermedades del corazón",
+          "citaTexto": "Ana Gonzáles, 2025",
+          "citaUrl": "https://beneficios-de.es/beneficio-de-la-harina-integral/"
+        }
+      ]
+    },
+    {
+      "nombre": "Huevos",
+      "gramos": 120,
+      "urlImagen": "https://tse4.mm.bing.net/th/id/OIP.9TxpdkpdW_AJV9H4IsjjSAHaEM?w=750&h=425&rs=1&pid=ImgDetMain&o=7&rm=3",
+      "puntosClave": [
+        {
+          "texto": "1-Mejora el desarrollo y el mantenimiento muscular por su aporte proteico completo.\nFavorece el control del peso, debido a su capacidad saciante y bajo aporte calórico.\n2-Colabora en la prevención de enfermedades cardiovasculares por su impacto positivo en el aumento del colesterol HDL (llamado coloquialmente “colesterol bueno”).\n3-Fortalece el sistema inmunológico gracias a su densidad en micronutrientes.\n4-Su aporte de colina ayuda en la prevención de enfermedades neurodegenerativas y favorece las funciones cognitivas.",
+          "citaTexto": "Maria Eugenia Cazeneuve, 2025",
+          "citaUrl": "https://www.infobae.com/salud/2025/08/12/consumo-record-de-huevos-en-argentina-cuales-son-sus-beneficios-para-la-salud-y-cuantos-se-pueden-comer-por-semana/"
+        }
+      ]
+    },
+    {
+      "nombre": "Azúcar mascabo",
+      "gramos": 100,
+      "urlImagen": "https://www.recetasderechupete.com/wp-content/uploads/2025/05/Azucar-mascabado-paso-4.png",
+      "puntosClave": [
+        {
+          "texto": "1-contiene una gran cantidad de carbohidratos que aportan energía a nuestro organismo dando lugar a una mejora de la disposición tanto mental, como física.\n2-prevención de la anemia ya que es la melaza de la caña de azúcar\n3-apacidad antioxidante, la cual se debe al alto contenido de polifenoles, ayuda a la protección de las células contra los posibles daños que puedan ejercer los radicales libres.",
+          "citaTexto": "Alfonso López Alonso",
+          "citaUrl": "https://www.abc.es/recetasderechupete/azucar-mascabado-que-es-para-que-sirve-propiedades-y-como-usarlo-en-la-cocina/130436/"
+        }
+      ]
+    },
+    {
+      "nombre": "Aceite de girasol",
+      "gramos": 70,
+      "urlImagen": "https://tse3.mm.bing.net/th/id/OIP.AvUeOtcvHr7OT8hwvo5w2AHaE8?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "puntosClave": [
+        {
+          "texto": "1-Salud cardiovascular: Esto puede disminuir el riesgo de enfermedades cardiovasculares, incluyendo ataques cardíacos y accidentes cerebrovasculares\n2-nflamación reducida: el ácido linoleico tiene propiedades antiinflamatorias que pueden ayudar a reducir la inflamación en el cuerpo\n3-Función inmunológica mejorada: la vitamina E y los ácidos grasos esenciales en el aceite de girasol apoyan el sistema inmunológico, ayudando al cuerpo a combatir infecciones y enfermedades.",
+          "citaTexto": "Amanda osuna, 2024",
+          "citaUrl": "https://www.infobae.com/espana/2024/07/27/aceite-de-girasol-propiedades-beneficios-y-contraindicaciones-del-alimento-que-regula-el-colesterol/"
+        }
+      ]
+    },
+    {
+      "nombre": "Yogurt natural",
+      "gramos": 125,
+      "urlImagen": "https://tse3.mm.bing.net/th/id/OIP.PRrhiQAxFRuNZK8bgZJVtAHaEe?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "puntosClave": [
+        {
+          "texto": "1-Mejora nuestra salud digestiva: Este alimento es probiótico\n2-Contribuye a la recuperación física: el yogur contiene proteínas en abundancia\n3-Alto contenido en omega 3: El yogur es considerado un muy buen alimento gracias a su aporte de omega 3,  es una muy buena opción a incluir en dietas vegetarianas\n4-Rico y con pocas calorías: Además de tener buen sabor, tiene la gran ventaja de que tiene pocas calorías en relación con los nutrientes que aporta, nutrientes los cuales apenas se pierden en los nutrientes. ",
+          "citaTexto": "Nahum Montagud Rubio, 2021",
+          "citaUrl": "https://psicologiaymente.com/nutricion/beneficios-yogur"
+        }
+      ]
+    },
+    {
+      "nombre": "Leche descremada",
+      "gramos": 125,
+      "urlImagen": "https://dam.cocinafacil.com.mx/wp-content/uploads/2019/06/Leche-descremada-3.jpg",
+      "puntosClave": [
+        {
+          "texto": "La leche de vaca aporta “proteínas de alto valor biológico, hidratos de carbono (fundamentalmente en forma de lactosa), grasas, vitaminas liposolubles, vitaminas del complejo B y minerales,\nespecialmente calcio y fósforo”.",
+          "citaTexto": "Miyeilis Flores, 2024",
+          "citaUrl": "https://eldiariony.com/2024/03/08/beneficios-y-contraindicaciones-de-beber-leche-descremada/"
+        }
+      ]
+    },
+    {
+      "nombre": "Polvo de hornear",
+      "gramos": 10,
+      "urlImagen": "https://tse1.mm.bing.net/th/id/OIP.-HbA3ytgq4vwxcq_3ITlfwHaJ4?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "puntosClave": [
+        {
+          "texto": "El polvo de hornear puede ser un remedio casero efectivo para una variedad de problemas cotidianos. Además, el polvo de hornear puede ayudar a aliviar las picaduras de insectos, ya que su naturaleza alcalina neutraliza los ácidos presentes en las picaduras y reduce la hinchazón y la picazón.",
+          "citaTexto": "Dani Fernandez, 2024",
+          "citaUrl": "https://www.revistamag.com/polvo-de-hornear-5-usos-caseros-que-tienes-68510/"
+        }
+      ]
+    },
+    {
+      "nombre": "Ralladura de un limón",
+      "gramos": 5,
+      "urlImagen": "https://tse1.mm.bing.net/th/id/OIP.m7J6rlbJFKXsWuNDV3pqyQHaE6?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "puntosClave": [
+        {
+          "texto": "-Mejorara la salud y rendimiento de tu aparato digestivo.\n-Desintoxicara y limpia tu hígado. Elimina posibles cálculos del mismo y tambien de vesícula.\n\n-Mejora la calidad y salud de tu vision.\n-Regula el sistema nervioso y el rendimiento cerebral.\n-Regula el nivel de azúcar en sangre.\n-Alivia las alergias.",
+          "citaTexto": "vertebellas, 2015",
+          "citaUrl": "https://vertebella.com/estos-son-los-beneficios-de-consumir-ralladura-de-limon/"
+        }
+      ]
+    },
+    {
+      "nombre": "Jugo de limón",
+      "gramos": 30,
+      "urlImagen": "https://www.elesquiu.com/u/fotografias/fotosnoticias/2024/2/3/499446.jpg",
+      "puntosClave": [
+        {
+          "texto": "Es rico en vitamina C y sustancias bioactivas, como el  limoneno y polifenoles, demás de contener fibras solubles, aportando propiedades antioxidantes y antiinflamatorios, antibacterianas, saciantes y diuréticas.",
+          "citaTexto": "Tatiana Zanin, 2024",
+          "citaUrl": "https://www.tuasaude.com/es/beneficios-del-limon/"
+        }
+      ]
+    }
+  ],
+  "preparacion": "1-Precalentá el horno a 180 °C. Engrasá y enhariná un molde para budín (tipo 24×8 cm).\n2-En un bowl grande, batí los huevos con el azúcar hasta que estén espumosos y bien integrados.\n3-Agregá el aceite, yogur, leche, ralladura y jugo de limón. Mezclá bien hasta que quede homogéneo.\n4-En otro bowl, mezclá los ingredientes secos: harina integral, polvo de hornear, bicarbonato\n5-Incorporá los secos a los húmedos de a poco, mezclando con espátula o batidor de mano. No sobrebatir.\n6-Verté la mezcla en el molde y horneá por 40–50 minutos, o hasta que al insertar un palillo, salga limpio.\n7-Dejalo enfriar unos minutos en el molde, luego desmoldá y dejá enfriar completamente sobre rejilla.\n8-Podés decorarlo con coco rallado, azúcar impalpable o glaseado de limón si querés darle un toque especial.",
+  "analisisCosto": {
+    "costoEstimado": "1500",
+    "accesibilidad": "-Fáciles de conseguir, -Pueden variar según zona o marca",
+    "dificultad": "Bajo",
+    "tiempoPreparacion": "50 minutos mas enfriado y desmolde"
+  },
+  "infoNutricional": {
+    "calorias": 0,
+    "proteinas": 5,
+    "grasas": {
+      "total": 8,
+      "saturadas": 1,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 33,
+      "fibra": 6,
+      "azucaresLibres": 11
+    },
+    "sodio": 70
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": false
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 65
+  },
+  "octogonos": {
+    "calorias": false,
+    "azucares": false,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

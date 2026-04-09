@@ -1,0 +1,40 @@
+{
+  "grupoEvaluador": 3,
+  "clasificacion": {
+    "S": [
+      "bolitas-energ-ticas-de-d-til"
+    ],
+    "A": [
+      "d-tiles-rellenos",
+      "sandwich-arcoiris"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "bombones-proteicos",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "helado-de-banana",
+      "snack-de-garbanzo",
+      "barrita-de-avena-mani-y-miel"
+    ],
+    "C": [
+      "bud-n-integral-de-lim-n",
+      "mousse-de-frutilla",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "barrita-de-quinoa"
+    ],
+    "D": [
+      "muffins-de-avena-cacao-y-banana"
+    ],
+    "Pool": [
+      "pancakes-de-banana"
+    ]
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "bolitas-energ-ticas-de-d-til",
+      "recetaInferior": "muffins-de-avena-cacao-y-banana",
+      "analisis": "Las bolitas energéticas de dátiles tiene pocos ingredientes, además sus ingredientes son beneficiosos para la salud, los dátiles mejoran el tránsito intestinal y es un potente antioxidante, las nueces mejoran el perfil metabólico disminuyendo significativamente el colesterol total, LDL y triglicéridos, y el cacao amargo mejora la función arterial. Los muffins de avena contienen ingredientes que aportan beneficios al organismo, la banana madura aporta vitaminas, potasio, antioxidantes, fibra, protegen la salud del corazón y contienen fitonutrientes, la avena posee polifenoles, antioxidantes que se encargan de regular la presión arterial y disminuyen los niveles de azúcares en sangre, el huevo contiene muchos nutrientes como omega 3, vitaminas, minerales, hierro, fósforo, zinc, etc, el yogur natural previene el síndrome metabólico. \nElegimos como superior a las bolitas energéticas de dátiles debido a que no presenta grasas trans, no posee azúcares libres, tiene fibra, bajo en grasas saturadas, bajo en sodio y bajo en colesterol, el cual a comparación del muffin de avena, cacao y banana, presenta cero grasas trans, es bajo en grasas saturadas y bajo en sodio pero tiene azúcares libres al ser banana madura ya que en esta etapa presenta mayor concentración de azúcares, no contiene fibra, lo que a nivel metabólico no enlentece la absorción de azúcares, no genera saciedad porque no retrasa el vaciado gástrico y no es bajo en colesterol, es decir, contiene una gran cantidad de colesterol, y su consumo frecuente puede influir en personas con hipercolesterolemia o riesgo cardiovascular."
+    }
+  ]
+}

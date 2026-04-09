@@ -1,0 +1,38 @@
+{
+  "grupoEvaluador": 10,
+  "clasificacion": {
+    "S": [
+      "sandwich-arcoiris",
+      "bombones-proteicos",
+      "bolitas-energ-ticas-de-d-til"
+    ],
+    "A": [
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "pancakes-de-banana",
+      "snack-de-garbanzo",
+      "barrita-de-quinoa",
+      "muffins-de-avena-cacao-y-banana",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "cookies-de-banana-chocolate-y-lentejas"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "bud-n-integral-de-lim-n",
+      "barrita-de-avena-mani-y-miel",
+      "d-tiles-rellenos"
+    ],
+    "C": [
+      "mousse-de-frutilla",
+      "helado-de-banana"
+    ],
+    "D": [],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "bombones-proteicos",
+      "recetaInferior": "mousse-de-frutilla",
+      "analisis": "La mousse de frutilla es una alternativa liviana y baja en calorías, que aporta antioxidantes y vitamina C de la fruta, además de proteínas de buena calidad provenientes de la clara de huevo. Al no contener azúcares agregados ni grasas saturadas, resulta una preparación mucho más saludable que la versión tradicional de mousse.  Sin embargo, los bombones proteicos siguen siendo una opción más completa en términos de densidad nutricional y saciedad. Sus ingredientes (proteína en polvo, yogur griego, frutos secos, cacao y dátiles) combinan proteínas, grasas saludables, fibra y antioxidantes, lo que los convierte en un snack balanceado que contribuye a mantener la masa muscular, regular el apetito y aportar energía sostenida. \nPor este motivo, la mousse light de frutilla es una opción adecuada cuando se busca un postre bajo en calorías y refrescante, mientras que los bombones proteicos resultan más beneficiosos para quienes necesitan mayor saciedad, aporte de proteínas y nutrientes funcionales. Ambas recetas pueden formar parte de una alimentación saludable, pero su elección dependerá del objetivo: ligereza y frescura en el caso de la mousse, o aporte proteico y energético en el de los bombones."
+    }
+  ]
+}

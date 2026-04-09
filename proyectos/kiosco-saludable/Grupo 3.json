@@ -1,0 +1,119 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Pancakes de banana ",
+    "grupo": "Grupo 3 ",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://foodit.lanacion.com.ar/resizer/v2/pancakes-de-fruta-con-avena-ideales-para-YYXBKHEPARCDJF7YLDV63D5CUQ.jpg?auth=8a5021cd145143f6658607687f2d1382f7999a97fe2ff63e7f1b68b2a49f14d1&width=880&height=586&quality=70&smart=true",
+    "idVideoYoutube": "https://vm.tiktok.com/ZMAULRPCg/",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Huevo ",
+      "gramos": 100,
+      "urlImagen": "https://portaluchile.uchile.cl//.imaging/stk/uchile/nav-lateral-ancho/dam/imagenes/Uchile/VEXCOM/2023/OCTUBRE-2023/huevo.zip/5-D-a-del-huevo/HUEVOS-01-L.jpg/jcr:content/HUEVOS-01-L.jpg.jpg",
+      "puntosClave": [
+        {
+          "texto": " Brinda proteinas de alto valor biologico, aporta vitaminas A,D,E,B2. Aporta grasas saludables,antiinflamatorio, aumento del colesterol bueno (HDL)",
+          "citaTexto": "",
+          "citaUrl": "https://www.nationalgeographicla.com/ciencia/2024/04/los-4-beneficios-del-huevo-para-la-salud-se-considera-un-alimento-completo"
+        }
+      ]
+    },
+    {
+      "nombre": "Banana ",
+      "gramos": 160,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYndi-maZ1i84U1Im_SEw27sRqd7dKsCN6qw&s",
+      "puntosClave": [
+        {
+          "texto": "Facil de transportar, favorece la digestión por el contenido en fibra, fuente de vitamina B6 importante para el funcionamiento del sistema nervioso, fuente de vitamina C, alivia calambres, protege el corazon por el contenido en potasio ",
+          "citaTexto": "",
+          "citaUrl": "https://www.nationalgeographicla.com/ciencia/2025/03/los-5-sorprendentes-beneficios-de-la-banana-segun-la-ciencia-incluso-ayuda-a-dormir"
+        }
+      ]
+    },
+    {
+      "nombre": "harina de almendra ",
+      "gramos": 45,
+      "urlImagen": "https://cdn0.recetasgratis.net/es/posts/5/9/6/harina_de_almendra_casera_73695_600_square.jpg",
+      "puntosClave": [
+        {
+          "texto": "libre de gluten (apta para celiacos), contiene vitamina E y antioxidantes, mejora la digestion, brinda saciedad, se puede comprar o preparar de forma casera en casa, ayuda a fortalecer las uñas, cabello y piel, facilita el transito intestinal",
+          "citaTexto": "",
+          "citaUrl": "https://www.tuasaude.com/es/harina-de-almendra/"
+        }
+      ]
+    }
+  ],
+  "preparacion": "Ingredientes:\n2 huevos\n⁠1  banana mediana pisada\n ⁠3 cucharadas soperas de harina de almendras\n ⁠Esencia de vainilla opcional \n\nForma de preparación: \n1. Colocar en un bowl una banana mediana y pisarla con un tenedor hasta obtener un puré.\n2. ⁠Agregar 2 huevos y mezclar bien hasta integrar.\n3. ⁠Incorporar las 3 cucharadas de harina de almendras , mezclar bien hasta obtener una preparación de consistencia semilíquida.\n4. ⁠Calentar una sartén a fuego medio\n5. ⁠Volcar la mezcla formando un panqueque y cocinar durante 2-3 minutos, hasta que la superficie comience a burbujear.\n6. ⁠Dar vuelta con una espátula  y cocinar 1-2 minutos más hasta que quede dorado y cocido en su interior",
+  "analisisCosto": {
+    "costoEstimado": "2000-3000",
+    "accesibilidad": "Faciles de encontrar",
+    "dificultad": "Bajo ",
+    "tiempoPreparacion": "5 min + 5 cocción"
+  },
+  "infoNutricional": {
+    "calorias": 459.7,
+    "proteinas": 23.46,
+    "grasas": {
+      "total": 32.35,
+      "saturadas": 5,
+      "trans": 0
+    },
+    "colesterol": 449,
+    "carbohidratos": {
+      "total": 46.92,
+      "fibra": 9.78,
+      "azucaresLibres": 0
+    },
+    "sodio": 137
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": false
+      }
+    ],
+    "total": 90
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": true,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

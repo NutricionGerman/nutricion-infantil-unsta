@@ -1,0 +1,125 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "helado de banana ",
+    "grupo": "15",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.postimg.cc/ydqj20Xt/Screenshot-7.png",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "banana",
+      "gramos": 120,
+      "urlImagen": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnutritionsource.hsph.harvard.edu%2Ffood-features%2Fbananas%2F&psig=AOvVaw1L_d_M4YpBsrhcT5M_NaNb&ust=1758647710939000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCIib9bPv7I8DFQAAAAAdAAAAABAE",
+      "puntosClave": [
+        {
+          "texto": "Es una excelente fuente de potasio, beneficiando a los músculos ya que ayuda a mantener su buen funcionamiento y evita los espasmos musculares.\nTambien es rico en vitaminas A, B6 , C y D, dando beneficios especialmente a los huesos y músculos del cuerpo humano. ",
+          "citaTexto": "Diciembre 2014",
+          "citaUrl": "https://www.medigraphic.com/pdfs/veracruzana/muv-2014/muv142d.pdf"
+        }
+      ]
+    },
+    {
+      "nombre": "leche",
+      "gramos": 60,
+      "urlImagen": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.culligan.es%2Fpropiedades-ventajas-y-algun-inconveniente-de-la-leche-desnatada%2F&psig=AOvVaw0vXnJidwLMdlnrZOsqBYIi&ust=1758647739696000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCICAuMbv7I8DFQAAAAAdAAAAABAE",
+      "puntosClave": [
+        {
+          "texto": "es una buena fuente de proteínas   (aminoácidos   esenciales),  grasa  (ácidos  grasos  saturados e insaturados),   vitaminas   y   minerales",
+          "citaTexto": "Silvia Priscila Minga Narváez",
+          "citaUrl": "https://revia.areandina.edu.co/index.php/RSA/article/view/352/385"
+        }
+      ]
+    },
+    {
+      "nombre": "stevia",
+      "gramos": 1.6,
+      "urlImagen": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdiaonline.supermercadosdia.com.ar%2Fedulcorante-stevia-forte-hileret-160-gr-298331%2Fp&psig=AOvVaw1XLNqu5Mi3RvDB-rCjh50M&ust=1758647772716000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCLj5o9Dv7I8DFQAAAAAdAAAAABAE",
+      "puntosClave": []
+    },
+    {
+      "nombre": "canela",
+      "gramos": 2,
+      "urlImagen": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hola.com%2Festar-bien%2F20180607125261%2Fla-canela-es-una-especia-llena-de-propiedades-beneficiosas%2F&psig=AOvVaw0Hg7H-yimDCbunvlIPs7EM&ust=1758647791703000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNDm39nv7I8DFQAAAAAdAAAAABAE",
+      "puntosClave": [
+        {
+          "texto": ".Aporta antioxidantes\n.Protege contra ciertos patógenos al prevenir la propagación de patógenos y bacterias transmitidas por los alimentos que pueden hacer que estos se echen a perder.\n.Tiene acción antiinflamatoria\n.Ayuda a regular el azúcar en la sangre\n.Favorece el sistema cardiaco",
+          "citaTexto": "Guillermo Garcia Lopez (2024)",
+          "citaUrl": "https://guillermogarcialopez.es/beneficios-canela/"
+        }
+      ]
+    }
+  ],
+  "preparacion": "1. congelas una banana ya cortada en rodajas.\n2. Une vez que este congelada la pones en una procesadora junto con un poco de leche (aprox 60ml pero es a ojo), la canela y la stevia\n3. trituras hasta que quede una textura cremosa \n4. servis para comerlo o lo dejas refrigerar un rato",
+  "analisisCosto": {
+    "costoEstimado": "400",
+    "accesibilidad": "faciles de encontrar",
+    "dificultad": "muy bajo",
+    "tiempoPreparacion": "5 min mas refrigeracion"
+  },
+  "infoNutricional": {
+    "calorias": 154,
+    "proteinas": 3.3,
+    "grasas": {
+      "total": 2,
+      "saturadas": 0.8,
+      "trans": 0
+    },
+    "colesterol": 7.5,
+    "carbohidratos": {
+      "total": 30.4,
+      "fibra": 3.3,
+      "azucaresLibres": 0
+    },
+    "sodio": 28.2
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 80
+  },
+  "octogonos": {
+    "calorias": false,
+    "azucares": false,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

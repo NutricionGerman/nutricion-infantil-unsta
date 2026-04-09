@@ -1,0 +1,38 @@
+{
+  "grupoEvaluador": 15,
+  "clasificacion": {
+    "S": [
+      "bombones-proteicos",
+      "snack-de-garbanzo",
+      "sandwich-arcoiris"
+    ],
+    "A": [
+      "d-tiles-rellenos",
+      "bolitas-energ-ticas-de-d-til",
+      "barritas-de-avena-y-manzana",
+      "pancakes-de-banana",
+      "barrita-de-avena-mani-y-miel",
+      "cookies-de-banana-chocolate-y-lentejas"
+    ],
+    "B": [
+      "muffins-de-avena-cacao-y-banana",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "barrita-de-quinoa",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a"
+    ],
+    "C": [
+      "bud-n-integral-de-lim-n"
+    ],
+    "D": [
+      "mousse-de-frutilla"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "analisis": "El snack de garbanzos es bueno en todos los sentidos: Es barato, es saciante, tiene buen sabor y es rico en micro y macro nutrientes tanto por los garbanzos (aportan fibra, proteinas de buen valor biologico, minerales y no generan picos de insulina) como por los condimentos que lo acompañan (ricos en vitaminas, minerales y principalmente antioxidantes que cuidan de la salud de las celulas de todo nuestro organismo contra los radicales libres).\nSi bien el licuado de frutas tambien es una muy buena opcion como alimento saludable (mas cuando hace calor que se antoja tomar cosas frias) aportando vitaminas, minerales y antioxidantes, no le hace competencia a la amplia capacidad que tiene la anterior receta de otorgarnos salud.\nLo que yo recomendaria es utilizar el licuado como acompañante de otra receta ( como unos huevos o un sanguche de queso ) para que asi la nutricion del paciente sea adecuada y de paso se evita generar picos de insulina al tomar solamente el licuado."
+    }
+  ]
+}

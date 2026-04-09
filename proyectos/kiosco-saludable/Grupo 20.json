@@ -1,0 +1,143 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Barrita de avena, mani y miel",
+    "grupo": "20",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.postimg.cc/Nf1Rx793/image.png",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Avena arrollada",
+      "gramos": 25,
+      "urlImagen": "https://i.postimg.cc/3wPw6Vzn/image.png",
+      "puntosClave": [
+        {
+          "texto": "Reduce el colesterol LDL y mejora la salud intestinal",
+          "citaTexto": "Pepsico Health y Nutrition Sciences, 2022",
+          "citaUrl": "https://www.pepsicohealthandnutritionsciences.com/prod/s3fs-public/2022-12/Emerging%20Oat%20Science%20for%20Registered%20Dietitians%20ESP.pdf"
+        }
+      ]
+    },
+    {
+      "nombre": "Mantequilla de mani natural",
+      "gramos": 10,
+      "urlImagen": "https://i.postimg.cc/t4JCg9jB/image.png",
+      "puntosClave": [
+        {
+          "texto": "Mejora los niveles de glucosa y lipidos en sangre en personas con diabetes tipo 2",
+          "citaTexto": "AARP, 2016",
+          "citaUrl": "https://www.aarp.org/espanol/salud/vida-saludable/info-2016/beneficios-salud-mantequilla-mani-fotos.html"
+        }
+      ]
+    },
+    {
+      "nombre": "Pasas de uva ",
+      "gramos": 3,
+      "urlImagen": "https://i.postimg.cc/J00dkYzC/image.png",
+      "puntosClave": [
+        {
+          "texto": "Contribuyen a la salud cardiovascular y digestiva",
+          "citaTexto": "Infobae, 2025",
+          "citaUrl": "https://www.infobae.com/salud/2025/06/05/que-produce-en-el-cuerpo-comer-pasas-de-uva-todos-los-dias/"
+        }
+      ]
+    },
+    {
+      "nombre": "Miel pura ",
+      "gramos": 7,
+      "urlImagen": "https://i.postimg.cc/pTp691Tb/image.png",
+      "puntosClave": [
+        {
+          "texto": "Posee propiedades antioxidantes y antiinflamatorias",
+          "citaTexto": "Fundacion del corazon, 2024",
+          "citaUrl": "https://fundaciondelcorazon.com/blog-impulso-vital/2402-miel-terapeutica-propiedades-nutricionales.html"
+        }
+      ]
+    },
+    {
+      "nombre": "Semillas de girasol",
+      "gramos": 5,
+      "urlImagen": "https://i.postimg.cc/yNWPn3z0/image.png",
+      "puntosClave": [
+        {
+          "texto": "Ayudan a reducir el colesterol LDL y apoyan la salud cardiovascular",
+          "citaTexto": "Escuela de Nutricion, UBA, 2019",
+          "citaUrl": "https://escuelanutricion.fmed.uba.ar/revistani/pdf/21a/rb/911_c.pdf"
+        }
+      ]
+    }
+  ],
+  "preparacion": "1- Mezclar la mantequilla de mani con la miel hasta integrar.\n2-Agregar la avena, las semillas y pasas. Unir todo hasta formar una mezcla compacta.\n3-Colocar la preparacion en un molde pequeño o darle forma rectangular con las manos.\n4-Llevar a la heladera por 1 hora para que se endurezca.\n5-Consumir como snack saludable",
+  "analisisCosto": {
+    "costoEstimado": "$1000",
+    "accesibilidad": "Faciles de conseguir en supermercados o dieteticas",
+    "dificultad": "Facil",
+    "tiempoPreparacion": "10 minutos + 40 minutos de refrigeracion"
+  },
+  "infoNutricional": {
+    "calorias": 380,
+    "proteinas": 11,
+    "grasas": {
+      "total": 14,
+      "saturadas": 1,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 50,
+      "fibra": 7,
+      "azucaresLibres": 17
+    },
+    "sodio": 5
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 80
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": true,
+    "grasasTotales": true,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

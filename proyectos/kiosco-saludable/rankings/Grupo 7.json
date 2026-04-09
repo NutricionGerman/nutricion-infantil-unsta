@@ -1,0 +1,43 @@
+{
+  "grupoEvaluador": 7,
+  "clasificacion": {
+    "S": [
+      "bolitas-energ-ticas-de-d-til",
+      "pancakes-de-banana",
+      "bombones-proteicos",
+      "snack-de-garbanzo"
+    ],
+    "A": [
+      "d-tiles-rellenos",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "barrita-de-avena-mani-y-miel",
+      "sandwich-arcoiris"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "muffins-de-avena-cacao-y-banana",
+      "bud-n-integral-de-lim-n",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "helado-de-banana",
+      "barrita-de-quinoa"
+    ],
+    "C": [
+      "cookies-de-banana-chocolate-y-lentejas",
+      "mousse-de-frutilla"
+    ],
+    "D": [],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "cookies-de-banana-chocolate-y-lentejas",
+      "analisis": "El snack de garbanzo tiene muy buenas proteinas, es nulo en colesterol y azucares."
+    },
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "cookies-de-banana-chocolate-y-lentejas",
+      "analisis": "El snack de garbanzo tiene muy buenas proteinas, es nulo en colesterol y azucares. Su bajo contenido de sodio favorece a largo plazo la salud del corazón,  tambien la fibra y proteina promueven la saciedad lo que ayuda a mantener un peso adecuado\nLas cookies de banana, chocolate y lentejas si bien tiene un exceso de proteinas no es muy comestible, al tener un exceso elevado de sodio a largo plazo tiene mayor riesgo de hipertensión arterial sobrecargando los riñones, esto podria aumentar la enfermedad cardiovascular"
+    }
+  ]
+}

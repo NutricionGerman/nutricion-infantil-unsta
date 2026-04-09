@@ -1,0 +1,149 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Trufas de avena con banana, cacao y coco",
+    "grupo": "Grupo 10",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.postimg.cc/tRcqJLBk/image.png",
+    "idVideoYoutube": "https://www.youtube.com/watch?v=6QP5HHxLf_o",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Manzana ",
+      "gramos": 100,
+      "urlImagen": "https://postimg.cc/87wz37R1",
+      "puntosClave": [
+        {
+          "texto": "Hidratos de carbono naturales, fibra y antioxidantes.",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Avena ",
+      "gramos": 90,
+      "urlImagen": "https://postimg.cc/6y5ScTpV",
+      "puntosClave": [
+        {
+          "texto": "Carbohidratos de absorción lenta, fibra soluble que ayuda a la saciedad y al colesterol.",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Canela en polvo ",
+      "gramos": 3,
+      "urlImagen": "https://postimg.cc/CB0BT3Z0",
+      "puntosClave": [
+        {
+          "texto": "Contiene antioxidantes, favorece la digestión ",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Pasas de uvas ",
+      "gramos": 20,
+      "urlImagen": "https://postimg.cc/1gt3ZyBD",
+      "puntosClave": [
+        {
+          "texto": "Endulzante  natural",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Semillas de chía ",
+      "gramos": 5,
+      "urlImagen": "https://postimg.cc/G4bpqFs7",
+      "puntosClave": [
+        {
+          "texto": "Contiene fibra, Omega-3 y proteínas vegetales.",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Esencia de vainilla",
+      "gramos": 5,
+      "urlImagen": "https://postimg.cc/kBQ4Q1DR",
+      "puntosClave": []
+    }
+  ],
+  "preparacion": "1)Lavar y rallar la manzana (con piel).\n\n2)En un bowl, mezclar la manzana rallada con la avena, la canela, las pasas y la chía.\n\n3)Dejar reposar 5–10 minutos para que la chía absorba humedad y la mezcla se compacte.\n\n4)Formar bolitas pequeñas con las manos. Opcional: pasarlas por un poco de avena extra para mejorar la textura.\n\n5)Llevar a la heladera 20 minutos antes de servir.",
+  "analisisCosto": {
+    "costoEstimado": "$1000-$1200",
+    "accesibilidad": "Fáciles de encontrar ",
+    "dificultad": "Baja ",
+    "tiempoPreparacion": "15 minutos + 20 minutos de refrigeración "
+  },
+  "infoNutricional": {
+    "calorias": 230,
+    "proteinas": 6,
+    "grasas": {
+      "total": 5,
+      "saturadas": 0.9,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 40,
+      "fibra": 7,
+      "azucaresLibres": 9
+    },
+    "sodio": 10
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 80
+  },
+  "octogonos": {
+    "calorias": false,
+    "azucares": true,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

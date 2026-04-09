@@ -1,0 +1,39 @@
+{
+  "grupoEvaluador": 22,
+  "clasificacion": {
+    "S": [
+      "snack-de-garbanzo",
+      "bombones-proteicos",
+      "bolitas-energ-ticas-de-d-til"
+    ],
+    "A": [
+      "sandwich-arcoiris",
+      "d-tiles-rellenos",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "barrita-de-avena-mani-y-miel",
+      "pancakes-de-banana"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "trufas-de-avena-con-banana-cacao-y-coco"
+    ],
+    "C": [
+      "barrita-de-quinoa",
+      "bud-n-integral-de-lim-n",
+      "helado-de-banana",
+      "muffins-de-avena-cacao-y-banana"
+    ],
+    "D": [
+      "mousse-de-frutilla",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "mousse-de-frutilla",
+      "analisis": "Snack de garbanzos\nMás allá de que tiene fibra, proteínas y grasas saludables, lo importante es que el consumo regular de legumbres se asocia con menor riesgo de diabetes, enfermedades cardiovasculares y ciertos cánceres, además de contribuir a la saciedad y a un mejor control del peso. A largo plazo, su presencia en la dieta está vinculada con mayor longevidad y mejor calidad de vida.\n\nMousse de frutilla\nAunque evita el azúcar y aporta fruta, no genera un impacto tan positivo en la salud a largo plazo. El uso de claras crudas puede ser un riesgo inmediato de inocuidad, y en términos de prevención de enfermedades crónicas no ofrece la misma evidencia que las legumbres.\n\nConclusión\nEl snack de garbanzos no solo es más nutritivo en el corto plazo, sino que a nivel de salud pública y prevención tiene un efecto demostrado en mejorar la calidad de vida y reducir riesgos. La mousse de frutilla puede ser un postre aceptable, pero no tiene el mismo respaldo en evidencia de beneficios a largo plazo."
+    }
+  ]
+}

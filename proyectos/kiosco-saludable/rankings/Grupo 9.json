@@ -1,0 +1,38 @@
+{
+  "grupoEvaluador": 9,
+  "clasificacion": {
+    "S": [
+      "bolitas-energ-ticas-de-d-til",
+      "bombones-proteicos",
+      "snack-de-garbanzo"
+    ],
+    "A": [
+      "d-tiles-rellenos",
+      "pancakes-de-banana",
+      "trufas-de-avena-con-banana-cacao-y-coco"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "barrita-de-quinoa",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a"
+    ],
+    "C": [
+      "sandwich-arcoiris",
+      "barrita-de-avena-mani-y-miel"
+    ],
+    "D": [
+      "muffins-de-avena-cacao-y-banana",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "bud-n-integral-de-lim-n",
+      "mousse-de-frutilla"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "bolitas-energ-ticas-de-d-til",
+      "recetaInferior": "bud-n-integral-de-lim-n",
+      "analisis": "Elegimos las bolitas energéticas de Datil en primer lugar porque lleva 3 ingredientes naturales, no requiere horno, no tiene harina ni azucares agregados y no lleva mucho tiempo de preparación. En cambio por otro lado, el budín integral de limón lleva 9 ingredientes, tiene harina, azúcar agregada y aceite de girasol, requiere de cocción en horno además del tiempo de preparación."
+    }
+  ]
+}

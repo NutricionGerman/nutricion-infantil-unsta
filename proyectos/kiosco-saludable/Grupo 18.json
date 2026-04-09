@@ -1,0 +1,159 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Snack de garbanzo",
+    "grupo": "18",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.pinimg.com/1200x/a2/4a/64/a24a64496c73386dd497bf3f95fce84a.jpg",
+    "idVideoYoutube": "https://youtube.com/shorts/-IFxQaqTzjc?si=5JlAae9WHgLFspMs",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Garbanzos cocidos",
+      "gramos": 30,
+      "urlImagen": "https://i.pinimg.com/1200x/52/29/16/522916b0bf74ef6e3287777e7bdc8386.jpg",
+      "puntosClave": [
+        {
+          "texto": "Alta en fibra dietética, almidón resistente, proteínas vegetales. Mejora del tránsito intestinal, saciedad, control del colesterol, salud cardiovascular.",
+          "citaTexto": "Mariana del Carmen Fernández - Fígares Jiménez 24/08/2022",
+          "citaUrl": "https://www.conasi.eu/blog/consejos-de-salud/garbanzos-propiedades/?utm_source"
+        },
+        {
+          "texto": "Los beneficios para la salud de los garbanzos\nLos garbanzos contribuyen a la salud de múltiples maneras:\n\nPromueven la digestión: gracias a su abundante contenido de fibra, que incluye tanto fibra soluble como insoluble, los garbanzos mejoran el tránsito intestinal y previenen el estreñimiento.\nFavorecen la salud del corazón: su bajo contenido de sodio y la ausencia de colesterol ayudan a reducir el riesgo de problemas cardíacos.\nAyudan a mantener un peso saludable: la fibra y la proteína de los garbanzos promueven la saciedad, facilitando el control de la ingesta calórica y ayudando en la pérdida de peso.\nApoyan una microbiota intestinal sana: los garbanzos nutren las bacterias beneficiosas del intestino, lo que contribuye a una digestión saludable y podría reducir la inflamación en el colon, según estudios de la Escuela de Salud Pública T.H. Chan de Harvard.",
+          "citaTexto": "06 Nov, 2024, Sol de María",
+          "citaUrl": "https://www.infobae.com/salud/2024/11/06/estos-son-los-beneficios-de-los-garbanzos-para-la-salud/?utm_source"
+        }
+      ]
+    },
+    {
+      "nombre": "Cúrcuma en polvo",
+      "gramos": 0.5,
+      "urlImagen": "https://i.pinimg.com/1200x/9b/e6/f1/9be6f163f8d0be6ac1b5313804572468.jpg",
+      "puntosClave": [
+        {
+          "texto": "Potente efecto antiinflamatorio, antioxidante; ayuda en la prevención y tratamiento de enfermedades inflamatorias, cardiovasculares, mejora de marcadores de salud.",
+          "citaTexto": "6 de marzo de 2023",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10111629/?utm_source"
+        }
+      ]
+    },
+    {
+      "nombre": "Ajo en polvo",
+      "gramos": 0.3,
+      "urlImagen": "https://i.pinimg.com/736x/a2/4d/31/a24d313a0688cb7ef320dce0d1393967.jpg",
+      "puntosClave": [
+        {
+          "texto": "Contiene compuestos sulfurados que tienen propiedades antioxidantes, antimicrobianas, antiinflamatorias; puede ayudar en salud cardíaca y circulación.",
+          "citaTexto": "Mayo de 2007 - Bárbara Demmig Adams",
+          "citaUrl": "https://www.researchgate.net/publication/235318835_Antioxidant_anti-inflammatory_and_antimicrobial_properties_of_garlic_and_onions"
+        },
+        {
+          "texto": "presentan algunos posibles beneficios:\n\n1-Prevención de enfermedades: \n2-Apoyo inmunológico \n3-Salud cerebral\n4-Apoyo al hígado",
+          "citaTexto": "9 de julio de 2025 - Chelsea Rae Bourgeois, dietista registrada, dietista registrada",
+          "citaUrl": "https://www.health.com/garlic-and-tumeric-benefits-11768081?utm_source"
+        }
+      ]
+    },
+    {
+      "nombre": "Pimentón dulce",
+      "gramos": 0.5,
+      "urlImagen": "https://i.pinimg.com/736x/9a/2a/20/9a2a20ac2a4906098bc04b164008b2c6.jpg",
+      "puntosClave": [
+        {
+          "texto": "Alta contenido de antioxidantes (carotenoides), que ayudan a neutralizar radicales libres; aporta color y sabor sin necesidad de mucha sal o azúcar.",
+          "citaTexto": "15 de septiembre- Por: Alexander Yashin, Yakov Yashin, Xiaoyan Xia, Boris Nemzer",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5618098/?utm_source"
+        }
+      ]
+    },
+    {
+      "nombre": "Aceite de oliva",
+      "gramos": 1.5,
+      "urlImagen": "https://tse3.mm.bing.net/th/id/OIP.l57RYbHD7RvONzkAYlIFRgHaHa?pid=Api&P=0&h=180",
+      "puntosClave": [
+        {
+          "texto": "El consumo habitual de AOVE se asocia con la mejora de varios biomarcadores clínicos, incluyendo:\nReducción de la presión arterial.\nDisminución del colesterol LDL (colesterol \"malo\").\nIncremento del colesterol HDL (colesterol \"bueno\").\nMejora del control glucémico.\nManejo del peso corporal.\n\nEstos efectos son superiores en comparación con otras grasas dietéticas y dietas bajas en grasa.",
+          "citaTexto": "27 de junio - Mary M. Flynn  , Audrey Tierney , Catherine Itsiopoulos",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10346407/?utm_source"
+        }
+      ]
+    },
+    {
+      "nombre": "Sal",
+      "gramos": 0.15,
+      "urlImagen": "https://i.pinimg.com/736x/02/26/9d/02269d7f9892c7959582ea7e23dabd36.jpg",
+      "puntosClave": []
+    }
+  ],
+  "preparacion": "Preparación:\n1-Colocar los garbanzos cocidos en un recipiente.\n2-Agregar el aceite de oliva junto con los condimentos: cúrcuma, pimentón dulce, ajo en polvo y sal.\n3-Mezclar bien hasta que los garbanzos queden uniformemente condimentados.\n4-Pasar los garbanzos a una asadera.\n5-Hornear a 200 °C durante 25–30 minutos, hasta que estén dorados y crocantes.\n6-Retirar del horno, dejar entibiar y servir.",
+  "analisisCosto": {
+    "costoEstimado": "$622",
+    "accesibilidad": "Fácil de encontrar",
+    "dificultad": "Muy bajo",
+    "tiempoPreparacion": "30 minutos"
+  },
+  "infoNutricional": {
+    "calorias": 417,
+    "proteinas": 19.7,
+    "grasas": {
+      "total": 11.2,
+      "saturadas": 1.3,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 67.7,
+      "fibra": 17.5,
+      "azucaresLibres": 0
+    },
+    "sodio": 202
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 100
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

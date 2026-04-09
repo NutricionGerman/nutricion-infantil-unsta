@@ -1,0 +1,38 @@
+{
+  "grupoEvaluador": 8,
+  "clasificacion": {
+    "S": [
+      "snack-de-garbanzo",
+      "bombones-proteicos"
+    ],
+    "A": [
+      "d-tiles-rellenos",
+      "bolitas-energ-ticas-de-d-til",
+      "sandwich-arcoiris",
+      "cookies-de-banana-chocolate-y-lentejas"
+    ],
+    "B": [
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "barritas-de-avena-y-manzana",
+      "barrita-de-quinoa"
+    ],
+    "C": [
+      "pancakes-de-banana",
+      "mousse-de-frutilla",
+      "barrita-de-avena-mani-y-miel",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "muffins-de-avena-cacao-y-banana"
+    ],
+    "D": [
+      "bud-n-integral-de-lim-n"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "bud-n-integral-de-lim-n",
+      "analisis": "la receta superior es mas saludable que la inferior porque tiene de base una legumbre que aporta proteínas y es un alimento natural, no elaborado como el budín. Además aporta antioxidantes, como la cúrcuma, grasas saludables, como el aceite de oliva, Y fibra gracias al garbanzo. Por ultimo es una receta de fácil preparación, económica y es una forma diferente e innovadora de incorporar legumbres."
+    }
+  ]
+}

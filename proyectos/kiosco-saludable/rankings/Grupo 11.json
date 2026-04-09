@@ -1,0 +1,74 @@
+{
+  "grupoEvaluador": 11,
+  "clasificacion": {
+    "S": [
+      "snack-de-garbanzo",
+      "bombones-proteicos",
+      "muffins-de-avena-cacao-y-banana"
+    ],
+    "A": [
+      "sandwich-arcoiris",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "pancakes-de-banana",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a"
+    ],
+    "B": [
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "d-tiles-rellenos",
+      "barritas-de-avena-y-manzana"
+    ],
+    "C": [
+      "mousse-de-frutilla",
+      "helado-de-banana"
+    ],
+    "D": [
+      "barrita-de-quinoa",
+      "bud-n-integral-de-lim-n",
+      "barrita-de-avena-mani-y-miel",
+      "bolitas-energ-ticas-de-d-til"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "barrita-de-quinoa",
+      "analisis": "Snack de garbando ofrece alternativa con legumbres atractiva, con buena biodisponibilidad proteica respecto a los alimentos de origen vegetal, con aporte de aceites vegetales, y con curcuma(antiinflamatorio) y pimenton (antioxidante). Frente a una barrita de quinoa con apporte tambien proteico pero con alto aporte de azucar y menos ingredientes beneficiosos (solo 3 ingredientes en total)"
+    },
+    {
+      "recetaSuperior": "bombones-proteicos",
+      "recetaInferior": "barrita-de-avena-mani-y-miel",
+      "analisis": "bombones contienen alta densidad nutricional en poco volumen: combinando los alimentos contienen variabilidad nutricional: grasas saludables poliinsaturadas y monoinsaturadas, fibra soluble e insoluble mejora el transito intestinal, proteinas vegetales, y magnesio-potasio-hierro escenciales para funcion muscular y cerebral. ademas bajo indice glucemico. antioxidantes naturales por el cacao. mayor versatilidad para dietas veganas, sin TACC, o sin lacteos"
+    },
+    {
+      "recetaSuperior": "sandwich-arcoiris",
+      "recetaInferior": "bud-n-integral-de-lim-n",
+      "analisis": "sandiwch es una mejor opcion porque tiene mas proteinas y fibra: mayor saciedad. vegetales frescos: mejoran perfil y aportan ademas vitaminas y minerales. aporta energia estable y sostenida sin picos de glucosa. es mas balanceado y funcional en  cuanto a nutrientes.  genera una mejor digestion por sus nutrientes"
+    },
+    {
+      "recetaSuperior": "muffins-de-avena-cacao-y-banana",
+      "recetaInferior": "bolitas-energ-ticas-de-d-til",
+      "analisis": "el muffin es una buena propuesta saciante, rico en proteina, y fibra. con menor densidad calorica. equilibrados. las bolitas de datiles son una buena propuesta saludable, pero se tiene a consumir en exceso por su forma, lo que implica un alto consumo de azucares simples."
+    },
+    {
+      "recetaSuperior": "cookies-de-banana-chocolate-y-lentejas",
+      "recetaInferior": "barrita-de-quinoa",
+      "analisis": "la cookie resulta mejor para la salud porque contiene menos sellos, proteinas de buena calidad de la lenteja y el huevo: perfil proteico super completo evitando deficit de aminoacidos, ademas utiliza banana como endulzante natural. la barrita es es densa caloricamente y rica en grasas totales"
+    },
+    {
+      "recetaSuperior": "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "recetaInferior": "helado-de-banana",
+      "analisis": "Más recomendable el licuado de mango, naranja, frutilla y chía porque tiene mayor diversidad de nutrientes, más antioxidantes, más fibra y grasas saludables, lo que lo hace más equilibrado.\nEl helado de banana puede mantenerse como opción más económica y refrescante, pero el licuado es más nutritivo y se alinea mejor con la idea de un kiosko saludable."
+    },
+    {
+      "recetaSuperior": "pancakes-de-banana",
+      "recetaInferior": "mousse-de-frutilla",
+      "analisis": "Más recomendable el panqueques de banana, porque aportan una combinación más completa de nutrientes (proteínas + grasas saludables + carbohidratos + fibra).\nEl mousse de frutilla es excelente como opción light o postre, pero los panqueques son más equilibrados y energéticos, lo que favorece a chicos y adultos como colación saludable y saciante."
+    },
+    {
+      "recetaSuperior": "trufas-de-avena-con-banana-cacao-y-coco",
+      "recetaInferior": "barrita-de-avena-mani-y-miel",
+      "analisis": "Las trufas son mejores que las barritas porque Tienen más ingredientes frescos y naturales, Aportan más fibra, micronutrientes y antioxidantes, Menor cantidad de azúcares libres agregados, Mejor perfil de grasas (por semillas y avena).\nLas barritas, en cambio, concentran más calorías, azúcares y grasas, lo que las hace menos recomendables para un consumo habitual."
+    }
+  ]
+}

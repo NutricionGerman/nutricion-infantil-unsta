@@ -1,0 +1,38 @@
+{
+  "grupoEvaluador": 14,
+  "clasificacion": {
+    "S": [
+      "bolitas-energ-ticas-de-d-til",
+      "snack-de-garbanzo",
+      "bombones-proteicos",
+      "pancakes-de-banana",
+      "sandwich-arcoiris",
+      "d-tiles-rellenos"
+    ],
+    "A": [
+      "helado-de-banana",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "barrita-de-avena-mani-y-miel",
+      "cookies-de-banana-chocolate-y-lentejas"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "bud-n-integral-de-lim-n",
+      "barrita-de-quinoa"
+    ],
+    "C": [
+      "mousse-de-frutilla",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "muffins-de-avena-cacao-y-banana"
+    ],
+    "D": [],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "bolitas-energ-ticas-de-d-til",
+      "recetaInferior": "muffins-de-avena-cacao-y-banana",
+      "analisis": "la receta superior  cumple con un puntaje perfecto por ser una receta baja en grasas saturadas, 0 grasas trans, baja en sodio , también contienen cantidades significativas de fibra, no tiene azucares  por lo que lo hace comestible para una persona con patología de diabetes y es baja en colesterol beneficios que la receta inferior no posee. \nen cuanto su costo es mucho mas baja que la receta inferior ($500 - $2000) al igual que con su tiempo de preparación (10 min - 35 min) .\nlas fuentes utilizadas para saber acerca de los beneficios de los alimentos usados en la receta son todas fuentes dedicas a la ciencia de la nutrición.\nsu video demostrativo hace que la receta sea fácil de entender y llevar a cabo la receta, la receta inferior nos habla de su duración a distintas temperaturas como en heladeras o temperatura ambiente que no tiene la receta superior.\nlos sellos de advertencia nos indica que la receta superior posee un exceso en calorías por lo que puede ser un alimento que puede ser consumido en una etapa hipercalórica de la persona y grasas totales,  la receta inferior solo cuenta con un sello de advertencia de exceso en azucares haciendo que si el producto se consume de manera elevada puede generar riegos de obesidad, enfermedades cardiovasculares, entre otras."
+    }
+  ]
+}

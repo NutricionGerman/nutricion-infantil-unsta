@@ -1,0 +1,143 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "licuado de de Mango, Naranja , Frutilla y Chía",
+    "grupo": "grupo 14 ",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://img-global.cpcdn.com/recipes/035b6c56e9d94f96/300x426cq80/licuado-de-frutilla-mango-y-naranja-foto-principal.webp",
+    "idVideoYoutube": "",
+    "esBebida": true
+  },
+  "ingredientes": [
+    {
+      "nombre": "Mango",
+      "gramos": 200,
+      "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Mangos_-_single_and_halved.jpg/250px-Mangos_-_single_and_halved.jpg",
+      "puntosClave": [
+        {
+          "texto": "ayudar a prevenir cancer de seno, de la sangre (leucemia), de prostata y de colon, combate la sequedad ocular, ayuda a la absorcion de hierro, la formacion de globulos rojos, colageno, dientes y huesos.\n\nTiene accion beneficiosa en la piel, la vista, el cabello, las mucosas, los huesos y el sistema inmunologico, por su contenido en vitamina C y A, es rico en fibra y ayuda a reducir el colesterol malo en la sangre. Tambien ayuda a restringir las actividades de una hormona llamada leptina.",
+          "citaTexto": "ministerio de salud publica y bienestar social (Paraguay), 8 enero 2022",
+          "citaUrl": "https://www.mspbs.gov.py/portal/24644/el-mango-propiedades-y-recetas-de-la-fruta-de-estacion.html"
+        }
+      ]
+    },
+    {
+      "nombre": "Naranja ",
+      "gramos": 300,
+      "urlImagen": "https://camposdelabuelo.com/cdn/shop/articles/1.png?v=1742998237&width=2000",
+      "puntosClave": [
+        {
+          "texto": "Es un potente antioxidante.\nEs una excelente fuente de vitamina C, fibra y potasio.\nAporta magnesio, fósforo y, en menor cantidad, calcio.\nAyuda a normalizar los niveles altos de colesterol en sangre debido a la presencia de pectina (fibra soluble).\nRefuerza las defensas del organismo y previene y combate los procesos infecciosos de origen vírico o bacteriano.\nAyuda a combatir la anemia ya que su contenido en vitamina C favorece la absorción de hierro por el organismo.",
+          "citaTexto": "Revista el consumidor (gobierno de México) 2021",
+          "citaUrl": "https://www.gob.mx/profeco/articulos/consume-naranja-esta-temporada?idiom=es"
+        }
+      ]
+    },
+    {
+      "nombre": "Frutilla ",
+      "gramos": 100,
+      "urlImagen": "https://publico.becaticketjunaeb.cl/images/default-source/default-album/369x376-frutillas.jpg?sfvrsn=65a17ed1_0",
+      "puntosClave": [
+        {
+          "texto": "contiene La vitamina C que \"contribuye al funcionamiento normal del sistema inmunitario y a la formación normal de colágeno de vasos sanguíneos, huesos, cartílagos, encías, dientes y piel. También ayuda a la absorción del hierro de la dieta y a disminuir la fatiga. Además, protege a las células del daño oxidativo debido a su capacidad antioxidante”\nTambien destacan por su manganeso y folatos. \"El manganeso ayuda al metabolismo energético normal, al mantenimiento de los huesos en condiciones normales o a la protección de las células frente al daño oxidativo”",
+          "citaTexto": "Manuel Moñino, Dietista-Nutricionista, Especialista en Comunicación de Ciencias de la Salud y Alimentación Humana (2023)",
+          "citaUrl": "https://www.academianutricionydietetica.org/saber-comprar/propiedades-fresas/"
+        }
+      ]
+    },
+    {
+      "nombre": "Semillas de chia",
+      "gramos": 15,
+      "urlImagen": "https://cloudfront-us-east-1.images.arcpublishing.com/infobae/NTNBWBYC75GMTITMJBAMRV6DUA.jpg",
+      "puntosClave": [
+        {
+          "texto": "La chía es una buena fuente de calcio mineral reconocido por su importante participación en la formación y el mantenimiento adecuado de la estructura de nuestros huesos y dientes.\nLa chía es una excelente fuente de fibra dietética, por lo que dentro de sus beneficios destaca el poder ayudar en la reducción de colesterol. Dado su alto contenido de fibra la chía absorbe agua, formando una especie de gel, que se expande en el estómago, lo cual nos puede ayudar a darnos una sensación de saciedad prolongada\nLa chía contiene ácido graso del tipo Omega 3. El omega 3 puede tener beneficios a nivel cardiovascular. Los Omega 3 pueden ayudar al cuerpo a producir DHA, necesario para la función cerebral y cognitiva.\nLa chía es una buena fuente de vitaminas del Complejo B como la tiamina y niacina, las cuales juegan un papel crítico en crecimiento, desarrollo y función de nuestras células, haciendo que nuestro cuerpo funcione mejor.\nEntre los compuestos que podemos encontrar en la chía, son aquellos con función antioxidante\nLas semillas de chía contienen proteína de alta calidad ya que contiene todos los aminoácidos esenciales, por ende, son una buena fuente de proteína. Dos cucharadas de chía (30g) contienen en promedio 5g de proteína, lo que representa casi el 10% del valor diario recomendado.",
+          "citaTexto": "Quaker Oats Company",
+          "citaUrl": "https://quaker.lat/mx/articulos/beneficios-de-la-chia-descubre-las-propiedades-de-esta-super-semilla"
+        }
+      ]
+    },
+    {
+      "nombre": "Agua ",
+      "gramos": 200,
+      "urlImagen": "https://media.istockphoto.com/id/803155598/es/foto/verter-el-agua-purificada-fresca-bebida-de-la-botella-sobre-la-mesa-en-la-sala-de-estar-de-cerca.jpg?s=612x612&w=0&k=20&c=4WywZJIu7ethpFSp23EdDMyaa6PPM4sGJkx37bmwL0w=",
+      "puntosClave": [
+        {
+          "texto": "permitir la absorción de nutrientes esenciales, lubricar las articulaciones, eliminar toxinas, facilitar el riego sanguíneo, y mejorar la función digestiva",
+          "citaTexto": "Mariana Laraguivel, de la Unidad de Soporte Nutricional y Metabolismo del Hospital Juárez de México",
+          "citaUrl": "https://www.gob.mx/salud/prensa/consumo-de-agua-brinda-beneficios-al-organismo-4604"
+        }
+      ]
+    }
+  ],
+  "preparacion": "Remojar las semillas de chía en 50 ml de agua por 10 min.\n\nLicuar mango, jugo de naranja y frutilla con el agua restante.\n\nAgregar la chía hidratada y mezclar.\n\nEdulcorante a gusto.\n\nServir frío en vasos.",
+  "analisisCosto": {
+    "costoEstimado": "$400",
+    "accesibilidad": "faciles de encontrar",
+    "dificultad": "facil ",
+    "tiempoPreparacion": "15 minutos"
+  },
+  "infoNutricional": {
+    "calorias": 58,
+    "proteinas": 1.1,
+    "grasas": {
+      "total": 1.3,
+      "saturadas": 0.15,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 12.2,
+      "fibra": 2,
+      "azucaresLibres": 8.8
+    },
+    "sodio": 3
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 60
+  },
+  "octogonos": {
+    "calorias": false,
+    "azucares": true,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

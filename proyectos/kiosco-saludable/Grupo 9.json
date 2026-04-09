@@ -1,0 +1,199 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Bombones proteicos ",
+    "grupo": "Grupo 9",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSUbzqhpVgL5gTas4BWkgkwfdQ-5i6VOeCQa54oCavWXRAbrrn-3uJ0rE&s=10",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Dátiles ",
+      "gramos": 100,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV5WjSXn9GShxJClVZAE60SXqDfNg1v-ZLmaYGMfrH2A&s=10",
+      "puntosClave": [
+        {
+          "texto": "Fuente de energía rápida",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Ricos en fibra ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta minerales como Ca, Fe, Mg",
+          "citaTexto": "Aporta vitaminas del complejo b",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Cacao amargo en polvo ",
+      "gramos": 60,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1PJTIou4HLqyP3g_eVqnM8GjJ8MtGDxJvHHNcn0fscw&s=10",
+      "puntosClave": [
+        {
+          "texto": "Contiene antioxidantes ",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Pasta de mani",
+      "gramos": 20,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcRwBG1m8U1FljJvFQnd-T5qGPIsM2AksnG1uLoK2iZg&s=10",
+      "puntosClave": [
+        {
+          "texto": "Contiene proteínas de origen vegetal ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta fibra ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta grasas saludables ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta vitaminas y minerales ",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Harina dd almendras ",
+      "gramos": 50,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-ftsQR_LX00zxBY1fg5NwXldpaTQK3r-7U_Z6nwJQEQ&s=10",
+      "puntosClave": [
+        {
+          "texto": "Aporta proteínas de origen vegetal ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Es apta para celíacos  ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta fibra ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta vitaminas y minerales ",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Proteína de chocolate ",
+      "gramos": 30,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIO-IBg4KNOQg3BarUcRBIPdPrS82yhlHJNaOE066P7Q&s=10",
+      "puntosClave": []
+    },
+    {
+      "nombre": "Yogurt griego",
+      "gramos": 30,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHcokxhZU_IyywOYaOJveWUewVm7FpWjAljRG_gTe5SA&s=10",
+      "puntosClave": [
+        {
+          "texto": "Aporta proteínas de origen animal ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Es fuerte de probióticos ",
+          "citaTexto": "",
+          "citaUrl": ""
+        },
+        {
+          "texto": "Aporta calcio y fósforo ",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    }
+  ],
+  "preparacion": "1. Colocar en una procesadora o licuadora los dátiles, la pasta de maní, la mitad del cacao, la proteína en polvo sabor chocolate y el yogur griego hasta obtener una pasta homogénea \n2. Formar bolitas de tamaño pequeño con la preparación anteriormente realizada \n3. Pasar las bolitas por el sobrante cacao amargo ",
+  "analisisCosto": {
+    "costoEstimado": "$1054",
+    "accesibilidad": "Fáciles de encontrar ",
+    "dificultad": "Bajo",
+    "tiempoPreparacion": "20 minutos "
+  },
+  "infoNutricional": {
+    "calorias": 333,
+    "proteinas": 19,
+    "grasas": {
+      "total": 16,
+      "saturadas": 3,
+      "trans": 0
+    },
+    "colesterol": 6,
+    "carbohidratos": {
+      "total": 44,
+      "fibra": 12,
+      "azucaresLibres": 0
+    },
+    "sodio": 41
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 100
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": true,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

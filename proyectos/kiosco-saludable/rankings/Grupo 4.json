@@ -1,0 +1,40 @@
+{
+  "grupoEvaluador": 4,
+  "clasificacion": {
+    "S": [
+      "bud-n-integral-de-lim-n",
+      "helado-de-banana",
+      "mousse-de-frutilla"
+    ],
+    "A": [
+      "bolitas-energ-ticas-de-d-til",
+      "bombones-proteicos",
+      "snack-de-garbanzo",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "barritas-de-avena-y-manzana",
+      "pancakes-de-banana"
+    ],
+    "B": [
+      "d-tiles-rellenos",
+      "barrita-de-avena-mani-y-miel",
+      "cookies-de-banana-chocolate-y-lentejas"
+    ],
+    "C": [
+      "barrita-de-quinoa",
+      "sandwich-arcoiris"
+    ],
+    "D": [
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a"
+    ],
+    "Pool": [
+      "muffins-de-avena-cacao-y-banana"
+    ]
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "bud-n-integral-de-lim-n",
+      "recetaInferior": "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "analisis": "El Budín integral de limón resulta una opción más saludable a largo plazo que el licuado porque no tiene sellos de advertencia, combina macronutrientes y micronutrientes que favorecen la saciedad y el control glucémico. Su perfil es más equilibrado para la prevención de enfermedades crónicas.\nEl licuado aunque es nutritivo y rico en antioxidantes pierde calidad por su exceso de azúcares libres y bajo efecto de saciedad, por lo que debería consumirse con menor frecuencia o en porciones controladas."
+    }
+  ]
+}

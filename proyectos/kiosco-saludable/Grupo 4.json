@@ -1,0 +1,155 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Muffins de avena, cacao y banana",
+    "grupo": "grupo 4",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://d36fw6y2wq3bat.cloudfront.net/recipes/muffins-de-platano-y-avena/900/muffins-de-platano-y-avena_version_1670904033.jpg",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Banana madura ",
+      "gramos": 200,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQG7ElBNPs-HbYJJOMHRu7lEmphTn8-52FYKw&s",
+      "puntosClave": [
+        {
+          "texto": "Además de ser deliciosas y fáciles de transportar, están repletas de nutrientes esenciales que pueden beneficiar la digestión y la salud del corazón. Contienen una gran cantidad de fibra y numerosos nutrientes beneficiosos, incluidos potasio, vitamina B6, vitamina C, varios antioxidantes y fitonutrientes",
+          "citaTexto": "Pilar Alvarez, 4 de junio 2024",
+          "citaUrl": "https://www.infobae.com/salud/2024/06/04/10-beneficios-de-la-banana-para-la-salud-basados-en-pruebas-cientificas/"
+        }
+      ]
+    },
+    {
+      "nombre": "Avena",
+      "gramos": 150,
+      "urlImagen": "https://www.luzdeltajo.net/wp-content/uploads/sites/28/2018/03/propiedades-de-la-avena.jpg",
+      "puntosClave": [
+        {
+          "texto": "La avena cuenta con unos polifenoles prácticamente exclusivos de este cereal, conocidos como avenantramidas . Gracias a estos antioxidantes no solo conseguirás combatir la oxidación celular, sino que además se encargan de regular la presión arterial. aporta grandes beneficios a la salud como  el cuidado del corazón y la disminución de los niveles de azúcar en sangre.",
+          "citaTexto": "24 de abril 2023",
+          "citaUrl": "https://www.luzdeltajo.net/lifestyle/blog-moda-noticias/los-beneficios-las-propiedades-la-avena/"
+        }
+      ]
+    },
+    {
+      "nombre": "Cacao amargo en polvo",
+      "gramos": 20,
+      "urlImagen": "https://acdn-us.mitiendanube.com/stores/001/167/320/products/cacao-amargo-polvo1-57c089997a7e1b36c115981104010080-640-0.jpg",
+      "puntosClave": [
+        {
+          "texto": "El cacao ayuda a combatir momentos de estrés o bajo estado anímico gracias a la sensación placentera que segrega en nuestro cerebro, asegura la FAO.  En su forma más pura, el cacao contiene mayor cantidad de antioxidantes que otros productos como el vino o el té verde. Estos antioxidantes actúan contra los radicales libres y protegen las células, asociando efectos analgésicos, antiinflamatorios y antimicrobianos, la FAO menciona que el cacao ayuda a regular la presión arterial y el colesterol y aumenta la elasticidad e hidratación de la piel gracias a los flavonoides.",
+          "citaTexto": " Redacción National Geographic, 7 jul 2023",
+          "citaUrl": "https://www.nationalgeographicla.com/ciencia/2023/07/4-beneficios-que-el-cacao-le-brinda-a-tu-cuerpo-y-seguro-no-sabias"
+        }
+      ]
+    },
+    {
+      "nombre": "Huevo",
+      "gramos": 100,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrb4HRPDz4NBRWWINLwkuDkS9YyDmCxCLzpw&s",
+      "puntosClave": [
+        {
+          "texto": "Son muchos los nutrientes presentes en el huevo, entre ellos, omega-3, vitamina A, vitamina D, hierro, fósforo, selenio, zinc y potasio. el consumo de huevos puede incluso aumentar el colesterol LDL (llamado popularmente colesterol “malo”), pero también es capaz de elevar el colesterol HDL (colesterol \"bueno\"), lo que se traduce en una relación HDL/LDL favorable.",
+          "citaTexto": " Redacción National Geographic, 18 abr 2024",
+          "citaUrl": "https://www.nationalgeographicla.com/ciencia/2024/04/los-4-beneficios-del-huevo-para-la-salud-se-considera-un-alimento-completo#:~:text=La%20clara%20y%20la%20yema,hotel%20del%20Serengeti%20(Kenia)."
+        }
+      ]
+    },
+    {
+      "nombre": "yogurt natural sin azucar",
+      "gramos": 100,
+      "urlImagen": "https://thefoodmarketar.vtexassets.com/arquivos/ids/161946-800-450?v=638415401875530000&width=800&height=450&aspect=true",
+      "puntosClave": [
+        {
+          "texto": "A pesar de que ahora hay yogures de muchos tipos en los supermercados los que son realmente saludables son los naturales, No sólo no dañan nuestra salud, sino que los expertos explican que, incluso, aportan varios beneficios. El más importante de ellos es que previenen el síndrome metabólico, un conjunto de síntomas como la concentración de grasa abdominal y los niveles altos de colesterol, azúcar o presión en sangre.",
+          "citaTexto": "J. R. R. Publicada 24 agosto 2021",
+          "citaUrl": "https://www.elespanol.com/ciencia/nutricion/20210824/verdad-yogures-sin-azucar-llevan-solo-saludables/606440288_0.html"
+        }
+      ]
+    },
+    {
+      "nombre": "Polvo de hornear",
+      "gramos": 6,
+      "urlImagen": "https://camoga.ar/media/catalog/product/cache/17183a23c5d57b885c9e1f3d66234d68/8/0/80000636_polvo_para_hornear_royal_x_50_grs.jpg",
+      "puntosClave": [
+        {
+          "texto": "El polvo para hornear reacciona inmediatamente cuando se expone al líquido y al calor. Por lo tanto, a diferencia de cuando se usa levadura, el polvo para hornear no requiere un tiempo de aumento adicional. Por tal razón, se usa para leudar tipos de pan rápidos como tortitas, pan de maíz, galletas y pasteles.",
+          "citaTexto": "",
+          "citaUrl": "https://www.clikisalud.net/polvo-para-hornear-lo-que-debes-saber/#:~:text=Al%20igual%20que%20la%20levadura,textura%20en%20su%20masa%20final)."
+        }
+      ]
+    }
+  ],
+  "preparacion": "Precalentar el horno a 180 °C.\n\nPisar las bananas hasta lograr un puré homogéneo.\n\nAgregar los huevos, el yogur, el aceite y la vainilla; batir ligeramente.\n\nIncorporar avena, cacao y polvo de hornear; mezclar hasta integrar.\n\nAgregar chips de chocolate (opcional).\n\nRepartir en moldes de muffins engrasados o con pirotines.\n\nHornear 20–25 minutos hasta que al pinchar con un palillo salga limpio.\n\nDejar enfriar y guardar en recipiente hermético (duran 3 días a temperatura ambiente, 5 en heladera).",
+  "analisisCosto": {
+    "costoEstimado": "$2.000 aprox",
+    "accesibilidad": "faciles de encontrar",
+    "dificultad": "muy facil",
+    "tiempoPreparacion": "35 minutos (10 de preparación + 25 de horneado)."
+  },
+  "infoNutricional": {
+    "calorias": 205,
+    "proteinas": 6.5,
+    "grasas": {
+      "total": 6.8,
+      "saturadas": 1.8,
+      "trans": 0
+    },
+    "colesterol": 35,
+    "carbohidratos": {
+      "total": 29,
+      "fibra": 4.5,
+      "azucaresLibres": 10
+    },
+    "sodio": 80
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": false
+      }
+    ],
+    "total": 50
+  },
+  "octogonos": {
+    "calorias": false,
+    "azucares": true,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

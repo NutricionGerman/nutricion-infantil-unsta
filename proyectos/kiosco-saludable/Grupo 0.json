@@ -1,0 +1,139 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Bolitas Energéticas de Dátil",
+    "grupo": "0",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.postimg.cc/1t736TqW/image.png",
+    "idVideoYoutube": "https://www.youtube.com/watch?v=3uZI-FJqXv0&source_ve_path=MTc4NDI0",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Dátiles",
+      "gramos": 40,
+      "urlImagen": "https://i.postimg.cc/667f471t/image.png",
+      "puntosClave": [
+        {
+          "texto": "Mejoran el tránsito intestinal y protegen las células del colon.",
+          "citaTexto": "Eid N, et al. British Journal of Nutrition 2015.",
+          "citaUrl": "https://pubmed.ncbi.nlm.nih.gov/26428278/"
+        },
+        {
+          "texto": "Potente fuente de antioxidantes.",
+          "citaTexto": "Phillips KM, et al. J Am Diet Assoc 2009",
+          "citaUrl": "https://pubmed.ncbi.nlm.nih.gov/19103324/"
+        }
+      ]
+    },
+    {
+      "nombre": "Nueces",
+      "gramos": 40,
+      "urlImagen": "https://i.postimg.cc/2yvWcZPW/image.png",
+      "puntosClave": [
+        {
+          "texto": "Reducción de Riesgo y Mortalidad: Un puñado (20-28g/día) se asocia con una drástica reducción del riesgo de: ~30% enf. cardíaca, ~15% cáncer, ~40% diabetes y ~22% mortalidad prematura.",
+          "citaTexto": "Balakrishna et al., 2022",
+          "citaUrl": "https://pubmed.ncbi.nlm.nih.gov/36041171/"
+        },
+        {
+          "texto": "Mejora del Perfil Metabólico: Múltiples ensayos clínicos demuestran que su consumo reduce significativamente el colesterol total, colesterol LDL (\"malo\") y triglicéridos.",
+          "citaTexto": "Nishi et al. (2025)",
+          "citaUrl": "https://www.nmcd-journal.com/article/S0939-4753(24)00390-9/fulltext"
+        }
+      ]
+    },
+    {
+      "nombre": "Cacao Amargo Puro",
+      "gramos": 20,
+      "urlImagen": "https://i.postimg.cc/g2Ghsr4w/image.png",
+      "puntosClave": [
+        {
+          "texto": "Mejora la función arterial y salud cardiovascular.",
+          "citaTexto": "",
+          "citaUrl": "https://pubmed.ncbi.nlm.nih.gov/22301923/"
+        },
+        {
+          "texto": "El ensayo COSMOS encontró una reducción del 27% en mortalidad cardiovascular con 500 mg/día de flavanoles de cacao.",
+          "citaTexto": "",
+          "citaUrl": "https://pubmed.ncbi.nlm.nih.gov/35294962/"
+        },
+        {
+          "texto": " Mejora la salud de la piel y reduce arrugas.",
+          "citaTexto": "",
+          "citaUrl": "https://www.sciencedirect.com/science/article/pii/S0022316622089672?via%3Dihub"
+        }
+      ]
+    }
+  ],
+  "preparacion": "Tritura: Licúa a pulsos los dátiles (sin hueso), las nueces y la vainilla hasta obtener una mezcla granulada.\nCompacta: Vierte la mezcla en un tazón y presiónala con una espátula para que se una.\nForma: Con las manos, toma porciones y ruédalas para hacer las bolitas.",
+  "analisisCosto": {
+    "costoEstimado": "$500",
+    "accesibilidad": "Ingredientes fáciles de encontrar",
+    "dificultad": "Muy Bajo",
+    "tiempoPreparacion": "10 min"
+  },
+  "infoNutricional": {
+    "calorias": 418,
+    "proteinas": 10.7,
+    "grasas": {
+      "total": 29,
+      "saturadas": 4,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 47,
+      "fibra": 12,
+      "azucaresLibres": 0
+    },
+    "sodio": 5
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 100
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": true,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

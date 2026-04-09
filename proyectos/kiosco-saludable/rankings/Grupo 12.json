@@ -1,0 +1,68 @@
+{
+  "grupoEvaluador": 12,
+  "clasificacion": {
+    "S": [
+      "bombones-proteicos",
+      "bolitas-energ-ticas-de-d-til",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "snack-de-garbanzo"
+    ],
+    "A": [
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "barrita-de-quinoa",
+      "pancakes-de-banana",
+      "d-tiles-rellenos"
+    ],
+    "B": [
+      "bud-n-integral-de-lim-n",
+      "sandwich-arcoiris",
+      "barrita-de-avena-mani-y-miel",
+      "barritas-de-avena-y-manzana",
+      "mousse-de-frutilla"
+    ],
+    "C": [
+      "muffins-de-avena-cacao-y-banana",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "helado-de-banana"
+    ],
+    "D": [],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "helado-de-banana",
+      "analisis": "es alto en fibra dietetica,fibras y proteinas vegetales ademas considero que es mas facil conservacion y consumo en relacion a un helado que si bien es alto en vitaminas"
+    },
+    {
+      "recetaSuperior": "bombones-proteicos",
+      "recetaInferior": "barrita-de-quinoa",
+      "analisis": "cada 100 gramos aporta mas proteinas y menos carbohidratos, aporta los probioticos del yogurt. en comparacion con las barritas de quinoa tiene menos calorias cada 100g"
+    },
+    {
+      "recetaSuperior": "cookies-de-banana-chocolate-y-lentejas",
+      "recetaInferior": "trufas-de-avena-con-banana-cacao-y-coco",
+      "analisis": "Paso 1: El Engaño Nutricional (Comparación de Etiqueta)\nGalletas (Banana, Choco, Lentejas): A primera vista, parecen enormemente superiores en la mayoría de métricas \"saludables\" de la etiqueta:\nProteínas: 57.85g (¡Diez veces más!)\nFibra: 62.9g (¡Casi diez veces más!)\nAzúcares Libres: No especificado, pero se asume un bajo nivel relativo dado el alto contenido de fibra/proteína.\nTrufas de Avena: Parecen nutricionalmente muy inferiores o, al menos, mucho más \"normales\":\nProteínas: 6g\nFibra: 7g\nAzúcares Libres: 9g\nPaso 2: La Realidad Científica (Evaluación del Impacto en la Dieta)\nConclusión del engaño: Basado solo en la lista de nutrientes, las galletas de lentejas ganan por goleada.\n❌ Galletas (Banana, Choco, Lentejas): A pesar de su alta fibra y proteína, son un alimento de altísima densidad energética (949 kcal/100g). Su consumo regular (incluso si tienen \"buenos\" ingredientes) promueve una ingesta calórica muy elevada y está fuertemente asociado con un mayor riesgo de aumento de peso, obesidad y sus enfermedades relacionadas, por la concentración y la eliminación del agua y la matriz del alimento entero.\n✅ Trufas de Avena: Su impacto negativo es mucho menor. Aunque tienen azúcares libres, son un producto de baja densidad energética (230 kcal/100g) en comparación. Su consumo, incluso como \"premio\" o snack, tiene un riesgo mucho más bajo de desplazar alimentos nutritivos o de contribuir significativamente a un superávit calórico que conduzca a la enfermedad.\n\nLas trufas provocan menor riesgo cardíaco"
+    },
+    {
+      "recetaSuperior": "pancakes-de-banana",
+      "recetaInferior": "sandwich-arcoiris",
+      "analisis": "Panqueques de Avena: A primera vista, parecen superiores en los nutrientes \"saludables\": tienen más Proteína y más Fibra por 100g.\nSándwich Arcoíris: Parecen inferiores en los nutrientes \"estrella\" (Proteína y Fibra), pero son significativamente menos densos calóricamente y tienen mucha menos grasa.\nPaso 2: La Realidad Científica (Evaluación del Impacto en la Dieta)\nConclusión del engaño: Basado solo en la lista de nutrientes y la obsesión por la proteína y fibra, los Panqueques de Avena parecen ganar.\n❌ Panqueques de Avena: A pesar de su mayor contenido de proteína y fibra, son un producto de muy alta densidad energética (459.7 kcal/100g) debido a su alto contenido de Grasas Totales (32.35g). Su consumo regular y en porciones grandes puede contribuir a una ingesta calórica excesiva, lo que incrementa el riesgo de aumento de peso y enfermedades metabólicas a largo plazo. La matriz del alimento (procesamiento y alta grasa) es el principal problema.\n✅ Sándwich Arcoíris: Tienen menos proteína y fibra, pero son un producto de menor densidad energética (328 kcal/100g). Su consumo tiene un impacto calórico más moderado por porción, lo que facilita el control de peso. Aunque su contenido de sodio es más alto, su menor aporte de calorías y grasa concentrada los hace menos propensos a desplazar comidas nutritivas o a provocar un superávit calórico masivo."
+    },
+    {
+      "recetaSuperior": "d-tiles-rellenos",
+      "recetaInferior": "barrita-de-avena-mani-y-miel",
+      "analisis": "Dátiles Rellenos: A primera vista, parecen superiores por su Fibra ligeramente mayor y, crucialmente, tienen 0g de Azúcares Libres. Sin embargo, tienen más calorías totales y mucha más grasa, especialmente saturada.\nBarritas de Avena: Parecen superiores por tener más Proteína, menos Calorías y mucha menos Grasa Saturada. Su principal punto débil son los 17g de Azúcares Libres.\nPaso 2: La Realidad Científica (Evaluación del Impacto en la Dieta)\nConclusión del engaño: El argumento se dividiría, pero muchos elegirían los Dátiles Rellenos por tener \"0 Azúcares Libres\".\n❌ Dátiles Rellenos: Aunque no tienen azúcares libres (el azúcar proviene naturalmente de la fruta), su consumo regular está asociado con el riesgo de aumento de peso y enfermedades metabólicas debido a su alta densidad energética (425 kcal/100g) y, más importante, su altísimo contenido de Grasas Saturadas (8g), que tiene un impacto directo negativo en la salud cardiovascular. Justificar un alimento por el \"0 Azúcares Libres\" ignorando la alta grasa saturada y las calorías es un error nutricional.\n✅ Barritas de Avena: A pesar de contener Azúcares Libres (17g), su impacto calórico es más moderado (380 kcal/100g), y lo más relevante, tienen una cantidad de Grasas Saturadas drásticamente menor (1g). La ciencia prioriza la reducción de grasas saturadas por su vínculo con las enfermedades cardiovasculares. El menor contenido de grasa saturada y calorías mitigaría el efecto negativo de los azúcares libres, haciéndolo la opción menos perjudicial a largo plazo.El alimento con \"0g de Azúcares Libres\" (Dátiles Rellenos) tiene un perfil de riesgo cardiovascular peor debido a su alta grasa saturada, demostrando que la ausencia de un nutriente malo no justifica la presencia de otro peor."
+    },
+    {
+      "recetaSuperior": "barritas-de-avena-y-manzana",
+      "recetaInferior": "muffins-de-avena-cacao-y-banana",
+      "analisis": "Barritas de Avena y Manzana: A primera vista, parecen superiores por el factor decisivo de 0g de Azúcares Libres. También tienen ligeramente más proteína y menos grasa saturada.\nMuffins de Avena, Cacao y Banana: Parecen inferiores por contener 10g de Azúcares Libres. Sin embargo, tienen menos calorías totales y menos colesterol.\nPaso 2: La Realidad Científica (Evaluación del Impacto en la Dieta)\nConclusión del engaño: Muchos elegirían las barritas por ser \"libres de azúcares añadidos\" (0g Azúcares Libres), ignorando otros factores.\n❌ Barritas de Avena y Manzana: La justificación se centraría en el 0g de Azúcares Libres, lo cual es bueno. Sin embargo, su mayor densidad calórica (283 kcal/100g) y su alto colesterol (63 mg) (que a pesar de no ser tan influyente como la grasa saturada, puede indicar el tipo de ingredientes usados, como huevos) hacen que su consumo regular sea más propenso a contribuir al aumento de peso y a dietas menos saludables en general que el otro producto. Son nutricionalmente más \"densa\".\n✅ Muffins de Avena, Cacao y Banana: A pesar de tener 10g de Azúcares Libres, su impacto en la dieta es significativamente menor debido a su baja densidad energética (205 kcal/100g). Para una misma porción de consumo, aportan muchas menos calorías que las barritas, haciendo que sea menos probable que promuevan un superávit calórico y sus consecuencias a largo plazo (obesidad, etc.). El factor más importante, la densidad calórica, juega a su favor.En este caso, el alimento que se percibe como \"peor\" por tener Azúcares Libres (los muffins) es menos denso en calorías que el que se justifica como \"bueno\" (las barritas), lo que lo convierte en una opción de menor riesgo para la salud a largo plazo."
+    },
+    {
+      "recetaSuperior": "mousse-de-frutilla",
+      "recetaInferior": "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "analisis": "Mousse de Frutilla: A primera vista, parece abrumadoramente superior. Tiene casi 8 veces más proteína, muchísimos menos Azúcares Libres y es el menos calórico.\nLicuado: Parece mucho peor. Tiene muy poca proteína, muchos más azúcares libres y es ligeramente más calórico. Su única ventaja perceptible es una fibra total mayor.\nPaso 2: La Realidad Científica (Evaluación del Impacto en la Dieta)\nConclusión del engaño: Basado en la etiqueta, el Mousse de Frutilla parece la opción fitness ganadora debido a su alta proteína y bajo azúcar libre.\n❌ Licuado (Mango, Naranja, Chía): Aunque tiene un perfil nutricional peor (más azúcar libre y menos proteína), la mayor preocupación es que es una bebida con alto contenido de fruta (azúcar natural + libre). El consumo de calorías líquidas, incluso de ingredientes naturales, está consistentemente asociado con una peor regulación del apetito y un mayor riesgo de sobrepeso a largo plazo en comparación con los alimentos sólidos, ya que el cuerpo no las registra bien.\n✅ Mousse de Frutilla: Si bien tiene más sodio, es un alimento sólido o semi-sólido y tiene un perfil calórico y de macronutrientes excepcional (muy bajo en calorías, bajo en azúcar libre y muy alto en proteína). Su matriz de alimento, alta en proteína, promueve una mayor saciedad y tiene un impacto positivo en la regulación del peso y el mantenimiento de la masa muscular, que son factores clave de longevidad. Es un claro ejemplo donde la lista de nutrientes sí se alinea con un mejor efecto a largo plazo."
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Barritas de avena y manzana ",
+    "grupo": "1",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.ytimg.com/vi/nSjsCM-RKLI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLB_mZG9WrmkjaU5y34a8jS9Q9lPjQ",
+    "idVideoYoutube": "https://www.instagram.com/reel/DJsPKS1Svds/",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Avena instantánea ",
+      "gramos": 375,
+      "urlImagen": "https://www.muyinteresante.com/wp-content/uploads/sites/5/2023/10/recurso-e1749573070773.jpg",
+      "puntosClave": [
+        {
+          "texto": "1. Aporta gran saciedad\n2. Ayuda en el control del azúcar en sangre\n3. Ayuda a controlar el colesterol\n4. Rica en antioxidantes\n5. Aporta mucha energía\n6. Es prebiótica\n7. Es buena para la digestión\n8. Previene el hipotiroidismo y ayuda con la bronquitis\n9. Alimenta los tejidos del organismo\n10. Mantiene el sistema nervioso bajo control y alimenta los huesos",
+          "citaTexto": "Fundación Española de Nutrición",
+          "citaUrl": "https://www.muyinteresante.com/salud/19322.html"
+        }
+      ]
+    },
+    {
+      "nombre": "Miel",
+      "gramos": 40,
+      "urlImagen": "https://c.files.bbci.co.uk/12829/production/_99471857_portada.jpg",
+      "puntosClave": [
+        {
+          "texto": "Regula los niveles de azúcar en sangre y proporciona energía estable.\n\nEs rica en antioxidantes (flavonoides, fenoles, enzimas, ácidos orgánicos) que ayudan a reducir el riesgo de enfermedades cardíacas, accidentes cerebrovasculares y ciertos tipos de cáncer.\n\nContribuye a disminuir triglicéridos y colesterol malo (LDL).\n\nPosee propiedades antibacterianas y antiinflamatorias.\n\nPuede ser más eficaz que tratamientos convencionales en infecciones del tracto respiratorio superior.\n\nAyuda en la salud gastrointestinal, útil en casos de diarrea y gastroenteritis.\n\nPresenta beneficios antidepresivos, anticonvulsivos y contra la ansiedad.\n\nPuede ser útil en el tratamiento de alergias y rinitis alérgica (ej. miel de Manuka).\n\nFavorece la cicatrización de heridas crónicas, úlceras y quemaduras.",
+          "citaTexto": "infobae",
+          "citaUrl": "https://www.infobae.com/salud/2024/07/02/cuales-son-los-beneficios-poco-conocidos-de-la-miel-para-la-salud/"
+        }
+      ]
+    },
+    {
+      "nombre": "Huevo ",
+      "gramos": 100,
+      "urlImagen": "https://portaluchile.uchile.cl//.imaging/default/dam/imagenes/Uchile/VEXCOM/2023/OCTUBRE-2023/huevo.zip/5-D-a-del-huevo/HUEVOS-01-L.jpg/jcr:content.jpg",
+      "puntosClave": [
+        {
+          "texto": "Aumento del colesterol HDL (“colesterol bueno”), favoreciendo una relación HDL/LDL saludable.\n\nAporte de antioxidantes (luteína, zeaxantina y colina), beneficiosos para la salud ocular, el hígado, la prevención cardiovascular y el desarrollo neuronal.\n\nEfecto positivo en el metabolismo y propiedades antiinflamatorias.\n\nContenido nutricional diferenciado:\n\nClara: rica en proteínas.\n\nYema: aporta grasas saludables y ácidos grasos omega-3.\n\nHuevo entero: ofrece una combinación completa de nutrientes y proteínas de alta calidad.",
+          "citaTexto": "nationalgeographic",
+          "citaUrl": "https://www.nationalgeographicla.com/ciencia/2024/04/los-4-beneficios-del-huevo-para-la-salud-se-considera-un-alimento-completo"
+        }
+      ]
+    },
+    {
+      "nombre": "Nueces ",
+      "gramos": 15,
+      "urlImagen": "https://aynicocina.com.ar/wp-content/uploads/2021/10/nuez-dorada.jpg",
+      "puntosClave": [
+        {
+          "texto": "Ayudan a la pérdida de peso y mejoran el estado de ánimo (efecto saciante y aumento de serotonina).\n\nSon fuente de nutrientes y antioxidantes (vitamina E, potasio, zinc, magnesio, fósforo, vitaminas del grupo B).\n\nDisminuyen el riesgo de enfermedades cardiovasculares (grasas insaturadas, omega-3 y omega-6 con efecto cardioprotector).\n\nMejoran la función cognitiva (omega-3 y antioxidantes que favorecen la memoria, concentración y protección frente al Alzheimer).",
+          "citaTexto": "centrallecheraasturiana",
+          "citaUrl": "https://www.centrallecheraasturiana.es/nutricionysalud/nutricion/grupos-de-alimentos/legumbres-tuberculos-y-frutos-secos/nuez/"
+        }
+      ]
+    },
+    {
+      "nombre": "Almendras",
+      "gramos": 15,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmPkOIx5AcucYd4q85DKJ-hORo2jZo55-W6A&s",
+      "puntosClave": [
+        {
+          "texto": "Mejoran la salud cardiovascular, reduciendo hasta un 30% el riesgo de infarto, ictus y muerte cardiovascular.\n\nDisminuyen el riesgo de diabetes tipo 2 (hasta un 50% menos riesgo en dietas mediterráneas con frutos secos).\n\nPueden reducir el riesgo de ciertos tipos de cáncer, especialmente el colorrectal.\n\nAyudan a modular la microbiota intestinal, favoreciendo una mejor inmunidad y reduciendo la inflamación de bajo grado.",
+          "citaTexto": "academianutricionydietetica",
+          "citaUrl": "https://www.academianutricionydietetica.org/que-comer/almendras/#Beneficios_de_comer_almendras"
+        }
+      ]
+    },
+    {
+      "nombre": "Manzana ",
+      "gramos": 150,
+      "urlImagen": "https://www.recetasnestlecam.com/sites/default/files/2022-04/tipos-de-manzana-royal-gala.jpg",
+      "puntosClave": [
+        {
+          "texto": "Puede disminuir el riesgo de desarrollar enfermedades crónicas.\n\nContribuye a la prevención de diabetes tipo 2.\n\nAyuda a reducir el riesgo de ciertos tipos de cáncer.\n\nFavorece la salud cardiovascular.",
+          "citaTexto": "nationalgeographic",
+          "citaUrl": "https://www.nationalgeographicla.com/ciencia/2023/09/cuales-son-los-beneficios-de-comer-manzana-regularmente"
+        }
+      ]
+    },
+    {
+      "nombre": "Mani ",
+      "gramos": 15,
+      "urlImagen": "https://acdn-us.mitiendanube.com/stores/002/324/020/products/mani-repelado-2b3d78a09d5914047816982385249393-640-0.png",
+      "puntosClave": [
+        {
+          "texto": "Contiene resveratrol y compuestos bioactivos que ayudan a prevenir el envejecimiento prematuro y promueven la longevidad.\n\nRico en grasas monoinsaturadas de buena calidad, fibra, vitaminas y antioxidantes, favoreciendo la salud cardiovascular.\n\nAporta saciedad y ayuda en el control del apetito.\n\nFuente de fibra, ácido fólico y magnesio, beneficioso para la digestión, el sistema nervioso y la función muscular.\n\nFavorece la salud de mujeres embarazadas al aportar ácido fólico, apoyando la ovulación y el desarrollo normal del bebé.\n\nAyuda a disminuir colesterol total y LDL (malo) y puede incrementar colesterol HDL (bueno).\n\nProtege el corazón y el sistema digestivo, reduciendo el riesgo de enfermedades cardíacas y de colon.\n\nAlto contenido energético que ayuda a combatir debilidad, cansancio y apatía.\n\nPuede tener efectos antidepresivos al aumentar los niveles de serotonina en el cerebro.",
+          "citaTexto": "infobae",
+          "citaUrl": "https://www.infobae.com/salud/2022/10/13/cuales-son-los-beneficios-del-mani-para-la-salud/"
+        }
+      ]
+    }
+  ],
+  "preparacion": "1. Mezclar huevo con miel.\n2. Por separado, cortar la manzana en trozos pequeños.\n3. Agregar a la mezcla anterior avena, nueces, almendras, maní y la manzana picada.\n4. Colocar en molde aceitado. \n5. Llevar a horno medio por 10 minutos. \n",
+  "analisisCosto": {
+    "costoEstimado": "2770",
+    "accesibilidad": "Fácil de encontrar",
+    "dificultad": "Muy bajo",
+    "tiempoPreparacion": "10 min + 10 minutos de horno "
+  },
+  "infoNutricional": {
+    "calorias": 283,
+    "proteinas": 8.84,
+    "grasas": {
+      "total": 8.14,
+      "saturadas": 1.37,
+      "trans": 0
+    },
+    "colesterol": 63,
+    "carbohidratos": {
+      "total": 47.74,
+      "fibra": 4.11,
+      "azucaresLibres": 0
+    },
+    "sodio": 108
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": false
+      }
+    ],
+    "total": 70
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Cookies de banana, chocolate y lentejas",
+    "grupo": "Grupo 5",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://media.mdzol.com/p/4d0efec16b011039f0d489e84c24e824/adjuntos/373/imagenes/001/164/0001164188/760x0/smart/con-esta-facil-receta-te-luciras-al-preparar-estas-exquisitas-galletas-cacao-lenteja-y-banana-foto-shutterstock.jpg",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": " lentejas cocidas",
+      "gramos": 180,
+      "urlImagen": "https://s-api.qcart.app/images/comoquiero-uploads/images/recipes/originals/5911.jpg?s=716x600&fit=cover&ext=webp",
+      "puntosClave": [
+        {
+          "texto": "Beneficios: fuente de proteína vegetal, buena cantidad de hierro no-hémo, folato, fibra (saciedad y salud intestinal) y micronutrientes (Zn, Mg, P). \nLas lentejas son ricas en proteínas, aminoácidos esenciales, minerales y fibras, lo que las convierte en una valiosa fuente de nutrición, especialmente en países de ingresos bajos y medios al ser económicas.\nEfectos positivos en el control de la diabetes, apoyo para la salud cardiovascular y propiedades antioxidantes. \nEfectos antiinflamatorios y antimicrobianos. El contenido de fibra y proteína en las lentejas las hace beneficiosas para la regulación del azúcar en la sangre y el apoyo a la salud intestinal general. \nLa lenta velocidad con la que las lentejas afectan los niveles de azúcar en sangre, debido a su bajo índice glucémico, puede ser ventajosa para las personas con diabetes.\n\nRevisión sobre propiedades saludables y perfil nutricional de las lentejas. \n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10945126/?utm_source=chatgpt.com"
+        }
+      ]
+    },
+    {
+      "nombre": "huevo",
+      "gramos": 50,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrb4HRPDz4NBRWWINLwkuDkS9YyDmCxCLzpw&s",
+      "puntosClave": [
+        {
+          "texto": "Beneficios: proteína de alta calidad (aminoácidos indispensables), vitaminas (B12, riboflavina), y colina, clave en el desarrollo cerebral y función cognitiva; estudios RCT muestran que la introducción temprana diaria de huevo en la alimentación complementaria mejoró el crecimiento lineal en niños (disminuyó la riesgo de retraso del crecimiento).\n",
+          "citaTexto": "Ensayo aleatorizado (Lulun Project) — huevos en alimentación complementaria y mejora del crecimiento infantil. ",
+          "citaUrl": "https://pubmed.ncbi.nlm.nih.gov/28588101/"
+        },
+        {
+          "texto": "Revisiones sobre la colina y su importancia en el neurodesarrollo:\nLos hallazgos sugieren que complementar la dieta materna o infantil con colina durante los primeros 1000 días de vida podría posteriormente: (1) favorecer el desarrollo cerebral normal (evidencia en animales y humanos), (2) proteger contra daños neuronales y metabólicos, especialmente cuando el feto está expuesto al alcohol (evidencia en animales y humanos), y (3) mejorar el funcionamiento neuronal y cognitivo (evidencia en animales).\n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7352907/?utm_source=chatgpt.com"
+        }
+      ]
+    },
+    {
+      "nombre": "pasta de maní sin azúcar",
+      "gramos": 45,
+      "urlImagen": "https://capsulandia.com.ar/cdn/shop/files/capsulandia-mantequilla-pasta-de-mani-natural-485g-mani-king-sin-azucar-sin-tacc-1_792x.jpg?v=1709517026",
+      "puntosClave": [
+        {
+          "texto": "Beneficios: alimento energético y denso en nutrientes aporta grasas insaturadas (MUFA), proteína vegetal, fibra, vitamina E, folato y minerales (Mg, Cu). Contribuye a la saciedad y puede formar parte de patrones alimentarios cardioprotectores cuando se consume con moderación. Promueve la longevidad. Propiedades antioxidantes.\n\nRevisión sobre cacahuete/peanut como alimento funcional (perfil nutricional). \nEl cacahuete es una excelente fuente de compuestos como el resveratrol, ácidos fenólicos, flavonoides y fitoesteroles, que bloquean la absorción del colesterol de la dieta. También es una buena fuente de coenzima Q10 y contiene los 20 aminoácidos, con la mayor cantidad de arginina. Estos compuestos bioactivos han sido reconocidos por sus propiedades preventivas de enfermedades y se cree que promueven la longevidad. Los métodos de procesamiento, como el tostado y el hervido, han demostrado un aumento en la concentración de estos compuestos bioactivos.\n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4711439/?utm_source=chatgpt.com"
+        },
+        {
+          "texto": "Revisiones/meta-análisis sobre beneficios de frutos secos y cacahuates en marcadores cardiometabólicos. \nSi bien son alimentos ricos en calorías, varios estudios han reportado efectos beneficiosos tras su consumo, gracias a su perfil de ácidos grasos, proteínas vegetales, fibra, vitaminas, minerales, carotenoides y fitoesteroles con potencial antioxidante\n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5748761/?utm_source=chatgpt.com"
+        }
+      ]
+    },
+    {
+      "nombre": "cacao amargo en polvo",
+      "gramos": 30,
+      "urlImagen": "https://acdn-us.mitiendanube.com/stores/001/167/320/products/cacao-amargo-polvo1-57c089997a7e1b36c115981104010080-640-0.jpg",
+      "puntosClave": [
+        {
+          "texto": "Beneficios: rico en polifenoles/flavanoles (epicatequina) efectos antioxidantes, vasculares (mejora función endotelial, presión arterial) y potenciales efectos positivos sobre el estado de ánimo y la cognición. \nEl cacao contiene más antioxidantes fenólicos que la mayoría de los alimentos. Los efectos antioxidantes del cacao pueden influir directamente en la resistencia a la insulina. El cacao puede proteger los nervios de lesiones e inflamación, proteger la piel del daño oxidativo de la radiación UV en preparaciones tópicas y tener efectos beneficiosos sobre la saciedad, la función cognitiva y el estado de ánimo.\n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4696435/?utm_source=chatgpt.com"
+        }
+      ]
+    },
+    {
+      "nombre": "banana",
+      "gramos": 100,
+      "urlImagen": "https://greenshop.ar/wp-content/uploads/2024/06/A.2.6-500GR.jpg",
+      "puntosClave": [
+        {
+          "texto": "Beneficios: fuente de carbohidrato fácil de usar como endulzante natural, potasio, vitamina B6 y vitamina C; cuando está menos madura contiene almidón resistente (prebiótico) que favorece microbiota y puede moderar respuesta glucémica.\nEn recetas para niños la banana aporta palatabilidad y micronutrientes.\n\nRevisión sobre almidón resistente de banana verde y potenciales beneficios prebióticos\n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11167165/?utm_source=chatgpt.com"
+        },
+        {
+          "texto": "Revisión sobre propiedades fisicoquímicas y digestibilidad del almidón de banana. ",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9370678/?utm_source=chatgpt.com"
+        }
+      ]
+    },
+    {
+      "nombre": "Esencia de vainilla",
+      "gramos": 5,
+      "urlImagen": "https://www.google.com/url?sa=i&url=https%3A%2F%2Falicante.com.ar%2Fproducto%2F52-producto-reposteria-vainilla%2F&psig=AOvVaw1kBy-L2jypILz99Jg8wBkz&ust=1758320727191000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPj866St448DFQAAAAAdAAAAABAE",
+      "puntosClave": [
+        {
+          "texto": "Vainilla: aporta aroma y compuestos (vanillina) con actividad antioxidante/antimicrobiana en estudios experimentales; su beneficio en la dieta es principalmente sensorial (permite reducir necesidad de azúcar añadido por mayor palatabilidad). \nRecientemente, las propiedades bioactivas de la vainillina, como la neuroprotección, la anticancerígena y la antioxidante, están ganando atención. Además, se ha descubierto que la vainillina y sus análogos sintéticos regulan la expresión génica y exhiben actividades biológicas. Por lo tanto, aquí resumimos los potenciales bioactivos de la vainillina y sus derivados con el objetivo de cambiar la perspectiva de ser un sabor popular a una molécula terapéutica de la nueva era.\n",
+          "citaTexto": "",
+          "citaUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7790484/?utm_source=chatgpt.com"
+        }
+      ]
+    },
+    {
+      "nombre": "polvo para hornear",
+      "gramos": 5,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr0X1U6IfGg0lqMhgPKKO_oMMEFS-D6wvNDw&s",
+      "puntosClave": []
+    }
+  ],
+  "preparacion": "1- Colocar todos los ingredientes en un recipiente y luego mixear.\n2-Una vez integrado los ingredientes, formar las cookies sobre una placa para horno con papel manteca.\n3-Hornear a 180 C por 15-20 min hasta que esten firmes.\n Duran 3-4 dias en la heladera.",
+  "analisisCosto": {
+    "costoEstimado": "1700",
+    "accesibilidad": "economico ",
+    "dificultad": "bajo",
+    "tiempoPreparacion": "25-30 min"
+  },
+  "infoNutricional": {
+    "calorias": 949,
+    "proteinas": 57.85,
+    "grasas": {
+      "total": 31.2,
+      "saturadas": 7.2,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 114,
+      "fibra": 62.9,
+      "azucaresLibres": 2.25
+    },
+    "sodio": 248.7
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": true
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 80
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": false,
+    "grasasSaturadas": false,
+    "sodio": false
+  }
+}

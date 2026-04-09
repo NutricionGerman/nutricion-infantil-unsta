@@ -1,0 +1,119 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Dátiles rellenos ",
+    "grupo": "Grupo 8",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxLCS9BVzagexgcYTVD_0IdEgrje2BmNVwFg&s",
+    "idVideoYoutube": "",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": "Dátil",
+      "gramos": 100,
+      "urlImagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA1CqyarOy88EjkvZ5-jje_hDwco8gSRnXCw&s",
+      "puntosClave": [
+        {
+          "texto": "Es un fruto seco dulce y energético, rico en fibra, vitaminas, minerales como potasio y hierro, y antioxidantes.",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Pasta de mani",
+      "gramos": 30,
+      "urlImagen": "https://www.clarin.com/2021/10/11/iJRja9NyR_1200x0__1.jpg",
+      "puntosClave": [
+        {
+          "texto": "Fuente de proteinas y grasas saludables, aporta también vitaminas del complejo B y minerales. Este ingrediente aporta saciedad.",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    },
+    {
+      "nombre": "Chocolate 70% (endulzado con stevia)",
+      "gramos": 80,
+      "urlImagen": "https://acdn-us.mitiendanube.com/stores/001/326/060/products/naq-hoj-140-2e1e3d96ab8cf0f54f17135613231259-1024-1024.jpg",
+      "puntosClave": [
+        {
+          "texto": "El chocolate 70% cacao endulzado con stevia es una muy buena opción para un snack saludable ya que es rico y no contiene azucar agregada. Nos aporta atioxidantes, minerales y contribuye a nuestro bienestar liberando endorfinas y serotonina. ",
+          "citaTexto": "",
+          "citaUrl": ""
+        }
+      ]
+    }
+  ],
+  "preparacion": "1) Abrir los datiles cortando a lo largo y retirar el carozo.\n2) Rellenar cada uno con 1 cucharadita de pasta de mani.\n3) Derretir el chocolate a baño maria o en microondas (en intervalos cortos). \n4) Bañar los datiles sumergiendolos en el chocolate, retiralos con un tenedor, escurrir el exceso y colocarlos en un plato o bandeja.\n5) OPCIONAL: decorar con coco en escamas, sal marina o trozitos de mani.\n6) LLevar a la heladera hasta que el chocolate endurezca (20-30min)\nLIsto! \n*Conservar en lugar fresco.",
+  "analisisCosto": {
+    "costoEstimado": "4000",
+    "accesibilidad": "Todos los ingredientes se consiguen en un supermercado y dietéticas. La pasta de mani, al ser mas accesible y común, se la consigue facilmente en kioscos.",
+    "dificultad": "Muy bajo, no requiere experiencia en reposteria.",
+    "tiempoPreparacion": "relleno + baño de chocolate 15-20 minutos. Enfriado en heladera aprox 3omin."
+  },
+  "infoNutricional": {
+    "calorias": 425,
+    "proteinas": 6.6,
+    "grasas": {
+      "total": 19,
+      "saturadas": 8,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 61.8,
+      "fibra": 7.3,
+      "azucaresLibres": 0
+    },
+    "sodio": 12
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": false
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 85
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": false,
+    "grasasTotales": true,
+    "grasasSaturadas": true,
+    "sodio": false
+  }
+}

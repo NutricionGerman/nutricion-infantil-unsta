@@ -1,0 +1,53 @@
+{
+  "grupoEvaluador": 18,
+  "clasificacion": {
+    "S": [
+      "barritas-de-avena-y-manzana",
+      "mousse-de-frutilla",
+      "helado-de-banana"
+    ],
+    "A": [
+      "cookies-de-banana-chocolate-y-lentejas",
+      "bud-n-integral-de-lim-n",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "bombones-proteicos"
+    ],
+    "B": [
+      "pancakes-de-banana",
+      "muffins-de-avena-cacao-y-banana",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "sandwich-arcoiris"
+    ],
+    "C": [
+      "bolitas-energ-ticas-de-d-til",
+      "d-tiles-rellenos",
+      "barrita-de-avena-mani-y-miel"
+    ],
+    "D": [
+      "barrita-de-quinoa"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "helado-de-banana",
+      "recetaInferior": "pancakes-de-banana",
+      "analisis": "El helado de banana:\n\nEduca al paladar hacia sabores más naturales.\n\nFavorece un estilo de alimentación ligera, ideal para la prevención de obesidad, diabetes y enfermedades cardiovasculares.\n\nPuede integrarse como postre o colación frecuente sin riesgo.\n\n\nLos pancakes de banana:\n\nAunque son nutritivos, su consumo frecuente y en porciones generosas puede favorecer sobrepeso y alteraciones lipídicas.\n\nSerían más adecuados como preparación ocasional o de fin de semana, no como colación diaria en un kiosco saludable."
+    },
+    {
+      "recetaSuperior": "cookies-de-banana-chocolate-y-lentejas",
+      "recetaInferior": "barrita-de-avena-mani-y-miel",
+      "analisis": "Cookies de banana, chocolate y lenteja \n• Fibra y salud digestiva: Las lentejas son una excelente fuente de fibra dietética, que ayuda a mantener la salud digestiva y puede reducir el riesgo de enfermedades del corazón.  \n• Proteína vegetal: La combinación de lentejas y pasta de maní proporciona una cantidad significativa de proteína vegetal, esencial para la reparación y crecimiento muscular, así como para la función inmunológica.\n• Bajo contenido de azúcares libres: El bajo contenido de azúcares libres (2,25 g por 100 g) ayuda a mantener niveles estables de glucosa en sangre, reduciendo el riesgo de desarrollar diabetes tipo 2 y enfermedades metabólicas asociadas.\nBarritas de avena, maní y miel  \nJustificación basada en efectos a largo plazo:\n• Alto contenido de azúcares libres: El alto contenido de azúcares libres puede contribuir a picos de glucosa en sangre, lo que aumenta el riesgo de desarrollar resistencia a la insulina y, eventualmente, diabetes tipo 2. El consumo excesivo de azúcares añadidos también se ha asociado con un mayor riesgo de enfermedades cardiovasculares .\n• Grasas saturadas elevadas: El contenido de grasas saturadas (14 g por 100 g) es elevado, lo que puede aumentar los niveles de colesterol LDL (\"malo\") en sangre, elevando el riesgo de enfermedades del corazón.\n• Bajo contenido de fibra: Aunque la avena es una excelente fuente de fibra, el contenido total de fibra (7 g por 100 g) es relativamente bajo en comparación con las cookies de banana, chocolate y lentejas, lo que limita los beneficios para la salud digestiva y cardiovascular.\n  conclusión\nConclusión: Aunque las cookies de banana, chocolate y lentejas presentan un contenido calórico más alto, su perfil nutricional, especialmente en términos de fibra y proteína, ofrece beneficios significativos para la salud a largo plazo. En cambio, las barritas de avena, maní y miel, debido a su alto contenido de azúcares libres y grasas saturadas, pueden contribuir a riesgos de salud a largo plazo si se consumen con frecuencia"
+    },
+    {
+      "recetaSuperior": "bud-n-integral-de-lim-n",
+      "recetaInferior": "muffins-de-avena-cacao-y-banana",
+      "analisis": "El Budín integral de limón:\n\nFavorece la salud digestiva y metabólica por su fibra.\n\nMantiene un perfil más bajo en grasas saturadas y azúcares.\n\nPuede ser incorporado más regularmente sin impacto negativo importante.\n\n\nLos Muffins de avena, cacao y banana:\n\nAportan nutrientes interesantes, pero su exceso de azúcares los hace menos recomendables en el consumo habitual.\n\nA largo plazo, pueden reforzar el hábito de consumir preparaciones más dulces, lo cual no es positivo para la salud metabólica.\n\nComo conclusión el budín integral de limón es claramente la opción más saludable a largo plazo, ya que fomenta un consumo moderado de azúcar, alto en fibra y con mejor perfil de grasas, mientras que los Muffins de avena y cacao son más adecuados como una opción ocasional y no de consumo frecuente."
+    },
+    {
+      "recetaSuperior": "barritas-de-avena-y-manzana",
+      "recetaInferior": "d-tiles-rellenos",
+      "analisis": "comparación y conclusión\n• Calorías: los dátiles rellenos aportan  más energía que las barritas.\n• Grasas: en los dátiles predominan saturadas, mientras que en las barritas predominan insaturadas (saludables).\n• Azúcares: los dátiles concentran azúcares naturales sin fibra suficiente → picos de glucosa; las barritas combinan azúcar de fruta con fibra → mejor control metabólico.\n• Proteínas y fibra: las barritas aportan más proteína y fibra → mayor saciedad y control del hambre.\n• Impacto a largo plazo: las barritas favorecen control glucémico, salud cardiovascular y digestiva; los dátiles rellenos frecuentes pueden favorecer sobrepeso, diabetes tipo 2 y riesgo cardiovascular.\nConclusión: Las barritas de avena y manzana son más saludables a largo plazo, combinan energía moderada con fibra, proteína y grasas de buena calidad. Los dátiles rellenos, aunque nutritivos, concentran azúcares y grasas saturadas, por lo que se ubican en categoría “regular”y su consumo frecuente no se recomienda, ya que el exceso de azúcares libres puede aumentar el riesgo de enfermedades como la diabetes tipo 2, enfermedades cardiovasculares, hipertensión y obesidad. La Organización Mundial de la Salud (OMS) recomienda que los azúcares libres representen menos del 10% de la ingesta calórica total diaria, y sugiere que una reducción por debajo del 5% podría ofrecer beneficios adicionales para la salud."
+    }
+  ]
+}

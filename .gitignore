@@ -1,0 +1,23 @@
+# Carpeta de dependencias
+node_modules/
+
+# Archivos pesados (Multimedia y Documentos)
+# He creado una guía de reconstrucción para estos archivos
+CLASES/
+HERRAMIENTAS/
+*.mp4
+*.pdf
+
+# Archivos de entorno y logs
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.firebaserc
+firebase.json
+firestore.indexes.json
+firestore.rules
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,38 @@
+{
+  "grupoEvaluador": 21,
+  "clasificacion": {
+    "S": [
+      "snack-de-garbanzo",
+      "bolitas-energ-ticas-de-d-til"
+    ],
+    "A": [
+      "barrita-de-avena-mani-y-miel",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "bud-n-integral-de-lim-n",
+      "sandwich-arcoiris"
+    ],
+    "B": [
+      "barritas-de-avena-y-manzana",
+      "pancakes-de-banana",
+      "muffins-de-avena-cacao-y-banana",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "d-tiles-rellenos"
+    ],
+    "C": [
+      "bombones-proteicos",
+      "helado-de-banana",
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a"
+    ],
+    "D": [
+      "mousse-de-frutilla"
+    ],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "bolitas-energ-ticas-de-d-til",
+      "recetaInferior": "mousse-de-frutilla",
+      "analisis": "Las Bolitas energéticas de dátil se consideran una opción superior porque están elaboradas con alimentos mínimamente procesados (dátiles, nueces y cacao puro), que aportan fibra, grasas insaturadas y antioxidantes. Estos nutrientes no solo cubren necesidades inmediatas, sino que la evidencia científica respalda que el consumo regular de frutos secos y cacao puro se asocia con mejor salud cardiovascular, mayor saciedad y mejor control glucémico a largo plazo. Aunque la receta recibe sellos por su densidad calórica y contenido de grasa, estos efectos pueden mitigarse con porciones adecuadas (1–2 unidades), manteniendo los beneficios de sus compuestos bioactivos. En cambio, la Mousse de frutilla, si bien es baja en calorías y no presenta sellos de advertencia, ofrece una baja densidad de nutrientes y fibra, lo que la hace menos saciante y con menor impacto en la prevención de enfermedades crónicas. Además, la combinación de claras, gelatina y edulcorante genera un postre ligero pero poco completo desde la perspectiva de un kiosco saludable. Conclusión: A largo plazo, las Bolitas energéticas de dátil representan una opción más beneficiosa para la salud que la Mousse de frutilla, gracias a su mayor densidad de nutrientes protectores y capacidad de favorecer la saciedad, siempre que se consuma en raciones moderadas."
+    }
+  ]
+}

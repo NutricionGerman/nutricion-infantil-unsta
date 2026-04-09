@@ -1,0 +1,119 @@
+{
+  "infoGeneral": {
+    "nombreReceta": "Barrita de Quinoa ",
+    "grupo": "21",
+    "categoria": "Quiosco Saludable / Recetas",
+    "urlImagenPrincipal": "https://i.postimg.cc/Y2TBZL44/IMG-8190.jpg",
+    "idVideoYoutube": "https://www.instagram.com/reel/CzubJg1L7Ls/?igsh=MThrMWlvbncxbHo0OQ==",
+    "esBebida": false
+  },
+  "ingredientes": [
+    {
+      "nombre": " Chocolate amargo ",
+      "gramos": 200,
+      "urlImagen": "https://postimg.cc/2bht61KP",
+      "puntosClave": [
+        {
+          "texto": "Las propiedades nutricionales del chocolate provienen de su ingrediente principal, el cacao. El cacao mínimamente procesado es rico en minerales, como el potasio, el zinc y el magnesio. También contiene flavonoides (sustancias químicas naturales de las plantas con efectos beneficiosos para la salud), que tienen potentes propiedades antioxidantes.\n",
+          "citaTexto": "16 de abril de 2024",
+          "citaUrl": "https://www.nike.com/us/es/a/beneficios-del-chocolate-amargo-para-la-salud"
+        }
+      ]
+    },
+    {
+      "nombre": "Quinoa  ",
+      "gramos": 150,
+      "urlImagen": "https://postimg.cc/yDWsNTXt",
+      "puntosClave": [
+        {
+          "texto": "Fuentes de proteínas vegetales, fibras y minerales \nMás proteína que cualquier cereal: La quinoa tiene entre 12-16 gramos de proteínas por cada 100 gramos. Estas proteínas vegetales son de alto valor biológico, ya que contienen todos los aminoácidos esenciales.\nIdeal para veganos: Por su alto contenido de proteínas vegetales, la quinoa es una excelente opción para dietas veganas.\nPrevención de enfermedades: La quinoa puede ayudar a prevenir cáncer de mama, diabetes tipo 2 y enfermedades cardiovasculares, entre otras.\nApta para diabéticos: Sus propiedades nutricionales y su sabor neutro hacen que la quinoa encaje perfectamente en una variedad de recetas.\nCarbohidratos complejos: Ayudan a perder peso sin hacer dieta, manteniendo niveles de energía estables.\nGrasas buenas: Contiene ácidos grasos Omega 3 y 6, esenciales para el cuerpo.\nRica en fibra y minerales: La quinoa aporta 15 gramos de fibra por cada 100, además de minerales como hierro, calcio y magnesio.\nRepleta de vitaminas: Contiene vitaminas del tipo B, C, E, y otras.\nApta para celíacos: Está libre de gluten y puede utilizarse en harina para productos derivados.\nAlivia el estreñimiento: Gracias a su aporte de fibra.\nMantiene un peso saludable: Ayuda a reducir el hambre y los antojos.\nAlto contenido en calcio: Contribuye a evitar la descalcificación de los dientes y los huesos.\nIdeal para deportistas: Por su contenido en proteínas y aminoácidos esenciales.\n\nBuena para la piel: Su contenido en vitamina C ayuda en la síntesis de colágeno.\nPoder antiedad: Contiene antioxidantes como la quercetina y el kaemferol.\nBeneficios para el cabello: La quinoa es un ingrediente potente en productos capilares, ayudando a retener el color y a mantener el cabello brillante",
+          "citaTexto": "Jueves 11.7.2024",
+          "citaUrl": "https://www.ellitoral.com/nosotros/quinoa-beneficios-propiedades-usos-recetas_0_tQG3Qgyf21.html"
+        }
+      ]
+    },
+    {
+      "nombre": "Pasta de maní natural ",
+      "gramos": 30,
+      "urlImagen": "https://postimg.cc/5H33k8D9",
+      "puntosClave": [
+        {
+          "texto": "Grasas saludables, proteína vegetal \nExcelente fuente de proteínas: Tan solo dos cucharadas de pasta de maní contienen alrededor de 7 gramos de proteína, contribuyendo a la recuperación muscular y al desarrollo de masa magra.\nSensación de saciedad: Gracias a su alto contenido proteico, este alimento genera sensación de saciedad, prolongando la sensación de plenitud y evitando la sensación de hambre durante más tiempo.\nPrevención de enfermedades cardiovasculares: Sus nutrientes, vitaminas y minerales ayudan a reducir el riesgo de padecer enfermedades cardíacas, fortaleciendo la salud del corazón.\nFuente de grasas saludables: La pasta de maní contiene más grasas insaturadas que saturadas, proporcionando energía al cuerpo y apoyando las funciones corporales.\nPrevención del estreñimiento: Su alto contenido en fibra ayuda a mantener un sistema digestivo saludable, previniendo problemas de estreñimiento.\nRefuerzo del sistema inmunológico: Su riqueza en zinc y vitamina B6 fortalece el sistema inmunológico, contribuyendo a una mayor resistencia frente a enfermedades.\nAcción antioxidante contra el envejecimiento: El magnesio presente en la pasta de maní actúa como un poderoso antioxidante, retrasando el envejecimiento prematuro de las células del cuerpo.\nContribución a la prevención del cáncer: Se observó que el consumo regular de mantequilla de maní puede ayudar a disminuir las células malignas, contribuyendo a la prevención del cáncer.",
+          "citaTexto": "28 Octubre 2023",
+          "citaUrl": "https://www.lagaceta.com.ar/nota/1011736/sociedad/ocho-beneficios-pasta-mani-para-consumas-sin-culpas.html"
+        }
+      ]
+    }
+  ],
+  "preparacion": "Preparación (Paso a Paso):\n\t1.\tDerretir el chocolate a baño maría o en microondas.\n\t2.\tIncorporar la pasta de maní y mezclar hasta integrar, opcional : edulcorante ( si se prefiere más dulce).\n\t3.\tAñadir la quinoa inflada y mezclar bien.\n\t4.\tVolcar la mezcla en un molde forrado con papel manteca y nivelar con una espátula.\n\t5.\tLlevar a la heladera hasta que solidifique.\n\t6.\tCortar en barritas y guardar en recipiente hermético.",
+  "analisisCosto": {
+    "costoEstimado": "",
+    "accesibilidad": "$500",
+    "dificultad": "Fácil de encontrar",
+    "tiempoPreparacion": "Muy bajo"
+  },
+  "infoNutricional": {
+    "calorias": 460,
+    "proteinas": 11,
+    "grasas": {
+      "total": 25,
+      "saturadas": 9,
+      "trans": 0
+    },
+    "colesterol": 0,
+    "carbohidratos": {
+      "total": 45,
+      "fibra": 6,
+      "azucaresLibres": 18
+    },
+    "sodio": 6
+  },
+  "puntuacion": {
+    "items": [
+      {
+        "id": "trans",
+        "nombre": "0 Grasas Trans",
+        "puntos": 25,
+        "activo": true
+      },
+      {
+        "id": "azucar",
+        "nombre": "Sin Azúcares Libres",
+        "puntos": 20,
+        "activo": false
+      },
+      {
+        "id": "integral",
+        "nombre": "Integral y Fibra",
+        "puntos": 20,
+        "activo": true
+      },
+      {
+        "id": "saturadas",
+        "nombre": "Bajo en Grasas Saturadas",
+        "puntos": 15,
+        "activo": false
+      },
+      {
+        "id": "sodio",
+        "nombre": "Bajo en Sodio",
+        "puntos": 10,
+        "activo": true
+      },
+      {
+        "id": "colesterol",
+        "nombre": "Bajo en Colesterol",
+        "puntos": 10,
+        "activo": true
+      }
+    ],
+    "total": 65
+  },
+  "octogonos": {
+    "calorias": true,
+    "azucares": true,
+    "grasasTotales": true,
+    "grasasSaturadas": true,
+    "sodio": false
+  }
+}

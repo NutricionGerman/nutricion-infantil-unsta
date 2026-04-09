@@ -1,0 +1,37 @@
+{
+  "grupoEvaluador": 1,
+  "clasificacion": {
+    "S": [
+      "bolitas-energ-ticas-de-d-til",
+      "pancakes-de-banana",
+      "cookies-de-banana-chocolate-y-lentejas",
+      "sandwich-arcoiris"
+    ],
+    "A": [
+      "barrita-de-quinoa",
+      "muffins-de-avena-cacao-y-banana",
+      "bud-n-integral-de-lim-n",
+      "barrita-de-avena-mani-y-miel"
+    ],
+    "B": [
+      "helado-de-banana",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "snack-de-garbanzo",
+      "bombones-proteicos",
+      "d-tiles-rellenos"
+    ],
+    "C": [
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "mousse-de-frutilla"
+    ],
+    "D": [],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "sandwich-arcoiris",
+      "recetaInferior": "mousse-de-frutilla",
+      "analisis": "Considero que el Sandwich Arcoíris es más saludable porque tiene un equilibrio nutricional completo: combina proteínas de origen animal (huevo y queso) y vegetal (vegetales y pan integral), carbohidratos de absorción lenta, fibra, vitaminas y minerales. Esto lo hace muy saciante y adecuado para una comida o colación que aporte energía de manera sostenida. Además, es fácil de preparar y los ingredientes son accesibles, lo que lo convierte en una opción práctica y funcional para cualquier momento del día.\nPor otro lado, la Mousse de Frutilla, aunque es ligera y baja en calorías, se queda corta en nutrientes esenciales. Tiene algo de proteína de clara de huevo y vitaminas de la frutilla, pero prácticamente no aporta fibra, carbohidratos complejos ni grasas saludables, por lo que su efecto saciante es muy bajo. Funciona más como un postre ocasional que como un snack nutritivo."
+    }
+  ]
+}

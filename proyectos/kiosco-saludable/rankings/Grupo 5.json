@@ -1,0 +1,37 @@
+{
+  "grupoEvaluador": 5,
+  "clasificacion": {
+    "S": [],
+    "A": [
+      "cookies-de-banana-chocolate-y-lentejas",
+      "snack-de-garbanzo"
+    ],
+    "B": [
+      "licuado-de-de-mango-naranja-frutilla-y-ch-a",
+      "mousse-de-frutilla",
+      "helado-de-banana",
+      "barrita-de-avena-mani-y-miel",
+      "d-tiles-rellenos",
+      "bombones-proteicos",
+      "trufas-de-avena-con-banana-cacao-y-coco",
+      "sandwich-arcoiris",
+      "bolitas-energ-ticas-de-d-til",
+      "muffins-de-avena-cacao-y-banana",
+      "pancakes-de-banana",
+      "barrita-de-quinoa",
+      "barritas-de-avena-y-manzana"
+    ],
+    "C": [
+      "bud-n-integral-de-lim-n"
+    ],
+    "D": [],
+    "Pool": []
+  },
+  "justificaciones": [
+    {
+      "recetaSuperior": "snack-de-garbanzo",
+      "recetaInferior": "bud-n-integral-de-lim-n",
+      "analisis": "El snack de garbanzo es más saludable que el budín integral de limón, porque contribuye a la incorporación de legumbres en la dieta de las personas, lo que proporciona proteína, fibra, entre otros, que promueven a una salud integral de las personas. El budín contiene azúcar mascabo, si bien, es menos refinada que la común, sigue siendo un azúcar agregado. También tiene agregado aceite de girasol en una cantidad considerable, a comparación del snack de garbanzo que solamente se utiliza 1,5g y es de oliva, el cual aporta ácidos grasos insaturados.\nAdemás, los condimentos del snack de garbanzo como la cúrcuma, están demostradas sus propiedades antioxidantes y antiinflamatorias, lo que contribuye a una mejor calidad de vida y longevidad. El snack de garbanzo es más accesible por sus ingredientes, más fácil de preparar y de trasladar. \nIgualmente teniendo en cuenta que un alimento será más saludable según el CONTEXTO de quién lo consume. En general, todas las recetas subidas son muy buenas opciones, pero dependerá del objetivo que tenga cada uno."
+    }
+  ]
+}
