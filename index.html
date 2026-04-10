@@ -5114,7 +5114,13 @@
                 const denominator = (totalTpFromConfig && totalTpFromConfig > 0) ? totalTpFromConfig : gradableTpRecords.length;
                 const tpPercentage = denominator > 0 ? Math.round((approvedTPsCount / denominator) * 100) : 0;
 
-                const isRegular = attendancePercentage >= 50 && tpPercentage >= 75;
+                const presentedTPsCount = allStudentRecordsForRelevantSessions.filter(r => r.tpNote !== null && r.tpNote !== 'Pendiente').length;
+                const tpPresentedPercentage = denominator > 0 ? Math.round((presentedTPsCount / denominator) * 100) : 0;
+
+                const promoOk = attendancePercentage >= 75 && tpPresentedPercentage >= 100;
+                const regOk = attendancePercentage >= 50 && tpPresentedPercentage >= 75;
+                const studentCondition = promoOk ? 'Promoción' : (regOk ? 'Regulariza' : 'Libre');
+                const conditionClass = promoOk ? 'regular' : (regOk ? 'regular' : 'no-regular');
 
                 // Build group options safely (no nested template literals)
                 let groupOptsSelectorHTML = '<option value="">(Sin Grupo)</option>';
@@ -5148,22 +5154,19 @@
                     groupCardHTML = `
                     <div class="stat-block">
                         <h4><i class="fas fa-users"></i> Mi Grupo</h4>
-                        <div class="group-link-card" data-group-id="${student.group}">
-                            <div class="group-logo-container" id="group-link-logo-${student.group}"></div>
-                            <div class="group-info">
-                                <h4>Grupo ${student.group}</h4>
-                                <p>${groupData.xp} XP Total</p>
-                            </div>
-                            <i class="fas fa-chevron-right"></i>
+                        <div class="current-rank-display" style="padding-bottom: 10px;">
+                            <div id="group-link-logo-${student.group}" style="width: 80px; height: 80px; margin: 0 auto 10px; opacity: 0.9;"></div>
+                            <div class="rank-name" style="margin-bottom: 5px;">Grupo ${student.group}</div>
+                            <div style="font-weight: bold; color: var(--xp-color);"><i class="fas fa-star" style="font-size: 0.9em; margin-right: 5px;"></i>${groupData.xp} XP Totales</div>
                         </div>
                         ${groupSelectorHTML}
                     </div>`;
                 } else {
                     groupCardHTML = `
                     <div class="stat-block">
-                         <h4><i class="fas fa-users"></i> Mi Grupo</h4>
-                         <p class="text-muted-light text-sm" style="margin-bottom: 10px;">Visualiza y únete a un grupo aquí.</p>
-                         ${groupSelectorHTML}
+                        <h4><i class="fas fa-users"></i> Mi Grupo</h4>
+                        <p style="margin-bottom: 15px; color: #aaa;">Aún no estás en ningún grupo.</p>
+                        ${groupSelectorHTML}
                     </div>`;
                 }
 
