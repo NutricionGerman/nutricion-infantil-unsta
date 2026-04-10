@@ -3533,14 +3533,51 @@
 
             async function initializeApp() {
                 try {
-                    // Carga única inicial
-                    const doc = await db.collection('app_state').doc('main').get();
-                    if (doc.exists) {
-                        fullData = doc.data();
-                        window.fullData = fullData;
+                    // 1. CARGA DE CONFIGURACIÓN Y ESTADO GLOBAL
+                    const configDoc = await db.collection('app_state').doc('main').get();
+                    let masterData = configDoc.exists ? configDoc.data() : { config: { totalTpCount: 1 } };
+                    
+                    // 2. CARGA DE LA COLECCIÓN DE ALUMNOS (CASILLEROS)
+                    let studentsSnapshot = await db.collection('students').get();
+                    let studentsArray = [];
+                    
+                    // RECONSTRUCCIÓN GRADUAL (Para no perder a nadie)
+                    studentsSnapshot.forEach(doc => studentsArray.push(doc.data()));
+
+                    // MIGRACIÓN FORZADA / INCREMENTAL: Si hay alumnos en el 'main' que no están migrados
+                    if (masterData.students && masterData.students.length > 0) {
+                        console.warn("🔄 Sincronizando alumnos faltantes del archivo maestro...");
+                        let migratedCount = 0;
+                        for (let s of masterData.students) {
+                            if (s.up) {
+                                // Solo migrar si no existe o para asegurar versión fresca
+                                const exists = studentsArray.find(x => x.up == s.up);
+                                if (!exists) {
+                                    await db.collection('students').doc(String(s.up)).set(s);
+                                    studentsArray.push(s);
+                                    migratedCount++;
+                                }
+                            }
+                        }
+                        
+                        if (migratedCount > 0) {
+                            console.log(`✅ Se rescataron ${migratedCount} alumnos del archivo antiguo.`);
+                            // Una vez rescatados, limpiamos el main para que no pese
+                            const cleanMaster = { ...masterData };
+                            delete cleanMaster.students;
+                            cleanMaster.isMigratedToCasilleros = true;
+                            await db.collection('app_state').doc('main').set(cleanMaster);
+                        }
                     }
 
-                    // Pre-cargar fotos y perfiles
+                    // 3. RECONSTRUIR OBJETO GLOBAL PARA COMPATIBILIDAD
+                    fullData = {
+                        ...masterData,
+                        students: studentsArray
+                    };
+                    window.fullData = fullData;
+
+                    // 4. PRE-CARGADO DE ASSETS (Fotos, Perfiles, etc)
                     const photosSnap = await db.collection('student_photos').get();
                     photosSnap.forEach(doc => sharedStudentPhotos[doc.id] = doc.data().photo);
                     
@@ -3548,116 +3585,46 @@
                     profilesSnap.forEach(doc => { if (doc.data().photo) sharedStudentPhotos[doc.id] = doc.data().photo; });
 
                     await fetchGroupsMetadata();
-                    
-                    // LLAMADA VITAL: Activar el escucha en TIEMPO REAL
-                    db.collection('app_state').doc('main').onSnapshot(doc => {
-                        if (doc.exists) {
-                            fullData = doc.data();
-                            window.fullData = fullData;
-                            
-                            // Redibujar todo el Dashboard
-                            try { displayGlobalStats(); } catch(e){}
-                            try { displayRanking(); } catch(e){}
-                            try { displayGroups(); } catch(e){}
-                            try { createOverallAttendanceChart(); } catch(e){}
-                            try { generateAndDisplayClasses(); } catch(e){}
-                            
-                            // MIGRACIÓN DE GRUPOS AUTOMÁTICA
-                            if (!fullData.groupsAssignedV4) {
-                                fullData.groupsAssignedV4 = true;
-                                const groupsData = [
-                                    ["Gianluca Vargiu", "Luca Delani", "344098", "Santiago Vázquez", "Rodrigo Lescano"], // Massimo Santucci = 344098
-                                    ["Josefina Padilla", "Luciano Dip", "Ariana Salon", "Florencia Cortez", "Agustina Salazar"],
-                                    ["Lucía Rossi", "Milagros Waunous", "Agostina Mukdise", "Juliana Gentile", "Luz Fernandez Murga"],
-                                    ["Alaina Fatima Bilbao", "Belen Gerez", "Juan Albornoz", "Maria Sol Gomez", "344025"], // Mariana Godoy = 344025
-                                    ["Tapia Daniela", "Perez Martinez Micaela", "Usandivaras constanza", "Llanos Vanesa", "Rivas Mirta"],
-                                    ["Marianella Giuliano", "Felicitas Gallardo", "Juan Martin Paz", "Thiara Bazan", "Guadalupe Avila"],
-                                    ["Zumaeta Rocío", "Santos Camila", "Lastra Nicolas", "Ocaranza Laureana", "Antich Facundo"],
-                                    ["Lourdes Paez de la Torre", "Nicole Jennifer Cuevas", "Sofía Abigail Barros", "Lucia Emilia Ruiz", "Tomás Vidal"],
-                                    ["Álvarez Romano Santiago Leonel", "Carrizo Fabricio", "Ibáñez Tomás", "Lazarte Maximo Daniel", "Elías Joaquín"],
-                                    ["344037", "344077", "344165", "344038", "344048"],
-                                    ["Matias Jerez", "Lai Franco", "Rodriguez Juan Pablo", "Lazarte Tomas", "Antonella Avila Lucena"],
-                                    ["Amparo viaña", "Amparo Colombres garmendia", "Martina Villarreal", "Sol Morandini", "Pilar Padilla"],
-                                    ["344031", "344044", "344032", "344012", "344011"],
-                                    ["Ignacio Miguel Altamiranda", "Joaquin Emiliano Guzman Siner", "Lautaro Ibarra Goñi", "María Sofía Díaz Romero", "Román Augusto Cordoba Diaz"],
-                                    ["Juan Pablo Zavaleta", "Augusto Mercado", "Joaquin Cerviño", "Fabrizzio Belluscio", "Benjamín Amayo"],
-                                    ["344085", "344073", "343783", "344105", "341726"], // Luisana Alcorta UP is 344085
-                                    ["Lisandro Geronimo Albornoz", "David Velardez", "343731", "Sofía Adorni"], // Sofía Herrmann = 343731
-                                    ["343992", "343997", "343891", "343850", "343870"]
-                                ];
 
-                                const normalize = str => {
-                                    if(!str) return '';
-                                    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '');
-                                };
-                                
-                                // Clean any existing groups
-                                fullData.students.forEach(s => s.group = "");
+                    // 5. ESCUCHA ACTIVA (SNAPSHOT) - Ahora sobre TODA la colección
+                    db.collection('students').onSnapshot(snap => {
+                        let updatedStudents = [];
+                        snap.forEach(doc => updatedStudents.push(doc.data()));
+                        
+                        fullData.students = updatedStudents;
+                        window.fullData = fullData;
 
-                                let gid = 1;
-                                let notFound = [];
-                                groupsData.forEach(members => {
-                                    const groupKey = 'g_' + gid;
-                                    if(!fullData.sharedGroupMetadata) fullData.sharedGroupMetadata = {};
-                                    if(!fullData.sharedGroupMetadata[groupKey]) {
-                                        fullData.sharedGroupMetadata[groupKey] = { name: "Grupo " + gid, xp: 0, level: 1 };
-                                    }
-                                    
-                                    members.forEach(member => {
-                                        const isUP = /^\d+$/.test(member);
-                                        const normM = normalize(member);
-                                        let student = null;
-                                        if (isUP) {
-                                            student = fullData.students.find(s => s.up == member);
-                                        } else {
-                                            let bestMatch = null;
-                                            let maxMatchLen = 0;
-                                            fullData.students.forEach(s => {
-                                                 const n1 = normalize(s.firstName + s.lastName);
-                                                 let nameParts = member.split(' ').map(normalize).filter(x=>x);
-                                                 let hasAllParts = nameParts.length > 0 && nameParts.every(p => n1.includes(p));
-                                                 if (hasAllParts && n1.length > maxMatchLen) {
-                                                     bestMatch = s;
-                                                     maxMatchLen = n1.length;
-                                                 }
-                                            });
-                                            if(bestMatch) student = bestMatch;
-                                            else {
-                                                student = fullData.students.find(s => {
-                                                    const n1 = normalize(s.firstName + s.lastName);
-                                                    return n1.includes(normM);
-                                                });
-                                            }
-                                        }
-                                        
-                                        if (student) {
-                                            student.group = groupKey;
-                                        } else {
-                                            notFound.push(member);
-                                        }
-                                    });
-                                    gid++;
-                                });
+                        // Actualizar UI en tiempo real
+                        try { displayGlobalStats(); } catch(e){}
+                        try { displayRanking(); } catch(e){}
+                        try { displayGroups(); } catch(e){}
+                        try { createOverallAttendanceChart(); } catch(e){}
+                        try { generateAndDisplayClasses(); } catch(e){}
 
-                                db.collection('app_state').doc('main').set(fullData).then(() => {
-                                    if(notFound.length > 0) alert("Grupos migrados. Los siguientes alumnos NO fueron encontrados.\n¡Esto significa que todavía no se han registrado en la web!\n\nAlumnos faltantes: " + notFound.join(', '));
-                                    else alert("¡Los 18 grupos fueron armados y asignados automáticamente sin errores!");
-                                });
+                        // Refrescar sesión actual si es alumno
+                        if (currentStudentUP) {
+                            const found = fullData.students.find(s => s.up == currentStudentUP);
+                            if (found) {
+                                currentStudentData = found;
+                                if (document.getElementById('profile-content').style.display === 'block') {
+                                    loadProfileContent(currentStudentData);
+                                }
                             }
                         }
                     });
 
-                    // Inicializar navegación y eventos
+                    // Navegación inicial
                     switchDashboardTab('alumnos');
                     try { initializeShop(); } catch (e) {}
 
+                    // Eventos de búsqueda y reportes
                     document.getElementById('search-rank-btn').addEventListener('click', handleStudentSearch);
                     document.getElementById('student-up-search').addEventListener('keypress', (e) => {
                         if (e.key === 'Enter') handleStudentSearch();
                     });
                     document.getElementById('generate-pdf-report-btn').addEventListener('click', generatePdfReport);
                     
-                    // RE-ACTIVAR CERRADO DE MODALES
+                    // Cerrado de modales centralizado
                     document.querySelectorAll('.close-modal').forEach(btn => {
                         btn.onclick = (e) => {
                             e.stopPropagation();
@@ -3673,7 +3640,53 @@
                     });
 
                 } catch (error) {
-                    console.error('Error crítico:', error);
+                    console.error('Error crítico en el inicio de la app:', error);
+                }
+            }
+
+            // --- NUEVO SISTEMA DE GUARDADO INTELIGENTE (GLOBAL) ---
+            window.saveProjectData = async function(targetStudents = null, saveAllStudents = false) {
+                try {
+                    const batch = db.batch();
+                    const cleanFullData = JSON.parse(JSON.stringify(fullData));
+                    const configRef = db.collection('app_state').doc('main');
+                    const masterToSave = { ...cleanFullData };
+                    delete masterToSave.students;
+                    masterToSave.isMigratedToCasilleros = true;
+                    
+                    batch.set(configRef, masterToSave, { merge: true });
+
+                    if (saveAllStudents) {
+                        cleanFullData.students.forEach(s => {
+                            if (s.up) {
+                                const sRef = db.collection('students').doc(String(s.up));
+                                batch.set(sRef, s);
+                            }
+                        });
+                    } else if (targetStudents) {
+                        const list = Array.isArray(targetStudents) ? targetStudents : [targetStudents];
+                        list.forEach(s => {
+                            if (s.up) {
+                                const sRef = db.collection('students').doc(String(s.up));
+                                const cleanS = cleanFullData.students.find(cs => String(cs.up) === String(s.up));
+                                if (cleanS) batch.set(sRef, cleanS);
+                            }
+                        });
+                    } else if (currentStudentUP) {
+                        const student = cleanFullData.students.find(s => String(s.up) === String(currentStudentUP));
+                        if (student) {
+                            const sRef = db.collection('students').doc(String(student.up));
+                            batch.set(sRef, student);
+                        }
+                    }
+
+                    await batch.commit();
+                    console.log("Datos sincronizados con éxito.");
+                    window.fullData = fullData; 
+                    return true;
+                } catch (error) {
+                    console.error("Error en sincronización:", error);
+                    throw error;
                 }
             }
 
@@ -4484,8 +4497,20 @@
                         }
                     }
 
+                    // --- SINCRONIZACIÓN DE CASILLEROS ---
+                    const allStudentsToSave = [];
+                    const voterObj = fullData.students.find(s => String(s.up).trim() === String(voterUP).trim());
+                    if (voterObj) allStudentsToSave.push(voterObj);
+                    
+                    if (targetXPBonus > 0) {
+                        const targetGroupMembers = fullData.students.filter(s => String(s.group) === String(targetId));
+                        targetGroupMembers.forEach(m => {
+                            if (!allStudentsToSave.find(x => x.up == m.up)) allStudentsToSave.push(m);
+                        });
+                    }
+
                     // Guardar y notificar
-                    await db.collection('app_state').doc('main').set(fullData);
+                    await saveProjectData(allStudentsToSave);
                     window.fullData = fullData;
 
                     let alertMsg = "¡Muchas gracias! Tu voto ha sido registrado.";
@@ -5410,7 +5435,7 @@
                             saveBtn.disabled = true;
 
                             try {
-                                await db.collection('app_state').doc('main').set(fullData);
+                                await saveProjectData(fullData.students[studentIndex]);
                                 alert('✅ Te has unido al grupo correctamente.');
                                 displayStudentPortalView(fullData.students[studentIndex]);
                             } catch (err) {
@@ -7268,7 +7293,7 @@
                 if (btn) { btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...'; btn.disabled = true; }
                 fullData.students[studentIndex].group = newGroup;
                 try {
-                    await db.collection('app_state').doc('main').set(fullData);
+                    await saveProjectData(fullData.students[studentIndex]);
                     currentStudentData = fullData.students[studentIndex];
                     loadProfileContent(fullData.students[studentIndex]);
                 } catch (err) {
@@ -7802,7 +7827,7 @@
                 fullData.sessions.push(sess);
                 
                 try {
-                    await db.collection('app_state').doc('main').set(fullData);
+                    await saveProjectData();
                     document.getElementById('new-sess-name').value = '';
                     refreshAdminSessList();
                     alert("Clase creada. Ahora puedes subir el CSV de asistencia.");
@@ -7817,7 +7842,7 @@
                 
                 sess.name = newName.trim();
                 try {
-                    await db.collection('app_state').doc('main').set(fullData);
+                    await saveProjectData();
                     refreshAdminSessList();
                 } catch(e) {
                     alert("Error al actualizar la clase.");
@@ -7846,7 +7871,7 @@
                 }
 
                 try {
-                    await db.collection('app_state').doc('main').set(fullData);
+                    await saveProjectData(null, true); // Guardamos TODO el impacto en alumnos
                     refreshAdminSessList();
                 } catch(e) {
                     alert("Error al eliminar la clase.");
@@ -7874,7 +7899,7 @@
                 }
 
                 try {
-                    await db.collection('app_state').doc('main').set(fullData);
+                    await saveProjectData(null, true);
                     alert("Asistencias y XP limpiadas correctamente.");
                 } catch(e) {
                     alert("Error al limpiar asistencias.");
@@ -8159,23 +8184,18 @@
             if (btn) { btn.disabled = true; btn.innerText = 'Enviando...'; }
 
             try {
-                // Leer datos frescos de Firestore para evitar falsos "ya registrado"
-                const freshDoc = await firebase.firestore().collection('app_state').doc('main').get();
-                if (!freshDoc.exists) throw new Error('No se pudo obtener datos.');
-                const freshData = freshDoc.data();
-                window.fullData = freshData; // actualizar cache local
-
-                const records = freshData.attendanceRecords || [];
+                // Usamos el fullData global que ya está sincronizado en tiempo real
+                const records = fullData.attendanceRecords || [];
                 if (records.some(r => String(r.sessionId) === sid && String(r.up) === String(up))) {
-                    const sessionName = freshData.sessions?.find(s => s.id === sid)?.name || sid;
-                    alert("Ya registraste tu asistencia para esta clase (" + sessionName + ").\n\nSi crees que esto es un error, verifica si ingresaste al link correcto de la nueva clase.");
+                    const sessionName = fullData.sessions?.find(s => s.id === sid)?.name || sid;
+                    alert("Ya registraste tu asistencia para esta clase (" + sessionName + ").");
                     modal.classList.remove('active');
                     return;
                 }
 
-                // Registrar asistencia
-                if (!freshData.attendanceRecords) freshData.attendanceRecords = [];
-                freshData.attendanceRecords.push({
+                // Registrar asistencia en el objeto global
+                if (!fullData.attendanceRecords) fullData.attendanceRecords = [];
+                fullData.attendanceRecords.push({
                     sessionId: sid,
                     up: String(up),
                     answer: ans,
@@ -8183,10 +8203,12 @@
                     timestamp: new Date().toISOString()
                 });
 
-                // Sumar 2 XP al alumno
-                const studentIdx = freshData.students.findIndex(s => String(s.up).trim() === String(up).trim());
+                // Buscar al alumno para sumarle XP
+                const studentIdx = fullData.students.findIndex(s => String(s.up).trim() === String(up).trim());
+                let studentToSave = null;
+
                 if (studentIdx !== -1) {
-                    const student = freshData.students[studentIdx];
+                    const student = fullData.students[studentIdx];
                     const xpGained = 2;
                     student.xp = (student.xp || 0) + xpGained;
                     if (!student.xpHistory) student.xpHistory = [];
@@ -8197,21 +8219,20 @@
                         newXP: student.xp,
                         sessionId: sid
                     });
+                    studentToSave = student;
                     
-                    await firebase.firestore().collection('app_state').doc('main').set(freshData);
-                    window.fullData = freshData;
-                    alert("✅ ¡Presente en " + (freshData.sessions.find(s=>s.id===sid)?.name || sid) + " enviado! +2 XP 🌟");
+                    // GUARDADO INTELGENTE (Actualiza main y el casillero del alumno)
+                    await window.saveProjectData(studentToSave);
+                    alert("✅ ¡Presente enviado! +2 XP 🌟\nClase: " + (fullData.sessions.find(s=>s.id===sid)?.name || sid));
                 } else {
-                    // Si no se encontró el estudiante pero se envía el presente, lo registramos igual pero avisamos.
-                    await firebase.firestore().collection('app_state').doc('main').set(freshData);
-                    window.fullData = freshData;
+                    await window.saveProjectData(); // Guardar el presente en el registro global
                     alert("✅ ¡Presente validado!\n\nNota: No se sumaron XP porque tu UP (" + up + ") no se encontró en la lista de alumnos. Verifica que sea correcto.");
                 }
                 
                 modal.classList.remove('active');
             } catch (e) {
-                console.error(e);
-                alert("Error al enviar. Intentá de nuevo.");
+                console.error("Error detallado:", e);
+                alert("Error al enviar: " + (e.message || "Error desconocido") + ". Intentá de nuevo.");
                 if (btn) { btn.disabled = false; btn.innerText = 'Enviar mi Presente'; }
             }
         };
