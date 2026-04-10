@@ -5247,28 +5247,7 @@
                     progressHTML = `<div class="rank-progress-text">¡Has alcanzado el rango máximo!</div>`;
                 }
 
-                let rankHTML = `
-                <div class="stat-block">
-                    <h4><i class="fas fa-medal"></i> Rango Actual</h4>
-                    <div class="current-rank-display">
-                        <img src="./Registro-Asistencias-TP/medallas/${currentRank.image}" alt="${currentRank.name}">
-                        <div class="rank-name">${currentRank.name}</div>
-                        ${progressHTML}
-                    </div>
-                </div>
-                <div class="stat-block">
-                    <h4><i class="fas fa-trophy"></i> Galería de Medallas</h4>
-                    <div class="rank-gallery-grid">`;
 
-                rankList.forEach(rank => {
-                    const isUnlocked = studentXP >= rank.xp;
-                    rankHTML += `
-                    <div class="rank-badge ${isUnlocked ? 'unlocked' : ''}" title="${rank.name} - Requiere ${rank.xp} XP">
-                        <img src="./Registro-Asistencias-TP/medallas/${rank.image}" alt="${rank.name}">
-                        <span class="rank-badge-name">${rank.name}</span>
-                    </div>`;
-                });
-                rankHTML += `</div></div>`;
 
                 let portalHTML = `
                 <button id="back-to-rankings-btn" class="back-button"><i class="fas fa-arrow-left"></i> Volver al Panel</button>
@@ -5295,7 +5274,7 @@
                             </div>
                             ${groupCardHTML}
                         </div>
-                        ${rankHTML}
+
                     </div>
                 </div>
                 ${attendanceModalHTML}${tpModalHTML}${xpHistoryModalHTML}`;
