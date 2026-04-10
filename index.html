@@ -4473,36 +4473,102 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    // === LÓGICA DE XP POR VOTACIONES ===
+                    // === LÓGICA DE XP POR VOTACIONES (VOTANTE) ===
                     // Contar el total de votos únicos que ha emitido este alumno
                     const allVotesSnapshot = await db.collection('video_ratings')
                         .where('voterUP', '==', String(voterUP))
                         .get();
                     const totalVotesCast = allVotesSnapshot.size;
 
+                    let voterGainedXP = false;
+                    let voterXPBonus = 0;
+
                     // Cada 4 votos = +1 XP (milestones: 4, 8, 12...)
-                    // Chequeamos si ESTE voto cruzó un múltiplo de 4
                     if (totalVotesCast % 4 === 0) {
-                        const xpBonus = 1;
+                        voterXPBonus = 1;
                         const voterStudent = fullData.students.find(s => String(s.up).trim() === String(voterUP).trim());
                         if (voterStudent) {
-                            voterStudent.xp = (voterStudent.xp || 0) + xpBonus;
+                            voterStudent.xp = (voterStudent.xp || 0) + voterXPBonus;
                             if (!voterStudent.xpHistory) voterStudent.xpHistory = [];
                             voterStudent.xpHistory.push({
                                 timestamp: new Date().toISOString(),
-                                amount: xpBonus,
-                                reason: `🗳️ ¡Calificaste ${totalVotesCast} TPs de tus compañeros! +${xpBonus} XP`,
+                                amount: voterXPBonus,
+                                reason: `🗳️ ¡Calificaste ${totalVotesCast} TPs de tus compañeros! +${voterXPBonus} XP`,
+                                newXP: voterStudent.xp
                             });
-                            await db.collection('app_state').doc('main').set(fullData);
-                            window.fullData = fullData;
-                            alert(`¡Muchas gracias! Tu voto individual ha sido registrado.\n\n🎉 ¡Milestone desbloqueado! Llegaste a ${totalVotesCast} votaciones. +${xpBonus} XP ⭐`);
-                        } else {
-                            alert("¡Muchas gracias! Tu voto individual ha sido registrado.");
+                            voterGainedXP = true;
                         }
+                    }
+
+                    // === LÓGICA DE MILESTONES (GRUPO OBJETIVO) === 
+                    let targetMilestoneHit = 0;
+                    let targetXPBonus = 0;
+                    
+                    if (parseInt(stars) === 5) {
+                        const targetVotesSnapshot = await db.collection('video_ratings')
+                            .where('targetGroupId', '==', String(targetId))
+                            .where('tpIndex', '==', tpIndex)
+                            .where('stars', '==', 5)
+                            .get();
+                        
+                        const total5Stars = targetVotesSnapshot.size;
+                        
+                        if (total5Stars === 5) targetXPBonus = 1;
+                        else if (total5Stars === 10) targetXPBonus = 2;
+                        else if (total5Stars === 15) targetXPBonus = 3;
+                        else if (total5Stars === 20) targetXPBonus = 5;
+                        else if (total5Stars === 25) targetXPBonus = 8;
+                        else if (total5Stars === 30) targetXPBonus = 12;
+                        else if (total5Stars === 35) targetXPBonus = 15;
+                        else if (total5Stars === 40) targetXPBonus = 18;
+                        else if (total5Stars === 45) targetXPBonus = 25;
+                        else if (total5Stars >= 50 && total5Stars % 5 === 0 && total5Stars === 50) targetXPBonus = 30;
+
+                        if (targetXPBonus > 0) {
+                            const groupMembers = fullData.students.filter(s => String(s.group) === String(targetId));
+                            const milestoneKey = `🌟 TP ${tpIndex + 1}: ¡Alcanzaron ${total5Stars} calificaciones de 5 estrellas!`;
+                            let changedForTarget = false;
+                            
+                            groupMembers.forEach(member => {
+                                if (!member.xpHistory) member.xpHistory = [];
+                                const alreadyReceived = member.xpHistory.some(entry => entry.reason && entry.reason.includes(milestoneKey));
+                                
+                                if (!alreadyReceived) {
+                                    member.xp = (member.xp || 0) + targetXPBonus;
+                                    member.xpHistory.push({
+                                        timestamp: new Date().toISOString(),
+                                        amount: targetXPBonus,
+                                        reason: `${milestoneKey} +${targetXPBonus} XP para c/u`,
+                                        newXP: member.xp
+                                    });
+                                    changedForTarget = true;
+                                }
+                            });
+                            
+                            if (changedForTarget) {
+                                targetMilestoneHit = total5Stars;
+                            }
+                        }
+                    }
+
+                    // Guardar y notificar
+                    await db.collection('app_state').doc('main').set(fullData);
+                    window.fullData = fullData;
+
+                    let alertMsg = "¡Muchas gracias! Tu voto ha sido registrado.";
+                    
+                    if (voterGainedXP) {
+                        alertMsg += `\n\n🎉 ¡Llegaste a ${totalVotesCast} votaciones! Ganaste +${voterXPBonus} XP ⭐`;
                     } else {
                         const remaining = 4 - (totalVotesCast % 4);
-                        alert(`¡Muchas gracias! Tu voto individual ha sido registrado.\n(Te faltan ${remaining} voto${remaining !== 1 ? 's' : ''} para ganar +1 XP 🌟)`);
+                        alertMsg += `\n(Te faltan ${remaining} voto${remaining !== 1 ? 's' : ''} para ganar XP 🌟)`;
                     }
+
+                    if (targetMilestoneHit > 0) {
+                        alertMsg += `\n\n🤯 ¡Increíble! Tu voto de 5 estrellas hizo que el Grupo ${targetId} alcance un nuevo Milestone de calidad (${targetMilestoneHit} votos máximos). ¡Les hiciste ganar +${targetXPBonus} XP a cada uno!`;
+                    }
+
+                    alert(alertMsg);
 
                     displayTPGallery(); // Refrescar promedios
                 } catch (e) {
