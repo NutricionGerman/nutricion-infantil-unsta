@@ -3734,8 +3734,16 @@
                     
                     // RE-ACTIVAR CERRADO DE MODALES
                     document.querySelectorAll('.close-modal').forEach(btn => {
-                        btn.onclick = () => {
-                            btn.closest('.modal').classList.remove('active');
+                        btn.onclick = (e) => {
+                            e.stopPropagation();
+                            const modal = btn.closest('.modal') || btn.closest('.modal-overlay');
+                            if (modal) {
+                                modal.classList.remove('active', 'visible');
+                                document.documentElement.classList.remove('modal-open');
+                                document.body.classList.remove('modal-open');
+                                const iframe = modal.querySelector('iframe');
+                                if (iframe) iframe.src = '';
+                            }
                         };
                     });
 
@@ -4809,7 +4817,11 @@
                         studentList.sort((a, b) => (a.attendancePercentage - b.attendancePercentage) || (a.tpPercentage - b.tpPercentage));
                         break;
                     default:
-                        studentList.sort((a, b) => a.student.lastName.localeCompare(b.student.lastName));
+                        studentList.sort((a, b) => {
+                            const nameA = a.student.lastName || a.student.apellido || a.student.name || '';
+                            const nameB = b.student.lastName || b.student.apellido || b.student.name || '';
+                            return nameA.localeCompare(nameB);
+                        });
                         break;
                 }
 
@@ -4819,11 +4831,12 @@
                     const failsTPs = item.tpPercentage < 75;
                     const attendanceStyle = failsAttendance ? `style="color: var(--danger-color); font-weight: bold;"` : '';
                     const tpStyle = failsTPs ? `style="color: var(--danger-color); font-weight: bold;"` : '';
+                    const displayName = `${item.student.lastName || item.student.apellido || ''} ${(item.student.lastName || item.student.apellido) ? ',' : ''} ${item.student.firstName || item.student.nombre || item.student.name || 'Alumno sin nombre'}`;
 
                     rowsHTML += `
                     <tr>
                         <td><div class="rank-photo" id="photo-reg-${item.student.up}"></div></td>
-                        <td>${item.student.lastName}, ${item.student.firstName}</td>
+                        <td>${displayName}</td>
                         <td ${attendanceStyle} class="text-center">${item.attendancePercentage.toFixed(1)}%</td>
                         <td ${tpStyle} class="text-center">${item.tpPercentage.toFixed(1)}%</td>
                     </tr>
@@ -4862,7 +4875,8 @@
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
                     const gradableTpRecords = studentRecords.filter(r => r.tpNote !== 'Pendiente');
-                    const denominator = gradableTpRecords.length;
+                    const totalTpFromConfig = (fullData.config && fullData.config.totalTpCount) ? fullData.config.totalTpCount : null;
+                    const denominator = (totalTpFromConfig && totalTpFromConfig > 0) ? totalTpFromConfig : gradableTpRecords.length;
 
                     // Presentados (cualquier nota o string no nulo excluyendo pendiente)
                     const presentedTPsCount = gradableTpRecords.filter(r => r.tpNote !== null && r.tpNote !== 'Pendiente').length;
@@ -4994,7 +5008,8 @@
                     const card = document.createElement('div');
                     card.className = `podium-card rank-${index + 1}`;
                     findImage(student.up, (photoHTML) => {
-                        card.innerHTML = `${photoHTML}<div class="podium-info"><p class="podium-name">${student.firstName} ${student.lastName}</p><p class="podium-xp"><i class="fas fa-star"></i> ${student.xp || 0} XP</p></div>`;
+                        const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
+                        card.innerHTML = `${photoHTML}<div class="podium-info"><p class="podium-name">${displayName}</p><p class="podium-xp"><i class="fas fa-star"></i> ${student.xp || 0} XP</p></div>`;
                         container.appendChild(card);
                     });
                 });
@@ -5044,13 +5059,13 @@
                 else {
                     studentsToDisplay.forEach((student, index) => {
                         const rank = getStudentRank(student.xp || 0);
+                        const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
                         listHTML += `<li class="ranking-list-item group-member-item" data-up="${student.up}">
                         <div class="rank-number">${index + 1}</div>
                         <div class="rank-photo" id="photo-stu-${student.up}"></div>
                         <div class="rank-details">
-                             <img src="./Registro-Asistencias-TP/medallas/${rank.image}" alt="Medalla de ${rank.name}" title="${rank.name}" class="rank-medal-icon">
                              <div>
-                                <div class="rank-name">${student.lastName}, ${student.firstName}</div>
+                                <div class="rank-name">${displayName}</div>
                                 <div class="rank-subtext">Grupo ${student.group || 'N/A'}</div>
                             </div>
                         </div>
@@ -5326,7 +5341,7 @@
                         <div class="edit-photo-trigger" id="edit-student-photo-btn" title="Editar Foto de Perfil" style="position: absolute; bottom: 5px; left: 60px; background: var(--accent-teal); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); z-index: 5; color: white;">
                             <i class="fas fa-pencil-alt"></i>
                         </div>
-                        <div class="profile-info"><h3>${student.firstName} ${student.lastName}</h3><p>UP: ${student.up} | Grupo: ${student.group || 'N/A'}</p></div>
+                        <div class="profile-info"><h3>${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}</h3><p>UP: ${student.up} | Grupo: ${student.group || 'N/A'}</p></div>
                     </div>
                     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
                         <div class="stat-card clickable" data-modal-target="#attendance-modal" title="Haz clic para ver detalle"><i class="fas fa-user-check stat-icon"></i><div class="stat-value">${attendancePercentage}%</div><div class="stat-label">Asistencia</div><div class="stat-sublabel">${attendanceSublabel}</div></div>
@@ -5816,9 +5831,10 @@
                     const statusMap = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' };
                     const iconMap = { onTime: 'fa-check-circle', late: 'fa-clock', absent: 'fa-times-circle' };
 
+                    const displayName = `${member.lastName || member.apellido || ''} ${(member.lastName || member.apellido) ? ',' : ''} ${member.firstName || member.nombre || member.name || 'Alumno sin nombre'}`;
                     listHTML += `<li class="ranking-list-item" style="padding: 0.5rem 0.25rem;">
                     <div class="rank-photo" id="photo-breakdown-${member.up}"></div>
-                    <div class="rank-name">${member.lastName}, ${member.firstName}</div>
+                    <div class="rank-name">${displayName}</div>
                     <div class="rank-xp status-${status}" style="margin-left: auto; font-size: 1rem;">
                         <i class="fas ${iconMap[status]}"></i> ${statusMap[status]}
                     </div>
@@ -7051,18 +7067,37 @@
                         document.getElementById('admin-student-invite-code').value = studentConfigDoc.data().registration_code || '';
                     }
 
-                    let html = '';
+                    let html = `
+                        <div style="margin-bottom: 15px; padding: 10px; background: rgba(23, 162, 184, 0.1); border: 1px solid var(--accent-teal); border-radius: 8px; color: white;">
+                            <i class="fas fa-calculator" style="color: var(--accent-teal); margin-right: 8px;"></i> TPs marcados para % Condición ("Obligatorios"): 
+                            <strong id="tp-evaluable-count" style="color: var(--accent-teal); font-size: 1.1rem;">0</strong>
+                        </div>
+                    `;
+                    let startEvaluableCount = 0;
                     for (let i = 1; i <= 10; i++) {
                         const tp = (config.tps && config.tps[i]) || { unlockDate: '', deadline: '' };
+                        if (tp.isEvaluable) startEvaluableCount++;
                         html += `
-                            <div style="display: grid; grid-template-columns: 80px 1fr 1fr; gap: 10px; margin-bottom: 15px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                            <div style="display: grid; grid-template-columns: 80px 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
                                 <strong style="color: var(--xp-color);">TP ${i}</strong>
                                 <div><label style="font-size:0.7rem; color: #9ca3af;">DESBLOQUEO</label><br><input type="datetime-local" class="global-unlock" data-tp="${i}" value="${tp.unlockDate || ''}" style="width:100%; font-size:11px; padding: 4px; border-radius:4px; border:1px solid #374151; background: #111827; color: white;"></div>
                                 <div><label style="font-size:0.7rem; color: #9ca3af;">FECHA LÍMITE</label><br><input type="datetime-local" class="global-deadline" data-tp="${i}" value="${tp.deadline || ''}" style="width:100%; font-size:11px; padding: 4px; border-radius:4px; border:1px solid #374151; background: #111827; color: white;"></div>
+                                <div><label style="font-size:0.7rem; color: #9ca3af;">EVALUABLE</label><br><label style="display:flex; align-items:center; gap:5px; font-size:11px;"><input type="checkbox" class="global-evaluable" data-tp="${i}" ${tp.isEvaluable ? 'checked' : ''}> Cuenta para %</label></div>
                             </div>
                         `;
                     }
                     globalTpList.innerHTML = html;
+                    
+                    const countEl = document.getElementById('tp-evaluable-count');
+                    if (countEl) countEl.innerText = startEvaluableCount;
+                    
+                    document.querySelectorAll('.global-evaluable').forEach(cb => {
+                        cb.addEventListener('change', () => {
+                            const currentChecked = document.querySelectorAll('.global-evaluable:checked').length;
+                            if (countEl) countEl.innerText = currentChecked;
+                        });
+                    });
+
                 } catch (e) { globalTpList.innerText = 'Error'; }
             }
 
@@ -7073,6 +7108,7 @@
                     saveGlobalBtn.innerText = 'Guardando...';
 
                     try {
+                        let evaluableCount = 0;
                         const newTps = {};
                         document.querySelectorAll('.global-unlock').forEach(input => {
                             const tpId = input.dataset.tp;
@@ -7083,14 +7119,24 @@
                             const tpId = input.dataset.tp;
                             newTps[tpId].deadline = input.value;
                         });
+                        document.querySelectorAll('.global-evaluable').forEach(input => {
+                            const tpId = input.dataset.tp;
+                            newTps[tpId].isEvaluable = input.checked;
+                            if (input.checked) evaluableCount++;
+                        });
 
                         await db.collection('config').doc('tp_settings').set({ tps: newTps }, { merge: true });
                         window.tpGlobalConfig = { tps: newTps };
+                        
+                        // Guardar la cantidad en el config de main app state también
+                        if (!fullData.config) fullData.config = {};
+                        fullData.config.totalTpCount = evaluableCount;
+                        await db.collection('app_state').doc('main').set({ config: fullData.config }, { merge: true });
 
                         const studentInviteCode = document.getElementById('admin-student-invite-code').value.trim();
                         await db.collection('config').doc('student_config').set({ registration_code: studentInviteCode }, { merge: true });
 
-                        status.innerText = '¡Configuración guardada!';
+                        status.innerText = `¡Configuración guardada! TPs evaluables: ${evaluableCount}`;
                         status.style.color = 'var(--success-color)';
 
                         setTimeout(() => {
