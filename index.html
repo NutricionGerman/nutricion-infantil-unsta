@@ -2831,10 +2831,15 @@
 
                     <!-- LOGIN SECTION -->
                     <div id="tab-master-key-section" style="max-width: 420px; margin: 0 auto; padding: 30px; border: 1px solid var(--accent-orange); border-radius: 16px; text-align: center;">
-                        <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--accent-orange); margin-bottom: 20px;"></i>
-                        <div class="input-group">
-                            <label>Clave Maestra</label>
-                            <input type="password" id="tab-master-key-input"
+                        <i class="fas fa-user-shield" style="font-size: 2.5rem; color: var(--accent-orange); margin-bottom: 20px;"></i>
+                        <div class="input-group" style="text-align: left; margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted-light);">Email Autorizado</label>
+                            <input type="email" id="tab-master-email-input" value="cristian.auad@unsta.edu.ar"
+                                style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 14px; border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        <div class="input-group" style="text-align: left; margin-bottom: 15px;">
+                            <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: var(--text-muted-light);">Contraseña</label>
+                            <input type="password" id="tab-master-key-input" placeholder="Tu contraseña de Firebase"
                                 style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 14px; border-radius: 8px; font-size: 1rem;">
                         </div>
                         <div style="margin-top: 20px;">
@@ -7273,43 +7278,49 @@
             }
 
 
-            // LOGICA DE PANEL DOCENTE GLOBAL (desde pestaña Panel Docente)
+            // LOGICA DE PANEL DOCENTE GLOBAL (Autenticación Real)
             const globalTpList = document.getElementById('global-tp-list');
-
-            // Botón de acceso dentro de la pestaña
             const tabVerifyBtn = document.getElementById('tab-verify-master-key-btn');
-            const tabKeyInput = document.getElementById('tab-master-key-input');
+            const tabEmailInput = document.getElementById('tab-master-email-input');
+            const tabPassInput = document.getElementById('tab-master-key-input');
             const tabMasterKeySection = document.getElementById('tab-master-key-section');
             const tabGlobalConfigSection = document.getElementById('tab-global-config-section');
+            const tabAuthStatus = document.getElementById('tab-master-key-status');
+
+            // Listener para detectar si ya hay una sesión iniciada
+            firebase.auth().onAuthStateChanged((user) => {
+                if (user && user.email === 'cristian.auad@unsta.edu.ar') {
+                    tabMasterKeySection.style.display = 'none';
+                    tabGlobalConfigSection.style.display = 'block';
+                    loadGlobalTPs();
+                } else {
+                    tabMasterKeySection.style.display = 'block';
+                    tabGlobalConfigSection.style.display = 'none';
+                }
+            });
 
             if (tabVerifyBtn) {
                 tabVerifyBtn.addEventListener('click', async () => {
-                    const code = tabKeyInput.value.trim();
-                    const status = document.getElementById('tab-master-key-status');
-                    if (!code) return;
-                    tabVerifyBtn.innerText = 'Verificando...';
+                    const email = tabEmailInput.value.trim();
+                    const pass = tabPassInput.value;
+                    
+                    if (!email || !pass) return;
+                    
+                    tabVerifyBtn.disabled = true;
+                    tabVerifyBtn.innerText = 'Autenticando...';
+                    tabAuthStatus.innerText = '';
+
                     try {
-                        const keyDoc = await db.collection('config').doc('master_key').get();
-                        const masterValue = keyDoc.exists ? keyDoc.data().value : 'materia2024';
-                        if (code === masterValue) {
-                            tabMasterKeySection.style.display = 'none';
-                            tabGlobalConfigSection.style.display = 'block';
-                            loadGlobalTPs();
-                        } else {
-                            status.innerText = 'Clave incorrecta';
-                            status.style.color = 'var(--danger-color)';
-                        }
+                        await firebase.auth().signInWithEmailAndPassword(email, pass);
+                        // El listener onAuthStateChanged se encargará de mostrar el panel
                     } catch (e) {
-                        status.innerText = 'Error al verificar';
+                        tabAuthStatus.innerText = 'Credenciales no autorizadas';
+                        tabAuthStatus.style.color = 'var(--danger-color)';
                         console.error(e);
                     } finally {
+                        tabVerifyBtn.disabled = false;
                         tabVerifyBtn.innerText = 'Acceder al Panel';
                     }
-                });
-
-                // También permitir Enter en el campo de clave
-                tabKeyInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') tabVerifyBtn.click();
                 });
             }
 
