@@ -54,3 +54,9 @@ Estos archivos son referenciados internamente por las pÃ¡ginas de cada clase o p
 
 ---
 *Archivo generado por Antigravity para asegurar la integridad lÃ³gica del proyecto.*
+
+### Checkpoint 7:
+- Migración del Panel de Control Docente desde un modal hacia una pestaña propia en la barra de navegación.
+- Acceso al panel docente con materia2024.
+- Sistema de XP por 'Milestones' de calidad (5-estrellas) en votación de TPs/Videos.
+- Cálculos de regularidad (Promoción/Regulariza/Libre) sincronizados entre alumno y panel docente.
