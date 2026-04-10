@@ -4408,7 +4408,37 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
 
-                    alert("¡Muchas gracias! Tu voto individual ha sido registrado.");
+                    // === LÓGICA DE XP POR VOTACIONES ===
+                    // Contar el total de votos únicos que ha emitido este alumno
+                    const allVotesSnapshot = await db.collection('video_ratings')
+                        .where('voterUP', '==', String(voterUP))
+                        .get();
+                    const totalVotesCast = allVotesSnapshot.size;
+
+                    // Cada 5 votos = +2 XP (milestones: 5, 10, 15...)
+                    // Chequeamos si ESTE voto cruzó un múltiplo de 5
+                    if (totalVotesCast % 5 === 0) {
+                        const xpBonus = 2;
+                        const voterStudent = fullData.students.find(s => String(s.up).trim() === String(voterUP).trim());
+                        if (voterStudent) {
+                            voterStudent.xp = (voterStudent.xp || 0) + xpBonus;
+                            if (!voterStudent.xpHistory) voterStudent.xpHistory = [];
+                            voterStudent.xpHistory.push({
+                                timestamp: new Date().toISOString(),
+                                amount: xpBonus,
+                                reason: `🗳️ ¡Calificaste ${totalVotesCast} TPs de tus compañeros!`,
+                            });
+                            await db.collection('app_state').doc('main').set(fullData);
+                            window.fullData = fullData;
+                            alert(`¡Muchas gracias! Tu voto individual ha sido registrado.\n\n🎉 ¡Milestone desbloqueado! Llegaste a ${totalVotesCast} votaciones. +${xpBonus} XP ⭐`);
+                        } else {
+                            alert("¡Muchas gracias! Tu voto individual ha sido registrado.");
+                        }
+                    } else {
+                        const remaining = 5 - (totalVotesCast % 5);
+                        alert(`¡Muchas gracias! Tu voto individual ha sido registrado.\n(Te faltan ${remaining} voto${remaining !== 1 ? 's' : ''} para ganar +2 XP 🌟)`);
+                    }
+
                     displayTPGallery(); // Refrescar promedios
                 } catch (e) {
                     console.error("Error al votar:", e);
