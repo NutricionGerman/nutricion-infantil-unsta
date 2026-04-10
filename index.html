@@ -7315,6 +7315,56 @@
                 } catch(e) { alert("Error al guardar."); }
             };
 
+            window.editClass = async (id) => {
+                const sess = fullData.sessions.find(s => s.id === id);
+                if (!sess) return;
+                const newName = prompt("Editar nombre de la clase:", sess.name);
+                if (!newName || newName.trim() === sess.name) return;
+                
+                sess.name = newName.trim();
+                try {
+                    await db.collection('app_state').doc('main').set(fullData);
+                    refreshAdminSessList();
+                } catch(e) {
+                    alert("Error al actualizar la clase.");
+                }
+            };
+
+            window.deleteClass = async (id) => {
+                const sess = fullData.sessions.find(s => s.id === id);
+                if (!sess) return;
+                if (!confirm(`¿Estás seguro de que deseas eliminar la clase "${sess.name}"?\n¡OJO! Esto también ELIMINARÁ permanentemente todos los registros de asistencia de todos los alumnos vinculados a esta clase.`)) return;
+                
+                fullData.sessions = fullData.sessions.filter(s => s.id !== id);
+                if (fullData.attendanceRecords) {
+                    fullData.attendanceRecords = fullData.attendanceRecords.filter(r => r.sessionId !== id);
+                }
+
+                try {
+                    await db.collection('app_state').doc('main').set(fullData);
+                    refreshAdminSessList();
+                } catch(e) {
+                    alert("Error al eliminar la clase.");
+                }
+            };
+
+            window.clearClassAttendances = async (id) => {
+                const sess = fullData.sessions.find(s => s.id === id);
+                if (!sess) return;
+                if (!confirm(`¿Deseas ELIMINAR TODAS las asistencias registradas hasta el momento de la clase "${sess.name}"?\nLa clase seguirá existiendo, pero se reiniciarán las asistencias (útil para corregir errores masivos o limpiar pruebas).`)) return;
+
+                if (fullData.attendanceRecords) {
+                    fullData.attendanceRecords = fullData.attendanceRecords.filter(r => r.sessionId !== id);
+                }
+
+                try {
+                    await db.collection('app_state').doc('main').set(fullData);
+                    alert("Asistencias limpiadas correctamente.");
+                } catch(e) {
+                    alert("Error al limpiar asistencias.");
+                }
+            };
+
             function refreshAdminSessList() {
                 const container = document.getElementById('admin-sess-list-container');
                 if (!container) return;
@@ -7328,12 +7378,19 @@
                 container.innerHTML = sessions.slice().reverse().map(s => `
                     <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.05);">
                         <div style="flex: 1;">
-                            <div style="font-size: 0.8rem; font-weight: 600; color: #fff;">${s.name}</div>
+                            <div style="font-size: 0.8rem; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px;">
+                                ${s.name}
+                                <span style="cursor:pointer; color:var(--accent-orange); font-size: 0.75rem;" onclick="editClass('${s.id}')" title="Editar Nombre"><i class="fas fa-edit"></i></span>
+                                <span style="cursor:pointer; color:var(--danger-color); font-size: 0.75rem;" onclick="deleteClass('${s.id}')" title="Eliminar Clase"><i class="fas fa-trash"></i></span>
+                            </div>
                             <div style="font-size: 0.65rem; color: var(--text-muted-light);">${s.date}</div>
                         </div>
                         <div style="display: flex; gap: 5px;">
                             <button onclick="downloadClassAnswers('${s.id}', '${s.name}')" class="nav-button" style="padding: 4px 8px; font-size: 0.7rem; border-color: var(--accent-orange); color: var(--accent-orange);">
                                 <i class="fas fa-download"></i> Respuestas
+                            </button>
+                            <button onclick="clearClassAttendances('${s.id}')" class="nav-button" style="padding: 4px 8px; font-size: 0.7rem; border-color: var(--danger-color); color: var(--danger-color);" title="Borrar todas las asistencias de esta clase">
+                                <i class="fas fa-broom"></i>
                             </button>
                             <button onclick="prepareSessForCSV('${s.id}', '${s.name}')" class="nav-button" style="padding: 4px 8px; font-size: 0.7rem; border-color: var(--accent-teal); color: var(--accent-teal);">
                                 <i class="fas fa-file-import"></i> Asistencia
