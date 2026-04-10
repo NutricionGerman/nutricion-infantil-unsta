@@ -7333,11 +7333,22 @@
             window.deleteClass = async (id) => {
                 const sess = fullData.sessions.find(s => s.id === id);
                 if (!sess) return;
-                if (!confirm(`¿Estás seguro de que deseas eliminar la clase "${sess.name}"?\n¡OJO! Esto también ELIMINARÁ permanentemente todos los registros de asistencia de todos los alumnos vinculados a esta clase.`)) return;
+                if (!confirm(`¿Estás seguro de que deseas eliminar la clase "${sess.name}"?\n¡OJO! Esto ELIMINARÁ permanentemente todos los registros de asistencia de todos los alumnos vinculados a esta clase, y si hay registros de XP vinculados a la clase, también se descontarán.`)) return;
                 
                 fullData.sessions = fullData.sessions.filter(s => s.id !== id);
                 if (fullData.attendanceRecords) {
                     fullData.attendanceRecords = fullData.attendanceRecords.filter(r => r.sessionId !== id);
+                }
+
+                // Reversión de XP vinculada si existe
+                if (fullData.students) {
+                    fullData.students.forEach(student => {
+                        if (student.xpHistory) {
+                            const linkedXpRows = student.xpHistory.filter(x => x.sessionId === id);
+                            linkedXpRows.forEach(rx => { student.xp -= rx.amount; });
+                            student.xpHistory = student.xpHistory.filter(x => x.sessionId !== id);
+                        }
+                    });
                 }
 
                 try {
@@ -7351,15 +7362,26 @@
             window.clearClassAttendances = async (id) => {
                 const sess = fullData.sessions.find(s => s.id === id);
                 if (!sess) return;
-                if (!confirm(`¿Deseas ELIMINAR TODAS las asistencias registradas hasta el momento de la clase "${sess.name}"?\nLa clase seguirá existiendo, pero se reiniciarán las asistencias (útil para corregir errores masivos o limpiar pruebas).`)) return;
+                if (!confirm(`¿Deseas ELIMINAR TODAS las asistencias registradas hasta el momento de la clase "${sess.name}"?\nSe descontará también la XP generada vinculada a esta clase.`)) return;
 
                 if (fullData.attendanceRecords) {
                     fullData.attendanceRecords = fullData.attendanceRecords.filter(r => r.sessionId !== id);
                 }
 
+                // Reversión de XP vinculada si existe
+                if (fullData.students) {
+                    fullData.students.forEach(student => {
+                        if (student.xpHistory) {
+                            const linkedXpRows = student.xpHistory.filter(x => x.sessionId === id);
+                            linkedXpRows.forEach(rx => { student.xp -= rx.amount; });
+                            student.xpHistory = student.xpHistory.filter(x => x.sessionId !== id);
+                        }
+                    });
+                }
+
                 try {
                     await db.collection('app_state').doc('main').set(fullData);
-                    alert("Asistencias limpiadas correctamente.");
+                    alert("Asistencias y XP limpiadas correctamente.");
                 } catch(e) {
                     alert("Error al limpiar asistencias.");
                 }
@@ -7486,7 +7508,8 @@
                                     student.xpHistory.push({
                                         timestamp: new Date().toISOString(),
                                         amount: 10,
-                                        reason: "Asistencia: " + document.getElementById('target-sess-display').innerText
+                                        reason: "Asistencia: " + document.getElementById('target-sess-display').innerText,
+                                        sessionId: window.activeSessId
                                     });
                                     ok++;
                                 }
@@ -7677,7 +7700,8 @@
                         timestamp: new Date().toISOString(),
                         amount: xpGained,
                         reason: 'Asistencia registrada (QR)',
-                        newXP: student.xp
+                        newXP: student.xp,
+                        sessionId: sid
                     });
                     
                     await firebase.firestore().collection('app_state').doc('main').set(freshData);
