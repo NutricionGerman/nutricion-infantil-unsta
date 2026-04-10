@@ -2635,10 +2635,7 @@
                     <li><button class="nav-button" data-tab-target="#panel-clases">Clases</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-herramientas">Herramientas</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-proyectos">Proyectos</button></li>
-                    <li><button class="nav-button" data-tab-target="#panel-tienda">Tienda de Canje</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-contacto"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
-                    <li><button class="nav-button" data-tab-target="#panel-seo">Plataforma SEO</button></li>
-                    <li><button class="nav-button" data-tab-target="#panel-discord">Comunidad Discord</button></li>
                 </ul>
             </nav>
         </div>
@@ -2791,17 +2788,7 @@
                 <div id="group-portal-result-container" style="display: none;"></div>
             </div>
 
-            <div id="panel-tienda" class="tab-panel">
-                <div class="content-panel-container">
-                    <div class="section-header" style="margin-top: 20px;">
-                        <i class="fas fa-store header-icon" style="color:var(--xp-color);"></i>
-                        <h2>Tienda de Canje</h2>
-                        <p>Usa los Puntos de Experiencia (XP) de tu grupo para obtener recompensas únicas.</p>
-                    </div>
-                    <!-- El contenido de la tienda se generará dinámicamente aquí -->
-                    <div id="shop-items-container" class="tool-grid" style="margin-top: 40px;"></div>
-                </div>
-            </div>
+
 
             <div id="panel-herramientas" class="tab-panel">
                 <div class="content-panel-container">
@@ -2863,7 +2850,24 @@
                         <div class="admin-tabs-nav" style="margin-bottom: 25px;">
                             <button onclick="switchAdminTab('tps')" class="admin-tab-btn active" id="btn-admin-tps"><i class="fas fa-tasks"></i> TPs</button>
                             <button onclick="switchAdminTab('clases')" class="admin-tab-btn" id="btn-admin-clases"><i class="fas fa-calendar-check"></i> Clases / Asistencia</button>
+                            <button onclick="switchAdminTab('grupos-keys')" class="admin-tab-btn" id="btn-admin-grupos-keys"><i class="fas fa-key"></i> Claves de Grupos</button>
                             <button onclick="switchAdminTab('sistema')" class="admin-tab-btn" id="btn-admin-sistema"><i class="fas fa-sliders-h"></i> Gestión Sistema</button>
+                        </div>
+
+                        <!-- SUB-PANEL: CLAVES DE GRUPOS -->
+                        <div id="sub-panel-grupos-keys" class="admin-sub-panel" style="display: none;">
+                            <h5 style="color: #8b5cf6; margin-bottom: 5px;"><i class="fas fa-key"></i> Claves de Acceso por Grupo</h5>
+                            <p style="font-size: 0.8rem; color: var(--text-muted-light); margin-bottom: 15px;">Visualizá la clave actual de cada grupo y reseteala a la por defecto (gN) si el grupo la perdió.</p>
+                            <div style="background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); border-radius: 10px; padding: 15px;">
+                                <div id="admin-group-keys-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;">
+                                    <div style="text-align:center; padding: 20px; color: var(--text-muted-light);"><i class="fas fa-circle-notch fa-spin"></i> Cargando claves...</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <button onclick="loadAdminGroupKeys()" class="nav-button" style="border-color:#8b5cf6; color:#8b5cf6;">
+                                    <i class="fas fa-sync-alt"></i> Recargar
+                                </button>
+                            </div>
                         </div>
 
                         <!-- SUB-PANEL: TPs -->
@@ -2929,158 +2933,11 @@
                 </div>
             </div>
 
-            <div id="panel-seo" class="tab-panel">
-                <div class="content-panel-container">
-                    <div class="section-header" style="margin-top: 20px;">
-                        <i class="fas fa-university header-icon" style="color:var(--accent-orange);"></i>
-                        <h2>Plataforma SEO</h2>
-                        <p>Este es el acceso al entorno virtual oficial de la cátedra. Aquí se subiran los trabajos
-                            prácticos.</p>
-                        <div style="margin-top: 30px;">
-                            <a href="https://seo.unsta.edu.ar/course/view.php?id=717" target="_blank"
-                                rel="noopener noreferrer" class="action-button action-button-seo">
-                                <i class="fas fa-external-link-alt"></i> Ir a la Plataforma
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="panel-discord" class="tab-panel">
-                <div class="content-panel-container">
-                    <div class="section-header" style="margin-top: 20px;">
-                        <i class="fab fa-discord header-icon" style="color:#5865F2;"></i>
-                        <h2>Comunidad de Discord</h2>
-                        <p>Este es nuestro canal de comunicación principal. Únete para resolver dudas, compartir
-                            recursos, recibir anuncios, participar en encuestas, enviar certificados médicos y colaborar
-                            con tus compañeros en un entorno dinámico.</p>
-                        <div style="margin-top: 30px;">
-                            <a href="https://discord.gg/7aDAkcRfKs" target="_blank" rel="noopener noreferrer"
-                                class="action-button action-button-discord">
-                                <i class="fab fa-discord"></i> Unirse al Servidor
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </main>
 
-    <footer class="site-footer"
-        style="padding: 40px 0; background: rgba(0,0,0,0.3); margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.05);">
-        <div class="container" style="text-align: center;">
-            <div class="footer-branding" style="margin-bottom: 20px;">
-                <img src="iconos/favicon-96x96.png" class="logo"
-                    style="width: 50px; height: 50px; opacity: 0.6; filter: grayscale(1);">
-                <div style="font-size: 0.9rem; color: var(--text-muted-light); margin-top: 10px;">
-                    © 2026 Plataforma de Nutrición Infantil - Gamificada
-                </div>
-            </div>
 
-            <!-- ACCESO OCULTO PARA DOCENTE -->
-            <div id="teacher-access-trigger" title="Panel de Control Docente"
-                style="display: inline-block; cursor: pointer; color: rgba(255,255,255,0.1); transition: color 0.3s;">
-                <i class="fas fa-lock" style="font-size: 0.7rem;"></i>
-            </div>
-        </div>
-    </footer>
-
-    <!-- MODAL ADMINISTRATIVO PARA EL DOCENTE -->
-    <div class="modal" id="teacher-admin-modal">
-        <div class="modal-content" style="max-width: 600px;">
-            <div class="modal-header">
-                <h4><i class="fas fa-user-shield"></i> Panel de Control Docente</h4>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="master-key-section">
-                    <p style="font-size: 0.9rem; margin-bottom: 20px; color: var(--text-muted-light);">Ingresa la clave
-                        maestra para configurar fechas de entrega globales.</p>
-                    <div class="input-group">
-                        <label>Clave Maestra</label>
-                        <input type="password" id="global-master-key"
-                            style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 12px; border-radius: 8px;">
-                    </div>
-                    <div style="text-align: center; margin-top: 20px;">
-                        <button type="button" id="verify-master-key-btn" class="nav-button active"
-                            style="width: 100%;">Acceder al Panel</button>
-                    </div>
-                    <div id="master-key-status" style="margin-top: 10px; text-align: center; font-size: 0.85rem;"></div>
-                </div>
-
-                <div id="global-config-section" style="display: none;">
-                    <!-- ADMIN TABS NAVIGATION -->
-                    <style>
-                        .admin-tabs-nav { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-                        .admin-tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; transition: all 0.3s; }
-                        .admin-tab-btn.active { background: var(--accent-teal); color: black; border-color: var(--accent-teal); font-weight: 600; }
-                    </style>
-                    <div class="admin-tabs-nav">
-                        <button onclick="switchAdminTab('tps')" class="admin-tab-btn active" id="btn-admin-tps">TPs</button>
-                        <button onclick="switchAdminTab('clases')" class="admin-tab-btn" id="btn-admin-clases">Clases / Asistencia</button>
-                        <button onclick="switchAdminTab('sistema')" class="admin-tab-btn" id="btn-admin-sistema">Gestión Sistema</button>
-                    </div>
-
-                    <!-- SUB-PANEL: TPs -->
-                    <div id="sub-panel-tps" class="admin-sub-panel">
-                        <h5 style="color: var(--accent-teal); margin-bottom: 15px;"><i class="fas fa-calendar-alt"></i> Configuración de TPs</h5>
-                        <div id="global-tp-list" style="max-height: 350px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;"></div>
-                        <div style="text-align: right; margin-top: 15px;">
-                            <button type="button" id="save-global-tp-config" class="nav-button active"><i class="fas fa-save"></i> Guardar TPs</button>
-                        </div>
-                    </div>
-
-                    <!-- SUB-PANEL: CLASES (SOLUCIÓN PEDIDA) -->
-                    <div id="sub-panel-clases" class="admin-sub-panel" style="display: none;">
-                        <h5 style="color: var(--accent-teal); margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> Nueva Sesión de Clase</h5>
-                        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 8px;">
-                            <input type="text" id="new-sess-name" placeholder="Ej: Clase 05: Proteínas" style="flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: white; padding: 8px; border-radius: 6px; font-size: 0.8rem;">
-                            <button onclick="createNewClass()" class="nav-button active" style="padding: 8px 12px;">Crear</button>
-                        </div>
-
-                        <div id="csv-import-box" style="display: none; background: rgba(20, 184, 166, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--accent-teal);">
-                            <div style="font-size: 0.8rem; margin-bottom: 8px; color: var(--accent-teal); font-weight: 600;">Importar Asistencia: <span id="target-sess-display">---</span></div>
-                            <input type="file" id="attendance-csv-input" accept=".csv" style="display: none;" onchange="handleCSVProcessing(this)">
-                            <button onclick="document.getElementById('attendance-csv-input').click()" class="nav-button" style="width: 100%; border-color: var(--accent-teal); color: var(--accent-teal);">
-                                <i class="fas fa-file-csv"></i> Cargar CSV (Google Forms)
-                            </button>
-                            <div id="csv-process-status" style="margin-top: 8px; font-size: 0.7rem; text-align: center;"></div>
-                        </div>
-
-                        <div id="admin-sess-list-container" style="max-height: 250px; overflow-y: auto;">
-                            <!-- Clases Cargadas -->
-                        </div>
-                    </div>
-
-                    <!-- SUB-PANEL: SISTEMA -->
-                        <div id="sub-panel-sistema" class="admin-sub-panel" style="display: none;">
-                            <h5 style="color: var(--accent-orange); margin-bottom: 15px;"><i class="fas fa-sliders-h"></i> Ajustes del Ciclo</h5>
-                            
-                            <!-- NUEVA SECCION ASISTENCIA QR (DOCENTE) -->
-                            <div style="background: rgba(232, 122, 61, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(232, 122, 61, 0.2); margin-bottom: 20px;">
-                                <h6 style="color: var(--accent-orange); margin-bottom: 10px; font-size: 0.9rem;">Sistema de Asistencia QR</h6>
-                                <p style="font-size: 0.75rem; margin-bottom: 12px; color: var(--text-muted-light);">Configura la pregunta del día y genera el código para que los alumnos lo escaneen.</p>
-                                <button class="btn-qr btn-qr-generate" style="width: 100%; justify-content: center; background: var(--accent-orange);" onclick="openQRConfig()">
-                                    <i class="fas fa-qrcode"></i> Configurar Pregunta y QR
-                                </button>
-                            </div>
-
-                            <div class="input-group">
-                            <label style="font-size: 0.75rem;">Código de Invitación</label>
-                            <input type="text" id="admin-student-invite-code" placeholder="Ej: NUTRI2024" style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 10px; border-radius: 6px;">
-                        </div>
-                        <div style="margin-top: 20px; padding: 15px; border: 1px solid #ef444433; border-radius: 8px;">
-                            <h6 style="color: #ef4444; font-size: 0.8rem; margin-bottom: 10px;">Reiniciar para Nuevo Año</h6>
-                            <button onclick="resetAcademicCycle()" class="nav-button" style="width: 100%; border-color: #ef4444; color: #ef4444;">Vaciar Datos y Alumnos</button>
-                        </div>
-                    </div>
-
-                    <div id="global-config-status" style="margin-top: 10px; text-align: center;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- INICIO: CONTENEDOR KIOSCO SALUDABLE (INTEGRADO) -->
     <div id="kiosco-saludable-container" class="container"
@@ -3270,6 +3127,69 @@
         </div>
     </div>
     <!-- FIN: MODALES KIOSCO SALUDABLE -->
+
+    <!-- INICIO: MODAL CAMBIAR CLAVE DE GRUPO -->
+    <div class="modal" id="change-group-key-modal">
+        <div class="modal-content" style="max-width: 460px;">
+            <div class="modal-header">
+                <h4><i class="fas fa-key"></i> Cambiar Clave del Grupo</h4>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); border-radius: 10px; padding: 14px; margin-bottom: 20px; font-size: 0.85rem; color: var(--text-muted-light);">
+                    <i class="fas fa-info-circle" style="color:#8b5cf6; margin-right: 6px;"></i>
+                    Al cambiar la clave, <strong style="color:white;">todos los miembros</strong> deberán usar la nueva clave para acceder al editor del grupo. Se descargará un comprobante automáticamente.
+                </div>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label style="font-size:0.8rem; color:var(--text-muted-light);">Tu UP (para confirmar identidad)</label>
+                    <input type="text" id="cgk-up-input" placeholder="Ej: UP12345"
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); color:white; padding:10px; border-radius:8px;">
+                </div>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label style="font-size:0.8rem; color:var(--text-muted-light);">Tu contraseña personal</label>
+                    <input type="password" id="cgk-pass-input" placeholder="Tu contraseña de alumno"
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); color:white; padding:10px; border-radius:8px;">
+                </div>
+                <div class="input-group" style="margin-bottom: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top:15px;">
+                    <label style="font-size:0.8rem; color:var(--text-muted-light);">Clave actual del GRUPO</label>
+                    <input type="password" id="cgk-old-group-key-input" placeholder="La clave que usan ahora"
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); color:white; padding:10px; border-radius:8px;">
+                </div>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label style="font-size:0.8rem; color:var(--text-muted-light);">Nueva clave para el grupo <span id="cgk-group-label" style="color:#8b5cf6; font-weight:700;"></span></label>
+                    <input type="text" id="cgk-new-key-input" placeholder="Mínimo 4 caracteres"
+                        style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); color:white; padding:10px; border-radius:8px; font-family: monospace; letter-spacing:1px;">
+                    <p style="font-size:0.72rem; color:var(--text-muted-light); margin-top:5px;"><i class="fas fa-lightbulb"></i> Usá algo que puedas compartir fácilmente con tu grupo (ej: nutri2025g5)</p>
+                </div>
+                <div id="cgk-status" style="text-align:center; font-size:0.85rem; min-height:20px;"></div>
+            </div>
+            <div class="modal-footer" style="padding-top:0;">
+                <button id="cgk-confirm-btn" class="nav-button active" style="width:100%; padding:13px; background:#8b5cf6; border-color:#8b5cf6;">
+                    <i class="fas fa-save"></i> Cambiar Clave y Descargar Comprobante
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- FIN: MODAL CAMBIAR CLAVE DE GRUPO -->
+
+    <!-- INICIO: MODAL CONFIRMAR CAMBIO DE GRUPO -->
+    <div class="modal" id="confirm-group-switch-modal">
+        <div class="modal-content" style="max-width: 420px;">
+            <div class="modal-header">
+                <h4><i class="fas fa-exchange-alt"></i> Confirmar Cambio de Grupo</h4>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom:15px; font-size:0.9rem;">Para unirte al <strong id="cgs-target-group-label" style="color:#8b5cf6;"></strong>, ingresá la clave actual de ese grupo. Solo los miembros del grupo la conocen.</p>
+                <div class="xp-search-bar" style="margin-bottom:15px;">
+                    <input type="password" id="cgs-key-input" placeholder="Clave del grupo destino">
+                    <button id="cgs-verify-btn"><i class="fas fa-check"></i> Unirme</button>
+                </div>
+                <div id="cgs-status" style="text-align:center; font-size:0.85rem; min-height:20px;"></div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN: MODAL CONFIRMAR CAMBIO DE GRUPO -->
 
     <!-- INICIO: MODAL DE ACCESO GRUPAL -->
     <div class="modal" id="group-access-modal">
@@ -4199,7 +4119,7 @@
 
                 container.innerHTML = `
                 <button class="stat-card" data-dashboard-tab="hitos" title="Ver galería de videos">
-                    <div class="stat-icon hitos-icon" style="background: rgba(245, 158, 11, 0.2); color: var(--accent-orange);"><i class="fas fa-video"></i></div>
+                    <i class="fas fa-video stat-icon" style="color: var(--accent-orange);"></i>
                     <div class="stat-value" id="global-videos-count">0</div>
                     <div class="stat-label">Galería</div>
                 </button>
@@ -5164,6 +5084,12 @@
 
             function displayStudentPortalView(student) {
                 const portalContainer = document.getElementById('student-portal-result-container');
+                
+                // Verificar si el perfil que se visualiza es el del usuario logueado
+                const isOwnProfile = (window.currentStudentUP && String(window.currentStudentUP).trim() === String(student.up).trim());
+                // El docente siempre tiene permiso de edición si está logueado en su sesión (opcional, pero ayuda)
+                const isTeacher = !!window.currentTeacherData; 
+                const canEdit = isOwnProfile || isTeacher;
 
                 const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                 const totalSessionsForStudent = relevantSessions.length;
@@ -5214,14 +5140,17 @@
                         groupOptsSelectorHTML += '<option value="' + g.id + '"' + sel + '>' + (gMetaRef[g.id].name || g.id) + '</option>';
                     });
 
-                const groupSelectorHTML = '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border);">'
-                    + '<p style="font-size: 0.9em; margin-bottom: 8px; color: var(--text-color);">Seleccionar o Cambiar Grupo:</p>'
-                    + '<form id="student-group-selection-form" style="display: flex; gap: 10px; flex-wrap: wrap;">'
-                    + '<select id="student-group-selector" style="flex-grow: 1; padding: 8px; border-radius: 4px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border);">'
-                    + groupOptsSelectorHTML
-                    + '</select>'
-                    + '<button type="submit" class="nav-button active" style="padding: 5px 15px; min-width: auto;"><i class="fas fa-save"></i> Guardar</button>'
-                    + '</form></div>';
+                let groupSelectorHTML = '';
+                if (canEdit) {
+                    groupSelectorHTML = '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border);">'
+                        + '<p style="font-size: 0.9em; margin-bottom: 8px; color: var(--text-color);">Seleccionar o Cambiar Grupo:</p>'
+                        + '<form id="student-group-selection-form" style="display: flex; gap: 10px; flex-wrap: wrap;">'
+                        + '<select id="student-group-selector" style="flex-grow: 1; padding: 8px; border-radius: 4px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border);">'
+                        + groupOptsSelectorHTML
+                        + '</select>'
+                        + '<button type="submit" class="nav-button active" style="padding: 5px 15px; min-width: auto;"><i class="fas fa-save"></i> Guardar</button>'
+                        + '</form></div>';
+                }
 
                 let groupCardHTML = '';
                 if (student.group) {
@@ -5232,16 +5161,77 @@
                         }
                     });
 
+                    let membersPhotosHTML = '<div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 15px 0; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 12px;">';
+                    const groupMembers = fullData.students.filter(s => s.group === student.group);
+                    groupMembers.forEach(m => {
+                        membersPhotosHTML += `<div id="member-photo-${m.up}" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--xp-color); overflow: hidden; background: rgba(0,0,0,0.2); transition: transform 0.2s;" title="${m.name}"></div>`;
+                    });
+                    membersPhotosHTML += '</div>';
+
+                    const cleanGroupNum = String(student.group).replace(/\D/g, '');
+                    
                     groupCardHTML = `
                     <div class="stat-block">
                         <h4><i class="fas fa-users"></i> Mi Grupo</h4>
                         <div class="current-rank-display" style="padding-bottom: 10px;">
-                            <div id="group-link-logo-${student.group}" style="width: 80px; height: 80px; margin: 0 auto 10px; opacity: 0.9;"></div>
+                            <div id="group-link-logo-${student.group}" style="width: 80px; height: 80px; margin: 0 auto 10px; opacity: 0.9; border-radius: 50%; overflow: hidden; border: 3px solid var(--xp-color); background: rgba(0,0,0,0.2);"></div>
                             <div class="rank-name" style="margin-bottom: 5px;">Grupo ${student.group}</div>
                             <div style="font-weight: bold; color: var(--xp-color);"><i class="fas fa-star" style="font-size: 0.9em; margin-right: 5px;"></i>${groupData.xp} XP Totales</div>
                         </div>
+                        <p style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted-light); letter-spacing: 1px; margin-bottom: 5px;">Integrantes:</p>
+                        ${membersPhotosHTML}
                         ${groupSelectorHTML}
                     </div>`;
+
+                    // Cargar logos y fotos de los integrantes después de que el modal se renderice
+                    setTimeout(() => {
+                        // Cargar logo del grupo usando el ID completo (ej: g_17)
+                        const groupSearchId = student.group || "";
+                        const logoDiv = document.getElementById(`group-link-logo-${student.group}`);
+                        if (logoDiv) {
+                            logoDiv.style.cursor = 'pointer';
+                            logoDiv.title = 'Ver perfil del grupo';
+                            logoDiv.addEventListener('click', () => {
+                                displayGroupPortalView(student.group);
+                            });
+
+                            findGroupImage(groupSearchId, (logoHTML) => {
+                                logoDiv.innerHTML = logoHTML;
+                                const img = logoDiv.querySelector('img');
+                                if (img) {
+                                    img.style.width = '100%';
+                                    img.style.height = '100%';
+                                    img.style.objectFit = 'cover';
+                                    img.style.borderRadius = '50%';
+                                }
+                            });
+                        }
+
+                        groupMembers.forEach(m => {
+                            const photoDiv = document.getElementById(`member-photo-${m.up}`);
+                            if (photoDiv) {
+                                photoDiv.style.cursor = 'pointer';
+                                photoDiv.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    
+                                    // Cambiar de perfil
+                                    displayStudentPortalView(m);
+                                    
+                                    // Hacer scroll hacia arriba del modal/portal para ver el nuevo perfil
+                                    const modalBody = document.querySelector('#student-portal-modal .modal-body') || window;
+                                    modalBody.scrollTo({ top: 0, behavior: 'smooth' });
+                                });
+
+                                findImage(m.up, (photoHTML) => {
+                                    photoDiv.innerHTML = photoHTML;
+                                    // Asegurar que la imagen no bloquee el clic
+                                    const img = photoDiv.querySelector('img');
+                                    if (img) img.style.pointerEvents = 'none';
+                                });
+                            }
+                        });
+                    }, 100);
                 } else {
                     groupCardHTML = `
                     <div class="stat-block">
@@ -5381,22 +5371,48 @@
                     groupForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
                         const newGroup = document.getElementById('student-group-selector').value;
+                        const currentGroup = student.group || "";
+
+                        // Si el grupo no cambió, no hacemos nada
+                        if (newGroup === currentGroup) {
+                            alert('Ya perteneces a este grupo.');
+                            return;
+                        }
+
+                        // Si elige "Sin Grupo", permitimos el cambio directo
+                        if (newGroup === "") {
+                            if (!confirm('¿Estás seguro de que quieres salir de tu grupo actual?')) return;
+                        } else {
+                            // SI ELIGE UN GRUPO NUEVO: Pedir la clave de ese grupo
+                            const cleanGroupId = String(newGroup).replace(/\D/g, '');
+                            const keyDoc = await db.collection('group_keys').doc(cleanGroupId).get();
+                            const validKey = keyDoc.exists ? keyDoc.data().key : ('g' + cleanGroupId);
+
+                            const enteredKey = prompt('Para unirte al Grupo ' + newGroup + ', ingresá la clave de acceso:');
+                            
+                            if (!enteredKey || enteredKey.toLowerCase() !== validKey.toLowerCase()) {
+                                alert('Clave incorrecta. No puedes unirte a este grupo sin la clave de acceso.');
+                                return;
+                            }
+                        }
+
                         const studentIndex = fullData.students.findIndex(s => String(s.up).trim() === String(student.up).trim());
-                        
                         if (studentIndex !== -1) {
                             fullData.students[studentIndex].group = newGroup;
-                            const originalText = groupForm.querySelector('button').innerHTML;
-                            groupForm.querySelector('button').innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...';
-                            groupForm.querySelector('button').disabled = true;
+                            const saveBtn = groupForm.querySelector('button');
+                            const originalText = saveBtn.innerHTML;
+                            saveBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...';
+                            saveBtn.disabled = true;
+
                             try {
                                 await db.collection('app_state').doc('main').set(fullData);
-                                alert('Tu grupo fue actualizado y guardado correctamente.');
+                                alert('✅ Te has unido al grupo correctamente.');
                                 displayStudentPortalView(fullData.students[studentIndex]);
                             } catch (err) {
                                 console.error("Error asignando grupo:", err);
                                 alert('Ocurrió un error al intentar cambiar de grupo.');
-                                groupForm.querySelector('button').innerHTML = originalText;
-                                groupForm.querySelector('button').disabled = false;
+                                saveBtn.innerHTML = originalText;
+                                saveBtn.disabled = false;
                             }
                         }
                     });
@@ -6009,18 +6025,7 @@
                 `;
             }
 
-            function openTPConfigEditor() {
-                const modal = document.getElementById('teacher-admin-modal');
-                if (modal) {
-                    modal.classList.add('active');
-                    const masterKeySection = document.getElementById('master-key-section');
-                    const globalConfigSection = document.getElementById('global-config-section');
-                    if (masterKeySection) masterKeySection.style.display = 'block';
-                    if (globalConfigSection) globalConfigSection.style.display = 'none';
-                    const keyInput = document.getElementById('global-master-key');
-                    if (keyInput) keyInput.value = '';
-                }
-            }
+            // openTPConfigEditor removida - acceso vía pestaña Panel Docente
 
             function attachGroupPortalEventListeners(groupId, groupData) {
                 // Función Volver
@@ -6984,14 +6989,29 @@
                     statusEl.style.color = 'var(--xp-color)';
 
                     try {
-                        const groupDoc = await db.collection('grupos').doc(currentViewingGroupId).get();
-                        if (groupDoc.exists && groupDoc.data().code === code) {
-                            activeGroupSession = { id: currentViewingGroupId, data: groupDoc.data() };
+                        const originalId = String(currentViewingGroupId);
+                        const cleanId = originalId.replace(/\D/g, ''); 
+                        
+                        // Solo buscamos en group_keys
+                        let keyDoc = await db.collection('group_keys').doc(cleanId).get();
+                        // Si no lo encuentra por ID limpio, intentar con el original por si las dudas
+                        if (!keyDoc.exists) {
+                            keyDoc = await db.collection('group_keys').doc(originalId).get();
+                        }
+
+                        // Si existe usamos la clave guardada, si no, la por defecto 'g'+ID limpio
+                        const validKey = keyDoc.exists ? keyDoc.data().key : ('g' + cleanId);
+
+                        // Comparamos estrictamente contra la única clave válida
+                        if (code.toLowerCase() === validKey.toLowerCase()) {
+                            const groupDoc = await db.collection('grupos').doc(originalId).get();
+                            activeGroupSession = { id: originalId, data: groupDoc.exists ? groupDoc.data() : {} };
+                            
                             statusEl.style.color = 'var(--success-color)';
                             statusEl.innerText = 'Acceso concedido. Redirigiendo...';
                             setTimeout(() => {
                                 document.getElementById('group-access-modal').classList.remove('active');
-                                openGroupEditor(currentViewingGroupId);
+                                openGroupEditor(originalId);
                             }, 1000);
                         } else {
                             statusEl.style.color = 'var(--danger-color)';
@@ -7003,6 +7023,255 @@
                     }
                 });
             }
+
+            // ============================================================
+            // SISTEMA DE CLAVES DE GRUPO - Perfil Alumno
+            // ============================================================
+
+            // Ayuda: genera el PDF comprobante de nueva clave
+            function generateGroupKeyPDF(groupNum, newKey, studentUP) {
+                const printWindow = window.open('', '_blank');
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('es-AR', { day:'2-digit', month:'long', year:'numeric' });
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="es">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Comprobante Clave Grupo ${groupNum}</title>
+                        <style>
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            body { font-family: 'Arial', sans-serif; background: #0a0a0f; color: #eee; padding: 40px; max-width: 600px; margin: 0 auto; }
+                            .card { background: #13131a; border: 2px solid #8b5cf6; border-radius: 18px; padding: 40px; text-align: center; }
+                            .logo { font-size: 3rem; margin-bottom: 15px; }
+                            h1 { font-size: 1.4rem; color: #a78bfa; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; }
+                            h2 { font-size: 1.1rem; color: #ccc; margin-bottom: 30px; font-weight: 400; }
+                            .group-badge { display: inline-block; background: rgba(139,92,246,0.2); border: 1px solid #8b5cf6; border-radius: 12px; padding: 12px 30px; margin-bottom: 25px; }
+                            .group-badge span { font-size: 1.3rem; font-weight: 700; color: white; }
+                            .key-box { background: #0a0a0f; border: 2px dashed #8b5cf6; border-radius: 12px; padding: 25px; margin: 25px 0; }
+                            .key-label { font-size: 0.75rem; color: #a78bfa; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+                            .key-value { font-family: 'Courier New', monospace; font-size: 2.2rem; font-weight: 700; color: #a78bfa; letter-spacing: 3px; }
+                            .warning { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 15px; margin-top: 20px; font-size: 0.85rem; color: #fca5a5; line-height: 1.6; }
+                            .footer { margin-top: 30px; font-size: 0.75rem; color: #555; }
+                            @media print { body { background: white; color: black; } .card { border-color: #6d28d9; } }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="card">
+                            <div class="logo">🔐</div>
+                            <h1>Comprobante de Clave de Grupo</h1>
+                            <h2>Plataforma de Nutrición Infantil · UNSTA</h2>
+                            <div class="group-badge"><span>Grupo ${groupNum}</span></div>
+                            <div class="key-box">
+                                <div class="key-label">Nueva Clave de Acceso</div>
+                                <div class="key-value">${newKey}</div>
+                            </div>
+                            <div class="warning">
+                                ⚠️ <strong>IMPORTANTE:</strong> Esta clave es exclusiva de tu grupo.<br>
+                                Compartila <strong>solo con tus compañeros de grupo</strong> por un medio privado (ej: WhatsApp del grupo).<br>
+                                Será necesaria para editar el perfil del grupo y para que cualquier miembro confirme un cambio de grupo.
+                            </div>
+                            <div class="footer">Generado por: UP ${studentUP} · ${dateStr}</div>
+                        </div>
+                        <script>window.onload = () => { window.print(); }<\/script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+
+            // Botón "Cambiar clave del grupo" en el perfil del alumno
+            document.addEventListener('click', (e) => {
+                if (e.target && e.target.closest('#open-change-group-key-btn')) {
+                    if (!currentStudentData || !currentStudentData.group) {
+                        alert('Primero debes tener un grupo asignado para cambiar su clave.');
+                        return;
+                    }
+                    const modal = document.getElementById('change-group-key-modal');
+                    const groupLabel = document.getElementById('cgk-group-label');
+                    if (groupLabel) groupLabel.textContent = 'Grupo ' + currentStudentData.group;
+                    const upInput = document.getElementById('cgk-up-input');
+                    if (upInput) upInput.value = currentStudentUP || '';
+                    document.getElementById('cgk-pass-input').value = '';
+                    document.getElementById('cgk-new-key-input').value = '';
+                    document.getElementById('cgk-status').textContent = '';
+                    if (modal) modal.classList.add('active');
+                }
+            });
+
+            // Confirmar cambio de clave del grupo
+            const cgkBtn = document.getElementById('cgk-confirm-btn');
+            if (cgkBtn) {
+                    cgkBtn.addEventListener('click', async () => {
+                        const upInput = document.getElementById('cgk-up-input').value.trim();
+                        const passInput = document.getElementById('cgk-pass-input').value.trim();
+                        const oldGroupKey = document.getElementById('cgk-old-group-key-input').value.trim();
+                        const newKey = document.getElementById('cgk-new-key-input').value.trim();
+                        const statusEl = document.getElementById('cgk-status');
+
+                        if (!upInput || !passInput || !oldGroupKey || !newKey) {
+                            statusEl.style.color = 'var(--danger-color)';
+                            statusEl.textContent = 'Completá todos los campos (incluyendo la clave actual del grupo).';
+                            return;
+                        }
+                        if (newKey.length < 4) {
+                            statusEl.style.color = 'var(--danger-color)';
+                            statusEl.textContent = 'La clave debe tener al menos 4 caracteres.';
+                            return;
+                        }
+
+                        statusEl.style.color = 'var(--xp-color)';
+                        statusEl.textContent = 'Verificando seguridad...';
+                        cgkBtn.disabled = true;
+
+                        try {
+                            // 1. Verificar identidad del alumno (UP y Pasword personal)
+                            if (String(upInput).toUpperCase() !== String(currentStudentUP).toUpperCase()) {
+                                throw new Error('El UP no coincide con tu sesión actual.');
+                            }
+                            const authDoc = await db.collection('student_auth').doc(String(currentStudentUP)).get();
+                            if (!authDoc.exists || authDoc.data().password !== passInput) {
+                                throw new Error('Contraseña personal incorrecta.');
+                            }
+
+                            // 2. Verificar CLAVE GRUPAL ACTUAL
+                            const cleanGroupId = String(currentStudentData.group).replace(/\D/g, '');
+                            const keyDoc = await db.collection('group_keys').doc(cleanGroupId).get();
+                            const actualKey = keyDoc.exists ? keyDoc.data().key : ('g' + cleanGroupId);
+
+                            if (oldGroupKey.toLowerCase() !== actualKey.toLowerCase()) {
+                                throw new Error('La clave actual del GRUPO no es correcta.');
+                            }
+
+                            // 3. Todo OK -> Guardar nueva clave
+                            await db.collection('group_keys').doc(cleanGroupId).set({ 
+                                key: newKey,
+                                updatedBy: currentStudentUP,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }, { merge: true });
+
+                            await db.collection('grupos').doc(String(currentStudentData.group)).set({
+                                code: newKey
+                            }, { merge: true });
+
+                        statusEl.style.color = 'var(--success-color)';
+                        statusEl.textContent = '✅ Clave actualizada con éxito. Preparando comprobante...';
+                        
+                        setTimeout(() => {
+                            document.getElementById('change-group-key-modal').classList.remove('active');
+                            // Llamar a la función de impresión (comprobante de cambio de clave)
+                            printGroupKeyReceipt(cleanGroupId, newKey);
+                        }, 1500);
+
+                        statusEl.style.color = 'var(--success-color)';
+                        statusEl.textContent = '✅ Clave actualizada. Abriendo comprobante...';
+
+                        setTimeout(() => {
+                            document.getElementById('change-group-key-modal').classList.remove('active');
+                            generateGroupKeyPDF(groupNum, newKey, currentStudentUP);
+                        }, 1200);
+                    } catch (err) {
+                        console.error(err);
+                        statusEl.style.color = 'var(--danger-color)';
+                        statusEl.textContent = 'Error al guardar. Intentá de nuevo.';
+                        cgkBtn.disabled = false;
+                    }
+                });
+            }
+
+            // ============================================================
+            // CONFIRMAR CAMBIO DE GRUPO - requiere clave del grupo destino
+            // ============================================================
+            // Interceptar el form de cambio de grupo en el PERFIL (auth-profile-group-form)
+            document.addEventListener('submit', async (e) => {
+                const form = e.target;
+                if (!form || form.id !== 'auth-profile-group-form') return;
+                e.preventDefault();
+
+                const newGroup = document.getElementById('auth-profile-group-selector').value;
+                const currentGroup = currentStudentData ? currentStudentData.group : null;
+
+                // Si no tiene grupo aún, o elige el mismo grupo, guardar directamente
+                if (!currentGroup || String(newGroup) === String(currentGroup)) {
+                    // Guardar sin verificación de clave
+                    await _doGroupChange(newGroup, form);
+                    return;
+                }
+
+                // Tiene grupo diferente: pedir clave del grupo destino
+                const targetLabel = document.getElementById('cgs-target-group-label');
+                if (targetLabel) targetLabel.textContent = 'Grupo ' + newGroup;
+                const statusEl = document.getElementById('cgs-status');
+                if (statusEl) { statusEl.textContent = ''; statusEl.style.color = ''; }
+                const keyInput = document.getElementById('cgs-key-input');
+                if (keyInput) keyInput.value = '';
+                const switchModal = document.getElementById('confirm-group-switch-modal');
+                if (switchModal) switchModal.classList.add('active');
+
+                // Guardar el grupo destino para usar en el listener del botón de confirmación
+                window._pendingGroupSwitch = { newGroup, form };
+            });
+
+            // Botón de confirmar en el modal de cambio de grupo
+            const cgsVerifyBtn = document.getElementById('cgs-verify-btn');
+            if (cgsVerifyBtn) {
+                cgsVerifyBtn.addEventListener('click', async () => {
+                    if (!window._pendingGroupSwitch) return;
+                    const { newGroup, form } = window._pendingGroupSwitch;
+                    const keyInput = document.getElementById('cgs-key-input');
+                    const statusEl = document.getElementById('cgs-status');
+                    const enteredKey = keyInput.value.trim();
+
+                    if (!enteredKey) { statusEl.style.color = 'var(--danger-color)'; statusEl.textContent = 'Ingresá la clave del grupo.'; return; }
+
+                    statusEl.style.color = 'var(--xp-color)';
+                    statusEl.textContent = 'Verificando...';
+                    cgsVerifyBtn.disabled = true;
+
+                    try {
+                        const keyDoc = await db.collection('group_keys').doc(String(newGroup)).get();
+                        const validKey = keyDoc.exists ? keyDoc.data().key : ('g' + String(newGroup).replace(/\D/g, ''));
+                        
+                        if (enteredKey.toLowerCase() === validKey.toLowerCase()) {
+                            statusEl.style.color = 'var(--success-color)';
+                            statusEl.textContent = '✅ Verificado. Cambiando grupo...';
+                            setTimeout(async () => {
+                                document.getElementById('confirm-group-switch-modal').classList.remove('active');
+                                await _doGroupChange(newGroup, form);
+                                window._pendingGroupSwitch = null;
+                            }, 800);
+                        } else {
+                            statusEl.style.color = 'var(--danger-color)';
+                            statusEl.textContent = 'Clave incorrecta. Solo los miembros del grupo la conocen.';
+                        }
+                    } catch (err) {
+                        console.error(err);
+                        statusEl.style.color = 'var(--danger-color)';
+                        statusEl.textContent = 'Error de conexión.';
+                    } finally {
+                        cgsVerifyBtn.disabled = false;
+                    }
+                });
+            }
+
+            // Función interna para hacer el cambio de grupo efectivo
+            async function _doGroupChange(newGroup, form) {
+                const student = currentStudentData;
+                const studentIndex = fullData.students.findIndex(s => s.up == student.up);
+                if (studentIndex === -1) return;
+                const btn = form ? form.querySelector('button[type="submit"]') : null;
+                if (btn) { btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...'; btn.disabled = true; }
+                fullData.students[studentIndex].group = newGroup;
+                try {
+                    await db.collection('app_state').doc('main').set(fullData);
+                    currentStudentData = fullData.students[studentIndex];
+                    loadProfileContent(fullData.students[studentIndex]);
+                } catch (err) {
+                    alert('Error al guardar el grupo. Intentá de nuevo.');
+                    if (btn) { btn.innerHTML = '<i class="fas fa-save"></i> Guardar Grupo'; btn.disabled = false; }
+                }
+            }
+
 
             // LOGICA DE PANEL DOCENTE GLOBAL (desde pestaña Panel Docente)
             const globalTpList = document.getElementById('global-tp-list');
@@ -7044,16 +7313,7 @@
                 });
             }
 
-            // Acceso oculto en el footer (por compatibilidad, ya no abre modal sino redirige al tab)
-            const teacherTrigger = document.getElementById('teacher-access-trigger');
-            if (teacherTrigger) {
-                teacherTrigger.addEventListener('click', () => {
-                    // Navegar a la pestaña Panel Docente
-                    const tabBtn = document.querySelector('[data-tab-target="#panel-contacto"]');
-                    if (tabBtn) tabBtn.click();
-                    setTimeout(() => tabKeyInput && tabKeyInput.focus(), 300);
-                });
-            }
+            // Trigger de footer legacy removido - acceso vía pestaña Panel Docente
 
             async function loadGlobalTPs() {
                 globalTpList.innerHTML = 'Cargando...';
@@ -7361,7 +7621,12 @@
                                     <i class="fas fa-save"></i> Guardar Grupo
                                 </button>
                             </form>
-                            <p style="font-size: 0.75rem; color: var(--text-muted-light); margin-top: 10px;"><i class="fas fa-info-circle"></i> Podés cambiar tu grupo cuando quieras.</p>
+                            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                                <p style="font-size: 0.75rem; color: var(--text-muted-light); margin: 0;"><i class="fas fa-shield-alt"></i> Cambiar de grupo requiere la clave del grupo destino.</p>
+                                <button id="open-change-group-key-btn" type="button" style="padding: 9px 18px; background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.4); border-radius: 8px; cursor: pointer; font-size: 0.82rem; font-weight: 700; white-space: nowrap;">
+                                    <i class="fas fa-key"></i> Cambiar clave del grupo
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -7401,29 +7666,8 @@
                     });
                 }
 
-                const groupForm = document.getElementById('auth-profile-group-form');
-                if (groupForm) {
-                    groupForm.addEventListener('submit', async (e) => {
-                        e.preventDefault();
-                        const newGroup = document.getElementById('auth-profile-group-selector').value;
-                        const studentIndex = fullData.students.findIndex(s => s.up == student.up);
-                        if (studentIndex !== -1) {
-                            const btn = groupForm.querySelector('button');
-                            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...';
-                            btn.disabled = true;
-                            fullData.students[studentIndex].group = newGroup;
-                            try {
-                                await db.collection('app_state').doc('main').set(fullData);
-                                // Reload the profile with updated student data
-                                loadProfileContent(fullData.students[studentIndex]);
-                            } catch (err) {
-                                alert('Error al guardar el grupo. Intentá de nuevo.');
-                                btn.innerHTML = '<i class="fas fa-save"></i> Guardar Grupo';
-                                btn.disabled = false;
-                            }
-                        }
-                    });
-                }
+                // El cambio de grupo ahora es manejado por el listener global (con verificación de clave)
+                // Ver: document.addEventListener('submit') y _doGroupChange()
             }
 
             window.editBio = async () => {
@@ -7485,7 +7729,53 @@
                 document.getElementById(`sub-panel-${tabId}`).style.display = 'block';
                 document.getElementById(`btn-admin-${tabId}`).classList.add('active');
                 if (tabId === 'clases') refreshAdminSessList();
+                if (tabId === 'grupos-keys') loadAdminGroupKeys();
             };
+
+            // ============================================================
+            // GESTIÓN DE CLAVES DE GRUPOS (Panel Docente)
+            // ============================================================
+            window.loadAdminGroupKeys = async () => {
+                const container = document.getElementById('admin-group-keys-list');
+                if (!container) return;
+                container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; color:var(--text-muted-light);"><i class="fas fa-circle-notch fa-spin"></i> Cargando...</div>';
+                try {
+                    const snapshot = await db.collection('group_keys').get();
+                    const keysMap = {};
+                    snapshot.forEach(doc => { keysMap[doc.id] = doc.data().key || ('g' + doc.id); });
+
+                    let html = '';
+                    for (let i = 1; i <= 18; i++) {
+                        const key = keysMap[String(i)] || ('g' + i);
+                        const isDefault = key === ('g' + i);
+                        html += `
+                        <div style="background: rgba(0,0,0,0.25); border: 1px solid ${isDefault ? 'rgba(255,255,255,0.08)' : 'rgba(139,92,246,0.4)'}; border-radius: 10px; padding: 12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <span style="font-weight:700; font-size:0.9rem;">Grupo ${i}</span>
+                                <span style="font-size:0.7rem; padding:2px 8px; border-radius:20px; background:${isDefault ? 'rgba(255,255,255,0.08)' : 'rgba(139,92,246,0.2)'}; color:${isDefault ? 'var(--text-muted-light)' : '#a78bfa'};">${isDefault ? 'por defecto' : 'personalizada'}</span>
+                            </div>
+                            <div style="font-family:monospace; font-size:1rem; color:${isDefault ? 'var(--text-muted-light)' : 'white'}; background:rgba(0,0,0,0.3); padding:7px 10px; border-radius:6px; margin-bottom:8px; letter-spacing:1px;">${key}</div>
+                            ${!isDefault ? `<button onclick="resetGroupKey(${i})" style="width:100%; padding:6px; font-size:0.75rem; background:rgba(239,68,68,0.1); color:#f87171; border:1px solid rgba(239,68,68,0.3); border-radius:6px; cursor:pointer;"><i class="fas fa-undo"></i> Resetear a "g${i}"</button>` : `<div style="font-size:0.72rem; color:var(--text-muted-light); text-align:center;"><i class="fas fa-check-circle"></i> Clave por defecto activa</div>`}
+                        </div>`;
+                    }
+                    container.innerHTML = html;
+                } catch (e) {
+                    container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:20px; color:var(--danger-color);">Error al cargar claves.</div>';
+                    console.error(e);
+                }
+            };
+
+            window.resetGroupKey = async (groupNum) => {
+                if (!confirm(`¿Resetear la clave del Grupo ${groupNum} a "g${groupNum}"? Los miembros del grupo deberán usar esa clave por defecto.`)) return;
+                try {
+                    await db.collection('group_keys').doc(String(groupNum)).set({ key: 'g' + groupNum }, { merge: true });
+                    loadAdminGroupKeys();
+                } catch (e) {
+                    alert('Error al resetear la clave.');
+                    console.error(e);
+                }
+            };
+
 
             window.createNewClass = async () => {
                 const name = document.getElementById('new-sess-name').value.trim();
