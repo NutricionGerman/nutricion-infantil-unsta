@@ -3770,7 +3770,7 @@
                 const reportData = fullData.students.map(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
-                    const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
+                    const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
 
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
@@ -4104,7 +4104,7 @@
                 fullData.students.forEach(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
-                    const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
+                    const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
                     const approvedTPsCount = studentRecords.filter(r => r.tpNote !== null && typeof r.tpNote === 'number' && r.tpNote >= 4).length;
@@ -4480,33 +4480,23 @@
                 const formattedDate = new Date(lastSession.date).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
                 titleEl.textContent = `Estadísticas de la última sesión registrada: ${lastSession.name} (${formattedDate})`;
 
-                // Asegurar que los ausentes estén registrados para esta sesión
+                // Asegurar que los ausentes no se reescriben permanentemente en Firebase
                 const studentsForSession = fullData.students.filter(s => !lastSession.group || s.group === "" || s.group === lastSession.group);
-                studentsForSession.forEach(student => {
-                    const hasRecord = fullData.attendanceRecords.some(r => r.sessionId === lastSession.id && r.up == student.up);
-                    if (!hasRecord) {
-                        // Solo añade en memoria para el cálculo, no modifica los datos guardados.
-                        fullData.attendanceRecords.push({
-                            sessionId: lastSession.id,
-                            up: student.up,
-                            status: 'absent'
-                        });
-                    }
-                });
-
+                
                 const records = fullData.attendanceRecords.filter(r => r.sessionId === lastSession.id);
                 const onTime = records.filter(r => r.status === 'onTime').length;
                 const late = records.filter(r => r.status === 'late').length;
-                const absent = records.filter(r => r.status === 'absent').length;
+                const presentCount = onTime + late;
+                const absent = studentsForSession.length > presentCount ? studentsForSession.length - presentCount : 0;
 
                 const groupAttendance = {};
-                records.forEach(r => {
-                    const student = fullData.students.find(s => s.up == r.up);
+                studentsForSession.forEach(student => {
                     if (student && student.group) {
                         if (!groupAttendance[student.group]) {
                             groupAttendance[student.group] = { present: 0, total: 0 };
                         }
-                        if (r.status === 'onTime' || r.status === 'late') {
+                        const r = records.find(rec => String(rec.up).trim() === String(student.up).trim());
+                        if (r && (r.status === 'onTime' || r.status === 'late')) {
                             groupAttendance[student.group].present++;
                         }
                         groupAttendance[student.group].total++;
@@ -4705,7 +4695,7 @@
                 fullData.students.forEach(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
-                    const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
+                    const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
 
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
@@ -5002,7 +4992,7 @@
                 const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                 const totalSessionsForStudent = relevantSessions.length;
 
-                const studentRecords = fullData.attendanceRecords.filter(r => r.up == student.up);
+                const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
 
                 const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                 const absentCount = totalSessionsForStudent - presentCount;
@@ -5084,13 +5074,13 @@
 
                 let attendanceModalHTML = `
                 <div class="modal" id="attendance-modal">
-                    <div class="modal-content"><div class="modal-header"><h4>Historial de Asistencia</h4><button class="close-modal">&times;</button></div>
+                    <div class="modal-content"><div class="modal-header"><h4>Historial de Asistencia Detallado</h4><button class="close-modal">&times;</button></div>
                         <div class="modal-body"><table class="attendance-table"><thead><tr><th>Clase</th><th>Fecha</th><th>Estado</th></tr></thead><tbody>`;
                 relevantSessions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(session => {
                     const record = studentRecords.find(r => r.sessionId === session.id);
                     const status = record ? record.status : 'absent';
                     const statusText = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' }[status];
-                    attendanceModalHTML += `<tr><td>${session.name}</td><td>${session.date}</td><td class="status-${status}">${statusText}</td></tr>`;
+                    attendanceModalHTML += `<tr><td>${session.name} <br><small>(${session.id})</small></td><td>${session.date}</td><td class="status-${status}">${statusText}</td></tr>`;
                 });
                 attendanceModalHTML += `</tbody></table></div></div></div>`;
 
@@ -5233,7 +5223,7 @@
                     groupForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
                         const newGroup = document.getElementById('student-group-selector').value;
-                        const studentIndex = fullData.students.findIndex(s => s.up === student.up);
+                        const studentIndex = fullData.students.findIndex(s => String(s.up).trim() === String(student.up).trim());
                         
                         if (studentIndex !== -1) {
                             fullData.students[studentIndex].group = newGroup;
@@ -5678,7 +5668,7 @@
 
                 let listHTML = '<ul class="ranking-list">';
                 members.forEach(member => {
-                    const record = fullData.attendanceRecords.find(r => r.sessionId === lastRelevantSession.id && r.up == member.up);
+                    const record = fullData.attendanceRecords.find(r => r.sessionId === lastRelevantSession.id && String(r.up).trim() === String(member.up).trim());
                     const status = record ? record.status : 'absent';
                     const statusMap = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' };
                     const iconMap = { onTime: 'fa-check-circle', late: 'fa-clock', absent: 'fa-times-circle' };
@@ -7424,7 +7414,7 @@
                             const student = fullData.students.find(s => String(s.up) === String(legajo));
                             if (student) {
                                 if(!fullData.attendanceRecords) fullData.attendanceRecords = [];
-                                const exists = fullData.attendanceRecords.some(r => r.sessionId === window.activeSessId && r.up === String(legajo));
+                                const exists = fullData.attendanceRecords.some(r => r.sessionId === window.activeSessId && String(r.up).trim() === String(legajo).trim());
                                 
                                 if (!exists) {
                                     fullData.attendanceRecords.push({
@@ -7507,7 +7497,9 @@
                 alert("No hay sesiones creadas. Primero crea una clase en la pestaña de Asistencia.");
                 return;
             }
-            sessions.forEach(s => {
+            
+            // Revertir para que la última sesión creada aparezca primero seleccionada por defecto
+            [...sessions].reverse().forEach(s => {
                 const opt = document.createElement('option');
                 opt.value = s.id;
                 opt.textContent = s.name || s.id;
@@ -7529,6 +7521,24 @@
             const attendanceUrl = `${window.location.origin}${window.location.pathname}?asistencia=${sid}&q=${encodeURIComponent(question)}`;
             document.getElementById('qr-config-modal').classList.remove('active');
             document.getElementById('qr-active-question').innerText = `Sesión: ${sid} | Pregunta: ${question}`;
+            
+            // Link clicable para testing local
+            let linkEl = document.getElementById('qr-test-link');
+            if (!linkEl) {
+                linkEl = document.createElement('a');
+                linkEl.id = 'qr-test-link';
+                linkEl.style.display = 'block';
+                linkEl.style.textAlign = 'center';
+                linkEl.style.marginTop = '15px';
+                linkEl.style.fontSize = '0.9rem';
+                linkEl.style.color = '#3b82f6';
+                linkEl.style.textDecoration = 'underline';
+                linkEl.textContent = 'Simular escaneo de alumno (Abrir en pestaña nueva)';
+                document.getElementById('qr-canvas-container').parentElement.appendChild(linkEl);
+            }
+            linkEl.href = attendanceUrl;
+            linkEl.target = '_blank';
+
             document.getElementById('qr-display-modal').classList.add('active');
             const container = document.getElementById("qrcode-main");
             container.innerHTML = "";
@@ -7583,7 +7593,8 @@
 
                 const records = freshData.attendanceRecords || [];
                 if (records.some(r => String(r.sessionId) === sid && String(r.up) === String(up))) {
-                    alert("Ya registraste tu asistencia en esta clase.");
+                    const sessionName = freshData.sessions?.find(s => s.id === sid)?.name || sid;
+                    alert("Ya registraste tu asistencia para esta clase (" + sessionName + ").\n\nSi crees que esto es un error, verifica si ingresaste al link correcto de la nueva clase.");
                     modal.classList.remove('active');
                     return;
                 }
@@ -7599,7 +7610,7 @@
                 });
 
                 // Sumar 2 XP al alumno
-                const studentIdx = freshData.students.findIndex(s => String(s.up) === String(up));
+                const studentIdx = freshData.students.findIndex(s => String(s.up).trim() === String(up).trim());
                 if (studentIdx !== -1) {
                     const student = freshData.students[studentIdx];
                     const xpGained = 2;
@@ -7611,11 +7622,17 @@
                         reason: 'Asistencia registrada (QR)',
                         newXP: student.xp
                     });
+                    
+                    await firebase.firestore().collection('app_state').doc('main').set(freshData);
+                    window.fullData = freshData;
+                    alert("✅ ¡Presente en " + (freshData.sessions.find(s=>s.id===sid)?.name || sid) + " enviado! +2 XP 🌟");
+                } else {
+                    // Si no se encontró el estudiante pero se envía el presente, lo registramos igual pero avisamos.
+                    await firebase.firestore().collection('app_state').doc('main').set(freshData);
+                    window.fullData = freshData;
+                    alert("✅ ¡Presente validado!\n\nNota: No se sumaron XP porque tu UP (" + up + ") no se encontró en la lista de alumnos. Verifica que sea correcto.");
                 }
-
-                await firebase.firestore().collection('app_state').doc('main').set(freshData);
-                window.fullData = freshData;
-                alert("✅ ¡Presente enviado! +2 XP 🌟");
+                
                 modal.classList.remove('active');
             } catch (e) {
                 console.error(e);
@@ -7627,6 +7644,7 @@
 
 
         setTimeout(window.checkAttendanceFromURL, 2000);
+        window.addEventListener('pageshow', window.checkAttendanceFromURL);
     </script>
 </body>
 
