@@ -1,4 +1,4 @@
-# 🗺️ GUÍA DE RECONSTRUCCIÓN DE PROYECTO
+# 🛠️ GUÍA DE RECONSTRUCCIÓN DE PROYECTO
 **Fecha:** 09 de Abril, 2026
 **Ubicación original:** `C:\Users\germa\OneDrive\Desktop\ARCHIVOS\UNSTA\pagina nutricion infantil`
 
@@ -6,7 +6,7 @@ Este documento contiene el "mapa lógico" de las carpetas `CLASES` y `HERRAMIENT
 
 ---
 
-## 🛠️ CARPETA: HERRAMIENTAS
+## 🏗️ CARPETA: HERRAMIENTAS
 El sistema de herramientas es dinámico y depende exclusivamente del archivo `HERRAMIENTAS/herramientas.json`.
 
 ### Estructura de archivos esperada:
@@ -28,7 +28,7 @@ El código busca este archivo mediante `fetch('HERRAMIENTAS/herramientas.json')`
 
 ---
 
-## 📚 CARPETA: CLASES
+## 📽️ CARPETA: CLASES
 Las clases se cargan mediante un escaneo dinámico basado en un rango de fechas de la cursada.
 
 ### Archivos de Clase (.html):
@@ -47,16 +47,5 @@ Estos archivos son referenciados internamente por las páginas de cada clase o p
 - `CLASES/talla-cdc.mp4`
 - **Imágenes:** `logo.png`, `marca mesobraquial.png`, `mqi.png`.
 
----
-
-## 📝 INSTRUCCIONES PARA EL FUTURO AGENTE:
-"Si las carpetas `CLASES` o `HERRAMIENTAS` han sido restauradas físicamente, no es necesario modificar el `index.html`. El sistema está programado para verificar la existencia de estos archivos mediante peticiones `fetch`. Si los archivos están en la ruta correcta según este mapa, aparecerán automáticamente en la interfaz del usuario."
-
----
-*Archivo generado por Antigravity para asegurar la integridad lógica del proyecto.*
-
-### Checkpoint 7:
-- Migraci�n del Panel de Control Docente desde un modal hacia una pesta�a propia en la barra de navegaci�n.
-- Acceso al panel docente con materia2024.
-- Sistema de XP por 'Milestones' de calidad (5-estrellas) en votaci�n de TPs/Videos.
-- C�lculos de regularidad (Promoci�n/Regulariza/Libre) sincronizados entre alumno y panel docente.
+### Conexión en `index.html`:
+Filtra los eventos de Firebase que tengan archivos adjuntos con la ruta `CLASES/` para mostrarlos en la galería de medios del portal.
