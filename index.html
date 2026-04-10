@@ -2636,7 +2636,7 @@
                     <li><button class="nav-button" data-tab-target="#panel-herramientas">Herramientas</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-proyectos">Proyectos</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-tienda">Tienda de Canje</button></li>
-                    <li><button class="nav-button" data-tab-target="#panel-contacto">Contacto Docente</button></li>
+                    <li><button class="nav-button" data-tab-target="#panel-contacto"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-seo">Plataforma SEO</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-discord">Comunidad Discord</button></li>
                 </ul>
@@ -2836,30 +2836,95 @@
 
             <div id="panel-contacto" class="tab-panel">
                 <div class="content-panel-container">
-                    <h2>Contacto Docente</h2>
-                    <div class="profesores-container">
-                        <div class="profesor-card">
-                            <div class="student-photo"><img src="./profesores/Graciela-Dibenedetto.png" alt="Foto">
-                            </div>
-                            <div class="profesor-info">
-                                <p>Lic. Graciela Dibenedetto</p><a
-                                    href="mailto:gdibenedetto@unsta.edu.ar">gdibenedetto@unsta.edu.ar</a>
+                    <div class="section-header" style="margin-top: 0;">
+                        <i class="fas fa-user-shield header-icon" style="color:var(--accent-orange);"></i>
+                        <h2>Panel de Control Docente</h2>
+                        <p>Acceso exclusivo para la cátedra. Ingresá la clave maestra para gestionar TPs, clases y el sistema.</p>
+                    </div>
+
+                    <!-- LOGIN SECTION -->
+                    <div id="tab-master-key-section" style="max-width: 420px; margin: 0 auto; padding: 30px; border: 1px solid var(--accent-orange); border-radius: 16px; text-align: center;">
+                        <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--accent-orange); margin-bottom: 20px;"></i>
+                        <div class="input-group">
+                            <label>Clave Maestra</label>
+                            <input type="password" id="tab-master-key-input"
+                                style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 14px; border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <button type="button" id="tab-verify-master-key-btn" class="nav-button active" style="width: 100%; padding: 14px;">Acceder al Panel</button>
+                        </div>
+                        <div id="tab-master-key-status" style="margin-top: 12px; font-size: 0.85rem;"></div>
+                    </div>
+
+                    <!-- PANEL CONTENT (hidden until login) -->
+                    <div id="tab-global-config-section" style="display: none; margin-top: 30px;">
+
+                        <!-- ADMIN TABS -->
+                        <div class="admin-tabs-nav" style="margin-bottom: 25px;">
+                            <button onclick="switchAdminTab('tps')" class="admin-tab-btn active" id="btn-admin-tps"><i class="fas fa-tasks"></i> TPs</button>
+                            <button onclick="switchAdminTab('clases')" class="admin-tab-btn" id="btn-admin-clases"><i class="fas fa-calendar-check"></i> Clases / Asistencia</button>
+                            <button onclick="switchAdminTab('sistema')" class="admin-tab-btn" id="btn-admin-sistema"><i class="fas fa-sliders-h"></i> Gestión Sistema</button>
+                        </div>
+
+                        <!-- SUB-PANEL: TPs -->
+                        <div id="sub-panel-tps" class="admin-sub-panel">
+                            <h5 style="color: var(--accent-teal); margin-bottom: 15px;"><i class="fas fa-calendar-alt"></i> Configuración de TPs</h5>
+                            <div id="global-tp-list" style="max-height: 500px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px;"></div>
+                            <div style="text-align: right; margin-top: 15px;">
+                                <button type="button" id="save-global-tp-config" class="nav-button active"><i class="fas fa-save"></i> Guardar TPs</button>
                             </div>
                         </div>
-                        <div class="profesor-card">
-                            <div class="student-photo"><img src="./profesores/Mariana-Mohedano.png" alt="Foto"></div>
-                            <div class="profesor-info">
-                                <p>Lic. Mariana Mohedano</p><a
-                                    href="mailto:mariana.mohedano@unsta.edu.ar">mariana.mohedano@unsta.edu.ar</a>
+
+                        <!-- SUB-PANEL: CLASES -->
+                        <div id="sub-panel-clases" class="admin-sub-panel" style="display: none;">
+                            <h5 style="color: var(--accent-teal); margin-bottom: 10px;"><i class="fas fa-plus-circle"></i> Nueva Sesión de Clase</h5>
+                            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 15px; display: flex; gap: 8px;">
+                                <input type="text" id="new-sess-name" placeholder="Ej: Clase 05: Proteínas" style="flex: 1; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: white; padding: 10px; border-radius: 6px; font-size: 0.85rem;">
+                                <button onclick="createNewClass()" class="nav-button active" style="padding: 10px 16px;">Crear</button>
+                            </div>
+
+                            <div id="csv-import-box" style="display: none; background: rgba(20, 184, 166, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--accent-teal);">
+                                <div style="font-size: 0.85rem; margin-bottom: 8px; color: var(--accent-teal); font-weight: 600;">Importar Asistencia: <span id="target-sess-display">---</span></div>
+                                <input type="file" id="attendance-csv-input" accept=".csv" style="display: none;" onchange="handleCSVProcessing(this)">
+                                <button onclick="document.getElementById('attendance-csv-input').click()" class="nav-button" style="width: 100%; border-color: var(--accent-teal); color: var(--accent-teal);">
+                                    <i class="fas fa-file-csv"></i> Cargar CSV (Google Forms)
+                                </button>
+                                <div id="csv-process-status" style="margin-top: 8px; font-size: 0.75rem; text-align: center;"></div>
+                            </div>
+
+                            <div id="admin-sess-list-container" style="max-height: 450px; overflow-y: auto;">
+                                <!-- Clases Cargadas -->
                             </div>
                         </div>
-                        <div class="profesor-card">
-                            <div class="student-photo"><img src="./profesores/German-Auad.png" alt="Foto"></div>
-                            <div class="profesor-info">
-                                <p>Lic. Cristian Auad</p><a
-                                    href="mailto:cristian.auad@unsta.edu.ar">cristian.auad@unsta.edu.ar</a>
+
+                        <!-- SUB-PANEL: SISTEMA -->
+                        <div id="sub-panel-sistema" class="admin-sub-panel" style="display: none;">
+                            <h5 style="color: var(--accent-orange); margin-bottom: 15px;"><i class="fas fa-sliders-h"></i> Ajustes del Ciclo</h5>
+
+                            <div style="background: rgba(232, 122, 61, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(232, 122, 61, 0.2); margin-bottom: 20px;">
+                                <h6 style="color: var(--accent-orange); margin-bottom: 10px;">Sistema de Asistencia QR</h6>
+                                <p style="font-size: 0.8rem; margin-bottom: 12px; color: var(--text-muted-light);">Configura la pregunta del día y genera el código para que los alumnos lo escaneen.</p>
+                                <button class="btn-qr btn-qr-generate" style="width: 100%; justify-content: center; background: var(--accent-orange);" onclick="openQRConfig()">
+                                    <i class="fas fa-qrcode"></i> Configurar Pregunta y QR
+                                </button>
+                            </div>
+
+                            <div class="input-group">
+                                <label>Código de Invitación para Alumnos</label>
+                                <input type="text" id="admin-student-invite-code" placeholder="Ej: NUTRI2024" style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 12px; border-radius: 6px;">
+                            </div>
+
+                            <div style="margin-top: 20px; padding: 15px; border: 1px solid #ef444433; border-radius: 8px;">
+                                <h6 style="color: #ef4444; font-size: 0.85rem; margin-bottom: 10px;">Reiniciar para Nuevo Año</h6>
+                                <p style="font-size: 0.75rem; color: var(--text-muted-light); margin-bottom: 12px;">Elimina todos los alumnos, sesiones, asistencias y XP. Esta acción es irreversible.</p>
+                                <button onclick="resetAcademicCycle()" class="nav-button" style="width: 100%; border-color: #ef4444; color: #ef4444;">Vaciar Datos y Alumnos</button>
                             </div>
                         </div>
+
+                        <div style="text-align: right; margin-top: 25px;">
+                            <button type="button" id="save-global-tp-config-bottom" class="nav-button active" onclick="document.getElementById('save-global-tp-config').click()"><i class="fas fa-save"></i> Guardar Configuración Global</button>
+                        </div>
+                        <div id="global-config-status" style="margin-top: 10px; text-align: center;"></div>
                     </div>
                 </div>
             </div>
@@ -6875,39 +6940,27 @@
                 });
             }
 
-            // LOGICA DE PANEL DOCENTE GLOBAL
-            const teacherTrigger = document.getElementById('teacher-access-trigger');
-            const teacherModal = document.getElementById('teacher-admin-modal');
-            const verifyKeyBtn = document.getElementById('verify-master-key-btn');
-            const keyInput = document.getElementById('global-master-key');
-            const masterKeySection = document.getElementById('master-key-section');
-            const globalConfigSection = document.getElementById('global-config-section');
+            // LOGICA DE PANEL DOCENTE GLOBAL (desde pestaña Panel Docente)
             const globalTpList = document.getElementById('global-tp-list');
 
-            if (teacherTrigger) {
-                teacherTrigger.addEventListener('click', () => {
-                    teacherModal.classList.add('active');
-                    masterKeySection.style.display = 'block';
-                    globalConfigSection.style.display = 'none';
-                    keyInput.value = '';
-                });
-            }
+            // Botón de acceso dentro de la pestaña
+            const tabVerifyBtn = document.getElementById('tab-verify-master-key-btn');
+            const tabKeyInput = document.getElementById('tab-master-key-input');
+            const tabMasterKeySection = document.getElementById('tab-master-key-section');
+            const tabGlobalConfigSection = document.getElementById('tab-global-config-section');
 
-            if (verifyKeyBtn) {
-                verifyKeyBtn.addEventListener('click', async () => {
-                    const code = keyInput.value.trim();
-                    const status = document.getElementById('master-key-status');
-
+            if (tabVerifyBtn) {
+                tabVerifyBtn.addEventListener('click', async () => {
+                    const code = tabKeyInput.value.trim();
+                    const status = document.getElementById('tab-master-key-status');
                     if (!code) return;
-                    verifyKeyBtn.innerText = 'Verificando...';
-
+                    tabVerifyBtn.innerText = 'Verificando...';
                     try {
                         const keyDoc = await db.collection('config').doc('master_key').get();
                         const masterValue = keyDoc.exists ? keyDoc.data().value : 'materia2024';
-
                         if (code === masterValue) {
-                            masterKeySection.style.display = 'none';
-                            globalConfigSection.style.display = 'block';
+                            tabMasterKeySection.style.display = 'none';
+                            tabGlobalConfigSection.style.display = 'block';
                             loadGlobalTPs();
                         } else {
                             status.innerText = 'Clave incorrecta';
@@ -6917,8 +6970,24 @@
                         status.innerText = 'Error al verificar';
                         console.error(e);
                     } finally {
-                        verifyKeyBtn.innerText = 'Acceder al Panel';
+                        tabVerifyBtn.innerText = 'Acceder al Panel';
                     }
+                });
+
+                // También permitir Enter en el campo de clave
+                tabKeyInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') tabVerifyBtn.click();
+                });
+            }
+
+            // Acceso oculto en el footer (por compatibilidad, ya no abre modal sino redirige al tab)
+            const teacherTrigger = document.getElementById('teacher-access-trigger');
+            if (teacherTrigger) {
+                teacherTrigger.addEventListener('click', () => {
+                    // Navegar a la pestaña Panel Docente
+                    const tabBtn = document.querySelector('[data-tab-target="#panel-contacto"]');
+                    if (tabBtn) tabBtn.click();
+                    setTimeout(() => tabKeyInput && tabKeyInput.focus(), 300);
                 });
             }
 
