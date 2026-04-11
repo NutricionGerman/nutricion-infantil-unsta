@@ -3654,6 +3654,9 @@
                         ...masterData,
                         students: studentsArray
                     };
+                    fullData.sessions = fullData.sessions || [];
+                    fullData.attendanceRecords = fullData.attendanceRecords || [];
+                    fullData.recipes = fullData.recipes || [];
                     window.fullData = fullData;
 
                     // 4. PRE-CARGADO DE ASSETS (Fotos, Perfiles, etc)
@@ -3674,11 +3677,11 @@
                         window.fullData = fullData;
 
                         // Actualizar UI en tiempo real
-                        try { displayGlobalStats(); } catch(e){}
+                        try { displayGlobalStats(); } catch(e){ console.error("Error en displayGlobalStats:", e); }
                         try { displayRanking(); } catch(e){}
                         try { displayGroups(); } catch(e){}
-                        try { createOverallAttendanceChart(); } catch(e){}
-                        try { generateAndDisplayClasses(); } catch(e){}
+                        try { createOverallAttendanceChart(); } catch(e){ console.error("Error en createOverallAttendanceChart:", e); }
+                        try { generateAndDisplayClasses(); } catch(e){ console.error("Error en generateAndDisplayClasses:", e); }
 
                         // Refrescar sesión actual si es alumno
                         if (currentStudentUP) {

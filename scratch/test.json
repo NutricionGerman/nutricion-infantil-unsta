@@ -1,0 +1,42 @@
+{
+  "documents": [
+    {
+      "name": "projects/nutricion-gamificada/databases/(default)/documents/students/341189",
+      "fields": {
+        "xp": {
+          "integerValue": "0"
+        },
+        "unlockedAchievements": {
+          "arrayValue": {}
+        },
+        "group": {
+          "stringValue": "g_4"
+        },
+        "parcial2": {
+          "nullValue": null
+        },
+        "parcial1": {
+          "nullValue": null
+        },
+        "lastName": {
+          "stringValue": "BILBAO"
+        },
+        "firstName": {
+          "stringValue": "Alaina Fátima"
+        },
+        "up": {
+          "stringValue": "341189"
+        },
+        "notes": {
+          "stringValue": ""
+        },
+        "xpHistory": {
+          "arrayValue": {}
+        }
+      },
+      "createTime": "2026-04-10T17:04:22.782370Z",
+      "updateTime": "2026-04-11T16:35:29.538036Z"
+    }
+  ],
+  "nextPageToken": "AFTOeJxp4W80WpAadb77DlmKpHqU_Rd3TqG5HevnypjX-q3iJwr8yHQq7rfkJs4lPaQJhN9Jkg-YTGXTMGiGeI5LB7I6Y0XlbNZ9aTRIpdow-9yUgA"
+}
