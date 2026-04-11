@@ -2607,6 +2607,67 @@
             .tool-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             }
+        /* === ADMIN PANEL TABS STYLING === */
+        .admin-tabs-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px !important;
+        }
+
+        .admin-tab-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-tab-btn i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: var(--accent-orange);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 44, 0.2);
+        }
+
+        .admin-tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-orange), #ff8c42);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 20px rgba(255, 107, 44, 0.4);
+            font-weight: 600;
+        }
+
+        .admin-tab-btn.active i {
+            transform: scale(1.1);
+        }
+
+        .admin-sub-panel {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 

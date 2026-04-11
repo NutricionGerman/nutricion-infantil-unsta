@@ -1,0 +1,5575 @@
+{
+  "createTime": "2026-03-06T19:34:50.451741Z",
+  "fields": {
+    "attendanceRecords": {
+      "arrayValue": {
+        "values": [
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343815"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344015"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344021"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344027"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344055"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344032"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344036"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343725"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344009"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344052"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344092"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343244"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344033"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344058"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344014"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344044"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344012"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343270"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344126"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343269"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344056"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344105"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344134"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344073"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344031"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343940"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344022"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344159"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343952"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344024"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343690"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344025"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344048"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344064"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344077"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344040"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344115"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343950"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343649"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344038"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344165"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344037"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344109"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344085"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344067"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344098"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343003"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343832"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343746"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343943"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344026"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343801"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "343300"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344130"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "sessionId": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "up": {
+                  "stringValue": "344083"
+                },
+                "status": {
+                  "stringValue": "onTime"
+                },
+                "timestamp": {
+                  "stringValue": "2026-04-11T12:00:00Z"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "config": {
+      "mapValue": {
+        "fields": {
+          "totalTpCount": {
+            "integerValue": "1"
+          }
+        }
+      }
+    },
+    "exportedAt": {
+      "stringValue": "2025-11-06T13:32:26.077Z"
+    },
+    "groupConceptPoints": {
+      "arrayValue": {
+        "values": [
+          {
+            "mapValue": {
+              "fields": {
+                "groupId": {
+                  "stringValue": "2"
+                },
+                "points": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "groupsAssignedV3": {
+      "booleanValue": true
+    },
+    "groupsAssignedV4": {
+      "booleanValue": true
+    },
+    "isCiclo2024Cargado": {
+      "booleanValue": true
+    },
+    "isMigratedToCasilleros": {
+      "booleanValue": true
+    },
+    "sessions": {
+      "arrayValue": {
+        "values": [
+          {
+            "mapValue": {
+              "fields": {
+                "date": {
+                  "stringValue": "2026-04-10"
+                },
+                "id": {
+                  "stringValue": "sess_1775863780415"
+                },
+                "name": {
+                  "stringValue": "CLASE 1"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "sharedGroupMetadata": {
+      "mapValue": {
+        "fields": {
+          "g_1": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 1"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_10": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 10"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_11": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 11"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_12": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 12"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_13": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 13"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_14": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 14"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_15": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 15"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_16": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 16"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_17": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 17"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_18": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 18"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_2": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 2"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_3": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 3"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_4": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 4"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_5": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 5"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_6": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 6"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_7": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 7"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_8": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 8"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          },
+          "g_9": {
+            "mapValue": {
+              "fields": {
+                "level": {
+                  "integerValue": "1"
+                },
+                "name": {
+                  "stringValue": "Grupo 9"
+                },
+                "xp": {
+                  "integerValue": "0"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "students": {
+      "arrayValue": {
+        "values": [
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Alaina F\u00e1tima"
+                },
+                "group": {
+                  "stringValue": "g_4"
+                },
+                "lastName": {
+                  "stringValue": "BILBAO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "341189"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Roberto Diego"
+                },
+                "group": {
+                  "stringValue": "g_16"
+                },
+                "lastName": {
+                  "stringValue": "HARDIE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "341726"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Maria Sol"
+                },
+                "group": {
+                  "stringValue": "g_4"
+                },
+                "lastName": {
+                  "stringValue": "GOMEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343003"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Camila Roc\u00edo"
+                },
+                "group": {
+                  "stringValue": ""
+                },
+                "lastName": {
+                  "stringValue": "BELLIDO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343240"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Juan Pablo"
+                },
+                "group": {
+                  "stringValue": "g_11"
+                },
+                "lastName": {
+                  "stringValue": "RODRIGUEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343244"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Antonella"
+                },
+                "group": {
+                  "stringValue": "g_11"
+                },
+                "lastName": {
+                  "stringValue": "AVILA LUCENA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343269"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Marcelo Matias"
+                },
+                "group": {
+                  "stringValue": "g_11"
+                },
+                "lastName": {
+                  "stringValue": "JEREZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343270"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Tom\u00e1s Benjamin"
+                },
+                "group": {
+                  "stringValue": "g_11"
+                },
+                "lastName": {
+                  "stringValue": "LAZARTE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343300"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Bruno Ignacio"
+                },
+                "group": {
+                  "stringValue": ""
+                },
+                "lastName": {
+                  "stringValue": "PONTICELLI"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343414"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Fabricio Ricardo"
+                },
+                "group": {
+                  "stringValue": ""
+                },
+                "lastName": {
+                  "stringValue": "SICA BUSTAMANTE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343512"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Pedro Benjamin"
+                },
+                "group": {
+                  "stringValue": "g_15"
+                },
+                "lastName": {
+                  "stringValue": "AMAYO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343579"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Agustina Abigail"
+                },
+                "group": {
+                  "stringValue": "g_2"
+                },
+                "lastName": {
+                  "stringValue": "SALAZAR"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343649"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Florencia del Pilar"
+                },
+                "group": {
+                  "stringValue": "g_2"
+                },
+                "lastName": {
+                  "stringValue": "CORTEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343690"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Luciano Ivan"
+                },
+                "group": {
+                  "stringValue": "g_2"
+                },
+                "lastName": {
+                  "stringValue": "DIP"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343725"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Sof\u00eda"
+                },
+                "group": {
+                  "stringValue": "g_17"
+                },
+                "lastName": {
+                  "stringValue": "HERRMANN"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343731"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Tomas"
+                },
+                "group": {
+                  "stringValue": "g_8"
+                },
+                "lastName": {
+                  "stringValue": "VIDAL"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343746"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Anna Lucia"
+                },
+                "group": {
+                  "stringValue": "g_16"
+                },
+                "lastName": {
+                  "stringValue": "ORTIZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343783"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Josefina Maria"
+                },
+                "group": {
+                  "stringValue": "g_2"
+                },
+                "lastName": {
+                  "stringValue": "PADILLA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343801"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Augusto"
+                },
+                "group": {
+                  "stringValue": "g_15"
+                },
+                "lastName": {
+                  "stringValue": "MERCADO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343813"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Santiago Jes\u00fas"
+                },
+                "group": {
+                  "stringValue": "g_1"
+                },
+                "lastName": {
+                  "stringValue": "VAZQUEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343815"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "David Nicol\u00e1s"
+                },
+                "group": {
+                  "stringValue": "g_17"
+                },
+                "lastName": {
+                  "stringValue": "VELARDEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343832"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Ana Paula"
+                },
+                "group": {
+                  "stringValue": "g_18"
+                },
+                "lastName": {
+                  "stringValue": "BRANDAN"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343850"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Yamila Dayana"
+                },
+                "group": {
+                  "stringValue": "g_18"
+                },
+                "lastName": {
+                  "stringValue": "OJEDA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343870"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Rodrigo Jes\u00fas"
+                },
+                "group": {
+                  "stringValue": "g_1"
+                },
+                "lastName": {
+                  "stringValue": "LESCANO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343872"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Ignacio Miguel"
+                },
+                "group": {
+                  "stringValue": "g_14"
+                },
+                "lastName": {
+                  "stringValue": "ALTAMIRANDA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343879"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Ana Virginia"
+                },
+                "group": {
+                  "stringValue": "g_18"
+                },
+                "lastName": {
+                  "stringValue": "IBA\u00f1EZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343891"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Rom\u00e1n Augusto"
+                },
+                "group": {
+                  "stringValue": "g_14"
+                },
+                "lastName": {
+                  "stringValue": "CORDOBA DIAZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343911"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Juan Pablo"
+                },
+                "group": {
+                  "stringValue": "g_15"
+                },
+                "lastName": {
+                  "stringValue": "Zavaleta"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343940"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Lisandro Geronimo"
+                },
+                "group": {
+                  "stringValue": "g_17"
+                },
+                "lastName": {
+                  "stringValue": "ALBORNOZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343943"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Mar\u00eda Sof\u00eda"
+                },
+                "group": {
+                  "stringValue": "g_14"
+                },
+                "lastName": {
+                  "stringValue": "DIAZ Romero"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343950"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Facundo"
+                },
+                "group": {
+                  "stringValue": "g_7"
+                },
+                "lastName": {
+                  "stringValue": "Antich"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343951"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Sofia"
+                },
+                "group": {
+                  "stringValue": "g_17"
+                },
+                "lastName": {
+                  "stringValue": "ADORNI HARDOY"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343952"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Walter Nicol\u00e1s"
+                },
+                "group": {
+                  "stringValue": "g_7"
+                },
+                "lastName": {
+                  "stringValue": "LASTRA CATANIA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343955"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Victoria"
+                },
+                "group": {
+                  "stringValue": ""
+                },
+                "lastName": {
+                  "stringValue": "NANTERNE MARTIN"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343959"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Joaquin Emiliano"
+                },
+                "group": {
+                  "stringValue": "g_14"
+                },
+                "lastName": {
+                  "stringValue": "GUZMAN SINER"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343962"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Lucas Ivan"
+                },
+                "group": {
+                  "stringValue": "g_18"
+                },
+                "lastName": {
+                  "stringValue": "ALVAREZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343992"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Maria Florencia"
+                },
+                "group": {
+                  "stringValue": "g_18"
+                },
+                "lastName": {
+                  "stringValue": "ARGA\u00d1ARAZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "343997"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Joaquin"
+                },
+                "group": {
+                  "stringValue": "g_15"
+                },
+                "lastName": {
+                  "stringValue": "CERVI\u00f1O"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344003"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Sofia Abigail"
+                },
+                "group": {
+                  "stringValue": "g_8"
+                },
+                "lastName": {
+                  "stringValue": "BARROS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344009"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Mariana"
+                },
+                "group": {
+                  "stringValue": "g_13"
+                },
+                "lastName": {
+                  "stringValue": "ROLD\u00c1N JAIMEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344012"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Lucia"
+                },
+                "group": {
+                  "stringValue": "g_3"
+                },
+                "lastName": {
+                  "stringValue": "ROSSI COLOMBRES"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344014"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Tomas"
+                },
+                "group": {
+                  "stringValue": "g_9"
+                },
+                "lastName": {
+                  "stringValue": "IBA\u00d1EZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344015"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Constanza Mercedes"
+                },
+                "group": {
+                  "stringValue": "g_5"
+                },
+                "lastName": {
+                  "stringValue": "USANDIVARAS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344017"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Marianella"
+                },
+                "group": {
+                  "stringValue": "g_6"
+                },
+                "lastName": {
+                  "stringValue": "GIULIANO AVELLANEDA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344021"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Juan Martin"
+                },
+                "group": {
+                  "stringValue": "g_6"
+                },
+                "lastName": {
+                  "stringValue": "PAZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344022"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Milagros"
+                },
+                "group": {
+                  "stringValue": "g_3"
+                },
+                "lastName": {
+                  "stringValue": "WAUNOUS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344024"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Gimena Mariana"
+                },
+                "group": {
+                  "stringValue": "g_4"
+                },
+                "lastName": {
+                  "stringValue": "GODOY"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344025"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Agostina"
+                },
+                "group": {
+                  "stringValue": "g_3"
+                },
+                "lastName": {
+                  "stringValue": "DHAIBES M\u00daKDISE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344026"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Camila Alejandra"
+                },
+                "group": {
+                  "stringValue": "g_7"
+                },
+                "lastName": {
+                  "stringValue": "SANTOS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344027"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Agust\u00edn Octavio"
+                },
+                "group": {
+                  "stringValue": "g_13"
+                },
+                "lastName": {
+                  "stringValue": "LINARES GONZALEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344031"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Guadalupe"
+                },
+                "group": {
+                  "stringValue": "g_13"
+                },
+                "lastName": {
+                  "stringValue": "FORTE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344032"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Luz"
+                },
+                "group": {
+                  "stringValue": "g_3"
+                },
+                "lastName": {
+                  "stringValue": "FERNANDEZ MURGA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344033"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Luca"
+                },
+                "group": {
+                  "stringValue": "g_1"
+                },
+                "lastName": {
+                  "stringValue": "DELANI"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344036"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Francisco"
+                },
+                "group": {
+                  "stringValue": "g_10"
+                },
+                "lastName": {
+                  "stringValue": "FERN\u00e1NDEZ SALAZAR"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344037"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Maria Lujan"
+                },
+                "group": {
+                  "stringValue": "g_10"
+                },
+                "lastName": {
+                  "stringValue": "ALBA\u00d1IL"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344038"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Juliana"
+                },
+                "group": {
+                  "stringValue": "g_3"
+                },
+                "lastName": {
+                  "stringValue": "GENTILE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344040"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Lourdes"
+                },
+                "group": {
+                  "stringValue": "g_13"
+                },
+                "lastName": {
+                  "stringValue": "GASCA DELLA PACE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344044"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Rodrigo Leonel"
+                },
+                "group": {
+                  "stringValue": "g_10"
+                },
+                "lastName": {
+                  "stringValue": "REGUERA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344048"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Lucia Emilia"
+                },
+                "group": {
+                  "stringValue": "g_8"
+                },
+                "lastName": {
+                  "stringValue": "RUIZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344050"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Thiara Agostina"
+                },
+                "group": {
+                  "stringValue": "g_6"
+                },
+                "lastName": {
+                  "stringValue": "BAZAN"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344052"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Nicole Jennifer"
+                },
+                "group": {
+                  "stringValue": "g_8"
+                },
+                "lastName": {
+                  "stringValue": "CUEVAS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344055"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Gianluca"
+                },
+                "group": {
+                  "stringValue": "g_1"
+                },
+                "lastName": {
+                  "stringValue": "VARGIU"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344056"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Felicitas"
+                },
+                "group": {
+                  "stringValue": "g_6"
+                },
+                "lastName": {
+                  "stringValue": "GALLARDO ELHALL"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344057"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Laureana"
+                },
+                "group": {
+                  "stringValue": "g_7"
+                },
+                "lastName": {
+                  "stringValue": "OCARANZA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344058"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Santiago Leonel"
+                },
+                "group": {
+                  "stringValue": "g_9"
+                },
+                "lastName": {
+                  "stringValue": "ALVAREZ ROMANO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344064"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Daniela Abigail"
+                },
+                "group": {
+                  "stringValue": "g_5"
+                },
+                "lastName": {
+                  "stringValue": "TAPIA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344067"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Luz Milagro"
+                },
+                "group": {
+                  "stringValue": "g_16"
+                },
+                "lastName": {
+                  "stringValue": "CONDORI NU\u00d1EZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344073"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Lourdes"
+                },
+                "group": {
+                  "stringValue": "g_8"
+                },
+                "lastName": {
+                  "stringValue": "PAEZ DE LA TORRE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344074"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Ignacio"
+                },
+                "group": {
+                  "stringValue": "g_10"
+                },
+                "lastName": {
+                  "stringValue": "FERNANDEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344077"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Pilar Maria"
+                },
+                "group": {
+                  "stringValue": "g_12"
+                },
+                "lastName": {
+                  "stringValue": "PADILLA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344083"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Luisana"
+                },
+                "group": {
+                  "stringValue": "g_16"
+                },
+                "lastName": {
+                  "stringValue": "ALCORTA VIZUR"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344085"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Rocio"
+                },
+                "group": {
+                  "stringValue": "g_7"
+                },
+                "lastName": {
+                  "stringValue": "ZUMAETA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344092"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Ana Bel\u00e9n"
+                },
+                "group": {
+                  "stringValue": "g_4"
+                },
+                "lastName": {
+                  "stringValue": "GEREZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344094"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Massimo"
+                },
+                "group": {
+                  "stringValue": "g_1"
+                },
+                "lastName": {
+                  "stringValue": "SANTUCCI"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344098"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Florencia Belen"
+                },
+                "group": {
+                  "stringValue": "g_16"
+                },
+                "lastName": {
+                  "stringValue": "Mustafa"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344105"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Joaquin"
+                },
+                "group": {
+                  "stringValue": "g_9"
+                },
+                "lastName": {
+                  "stringValue": "ELIAS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344109"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Martina"
+                },
+                "group": {
+                  "stringValue": "g_12"
+                },
+                "lastName": {
+                  "stringValue": "VILLARREAL"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344115"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Juan Ignacio"
+                },
+                "group": {
+                  "stringValue": "g_4"
+                },
+                "lastName": {
+                  "stringValue": "ALBORNOZ MARTOS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344117"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Amparo"
+                },
+                "group": {
+                  "stringValue": "g_12"
+                },
+                "lastName": {
+                  "stringValue": "VIA\u00f1A"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344126"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Mirta Yolanda"
+                },
+                "group": {
+                  "stringValue": "g_5"
+                },
+                "lastName": {
+                  "stringValue": "RIVAS"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344130"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Amparo"
+                },
+                "group": {
+                  "stringValue": "g_12"
+                },
+                "lastName": {
+                  "stringValue": "COLOMBRES GARMENDIA"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344134"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Maximo Daniel"
+                },
+                "group": {
+                  "stringValue": "g_9"
+                },
+                "lastName": {
+                  "stringValue": "LAZARTE"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344159"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Luciana Micaela"
+                },
+                "group": {
+                  "stringValue": "g_5"
+                },
+                "lastName": {
+                  "stringValue": "PEREZ MARTINEZ"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344160"
+                },
+                "xp": {
+                  "integerValue": "0"
+                },
+                "xpHistory": {
+                  "arrayValue": {}
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "firstName": {
+                  "stringValue": "Abril Martina"
+                },
+                "group": {
+                  "stringValue": "g_10"
+                },
+                "lastName": {
+                  "stringValue": "FERJANCIC MARINO"
+                },
+                "notes": {
+                  "stringValue": ""
+                },
+                "parcial1": {
+                  "nullValue": null
+                },
+                "parcial2": {
+                  "nullValue": null
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "344165"
+                },
+                "xp": {
+                  "integerValue": "2"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "timestamp": {
+                              "stringValue": "2026-04-11T12:00:00Z"
+                            },
+                            "amount": {
+                              "integerValue": "2"
+                            },
+                            "reason": {
+                              "stringValue": "Asistencia: CLASE 1"
+                            },
+                            "sessionId": {
+                              "stringValue": "sess_1775863780415"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          {
+            "mapValue": {
+              "fields": {
+                "apellido": {
+                  "stringValue": "PRUEBA"
+                },
+                "group": {
+                  "stringValue": "g_17"
+                },
+                "grupo": {
+                  "stringValue": "g_1"
+                },
+                "nombre": {
+                  "stringValue": "ALUMNO"
+                },
+                "unlockedAchievements": {
+                  "arrayValue": {}
+                },
+                "up": {
+                  "stringValue": "999999"
+                },
+                "xp": {
+                  "integerValue": "1"
+                },
+                "xpHistory": {
+                  "arrayValue": {
+                    "values": [
+                      {
+                        "mapValue": {
+                          "fields": {
+                            "amount": {
+                              "integerValue": "1"
+                            },
+                            "reason": {
+                              "stringValue": "\ud83d\uddf3\ufe0f \u00a1Calificaste 4 TPs de tus compa\u00f1eros! +1 XP"
+                            },
+                            "timestamp": {
+                              "stringValue": "2026-04-10T01:49:34.718Z"
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "name": "projects/nutricion-gamificada/databases/(default)/documents/app_state/main",
+  "updateTime": "2026-04-10T23:29:42.186743Z"
+}

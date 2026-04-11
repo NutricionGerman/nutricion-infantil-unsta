@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Acceso 2026 - Nutrición Infantil UNSTA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --accent-orange: #f97316;
+            --accent-teal: #14b8a6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f97316 0%, #14b8a6 100%);
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            background: var(--accent-orange);
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 800;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(249, 115, 22, 0.4);
+        }
+
+        h2 {
+            color: var(--accent-teal);
+            font-size: 1.8rem;
+            margin-top: 0;
+        }
+
+        .step-img {
+            width: 100%;
+            border-radius: 16px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .tip-box {
+            background: rgba(20, 184, 166, 0.1);
+            border-left: 4px solid var(--accent-teal);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 20px;
+        }
+
+        .code-box {
+            background: #000;
+            color: var(--accent-orange);
+            font-family: monospace;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--accent-orange);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 5px 15px rgba(249, 115, 22, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8rem; }
+            .step-card { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>UNSTA <br> Nutrición Infantil</h1>
+        <p>Tu guía paso a paso para la plataforma educativa (Ciclo 2026)</p>
+    </div>
+
+    <div class="container">
+        
+        <!-- PASO 1 -->
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h2>Acceso Seguro</h2>
+            <p>Ingresa a la sección <strong>"Mi Perfil"</strong>. El sistema te pedirá tu número de legajo (UP) para comenzar.</p>
+            <img src="login_up.png" alt="Pantalla de UP" class="step-img" onerror="this.style.display='none'">
+            <div style="text-align: center; color: var(--text-muted); font-style: italic; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; font-size: 0.8rem;">
+                <i class="fas fa-info-circle"></i> Aquí escribes tu número de legajo y haces clic en el botón naranja.
+            </div>
+        </div>
+
+        <!-- PASO 2 -->
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h2>Vinculación (Solo la primera vez)</h2>
+            <p>Si es tu primer ingreso, el sistema te pedirá el código de la cátedra para asegurar tu perfil:</p>
+            <div style="text-align: center;"><div class="code-box">ALUMNO2024</div></div>
+            <img src="registro.png" alt="Pantalla de Registro" class="step-img" onerror="this.style.display='none'">
+            <p>Inventa una contraseña personal que no olvides y haz clic en <strong>Vincular y Entrar</strong>.</p>
+        </div>
+
+        <!-- PASO 3 -->
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h2>Elige tu Grupo</h2>
+            <p>Una vez en tu perfil, navega hasta el final para seleccionar tu equipo. ¡Esto es fundamental para que tus puntos sumen al grupo!</p>
+            <div class="tip-box">
+                <strong><i class="fas fa-lightbulb"></i> Tip:</strong> Si ya estás logueado, verás tu nombre y puntos XP acumulados.
+            </div>
+            <img src="login_pass.png" alt="Acceso con contraseña" class="step-img" onerror="this.style.display='none'">
+        </div>
+
+        <!-- PASO 4 -->
+        <div class="step-card" id="tp-entrega">
+            <div class="step-number">4</div>
+            <h2>Entrega del TP1 (Video)</h2>
+            <p>Sigan este procedimiento para publicar su primer desafío:</p>
+            <div class="tip-box" style="background: rgba(255,0,0,0.05); border-color: #ff0000;">
+                <strong><i class="fab fa-youtube"></i> YouTube en Oculto:</strong> Al subir su video, elijan la visibilidad <strong>"Oculto" (Unlisted)</strong>. Esto protege su privacidad pero nos permite verlo con el link.
+            </div>
+            <p>Luego, busquen su grupo en la <strong>Galería</strong>, ingresen con su clave grupal y peguen el link en la pestaña de desafíos.</p>
+            <img src="acceso_grupal.png" alt="Acceso Grupal" class="step-img" onerror="this.style.display='none'">
+            <div class="tip-box" style="border-color: var(--accent-orange); background: rgba(249,115,22,0.1);">
+                <strong><i class="fas fa-star"></i> ¡Gana XP!</strong> Al calificar los videos de tus compañeros, sumas puntos extra para tu equipo.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 Cátedra de Nutrición Infantil - UNSTA <br> Desarrollado para una educación innovadora.</p>
+    </div>
+
+</body>
+</html>
