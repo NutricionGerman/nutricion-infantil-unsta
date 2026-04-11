@@ -8253,9 +8253,13 @@
                     if (lines.length < 2) return;
 
                     let ok = 0, fail = 0;
-                    
-                    // 1. Detectar columna de Legajo automáticamente
-                    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim().toLowerCase());
+
+                    // 1. Auto-detectar separador: coma (Excel inglés) o punto y coma (Excel español)
+                    const delimiter = lines[0].includes(';') ? ';' : ',';
+                    console.log("Separador detectado:", delimiter === ';' ? 'punto y coma (;) - Excel español' : 'coma (,) - Excel inglés');
+
+                    // 2. Detectar columna de Legajo automáticamente
+                    const headers = lines[0].split(delimiter).map(h => h.replace(/"/g, '').trim().toLowerCase());
                     let upColumnIndex = headers.findIndex(h => h.includes('up') || h.includes('legajo') || h.includes('padron') || h.includes('id'));
                     
                     // Si no lo encuentra por nombre, usamos la columna 3 (índice 2) por defecto
@@ -8264,7 +8268,7 @@
                     console.log("Detectada columna de Legajo en índice:", upColumnIndex);
 
                     for (let i = 1; i < lines.length; i++) {
-                        const row = lines[i].split(',').map(c => c.replace(/"/g, '').trim());
+                        const row = lines[i].split(delimiter).map(c => c.replace(/"/g, '').trim());
                         const legajo = row[upColumnIndex];
                         
                         if (legajo) {
@@ -8281,11 +8285,11 @@
                                         timestamp: new Date().toISOString()
                                     });
 
-                                    student.xp = (student.xp || 0) + 10;
+                                    student.xp = (student.xp || 0) + 2;
                                     if(!student.xpHistory) student.xpHistory = [];
                                     student.xpHistory.push({
                                         timestamp: new Date().toISOString(),
-                                        amount: 10,
+                                        amount: 2,
                                         reason: "Asistencia: " + document.getElementById('target-sess-display').innerText,
                                         sessionId: window.activeSessId
                                     });
@@ -8298,11 +8302,26 @@
                     }
 
                     try {
+                        // 1. Guardar asistencias y sesiones en app_state/main
                         await db.collection('app_state').doc('main').set(fullData);
+
+                        // 2. Guardar XP actualizado en la colección individual de cada alumno
+                        const batch = db.batch();
+                        fullData.students.forEach(s => {
+                            // Solo actualizamos los alumnos que fueron afectados (tienen el sessionId en su historial)
+                            const fueAfectado = (s.xpHistory || []).some(h => h.sessionId === window.activeSessId);
+                            if (fueAfectado) {
+                                const ref = db.collection('students').doc(String(s.up));
+                                batch.update(ref, { xp: s.xp, xpHistory: s.xpHistory });
+                            }
+                        });
+                        await batch.commit();
+
                         status.innerText = `✅ ¡Sincronizado! Presentes: ${ok} | No encontrados: ${fail}`;
                         status.style.color = "var(--success-color)";
                         generateAndDisplayClasses();
                     } catch(err) {
+                        console.error(err);
                         status.innerText = "❌ Error al guardar.";
                     }
                 };
