@@ -3685,6 +3685,14 @@
 
                         // Refrescar sesión actual si es alumno
                         if (currentStudentUP) {
+                            const matchedStudent = fullData.students.find(s => s.up == currentStudentUP);
+                            if (matchedStudent) {
+                                displayStudentPortalView(matchedStudent);
+                            }
+                        }
+
+                        // Refrescar paneles de admin si está en esa vista
+                        if (currentUserRoll === 'teacher') {
                             const found = fullData.students.find(s => s.up == currentStudentUP);
                             if (found) {
                                 currentStudentData = found;
