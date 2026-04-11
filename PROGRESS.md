@@ -21,8 +21,14 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 ## 🧼 Limpieza de Datos
 - **Grupo 22**: Se eliminó completamente de Firestore (colección `grupos`) ya que correspondía a una cohorte anterior, dejando el panel limpio para este año.
 
+## 🗄️ Infraestructura de Base de Datos (Nuevo)
+- **Migración de Alumnos**: Se extrajo el enorme bloque de alumnos que residía en `app_state/main` y se los migró a su propia colección `students` asignando como clave de documento su DNI/UP. Las reglas de seguridad y lecturas de App fueron actualizadas (`firestore.rules`).
+- **Resiliencia UI**: Se ajustó `index.html` para contemplar de manera robusta estructuras (`sessions`, `attendanceRecords`) que estén momentáneamente vacías y así evitar fallos del dashboard (TypeError de listados undefined).
+
 ## 📌 Último Checkpoint (GitHub)
-- **Mensaje**: `Fix: Teacher panel consistency & group cleanup`
+- **Mensaje**: `fix(ui): solucionar bloqueo de interfaz y migrar estudiantes a coleccion separada en Firestore`
+- **Archivos Modificados**: `index.html`, `firestore.rules`, `migrate_rest.mjs` (scripts adjuntos).
+- **Fecha**: 11 de abril de 2026.
 - **Estado**: Subido exitosamente a `origin master`.
 
 ---
