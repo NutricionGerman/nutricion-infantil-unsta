@@ -7,6 +7,72 @@
     <title>Cátedra de Nutrición Infantil - UNSTA</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* === BANNER DE NUEVA VERSIÓN === */
+        #update-banner {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 99999;
+            background: linear-gradient(90deg, #ff6b35, #f59e0b);
+            color: #fff;
+            padding: 14px 24px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            animation: slideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+        #update-banner .banner-msg {
+            display: flex; align-items: center; gap: 12px;
+        }
+        #update-banner .banner-msg i {
+            font-size: 1.3rem; animation: pulse-icon 1.5s infinite;
+        }
+        @keyframes pulse-icon {
+            0%,100% { transform: scale(1); }
+            50%      { transform: scale(1.25); }
+        }
+        #update-banner .banner-actions {
+            display: flex; align-items: center; gap: 10px;
+        }
+        #update-banner .btn-update {
+            background: #fff;
+            color: #ff6b35;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        #update-banner .btn-update:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+        #update-banner .btn-dismiss {
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #update-banner .btn-dismiss:hover {
+            background: rgba(255,255,255,0.15);
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -2687,6 +2753,18 @@
 
 <body>
 
+    <!-- BANNER DE NUEVA VERSIÓN -->
+    <div id="update-banner">
+        <div class="banner-msg">
+            <i class="fas fa-rocket"></i>
+            <span>🎉 ¡Hay una nueva versión de la plataforma disponible! Para ver los últimos cambios, actualizá la página.</span>
+        </div>
+        <div class="banner-actions">
+            <button class="btn-update" onclick="location.reload(true)"><i class="fas fa-sync-alt"></i> Actualizar ahora</button>
+            <button class="btn-dismiss" onclick="document.getElementById('update-banner').style.display='none'">Después</button>
+        </div>
+    </div>
+
     <header class="site-header">
         <div class="container header-content">
             <nav class="main-navbar">
@@ -2854,10 +2932,23 @@
             <div id="panel-herramientas" class="tab-panel">
                 <div class="content-panel-container">
                     <div id="herramientas-content-container">
-                        <!-- El contenido de las herramientas se generará aquí dinámicamente -->
+                        <div class="section-header" style="margin-top: 20px;">
+                            <i class="fas fa-tools header-icon" style="color:var(--accent-teal);"></i>
+                            <h2>Calculadoras Principales</h2>
+                            <p>Herramientas de valoración nutricional elaboradas para la cátedra.</p>
+                        </div>
+                        <div class="tool-grid" style="margin-top: 30px;">
+                            <a href="https://nutriciongerman.github.io/valora-gest/" class="tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="tool-card-icon"><i class="fas fa-calculator"></i></div>
+                                <h4 class="tool-card-title">ValoraGest</h4>
+                                <p class="tool-card-description">Herramienta completa de valoración nutricional gestacional. Calculá requerimientos, ganancia de peso, suplementación y más.</p>
+                                <span style="display:inline-block; margin-top:12px; font-size:0.78rem; color:var(--accent-teal); font-weight:600;"><i class="fas fa-external-link-alt"></i> Abrir herramienta</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+
 
             <div id="panel-proyectos" class="tab-panel">
                 <div class="content-panel-container">
@@ -4002,8 +4093,9 @@
 
                     // Calculadoras con descripción
                     toolsData.calculadoras.forEach(tool => {
+                        const calcUrl = tool.external ? tool.url : `HERRAMIENTAS/${tool.url}`;
                         html += `
-                        <a href="HERRAMIENTAS/${tool.url}" class="tool-card" target="_blank">
+                        <a href="${calcUrl}" class="tool-card" target="_blank">
                             <div class="tool-card-icon"><i class="${tool.icon}"></i></div>
                             <h4 class="tool-card-title">${tool.nombre}</h4>
                             <p class="tool-card-description">${tool.description || ''}</p>
@@ -4011,6 +4103,7 @@
                     `;
                     });
                     html += '</div>';
+
 
                     // Mediciones Antropométricas (NUEVA SECCIÓN)
                     if (toolsData.medicionesAntropometricas && toolsData.medicionesAntropometricas.length > 0) {
@@ -8613,6 +8706,57 @@
 
         setTimeout(window.checkAttendanceFromURL, 2000);
         window.addEventListener('pageshow', window.checkAttendanceFromURL);
+    </script>
+
+    <!-- SISTEMA DE DETECCIÓN DE NUEVA VERSIÓN -->
+    <script>
+        (function() {
+            const VERSION_URL = 'version.json';
+            const STORAGE_KEY = 'app_cached_version';
+
+            async function fetchVersion() {
+                try {
+                    // Cache-bust con timestamp para evitar que el navegador sirva una copia vieja
+                    const res = await fetch(VERSION_URL + '?t=' + Date.now(), { cache: 'no-store' });
+                    if (!res.ok) return null;
+                    const data = await res.json();
+                    return data.v || null;
+                } catch(e) {
+                    return null;
+                }
+            }
+
+            function showUpdateBanner() {
+                const banner = document.getElementById('update-banner');
+                if (banner) banner.style.display = 'flex';
+            }
+
+            async function checkVersion() {
+                const latestVersion = await fetchVersion();
+                if (!latestVersion) return;
+
+                const storedVersion = localStorage.getItem(STORAGE_KEY);
+
+                if (!storedVersion) {
+                    // Primera visita: guardar versión actual, sin mostrar banner
+                    localStorage.setItem(STORAGE_KEY, latestVersion);
+                } else if (storedVersion !== latestVersion) {
+                    // ¡Nueva versión detectada! Mostrar banner
+                    showUpdateBanner();
+                }
+            }
+
+            // Chequear al cargar la página
+            checkVersion();
+
+            // Chequear cada 5 minutos mientras la página está abierta
+            setInterval(checkVersion, 5 * 60 * 1000);
+
+            // Chequear cuando el alumno vuelve a poner el foco en la pestaña (ej: venía de WhatsApp)
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') checkVersion();
+            });
+        })();
     </script>
 </body>
 
