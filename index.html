@@ -8535,14 +8535,20 @@
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> Cargando datos...</td></tr>';
                 
                 try {
-                    const [studentsSnap, authSnap] = await Promise.all([
+                    const [studentsSnap, authSnap, photosSnap] = await Promise.all([
                         db.collection('students').get(),
-                        db.collection('student_auth').get()
+                        db.collection('student_auth').get(),
+                        db.collection('student_photos').get()
                     ]);
                     
                     let authMap = {};
                     authSnap.forEach(doc => {
                         authMap[doc.id] = doc.data().password;
+                    });
+
+                    let photosMap = {};
+                    photosSnap.forEach(doc => {
+                        photosMap[doc.id] = true;
                     });
 
                     let studentsList = [];
@@ -8561,16 +8567,18 @@
                     studentsList.forEach(s => {
                         const hasPass = authMap[s.up] ? true : false;
                         const pass = hasPass ? authMap[s.up] : '<span style="color:#ef4444; font-size:0.8rem;">Sin crear</span>';
-                        // To avoid querying photos here (too heavy), we just always show the option to delete photo
+                        
+                        const hasPhoto = s.photo || photosMap[s.up] ? true : false;
+                        
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${s.up}</td>
                             <td>${s.name}</td>
                             <td>Grupo ${s.group || '?'}</td>
                             <td><strong style="color: #10b981;">${pass}</strong></td>
-                            <td style="text-align: center; display: flex; gap: 5px; justify-content: center;">
+                            <td style="text-align: center; display: flex; gap: 5px; justify-content: center; align-items: center;">
                                 ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${s.name}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Contraseña"><i class="fas fa-key"></i></button>` : ''}
-                                <button onclick="deleteStudentPhoto('${s.up}', '${s.name}')" style="background:#f59e0b; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto de Perfil"><i class="fas fa-user-times"></i> Foto</button>
+                                ${hasPhoto ? `<button onclick="deleteStudentPhoto('${s.up}', '${s.name}')" style="background:#f59e0b; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto de Perfil"><i class="fas fa-user-times"></i> Foto</button>` : '<span style="font-size: 0.8rem; color: var(--text-muted-light);"><i class="fas fa-camera-slash"></i> Sin foto</span>'}
                             </td>
                         `;
                         tbody.appendChild(tr);
