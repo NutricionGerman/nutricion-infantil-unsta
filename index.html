@@ -3313,6 +3313,14 @@
                                 <input type="text" id="admin-student-invite-code" placeholder="Ej: NUTRI2024" style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 12px; border-radius: 6px;">
                             </div>
 
+                            <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2); margin-top: 20px;">
+                                <h6 style="color: #10b981; margin-bottom: 10px;"><i class="fas fa-user-plus"></i> Añadir Nuevo Alumno</h6>
+                                <p style="font-size: 0.8rem; margin-bottom: 12px; color: var(--text-muted-light);">Agrega manualmente un alumno al sistema si tuvo problemas para registrarse o fue omitido.</p>
+                                <button class="nav-button" style="width: 100%; justify-content: center; background: #10b981; border: none; color: white;" onclick="openAddStudentModal()">
+                                    <i class="fas fa-plus"></i> Agregar Alumno Manualmente
+                                </button>
+                            </div>
+
                             <div style="background: rgba(139, 92, 246, 0.1); padding: 15px; border-radius: 8px; border: 1px solid rgba(139, 92, 246, 0.2); margin-top: 20px;">
                                 <h6 style="color: #8b5cf6; margin-bottom: 10px;"><i class="fas fa-users-cog"></i> Gestión de Claves de Alumnos</h6>
                                 <p style="font-size: 0.8rem; margin-bottom: 12px; color: var(--text-muted-light);">Administra las contraseñas personales de los alumnos. Puedes borrarlas para obligarlos a ingresar nuevamente el Código de Invitación.</p>
@@ -3826,6 +3834,45 @@
         </div>
     </div>
     <!-- FIN: MODAL GESTION CLAVES ALUMNOS -->
+
+    <!-- INICIO: MODAL AÑADIR ALUMNO NUEVO -->
+    <div class="modal" id="add-student-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h4><i class="fas fa-user-plus"></i> Añadir Nuevo Alumno</h4>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="add-student-form">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="color: var(--accent-orange); font-size: 0.8rem; font-weight: bold;">Legajo / UP</label>
+                        <input type="text" id="add-student-up" required placeholder="Ej: 12345678" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="color: var(--accent-orange); font-size: 0.8rem; font-weight: bold;">Nombre/s</label>
+                        <input type="text" id="add-student-firstname" required placeholder="Ej: Juan Pablo" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label style="color: var(--accent-orange); font-size: 0.8rem; font-weight: bold;">Apellido/s</label>
+                        <input type="text" id="add-student-lastname" required placeholder="Ej: Perez" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white;">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 25px;">
+                        <label style="color: var(--accent-orange); font-size: 0.8rem; font-weight: bold;">Grupo (Opcional)</label>
+                        <select id="add-student-group" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white;">
+                            <option value="">(Sin Grupo)</option>
+                            <option value="g_1">Grupo 1</option><option value="g_2">Grupo 2</option><option value="g_3">Grupo 3</option><option value="g_4">Grupo 4</option>
+                            <option value="g_5">Grupo 5</option><option value="g_6">Grupo 6</option><option value="g_7">Grupo 7</option><option value="g_8">Grupo 8</option>
+                            <option value="g_9">Grupo 9</option><option value="g_10">Grupo 10</option><option value="g_11">Grupo 11</option><option value="g_12">Grupo 12</option>
+                            <option value="g_13">Grupo 13</option><option value="g_14">Grupo 14</option><option value="g_15">Grupo 15</option><option value="g_16">Grupo 16</option>
+                            <option value="g_17">Grupo 17</option><option value="g_18">Grupo 18</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="add-student-submit-btn" class="nav-button active" style="width: 100%; justify-content: center;"><i class="fas fa-check"></i> Añadir Alumno</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- FIN: MODAL AÑADIR ALUMNO NUEVO -->
 
     <!-- Modal para Configurar QR (Docente) -->
     <div id="qr-config-modal" class="modal modal-sm">
@@ -8800,11 +8847,76 @@
                 };
                 reader.readAsText(file);
             };
+            window.openAddStudentModal = () => {
+                document.getElementById('add-student-form').reset();
+                document.getElementById('add-student-modal').classList.add('active');
+            };
+
+            const addStudentForm = document.getElementById('add-student-form');
+            if (addStudentForm) {
+                addStudentForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const up = document.getElementById('add-student-up').value.trim();
+                    const firstName = document.getElementById('add-student-firstname').value.trim();
+                    const lastName = document.getElementById('add-student-lastname').value.trim();
+                    const group = document.getElementById('add-student-group').value;
+                    const submitBtn = document.getElementById('add-student-submit-btn');
+
+                    if (!up || !firstName || !lastName) {
+                        alert("Completá todos los campos obligatorios.");
+                        return;
+                    }
+
+                    submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Guardando...';
+                    submitBtn.disabled = true;
+
+                    try {
+                        const existingDoc = await db.collection('students').doc(up).get();
+                        if (existingDoc.exists) {
+                            alert(`Error: Ya existe un alumno registrado con el UP/Legajo ${up}.`);
+                            submitBtn.innerHTML = '<i class="fas fa-check"></i> Añadir Alumno';
+                            submitBtn.disabled = false;
+                            return;
+                        }
+
+                        const newStudent = {
+                            up: up,
+                            firstName: firstName,
+                            lastName: lastName,
+                            name: `${lastName}, ${firstName}`.toUpperCase(),
+                            group: group,
+                            xp: 0,
+                            xpHistory: []
+                        };
+
+                        await db.collection('students').doc(up).set(newStudent);
+                        alert("¡Alumno añadido exitosamente!");
+                        
+                        // Si fullData ya estaba cargado, inyectar para que no haya que recargar todo
+                        if (window.fullData && window.fullData.students) {
+                            window.fullData.students.push(newStudent);
+                            if (window.renderStudentPasswordsTable) {
+                                renderStudentPasswordsTable();
+                            }
+                        }
+
+                        document.getElementById('add-student-modal').classList.remove('active');
+                    } catch (err) {
+                        console.error(err);
+                        alert("Ocurrió un error al guardar el alumno.");
+                    } finally {
+                        submitBtn.innerHTML = '<i class="fas fa-check"></i> Añadir Alumno';
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
 
             window.openStudentPasswordsModal = async () => {
                 document.getElementById('student-passwords-modal').classList.add('active');
                 await renderStudentPasswordsTable();
             };
+
 
             window.renderStudentPasswordsTable = async () => {
                 const tbody = document.getElementById('student-passwords-table-body');
@@ -8849,12 +8961,13 @@
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${s.up}</td>
-                            <td>${s.name}</td>
+                            <td>${s.name || 'Sin nombre'}</td>
                             <td>Grupo ${s.group || '?'}</td>
                             <td><strong style="color: #10b981;">${pass}</strong></td>
                             <td style="text-align: center; display: flex; gap: 5px; justify-content: center; align-items: center;">
-                                ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${s.name}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Contraseña"><i class="fas fa-key"></i></button>` : ''}
-                                ${hasPhoto ? `<button onclick="deleteStudentPhoto('${s.up}', '${s.name}')" style="background:#f59e0b; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto de Perfil"><i class="fas fa-user-times"></i> Foto</button>` : '<span style="font-size: 0.8rem; color: var(--text-muted-light);"><i class="fas fa-camera-slash"></i> Sin foto</span>'}
+                                ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${(s.name || '').replace(/'/g, "\\'")}')" style="background:#eab308; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Contraseña"><i class="fas fa-key"></i></button>` : ''}
+                                ${hasPhoto ? `<button onclick="deleteStudentPhoto('${s.up}', '${(s.name || '').replace(/'/g, "\\'")}')" style="background:#f97316; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto"><i class="fas fa-camera"></i></button>` : ''}
+                                <button onclick="deleteStudentFull('${s.up}', '${(s.name || '').replace(/'/g, "\\'")}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Eliminar Alumno Definitivamente"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         `;
                         tbody.appendChild(tr);
@@ -8900,6 +9013,40 @@
                     alert('No se pudo borrar la foto, o el alumno no tenía una foto asignada.');
                 }
             };
+
+            window.deleteStudentFull = async (up, name) => {
+                if (!confirm(`⚠️ CUIDADO: ¿Estás totalmente seguro de que quieres ELIMINAR por completo al alumno ${name} (UP: ${up}) del sistema?\n\nEsta acción borrará sus datos, su contraseña y no podrá recuperarse.`)) {
+                    return;
+                }
+                
+                // Pedimos una confirmación extra de seguridad digitando el UP
+                const upInput = prompt(`Para confirmar la eliminación, escribe el número de UP exacto del alumno (${up}):`);
+                if (upInput !== String(up)) {
+                    if (upInput !== null) alert("El número ingresado no coincide. Eliminación cancelada.");
+                    return;
+                }
+                
+                try {
+                    // Borrar perfil en 'students'
+                    await db.collection('students').doc(String(up)).delete();
+                    
+                    // Intentar borrar pass auth u ok foto, ignorar fallos si no existen
+                    await db.collection('student_auth').doc(String(up)).delete().catch(() => {});
+                    await db.collection('student_photos').doc(String(up)).delete().catch(() => {});
+                    
+                    alert('Alumno eliminado exitosamente del sistema.');
+                    
+                    // Limpiar memory para no requerir refresh
+                    if (window.fullData && window.fullData.students) {
+                        window.fullData.students = window.fullData.students.filter(s => String(s.up) !== String(up));
+                    }
+                    await renderStudentPasswordsTable();
+                } catch (e) {
+                    console.error("Error deleting student completely:", e);
+                    alert("Error al intentar eliminar el alumno. Revisa tu conexión a internet.");
+                }
+            };
+
 
             window.resetAcademicCycle = async () => {
                 if (!confirm("⚠️ ¡ADVERTENCIA CRÍTICA! ⚠️\n\nEsto borrará todas las asistencias, sesiones y XP de los alumnos para iniciar un año limpio.\n\n¿Estás absolutamente seguro?")) return;
