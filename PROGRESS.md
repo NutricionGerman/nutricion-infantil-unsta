@@ -17,7 +17,7 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Consistencia Visual**: La pestaña de "Entregas de Grupos" (`loadAdminGroupContents`) ahora muestra siempre los **18 grupos estándar** (ID `g_1` al `g_18`), sin importar si tienen datos cargados o no.
 - **Gestión de IDs**: El sistema ahora busca datos tanto por ID numérico (`1`) como con prefijo (`g_1`) para evitar inconsistencias.
 - **Grupos Extras**: El sistema detecta y muestra grupos fuera del rango estándar si existen en la base de datos.
-- **Gestión de Claves de Alumnos (Nuevo)**: En la pestaña "Sistema" del panel docente, se agregó un modal para "Administrar Claves de Alumnos". Permite visualizar las contraseñas personales y **borrarlas** individualmente para forzar al alumno a generar una nueva con el Código de Cátedra.
+- **Gestión de Alumnos (Claves y Fotos)**: En la pestaña "Sistema" del panel docente, se agregó un modal de "Gestión de Alumnos". Permite visualizar y borrar las **contraseñas personales** para forzarlos a iniciar con el código general, y también permite **eliminar sus fotos de perfil** directamente desde el panel sin tocar la base de datos a mano.
 
 ## 🧼 Limpieza de Datos
 - **Grupo 22**: Se eliminó completamente de Firestore (colección `grupos`) ya que correspondía a una cohorte anterior, dejando el panel limpio para este año.
@@ -37,10 +37,10 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Flujo del docente**: Modificar `index.html` → cambiar fecha en `version.json` → commit + push → alumnos son notificados automáticamente.
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `feat(admin): modal de administracion de claves de alumnos` y `fix: escape de tags en JS para evitar falla con live-server`.
+- **Mensaje**: `feat(admin): agregar boton para eliminar foto de perfil del alumno desde modal`
 - **Archivos Modificados**: `index.html`, `PROGRESS.md`.
 - **Fecha**: `12 de abril de 2026`.
-- **Estado**: Subido exitosamente a `origin master` (hash `2d3f774`).
+- **Estado**: Subido exitosamente a `origin master` (hash `4bd0c74`).
 
 
 ---
