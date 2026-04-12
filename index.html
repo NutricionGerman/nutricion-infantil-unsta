@@ -3098,15 +3098,6 @@
 
                         <!-- VISTA PARA ALUMNOS -->
                         <div id="alumnos-dashboard-content" class="dashboard-content-panel active">
-                            <div class="section-header" style="margin-top: 0;">
-                                <i class="fas fa-user-graduate header-icon" style="color:#60a5fa;"></i>
-                                <h2>Ranking de Alumnos</h2>
-                                <p>¡Los alumnos más destacados de la cursada!</p>
-                            </div>
-                            <div class="xp-search-bar">
-                                <input type="text" id="student-up-search" placeholder="Ingresa tu N° de UP">
-                                <button id="search-rank-btn"><i class="fas fa-search"></i> Buscar</button>
-                            </div>
                             <div id="student-podium-container" class="podium-container"></div>
                             <div class="extended-rankings-wrapper">
                                 <div id="top-alumnos-container" class="ranking-list-container"></div>
@@ -4161,11 +4152,7 @@
                     switchDashboardTab('alumnos');
                     try { initializeShop(); } catch (e) {}
 
-                    // Eventos de búsqueda y reportes
-                    document.getElementById('search-rank-btn').addEventListener('click', handleStudentSearch);
-                    document.getElementById('student-up-search').addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') handleStudentSearch();
-                    });
+                    // Eventos de reportes
                     document.getElementById('generate-pdf-report-btn').addEventListener('click', generatePdfReport);
                     
                     // Cerrado de modales centralizado
