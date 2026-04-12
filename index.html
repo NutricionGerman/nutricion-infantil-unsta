@@ -505,17 +505,22 @@
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 1.5rem;
-            min-height: 280px;
+            gap: 1rem;
+            min-height: 320px;
+            padding-bottom: 2rem;
+            margin-top: 2rem;
         }
 
         .podium-card {
-            padding: 60px 1rem 1.5rem 1rem;
+            padding: 65px 1.5rem 1.5rem 1.5rem;
             text-align: center;
             transition: transform 0.3s ease;
             width: 100%;
-            max-width: 240px;
+            max-width: 260px;
             position: relative;
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
         }
 
         .extended-rankings-wrapper {
@@ -638,30 +643,42 @@
 
         .podium-name {
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-light);
+            margin-bottom: 5px;
+            /* Prevent wrapping on long names */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .podium-xp {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 1.1rem;
+            font-weight: 700;
             color: var(--xp-color);
             margin-top: 0.5rem;
         }
 
         .podium-card.rank-1 {
             order: 2;
-            transform: scale(1.1);
+            transform: translateY(-30px) scale(1.05);
             z-index: 2;
-            border-color: rgba(245, 158, 11, 0.5);
+            border: 2px solid rgba(245, 158, 11, 0.8);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.15);
         }
 
         .podium-card.rank-2 {
             order: 1;
+            transform: translateY(-10px);
+            border: 1px solid rgba(156, 163, 175, 0.6);
+            box-shadow: 0 10px 25px rgba(156, 163, 175, 0.1);
         }
 
         .podium-card.rank-3 {
             order: 3;
+            transform: translateY(10px);
+            border: 1px solid rgba(180, 83, 9, 0.6);
+            box-shadow: 0 10px 25px rgba(180, 83, 9, 0.1);
         }
 
         /* extended-rankings-wrapper duplicated css rule removed */
