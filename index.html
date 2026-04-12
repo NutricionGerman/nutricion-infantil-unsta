@@ -6025,14 +6025,14 @@
                         <div class="edit-photo-trigger" id="edit-student-photo-btn" title="Editar Foto de Perfil" style="position: absolute; bottom: 5px; left: 60px; background: var(--accent-teal); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); z-index: 5; color: white;">
                             <i class="fas fa-pencil-alt"></i>
                         </div>
-                        <div class="profile-info"><h3>${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}</h3><p>UP: ${student.up} | Grupo: ${student.group || 'N/A'}</p></div>
+                        <div class="profile-info"><h3>${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}</h3></div>
                     </div>
                     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
                         <div class="stat-card clickable" data-modal-target="#attendance-modal" title="Haz clic para ver detalle"><i class="fas fa-user-check stat-icon"></i><div class="stat-value">${attendancePercentage}%</div><div class="stat-label">Asistencia</div><div class="stat-sublabel">${attendanceSublabel}</div></div>
                         <div class="stat-card clickable" data-modal-target="#tp-modal" title="Haz clic para ver detalle"><i class="fas fa-file-alt stat-icon"></i><div class="stat-value">${tpPercentage}%</div><div class="stat-label">TPs Aprobados</div><div class="stat-sublabel">(${approvedTPsCount} de ${denominator})</div></div>
                         <div class="stat-card"><i class="fas fa-file-signature stat-icon"></i><div class="stat-value">${student.parcial1 ?? 'N/A'}</div><div class="stat-label">1er Parcial</div></div>
                         <div class="stat-card"><i class="fas fa-file-signature stat-icon"></i><div class="stat-value">${student.parcial2 ?? 'N/A'}</div><div class="stat-label">2do Parcial</div></div>
-                        <div class="stat-card" style="box-shadow: 0 0 15px rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3);"><i class="fas fa-graduation-cap stat-icon" style="color: ${promoOk ? 'var(--xp-color)' : (regOk ? 'var(--accent-teal)' : 'var(--danger-color)')}"></i><div class="stat-label" style="margin-bottom: 1rem;">Condición</div><span class="status-tag ${conditionClass}" style="${promoOk ? 'background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);' : ''}">${studentCondition}</span></div>
+                        <div class="stat-card clickable" data-modal-target="#condition-modal" title="Haz clic para ver tu condición" style="box-shadow: 0 0 15px rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3); cursor: pointer;"><i class="fas fa-graduation-cap stat-icon" style="color: ${promoOk ? 'var(--xp-color)' : (regOk ? 'var(--accent-teal)' : 'var(--danger-color)')}"></i><div class="stat-label" style="margin-bottom: 1rem;">Condición</div><span class="status-tag ${conditionClass}" style="${promoOk ? 'background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);' : ''}">${studentCondition}</span><div style="font-size:0.7rem; color:var(--text-muted-light); margin-top:8px;"><i class="fas fa-info-circle"></i> Ver detalle</div></div>
                     </div>
                     <div class="additional-stats">
                         <div> 
@@ -6045,7 +6045,61 @@
 
                     </div>
                 </div>
-                ${attendanceModalHTML}${tpModalHTML}${xpHistoryModalHTML}`;
+                ${attendanceModalHTML}${tpModalHTML}${xpHistoryModalHTML}
+                <!-- MODAL DE CONDICIÓN -->
+                <div class="modal" id="condition-modal">
+                    <div class="modal-content">
+                        <div class="modal-header"><h4><i class="fas fa-graduation-cap"></i> Tu Condición Académica</h4><button class="close-modal">&times;</button></div>
+                        <div class="modal-body">
+                        ${ promoOk ? `
+                            <div style="text-align:center; padding: 1.5rem 0;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                                <h3 style="color: #FFD700; font-size: 1.4rem; margin-bottom: 0.5rem;">¡Felicitaciones, vas en camino a Promocionar!</h3>
+                                <p style="color: var(--text-muted-light); max-width: 400px; margin: 0 auto 1.5rem;">Mantené tu ritmo y llegás a fin de año en la mejor condición posible. ¡Seguí así!</p>
+                                <div style="background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05)); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 1rem; display: inline-block;">
+                                    <p style="color: #FFD700; font-weight: 600; margin:0;"><i class="fas fa-star"></i> Asistencia: ${attendancePercentage}% (req. 75%) ✓</p>
+                                    <p style="color: #FFD700; font-weight: 600; margin: 8px 0 0;"><i class="fas fa-file-alt"></i> TPs: ${tpPercentage}% (req. 100%) ✓</p>
+                                </div>
+                            </div>
+                        ` : regOk ? `
+                            <div style="text-align:center; padding: 1rem 0 1.5rem;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">✅</div>
+                                <h3 style="color: var(--accent-teal); font-size: 1.2rem; margin-bottom: 0.5rem;">Estás Regularizando</h3>
+                                <p style="color: var(--text-muted-light); margin-bottom: 1.5rem;">Tu condición actual es <strong style="color:var(--accent-teal)">Regular</strong>. Esto aún puede cambiar. ¿Qué te falta para llegar a Promoción?</p>
+                            </div>
+                            <div style="display: grid; gap: 0.75rem;">
+                                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 10px; padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <div><i class="fas fa-user-check" style="color: var(--accent-teal); margin-right: 8px;"></i><span>Asistencia actual</span></div>
+                                    <div style="text-align:right;"><strong>${attendancePercentage}%</strong> <span style="color: ${attendancePercentage >= 75 ? '#4ade80' : '#f87171'};">(necesitás 75%)</span></div>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 10px; padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                                    <div><i class="fas fa-file-alt" style="color: var(--accent-teal); margin-right: 8px;"></i><span>TPs entregados</span></div>
+                                    <div style="text-align:right;"><strong>${tpPercentage}%</strong> <span style="color: ${tpPercentage >= 100 ? '#4ade80' : '#f87171'};">(necesitás 100%)</span></div>
+                                </div>
+                            </div>
+                        ` : `
+                            <div style="text-align:center; padding: 1rem 0 1.5rem;">
+                                <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">⚠️</div>
+                                <h3 style="color: var(--danger-color); font-size: 1.2rem; margin-bottom: 0.5rem;">Condición: Libre</h3>
+                                <p style="color: var(--text-muted-light); margin-bottom: 1.5rem;">Todavía hay tiempo de revertir esto. Mirá qué necesitás para cada condición:</p>
+                            </div>
+                            <div style="display: grid; gap: 0.75rem;">
+                                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 10px; padding: 1rem;">
+                                    <p style="font-weight: 600; color: var(--accent-teal); margin-bottom: 0.5rem;">Para <strong>Regularizar</strong> necesitás:</p>
+                                    <p style="margin: 0; color: ${attendancePercentage >= 50 ? '#4ade80' : '#f87171'};"><i class="fas fa-user-check" style="margin-right:6px;"></i>Asistencia: ${attendancePercentage}% → mínimo 50% ${attendancePercentage >= 50 ? '✓' : '✗'}</p>
+                                    <p style="margin: 6px 0 0; color: ${tpPercentage >= 75 ? '#4ade80' : '#f87171'};"><i class="fas fa-file-alt" style="margin-right:6px;"></i>TPs: ${tpPercentage}% → mínimo 75% ${tpPercentage >= 75 ? '✓' : '✗'}</p>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 10px; padding: 1rem;">
+                                    <p style="font-weight: 600; color: #FFD700; margin-bottom: 0.5rem;">Para <strong>Promocionar</strong> necesitás:</p>
+                                    <p style="margin: 0; color: ${attendancePercentage >= 75 ? '#4ade80' : '#f87171'};"><i class="fas fa-user-check" style="margin-right:6px;"></i>Asistencia: ${attendancePercentage}% → mínimo 75% ${attendancePercentage >= 75 ? '✓' : '✗'}</p>
+                                    <p style="margin: 6px 0 0; color: ${tpPercentage >= 100 ? '#4ade80' : '#f87171'};"><i class="fas fa-file-alt" style="margin-right:6px;"></i>TPs: ${tpPercentage}% → mínimo 100% ${tpPercentage >= 100 ? '✓' : '✗'}</p>
+                                </div>
+                            </div>
+                        `}
+                        <p style="font-size: 0.75rem; color: var(--text-muted-light); margin-top: 1.5rem; text-align: center;"><i class="fas fa-info-circle"></i> Esta condición es académica y no es definitoria hasta el cierre de la cursada.</p>
+                        </div>
+                    </div>
+                </div>`;
 
                 portalContainer.innerHTML = portalHTML;
                 findImage(student.up, (photoHTML) => { document.getElementById('portal-photo').innerHTML = photoHTML; }, true);
