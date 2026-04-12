@@ -37,10 +37,10 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Flujo del docente**: Modificar `index.html` → cambiar fecha en `version.json` → commit + push → alumnos son notificados automáticamente.
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `feat(ux): banner de nueva version + tarjeta ValoraGest en Herramientas`
-- **Archivos Modificados**: `index.html` (banner CSS/HTML/JS + tarjeta ValoraGest), `version.json` (nuevo archivo de versión).
-- **Fecha**: `11 de abril de 2026`.
-- **Estado**: Subido exitosamente a `origin master` (hash `09301d9`).
+- **Mensaje**: `feat(admin): modal de administracion de claves de alumnos` y `fix: escape de tags en JS para evitar falla con live-server`.
+- **Archivos Modificados**: `index.html`, `PROGRESS.md`.
+- **Fecha**: `12 de abril de 2026`.
+- **Estado**: Subido exitosamente a `origin master` (hash `2d3f774`).
 
 
 ---
