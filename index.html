@@ -73,6 +73,162 @@
             background: rgba(255,255,255,0.15);
         }
     </style>
+
+    <style>
+        /* ====================================================
+           AUTH WALL - Muro de Autenticación
+        ==================================================== */
+        #auth-wall {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: url('https://i.postimg.cc/bwd1p28N/Image-fx-6.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #1c1d21;
+        }
+        #auth-wall::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(13, 14, 17, 0.82);
+            backdrop-filter: blur(6px);
+        }
+        #auth-wall-card {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            background: rgba(28, 29, 33, 0.95);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px 36px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            animation: authCardIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        @keyframes authCardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0)   scale(1);    }
+        }
+        .auth-wall-logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .auth-wall-logo .aw-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #e87a3d, #4c9a9b);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 14px;
+            box-shadow: 0 8px 24px rgba(232,122,61,0.35);
+        }
+        .auth-wall-logo h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f0f0f0;
+            margin: 0;
+        }
+        .auth-wall-logo p {
+            font-size: 0.8rem;
+            color: rgba(240,240,240,0.5);
+            margin-top: 4px;
+        }
+        .aw-step { display: none; }
+        .aw-step.active { display: block; }
+        .aw-label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: rgba(240,240,240,0.6);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .aw-input {
+            width: 100%;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #f0f0f0;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 18px;
+        }
+        .aw-input:focus {
+            border-color: #4c9a9b;
+        }
+        .aw-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e87a3d, #d4622a);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s, opacity 0.2s;
+            box-shadow: 0 4px 16px rgba(232,122,61,0.4);
+        }
+        .aw-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,122,61,0.5); }
+        .aw-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+        .aw-btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(240,240,240,0.7);
+            box-shadow: none;
+            margin-top: 10px;
+        }
+        .aw-btn-secondary:hover { background: rgba(255,255,255,0.06); box-shadow: none; transform: none; }
+        .aw-divider {
+            border: none;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin: 20px 0;
+        }
+        .aw-msg {
+            font-size: 0.82rem;
+            text-align: center;
+            color: rgba(240,240,240,0.5);
+            margin-top: 18px;
+        }
+        .aw-error {
+            color: #ef4444;
+            font-size: 0.82rem;
+            margin-bottom: 12px;
+            text-align: center;
+            min-height: 18px;
+        }
+        .aw-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #f0f0f0;
+            margin-bottom: 6px;
+        }
+        .aw-section-sub {
+            font-size: 0.82rem;
+            color: rgba(240,240,240,0.5);
+            margin-bottom: 20px;
+        }
+        #auth-wall.hidden {
+            animation: authWallOut 0.45s ease forwards;
+            pointer-events: none;
+        }
+        @keyframes authWallOut {
+            to { opacity: 0; transform: scale(1.04); }
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -2753,6 +2909,70 @@
 
 <body>
 
+    <!-- ============================================================
+         AUTH WALL - Pantalla de acceso obligatoria
+    ============================================================ -->
+    <div id="auth-wall">
+        <div id="auth-wall-card">
+            <!-- LOGO / MARCA -->
+            <div class="auth-wall-logo">
+                <div class="aw-icon"><i class="fas fa-seedling"></i></div>
+                <h2>Cátedra de Nutrición Infantil</h2>
+                <p>UNSTA — Acceso exclusivo para alumnos</p>
+            </div>
+
+            <!-- PASO 1: Ingresar UP (número de legajo) -->
+            <div id="aw-step-up" class="aw-step active">
+                <div class="aw-section-title">¡Bienvenido/a! 👋</div>
+                <div class="aw-section-sub">Ingresá tu número de UP (legajo) para continuar.</div>
+                <label class="aw-label" for="aw-up-input">Número de UP</label>
+                <input id="aw-up-input" class="aw-input" type="number" placeholder="Ej: 12345" autocomplete="off">
+                <div id="aw-up-error" class="aw-error"></div>
+                <button id="aw-up-btn" class="aw-btn"><i class="fas fa-arrow-right"></i> Continuar</button>
+                <p class="aw-msg">¿Sos docente? <a href="#" id="aw-teacher-link" style="color: #4c9a9b;">Ingresar como docente</a></p>
+            </div>
+
+            <!-- PASO 2A: Login (alumno ya registrado) -->
+            <div id="aw-step-login" class="aw-step">
+                <div class="aw-section-title" id="aw-login-greeting">Hola 👋</div>
+                <div class="aw-section-sub">Ingresá tu contraseña personal para acceder.</div>
+                <label class="aw-label" for="aw-login-pass">Contraseña</label>
+                <input id="aw-login-pass" class="aw-input" type="password" placeholder="Tu contraseña">
+                <div id="aw-login-error" class="aw-error"></div>
+                <button id="aw-login-btn" class="aw-btn"><i class="fas fa-unlock"></i> Entrar</button>
+                <button class="aw-btn aw-btn-secondary" onclick="awGoBack()"><i class="fas fa-arrow-left"></i> Volver</button>
+            </div>
+
+            <!-- PASO 2B: Registro (alumno nuevo) -->
+            <div id="aw-step-register" class="aw-step">
+                <div class="aw-section-title">Crear cuenta 🎓</div>
+                <div class="aw-section-sub">Primera vez que ingresás. Necesitás el código de invitación de la cátedra y crear tu contraseña.</div>
+                <label class="aw-label" for="aw-reg-code">Código de Invitación</label>
+                <input id="aw-reg-code" class="aw-input" type="text" placeholder="Código que te dio tu docente">
+                <label class="aw-label" for="aw-reg-pass">Elegí una contraseña</label>
+                <input id="aw-reg-pass" class="aw-input" type="password" placeholder="Mínimo 4 caracteres">
+                <label class="aw-label" for="aw-reg-pass2">Confirmá la contraseña</label>
+                <input id="aw-reg-pass2" class="aw-input" type="password" placeholder="Repetí la contraseña">
+                <div id="aw-reg-error" class="aw-error"></div>
+                <button id="aw-reg-btn" class="aw-btn"><i class="fas fa-check-circle"></i> Crear cuenta y Entrar</button>
+                <button class="aw-btn aw-btn-secondary" onclick="awGoBack()"><i class="fas fa-arrow-left"></i> Volver</button>
+            </div>
+
+            <!-- PASO DOCENTE: Login con Firebase -->
+            <div id="aw-step-teacher" class="aw-step">
+                <div class="aw-section-title"><i class="fas fa-chalkboard-teacher" style="color:#4c9a9b;"></i> Acceso Docente</div>
+                <div class="aw-section-sub">Ingresá con tu cuenta de docente para administrar la plataforma.</div>
+                <label class="aw-label" for="aw-teacher-email">Email</label>
+                <input id="aw-teacher-email" class="aw-input" type="email" placeholder="tu@email.com">
+                <label class="aw-label" for="aw-teacher-pass">Contraseña</label>
+                <input id="aw-teacher-pass" class="aw-input" type="password" placeholder="Contraseña">
+                <div id="aw-teacher-error" class="aw-error"></div>
+                <button id="aw-teacher-btn" class="aw-btn" style="background: linear-gradient(135deg, #4c9a9b, #357c7d);"><i class="fas fa-sign-in-alt"></i> Ingresar como Docente</button>
+                <button class="aw-btn aw-btn-secondary" onclick="awGoBack()"><i class="fas fa-arrow-left"></i> Volver</button>
+            </div>
+        </div>
+    </div>
+
     <!-- BANNER DE NUEVA VERSIÓN -->
     <div id="update-banner">
         <div class="banner-msg">
@@ -3685,6 +3905,21 @@
                     tabPanels.forEach(panel => panel.classList.remove('active'));
                     if (targetPanel) {
                         targetPanel.classList.add('active');
+                    }
+
+                    // AUTO-LOGIN en "Mi Perfil" si ya hay sesión del Auth Wall
+                    if (button.dataset.tabTarget === '#panel-perfil') {
+                        const awUP = sessionStorage.getItem('aw_authenticated_up');
+                        if (awUP && fullData && fullData.students) {
+                            const student = fullData.students.find(s => String(s.up) === String(awUP));
+                            if (student) {
+                                // Saltar el formulario interno y mostrar el perfil directamente
+                                document.getElementById('profile-auth-container').style.display = 'none';
+                                currentStudentUP = String(awUP);
+                                currentStudentData = student;
+                                loadProfileContent(student);
+                            }
+                        }
                     }
                 });
             });
@@ -7762,7 +7997,7 @@
             const registerBtn = document.getElementById('student-register-btn');
             const loginUpInput = document.getElementById('student-login-up');
             
-            let currentStudentUP = null;
+            let currentStudentUP = window.currentStudentUP || null;
             let currentStudentData = null;
 
             if (loginNextBtn) {
@@ -8676,7 +8911,200 @@
             
             // Función para que el docente abra el configurador
             // Ejecución de detección de URL para asistencia QR
-            initializeApp();
+            // ================================================================
+            // AUTH WALL LOGIC - Controla el acceso antes de cargar la app
+            // ================================================================
+            (function setupAuthWall() {
+                const wall = document.getElementById('auth-wall');
+                const db_aw = db; // Reusar la misma instancia de Firestore ya iniciada
+
+                // Verificar si ya hay sesión activa (sin nueva lectura de Firestore)
+                const savedUP = sessionStorage.getItem('aw_authenticated_up');
+                const savedName = sessionStorage.getItem('aw_authenticated_name');
+
+                function dismissWall() {
+                    wall.classList.add('hidden');
+                    setTimeout(() => wall.remove(), 500);
+                    initializeApp();
+                }
+
+                // Si ya está autenticado en esta sesión → cargar directo
+                if (savedUP) {
+                    window.currentStudentUP = savedUP;
+                    dismissWall();
+                    return;
+                }
+
+                // Si no, mostrar el muro
+                let awCurrentUP = null;
+
+                const awUpInput = document.getElementById('aw-up-input');
+                const awUpBtn = document.getElementById('aw-up-btn');
+                const awUpError = document.getElementById('aw-up-error');
+
+                const awLoginPass = document.getElementById('aw-login-pass');
+                const awLoginBtn = document.getElementById('aw-login-btn');
+                const awLoginError = document.getElementById('aw-login-error');
+                const awLoginGreeting = document.getElementById('aw-login-greeting');
+
+                const awRegCode = document.getElementById('aw-reg-code');
+                const awRegPass = document.getElementById('aw-reg-pass');
+                const awRegPass2 = document.getElementById('aw-reg-pass2');
+                const awRegBtn = document.getElementById('aw-reg-btn');
+                const awRegError = document.getElementById('aw-reg-error');
+
+                function awShowStep(stepId) {
+                    document.querySelectorAll('.aw-step').forEach(s => s.classList.remove('active'));
+                    document.getElementById(stepId).classList.add('active');
+                }
+
+                window.awGoBack = function() { awShowStep('aw-step-up'); awCurrentUP = null; };
+
+                // Docente: mostrar paso de login docente DENTRO del Auth Wall
+                document.getElementById('aw-teacher-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    awShowStep('aw-step-teacher');
+                    setTimeout(() => document.getElementById('aw-teacher-email').focus(), 100);
+                });
+
+                // Login docente via Firebase Auth
+                const awTeacherBtn = document.getElementById('aw-teacher-btn');
+                const awTeacherEmail = document.getElementById('aw-teacher-email');
+                const awTeacherPass = document.getElementById('aw-teacher-pass');
+                const awTeacherError = document.getElementById('aw-teacher-error');
+
+                awTeacherBtn.addEventListener('click', async () => {
+                    const email = awTeacherEmail.value.trim();
+                    const pass = awTeacherPass.value;
+                    if (!email || !pass) { awTeacherError.textContent = 'Completá los campos.'; return; }
+                    awTeacherError.textContent = '';
+                    awTeacherBtn.disabled = true;
+                    awTeacherBtn.textContent = 'Autenticando...';
+                    try {
+                        await firebase.auth().signInWithEmailAndPassword(email, pass);
+                        // Firebase onAuthStateChanged lo confirma; descartamos el muro
+                        dismissWall();
+                    } catch(e) {
+                        awTeacherError.textContent = 'Credenciales incorrectas.';
+                    } finally {
+                        awTeacherBtn.disabled = false;
+                        awTeacherBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Ingresar como Docente';
+                    }
+                });
+
+                awTeacherPass.addEventListener('keypress', (e) => { if (e.key === 'Enter') awTeacherBtn.click(); });
+
+                // PASO 1: Buscar alumno por UP
+                awUpBtn.addEventListener('click', async () => {
+                    const upVal = awUpInput.value.trim();
+                    if (!upVal) { awUpError.textContent = 'Ingresá tu número de UP.'; return; }
+                    awUpError.textContent = '';
+                    awUpBtn.disabled = true;
+                    awUpBtn.textContent = 'Buscando...';
+
+                    try {
+                        // Pre-cargamos solo el documento del alumno (1 lectura mínima)
+                        const studentDoc = await db_aw.collection('students').doc(String(upVal)).get();
+                        if (!studentDoc.exists) {
+                            awUpError.textContent = 'UP no encontrado. Verificá el número o consultá a tu docente.';
+                            awUpBtn.disabled = false;
+                            awUpBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continuar';
+                            return;
+                        }
+
+                        const student = studentDoc.data();
+                        awCurrentUP = String(upVal);
+
+                        // Verificar si ya tiene contraseña creada (otra lectura mínima)
+                        const authDoc = await db_aw.collection('student_auth').doc(awCurrentUP).get();
+
+                        if (authDoc.exists) {
+                            awLoginGreeting.textContent = `Hola, ${student.firstName || 'alumno/a'} 👋`;
+                            awShowStep('aw-step-login');
+                            awLoginPass.value = '';
+                            setTimeout(() => awLoginPass.focus(), 100);
+                        } else {
+                            awShowStep('aw-step-register');
+                            setTimeout(() => awRegCode.focus(), 100);
+                        }
+                    } catch (e) {
+                        awUpError.textContent = 'Error de conexión. Intentá de nuevo.';
+                    } finally {
+                        awUpBtn.disabled = false;
+                        awUpBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continuar';
+                    }
+                });
+
+                awUpInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') awUpBtn.click(); });
+
+                // PASO 2A: Login con contraseña
+                awLoginBtn.addEventListener('click', async () => {
+                    const pass = awLoginPass.value;
+                    if (!pass) { awLoginError.textContent = 'Ingresá tu contraseña.'; return; }
+                    awLoginError.textContent = '';
+                    awLoginBtn.disabled = true;
+                    awLoginBtn.textContent = 'Verificando...';
+
+                    try {
+                        const authDoc = await db_aw.collection('student_auth').doc(awCurrentUP).get();
+                        if (authDoc.exists && authDoc.data().password === pass) {
+                            sessionStorage.setItem('aw_authenticated_up', awCurrentUP);
+                            window.currentStudentUP = awCurrentUP;
+                            dismissWall();
+                        } else {
+                            awLoginError.textContent = 'Contraseña incorrecta. Intentá de nuevo.';
+                        }
+                    } catch(e) {
+                        awLoginError.textContent = 'Error de conexión. Intentá de nuevo.';
+                    } finally {
+                        awLoginBtn.disabled = false;
+                        awLoginBtn.innerHTML = '<i class="fas fa-unlock"></i> Entrar';
+                    }
+                });
+
+                awLoginPass.addEventListener('keypress', (e) => { if (e.key === 'Enter') awLoginBtn.click(); });
+
+                // PASO 2B: Registro nuevo
+                awRegBtn.addEventListener('click', async () => {
+                    const code = awRegCode.value.trim();
+                    const pass = awRegPass.value;
+                    const pass2 = awRegPass2.value;
+                    awRegError.textContent = '';
+
+                    if (!code || !pass || !pass2) { awRegError.textContent = 'Completá todos los campos.'; return; }
+                    if (pass.length < 4) { awRegError.textContent = 'La contraseña debe tener al menos 4 caracteres.'; return; }
+                    if (pass !== pass2) { awRegError.textContent = 'Las contraseñas no coinciden.'; return; }
+
+                    awRegBtn.disabled = true;
+                    awRegBtn.textContent = 'Procesando...';
+
+                    try {
+                        const configDoc = await db_aw.collection('config').doc('student_config').get();
+                        const officialCode = configDoc.exists ? (configDoc.data().registration_code || 'ALUMNO2024') : 'ALUMNO2024';
+
+                        if (code !== officialCode) {
+                            awRegError.textContent = 'El código de invitación es incorrecto.';
+                            awRegBtn.disabled = false;
+                            awRegBtn.innerHTML = '<i class="fas fa-check-circle"></i> Crear cuenta y Entrar';
+                            return;
+                        }
+
+                        await db_aw.collection('student_auth').doc(awCurrentUP).set({
+                            password: pass,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+
+                        sessionStorage.setItem('aw_authenticated_up', awCurrentUP);
+                        window.currentStudentUP = awCurrentUP;
+                        dismissWall();
+                    } catch(e) {
+                        awRegError.textContent = 'Error al guardar. Intentá de nuevo.';
+                        awRegBtn.disabled = false;
+                        awRegBtn.innerHTML = '<i class="fas fa-check-circle"></i> Crear cuenta y Entrar';
+                    }
+                });
+
+            })();
         });
     </script>
 
