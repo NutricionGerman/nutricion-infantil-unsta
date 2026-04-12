@@ -36,11 +36,17 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Chequeo inteligente**: Verifica cada 5 minutos y también al volver a la pestaña (útil para celulares).
 - **Flujo del docente**: Modificar `index.html` → cambiar fecha en `version.json` → commit + push → alumnos son notificados automáticamente.
 
+## 🔐 Auth Wall y Acceso (Nuevo)
+- **Muro de Autenticación (Auth Wall)**: Implementado obligando a registro/ingreso (con código o UP/Pass) antes de ver la página web. Utiliza `sessionStorage` para autologuear.
+- **Acceso Docente Protegido**: El link "Ingresar como docente" ahora abre un sub-panel dentro del muro y requiere login real con Firebase Auth para recién descartar el muro y entrar.
+- **Perfil Integrado**: Al hacer clic en la pestaña "Mi Perfil" estando logueado, ya no se usa el sub-panel antiguo, sino que redirige automáticamente a la pestaña Inicio (`panel-honor`) pero desplegando la vista detallada de "Panel Estudiantil" que antes era exclusiva del ranking.
+- **Selector de Grupos**: Ya no desaparecen de las opciones de "Seleccionar O Cambiar Grupo" los grupos vacíos. Modificado para rellenar forzadamente y que siempre muestre desde "Grupo 1" hasta "Grupo 18".
+
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `feat(admin): agregar boton para eliminar foto de perfil del alumno desde modal`
+- **Mensaje**: `Mejora: Panel estudiantil integrado en Mi Perfil y selector de grupos completo` + Commits previos de Auth Wall.
 - **Archivos Modificados**: `index.html`, `PROGRESS.md`.
 - **Fecha**: `12 de abril de 2026`.
-- **Estado**: Subido exitosamente a `origin master` (hash `4bd0c74`).
+- **Estado**: Subido exitosamente a `origin master` (hash `fda2997`).
 
 
 ---
