@@ -519,8 +519,9 @@
         }
 
         .extended-rankings-wrapper {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 2.5rem;
             margin-top: 80px;
         }
@@ -604,6 +605,8 @@
 
         .ranking-list-container {
             padding: 1.5rem;
+            width: 100%;
+            max-width: 800px;
         }
 
         .podium-card .student-photo,
@@ -661,12 +664,7 @@
             order: 3;
         }
 
-        .extended-rankings-wrapper {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2.5rem;
-            margin-top: 80px;
-        }
+        /* extended-rankings-wrapper duplicated css rule removed */
 
         .ranking-list-container h3 {
             font-size: 1.25rem;
@@ -5168,7 +5166,7 @@
 
                 // El contenedor principal ahora tiene dos sub-contenedores para los gráficos
                 container.innerHTML = `
-                <div class="extended-rankings-wrapper" style="margin-top:0; grid-template-columns: 1fr 1fr;">
+                <div class="extended-rankings-wrapper" style="margin-top:0; display: grid; grid-template-columns: 1fr 1fr;">
                     <div class="ranking-list-container">
                         <canvas id="lastSessionDonutChart"></canvas>
                     </div>
@@ -5439,7 +5437,7 @@
                     <p style="color: var(--text-muted-light); font-size: 0.95rem; margin-bottom: 15px;">Estado actual de la condición de los alumnos en la cursada.</p>
                     <button onclick="downloadGeneralAttendanceReport()" class="nav-button active" style="margin: 0 auto 10px auto; display: block; border-radius: 8px; font-size: 0.9rem; padding: 10px 20px;"><i class="fas fa-file-excel"></i> Descargar Planilla de Cursada</button>
                 </div>
-                <div class="extended-rankings-wrapper" style="margin-top:0; grid-template-columns: 1fr 1fr;">
+                <div class="extended-rankings-wrapper" style="margin-top:0; display: grid; grid-template-columns: 1fr 1fr;">
                     <div class="ranking-list-container">
                         <canvas id="regularityDonutChart"></canvas>
                     </div>
