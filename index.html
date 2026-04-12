@@ -3283,13 +3283,28 @@
                             </div>
 
                             <div id="csv-import-box" style="display: none; background: rgba(20, 184, 166, 0.05); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px dashed var(--accent-teal);">
-                                <div style="font-size: 0.85rem; margin-bottom: 8px; color: var(--accent-teal); font-weight: 600;">Importar Asistencia: <span id="target-sess-display">---</span></div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <div style="font-size: 0.95rem; color: var(--accent-teal); font-weight: 600;">Asistencia: <span id="target-sess-display">---</span></div>
+                                    <button onclick="document.getElementById('csv-import-box').style.display = 'none'" style="background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem;">&times;</button>
+                                </div>
+                                
+                                <!-- CSV IMPORT -->
                                 <input type="file" id="attendance-csv-input" accept=".csv" style="display: none;" onchange="handleCSVProcessing(this)">
-                                <button onclick="document.getElementById('attendance-csv-input').click()" class="nav-button" style="width: 100%; border-color: var(--accent-teal); color: var(--accent-teal);">
-                                    <i class="fas fa-file-csv"></i> Cargar CSV (Google Forms)
+                                <button onclick="document.getElementById('attendance-csv-input').click()" class="nav-button" style="width: 100%; border-color: var(--accent-teal); color: var(--accent-teal); margin-bottom: 5px;">
+                                    <i class="fas fa-file-csv"></i> Importar CSV de Asistencia
                                 </button>
-                                <div id="csv-process-status" style="margin-top: 8px; font-size: 0.75rem; text-align: center;"></div>
+                                <div id="csv-process-status" style="font-size: 0.75rem; text-align: center; margin-bottom: 15px;"></div>
+                                
+                                <hr style="border-color: rgba(255,255,255,0.05); margin-bottom: 15px;">
+                                
+                                <!-- MANUAL MANAGEMENT -->
+                                <div style="font-size: 0.85rem; font-weight: 600; margin-bottom: 8px;">Carga Manual</div>
+                                <input type="text" id="manual-att-search" placeholder="Buscar por apellido, nombre o UP..." onkeyup="filterManualAtt()" style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: white; padding: 8px; border-radius: 6px; font-size: 0.8rem; margin-bottom: 10px;">
+                                <div id="manual-att-list" style="max-height: 250px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                                    <!-- Dynamic content -->
+                                </div>
                             </div>
+
 
                             <div id="admin-sess-list-container" style="max-height: 450px; overflow-y: auto;">
                                 <!-- Clases Cargadas -->
@@ -8722,9 +8737,111 @@
 
             window.prepareSessForCSV = (id, name) => {
                 window.activeSessId = id;
+                window.activeSessName = name;
                 document.getElementById('target-sess-display').innerText = name;
                 document.getElementById('csv-import-box').style.display = 'block';
+                document.getElementById('csv-process-status').innerText = "";
+                document.getElementById('manual-att-search').value = "";
+                renderManualAttendance();
+                // Scroll al elemento
+                setTimeout(() => document.getElementById('csv-import-box').scrollIntoView({ behavior: 'smooth' }), 100);
             };
+
+            window.renderManualAttendance = () => {
+                const container = document.getElementById('manual-att-list');
+                const search = document.getElementById('manual-att-search').value.toLowerCase();
+                const records = window.fullData.attendanceRecords || [];
+                let students = window.fullData.students || [];
+                
+                // Asegurarse de tener `name` compilado
+                students.forEach(s => {
+                    if (!s.name) s.name = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || ''}`.trim() || 'Sin nombre';
+                });
+                
+                // Filtrar por busqueda y ordenar
+                students = students.filter(s => s.name.toLowerCase().includes(search) || String(s.up).includes(search));
+                students.sort((a,b) => a.name.localeCompare(b.name));
+                
+                if(students.length === 0){
+                    container.innerHTML = '<div style="color:var(--text-muted-light); font-size:0.8rem; text-align:center;">No hay alumnos.</div>';
+                    return;
+                }
+
+                container.innerHTML = students.map(s => {
+                    // Checkeamos si tienen presente
+                    const isPresent = records.some(r => r.sessionId === window.activeSessId && String(r.up) === String(s.up));
+                    
+                    return `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <div style="font-size: 0.8rem;">
+                                <span style="color: var(--accent-teal); font-weight: 500;">${s.up}</span> - ${s.name} ${s.group ? `<span style="font-size:0.65rem; color:var(--accent-orange);">(${s.group})</span>` : ''}
+                            </div>
+                            <label class="switch" style="transform: scale(0.7); margin: 0;">
+                                <input type="checkbox" id="chk-att-${s.up}" ${isPresent ? 'checked' : ''} onchange="toggleManualAttendance('${s.up}', this)">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            window.filterManualAtt = () => {
+                renderManualAttendance();
+            };
+
+            window.toggleManualAttendance = async (up, checkboxElem) => {
+                if(!window.activeSessId) return;
+                const isPresent = checkboxElem.checked;
+                checkboxElem.disabled = true; // Disable until saved
+                
+                try {
+                    let student = window.fullData.students.find(s => String(s.up) === String(up));
+                    if(!student) throw new Error("Alumno no encontrado");
+
+                    if(!window.fullData.attendanceRecords) window.fullData.attendanceRecords = [];
+                    
+                    if (isPresent) {
+                        // Agregar presente
+                        window.fullData.attendanceRecords.push({
+                            sessionId: window.activeSessId,
+                            up: String(up),
+                            status: 'onTime',
+                            timestamp: new Date().toISOString()
+                        });
+
+                        student.xp = (student.xp || 0) + 2;
+                        if(!student.xpHistory) student.xpHistory = [];
+                        student.xpHistory.push({
+                            timestamp: new Date().toISOString(),
+                            amount: 2,
+                            reason: "Asistencia: " + window.activeSessName,
+                            sessionId: window.activeSessId
+                        });
+
+                    } else {
+                        // Rescatar cantidad descontable primero visualizando el historial
+                        if(student.xpHistory){
+                            const hItemIndex = student.xpHistory.findIndex(h => h.sessionId === window.activeSessId && h.reason.startsWith("Asistencia"));
+                            if(hItemIndex !== -1) {
+                                student.xp -= student.xpHistory[hItemIndex].amount;
+                                student.xpHistory.splice(hItemIndex, 1);
+                            }
+                        }
+                        
+                        // Borrar asistencia
+                        window.fullData.attendanceRecords = window.fullData.attendanceRecords.filter(r => !(r.sessionId === window.activeSessId && String(r.up) === String(up)));
+                    }
+
+                    await saveProjectData(null, true);
+                    checkboxElem.disabled = false;
+                } catch(e) {
+                    console.error(e);
+                    alert("Falló la carga de asistencia.");
+                    checkboxElem.checked = !isPresent; // revert visual state
+                    checkboxElem.disabled = false;
+                }
+            };
+
 
             window.downloadClassAnswers = (sessionId, sessionName) => {
                 const records = window.fullData.attendanceRecords || [];
