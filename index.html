@@ -5892,7 +5892,28 @@
                     const hasVideo = groupVideos[videoIdx] !== undefined || groupVideos[i] !== undefined || groupVideos[String(videoIdx)] !== undefined || groupVideos[String(i)] !== undefined; 
                     
                     const conditionText = isEval ? '<span style="color:var(--accent-teal); font-weight:700;">SÍ</span>' : '<span style="opacity:0.5;">No</span>';
-                    const statusText = hasVideo ? '<span style="color:#4ade80; font-weight:700;"><i class="fas fa-check-circle"></i> Presentado</span>' : '<span style="color:#f87171; opacity:0.8;"><i class="fas fa-times-circle"></i> Pendiente</span>';
+                    
+                    let statusText = '';
+                    if (hasVideo) {
+                        statusText = '<span style="color:#4ade80; font-weight:700;"><i class="fas fa-check-circle"></i> Entregado</span>';
+                    } else {
+                        if (!isEval) {
+                            statusText = '<span style="color:#64748b; font-weight:500;"><i class="fas fa-minus-circle"></i> No habilitado</span>';
+                        } else {
+                            if (!tpEntry.deadline) {
+                                statusText = '<span style="color:#f87171;"><i class="fas fa-exclamation-circle"></i> Pendiente</span>';
+                            } else {
+                                const deadlineDate = new Date(tpEntry.deadline);
+                                const now = new Date();
+                                if (deadlineDate < now) {
+                                    statusText = '<span style="color:#f87171; font-weight:700;"><i class="fas fa-times-circle"></i> No entregado</span>';
+                                } else {
+                                    const formattedDeadline = deadlineDate.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' }) + ' ' + deadlineDate.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit'});
+                                    statusText = `<span style="color:#eab308; font-weight:600;"><i class="fas fa-clock"></i> Vence el ${formattedDeadline}</span>`;
+                                }
+                            }
+                        }
+                    }
                     
                     tpModalHTML += `<tr>
                         <td>Trabajo Práctico ${i}</td>
