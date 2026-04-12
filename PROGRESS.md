@@ -39,14 +39,16 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 ## 🔐 Auth Wall y Acceso (Nuevo)
 - **Muro de Autenticación (Auth Wall)**: Implementado obligando a registro/ingreso (con código o UP/Pass) antes de ver la página web. Utiliza `sessionStorage` para autologuear.
 - **Acceso Docente Protegido**: El link "Ingresar como docente" ahora abre un sub-panel dentro del muro y requiere login real con Firebase Auth para recién descartar el muro y entrar.
-- **Perfil Integrado**: Al hacer clic en la pestaña "Mi Perfil" estando logueado, ya no se usa el sub-panel antiguo, sino que redirige automáticamente a la pestaña Inicio (`panel-honor`) pero desplegando la vista detallada de "Panel Estudiantil" que antes era exclusiva del ranking.
-- **Selector de Grupos**: Ya no desaparecen de las opciones de "Seleccionar O Cambiar Grupo" los grupos vacíos. Modificado para rellenar forzadamente y que siempre muestre desde "Grupo 1" hasta "Grupo 18".
+
+## 🛠️ Panel de Administración (Gestión Interna)
+- **Añadir Alumno Excepcional**: Botón para que el docente pueda registrar alumnos manualmente saltándose el Auth Wall, si tuvieran complicaciones.
+- **Eliminación Total de Alumno**: Desde la lista de claves, ahora se muestran íconos más prolijos, y se integró la función para borrar alumno completamente (clave, foto, y tabla principal), previniendo errores undefined en nombres.
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `Mejora: Panel estudiantil integrado en Mi Perfil y selector de grupos completo` + Commits previos de Auth Wall.
+- **Mensaje**: `Admin: Fix crash on string replace for undefined student names, Add Admin Manual Add/Delete student functions`
 - **Archivos Modificados**: `index.html`, `PROGRESS.md`.
 - **Fecha**: `12 de abril de 2026`.
-- **Estado**: Subido exitosamente a `origin master` (hash `fda2997`).
+- **Estado**: Subido exitosamente a `origin master`.
 
 
 ---

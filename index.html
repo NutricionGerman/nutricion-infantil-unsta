@@ -8943,7 +8943,13 @@
                     studentsSnap.forEach(doc => {
                         studentsList.push(doc.data());
                     });
-                    
+                    studentsList.forEach(s => {
+                        // Construir el nombre de forma segura para documentos antiguos
+                        if (!s.name) {
+                            s.name = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || ''}`.trim() || 'Sin nombre';
+                        }
+                    });
+
                     studentsList.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
                     if (studentsList.length === 0) {
@@ -8957,17 +8963,18 @@
                         const pass = hasPass ? authMap[s.up] : '<span style="color:#ef4444; font-size:0.8rem;">Sin crear</span>';
                         
                         const hasPhoto = s.photo || photosMap[s.up] ? true : false;
+                        const safeName = s.name.replace(/'/g, "\\'");
                         
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${s.up}</td>
-                            <td>${s.name || 'Sin nombre'}</td>
+                            <td>${s.name}</td>
                             <td>Grupo ${s.group || '?'}</td>
                             <td><strong style="color: #10b981;">${pass}</strong></td>
                             <td style="text-align: center; display: flex; gap: 5px; justify-content: center; align-items: center;">
-                                ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${(s.name || '').replace(/'/g, "\\'")}')" style="background:#eab308; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Contraseña"><i class="fas fa-key"></i></button>` : ''}
-                                ${hasPhoto ? `<button onclick="deleteStudentPhoto('${s.up}', '${(s.name || '').replace(/'/g, "\\'")}')" style="background:#f97316; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto"><i class="fas fa-camera"></i></button>` : ''}
-                                <button onclick="deleteStudentFull('${s.up}', '${(s.name || '').replace(/'/g, "\\'")}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Eliminar Alumno Definitivamente"><i class="fas fa-trash-alt"></i></button>
+                                ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${safeName}')" style="background:#eab308; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Contraseña"><i class="fas fa-key"></i></button>` : ''}
+                                ${hasPhoto ? `<button onclick="deleteStudentPhoto('${s.up}', '${safeName}')" style="background:#f97316; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto"><i class="fas fa-camera"></i></button>` : ''}
+                                <button onclick="deleteStudentFull('${s.up}', '${safeName}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Eliminar Alumno Definitivamente"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         `;
                         tbody.appendChild(tr);
