@@ -3584,7 +3584,7 @@
     <div class="modal" id="student-passwords-modal">
         <div class="modal-content" style="max-width: 650px;">
             <div class="modal-header">
-                <h4><i class="fas fa-key"></i> Claves de Alumnos</h4>
+                <h4><i class="fas fa-users-cog"></i> Gestión de Alumnos</h4>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -3595,7 +3595,7 @@
                             <th>Alumno</th>
                             <th style="width: 70px;">Grupo</th>
                             <th>Contraseña</th>
-                            <th style="text-align: center; width: 90px;">Acción</th>
+                            <th style="text-align: center; width: 150px;">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="student-passwords-table-body">
@@ -8561,14 +8561,16 @@
                     studentsList.forEach(s => {
                         const hasPass = authMap[s.up] ? true : false;
                         const pass = hasPass ? authMap[s.up] : '<span style="color:#ef4444; font-size:0.8rem;">Sin crear</span>';
+                        // To avoid querying photos here (too heavy), we just always show the option to delete photo
                         const tr = document.createElement('tr');
                         tr.innerHTML = `
                             <td>${s.up}</td>
                             <td>${s.name}</td>
                             <td>Grupo ${s.group || '?'}</td>
                             <td><strong style="color: #10b981;">${pass}</strong></td>
-                            <td style="text-align: center;">
-                                ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${s.name}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;"><i class="fas fa-trash"></i> Borrar</button>` : ''}
+                            <td style="text-align: center; display: flex; gap: 5px; justify-content: center;">
+                                ${hasPass ? `<button onclick="deleteStudentPassword('${s.up}', '${s.name}')" style="background:#ef4444; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Contraseña"><i class="fas fa-key"></i></button>` : ''}
+                                <button onclick="deleteStudentPhoto('${s.up}', '${s.name}')" style="background:#f59e0b; border:none; padding:5px 10px; border-radius:4px; color:white; font-size:0.8rem; cursor:pointer;" title="Borrar Foto de Perfil"><i class="fas fa-user-times"></i> Foto</button>
                             </td>
                         `;
                         tbody.appendChild(tr);
@@ -8591,6 +8593,27 @@
                 } catch (e) {
                     console.error("Error deleting password:", e);
                     alert('No se pudo borrar la contraseña.');
+                }
+            };
+
+            window.deleteStudentPhoto = async (up, name) => {
+                if (!confirm(`¿Estás seguro de que quieres eliminar la FOTO DE PERFIL de ${name} (UP: ${up})?`)) {
+                    return;
+                }
+                try {
+                    // Borrar de la colección de fotos nueva
+                    await db.collection('student_photos').doc(String(up)).delete();
+                    
+                    // Borrar de la colección de perfiles antigua
+                    await db.collection('students').doc(String(up)).update({
+                        photo: firebase.firestore.FieldValue.delete()
+                    });
+                    
+                    alert('Foto eliminada exitosamente.');
+                    generateAndDisplayClasses(); // Para que refresque los UI locales si hace falta
+                } catch (e) {
+                    console.error("Error deleting photo:", e);
+                    alert('No se pudo borrar la foto, o el alumno no tenía una foto asignada.');
                 }
             };
 
