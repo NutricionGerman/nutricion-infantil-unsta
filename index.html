@@ -5569,8 +5569,20 @@
                     studentsToDisplay.forEach((student, index) => {
                         const rank = getStudentRank(student.xp || 0);
                         const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
+                        
+                        // Medal styling for top 3
+                        let rankNumberStyle = '';
+                        let rankNumberContent = index + 1;
+                        if (index === 0) {
+                            rankNumberStyle = 'background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #1a1a1a; font-weight: 800; box-shadow: 0 0 12px rgba(245,158,11,0.5);';
+                        } else if (index === 1) {
+                            rankNumberStyle = 'background: linear-gradient(135deg, #9ca3af, #d1d5db); color: #1a1a1a; font-weight: 800; box-shadow: 0 0 10px rgba(156,163,175,0.4);';
+                        } else if (index === 2) {
+                            rankNumberStyle = 'background: linear-gradient(135deg, #b45309, #d97706); color: #fff; font-weight: 800; box-shadow: 0 0 10px rgba(180,83,9,0.4);';
+                        }
+                        
                         listHTML += `<li class="ranking-list-item group-member-item" data-up="${student.up}">
-                        <div class="rank-number">${index + 1}</div>
+                        <div class="rank-number" style="${rankNumberStyle}">${rankNumberContent}</div>
                         <div class="rank-photo" id="photo-stu-${student.up}"></div>
                         <div class="rank-details">
                              <div>
@@ -5585,7 +5597,28 @@
                 listHTML += '</ul>';
 
                 if (!showAll && fullData.students.length > 10) {
-                    listHTML += `<div class="text-center mt-4"><button id="show-all-students-btn" class="nav-button" style="display:inline-block; border: 1px solid var(--glass-border);">Ver Todos los Alumnos</button></div>`;
+                    listHTML += `
+                    <div style="margin-top: 1.5rem; padding: 0 0.5rem;">
+                        <button id="show-all-students-btn" style="
+                            width: 100%;
+                            padding: 14px 0;
+                            background: transparent;
+                            border: 1px solid var(--glass-border);
+                            border-radius: 12px;
+                            color: var(--text-muted-light);
+                            font-size: 0.9rem;
+                            letter-spacing: 0.05em;
+                            cursor: pointer;
+                            transition: all 0.25s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                        "
+                        onmouseover="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-light)'; this.style.borderColor='rgba(255,255,255,0.3)';"
+                        onmouseout="this.style.background='transparent'; this.style.color='var(--text-muted-light)'; this.style.borderColor='var(--glass-border)';"
+                        ><i class="fas fa-chevron-down"></i> Ver todos los alumnos</button>
+                    </div>`;
                 }
 
                 container.innerHTML = listHTML;
