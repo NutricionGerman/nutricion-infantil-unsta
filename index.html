@@ -3898,6 +3898,32 @@
 
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
+                    const awUP = sessionStorage.getItem('aw_authenticated_up');
+
+                    // Si el alumno hace clic en "Mi Perfil" y ya está autenticado vía Auth Wall
+                    // → redirigir a panel-honor y mostrar su panel de estadísticas completo
+                    if (button.dataset.tabTarget === '#panel-perfil' && awUP && fullData && fullData.students) {
+                        const student = fullData.students.find(s => String(s.up) === String(awUP));
+                        if (student) {
+                            // Activar pestaña Inicio visualmente
+                            tabButtons.forEach(btn => btn.classList.remove('active'));
+                            const honorBtn = document.querySelector('.nav-button[data-tab-target="#panel-honor"]');
+                            if (honorBtn) honorBtn.classList.add('active');
+                            tabPanels.forEach(panel => panel.classList.remove('active'));
+                            const honorPanel = document.getElementById('panel-honor');
+                            if (honorPanel) honorPanel.classList.add('active');
+
+                            // Asegurar que currentStudentUP esté seteado para que isOwnProfile = true
+                            currentStudentUP = String(awUP);
+                            window.currentStudentUP = String(awUP);
+
+                            // Mostrar el panel completo de estadísticas del alumno
+                            displayStudentPortalView(student);
+                            return; // No continuar con el flujo normal
+                        }
+                    }
+
+                    // Flujo normal para el resto de las pestañas
                     const targetPanel = document.querySelector(button.dataset.tabTarget);
                     showHonorPanelView('main');
                     tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -3905,21 +3931,6 @@
                     tabPanels.forEach(panel => panel.classList.remove('active'));
                     if (targetPanel) {
                         targetPanel.classList.add('active');
-                    }
-
-                    // AUTO-LOGIN en "Mi Perfil" si ya hay sesión del Auth Wall
-                    if (button.dataset.tabTarget === '#panel-perfil') {
-                        const awUP = sessionStorage.getItem('aw_authenticated_up');
-                        if (awUP && fullData && fullData.students) {
-                            const student = fullData.students.find(s => String(s.up) === String(awUP));
-                            if (student) {
-                                // Saltar el formulario interno y mostrar el perfil directamente
-                                document.getElementById('profile-auth-container').style.display = 'none';
-                                currentStudentUP = String(awUP);
-                                currentStudentData = student;
-                                loadProfileContent(student);
-                            }
-                        }
                     }
                 });
             });
@@ -5672,12 +5683,20 @@
                 // Build group options safely (no nested template literals)
                 let groupOptsSelectorHTML = '<option value="">(Sin Grupo)</option>';
                 const gMetaRef_original = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {}); 
-                Object.keys(gMetaRef_original)
-                    .map(gId => ({ id: gId, num: parseInt(gId.replace('g_','')) }))
+                
+                // Asegurar que siempre estén los grupos del 1 al 18
+                let baseGroupIds = new Set(Array.from({length: 18}, (_, i) => `g_${i + 1}`));
+                // Y agregar cualquier otro ID existente en la metadata
+                Object.keys(gMetaRef_original).forEach(id => baseGroupIds.add(id));
+
+                Array.from(baseGroupIds)
+                    .map(gId => ({ id: gId, num: parseInt(gId.replace(/\D/g, '')) || 999 }))
                     .sort((a,b) => a.num - b.num)
                     .forEach(g => {
                         const sel = student.group === g.id ? ' selected' : '';
-                        groupOptsSelectorHTML += '<option value="' + g.id + '"' + sel + '>' + (gMetaRef_original[g.id].name || g.id) + '</option>';
+                        const metaName = gMetaRef_original[g.id] && gMetaRef_original[g.id].name;
+                        const displayName = metaName ? metaName : `Grupo ${g.num === 999 ? g.id : g.num}`;
+                        groupOptsSelectorHTML += '<option value="' + g.id + '"' + sel + '>' + displayName + '</option>';
                     });
 
                 let groupSelectorHTML = '';
