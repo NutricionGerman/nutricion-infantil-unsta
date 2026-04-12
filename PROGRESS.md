@@ -44,9 +44,10 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Añadir Alumno Excepcional**: Botón para que el docente pueda registrar alumnos manualmente saltándose el Auth Wall, si tuvieran complicaciones.
 - **Eliminación Total de Alumno**: Desde la lista de claves, ahora se muestran íconos más prolijos, y se integró la función para borrar alumno completamente (clave, foto, y tabla principal), previniendo errores undefined en nombres.
 - **Gestión Manual de Asistencia**: Ahora al darle clic en "Importar Asistencia" en cada clase generada, el sistema despliega un buscador en tiempo real de todos los alumnos, junto con *checkboxes/switches* que permiten de forma manual darle "Presente" a un alumno o "Ausente", otorgándole/descontándole su puntaje de experiencia correspondiente (+2 XP) de manera instantánea y transparente al tocar el botón.
+- **Historial de Trabajos Prácticos Inteligente (Alumnos)**: El panel de los estudiantes ahora muestra estados dinámicos precisos para cada TP: "Entregado" (verde), "No habilitado" (gris, si no cuenta para porcentaje), "Vence el dd/mm/aa" (naranja, si está activo pero en plazo), y "No entregado" (rojo, si ya pasó la fecha configurada sin entregar).
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `Admin: Add manual checkboxes to toggle individual student attendances and manage XP accordingly per session`
+- **Mensaje**: `Admin/Student: Smart TP history status messages based on eval mode and deadline`
 - **Archivos Modificados**: `index.html`, `PROGRESS.md`.
 - **Fecha**: `12 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
