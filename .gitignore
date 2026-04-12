@@ -24,3 +24,12 @@ Thumbs.db
 
 # Carpeta temporal
 tmp/
+
+# Herramientas internas (contienen configuración de Firebase, no deben ser públicas)
+seed.html
+generate_seed.py
+migrate.js
+migrate_rest.mjs
+import_data.js
+test.mjs
+scratch/
