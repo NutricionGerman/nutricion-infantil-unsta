@@ -17,6 +17,7 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Consistencia Visual**: La pestaña de "Entregas de Grupos" (`loadAdminGroupContents`) ahora muestra siempre los **18 grupos estándar** (ID `g_1` al `g_18`), sin importar si tienen datos cargados o no.
 - **Gestión de IDs**: El sistema ahora busca datos tanto por ID numérico (`1`) como con prefijo (`g_1`) para evitar inconsistencias.
 - **Grupos Extras**: El sistema detecta y muestra grupos fuera del rango estándar si existen en la base de datos.
+- **Gestión de Claves de Alumnos (Nuevo)**: En la pestaña "Sistema" del panel docente, se agregó un modal para "Administrar Claves de Alumnos". Permite visualizar las contraseñas personales y **borrarlas** individualmente para forzar al alumno a generar una nueva con el Código de Cátedra.
 
 ## 🧼 Limpieza de Datos
 - **Grupo 22**: Se eliminó completamente de Firestore (colección `grupos`) ya que correspondía a una cohorte anterior, dejando el panel limpio para este año.
