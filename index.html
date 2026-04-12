@@ -3692,7 +3692,7 @@
                         }
 
                         // Refrescar paneles de admin si está en esa vista
-                        if (currentUserRoll === 'teacher') {
+                        if (firebase.auth().currentUser) {
                             const found = fullData.students.find(s => s.up == currentStudentUP);
                             if (found) {
                                 currentStudentData = found;
@@ -3744,7 +3744,9 @@
                     delete masterToSave.students;
                     masterToSave.isMigratedToCasilleros = true;
                     
-                    batch.set(configRef, masterToSave, { merge: true });
+                    if (firebase.auth().currentUser) {
+                        batch.set(configRef, masterToSave, { merge: true });
+                    }
 
                     if (saveAllStudents) {
                         cleanFullData.students.forEach(s => {
@@ -4624,7 +4626,7 @@
                     displayTPGallery(); // Refrescar promedios
                 } catch (e) {
                     console.error("Error al votar:", e);
-                    alert("Se produjo un error al registrar el voto.");
+                    alert("Se produjo un error al registrar el voto: " + e.message);
                 }
             }
 
@@ -4917,17 +4919,37 @@
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
-                    const gradableTpRecords = studentRecords.filter(r => r.tpNote !== 'Pendiente');
-                    const totalTpFromConfig = (fullData.config && fullData.config.totalTpCount) ? fullData.config.totalTpCount : null;
-                    const denominator = (totalTpFromConfig && totalTpFromConfig > 0) ? totalTpFromConfig : gradableTpRecords.length;
+                    // --- LÓGICA DE TPS (CORREGIDA) ---
+                    const tpConfig = (fullData.tpGlobalConfig && fullData.tpGlobalConfig.tps) ? fullData.tpGlobalConfig.tps : (fullData.config && fullData.config.tps ? fullData.config.tps : {});
+                    
+                    let denominator = 0;
+                    const evaluableIndices = [];
+                    for (let i = 1; i <= 10; i++) {
+                        if (tpConfig[i] && tpConfig[i].isEvaluable) {
+                            denominator++;
+                            evaluableIndices.push(i);
+                        }
+                    }
 
-                    // Presentados (cualquier nota o string no nulo excluyendo pendiente)
-                    const presentedTPsCount = gradableTpRecords.filter(r => r.tpNote !== null && r.tpNote !== 'Pendiente').length;
-                    const tpPresentedPercentage = denominator > 0 ? (presentedTPsCount / denominator) * 100 : 0;
+                    const studentGroupId = student.group ? String(student.group).trim() : null;
+                    const gIdWithG = studentGroupId && studentGroupId.startsWith('g_') ? studentGroupId : (studentGroupId ? 'g_' + studentGroupId : null);
+                    const gIdNoG = studentGroupId && studentGroupId.startsWith('g_') ? studentGroupId.substring(2) : studentGroupId;
+                    
+                    const gMetaRef = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {});
+                    const groupData = studentGroupId ? (gMetaRef[gIdWithG] || gMetaRef[gIdNoG] || gMetaRef[studentGroupId] || null) : null;
+                    const groupVideos = (groupData && groupData.videos) ? groupData.videos : {};
 
-                    // Aprobados (nota >= 4)
-                    const approvedTPsCount = gradableTpRecords.filter(r => typeof r.tpNote === 'number' && r.tpNote >= 4).length;
-                    const tpApprovedPercentage = denominator > 0 ? (approvedTPsCount / denominator) * 100 : 0;
+                    let approvedTPsCount = 0;
+                    evaluableIndices.forEach(idx => {
+                        const videoIdx = parseInt(idx) - 1; 
+                        if (groupVideos[videoIdx] !== undefined || groupVideos[idx] !== undefined || groupVideos[String(videoIdx)] !== undefined || groupVideos[String(idx)] !== undefined) {
+                            approvedTPsCount++;
+                        }
+                    });
+
+                    const tpPresentedPercentage = denominator > 0 ? (approvedTPsCount / denominator) * 100 : 0;
+                    const tpApprovedPercentage = tpPresentedPercentage;
+                    // ------------------------------------
 
                     const promoOk = attendancePercentage >= 75 && tpPresentedPercentage >= 100;
                     const regOk = attendancePercentage >= 50 && tpPresentedPercentage >= 75;
@@ -5235,17 +5257,42 @@
                     return studentRecords.find(r => r.sessionId === session.id) || { tpNote: null };
                 });
 
-                const approvedTPsCount = allStudentRecordsForRelevantSessions.filter(r => typeof r.tpNote === 'number' && r.tpNote >= 4).length;
+                // --- LÓGICA DE TPS (BÚSQUEDA ROBUSTA) ---
+                const rawConfig = window.tpGlobalConfig || (fullData && fullData.tpGlobalConfig) || (fullData && fullData.config) || {};
+                const tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
+                
+                // Calculamos el denominador: cuántos TPs tienen isEvaluable == true
+                let denominator = 0;
+                const evaluableIndices = [];
+                for (let i = 1; i <= 10; i++) {
+                    const tpEntry = tpConfig[i] || tpConfig[String(i)] || tpConfig[i-1] || {};
+                    if (tpEntry.isEvaluable) {
+                        denominator++;
+                        evaluableIndices.push(i);
+                    }
+                }
 
-                // El total de TPs a calificar excluye los pendientes de la lista completa
-                const gradableTpRecords = allStudentRecordsForRelevantSessions.filter(r => r.tpNote !== 'Pendiente');
+                // Obtener videos del grupo del alumno (Búsqueda flexible)
+                const gIdRaw = String(student.group || "").trim();
+                const gIdWithG = gIdRaw.startsWith('g_') ? gIdRaw : 'g_' + gIdRaw;
+                const gIdNoG = gIdRaw.startsWith('g_') ? gIdRaw.substring(2) : gIdRaw;
+                
+                const gMetaRef = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {});
+                const groupData = gMetaRef[gIdWithG] || gMetaRef[gIdNoG] || gMetaRef[gIdRaw] || null;
+                const groupVideos = (groupData && groupData.videos) ? groupData.videos : {};
 
-                const totalTpFromConfig = (fullData.config && fullData.config.totalTpCount) ? fullData.config.totalTpCount : null;
-                const denominator = (totalTpFromConfig && totalTpFromConfig > 0) ? totalTpFromConfig : gradableTpRecords.length;
+                // Numerador: Contamos entregas. 
+                let approvedTPsCount = 0;
+                evaluableIndices.forEach(idx => {
+                    const videoIdx = parseInt(idx) - 1; 
+                    // Verificamos si existe el video en el índice original (ej: "1") o en el ajustado (ej: "0")
+                    if (groupVideos[videoIdx] !== undefined || groupVideos[idx] !== undefined || groupVideos[String(videoIdx)] !== undefined || groupVideos[String(idx)] !== undefined) {
+                        approvedTPsCount++;
+                    }
+                });
+
                 const tpPercentage = denominator > 0 ? Math.round((approvedTPsCount / denominator) * 100) : 0;
-
-                const presentedTPsCount = allStudentRecordsForRelevantSessions.filter(r => r.tpNote !== null && r.tpNote !== 'Pendiente').length;
-                const tpPresentedPercentage = denominator > 0 ? Math.round((presentedTPsCount / denominator) * 100) : 0;
+                const tpPresentedPercentage = tpPercentage;
 
                 const promoOk = attendancePercentage >= 75 && tpPresentedPercentage >= 100;
                 const regOk = attendancePercentage >= 50 && tpPresentedPercentage >= 75;
@@ -5254,13 +5301,13 @@
 
                 // Build group options safely (no nested template literals)
                 let groupOptsSelectorHTML = '<option value="">(Sin Grupo)</option>';
-                const gMetaRef = fullData.sharedGroupMetadata || {};
-                Object.keys(gMetaRef)
+                const gMetaRef_original = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {}); 
+                Object.keys(gMetaRef_original)
                     .map(gId => ({ id: gId, num: parseInt(gId.replace('g_','')) }))
                     .sort((a,b) => a.num - b.num)
                     .forEach(g => {
                         const sel = student.group === g.id ? ' selected' : '';
-                        groupOptsSelectorHTML += '<option value="' + g.id + '"' + sel + '>' + (gMetaRef[g.id].name || g.id) + '</option>';
+                        groupOptsSelectorHTML += '<option value="' + g.id + '"' + sel + '>' + (gMetaRef_original[g.id].name || g.id) + '</option>';
                     });
 
                 let groupSelectorHTML = '';
@@ -5378,13 +5425,30 @@
 
                 let tpModalHTML = `
                 <div class="modal" id="tp-modal">
-                    <div class="modal-content"><div class="modal-header"><h4>Historial de TPs</h4><button class="close-modal">&times;</button></div>
-                        <div class="modal-body"><table class="attendance-table"><thead><tr><th>TP</th><th>Nota</th></tr></thead><tbody>`;
-                relevantSessions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(session => {
-                    const record = studentRecords.find(r => r.sessionId === session.id);
-                    const note = (record && record.tpNote !== null) ? record.tpNote : 'No entregado';
-                    tpModalHTML += `<tr><td>${session.name}</td><td>${note}</td></tr>`;
-                });
+                    <div class="modal-content">
+                        <div class="modal-header"><h4>Historial de Trabajos Prácticos</h4><button class="close-modal">&times;</button></div>
+                        <div class="modal-body">
+                            <p style="font-size:0.8rem; color:#aaa; margin-bottom:15px;"><i class="fas fa-info-circle"></i> Los TPs son evaluados por grupo. Un TP presentado se considera aprobado.</p>
+                            <table class="attendance-table">
+                                <thead><tr><th>TP</th><th>Obligatorio</th><th>Estado</th></tr></thead>
+                                <tbody>`;
+                
+                // Mostrar los 10 slots fijos de la configuración
+                for(let i=1; i<=10; i++) {
+                    const tpEntry = tpConfig[i] || tpConfig[String(i)] || {};
+                    const isEval = tpEntry.isEvaluable;
+                    const videoIdx = i - 1;
+                    const hasVideo = groupVideos[videoIdx] !== undefined || groupVideos[i] !== undefined || groupVideos[String(videoIdx)] !== undefined || groupVideos[String(i)] !== undefined; 
+                    
+                    const conditionText = isEval ? '<span style="color:var(--accent-teal); font-weight:700;">SÍ</span>' : '<span style="opacity:0.5;">No</span>';
+                    const statusText = hasVideo ? '<span style="color:#4ade80; font-weight:700;"><i class="fas fa-check-circle"></i> Presentado</span>' : '<span style="color:#f87171; opacity:0.8;"><i class="fas fa-times-circle"></i> Pendiente</span>';
+                    
+                    tpModalHTML += `<tr>
+                        <td>Trabajo Práctico ${i}</td>
+                        <td>${conditionText}</td>
+                        <td>${statusText}</td>
+                    </tr>`;
+                }
                 tpModalHTML += `</tbody></table></div></div></div>`;
 
                 let xpHistoryModalHTML = `
@@ -7700,7 +7764,7 @@
 
                 // Pre-build group options to avoid nested template literal
                 let groupOptionsHTML = '<option value="">(Sin Grupo)</option>';
-                const gMeta = fullData.sharedGroupMetadata || {};
+                const gMeta = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {});
                 Object.keys(gMeta).map(gId => ({ id: gId, num: parseInt(gId.replace('g_','')) }))
                     .sort((a,b) => a.num - b.num)
                     .forEach(g => {

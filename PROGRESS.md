@@ -26,8 +26,8 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Resiliencia UI**: Se ajustó `index.html` para contemplar de manera robusta estructuras (`sessions`, `attendanceRecords`) que estén momentáneamente vacías y así evitar fallos del dashboard (TypeError de listados undefined).
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `feat(csv): importación de asistencia robusta con auto-detección de separador, XP dual-write y 3 clases cargadas`
-- **Archivos Modificados**: `index.html` (parser CSV, fix XP a colección students).
+- **Mensaje**: `fix(security): corrección en firestore rules sobre propiedades indefinidas y parche JS Auth`
+- **Archivos Modificados**: `index.html` (reemplazo de comprobador roto currentUserRoll), `firestore.rules` (fijar asignación de valores fallback map `get('xp', 0)` para alumnos).
 - **Fecha**: `11 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
 
