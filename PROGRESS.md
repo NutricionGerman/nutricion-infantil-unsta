@@ -25,24 +25,22 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Migración de Alumnos**: Se extrajo el enorme bloque de alumnos que residía en `app_state/main` y se los migró a su propia colección `students` asignando como clave de documento su DNI/UP. Las reglas de seguridad y lecturas de App fueron actualizadas (`firestore.rules`).
 - **Resiliencia UI**: Se ajustó `index.html` para contemplar de manera robusta estructuras (`sessions`, `attendanceRecords`) que estén momentáneamente vacías y así evitar fallos del dashboard (TypeError de listados undefined).
 
-## ✅ Sistema de Votación de TPs (Completado)
-- **Galería de TPs**: Los alumnos pueden calificar los videos de sus compañeros con 1 a 5 estrellas desde la sección "Galería de TPs".
-- **Recompensa por votar**: Cada 10 votos emitidos, el votante gana **+2 XP** automáticamente.
-- **Milestones de excelencia**: Si un video de grupo acumula votos de 5 estrellas, desbloquea premios XP para todo el grupo (escala: 5⭐→+1Xp, 10⭐→+2XP, ..., 50⭐→+30XP).
-- **Fix JS crítico**: Se corrigió `ReferenceError: currentUserRoll is not defined` que impedía completar el guardado del voto. Se reemplazó por `firebase.auth().currentUser`.
-- **Fix Firestore Rules**: Se simplificaron las reglas de update de alumnos para evitar chequeos de tipo que fallaban silenciosamente.
+## 🔧 Herramientas (Nuevo)
+- **Sección Herramientas activa**: Se incrustó directamente en el HTML la tarjeta de **ValoraGest** con enlace externo a `https://nutriciongerman.github.io/valora-gest/`.
+- **Sin dependencia de JSON**: La tarjeta es HTML estático, funciona siempre sin necesitar el `fetch` a `herramientas.json`.
 
-## ⚡ Optimización de Cuota Firestore (Completado)
-- **Persistencia Caché Local**: Se habilitó `db.enablePersistence({synchronizeTabs:true})` en `index.html`.
-- **Impacto**: Los alumnos que ya visitaron la página no generan lecturas adicionales en sucesivas visitas; solo se sincronizan los cambios nuevos.
-- **Verificación**: Confirmado con DevTools → Application → IndexedDB → `firestore/[DEFAULT]/nutricion-gamificada/main` (Object stores: 17).
-- **Reducción estimada de cuota**: ~90-95% menos lecturas diarias.
+## 🔔 Sistema de Detección de Nueva Versión (Nuevo)
+- **Archivo `version.json`**: Controla la versión actual de la app. El docente actualiza la fecha antes de cada deploy.
+- **Banner automático**: Cuando el docente hace deploy y actualiza `version.json`, los alumnos que tengan la página abierta ven un banner naranja-ámbar animado con botón "Actualizar ahora".
+- **Chequeo inteligente**: Verifica cada 5 minutos y también al volver a la pestaña (útil para celulares).
+- **Flujo del docente**: Modificar `index.html` → cambiar fecha en `version.json` → commit + push → alumnos son notificados automáticamente.
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `perf(firestore): habilitada persistencia de cache local + fix votacion TPs`
-- **Archivos Modificados**: `index.html` (fix currentUserRoll + enablePersistence), `PROGRESS.md` (documentación).
+- **Mensaje**: `feat(ux): banner de nueva version + tarjeta ValoraGest en Herramientas`
+- **Archivos Modificados**: `index.html` (banner CSS/HTML/JS + tarjeta ValoraGest), `version.json` (nuevo archivo de versión).
 - **Fecha**: `11 de abril de 2026`.
-- **Estado**: Subido exitosamente a `origin master`.
+- **Estado**: Subido exitosamente a `origin master` (hash `09301d9`).
+
 
 ---
 
