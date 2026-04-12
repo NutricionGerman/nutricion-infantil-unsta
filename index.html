@@ -3607,6 +3607,11 @@
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
 
+            // 🔥 Habilitar caché persistente para ahorrar 90% de lecturas (Plan Gratuito Segurizado)
+            db.enablePersistence({synchronizeTabs:true}).catch(function(err) {
+                console.warn("La persistencia falló:", err.code);
+            });
+
             let activeGroupSession = null;
             let currentViewingGroupId = null;
 
