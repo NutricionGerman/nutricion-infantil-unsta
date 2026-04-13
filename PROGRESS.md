@@ -79,7 +79,7 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Estado**: Subido exitosamente a `origin master`.
 
 ## 📌 Último Checkpoint (Actual)
-- **Commit**: `VOTE_AND_EMBED_FIX_$(date +%s)`
+- **Commit**: `91afd79`
 - **Mensaje**: `Fix: Sincronización de sesión de alumno y reparación de links de YouTube`
 - **Descripción**:
   - Reparada la lógica de visualización de YouTube (X-Frame-Options) en Galería y TPs.
@@ -87,7 +87,7 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
   - Sincronizada la carga global de `currentStudentData` en el arranque.
 - **Archivos Modificados**: `index.html`, `PROGRESS.md`.
 - **Fecha**: `13 de abril de 2026`.
-- **Estado**: Por subir (A/B).
+- **Estado**: Subido exitosamente a `origin master`.
 
 
 ---
