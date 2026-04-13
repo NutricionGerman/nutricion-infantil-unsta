@@ -3561,7 +3561,7 @@
     <!-- FIN: MODALES KIOSCO SALUDABLE -->
 
     <!-- INICIO: MODAL CAMBIAR CLAVE DE GRUPO -->
-    <div class="modal" id="change-group-key-modal">
+    <div class="modal" id="change-group-key-modal" style="z-index: 10000;">
         <div class="modal-content" style="max-width: 460px;">
             <div class="modal-header">
                 <h4><i class="fas fa-key"></i> Cambiar Clave del Grupo</h4>
@@ -3665,10 +3665,11 @@
                             <input type="range" id="group-logo-zoom-slider" min="100" max="300" value="100"
                                 style="width: 180px; margin-top: 6px; accent-color: var(--accent-teal); display: none;">
                         </div>
-                        <div style="text-align: center;">
-                            <label class="nav-button"
-                                style="cursor: pointer; display: inline-block; background: var(--accent-teal); font-size: 0.85rem; padding: 6px 15px;">
-                                <i class="fas fa-upload"></i> Seleccionar Imagen
+                        <div style="text-align: center; margin-top: 10px;">
+                            <label style="cursor: pointer; display: inline-block; background: transparent; border: 2px solid var(--accent-teal); color: var(--accent-teal); font-weight: 600; font-size: 0.9rem; padding: 10px 20px; border-radius: 25px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(26, 188, 156, 0.15);"
+                            onmouseover="this.style.background='var(--accent-teal)'; this.style.color='#fff'; this.style.boxShadow='0 6px 20px rgba(26, 188, 156, 0.4)';"
+                            onmouseout="this.style.background='transparent'; this.style.color='var(--accent-teal)'; this.style.boxShadow='0 4px 15px rgba(26, 188, 156, 0.15)';">
+                                <i class="fas fa-camera"></i> Subir Logo
                                 <input type="file" id="group-logo-input" accept="image/*" style="display: none;">
                             </label>
                         </div>
@@ -3708,9 +3709,22 @@
                             style="width: 100%; border: 1px solid var(--border-color); background: rgba(0,0,0,0.3); color: white; padding: 8px; border-radius: 5px;">
                     </div>
 
+                    <hr style="border: 0; border-top: 1px dashed rgba(255,255,255,0.15); margin: 25px 0;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.25); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,152,0,0.3); margin-bottom: 25px;">
+                        <div>
+                            <h5 style="margin: 0 0 5px 0; color: #ff9800; font-size: 1rem;"><i class="fas fa-key"></i> Contraseña del Grupo</h5>
+                            <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted-light);">Reemplaza la clave por defecto para que nadie más pueda unirse.</p>
+                        </div>
+                        <button type="button" onclick="changeGroupKeyFromEditor()" style="background: rgba(255,152,0,0.1); border: 1px solid #ff9800; color: #ff9800; padding: 8px 18px; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: 600; white-space: nowrap; font-size: 0.85rem;" onmouseover="this.style.background='#ff9800'; this.style.color='#111'; this.style.boxShadow='0 0 10px rgba(255,152,0,0.5)';" onmouseout="this.style.background='rgba(255,152,0,0.1)'; this.style.color='#ff9800'; this.style.boxShadow='none';">
+                            Cambiar
+                        </button>
+                    </div>
+
                     <div style="text-align: right;">
-                        <button type="submit" id="save-group-profile-btn" class="nav-button active"><i
-                                class="fas fa-save"></i> Guardar Cambios</button>
+                        <button type="submit" id="save-group-profile-btn" style="background: linear-gradient(135deg, var(--accent-teal), #128c7e); border: none; color: white; padding: 12px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(26, 188, 156, 0.4);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(26, 188, 156, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(26, 188, 156, 0.4)';">
+                            <i class="fas fa-save"></i> Guardar Cambios
+                        </button>
                     </div>
                 </form>
                 <div id="group-editor-status" style="margin-top: 15px; text-align: center;"></div>
@@ -6940,6 +6954,37 @@
                 document.getElementById('global-videos-count').innerText = totalVideosCount;
             }
 
+            window.changeGroupKeyFromEditor = async function() {
+                if (!activeGroupSession || !activeGroupSession.id) {
+                    alert("Error: No se identificó el grupo activo.");
+                    return;
+                }
+                const numStr = String(activeGroupSession.id).replace(/\D/g, '');
+                const newKey = prompt('Ingrese la nueva CLAVE para el Grupo ' + numStr + ' (mínimo 4 caracteres):');
+                if (!newKey) return;
+                
+                if (newKey.length < 4) {
+                    alert('Error: La clave debe tener al menos 4 caracteres.');
+                    return;
+                }
+                
+                try {
+                    await db.collection('group_keys').doc(numStr).set({
+                        key: newKey,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    
+                    await db.collection('grupos').doc(numStr).set({
+                        code: newKey
+                    }, { merge: true });
+                    
+                    alert('✅ Clave actualizada con éxito. La nueva clave es: ' + newKey + '\n\nCualquier integrante del grupo deberá usarla para acceder a este panel de edición en el futuro.');
+                } catch(err) {
+                    console.error(err);
+                    alert("Lo sentimos, ocurrió un error al guardar: " + err.message);
+                }
+            }
+
             function openGroupEditor(groupId) {
                 const modal = document.getElementById('group-editor-modal');
                 const data = activeGroupSession.data;
@@ -7993,25 +8038,16 @@
                             }, { merge: true });
 
                         statusEl.style.color = 'var(--success-color)';
-                        statusEl.textContent = '✅ Clave actualizada con éxito. Preparando comprobante...';
-                        
-                        setTimeout(() => {
-                            document.getElementById('change-group-key-modal').classList.remove('active');
-                            // Llamar a la función de impresión (comprobante de cambio de clave)
-                            printGroupKeyReceipt(cleanGroupId, newKey);
-                        }, 1500);
-
-                        statusEl.style.color = 'var(--success-color)';
                         statusEl.textContent = '✅ Clave actualizada. Abriendo comprobante...';
 
                         setTimeout(() => {
-                            document.getElementById('change-group-key-modal').classList.remove('active');
-                            generateGroupKeyPDF(groupNum, newKey, currentStudentUP);
+                            document.getElementById('change-group-key-modal').style.display = 'none';
+                            generateGroupKeyPDF(cleanGroupId, newKey, currentStudentUP);
                         }, 1200);
                     } catch (err) {
                         console.error(err);
                         statusEl.style.color = 'var(--danger-color)';
-                        statusEl.textContent = 'Error al guardar. Intentá de nuevo.';
+                        statusEl.textContent = err.message || 'Error al guardar. Intentá de nuevo.';
                         cgkBtn.disabled = false;
                     }
                 });

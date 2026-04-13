@@ -46,18 +46,25 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Gestión Manual de Asistencia**: Ahora al darle clic en "Importar Asistencia" en cada clase generada, el sistema despliega un buscador en tiempo real de todos los alumnos, junto con *checkboxes/switches* que permiten de forma manual darle "Presente" a un alumno o "Ausente", otorgándole/descontándole su puntaje de experiencia correspondiente (+2 XP) de manera instantánea y transparente al tocar el botón.
 - **Historial de Trabajos Prácticos Inteligente (Alumnos)**: El panel de los estudiantes ahora muestra estados dinámicos precisos para cada TP: "Entregado" (verde), "No habilitado" (gris, si no cuenta para porcentaje), "Vence el dd/mm/aa" (naranja, si está activo pero en plazo), y "No entregado" (rojo, si ya pasó la fecha configurada sin entregar).
 
-## 🎯 Último Checkpoint (GitHub)
-- **Commit**: `bb845f8`
-- **Mensaje**: `UX: Alerta inteligente de TP pendiente en perfil del alumno`
-- **Descripción**:
-  - `displayStudentPortalView` ahora es `async` y carga `tpGlobalConfig` desde Firestore si no fue cargado previamente por el panel docente (bug crítico: alumnos que ingresaban directamente veían 0 TPs).
-  - Banner ámbar con instrucciones de 3 pasos para alumno con grupo (señala el ícono de grupo más abajo en el mismo perfil → pestaña Desafíos/TPs → subir link).
-  - Banner rojo informativo para alumno sin grupo, indicando que debe unirse a uno.
-  - Si todos los TPs evaluables están entregados, no aparece ningún banner.
-  - Eliminado listener de navegación (reemplazado por mensaje estático más robusto).
-- **Archivos Modificados**: `index.html`, `PROGRESS.md`.
-- **Fecha**: `13 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
+
+## 🔒 Gestión de Grupos y Seguridad (Finalizado)
+- **Cambio de Clave desde Editor**: Se implementó una función `bypass` (`changeGroupKeyFromEditor`) para permitir que docentes o integrantes con acceso al editor de grupo cambien la clave grupal sin depender de una sesión de alumno cargada.
+- **UI de Clave**: Se reemplazó el modal complejo de alumnos por un prompt de sistema nativo más rápido y eficiente para perfiles administrativos.
+- **Persistencia Firestore**: El sistema ahora actualiza en paralelo tanto la colección `group_keys` (para el login) como el campo `code` en `grupos` (para la gestión interna).
+- **Security Rules**: Se actualizaron las reglas de Firestore para permitir que usuarios con el rol adecuado escriban en `group_keys`.
+
+## 📌 Último Checkpoint (Actual)
+- **Commit**: `FIX_GROUP_KEY_$(date +%s)`
+- **Mensaje**: `Fix: Bypass de sesión de alumno para cambio de clave grupal y actualización de reglas Firestore`
+- **Descripción**:
+  - Implementada función global `changeGroupKeyFromEditor` vinculada al botón de edición.
+  - Corregido bug de "Primero debes tener un grupo asignado" al editar desde el panel administrativo.
+  - Actualizadas `firestore.rules` para habilitar escritura en `group_keys`.
+  - Mejorada estética de botones de edición (Save/Upload Logo).
+- **Archivos Modificados**: `index.html`, `firestore.rules`, `PROGRESS.md`.
+- **Fecha**: `13 de abril de 2026`.
+- **Estado**: Por subir (A/B).
 
 
 ---
