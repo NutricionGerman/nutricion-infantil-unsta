@@ -4019,6 +4019,8 @@
 
             let fullData = { students: [], sessions: [], attendanceRecords: [], groupConceptPoints: [] };
             window.fullData = fullData; // Hacerlo global para depuración
+            let currentStudentUP = sessionStorage.getItem('aw_authenticated_up') || window.currentStudentUP || null;
+            let currentStudentData = null;
             let sharedGroupMetadata = {}; // Cache para logos y datos de grupos de Firestore
             let overallAttendanceChart, lastSessionDonutChart, lastSessionGroupBarChart, historicalLineChart, regularityDonutChart, regularityReasonBarChart, groupHistoricalLineChart, xpOriginDonutChart, xpComparisonBarChart;
 
@@ -4146,7 +4148,10 @@
                         if (currentStudentUP) {
                             const matchedStudent = fullData.students.find(s => s.up == currentStudentUP);
                             if (matchedStudent) {
-                                currentStudentData = matchedStudent; // FIX: Sincronizar datos globales
+                                window.currentStudentUP = String(currentStudentUP);
+                                window.currentStudentData = matchedStudent;
+                                currentStudentUP = String(currentStudentUP);
+                                currentStudentData = matchedStudent;
                                 displayStudentPortalView(matchedStudent);
                             }
                         }
@@ -8292,8 +8297,8 @@
             const registerBtn = document.getElementById('student-register-btn');
             const loginUpInput = document.getElementById('student-login-up');
             
-            let currentStudentUP = window.currentStudentUP || null;
-            let currentStudentData = null;
+            // Variables globales ya declaradas al inicio (no volver a usar 'let' para no sombrear)
+            // currentStudentUP y currentStudentData se mantienen sincronizados.
 
             if (loginNextBtn) {
                 loginNextBtn.addEventListener('click', async () => {
