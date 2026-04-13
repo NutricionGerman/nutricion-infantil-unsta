@@ -55,7 +55,7 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Security Rules**: Se actualizaron las reglas de Firestore para permitir que usuarios con el rol adecuado escriban en `group_keys`.
 
 ## 📌 Último Checkpoint (Actual)
-- **Commit**: `FIX_GROUP_KEY_$(date +%s)`
+- **Commit**: `6a6d4e7`
 - **Mensaje**: `Fix: Bypass de sesión de alumno para cambio de clave grupal y actualización de reglas Firestore`
 - **Descripción**:
   - Implementada función global `changeGroupKeyFromEditor` vinculada al botón de edición.
@@ -64,7 +64,7 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
   - Mejorada estética de botones de edición (Save/Upload Logo).
 - **Archivos Modificados**: `index.html`, `firestore.rules`, `PROGRESS.md`.
 - **Fecha**: `13 de abril de 2026`.
-- **Estado**: Por subir (A/B).
+- **Estado**: Subido exitosamente a `origin master`.
 
 
 ---
