@@ -47,9 +47,16 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Historial de Trabajos Prácticos Inteligente (Alumnos)**: El panel de los estudiantes ahora muestra estados dinámicos precisos para cada TP: "Entregado" (verde), "No habilitado" (gris, si no cuenta para porcentaje), "Vence el dd/mm/aa" (naranja, si está activo pero en plazo), y "No entregado" (rojo, si ya pasó la fecha configurada sin entregar).
 
 ## 🎯 Último Checkpoint (GitHub)
-- **Mensaje**: `Admin/Student: Smart TP history status messages based on eval mode and deadline`
+- **Commit**: `bb845f8`
+- **Mensaje**: `UX: Alerta inteligente de TP pendiente en perfil del alumno`
+- **Descripción**:
+  - `displayStudentPortalView` ahora es `async` y carga `tpGlobalConfig` desde Firestore si no fue cargado previamente por el panel docente (bug crítico: alumnos que ingresaban directamente veían 0 TPs).
+  - Banner ámbar con instrucciones de 3 pasos para alumno con grupo (señala el ícono de grupo más abajo en el mismo perfil → pestaña Desafíos/TPs → subir link).
+  - Banner rojo informativo para alumno sin grupo, indicando que debe unirse a uno.
+  - Si todos los TPs evaluables están entregados, no aparece ningún banner.
+  - Eliminado listener de navegación (reemplazado por mensaje estático más robusto).
 - **Archivos Modificados**: `index.html`, `PROGRESS.md`.
-- **Fecha**: `12 de abril de 2026`.
+- **Fecha**: `13 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
 
 
