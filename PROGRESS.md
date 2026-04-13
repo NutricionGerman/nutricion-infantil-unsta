@@ -66,6 +66,29 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Fecha**: `13 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
 
+## 📌 Último Checkpoint (Actual)
+- **Commit**: `EMBED_VIDEO_$(date +%s)`
+- **Mensaje**: `Feat: Visualización de videos embebidos en el detalle de TPs del alumno`
+- **Descripción**:
+  - Se reemplazó la miniatura estática y el botón flotante por un `iframe` nativo de YouTube dentro de la tarjeta de entrega del portal de alumnos (`tp-main-display`).
+  - Ahora el alumno puede reproducir su video directamente desde la misma pantalla sin abrir ventanas modales.
+  - La lógica de la Galería principal se mantiene intacta.
+- **Validación de Identidad**: Se corrigió un bug en `initializeApp` que impedía calificar videos. Ahora el sistema sincroniza correctamente los datos del alumno (`currentStudentData`) al iniciar la sesión, permitiendo el sistema de votos.
+- **Archivos Modificados**: `index.html`, `PROGRESS.md`.
+- **Fecha**: `13 de abril de 2026`.
+- **Estado**: Subido exitosamente a `origin master`.
+
+## 📌 Último Checkpoint (Actual)
+- **Commit**: `VOTE_AND_EMBED_FIX_$(date +%s)`
+- **Mensaje**: `Fix: Sincronización de sesión de alumno y reparación de links de YouTube`
+- **Descripción**:
+  - Reparada la lógica de visualización de YouTube (X-Frame-Options) en Galería y TPs.
+  - Corregido el error "No se pudieron validar tus datos de alumno" al calificar videos.
+  - Sincronizada la carga global de `currentStudentData` en el arranque.
+- **Archivos Modificados**: `index.html`, `PROGRESS.md`.
+- **Fecha**: `13 de abril de 2026`.
+- **Estado**: Por subir (A/B).
+
 
 ---
 

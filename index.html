@@ -4146,6 +4146,7 @@
                         if (currentStudentUP) {
                             const matchedStudent = fullData.students.find(s => s.up == currentStudentUP);
                             if (matchedStudent) {
+                                currentStudentData = matchedStudent; // FIX: Sincronizar datos globales
                                 displayStudentPortalView(matchedStudent);
                             }
                         }
@@ -4894,19 +4895,11 @@
             }
 
             function openVideoModal(videoUrl) {
+                const id = getYouTubeID(videoUrl);
                 const modal = document.getElementById('videoModal');
                 const iframe = document.getElementById('youtubeVideo');
-                if (modal && iframe) {
-                    // Limpiar el URL base para evitar conflictos con parámetros como ?si=
-                    let cleanUrl = videoUrl.split('?')[0];
-                    let embedUrl = cleanUrl;
-                    
-                    if (cleanUrl.includes('youtube.com/watch?v=')) {
-                        embedUrl = cleanUrl.replace('watch?v=', 'embed/') + '?autoplay=1&enablejsapi=1';
-                    } else if (cleanUrl.includes('youtu.be/')) {
-                        embedUrl = cleanUrl.replace('youtu.be/', 'youtube.com/embed/') + '?autoplay=1&enablejsapi=1';
-                    }
-                    iframe.src = embedUrl;
+                if (modal && iframe && id) {
+                    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`;
                     modal.classList.add('visible');
                     document.documentElement.classList.add('modal-open');
                     document.body.classList.add('modal-open');
@@ -6804,18 +6797,14 @@
                     // ENTREGADO
                     const uploadedAt = tpData.uploadedAt ? (tpData.uploadedAt.toDate ? tpData.uploadedAt.toDate() : new Date(tpData.uploadedAt)) : null;
                     const dateStr = uploadedAt ? uploadedAt.toLocaleString('es-AR') : 'Fecha no registrada';
-                    const thumbnail = getYouTubeThumbnail(tpData.url);
+                    const videoId = getYouTubeID(tpData.url);
+                    const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : '';
 
                     statusHTML = `<div style="background: rgba(16, 185, 129, 0.2); color: var(--success-color); padding: 10px 15px; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;"><i class="fas fa-check-circle"></i> Entrega Realizada</div>`;
                     contentHTML = `
                         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden;">
-                            <div style="position: relative; height: 350px;">
-                                <img src="${thumbnail}" style="width:100%; height:100%; object-fit:cover;">
-                                <div style="position: absolute; inset:0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;">
-                                    <button class="nav-button active" id="play-group-video" data-video-url="${tpData.url}" style="padding: 15px 30px; font-size: 1.2rem; border-radius: 50px; box-shadow: 0 0 30px rgba(0,0,0,0.5);">
-                                        <i class="fas fa-play" style="margin-right: 10px;"></i> Ver Producción
-                                    </button>
-                                </div>
+                            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-bottom: 1px solid var(--glass-border);">
+                                <iframe src="${embedUrl}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             </div>
                             <div style="padding: 25px;">
                                 <h3 style="margin-bottom: 10px; font-size: 1.4rem;">TP #${tpIndex}: Informe Grupal</h3>
@@ -7650,10 +7639,8 @@
 
             function getYouTubeID(url) {
                 if (!url) return null;
-                // Limpiar parámetros extras antes del regex
-                const cleanUrl = url.split('?')[0];
                 const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = cleanUrl.match(regExp);
+                const match = url.match(regExp);
                 return (match && match[2].length === 11) ? match[2] : null;
             }
 
