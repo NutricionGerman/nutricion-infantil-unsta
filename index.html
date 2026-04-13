@@ -5705,7 +5705,7 @@
                 }
             }
 
-            function displayStudentPortalView(student) {
+            async function displayStudentPortalView(student) {
                 const portalContainer = document.getElementById('student-portal-result-container');
                 
                 // Verificar si el perfil que se visualiza es el del usuario logueado
@@ -5736,6 +5736,13 @@
                 });
 
                 // --- LÓGICA DE TPS (BÚSQUEDA ROBUSTA) ---
+                // Si window.tpGlobalConfig no fue cargado por el panel docente, lo buscamos ahora
+                if (!window.tpGlobalConfig) {
+                    try {
+                        const configDoc = await db.collection('config').doc('tp_settings').get();
+                        if (configDoc.exists) window.tpGlobalConfig = configDoc.data();
+                    } catch (e) { console.warn('No se pudo cargar tpGlobalConfig:', e); }
+                }
                 const rawConfig = window.tpGlobalConfig || (fullData && fullData.tpGlobalConfig) || (fullData && fullData.config) || {};
                 const tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
                 
@@ -6021,23 +6028,21 @@
                 <button id="back-to-rankings-btn" class="back-button"><i class="fas fa-arrow-left"></i> Volver al Panel</button>`;
 
                 // --- ALERTA INTELIGENTE DE TP PENDIENTE ---
-                const rawConfigForAlert = (fullData.tpGlobalConfig || fullData.config || {});
-                const tpConfigForAlert = rawConfigForAlert.tps || {};
+                // Usamos tpConfig y groupVideos que ya están calculados correctamente en este scope
                 const now_alert = new Date();
                 let pendingTPs = [];
                 for (let i = 1; i <= 10; i++) {
-                    const entry = tpConfigForAlert[i] || tpConfigForAlert[String(i)] || {};
+                    const entry = tpConfig[i] || tpConfig[String(i)] || tpConfig[i-1] || {};
                     if (!entry.isEvaluable) continue;
-                    // Check if deadline is open (in the future or no deadline)
                     if (entry.deadline && new Date(entry.deadline) < now_alert) continue;
-                    // Check if group already submitted
                     const vIdx = i - 1;
                     const alreadyDone = groupVideos[vIdx] !== undefined || groupVideos[i] !== undefined || groupVideos[String(vIdx)] !== undefined || groupVideos[String(i)] !== undefined;
                     if (!alreadyDone) pendingTPs.push(i);
                 }
                 
                 if (pendingTPs.length > 0) {
-                    const tpLabel = pendingTPs.length === 1 ? `el Trabajo Práctico ${pendingTPs[0]}` : `${pendingTPs.length} Trabajos Prácticos (${pendingTPs.map(n => 'TP' + n).join(', ')})`;
+                    const tpNames = pendingTPs.map(n => `TP ${n}`).join(', ');
+                    const tpLabelShort = pendingTPs.length === 1 ? `el Trabajo Práctico ${pendingTPs[0]}` : `los Trabajos Prácticos ${tpNames}`;
                     if (!student.group) {
                         portalHTML += `
                         <div id="tp-alert-banner" style="
@@ -6052,8 +6057,9 @@
                         ">
                             <div style="font-size:1.6rem; flex-shrink:0;">⚠️</div>
                             <div>
-                                <p style="font-weight:700; color:#f87171; margin:0 0 4px;">Tenés ${tpLabel} pendiente${pendingTPs.length > 1 ? 's' : ''}</p>
-                                <p style="color:var(--text-muted-light); font-size:0.87rem; margin:0;">Aún no pertenecés a ningún grupo. <strong style="color:var(--text-light);">Unirse a un grupo es necesario</strong> para poder entregar los TPs. Hacé clic en "Mi Grupo" para integrarte.</p>
+                                <p style="font-weight:700; color:#f87171; margin:0 0 6px;">Tenés ${tpLabelShort} pendiente${pendingTPs.length > 1 ? 's' : ''}</p>
+                                <p style="color:var(--text-muted-light); font-size:0.87rem; margin:0 0 4px;">Aún no pertenecés a ningún grupo. <strong style="color:var(--text-light);">Unirse a un grupo es obligatorio</strong> para poder entregar los TPs.</p>
+                                <p style="color:var(--text-muted-light); font-size:0.85rem; margin:0;">👉 Andá a la sección <strong style="color:#f87171;">Mi Grupo</strong> en el menú principal para integrarte a uno.</p>
                             </div>
                         </div>`;
                     } else {
@@ -6064,24 +6070,18 @@
                             border-radius: 14px;
                             padding: 1rem 1.25rem;
                             margin-bottom: 1.25rem;
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-                            gap: 1rem;
-                            cursor: pointer;
-                            transition: background 0.2s ease;
-                        " onmouseover="this.style.background='linear-gradient(135deg,rgba(245,158,11,0.2),rgba(245,158,11,0.1))'" 
-                           onmouseout="this.style.background='linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.05))'"
-                           id="tp-alert-go-btn">
+                        ">
                             <div style="display:flex; align-items:flex-start; gap:0.9rem;">
                                 <div style="font-size:1.6rem; flex-shrink:0;">📋</div>
-                                <div>
-                                    <p style="font-weight:700; color:#fbbf24; margin:0 0 3px;">Tenés ${tpLabel} para entregar</p>
-                                    <p style="color:var(--text-muted-light); font-size:0.87rem; margin:0;">Tocá aquí para ir directamente a <strong style="color:var(--text-light);">Desafíos / TPs</strong> y subir la entrega de tu grupo.</p>
+                                <div style="flex:1;">
+                                    <p style="font-weight:700; color:#fbbf24; margin:0 0 8px;">Tenés ${tpLabelShort} para entregar</p>
+                                    <p style="color:var(--text-muted-light); font-size:0.85rem; margin:0 0 8px;">Para subir la entrega, seguí estos pasos:</p>
+                                    <ol style="color:var(--text-muted-light); font-size:0.85rem; margin:0; padding-left:1.2rem; line-height:1.8;">
+                                        <li>Más abajo en esta misma página, hacé clic en el <strong style="color:var(--text-light);">ícono de tu grupo</strong></li>
+                                        <li>En el portal del grupo, hacé clic en la pestaña <strong style="color:#fbbf24;">Desafíos / TPs</strong></li>
+                                        <li>Subí el link del video de entrega</li>
+                                    </ol>
                                 </div>
-                            </div>
-                            <div style="flex-shrink:0; background: rgba(245,158,11,0.2); border-radius:10px; padding: 8px 14px; font-size:0.85rem; color:#fbbf24; font-weight:600; white-space:nowrap;">
-                                <i class="fas fa-arrow-right"></i> Ir ahora
                             </div>
                         </div>`;
                     }
@@ -7135,16 +7135,6 @@
 
                 attachModalListeners('body');
 
-                // Alerta de TP pendiente → navegar al portal del grupo en la pestaña TPs
-                const tpAlertBtn = document.getElementById('tp-alert-go-btn');
-                if (tpAlertBtn) {
-                    tpAlertBtn.addEventListener('click', () => {
-                        const groupId = currentStudentData && currentStudentData.group;
-                        if (groupId) {
-                            displayGroupPortalView(groupId, 'tps');
-                        }
-                    });
-                }
 
                 // Lógica de Edición de Foto de Alumno
                 const editPhotoBtn = document.getElementById('edit-student-photo-btn');
