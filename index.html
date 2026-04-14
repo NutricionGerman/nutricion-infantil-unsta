@@ -583,29 +583,44 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
-            scrollbar-color: var(--accent-orange) rgba(255, 255, 255, 0.05);
+            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
         }
 
         .videos-scroll-container::-webkit-scrollbar {
-            height: 8px;
+            height: 6px;
         }
 
         .videos-scroll-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: 10px;
         }
 
         .videos-scroll-container::-webkit-scrollbar-thumb {
-            background: var(--accent-orange);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            border: 2px solid transparent;
-            background-clip: content-box;
+            transition: background 0.3s ease;
+        }
+        
+        .videos-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-orange);
         }
 
         .video-gallery-card {
             min-width: 320px;
             width: 320px;
             flex: 0 0 auto;
+        }
+
+        .video-gallery-card:hover .play-glass-btn {
+            background: rgba(255, 255, 255, 0.3) !important;
+            border-color: #fff !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
+        }
+
+        .video-gallery-card:hover img {
+            opacity: 1 !important;
+            transform: scale(1.03);
         }
 
         .ranking-list-container {
@@ -2635,12 +2650,14 @@
             overflow: hidden;
         }
 
-        .video-wrapper iframe {
+        .video-wrapper iframe,
+        .video-wrapper video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
         }
 
         .score-modal .modal-content {
@@ -3091,7 +3108,7 @@
                                 <h2>Galería de Producciones</h2>
                                 <p>Explora los trabajos prácticos realizados por todos los grupos.</p>
                             </div>
-                            <div id="recent-activity-container" class="ranking-list-container" style="background: transparent; border: none; padding: 0;">
+                            <div id="recent-activity-container" class="ranking-list-container" style="background: transparent; border: none; padding: 0; max-width: 100%; margin: 0 auto;">
                                 <!-- La galería se generará aquí -->
                             </div>
                         </div>
@@ -3390,9 +3407,12 @@
             style="background:var(--card-bg);border:1px solid var(--glass-border);border-radius:20px;padding:10px;width:90%;max-width:890px;background:#000; position: relative;">
             <button class="close-modal"
                 style="position: absolute; top: -35px; right: -5px; color: white; z-index: 1001;">&times;</button>
-            <div class="video-wrapper"><iframe id="youtubeVideo" src="" title="YouTube video player" frameborder="0"
+            <div class="video-wrapper">
+                <iframe id="youtubeVideo" src="" title="Video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen></iframe></div>
+                    allowfullscreen style="display:none;"></iframe>
+                <video id="directVideo" controls style="display:none;"></video>
+            </div>
         </div>
     </div>
     <div class="modal-overlay score-modal" id="fiberModal">
@@ -4049,6 +4069,56 @@
                 { xp: 115, name: 'Supersónico III', image: '115.png' },
                 { xp: 120, name: 'Leyenda Supersónica', image: '120.png' }
             ];
+            
+            // --- VIDEO UTILITIES ---
+            function getVideoInfo(url) {
+                if (!url) return null;
+
+                // YouTube
+                const ytRegExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const ytMatch = url.match(ytRegExp);
+                if (ytMatch && ytMatch[2].length === 11) {
+                    const id = ytMatch[2];
+                    return {
+                        type: 'youtube',
+                        id: id,
+                        thumbnail: `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
+                        embedUrl: `https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`
+                    };
+                }
+
+                // TikTok
+                const tiktokRegExp = /tiktok\.com\/.*\/video\/(\d+)/;
+                const tiktokMatch = url.match(tiktokRegExp);
+                if (tiktokMatch) {
+                    const id = tiktokMatch[1];
+                    return {
+                        type: 'tiktok',
+                        id: id,
+                        thumbnail: './iconos/logo.png',
+                        embedUrl: `https://www.tiktok.com/embed/v3/${id}`
+                    };
+                }
+
+                // Direct Video (mp4, webm, etc)
+                const directMatch = (url.split('?')[0]).match(/\.(mp4|webm|ogg)$/i);
+                if (directMatch) {
+                    return {
+                        type: 'direct',
+                        id: null,
+                        thumbnail: './iconos/logo.png',
+                        embedUrl: url
+                    };
+                }
+
+                return {
+                    type: 'other',
+                    id: null,
+                    thumbnail: './iconos/logo.png',
+                    embedUrl: url
+                };
+            }
+            window.getVideoInfo = getVideoInfo;
 
             // Firebase Configuration
             const firebaseConfig = {
@@ -4792,35 +4862,36 @@
                     const sortedVideos = galleryByTP[tpIndex].sort((a, b) => b.avgRating - a.avgRating);
 
                     html += `
-                        <div class="gallery-tp-section" style="margin-bottom: 50px; animation: slideUp 0.5s ease-out;">
+                        <div class="gallery-tp-section" style="margin-bottom: 50px; background: rgba(10, 12, 16, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; 
+animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             <h3 style="color: var(--accent-orange); font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
                                 <span><i class="fas fa-film"></i> ${tpName}</span>
                                 <span style="font-size: 0.8rem; color: var(--text-muted-light); font-weight: 400;"><i class="fas fa-sort-amount-down"></i> Ordenados por valoración</span>
                             </h3>
-                            <div class="videos-scroll-container">
+                            <div class="videos-scroll-container" style="padding-top: 10px;">
                                 ${sortedVideos.map((v, index) => {
                                     const thumbnail = getYouTubeThumbnail(v.videoUrl);
                                     const isTop = index === 0 && v.avgRating > 0;
                                     return `
-                                    <div class="video-gallery-card" style="background: rgba(255,255,255,0.03); border: 1px solid ${isTop ? 'var(--accent-orange)' : 'var(--glass-border)'}; border-radius: 20px; overflow: hidden; transition: all 0.3s ease; position: relative; display: flex; flex-direction: column; ${isTop ? 'box-shadow: 0 0 15px rgba(232, 122, 61, 0.2);' : ''}">
-                                        ${isTop ? `<div style="position: absolute; top: 12px; left: 12px; z-index: 10; background: var(--accent-orange); color: #000; font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 50px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);"><i class="fas fa-crown"></i> MEJOR CALIFICADO</div>` : ''}
+                                    <div class="video-gallery-card hover-lift" style="background: rgba(255,255,255,0.03); border: 1px solid ${isTop ? 'var(--accent-orange)' : 'var(--glass-border)'}; border-radius: 20px; overflow: hidden; transition: all 0.3s ease; position: relative; display: flex; flex-direction: column; min-width: 280px; ${isTop ? 'box-shadow: 0 0 15px rgba(232, 122, 61, 0.2);' : ''}">
+                                        ${isTop ? `<div style="position: absolute; top: 12px; left: 12px; z-index: 10; background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8c42 100%); color: #000; font-size: 0.65rem; font-weight: 800; padding: 6px 14px; border-radius: 50px; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); white-space: nowrap; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(4px);"><i class="fas fa-crown"></i> MEJOR CALIFICADO</div>` : ''}
                                         <div style="position: relative; height: 180px; overflow: hidden; background: #000; flex-shrink: 0;">
-                                            <img src="${thumbnail}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: all 0.5s ease;">
-                                            <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);"></div>
-                                            <div class="play-overlay" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.9;">
-                                                <button class="nav-button active" id="play-group-video" data-video-url="${v.videoUrl}" style="width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding:0; font-size: 1.5rem; box-shadow: 0 0 25px rgba(0,0,0,0.5); transform: scale(0.9); transition: all 0.3s ease;">
-                                                    <i class="fas fa-play" style="margin-left: 5px;"></i>
+                                            <img src="${thumbnail}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: all 0.5s ease; border-radius: 20px 20px 0 0;">
+                                            <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 80%);"></div>
+                                            <div class="play-overlay" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.9; transition: opacity 0.3s;">
+                                                <button class="play-glass-btn" id="play-group-video" data-video-url="${v.videoUrl}" style="cursor: pointer; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding:0; font-size: 1.5rem; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: scale(0.9); transition: all 0.3s ease;">
+                                                    <i class="fas fa-play" style="margin-left: 5px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></i>
                                                 </button>
                                             </div>
                                         </div>
                                         <div style="padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
                                             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #333; border: 2px solid var(--accent-teal); flex-shrink: 0;">
-                                                    ${v.logo ? `<img src="${v.logo}" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fas fa-users" style="display: flex; align-items:center; justify-content: center; height:100%; font-size: 0.7rem;"></i>`}
+                                                <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #333; border: 2px solid var(--accent-teal); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                                                    ${v.logo ? `<img src="${v.logo}" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fas fa-users" style="font-size: 1.2rem; color: #fff;"></i>`}
                                                 </div>
                                                 <div style="flex: 1; min-width: 0;">
-                                                    <div style="font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; font-size: 0.95rem;">${v.groupName}</div>
-                                                    <div style="font-size: 0.7rem; color: var(--accent-teal); font-weight: 500;">Grupo #${v.groupId}</div>
+                                                    <div style="font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; font-size: 1rem; text-transform: capitalize;">${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</div>
+                                                    <div style="font-size: 0.75rem; color: var(--text-muted-light); font-weight: 400; display: flex; align-items: center; gap: 5px;"><i class="fas fa-hashtag"></i>ID: ${v.groupId.replace('g_', '')}</div>
                                                 </div>
                                             </div>
 
@@ -4900,15 +4971,31 @@
             }
 
             function openVideoModal(videoUrl) {
-                const id = getYouTubeID(videoUrl);
+                const info = getVideoInfo(videoUrl);
                 const modal = document.getElementById('videoModal');
                 const iframe = document.getElementById('youtubeVideo');
-                if (modal && iframe && id) {
-                    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`;
-                    modal.classList.add('visible');
-                    document.documentElement.classList.add('modal-open');
-                    document.body.classList.add('modal-open');
+                const directVideo = document.getElementById('directVideo');
+                
+                if (!modal || !info) return;
+
+                if (info.type === 'direct') {
+                    if (iframe) { iframe.style.display = 'none'; iframe.src = ""; }
+                    if (directVideo) {
+                        directVideo.style.display = 'block';
+                        directVideo.src = info.embedUrl;
+                        directVideo.play();
+                    }
+                } else {
+                    if (directVideo) { directVideo.style.display = 'none'; directVideo.pause(); directVideo.src = ""; }
+                    if (iframe) {
+                        iframe.style.display = 'block';
+                        iframe.src = info.embedUrl;
+                    }
                 }
+
+                modal.classList.add('visible');
+                document.documentElement.classList.add('modal-open');
+                document.body.classList.add('modal-open');
             }
 
             async function handleVideoVoting(tpIndex, targetId, stars) {
@@ -7643,15 +7730,13 @@
             }
 
             function getYouTubeID(url) {
-                if (!url) return null;
-                const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[2].length === 11) ? match[2] : null;
+                const info = getVideoInfo(url);
+                return (info && info.type === 'youtube') ? info.id : url;
             }
 
             function getYouTubeThumbnail(url) {
-                const id = getYouTubeID(url);
-                return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : './iconos/logo.png';
+                const info = getVideoInfo(url);
+                return info ? info.thumbnail : './iconos/logo.png';
             }
 
             // Manejo del modal de video (Eliminado por redundancia, ahora se usa el modal centralizado)
@@ -7680,12 +7765,7 @@
                 window.scrollTo(0, 0);
             }
 
-            function getYouTubeID(url) {
-                if (!url) return null;
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = url.match(regExp);
-                return (match && match[2].length == 11) ? match[2] : url;
-            }
+
 
             function createRecipeDetailHTML(recipe) {
                 const KIOSCO_BASE_PATH = 'proyectos/kiosco-saludable/';
@@ -7798,12 +7878,7 @@
                     return `<div class="gallery-card" data-recipe-id="${recipeId}"><div class="gallery-card-image-wrapper"><img src="${recipe.infoGeneral.urlImagenPrincipal}" alt="${recipe.infoGeneral.nombreReceta}" class="gallery-card-image"><div class="gallery-card-seals-overlay">${sealsHTML}</div></div><div class="gallery-card-score-circle ${scoreColorClass}">${recipe.puntuacion.total}</div><div class="gallery-card-content"><h3 class="gallery-card-title">${recipe.infoGeneral.nombreReceta}</h3><p class="gallery-card-group">${recipe.infoGeneral.grupo || ''}</p></div></div>`;
                 }
 
-                function getYouTubeID(url) {
-                    if (!url) return null;
-                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                    const match = url.match(regExp);
-                    return (match && match[2].length == 11) ? match[2] : url;
-                }
+
 
                 document.body.addEventListener('click', (e) => {
                     const clickedModal = e.target.closest('.modal-overlay');
@@ -7811,7 +7886,12 @@
                         if (e.target.matches('.close-modal')) e.stopPropagation();
                         if (clickedModal) {
                             clickedModal.classList.remove('visible');
-                            if (clickedModal.id === 'videoModal') { const iframe = clickedModal.querySelector('iframe'); if (iframe) iframe.src = ""; }
+                            if (clickedModal.id === 'videoModal') {
+                                const iframe = clickedModal.querySelector('iframe');
+                                if (iframe) iframe.src = "";
+                                const video = clickedModal.querySelector('video');
+                                if (video) { video.pause(); video.src = ""; }
+                            }
                             if (clickedModal.id === 'recipe-modal') { setTimeout(() => { clickedModal.querySelector('#recipe-modal-content').innerHTML = ''; }, 300); }
 
                             if (!document.querySelector('.modal-overlay.visible')) {

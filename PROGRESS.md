@@ -89,6 +89,19 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Fecha**: `13 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
 
+## 📌 Último Checkpoint (Actual)
+- **Commit**: `Feat: Soporte multi-plataforma para videos (TikTok/Directo) y mejoras estéticas en Galería`
+- **Descripción**:
+  - Implementada utilidad `getVideoInfo` para detectar YouTube, TikTok y archivos directos (.mp4, .webm).
+  - Actualizado `videoModal` con soporte para etiqueta `<video>` nativa.
+  - Aplicado *Glassmorphism* (fondo esmerilado) a las secciones de la galería.
+  - Mejorada la barra de desplazamiento (más fina y minimalista).
+  - Rediseñado el botón de "Play" con efecto cristal y animaciones de escala.
+  - Corregido el chip de "Mejor Calificado" como una píldora flotante integrada en la miniatura.
+  - Limpieza de redundancia en nombres de grupos en las tarjetas de galería.
+- **Archivos Modificados**: `index.html`, `PROGRESS.md`.
+- **Fecha**: `14 de abril de 2026`.
+- **Estado**: Subido exitosamente a `origin master`.
 
 ---
 
