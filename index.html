@@ -3115,6 +3115,14 @@
 
                         <!-- VISTA PARA ALUMNOS -->
                         <div id="alumnos-dashboard-content" class="dashboard-content-panel active">
+                            <!-- SEARCH RAPIDO PARA ADMIN -->
+                            <div id="admin-rapid-search-container" style="display: none; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,165,0,0.5); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+                                <h3 style="color: var(--accent-orange); margin: 0 0 15px 0; font-size:1.1rem;"><i class="fas fa-search"></i> Administrar Alumnos (Panel Rápido)</h3>
+                                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                                    <input type="text" id="admin-student-search-input" placeholder="Buscar por Apellido, Nombre o UP..." autocomplete="off" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white;" oninput="adminSearchStudent()">
+                                </div>
+                                <div id="admin-student-search-results" style="max-height: 250px; overflow-y: auto; display:flex; flex-direction:column; gap:5px;"></div>
+                            </div>
                             <div id="student-podium-container" class="podium-container"></div>
                             <div class="extended-rankings-wrapper">
                                 <div id="top-alumnos-container" class="ranking-list-container"></div>
@@ -4238,6 +4246,32 @@
                         }
                     });
 
+                    // 5B. ESCUCHA ACTIVA DE CONFIGURACION GLOBAL Y ASISTENCIAS
+                    db.collection('app_state').doc('main').onSnapshot(doc => {
+                        if (doc.exists) {
+                            const newMaster = doc.data();
+                            fullData.config = newMaster.config || fullData.config;
+                            fullData.sessions = newMaster.sessions || fullData.sessions || [];
+                            fullData.attendanceRecords = newMaster.attendanceRecords || fullData.attendanceRecords || [];
+                            fullData.recipes = newMaster.recipes || fullData.recipes || [];
+                            window.fullData = fullData;
+
+                            try { createOverallAttendanceChart(); } catch(e){}
+                            try { displayGlobalStats(); } catch(e){}
+                            
+                            // Si el doc es admin y está organizando asisistencia, refrescar lista
+                            try { 
+                                if (document.getElementById('csv-import-box') && document.getElementById('csv-import-box').style.display === 'block') {
+                                    if(typeof renderManualAttendance === 'function') renderManualAttendance();
+                                }
+                            } catch(e){}
+                            
+                            // Refrescar lista de sesiones
+                            try { if(typeof refreshAdminSessList === 'function') refreshAdminSessList(); } catch(e) {}
+                        }
+                    });
+
+
                     // Navegación inicial
                     switchDashboardTab('alumnos');
                     try { initializeShop(); } catch (e) {}
@@ -4706,9 +4740,17 @@
                     activePanel.classList.add('active');
                 }
 
+                const adminSearchContainer = document.getElementById('admin-rapid-search-container');
+                if (adminSearchContainer) {
+                    adminSearchContainer.style.display = (tabName === 'alumnos' && firebase.auth().currentUser) ? 'block' : 'none';
+                    if (tabName === 'alumnos' && firebase.auth().currentUser) {
+                        try { window.adminSearchStudent(); } catch(e){}
+                    }
+                }
+
                 const searchBar = document.querySelector('.xp-search-bar');
                 if (searchBar) {
-                    searchBar.style.display = (tabName === 'alumnos') ? 'flex' : 'none';
+                    searchBar.style.display = 'none'; // Obsoleto en esta vista, escondemos por si aca
                 }
 
                 if (tabName === 'alumnos') {
@@ -6187,6 +6229,20 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 }
                 // --- FIN ALERTA ---
 
+                // --- HERRAMIENTAS DE ADMIN ---
+                if (firebase.auth().currentUser && window.currentView === 'admin') {
+                    portalHTML += `
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--accent-orange); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                        <h4 style="color: var(--accent-orange); margin: 0 0 10px 0; font-size: 1rem;"><i class="fas fa-tools"></i> Herramientas de Docente</h4>
+                        <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="nav-button" onclick="adminModXP('${student.up}')" style="border-color: var(--xp-color); color: var(--xp-color); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-star"></i> Modificar XP</button>
+                            <button class="nav-button" onclick="adminModManualAtt('${student.up}')" style="border-color: var(--accent-teal); color: var(--accent-teal); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-user-check"></i> Asistencia Normal</button>
+                        </div>
+                    </div>
+                    `;
+                }
+                // --- FIN HERRAMIENTAS ---
+
                 portalHTML += `
                 <div class="result-card">
                     <div class="profile-header">
@@ -6491,6 +6547,16 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             </div>
                         </div>
                     </div>
+
+                    <!-- HERRAMIENTAS DE ADMIN PARA GRUPO -->
+                    ${(firebase.auth().currentUser) ? `
+                    <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--accent-orange); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                        <h4 style="color: var(--accent-orange); margin: 0 0 10px 0; font-size: 1rem;"><i class="fas fa-tools"></i> Herramientas de Docente</h4>
+                        <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="nav-button" onclick="adminGroupModXP('${cleanGroupId}')" style="border-color: var(--xp-color); color: var(--xp-color); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-star"></i> Modificar XP a todo el Grupo</button>
+                        </div>
+                    </div>` : ''}
+                    <!-- FIN HERRAMIENTAS -->
 
                     <!-- NAVEGACIÓN -->
                     <div class="portal-nav-tabs">
@@ -9088,6 +9154,207 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 renderManualAttendance();
             };
 
+            window.adminSearchStudent = () => {
+                const searchInput = document.getElementById('admin-student-search-input');
+                if (!searchInput) return;
+                const search = searchInput.value.toLowerCase();
+                const container = document.getElementById('admin-student-search-results');
+                if (search.length < 2) {
+                    container.innerHTML = '';
+                    return;
+                }
+                
+                let students = window.fullData.students || [];
+                students.forEach(s => {
+                    if (!s.name) s.name = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || ''}`.trim() || 'Sin nombre';
+                });
+                
+                const results = students.filter(s => s.name.toLowerCase().includes(search) || String(s.up).includes(search));
+                
+                if (results.length === 0) {
+                    container.innerHTML = '<div style="color:var(--text-muted-light); font-size:0.8rem; text-align:center;">No hay alumnos coincidientes.</div>';
+                    return;
+                }
+
+                container.innerHTML = results.map(s => `
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; display:flex; justify-content: space-between; align-items:center; border: 1px solid rgba(255,255,255,0.05);">
+                        <div style="cursor: pointer; flex:1;" onclick="displayStudentPortalView(fullData.students.find(st => st.up == '${s.up}'))">
+                            <div style="font-weight:600; color:white; font-size:0.9rem;">${s.name} <span style="font-size:0.7rem; color:var(--text-muted-light);">(${s.up})</span></div>
+                            <div style="font-size:0.75rem; color:var(--xp-color); margin-top:2px;"><i class="fas fa-star"></i> ${s.xp || 0} XP</div>
+                        </div>
+                        <div style="display:flex; gap: 8px;">
+                            <button class="nav-button" onclick="adminModXP('${s.up}')" style="padding: 6px 10px; font-size: 0.75rem; border-color: var(--xp-color); color: var(--xp-color);" title="Añadir/Quitar XP"><i class="fas fa-star"></i> Modificar XP</button>
+                            <button class="nav-button" onclick="adminModManualAtt('${s.up}')" style="padding: 6px 10px; font-size: 0.75rem; border-color: var(--accent-teal); color: var(--accent-teal);" title="Alternar Presente en una clase"><i class="fas fa-user-check"></i> Asistencia</button>
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            window.adminModXP = async (up) => {
+                const s = window.fullData.students.find(st => String(st.up) === String(up));
+                if(!s) return;
+                const change = prompt(`ALUMNO: ${s.name}\nPUNTOS ACTUALES: ${s.xp || 0} XP.\n\nIngresa la CANTIDAD de XP a sumar (ej: 5) o restar (ej: -5):`);
+                if(!change) return;
+                const num = parseInt(change);
+                if(isNaN(num) || num === 0) return alert("Cantidad inválida.");
+                
+                const reason = prompt("Ingresa el MOTIVO de esta modificación de XP (ej: 'Participación en clase', 'Penalización'):\nSe mostrará en su historial.", "Modificación manual");
+                if(!reason) return;
+
+                s.xp = (s.xp || 0) + num;
+                if(!s.xpHistory) s.xpHistory = [];
+                s.xpHistory.push({
+                    timestamp: new Date().toISOString(),
+                    amount: num,
+                    reason: reason,
+                    sessionId: "manual_admin",
+                    newXP: s.xp
+                });
+                
+                try {
+                    await saveProjectData(s);
+                    alert(`✅ Se actualizaron los puntos exitosamente.\nNuevo Total: ${s.xp} XP`);
+                    try { window.adminSearchStudent(); } catch(e){}
+                    if (document.getElementById('portal-photo')) {
+                        try { displayStudentPortalView(s); } catch(e){}
+                    }
+                } catch(e) {
+                    alert("Error al guardar en el servidor.");
+                }
+            };
+
+            window.adminGroupModXP = async (groupId) => {
+                groupId = String(groupId).trim();
+                const members = window.fullData.students.filter(s => String(s.group).trim() === groupId);
+                
+                if(members.length === 0) return alert("Este grupo no tiene miembros.");
+                
+                const change = prompt(`GRUPO: ${groupId}\nCANTIDAD DE MIEMBROS: ${members.length}\n\nIngresa la CANTIDAD de XP a sumar (ej: 5) o restar (ej: -5) para TODO EL GRUPO:`);
+                if(!change) return;
+                const num = parseInt(change);
+                if(isNaN(num) || num === 0) return alert("Cantidad inválida.");
+                
+                const reason = prompt("Ingresa el MOTIVO para sumar estos puntos (Ej: 'Desafío del día', 'Penalización grupal'):\nSe mostrará en el historial de cada miembro.", "Modificación grupal");
+                if(!reason) return;
+
+                if (!confirm(`Se modificará ${num} XP a ${members.length} alumno/s por el motivo: "${reason}".\n\n¿Estás seguro/a?`)) return;
+
+                const db = firebase.firestore();
+                const batch = db.batch();
+                let successCount = 0;
+
+                for (let s of members) {
+                    s.xp = (s.xp || 0) + num;
+                    if(!s.xpHistory) s.xpHistory = [];
+                    s.xpHistory.push({
+                        timestamp: new Date().toISOString(),
+                        amount: num,
+                        reason: reason,
+                        sessionId: "manual_admin_group",
+                        newXP: s.xp
+                    });
+                    
+                    batch.set(db.collection('students').doc(String(s.up)), s);
+                    successCount++;
+                }
+                
+                try {
+                    await batch.commit();
+                    alert(`✅ ¡Listo! Se actualizaron los puntos de ${successCount} miembros del grupo exitosamente.`);
+                    
+                    try { window.adminSearchStudent(); } catch(e){}
+                    if (document.getElementById('group-portal-result-container')) {
+                        displayGroupPortalView(groupId);
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert("Ocurrió un error al guardar en el servidor.");
+                }
+            };
+
+            window.adminModManualAtt = async (up) => {
+                const s = window.fullData.students.find(st => String(st.up) === String(up));
+                if(!s) return;
+                
+                const sessions = (window.fullData.sessions || []).slice().reverse();
+                if(sessions.length === 0) return alert("No hay clases creadas en el sistema.");
+                
+                let promptText = `ASISTENCIA: ${s.name}\n\nEscribe el NÚMERO de la sesión a modificar:\n`;
+                const recent = sessions.slice(0, 7);
+                recent.forEach((sess, idx) => {
+                    promptText += `${idx+1}. ${sess.name} (${sess.date})\n`;
+                });
+                promptText += `\nTu respuesta (1 a ${recent.length}):`;
+                
+                const selection = prompt(promptText);
+                if(!selection) return;
+                const idx = parseInt(selection) - 1;
+                if(isNaN(idx) || idx < 0 || idx >= recent.length) return alert("Opción no válida.");
+                
+                const chosenSess = recent[idx];
+                
+                // Ensure array initialized locally just in case
+                if (!window.fullData.attendanceRecords) window.fullData.attendanceRecords = [];
+                
+                const existing = window.fullData.attendanceRecords.find(r => r.sessionId === chosenSess.id && String(r.up) === String(s.up));
+                if(existing) {
+                    if(!confirm(`❗ El alumno YA TIENE PRESENTE en ${chosenSess.name}.\n\n¿Deseas BORRARLE la asistencia y restarle sus 2 XP de dicho día?`)) return;
+                    
+                    window.fullData.attendanceRecords = window.fullData.attendanceRecords.filter(r => !(r.sessionId === chosenSess.id && String(r.up) === String(s.up)));
+                    
+                    if(s.xpHistory) {
+                        const hIdx = s.xpHistory.findIndex(h => h.sessionId === chosenSess.id && h.reason.startsWith("Asistencia"));
+                        if(hIdx !== -1) {
+                            s.xp -= s.xpHistory[hIdx].amount;
+                            s.xpHistory.splice(hIdx, 1);
+                        }
+                    }
+                    
+                    try {
+                        const db = firebase.firestore();
+                        const batch = db.batch();
+                        batch.update(db.collection('app_state').doc('main'), {
+                            attendanceRecords: window.fullData.attendanceRecords
+                        });
+                        batch.set(db.collection('students').doc(String(s.up)), s);
+                        await batch.commit();
+                        alert(`❌ Asistencia borrada. Se recuperaron los puntos.`);
+                    } catch(e) { alert("Error al intentar borrar en la nube."); }
+                    
+                } else {
+                    if(!confirm(`✅ Dar de alta el presente manual de ${s.name} en ${chosenSess.name} (+2 XP)?`)) return;
+
+                    window.fullData.attendanceRecords.push({
+                        sessionId: chosenSess.id,
+                        up: String(s.up),
+                        status: 'onTime',
+                        timestamp: new Date().toISOString(),
+                        answer: 'Carga Manual Directa'
+                    });
+                    
+                    s.xp = (s.xp || 0) + 2;
+                    if(!s.xpHistory) s.xpHistory = [];
+                    s.xpHistory.push({
+                        timestamp: new Date().toISOString(),
+                        amount: 2,
+                        reason: "Asistencia: " + chosenSess.name + " (Manual)",
+                        sessionId: chosenSess.id,
+                        newXP: s.xp
+                    });
+                    
+                    try {
+                        const db = firebase.firestore();
+                        const batch = db.batch();
+                        batch.update(db.collection('app_state').doc('main'), {
+                            attendanceRecords: firebase.firestore.FieldValue.arrayUnion(window.fullData.attendanceRecords[window.fullData.attendanceRecords.length - 1])
+                        });
+                        batch.set(db.collection('students').doc(String(s.up)), s);
+                        await batch.commit();
+                        alert(`✅ Presente añadido con éxito.`);
+                    } catch(e) { alert("Error al guardar asistencia."); }
+                }
+            };
+
             window.toggleManualAttendance = async (up, checkboxElem) => {
                 if(!window.activeSessId) return;
                 const isPresent = checkboxElem.checked;
@@ -9239,7 +9506,9 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
                     try {
                         // 1. Guardar asistencias y sesiones en app_state/main
-                        await db.collection('app_state').doc('main').set(fullData);
+                        await db.collection('app_state').doc('main').update({
+                            attendanceRecords: fullData.attendanceRecords
+                        });
 
                         // 2. Guardar XP actualizado en la colección individual de cada alumno
                         const batch = db.batch();
@@ -9729,7 +9998,9 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
             const sessionIdx = window.fullData.sessions.findIndex(s => s.id === sid);
             if (sessionIdx !== -1) {
                 window.fullData.sessions[sessionIdx].question = question;
-                firebase.firestore().collection('app_state').doc('main').set(window.fullData);
+                firebase.firestore().collection('app_state').doc('main').update({
+                    sessions: window.fullData.sessions
+                });
             }
             const attendanceUrl = `${window.location.origin}${window.location.pathname}?asistencia=${sid}&q=${encodeURIComponent(question)}`;
             document.getElementById('qr-config-modal').classList.remove('active');

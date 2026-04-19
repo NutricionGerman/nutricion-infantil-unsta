@@ -103,6 +103,18 @@ Este documento sirve como memoria para el asistente de IA sobre los cambios y co
 - **Fecha**: `14 de abril de 2026`.
 - **Estado**: Subido exitosamente a `origin master`.
 
+## 📌 Último Checkpoint (Actual)
+- **Commit**: `Feat: Panel rápido y herramientas grupales de Docente`
+- **Mensaje**: `Feat: Herramientas de XP y Asistencia para Docente`
+- **Descripción**:
+  - Implementado panel de búsqueda rápida en la pestaña Alumnos para docentes.
+  - Creadas funciones \`adminModXP\` y \`adminModManualAtt\` para gestionar estudiantes.
+  - Implementado \`adminGroupModXP\` expuesto en portales de Grupos para poder sumar/restar XP en lote.
+  - Asegurada consistencia y auto-actualización de los paneles al guardar datos usando \`db.batch()\`.
+- **Archivos Modificados**: \`index.html\`, \`PROGRESS.md\`.
+- **Fecha**: \`19 de abril de 2026\`.
+- **Estado**: Subido exitosamente a \`origin master\`.
+
 ---
 
 ## 🤖 Directivas de Flujo de Trabajo (para el Agente)
