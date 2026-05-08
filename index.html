@@ -7201,7 +7201,9 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             return;
                         }
 
-                        const config = (window.tpGlobalConfig && window.tpGlobalConfig.tps && window.tpGlobalConfig.tps[tpId]) || null;
+                        // El selector usa valores 0-indexados ("0"=TP1, "1"=TP2) pero los configs se guardan 1-indexados
+                        const configKey = String(parseInt(tpId) + 1);
+                        const config = (window.tpGlobalConfig && window.tpGlobalConfig.tps && window.tpGlobalConfig.tps[configKey]) || null;
                         const now = new Date();
 
                         tpStatusInfo.style.display = 'block';
@@ -7213,23 +7215,23 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             if (unlock && now < unlock) {
                                 tpStatusInfo.style.background = 'rgba(107, 114, 128, 0.2)';
                                 tpStatusInfo.style.color = '#9ca3af';
-                                tpStatusInfo.innerHTML = `< i class="fas fa-lock" ></i > Este TP se desbloquea el ${unlock.toLocaleString('es-AR')} `;
+                                tpStatusInfo.innerHTML = `<i class="fas fa-lock"></i> Este TP se desbloquea el ${unlock.toLocaleString('es-AR')}`;
                                 tpInputContainer.style.display = 'none';
                                 return;
                             }
 
                             if (deadline && now > deadline) {
-                                // Verificar si ya hay entrega
+                                // Verificar si ya hay entrega (videos son 0-indexados, tpId ya es el índice correcto)
                                 const existingVideo = (activeGroupSession.data.videos && activeGroupSession.data.videos[tpId]);
                                 if (existingVideo) {
                                     tpStatusInfo.style.background = 'rgba(16, 185, 129, 0.2)';
                                     tpStatusInfo.style.color = 'var(--success-color)';
-                                    tpStatusInfo.innerHTML = `< i class="fas fa-check-circle" ></i > Entregado.No se pueden realizar cambios(Plazo vencido).`;
+                                    tpStatusInfo.innerHTML = `<i class="fas fa-check-circle"></i> Entregado. No se pueden realizar cambios (Plazo vencido).`;
                                     tpInputContainer.style.display = 'none';
                                 } else {
                                     tpStatusInfo.style.background = 'rgba(239, 68, 68, 0.2)';
                                     tpStatusInfo.style.color = 'var(--danger-color)';
-                                    tpStatusInfo.innerHTML = `< i class="fas fa-exclamation-triangle" ></i > PLAZO VENCIDO.No se aceptan entregas.`;
+                                    tpStatusInfo.innerHTML = `<i class="fas fa-exclamation-triangle"></i> PLAZO VENCIDO. No se aceptan entregas.`;
                                     tpInputContainer.style.display = 'none';
                                 }
                                 return;
@@ -7238,7 +7240,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
                         tpStatusInfo.style.background = 'rgba(245, 158, 11, 0.1)';
                         tpStatusInfo.style.color = 'var(--xp-color)';
-                        tpStatusInfo.innerHTML = `< i class="fas fa-unlock" ></i > Abierto para entrega.`;
+                        tpStatusInfo.innerHTML = `<i class="fas fa-unlock"></i> Abierto para entrega.`;
                         tpInputContainer.style.display = 'block';
 
                         const existingVideo = (activeGroupSession.data.videos && activeGroupSession.data.videos[tpId]);
