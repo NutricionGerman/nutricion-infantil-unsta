@@ -6611,9 +6611,9 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         const tpConfigs = (window.tpGlobalConfig && window.tpGlobalConfig.tps) || {};
                         const now = new Date();
                         for (let i = 1; i <= 10; i++) {
-                            // Los videos se guardan con clave 0-indexada (TP1 = videos[0], TP2 = videos[1]...)
+                            // Videos: 0-indexados (TP1=videos[0]). Configs: 1-indexados (TP1=tpConfigs[1])
                             const tpData = (groupData.videos && groupData.videos[i - 1]);
-                            const config = tpConfigs[i - 1] || {};
+                            const config = tpConfigs[i] || {};
                             const unlockDate = config.unlockDate ? new Date(config.unlockDate) : null;
                             const deadline = config.deadline ? new Date(config.deadline) : null;
 
@@ -6944,8 +6944,8 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 if (!container) return;
 
                 const tpConfigs = (window.tpGlobalConfig && window.tpGlobalConfig.tps) || {};
-                // Los videos se guardan con clave 0-indexada (TP1=0, TP2=1...) pero tpIndex llega como 1-indexado
-                const config = tpConfigs[tpIndex - 1] || {};
+                // Videos: 0-indexados (TP1=videos[0]). Configs: 1-indexados (TP1=tpConfigs[1])
+                const config = tpConfigs[tpIndex] || {};
                 const tpData = (groupData.videos && groupData.videos[tpIndex - 1]);
                 const now = new Date();
 
