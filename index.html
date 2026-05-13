@@ -5884,7 +5884,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
                 // Unifica los registros del alumno con todas las sesiones relevantes para un cálculo consistente
                 const allStudentRecordsForRelevantSessions = relevantSessions.map(session => {
-                    return studentRecords.find(r => r.sessionId === session.id) || { tpNote: null };
+                    return studentRecords.find(r => String(r.sessionId).trim() === String(session.id).trim()) || { tpNote: null };
                 });
 
                 // --- LÓGICA DE TPS (BÚSQUEDA ROBUSTA) ---
@@ -6061,7 +6061,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     <div class="modal-content"><div class="modal-header"><h4>Historial de Asistencia Detallado</h4><button class="close-modal">&times;</button></div>
                         <div class="modal-body"><table class="attendance-table"><thead><tr><th>Clase</th><th>Fecha</th><th>Estado</th></tr></thead><tbody>`;
                 relevantSessions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(session => {
-                    const record = studentRecords.find(r => r.sessionId === session.id);
+                    const record = studentRecords.find(r => String(r.sessionId).trim() === String(session.id).trim());
                     const status = record ? record.status : 'absent';
                     const statusText = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' }[status];
                     attendanceModalHTML += `<tr><td>${session.name} <br><small>(${session.id})</small></td><td>${session.date}</td><td class="status-${status}">${statusText}</td></tr>`;
@@ -10088,13 +10088,27 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
             if (btn) { btn.disabled = true; btn.innerText = 'Enviando...'; }
 
             try {
-                // Usamos el fullData global que ya está sincronizado en tiempo real
+                const sessionName = fullData.sessions?.find(s => s.id === sid)?.name || sid;
+                
+                // 1. Validación local rápida
                 const records = fullData.attendanceRecords || [];
                 if (records.some(r => String(r.sessionId) === sid && String(r.up) === String(up))) {
-                    const sessionName = fullData.sessions?.find(s => s.id === sid)?.name || sid;
-                    alert("Ya registraste tu asistencia para esta clase (" + sessionName + ").");
+                    alert("Ya estás registrado en esta clase (" + sessionName + ") y ya se te sumaron los puntos.");
                     modal.classList.remove('active');
+                    if (btn) { btn.disabled = false; btn.innerText = 'Enviar mi Presente'; }
                     return;
+                }
+
+                // 2. Validación extra consultando a la base de datos para evitar envíos dobles por latencia
+                const mainDoc = await firebase.firestore().collection('app_state').doc('main').get();
+                if (mainDoc.exists) {
+                    const dbRecords = mainDoc.data().attendanceRecords || [];
+                    if (dbRecords.some(r => String(r.sessionId) === sid && String(r.up) === String(up))) {
+                        alert("Ya estás registrado en esta clase (" + sessionName + ") y ya se te sumaron los puntos.");
+                        modal.classList.remove('active');
+                        if (btn) { btn.disabled = false; btn.innerText = 'Enviar mi Presente'; }
+                        return;
+                    }
                 }
 
                 // REGISTRO DE ASISTENCIA ATÓMICO (Mucho más seguro)
