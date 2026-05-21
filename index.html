@@ -1539,6 +1539,51 @@
             font-weight: 600;
         }
 
+        .cromo-badge {
+            height: 35px;
+            width: auto;
+            border-radius: 4px;
+            object-fit: contain;
+            border: 2px solid var(--accent-orange);
+            display: inline-block;
+            cursor: pointer;
+            vertical-align: middle;
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+            transition: transform 0.2s;
+        }
+        .cromo-badge:hover {
+            transform: scale(1.15);
+        }
+        .cromo-tooltip-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 6px;
+        }
+        .cromo-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.95);
+            border: 1px solid var(--accent-orange);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            width: max-content;
+            max-width: 250px;
+            z-index: 999;
+            font-size: 0.85rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+        .cromo-tooltip-container:hover .cromo-tooltip {
+            display: block;
+        }
+
         .status-late {
             color: #f59e0b;
         }
@@ -3126,9 +3171,36 @@
                                 <div style="display:flex; gap:10px; margin-bottom:15px;">
                                     <input type="text" id="admin-student-search-input" placeholder="Buscar por Apellido, Nombre o UP..." autocomplete="off" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white;" oninput="adminSearchStudent()">
                                 </div>
-                                <div id="admin-student-search-results" style="max-height: 250px; overflow-y: auto; display:flex; flex-direction:column; gap:5px;"></div>
+                            <div id="admin-student-search-results" style="max-height: 250px; overflow-y: auto; display:flex; flex-direction:column; gap:5px;"></div>
+                        </div>
+
+                        <!-- GESTOR DE GALERIA DE CROMOS (ADMIN) -->
+                        <div id="admin-cromos-manager-container" style="display: none; background: rgba(0,0,0,0.2); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
+                            <h3 style="color: #a855f7; margin: 0 0 15px 0; font-size:1.1rem;"><i class="fas fa-medal"></i> Galería de Cromos (Logros)</h3>
+                            <div style="display:flex; gap:10px; margin-bottom:15px; align-items: flex-end; flex-wrap: wrap;">
+                                <div style="flex:1; min-width:150px;">
+                                    <label style="font-size: 0.8rem; color: var(--text-muted-light);">Nombre del Cromo</label>
+                                    <input type="text" id="cromo-new-name" placeholder="Ej: Rey de las Proteínas" style="width:100%; padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white;">
+                                </div>
+                                <div style="flex:2; min-width:200px;">
+                                    <label style="font-size: 0.8rem; color: var(--text-muted-light);">Descripción (Tooltip)</label>
+                                    <input type="text" id="cromo-new-desc" placeholder="Motivo o descripción del premio..." style="width:100%; padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white;">
+                                </div>
+                                <div style="flex:2; min-width:180px;">
+                                    <label style="font-size: 0.8rem; color: var(--text-muted-light);">URL Externa (ImgBB, etc) <span style="font-size: 0.7rem; color: var(--accent-orange);">(Opcional)</span></label>
+                                    <input type="text" id="cromo-new-url" placeholder="https://i.ibb.co/..." style="width:100%; padding: 8px; border-radius: 6px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.4); color: white;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 0.8rem; color: var(--text-muted-light); display:block;">Imagen Local</label>
+                                    <input type="file" id="cromo-new-file" accept="image/*" style="display:none;">
+                                    <button class="nav-button" onclick="document.getElementById('cromo-new-file').click()" style="padding: 8px; border-color: var(--accent-orange); color: var(--accent-orange);"><i class="fas fa-image"></i> Archivo</button>
+                                </div>
+                                <button class="nav-button" onclick="adminCreateCromo()" style="padding: 8px; background: #a855f7; border:none; color: white; font-weight:bold;"><i class="fas fa-upload"></i> Subir Cromo</button>
                             </div>
-                            <div id="student-podium-container" class="podium-container"></div>
+                            <div id="admin-cromos-gallery" style="display:flex; gap: 10px; flex-wrap: wrap; max-height: 150px; overflow-y: auto; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                        </div>
+
+                        <div id="student-podium-container" class="podium-container"></div>
                             <div class="extended-rankings-wrapper">
                                 <div id="top-alumnos-container" class="ranking-list-container"></div>
                             </div>
@@ -4249,6 +4321,10 @@
                     const profilesSnap = await db.collection('student_profiles').get();
                     profilesSnap.forEach(doc => { if (doc.data().photo) sharedStudentPhotos[doc.id] = doc.data().photo; });
 
+                    const cromosSnap = await db.collection('app_state').doc('cromos_gallery').get();
+                    window.cromosGallery = cromosSnap.exists ? (cromosSnap.data().items || []) : [];
+                    if(window.renderAdminCromosGallery) window.renderAdminCromosGallery();
+
                     await fetchGroupsMetadata();
 
                     // 5. ESCUCHA ACTIVA (SNAPSHOT) - Ahora sobre TODA la colección
@@ -4786,8 +4862,14 @@
 
                 const adminSearchContainer = document.getElementById('admin-rapid-search-container');
                 if (adminSearchContainer) {
-                    adminSearchContainer.style.display = (tabName === 'alumnos' && firebase.auth().currentUser) ? 'block' : 'none';
-                    if (tabName === 'alumnos' && firebase.auth().currentUser) {
+                    const isVisible = (tabName === 'alumnos' && firebase.auth().currentUser);
+                    adminSearchContainer.style.display = isVisible ? 'block' : 'none';
+                    const cromosManager = document.getElementById('admin-cromos-manager-container');
+                    if (cromosManager) {
+                        cromosManager.style.display = isVisible ? 'block' : 'none';
+                        if (isVisible && window.renderAdminCromosGallery) window.renderAdminCromosGallery();
+                    }
+                    if (isVisible) {
                         try { window.adminSearchStudent(); } catch(e){}
                     }
                 }
@@ -5528,7 +5610,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 modal.classList.add('active');
             }
 
-            function displayRegularityAnalytics() {
+            async function displayRegularityAnalytics() {
                 const container = document.getElementById('regularity-charts-container');
                 if (!container) return;
 
@@ -5539,6 +5621,14 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 const libresTPsOnly = [];
                 const libresBoth = [];
 
+                if (!window.tpGlobalConfig) {
+                    try {
+                        const db = firebase.firestore();
+                        const configDoc = await db.collection('config').doc('tp_settings').get();
+                        if (configDoc.exists) window.tpGlobalConfig = configDoc.data();
+                    } catch (e) { console.warn('No se pudo cargar tpGlobalConfig:', e); }
+                }
+
                 fullData.students.forEach(student => {
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
@@ -5547,8 +5637,9 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
-                    // --- LÓGICA DE TPS (CORREGIDA) ---
-                    const tpConfig = (fullData.tpGlobalConfig && fullData.tpGlobalConfig.tps) ? fullData.tpGlobalConfig.tps : (fullData.config && fullData.config.tps ? fullData.config.tps : {});
+                    // --- LÓGICA DE TPS (ROBUSTA) ---
+                    const rawConfig = window.tpGlobalConfig || (fullData && fullData.tpGlobalConfig) || (fullData && fullData.config) || {};
+                    const tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
                     
                     let denominator = 0;
                     const evaluableIndices = [];
@@ -5702,7 +5793,25 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     card.className = `podium-card rank-${index + 1}`;
                     findImage(student.up, (photoHTML) => {
                         const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
-                        card.innerHTML = `${photoHTML}<div class="podium-info"><p class="podium-name">${displayName}</p><p class="podium-xp"><i class="fas fa-star"></i> ${student.xp || 0} XP</p></div>`;
+                        
+                        let cromosHTML = '';
+                        if (student.cromos && student.cromos.length > 0 && window.cromosGallery) {
+                            student.cromos.forEach(cId => {
+                                const cData = window.cromosGallery.find(c => c.id === cId);
+                                if (cData) {
+                                    cromosHTML += `<div class="cromo-tooltip-container" style="margin-left: 0; margin-top: 4px;">
+                                        <img src="${cData.img}" class="cromo-badge" onclick="openCromoModal('${cData.img}')" style="margin-left: 2px;">
+                                        <div class="cromo-tooltip">
+                                            <strong style="color:var(--accent-orange); display:block; margin-bottom:4px;">${cData.name}</strong>
+                                            ${cData.desc}
+                                        </div>
+                                    </div>`;
+                                }
+                            });
+                        }
+                        const nameDisplayWithCromos = cromosHTML ? `<span style="display:inline-block;">${displayName}</span><div style="display:flex; justify-content:center; align-items:center; flex-wrap:wrap;">${cromosHTML}</div>` : displayName;
+
+                        card.innerHTML = `${photoHTML}<div class="podium-info"><p class="podium-name">${nameDisplayWithCromos}</p><p class="podium-xp"><i class="fas fa-star"></i> ${student.xp || 0} XP</p></div>`;
                         container.appendChild(card);
                     });
                 });
@@ -5755,6 +5864,23 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         const rank = getStudentRank(student.xp || 0);
                         const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
                         
+                        let cromosHTML = '';
+                        if (student.cromos && student.cromos.length > 0 && window.cromosGallery) {
+                            student.cromos.forEach(cId => {
+                                const cData = window.cromosGallery.find(c => c.id === cId);
+                                if (cData) {
+                                    cromosHTML += `<div class="cromo-tooltip-container">
+                                        <img src="${cData.img}" class="cromo-badge" onclick="openCromoModal('${cData.img}')">
+                                        <div class="cromo-tooltip">
+                                            <strong style="color:var(--accent-orange); display:block; margin-bottom:4px;">${cData.name}</strong>
+                                            ${cData.desc}
+                                        </div>
+                                    </div>`;
+                                }
+                            });
+                        }
+                        const nameDisplayWithCromos = cromosHTML ? `<span style="display:flex; align-items:center;">${displayName}${cromosHTML}</span>` : displayName;
+                        
                         // Medal styling for top 3
                         let rankNumberStyle = '';
                         let rankNumberContent = index + 1;
@@ -5771,7 +5897,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         <div class="rank-photo" id="photo-stu-${student.up}"></div>
                         <div class="rank-details">
                              <div>
-                                <div class="rank-name">${displayName}</div>
+                                <div class="rank-name">${nameDisplayWithCromos}</div>
                                 <div class="rank-subtext">Grupo ${student.group || 'N/A'}</div>
                             </div>
                         </div>
@@ -6287,14 +6413,40 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 }
                 // --- FIN HERRAMIENTAS ---
 
+                let cromosBadgeHTML = '';
+                let fullCromosHTML = '';
+                if (student.cromos && student.cromos.length > 0 && window.cromosGallery) {
+                    student.cromos.forEach(cId => {
+                        const cData = window.cromosGallery.find(c => c.id === cId);
+                        if (cData) {
+                            // Badge for the name line (optional now that we have full cards, but keeping just in case or we can just use full cards)
+                            cromosBadgeHTML += `<div class="cromo-tooltip-container">
+                                <img src="${cData.img}" class="cromo-badge" style="height: 28px;" onclick="openCromoModal('${cData.img}')">
+                                <div class="cromo-tooltip"><strong style="color:var(--accent-orange); display:block; margin-bottom:4px;">${cData.name}</strong>${cData.desc}</div>
+                            </div>`;
+                            
+                            // Full card for the top right
+                            fullCromosHTML += `<div class="cromo-tooltip-container" style="cursor:pointer;" onclick="openCromoModal('${cData.img}')">
+                                <img src="${cData.img}" style="height: 120px; width: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); border: 2px solid var(--accent-orange); object-fit: contain;">
+                                <div class="cromo-tooltip" style="bottom: auto; top: 50%; left: auto; right: 110%; transform: translateY(-50%);"><strong style="color:var(--accent-orange); display:block; margin-bottom:4px;">${cData.name}</strong>${cData.desc}</div>
+                            </div>`;
+                        }
+                    });
+                }
+                const nameDisplayWithCromos = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
+
                 portalHTML += `
                 <div class="result-card">
-                    <div class="profile-header">
+                    <div class="profile-header" style="display:flex; align-items:center;">
                         <div id="portal-photo" style="position: relative;"></div>
                         <div class="edit-photo-trigger" id="edit-student-photo-btn" title="Editar Foto de Perfil" style="position: absolute; bottom: 5px; left: 60px; background: var(--accent-teal); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); z-index: 5; color: white;">
                             <i class="fas fa-pencil-alt"></i>
                         </div>
-                        <div class="profile-info"><h3>${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}</h3></div>
+                        <div class="profile-info" style="margin-right: 15px;"><h3>${nameDisplayWithCromos}</h3></div>
+                        <!-- CROMOS FULL CARDS -->
+                        <div style="margin-left: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
+                            ${fullCromosHTML}
+                        </div>
                     </div>
                     <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
                         <div class="stat-card clickable" data-modal-target="#attendance-modal" title="Haz clic para ver detalle"><i class="fas fa-user-check stat-icon"></i><div class="stat-value">${attendancePercentage}%</div><div class="stat-label">Asistencia</div><div class="stat-sublabel">${attendanceSublabel}</div></div>
@@ -9237,6 +9389,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         <div style="display:flex; gap: 8px;">
                             <button class="nav-button" onclick="adminModXP('${s.up}')" style="padding: 6px 10px; font-size: 0.75rem; border-color: var(--xp-color); color: var(--xp-color);" title="Añadir/Quitar XP"><i class="fas fa-star"></i> Modificar XP</button>
                             <button class="nav-button" onclick="adminModManualAtt('${s.up}')" style="padding: 6px 10px; font-size: 0.75rem; border-color: var(--accent-teal); color: var(--accent-teal);" title="Alternar Presente en una clase"><i class="fas fa-user-check"></i> Asistencia</button>
+                            <button class="nav-button" onclick="adminGrantCromo('${s.up}')" style="padding: 6px 10px; font-size: 0.75rem; border-color: #a855f7; color: #a855f7;" title="Otorgar o quitar cromo"><i class="fas fa-medal"></i> Cromos</button>
                         </div>
                     </div>
                 `).join('');
@@ -10279,6 +10432,165 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
             document.addEventListener('visibilitychange', () => {
                 if (document.visibilityState === 'visible') checkVersion();
             });
+
+            // GESTOR DE CROMOS GLOBALES
+            window.adminCreateCromo = () => {
+                const name = document.getElementById('cromo-new-name').value.trim();
+                const desc = document.getElementById('cromo-new-desc').value.trim();
+                const urlInput = document.getElementById('cromo-new-url').value.trim();
+                const fileInput = document.getElementById('cromo-new-file');
+                const file = fileInput.files[0];
+
+                if(!name || !desc) return alert("Completa al menos el nombre y la descripción.");
+                if(!file && !urlInput) return alert("Debes subir un archivo local O pegar una URL externa (ImgBB).");
+
+                const saveToFirestore = async (finalImgUrl) => {
+                    try {
+                        const db = firebase.firestore();
+                        const newCromo = { id: 'cromo_' + Date.now(), name, desc, img: finalImgUrl };
+                        await db.collection('app_state').doc('cromos_gallery').set({
+                            items: firebase.firestore.FieldValue.arrayUnion(newCromo)
+                        }, { merge: true });
+                        
+                        if(!window.cromosGallery) window.cromosGallery = [];
+                        window.cromosGallery.push(newCromo);
+                        window.renderAdminCromosGallery();
+                        
+                        document.getElementById('cromo-new-name').value = '';
+                        document.getElementById('cromo-new-desc').value = '';
+                        document.getElementById('cromo-new-url').value = '';
+                        fileInput.value = '';
+                        alert("✅ Cromo subido exitosamente.");
+                    } catch(error) {
+                        alert("Error guardando el cromo.");
+                    }
+                };
+
+                if (urlInput) {
+                    saveToFirestore(urlInput);
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = new Image();
+                        img.onload = async function() {
+                            const MAX_HEIGHT = 500;
+                            let w = img.width;
+                            let h = img.height;
+                            if (h > MAX_HEIGHT) {
+                                w = Math.round((w * MAX_HEIGHT) / h);
+                                h = MAX_HEIGHT;
+                            }
+                            const canvas = document.createElement('canvas');
+                            canvas.width = w;
+                            canvas.height = h;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, w, h);
+                            const dataUrl = canvas.toDataURL('image/webp', 0.65);
+                            saveToFirestore(dataUrl);
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            window.renderAdminCromosGallery = () => {
+                const container = document.getElementById('admin-cromos-gallery');
+                if(!container) return;
+                if(!window.cromosGallery || window.cromosGallery.length === 0) {
+                    container.innerHTML = '<div style="color:var(--text-muted-light); font-size:0.8rem; width:100%;">No hay cromos en la galería aún.</div>';
+                    return;
+                }
+                container.innerHTML = window.cromosGallery.map(c => `
+                    <div style="text-align:center; position:relative; width:48px;" title="${c.name} - ${c.desc}">
+                        <img src="${c.img}" style="width:48px; height:48px; border-radius:50%; border:2px solid #a855f7; background: rgba(0,0,0,0.5);">
+                        <button onclick="adminDeleteCromo('${c.id}')" style="position:absolute; top:-5px; right:-5px; background:#ef4444; color:white; border:none; border-radius:50%; width:20px; height:20px; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center;">×</button>
+                    </div>
+                `).join('');
+            };
+
+            window.adminDeleteCromo = async (cromoId) => {
+                if(!confirm("¿Borrar este cromo de la galería global? (Los alumnos que lo tengan lo conservarán hasta que se lo quites).")) return;
+                try {
+                    const cromo = window.cromosGallery.find(c => c.id === cromoId);
+                    if(cromo) {
+                        const db = firebase.firestore();
+                        await db.collection('app_state').doc('cromos_gallery').update({
+                            items: firebase.firestore.FieldValue.arrayRemove(cromo)
+                        });
+                        window.cromosGallery = window.cromosGallery.filter(c => c.id !== cromoId);
+                        window.renderAdminCromosGallery();
+                    }
+                } catch(e) { alert("Error al borrar."); }
+            };
+
+            window.adminGrantCromo = async (up) => {
+                const s = window.fullData.students.find(st => String(st.up) === String(up));
+                if(!s) return;
+                if(!window.cromosGallery || window.cromosGallery.length === 0) return alert("Primero sube cromos a la galería.");
+                
+                let promptMsg = `Cromos disponibles:\n`;
+                window.cromosGallery.forEach((c, idx) => {
+                    promptMsg += `${idx+1}. ${c.name}\n`;
+                });
+                promptMsg += `\nPara QUITAR un cromo, ingresa '-N' (ej: -1 para quitar el primero).\nIngresa el NÚMERO del cromo a otorgar a ${s.name}:`;
+                const choice = prompt(promptMsg);
+                if(!choice) return;
+                
+                const num = parseInt(choice);
+                if(isNaN(num) || num === 0 || Math.abs(num) > window.cromosGallery.length) return alert("Opción no válida.");
+                
+                const cromoIdx = Math.abs(num) - 1;
+                const cromo = window.cromosGallery[cromoIdx];
+                const isRemoval = num < 0;
+                
+                if(!s.cromos) s.cromos = [];
+                
+                if (isRemoval) {
+                    s.cromos = s.cromos.filter(id => id !== cromo.id);
+                } else {
+                    if (s.cromos.includes(cromo.id)) return alert("El alumno ya tiene este cromo.");
+                    s.cromos.push(cromo.id);
+                }
+                
+                try {
+                    const db = firebase.firestore();
+                    await db.collection('students').doc(String(s.up)).update({ cromos: s.cromos });
+                    alert(`✅ Cromo ${isRemoval ? 'quitado' : 'otorgado'} exitosamente.`);
+                    try { window.adminSearchStudent(); } catch(e){}
+                    if(typeof generateRanking === 'function') generateRanking();
+                    if(document.getElementById('portal-photo')) {
+                        try { displayStudentPortalView(s); } catch(e){}
+                    }
+                } catch(e) { alert("Error guardando en la base de datos."); }
+            };
+
+            // MODAL DE CROMOS FULL RES
+            window.openCromoModal = (imgSrc) => {
+                let modal = document.getElementById('cromo-full-modal');
+                if (!modal) {
+                    modal = document.createElement('div');
+                    modal.id = 'cromo-full-modal';
+                    modal.className = 'modal';
+                    modal.style.zIndex = '10000';
+                    modal.innerHTML = `
+                        <div class="modal-content" style="background: transparent; border: none; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+                            <button class="close-modal" onclick="document.getElementById('cromo-full-modal').style.display='none'" style="position: absolute; top: -20px; right: 0px; background: rgba(0,0,0,0.8); border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; z-index: 10001; color: white;">&times;</button>
+                            <img id="cromo-full-img" src="" style="max-width: 90vw; max-height: 85vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); border: 2px solid var(--accent-orange); object-fit: contain;">
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                    
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            this.style.display = 'none';
+                        }
+                    });
+                }
+                document.getElementById('cromo-full-img').src = imgSrc;
+                modal.style.display = 'flex';
+            };
+
         })();
     </script>
 </body>
