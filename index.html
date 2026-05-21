@@ -1534,6 +1534,11 @@
             color: var(--success-color);
         }
 
+        .status-justificado {
+            color: #3b82f6; /* accent-blue usually, hardcoding blue to be safe */
+            font-weight: 600;
+        }
+
         .status-late {
             color: #f59e0b;
         }
@@ -4479,7 +4484,7 @@
                     const totalSessionsForStudent = relevantSessions.length;
                     const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
 
-                    const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
                     const approvedTPsCount = studentRecords.filter(r => r.tpNote !== null && typeof r.tpNote === 'number' && r.tpNote >= 4).length;
@@ -4822,7 +4827,7 @@
                     const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
                     const totalSessionsForStudent = relevantSessions.length;
                     const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
-                    const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
                     const approvedTPsCount = studentRecords.filter(r => r.tpNote !== null && typeof r.tpNote === 'number' && r.tpNote >= 4).length;
                     const tpPercentage = totalSessionsForStudent > 0 ? (approvedTPsCount / totalSessionsForStudent) * 100 : 0;
@@ -4836,7 +4841,7 @@
                 let lastSessionAttendance = 'N/A';
                 if (lastSession) {
                     const records = fullData.attendanceRecords.filter(r => r.sessionId === lastSession.id);
-                    const present = records.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const present = records.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     const totalStudentsInGroupsOfSession = fullData.students.filter(s => !lastSession.group || s.group === "" || s.group === lastSession.group).length;
                     lastSessionAttendance = totalStudentsInGroupsOfSession > 0 ? `${Math.round((present / totalStudentsInGroupsOfSession) * 100)}%` : '0%';
                 }
@@ -5262,7 +5267,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 const labels = sortedSessions.map(s => s.name);
                 const data = sortedSessions.map(session => {
                     const records = fullData.attendanceRecords.filter(r => r.sessionId === session.id);
-                    const present = records.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const present = records.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     return fullData.students.length > 0 ? (present / fullData.students.length) * 100 : 0;
                 });
 
@@ -5333,7 +5338,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             groupAttendance[student.group] = { present: 0, total: 0 };
                         }
                         const r = records.find(rec => String(rec.up).trim() === String(student.up).trim());
-                        if (r && (r.status === 'onTime' || r.status === 'late')) {
+                        if (r && (r.status === 'onTime' || r.status === 'late' || r.status === 'justificado')) {
                             groupAttendance[student.group].present++;
                         }
                         groupAttendance[student.group].total++;
@@ -5422,7 +5427,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 const historicalData = sortedSessions.map(session => {
                     const recordsForSession = fullData.attendanceRecords.filter(r => r.sessionId === session.id);
                     const studentsForSessionCalc = fullData.students.filter(s => !session.group || s.group === "" || s.group === session.group);
-                    const presentCount = recordsForSession.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const presentCount = recordsForSession.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     return studentsForSessionCalc.length > 0 ? (presentCount / studentsForSessionCalc.length) * 100 : 0;
                 });
 
@@ -5539,7 +5544,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     const totalSessionsForStudent = relevantSessions.length;
                     const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
 
-                    const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
                     // --- LÓGICA DE TPS (CORREGIDA) ---
@@ -5899,7 +5904,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
                 const studentRecords = fullData.attendanceRecords.filter(r => String(r.up).trim() === String(student.up).trim());
 
-                const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                const presentCount = studentRecords.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                 const absentCount = totalSessionsForStudent - presentCount;
 
                 // Lógica de aplicación de Fichas de Bonus
@@ -6091,7 +6096,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 relevantSessions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(session => {
                     const record = studentRecords.find(r => String(r.sessionId).trim() === String(session.id).trim());
                     const status = record ? record.status : 'absent';
-                    const statusText = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' }[status];
+                    const statusText = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente', justificado: 'Justificado' }[status];
                     attendanceModalHTML += `<tr><td>${session.name} <br><small>(${session.id})</small></td><td>${session.date}</td><td class="status-${status}">${statusText}</td></tr>`;
                 });
                 attendanceModalHTML += `</tbody></table></div></div></div>`;
@@ -6461,7 +6466,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 if (relevantSessions.length > 0) {
                     const lastRelevantSession = relevantSessions[relevantSessions.length - 1];
                     const recordsForLastSession = fullData.attendanceRecords.filter(r => r.sessionId === lastRelevantSession.id && memberUPs.has(r.up));
-                    const presentCount = recordsForLastSession.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const presentCount = recordsForLastSession.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     lastSessionAttendancePercentage = memberUPs.size > 0 ? (presentCount / memberUPs.size) * 100 : 0;
                 }
 
@@ -6480,7 +6485,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 const historicalLabels = relevantSessions.map(s => s.name);
                 const historicalData = relevantSessions.map(session => {
                     const recordsForSession = fullData.attendanceRecords.filter(r => r.sessionId === session.id && memberUPs.has(r.up));
-                    const presentCount = recordsForSession.filter(r => r.status === 'onTime' || r.status === 'late').length;
+                    const presentCount = recordsForSession.filter(r => r.status === 'onTime' || r.status === 'late' || r.status === 'justificado').length;
                     return members.length > 0 ? (presentCount / members.length) * 100 : 0;
                 });
 
@@ -6877,7 +6882,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 members.forEach(member => {
                     const record = fullData.attendanceRecords.find(r => r.sessionId === lastRelevantSession.id && String(r.up).trim() === String(member.up).trim());
                     const status = record ? record.status : 'absent';
-                    const statusMap = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente' };
+                    const statusMap = { onTime: 'Presente', late: 'Tarde', absent: 'Ausente', justificado: 'Justificado' };
                     const iconMap = { onTime: 'fa-check-circle', late: 'fa-clock', absent: 'fa-times-circle' };
 
                     const displayName = `${member.lastName || member.apellido || ''} ${(member.lastName || member.apellido) ? ',' : ''} ${member.firstName || member.nombre || member.name || 'Alumno sin nombre'}`;
@@ -9369,22 +9374,34 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     } catch(e) { alert("Error al intentar borrar en la nube."); }
                     
                 } else {
-                    if(!confirm(`✅ Dar de alta el presente manual de ${s.name} en ${chosenSess.name} (+2 XP)?`)) return;
+                    const promptText = `Selecciona el tipo de asistencia para ${s.name} en ${chosenSess.name}:\n\n1. Presente Normal (+2 XP)\n2. Justificado (0 XP, pero cuenta % asistencia)`;
+                    const tipoAsistencia = prompt(promptText);
+                    if (!tipoAsistencia) return;
+                    
+                    const option = tipoAsistencia.trim();
+                    if (option !== "1" && option !== "2") return alert("Opción no válida.");
+                    
+                    const isJustified = option === "2";
+                    
+                    if(!confirm(`✅ Dar de alta el presente manual de ${s.name} en ${chosenSess.name} ${isJustified ? '(JUSTIFICADO, 0 XP)' : '(+2 XP)'}?`)) return;
 
                     window.fullData.attendanceRecords.push({
                         sessionId: chosenSess.id,
                         up: String(s.up),
-                        status: 'onTime',
+                        status: isJustified ? 'justificado' : 'onTime',
                         timestamp: new Date().toISOString(),
                         answer: 'Carga Manual Directa'
                     });
                     
-                    s.xp = (s.xp || 0) + 2;
+                    if (!isJustified) {
+                        s.xp = (s.xp || 0) + 2;
+                    }
+                    
                     if(!s.xpHistory) s.xpHistory = [];
                     s.xpHistory.push({
                         timestamp: new Date().toISOString(),
-                        amount: 2,
-                        reason: "Asistencia: " + chosenSess.name + " (Manual)",
+                        amount: isJustified ? 0 : 2,
+                        reason: (isJustified ? "Asistencia Justificada: " : "Asistencia: ") + chosenSess.name + " (Manual)",
                         sessionId: chosenSess.id,
                         newXP: s.xp
                     });
