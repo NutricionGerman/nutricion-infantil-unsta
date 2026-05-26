@@ -2973,6 +2973,632 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        /* ================= MOBILE APP NAVIGATION ================= */
+        @media (min-width: 769px) {
+            #mobile-top-header,
+            #mobile-bottom-nav,
+            #mobile-side-menu,
+            #mobile-menu-overlay {
+                display: none !important;
+            }
+        }
+        .mobile-only { display: none; }
+        
+        @media (max-width: 768px) {
+            .site-header { display: none !important; }
+            .mobile-only { display: flex !important; }
+            
+            /* TAMAÑO DE TEXTOS EN TITULOS PARA MOVILES */
+            .section-header h2 { font-size: 1.8rem !important; margin-bottom: 5px !important; }
+            .section-header p { font-size: 0.95rem !important; padding: 0 10px; }
+            
+            /* COMPACT 2x2 STATS GRID FOR MOBILE */
+            .stats-grid {
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+                padding: 10px !important;
+            }
+            .stats-grid .stat-card {
+                padding: 15px 5px !important;
+            }
+            .stats-grid .stat-card i {
+                font-size: 1.5rem !important;
+                margin-bottom: 5px !important;
+            }
+            .stats-grid .stat-card h3 {
+                font-size: 1.8rem !important;
+            }
+            .stats-grid .stat-card p {
+                font-size: 0.8rem !important;
+            }
+            
+            /* MOBILE PODIUM CAROUSEL */
+            .podium-container {
+                position: relative !important;
+                min-height: 250px !important;
+                display: block !important;
+                margin-bottom: 50px !important;
+            }
+            .podium-card {
+                position: absolute !important;
+                top: 0; left: 0; right: 0; height: 100%;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                transform: scale(0.95) !important;
+                transition: opacity 0.5s ease, transform 0.5s ease !important;
+                z-index: 1 !important;
+                margin: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                border: 2px solid transparent !important;
+                background-size: cover !important;
+                background-position: center !important;
+                background-blend-mode: overlay !important;
+            }
+            .podium-card.carousel-active {
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: scale(1) !important;
+                z-index: 2 !important;
+            }
+            .podium-card.rank-1 {
+                background-color: rgba(218,165,32,0.3) !important;
+                border-color: #FFD700 !important;
+                box-shadow: 0 0 20px rgba(255,215,0,0.2) !important;
+            }
+            .podium-card.rank-2 {
+                background-color: rgba(169,169,169,0.3) !important;
+                border-color: #C0C0C0 !important;
+            }
+            .podium-card.rank-3 {
+                background-color: rgba(139,69,19,0.3) !important;
+                border-color: #CD7F32 !important;
+            }
+            .carousel-indicators {
+                position: absolute;
+                bottom: -35px;
+                left: 0; right: 0;
+                display: flex;
+                justify-content: center;
+                gap: 12px;
+                z-index: 10;
+            }
+            .carousel-dot {
+                width: 12px; height: 12px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.2);
+                transition: all 0.3s;
+            }
+            .carousel-dot.active {
+                background: var(--accent-orange);
+                transform: scale(1.3);
+            }
+            body { padding-top: 60px; padding-bottom: 80px; }
+            
+            #mobile-top-header {
+                position: fixed; top: 0; left: 0; right: 0; height: 60px;
+                background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(10px);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                z-index: 1000; display: flex; align-items: center; justify-content: space-between;
+                padding: 0 20px;
+            }
+            .mobile-logo { font-weight: bold; font-size: 1.2rem; color: white; }
+            #mobile-menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; padding: 10px; }
+            
+            #mobile-bottom-nav {
+                position: fixed; bottom: 0; left: 0; right: 0; height: 70px;
+                background: rgba(26, 26, 46, 0.98); backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255,255,255,0.05);
+                z-index: 1000; display: flex; align-items: center; justify-content: space-around;
+                padding-bottom: env(safe-area-inset-bottom, 10px);
+            }
+            .mobile-bottom-item {
+                display: flex; flex-direction: column; align-items: center; justify-content: center;
+                background: none; border: none; color: var(--text-muted); font-size: 0.75rem;
+                cursor: pointer; gap: 5px; flex: 1; padding: 10px 0; transition: all 0.3s;
+            }
+            .mobile-bottom-item i { font-size: 1.3rem; margin-bottom: 2px; }
+            .mobile-bottom-item.active { color: var(--accent-orange); }
+            
+            .mobile-side-menu {
+                position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+                background: #1a1a2e; z-index: 2000; transition: right 0.3s ease;
+                box-shadow: -5px 0 20px rgba(0,0,0,0.5); display: flex; flex-direction: column;
+            }
+            .mobile-side-menu.open { right: 0; }
+            .mobile-side-menu-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            .mobile-side-menu-header h3 { margin: 0; color: white; }
+            .close-menu-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+            .mobile-side-nav-list { list-style: none; padding: 0; margin: 0; }
+            .mobile-side-nav-list li { border-bottom: 1px solid rgba(255,255,255,0.02); }
+            .mobile-nav-item {
+                display: flex; align-items: center; gap: 15px; width: 100%; padding: 20px;
+                background: none; border: none; color: white; font-size: 1rem; cursor: pointer; text-align: left;
+            }
+            .mobile-nav-item.active { background: rgba(255,165,0,0.1); color: var(--accent-orange); border-left: 4px solid var(--accent-orange); }
+            
+            #mobile-menu-overlay {
+                position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+                background: rgba(0,0,0,0.6); z-index: 1500; display: none; backdrop-filter: blur(3px);
+            }
+            #mobile-menu-overlay.show { display: block; }
+        }
+        }
+        
+        /* ================= APP-STYLE VIDEO GALLERY ================= */
+        .tp-tabs-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 10px 0 20px 0;
+            scrollbar-width: none;
+        }
+        .tp-tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        .tp-tab-pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted-light);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tp-tab-pill.active {
+            background: var(--accent-orange);
+            color: #fff;
+            border-color: #ff8c42;
+            box-shadow: 0 4px 15px rgba(232, 122, 61, 0.3);
+        }
+        .gallery-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 5px;
+        }
+        .gallery-header-row .count-text {
+            color: var(--text-muted-light);
+            font-size: 0.9rem;
+        }
+        .gallery-header-row .sort-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .gallery-header-row .sort-btn:hover {
+            opacity: 0.7;
+        }
+        .gallery-tp-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .gallery-tp-content.active {
+            display: block;
+        }
+        .gallery-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .app-video-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .app-video-thumbnail {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+        .app-video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .app-video-card:hover .app-video-thumbnail img {
+            transform: scale(1.05);
+        }
+        .app-video-thumbnail::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(26,26,46,1) 0%, rgba(26,26,46,0) 40%);
+        }
+        .app-video-play-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px; height: 64px;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .app-video-card:hover .app-video-play-btn {
+            background: rgba(255,255,255,0.4);
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        .app-video-badge {
+            position: absolute;
+            top: 16px; left: 16px;
+            background: linear-gradient(135deg, #a855f7 0%, #d946ef 100%);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 50px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+        }
+        .app-video-badge.orange {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8c42 100%);
+        }
+        .app-video-info {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 3;
+            background: rgba(26, 26, 46, 0.95);
+        }
+        .app-video-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: #a855f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #fff;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .app-video-avatar img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .app-video-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .app-video-title {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: capitalize;
+        }
+        .app-video-subtitle {
+            color: var(--text-muted-light);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+        .app-video-rating {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        .app-video-rating .stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            white-space: nowrap;
+        }
+        .app-video-rating .score {
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .app-video-rating .score span {
+            color: var(--text-muted-light);
+            font-weight: 400;
+            font-size: 0.8rem;
+        }
+        
+        /* ================= APP-STYLE STUDENT PROFILE ================= */
+        .app-profile-container {
+            background: #13141c; /* Fondo súper oscuro */
+            border-radius: 20px;
+            padding: 24px 16px;
+            color: #fff;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        .app-profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .app-avatar-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 16px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .app-avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .app-avatar-wrapper .fas.fa-user {
+            font-size: 3rem;
+            color: rgba(255,255,255,0.3);
+        }
+        .app-avatar-edit-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: #00e5ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            cursor: pointer;
+            border: 3px solid #13141c;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+            transition: transform 0.2s;
+        }
+        .app-avatar-edit-btn:hover { transform: scale(1.1); }
+        
+        .app-profile-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0;
+        }
+        .app-profile-subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.95rem;
+        }
+        
+        .app-condition-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .app-condition-card:hover { background: rgba(255,255,255,0.06); }
+        .app-condition-card .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-right: 16px;
+        }
+        /* Colores dinámicos por condición */
+        .app-condition-card.libre { border-color: rgba(255,71,87,0.3); background: linear-gradient(90deg, rgba(255, 71, 87, 0.15), rgba(255, 71, 87, 0.05)); }
+        .app-condition-card.libre .icon-wrapper { background: rgba(255,71,87,0.2); color: #ff4757; }
+        .app-condition-card.libre .app-condition-value { color: #ff4757; }
+        .app-condition-card.libre .app-condition-action { color: #ff4757; }
+        
+        .app-condition-card.regular { border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.05); }
+        .app-condition-card.regular .icon-wrapper { background: rgba(0,229,255,0.2); color: #00e5ff; }
+        .app-condition-card.regular .condition-value { color: #00e5ff; }
+        
+        .app-condition-card.promocion { border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.05); }
+        .app-condition-card.promocion .icon-wrapper { background: rgba(255,215,0,0.2); color: #FFD700; }
+        .app-condition-card.promocion .condition-value { color: #FFD700; }
+
+        .app-condition-content { flex: 1; }
+        .app-condition-label { font-size: 0.75rem; letter-spacing: 1px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 4px; }
+        .app-condition-value { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
+        .app-condition-action { font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 4px; }
+        
+        .app-xp-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .app-xp-card:hover { background: rgba(255,255,255,0.06); }
+        .app-xp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .app-xp-title { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 700; color: #FFD700; }
+        .app-xp-amount { font-size: 1.5rem; font-weight: 800; }
+        .app-xp-amount span { font-size: 0.9rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+        
+        .app-xp-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 12px; overflow: hidden; }
+        .app-xp-bar-fill { height: 100%; background: #FFD700; border-radius: 4px; }
+        
+        .app-xp-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+        
+        .app-stats-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .app-stat-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .app-stat-box:hover { background: rgba(255,255,255,0.06); }
+        .app-stat-icon { font-size: 1.6rem; margin-bottom: 12px; color: #00e5ff; }
+        .app-stat-value { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
+        .app-stat-label { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+        .app-stat-sublabel { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+        
+        .app-group-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .app-group-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .app-group-desc {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .app-group-selector {
+            width: 100%;
+            background: #1a1b26;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            outline: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        .app-group-selector-wrapper { position: relative; }
+        .app-group-selector-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+        .app-group-save-btn {
+            width: 100%;
+            background: #ff6b00;
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .app-group-save-btn:hover { background: #e66000; }
+        .app-group-members {
+            display: flex;
+            gap: -8px;
+            margin-bottom: 20px;
+        }
+        .app-group-member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #13141c;
+            background: rgba(255,255,255,0.1);
+            margin-left: -10px;
+        }
+        .app-group-member-avatar:first-child { margin-left: 0; }
+        
+        @media (min-width: 769px) {
+            .app-profile-container {
+                max-width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                align-items: start;
+                padding: 40px;
+            }
+            .app-profile-header {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                text-align: left;
+                gap: 20px;
+            }
+            .app-profile-header .app-avatar-wrapper {
+                margin-bottom: 0;
+            }
+            .app-stats-2x2 {
+                grid-column: 1 / -1;
+                grid-template-columns: repeat(4, 1fr);
+                margin-bottom: 0;
+            }
+            .app-group-card {
+                grid-column: 1 / -1;
+            }
+            .app-condition-card, .app-xp-card {
+                margin-bottom: 0;
+                height: 100%;
+            }
+        }
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -2987,7 +3613,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="iconos/web-app-manifest-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="iconos/web-app-manifest-512x512.png">
     <link rel="manifest" href="iconos/site.webmanifest">
-    <link rel="stylesheet" href="tienda.css">
+    <link rel="stylesheet" href="tienda.css?v=2">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -3084,6 +3710,26 @@
             </nav>
         </div>
     </header>
+
+    <!-- MOBILE APP NAVIGATION ELEMENTS -->
+    <header id="mobile-top-header" class="mobile-only" style="display: none;">
+        <div class="mobile-logo">Nutrición Infantil</div>
+        <button id="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+    </header>
+
+    <div id="mobile-menu-overlay" onclick="toggleMobileMenu()" style="display: none;"></div>
+    
+    <div id="mobile-side-menu" class="mobile-side-menu" style="display: none;">
+        <div class="mobile-side-menu-header">
+            <h3>Menú Adicional</h3>
+            <button class="close-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="mobile-side-nav-list">
+            <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-herramientas" onclick="toggleMobileMenu()"><i class="fas fa-tools"></i> Herramientas</button></li>
+            <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-proyectos" onclick="toggleMobileMenu()"><i class="fas fa-folder-open"></i> Proyectos</button></li>
+            <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-contacto" onclick="toggleMobileMenu()"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
+        </ul>
+    </div>
 
     <main class="container">
         <div id="tab-content-container">
@@ -3334,10 +3980,6 @@
 
             <!-- TABS: TIENDA -->
             <div id="panel-tienda" class="tab-panel">
-                <div class="panel-header" style="text-align: center; margin-bottom: 2rem;">
-                    <h2 style="color: #FFA500; font-size: 2.5rem; text-shadow: 0 0 20px rgba(255,165,0,0.4);"><i class="fas fa-store"></i> Tienda de Recompensas</h2>
-                    <p>Canjea tus XP por ventajas y bonificaciones increíbles.</p>
-                </div>
                 <div id="tienda-tab-content">
                     <div style="text-align:center; padding: 40px; background: rgba(0,0,0,0.3); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
                         <i class="fas fa-lock" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
@@ -5065,65 +5707,82 @@
                 let html = '';
                 const sortedTPs = Object.keys(galleryByTP).sort((a, b) => parseInt(a) - parseInt(b));
 
-                sortedTPs.forEach(tpIndex => {
+                // 1. GENERATE TABS NAVIGATION (PILLS)
+                html += '<div class="tp-tabs-container">';
+                sortedTPs.forEach((tpIndex, i) => {
                     const config = tpConfigs[tpIndex] || {};
-                    const tpName = config.name || `Trabajo Práctico #${parseInt(tpIndex) + 1}`;
+                    const tpName = config.name || `Práctico #${parseInt(tpIndex) + 1}`;
+                    const isActive = i === sortedTPs.length - 1 ? 'active' : ''; // Default to latest TP
+                    html += `<div class="tp-tab-pill ${isActive}" onclick="window.switchTPGallery('${tpIndex}')" data-target-tp="${tpIndex}">${tpName}</div>`;
+                });
+                html += '</div>';
 
+                // 2. GENERATE CONTENT SECTIONS FOR EACH TP
+                sortedTPs.forEach((tpIndex, i) => {
                     // ORDENAR VIDEOS POR PROMEDIO (Mayor a menor)
                     const sortedVideos = galleryByTP[tpIndex].sort((a, b) => b.avgRating - a.avgRating);
-
+                    const isActive = i === sortedTPs.length - 1 ? 'active' : '';
+                    
                     html += `
-                        <div class="gallery-tp-section" style="margin-bottom: 50px; background: rgba(10, 12, 16, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 30px; 
-animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-                            <h3 style="color: var(--accent-orange); font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
-                                <span><i class="fas fa-film"></i> ${tpName}</span>
-                                <span style="font-size: 0.8rem; color: var(--text-muted-light); font-weight: 400;"><i class="fas fa-sort-amount-down"></i> Ordenados por valoración</span>
-                            </h3>
-                            <div class="videos-scroll-container" style="padding-top: 10px;">
-                                ${sortedVideos.map((v, index) => {
-                                    const thumbnail = getYouTubeThumbnail(v.videoUrl);
-                                    const isTop = index === 0 && v.avgRating > 0;
-                                    return `
-                                    <div class="video-gallery-card hover-lift" style="background: rgba(255,255,255,0.03); border: 1px solid ${isTop ? 'var(--accent-orange)' : 'var(--glass-border)'}; border-radius: 20px; overflow: hidden; transition: all 0.3s ease; position: relative; display: flex; flex-direction: column; min-width: 280px; ${isTop ? 'box-shadow: 0 0 15px rgba(232, 122, 61, 0.2);' : ''}">
-                                        ${isTop ? `<div style="position: absolute; top: 12px; left: 12px; z-index: 10; background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8c42 100%); color: #000; font-size: 0.65rem; font-weight: 800; padding: 6px 14px; border-radius: 50px; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.6); white-space: nowrap; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.4); backdrop-filter: blur(4px);"><i class="fas fa-crown"></i> MEJOR CALIFICADO</div>` : ''}
-                                        <div style="position: relative; height: 180px; overflow: hidden; background: #000; flex-shrink: 0;">
-                                            <img src="${thumbnail}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: all 0.5s ease; border-radius: 20px 20px 0 0;">
-                                            <div style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 80%);"></div>
-                                            <div class="play-overlay" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.9; transition: opacity 0.3s;">
-                                                <button class="play-glass-btn" id="play-group-video" data-video-url="${v.videoUrl}" style="cursor: pointer; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding:0; font-size: 1.5rem; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.4); color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transform: scale(0.9); transition: all 0.3s ease;">
-                                                    <i class="fas fa-play" style="margin-left: 5px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div style="padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
-                                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #333; border: 2px solid var(--accent-teal); flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
-                                                    ${v.logo ? `<img src="${v.logo}" style="width: 100%; height: 100%; object-fit: cover;">` : `<i class="fas fa-users" style="font-size: 1.2rem; color: #fff;"></i>`}
-                                                </div>
-                                                <div style="flex: 1; min-width: 0;">
-                                                    <div style="font-weight: 700; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; font-size: 1rem; text-transform: capitalize;">${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</div>
-                                                    <div style="font-size: 0.75rem; color: var(--text-muted-light); font-weight: 400; display: flex; align-items: center; gap: 5px;"><i class="fas fa-hashtag"></i>ID: ${v.groupId.replace('g_', '')}</div>
-                                                </div>
-                                            </div>
+                        <div class="gallery-tp-content ${isActive}" id="tp-content-${tpIndex}">
+                            <div class="gallery-header-row">
+                                <div class="count-text">${sortedVideos.length} trabajos entregados</div>
+                                <button class="sort-btn"><i class="fas fa-sort-amount-down"></i> Valoración</button>
+                            </div>
+                            <div class="gallery-cards-grid">
+                    `;
 
-                                            <div class="video-rating-section" style="margin: 0; padding: 10px; display: flex; align-items: center; justify-content: space-between;">
-                                                <div class="stars-container" data-tp="${tpIndex}" data-target-group="${v.groupId}">
-                                                    ${renderStars(v.avgRating)}
-                                                </div>
-                                                <div class="rating-avg-text" style="color: var(--text-muted-light); font-size: 0.8rem;">
-                                                    ${v.avgRating > 0 ? v.avgRating.toFixed(1) : '---'} (${v.voteCount})
-                                                </div>
-                                            </div>
-                                        </div>
+                    sortedVideos.forEach((v, index) => {
+                        const thumbnail = getYouTubeThumbnail(v.videoUrl);
+                        const isTop = index === 0 && v.avgRating > 0;
+                        const badgeClass = isTop ? 'orange' : '';
+                        const badgeText = isTop ? '<i class="fas fa-crown"></i> MEJOR CALIFICADO' : '<i class="fas fa-fire"></i> DESTACADO';
+                        
+                        html += `
+                        <div class="app-video-card">
+                            <div class="app-video-thumbnail">
+                                ${isTop ? `<div class="app-video-badge ${badgeClass}">${badgeText}</div>` : ''}
+                                <img src="${thumbnail}">
+                                <div class="app-video-play-btn" id="play-group-video" data-video-url="${v.videoUrl}">
+                                    <i class="fas fa-play" style="margin-left: 4px;"></i>
+                                </div>
+                            </div>
+                            <div class="app-video-info">
+                                <div class="app-video-avatar">
+                                    ${v.logo ? `<img src="${v.logo}">` : `<i class="fas fa-users"></i>`}
+                                </div>
+                                <div class="app-video-text">
+                                    <h4 class="app-video-title">${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</h4>
+                                    <p class="app-video-subtitle">ID: ${v.groupId.replace('g_', '')}</p>
+                                </div>
+                                <div class="app-video-rating">
+                                    <div class="stars-container" data-tp="${tpIndex}" data-target-group="${v.groupId}">
+                                        ${renderStars(v.avgRating)}
                                     </div>
-                                    `;
-                                }).join('')}
+                                    <div class="score">${v.avgRating > 0 ? v.avgRating.toFixed(1) : '---'} <span>(${v.voteCount})</span></div>
+                                </div>
                             </div>
                         </div>
-                    `;
+                        `;
+                    });
+
+                    html += `</div></div>`; // Close gallery-cards-grid and gallery-tp-content
                 });
 
                 container.innerHTML = html;
+                
+                window.switchTPGallery = function(tpIndex) {
+                    const cont = document.getElementById('recent-activity-container');
+                    if(!cont) return;
+                    cont.querySelectorAll('.tp-tab-pill').forEach(pill => {
+                        if(pill.dataset.targetTp === String(tpIndex)) pill.classList.add('active');
+                        else pill.classList.remove('active');
+                    });
+                    cont.querySelectorAll('.gallery-tp-content').forEach(content => {
+                        if(content.id === `tp-content-${tpIndex}`) content.classList.add('active');
+                        else content.classList.remove('active');
+                    });
+                };
                 
                 function renderStars(rating) {
                     let stars = '';
@@ -5137,28 +5796,6 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     }
                     return stars;
                 }
-
-                // Añadir efectos hover y click
-                const cards = container.querySelectorAll('.video-gallery-card');
-                cards.forEach(card => {
-                    const img = card.querySelector('img');
-                    const btn = card.querySelector('.nav-button');
-                    
-                    card.onmouseenter = () => {
-                        card.style.transform = 'translateY(-5px)';
-                        card.style.background = 'rgba(255,255,255,0.06)';
-                        if(img) img.style.transform = 'scale(1.1)';
-                        if(img) img.style.opacity = '1';
-                        if(btn) btn.style.transform = 'scale(1.1)';
-                    };
-                    card.onmouseleave = () => {
-                        card.style.transform = 'translateY(0)';
-                        card.style.background = 'rgba(255,255,255,0.03)';
-                        if(img) img.style.transform = 'scale(1)';
-                        if(img) img.style.opacity = '0.8';
-                        if(btn) btn.style.transform = 'scale(0.9)';
-                    };
-                });
 
                 // Listener delegado para clicks
                 container.onclick = async (e) => {
@@ -5858,6 +6495,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         container.appendChild(card);
                     });
                 });
+                setTimeout(() => initPodiumCarousel('student-podium-container'), 800);
             }
 
             function displayGroupPodium() {
@@ -5892,6 +6530,70 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         container.appendChild(card);
                     });
                 });
+                setTimeout(() => initPodiumCarousel('group-podium-container'), 800);
+            }
+
+            // Global intervals for carousels
+            window.podiumIntervals = window.podiumIntervals || {};
+
+            function initPodiumCarousel(containerId) {
+                if (window.innerWidth > 768) return; // Only on mobile
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                if (window.podiumIntervals[containerId]) {
+                    clearInterval(window.podiumIntervals[containerId]);
+                }
+
+                const cards = container.querySelectorAll('.podium-card');
+                if (cards.length === 0) return;
+
+                let indicators = container.querySelector('.carousel-indicators');
+                if (!indicators) {
+                    indicators = document.createElement('div');
+                    indicators.className = 'carousel-indicators';
+                    container.appendChild(indicators);
+                    
+                    cards.forEach((_, i) => {
+                        const dot = document.createElement('div');
+                        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                        dot.onclick = () => showCarouselSlide(containerId, i);
+                        indicators.appendChild(dot);
+                    });
+                }
+
+                cards.forEach(c => c.classList.remove('carousel-active'));
+                cards[0].classList.add('carousel-active');
+
+                let currentSlide = 0;
+                window.podiumIntervals[containerId] = setInterval(() => {
+                    const latestCards = container.querySelectorAll('.podium-card');
+                    if(latestCards.length === 0) { clearInterval(window.podiumIntervals[containerId]); return; }
+                    currentSlide = (currentSlide + 1) % latestCards.length;
+                    showCarouselSlide(containerId, currentSlide);
+                }, 4000);
+            }
+
+            window.showCarouselSlide = function(containerId, index) {
+                const container = document.getElementById(containerId);
+                if(!container) return;
+                const cards = container.querySelectorAll('.podium-card');
+                const dots = container.querySelectorAll('.carousel-dot');
+                if(cards.length === 0) return;
+                
+                cards.forEach(c => c.classList.remove('carousel-active'));
+                dots.forEach(d => d.classList.remove('active'));
+                
+                if(cards[index]) cards[index].classList.add('carousel-active');
+                if(dots[index]) dots[index].classList.add('active');
+                
+                if (window.podiumIntervals[containerId]) {
+                    clearInterval(window.podiumIntervals[containerId]);
+                    window.podiumIntervals[containerId] = setInterval(() => {
+                        let nextSlide = (index + 1) % cards.length;
+                        showCarouselSlide(containerId, nextSlide);
+                    }, 4000);
+                }
             }
 
             function displayExtendedStudentRanking(showAll = false) {
@@ -6141,7 +6843,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 const promoOk = attendancePercentage >= 75 && tpPresentedPercentage >= 100;
                 const regOk = attendancePercentage >= 50 && tpPresentedPercentage >= 75;
                 const studentCondition = promoOk ? 'Promoción' : (regOk ? 'Regulariza' : 'Libre');
-                const conditionClass = promoOk ? 'regular' : (regOk ? 'regular' : 'no-regular');
+                const conditionClass = promoOk ? 'promocion' : (regOk ? 'regular' : 'libre');
 
                 // Build group options safely (no nested template literals)
                 let groupOptsSelectorHTML = '<option value="">(Sin Grupo)</option>';
@@ -6164,14 +6866,18 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
                 let groupSelectorHTML = '';
                 if (canEdit) {
-                    groupSelectorHTML = '<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--glass-border);">'
-                        + '<p style="font-size: 0.9em; margin-bottom: 8px; color: var(--text-color);">Seleccionar o Cambiar Grupo:</p>'
-                        + '<form id="student-group-selection-form" style="display: flex; gap: 10px; flex-wrap: wrap;">'
-                        + '<select id="student-group-selector" style="flex-grow: 1; padding: 8px; border-radius: 4px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border);">'
-                        + groupOptsSelectorHTML
-                        + '</select>'
-                        + '<button type="submit" class="nav-button active" style="padding: 5px 15px; min-width: auto;"><i class="fas fa-save"></i> Guardar</button>'
-                        + '</form></div>';
+                    groupSelectorHTML = `
+                        <form id="student-group-selection-form" style="margin-top: 16px;">
+                            <div class="app-group-selector-wrapper">
+                                <select id="student-group-selector" class="app-group-selector">
+                                    ${groupOptsSelectorHTML}
+                                </select>
+                            </div>
+                            <button type="submit" class="app-group-save-btn">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
+                        </form>
+                    `;
                 }
 
                 let groupCardHTML = '';
@@ -6183,71 +6889,39 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         }
                     });
 
-                    let membersPhotosHTML = '<div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 15px 0; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 12px;">';
+                    let membersPhotosHTML = '<div class="app-group-members">';
                     const groupMembers = fullData.students.filter(s => s.group === student.group);
                     groupMembers.forEach(m => {
-                        membersPhotosHTML += `<div id="member-photo-${m.up}" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--xp-color); overflow: hidden; background: rgba(0,0,0,0.2); transition: transform 0.2s;" title="${m.name}"></div>`;
+                        membersPhotosHTML += `<div id="member-photo-${m.up}" class="app-group-member-avatar" title="${m.name}"></div>`;
                     });
                     membersPhotosHTML += '</div>';
 
-                    const cleanGroupNum = String(student.group).replace(/\D/g, '');
-                    
                     groupCardHTML = `
-                    <div class="stat-block">
-                        <h4><i class="fas fa-users"></i> Mi Grupo</h4>
-                        <div class="current-rank-display" style="padding-bottom: 10px;">
-                            <div id="group-link-logo-${student.group}" style="width: 80px; height: 80px; margin: 0 auto 10px; opacity: 0.9; border-radius: 50%; overflow: hidden; border: 3px solid var(--xp-color); background: rgba(0,0,0,0.2);"></div>
-                            <div class="rank-name" style="margin-bottom: 5px;">Grupo ${student.group}</div>
-                            <div style="font-weight: bold; color: var(--xp-color);"><i class="fas fa-star" style="font-size: 0.9em; margin-right: 5px;"></i>${groupData.xp} XP Totales</div>
+                    <div class="app-group-card">
+                        <div class="app-group-title">
+                            <i class="fas fa-users" style="color: #ff6b00;"></i> Mi Grupo
                         </div>
-                        <p style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted-light); letter-spacing: 1px; margin-bottom: 5px;">Integrantes:</p>
+                        <div class="app-group-desc">
+                            Perteneces al <strong>Grupo ${student.group}</strong> junto a ${groupMembers.length > 1 ? groupMembers.length - 1 : 0} compañeros más. Juntos acumulan <strong style="color: #FFD700;"><i class="fas fa-star"></i> ${groupData.xp} XP</strong>.
+                        </div>
                         ${membersPhotosHTML}
                         ${groupSelectorHTML}
                     </div>`;
 
-                    // Cargar logos y fotos de los integrantes después de que el modal se renderice
                     setTimeout(() => {
-                        // Cargar logo del grupo usando el ID completo (ej: g_17)
-                        const groupSearchId = student.group || "";
-                        const logoDiv = document.getElementById(`group-link-logo-${student.group}`);
-                        if (logoDiv) {
-                            logoDiv.style.cursor = 'pointer';
-                            logoDiv.title = 'Ver perfil del grupo';
-                            logoDiv.addEventListener('click', () => {
-                                displayGroupPortalView(student.group);
-                            });
-
-                            findGroupImage(groupSearchId, (logoHTML) => {
-                                logoDiv.innerHTML = logoHTML;
-                                const img = logoDiv.querySelector('img');
-                                if (img) {
-                                    img.style.width = '100%';
-                                    img.style.height = '100%';
-                                    img.style.objectFit = 'cover';
-                                    img.style.borderRadius = '50%';
-                                }
-                            });
-                        }
-
                         groupMembers.forEach(m => {
                             const photoDiv = document.getElementById(`member-photo-${m.up}`);
                             if (photoDiv) {
                                 photoDiv.style.cursor = 'pointer';
                                 photoDiv.addEventListener('click', (e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    
-                                    // Cambiar de perfil
+                                    e.preventDefault(); e.stopPropagation();
                                     displayStudentPortalView(m);
-                                    
-                                    // Hacer scroll hacia arriba del modal/portal para ver el nuevo perfil
                                     const modalBody = document.querySelector('#student-portal-modal .modal-body') || window;
                                     modalBody.scrollTo({ top: 0, behavior: 'smooth' });
                                 });
 
                                 findImage(m.up, (photoHTML) => {
                                     photoDiv.innerHTML = photoHTML;
-                                    // Asegurar que la imagen no bloquee el clic
                                     const img = photoDiv.querySelector('img');
                                     if (img) img.style.pointerEvents = 'none';
                                 });
@@ -6256,9 +6930,13 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     }, 100);
                 } else {
                     groupCardHTML = `
-                    <div class="stat-block">
-                        <h4><i class="fas fa-users"></i> Mi Grupo</h4>
-                        <p style="margin-bottom: 15px; color: #aaa;">Aún no estás en ningún grupo.</p>
+                    <div class="app-group-card">
+                        <div class="app-group-title">
+                            <i class="fas fa-users" style="color: #ff6b00;"></i> Mi Grupo
+                        </div>
+                        <div class="app-group-desc">
+                            Aún no estás asignado a ningún grupo de trabajo para los prácticos.
+                        </div>
                         ${groupSelectorHTML}
                     </div>`;
                 }
@@ -6490,35 +7168,80 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 }
 
                 portalHTML += `
-                <div class="result-card">
-                    <div class="profile-header" style="display:flex; align-items:center; ${headerBg}">
-                        <div id="portal-photo" style="position: relative;"></div>
-                        <div class="edit-photo-trigger" id="edit-student-photo-btn" title="Editar Foto de Perfil" style="position: absolute; bottom: 5px; left: 60px; background: var(--accent-teal); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); z-index: 5; color: white;">
-                            <i class="fas fa-pencil-alt"></i>
-                        </div>
-                        <div class="profile-info" style="margin-right: 15px;"><h3>${nameDisplayWithCromos}</h3></div>
-                        <!-- CROMOS FULL CARDS -->
-                        <div style="margin-left: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end;">
-                            ${fullCromosHTML}
-                        </div>
-                    </div>
-                    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-                        <div class="stat-card clickable" data-modal-target="#attendance-modal" title="Haz clic para ver detalle"><i class="fas fa-user-check stat-icon"></i><div class="stat-value">${attendancePercentage}%</div><div class="stat-label">Asistencia</div><div class="stat-sublabel">${attendanceSublabel}</div></div>
-                        <div class="stat-card clickable" data-modal-target="#tp-modal" title="Haz clic para ver detalle"><i class="fas fa-file-alt stat-icon"></i><div class="stat-value">${tpPercentage}%</div><div class="stat-label">TPs Aprobados</div><div class="stat-sublabel">(${approvedTPsCount} de ${denominator})</div></div>
-                        <div class="stat-card"><i class="fas fa-file-signature stat-icon"></i><div class="stat-value">${student.parcial1 ?? 'N/A'}</div><div class="stat-label">1er Parcial</div></div>
-                        <div class="stat-card"><i class="fas fa-file-signature stat-icon"></i><div class="stat-value">${student.parcial2 ?? 'N/A'}</div><div class="stat-label">2do Parcial</div></div>
-                        <div class="stat-card clickable" data-modal-target="#condition-modal" title="Haz clic para ver tu condición" style="box-shadow: 0 0 15px rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3); cursor: pointer;"><i class="fas fa-graduation-cap stat-icon" style="color: ${promoOk ? 'var(--xp-color)' : (regOk ? 'var(--accent-teal)' : 'var(--danger-color)')}"></i><div class="stat-label" style="margin-bottom: 1rem;">Condición</div><span class="status-tag ${conditionClass}" style="${promoOk ? 'background: linear-gradient(45deg, #FFD700, #FFA500); color: #000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);' : ''}">${studentCondition}</span><div style="font-size:0.7rem; color:var(--text-muted-light); margin-top:8px;"><i class="fas fa-info-circle"></i> Ver detalle</div></div>
-                    </div>
-                    <div class="additional-stats">
-                        <div> 
-                            <div class="stat-block clickable" data-modal-target="#xp-modal" title="Haz clic para ver historial" style="margin-bottom: 1rem;">
-                                <h4><i class="fas fa-star"></i> Puntos de Experiencia (XP)</h4>
-                                <p class="xp-display">${student.xp || 0} XP</p>
+                <div class="app-profile-container">
+                    
+                    <div class="app-profile-header" ${headerBg ? `style="${headerBg} padding: 20px; border-radius: 20px;"` : ''}>
+                        <div class="app-avatar-wrapper">
+                            <div id="portal-photo" style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                <i class="fas fa-user"></i>
                             </div>
-                            ${groupCardHTML}
+                            <div class="app-avatar-edit-btn" id="edit-student-photo-btn" title="Editar Foto de Perfil">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
                         </div>
-
+                        
+                        <div class="app-profile-name">${nameDisplayWithCromos}</div>
                     </div>
+                    
+                    
+                    <div class="app-condition-card ${conditionClass.toLowerCase()}" data-modal-target="#condition-modal">
+                        <div class="icon-wrapper">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="app-condition-content">
+                            <div class="app-condition-label">Condición Actual</div>
+                            <div class="app-condition-value">${studentCondition}</div>
+                        </div>
+                        <div class="app-condition-action">
+                            Ver detalle <i class="fas fa-chevron-right" style="font-size: 0.8rem; margin-left: 4px;"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="app-xp-card" data-modal-target="#xp-modal">
+                        <div class="app-xp-header">
+                            <div class="app-xp-title"><i class="fas fa-star"></i> Experiencia</div>
+                            <div class="app-xp-amount">${studentXP} <span>XP</span></div>
+                        </div>
+                        <div class="app-xp-bar-bg">
+                            <div class="app-xp-bar-fill" style="width: ${nextRank ? Math.round(((studentXP - currentRank.xp) / (nextRank.xp - currentRank.xp)) * 100) : 100}%;"></div>
+                        </div>
+                        <div class="app-xp-footer">
+                            <div>${currentRank.name}</div>
+                            <div>${nextRank ? `Meta: ${nextRank.xp} XP` : 'Max Level'}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="app-stats-2x2">
+                        <div class="app-stat-box" data-modal-target="#attendance-modal">
+                            <div class="app-stat-icon"><i class="fas fa-user-check"></i></div>
+                            <div class="app-stat-value">${attendancePercentage}%</div>
+                            <div class="app-stat-label">Asistencia</div>
+                            <div class="app-stat-sublabel">(${presentCount} de ${totalSessionsForStudent})</div>
+                        </div>
+                        <div class="app-stat-box" data-modal-target="#tp-modal">
+                            <div class="app-stat-icon"><i class="fas fa-file-invoice-dollar" style="color: #00e5ff;"></i></div>
+                            <div class="app-stat-value">${tpPercentage}%</div>
+                            <div class="app-stat-label">TPs Aprobados</div>
+                            <div class="app-stat-sublabel">(${approvedTPsCount} de ${denominator})</div>
+                        </div>
+                        <div class="app-stat-box">
+                            <div class="app-stat-icon"><i class="fas fa-file-signature" style="color: #3b82f6;"></i></div>
+                            <div class="app-stat-value">${student.parcial1 ?? 'N/A'}</div>
+                            <div class="app-stat-label">1er Parcial</div>
+                            <div class="app-stat-sublabel">${student.parcial1 !== undefined && student.parcial1 !== null ? 'Calificado' : 'Sin calificar'}</div>
+                        </div>
+                        <div class="app-stat-box">
+                            <div class="app-stat-icon"><i class="fas fa-file-signature" style="color: #3b82f6;"></i></div>
+                            <div class="app-stat-value">${student.parcial2 ?? 'N/A'}</div>
+                            <div class="app-stat-label">2do Parcial</div>
+                            <div class="app-stat-sublabel">${student.parcial2 !== undefined && student.parcial2 !== null ? 'Calificado' : 'Sin calificar'}</div>
+                        </div>
+                    </div>
+                    
+                    ${groupCardHTML}
+                    
+                    ${fullCromosHTML ? `<div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 24px;">${fullCromosHTML}</div>` : ''}
+                    
                 </div>
                 ${attendanceModalHTML}${tpModalHTML}${xpHistoryModalHTML}
                 <!-- MODAL DE CONDICIÓN -->
@@ -10814,7 +11537,44 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
         })();
     </script>
-    <script src="tienda.js?v=1.28"></script>
+    <!-- MOBILE BOTTOM NAV -->
+    <nav id="mobile-bottom-nav" class="mobile-only" style="display: none;">
+        <button class="nav-button mobile-bottom-item active" data-tab-target="#panel-honor">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </button>
+        <button class="nav-button mobile-bottom-item" data-tab-target="#panel-perfil">
+            <i class="fas fa-user-circle"></i>
+            <span>Perfil</span>
+        </button>
+        <button class="nav-button mobile-bottom-item" data-tab-target="#panel-clases">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <span>Clases</span>
+        </button>
+        <button class="nav-button mobile-bottom-item" data-tab-target="#panel-tienda" style="color: #FFA500;">
+            <i class="fas fa-store"></i>
+            <span>Tienda</span>
+        </button>
+    </nav>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-side-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('show');
+            if (menu.classList.contains('open')) {
+                menu.style.display = 'flex';
+                overlay.style.display = 'block';
+            } else {
+                setTimeout(() => {
+                    menu.style.display = 'none';
+                    overlay.style.display = 'none';
+                }, 300); // Wait for transition
+            }
+        }
+    </script>
+    <script src="tienda.js?v=1.31"></script>
 </body>
 
 </html>

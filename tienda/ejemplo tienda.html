@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Premium Store UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #1a1a24; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* MOCKUP DEL CELULAR - Ultra Oscuro */
+        .phone-mockup {
+            width: 390px; height: 844px; background-color: #08090C;
+            border-radius: 45px; border: 10px solid #1a1c23; box-shadow: 0 35px 80px rgba(0,0,0,0.9);
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+            /* Luces de fondo (Ambient Glow) */
+            background-image: 
+                radial-gradient(circle at top right, rgba(255, 115, 0, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(138, 43, 226, 0.08) 0%, transparent 40%);
+        }
+
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 30px; background-color: #1a1c23;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 50;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 50px 20px 10px 20px; position: relative; z-index: 40;
+        }
+        .top-bar h1 { font-size: 24px; font-weight: 700; color: white; letter-spacing: -0.5px; }
+        .profile-btn {
+            width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05);
+            display: flex; justify-content: center; align-items: center; color: white;
+            border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+        }
+
+        .content-scroll { flex-grow: 1; overflow-y: auto; padding: 10px 0 100px 0; }
+        .content-scroll::-webkit-scrollbar { display: none; }
+
+        /* BILLETERA HERO (La joya de la corona) */
+        .wallet-hero {
+            margin: 10px 20px 25px 20px; padding: 25px 20px; border-radius: 28px;
+            background: linear-gradient(135deg, rgba(30, 32, 41, 0.8), rgba(15, 16, 20, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.05); position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); backdrop-filter: blur(20px);
+        }
+        .wallet-hero::after {
+            content: ''; position: absolute; top: -50%; right: -20%; width: 150px; height: 150px;
+            background: #ff7300; filter: blur(60px); opacity: 0.2; border-radius: 50%;
+        }
+        .wallet-label { color: #8a8d99; font-size: 13px; font-weight: 500; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .wallet-balance { display: flex; align-items: baseline; gap: 8px; }
+        .wallet-balance .amount { color: white; font-size: 46px; font-weight: 800; font-family: 'Inter', sans-serif; line-height: 1; }
+        .wallet-balance .currency { color: #ff7300; font-size: 18px; font-weight: 700; text-shadow: 0 0 15px rgba(255,115,0,0.5); }
+        .wallet-action {
+            display: inline-flex; align-items: center; gap: 6px; margin-top: 15px;
+            background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 20px;
+            color: white; font-size: 12px; font-weight: 500;
+        }
+
+        /* CATEGORÍAS HORIZONTALES */
+        .categories {
+            display: flex; gap: 12px; padding: 0 20px 20px 20px; overflow-x: auto;
+            -ms-overflow-style: none; scrollbar-width: none;
+        }
+        .categories::-webkit-scrollbar { display: none; }
+        .chip {
+            padding: 10px 20px; border-radius: 14px; font-size: 13px; font-weight: 600; white-space: nowrap;
+            background: rgba(255,255,255,0.03); color: #8a8d99; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+        }
+        .chip.active { background: #ff7300; color: white; border-color: #ff7300; box-shadow: 0 8px 20px rgba(255,115,0,0.3); }
+
+        /* SECCIÓN ROTACIÓN SEMANAL (Scarcity / FOMO) */
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; padding: 0 20px; margin-bottom: 15px; }
+        .section-title { color: white; font-size: 18px; font-weight: 700; }
+        .timer { color: #ff4757; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px; font-family: 'Inter'; }
+
+        /* ITEM LEGENDARIO (Animado) */
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.2), inset 0 0 10px rgba(138, 43, 226, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(138, 43, 226, 0.5), inset 0 0 20px rgba(138, 43, 226, 0.2); border-color: rgba(138, 43, 226, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.2), inset 0 0 10px rgba(138, 43, 226, 0.1); }
+        }
+
+        .legendary-card {
+            margin: 0 20px 30px 20px; padding: 2px; border-radius: 24px;
+            background: linear-gradient(135deg, rgba(138,43,226,0.5), rgba(0,0,0,0));
+            animation: glowPulse 3s infinite;
+        }
+        .legendary-inner {
+            background: #0D0E15; border-radius: 22px; padding: 20px; position: relative; overflow: hidden;
+        }
+        .badge-legendary {
+            position: absolute; top: 15px; right: 15px; background: linear-gradient(90deg, #8a2be2, #d63031);
+            color: white; font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 8px; letter-spacing: 1px;
+        }
+        .legendary-icon { font-size: 50px; margin-bottom: 10px; filter: drop-shadow(0 10px 15px rgba(138, 43, 226, 0.6)); }
+        .legendary-title { color: white; font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+        .legendary-desc { color: #8a8d99; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
+        
+        /* Barra de disponibilidad */
+        .stock-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 5px; overflow: hidden; }
+        .stock-bar-fill { width: 15%; height: 100%; background: #ff4757; border-radius: 10px; }
+        .stock-text { color: #ff4757; font-size: 11px; font-weight: 600; font-family: 'Inter'; margin-bottom: 15px; }
+
+        .btn-legendary {
+            width: 100%; padding: 16px; border-radius: 14px; border: none;
+            background: linear-gradient(90deg, #8a2be2, #6c5ce7); color: white;
+            font-size: 15px; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 10px 25px rgba(138, 43, 226, 0.4);
+        }
+
+        /* GRILLA DE ITEMS REGULARES */
+        .store-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
+
+        .item-card {
+            background: #12141A; border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 20px; padding: 15px; display: flex; flex-direction: column; position: relative;
+        }
+        .item-card.gold { border-color: rgba(255, 215, 0, 0.2); background: linear-gradient(180deg, rgba(255,215,0,0.03) 0%, #12141A 100%); }
+
+        .item-icon { font-size: 35px; margin-bottom: 12px; align-self: center; }
+        .item-card.gold .item-icon { filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.4)); }
+        .item-icon-normal { filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5)); }
+
+        .item-title { color: white; font-size: 14px; font-weight: 600; line-height: 1.3; margin-bottom: 6px; }
+        .item-desc { color: #6c7080; font-size: 11px; line-height: 1.4; margin-bottom: 15px; flex-grow: 1; }
+
+        /* Precio y Botón en la misma línea */
+        .item-footer { display: flex; justify-content: space-between; align-items: center; }
+        .item-price { color: white; font-size: 16px; font-weight: 800; font-family: 'Inter'; display: flex; align-items: center; gap: 4px; }
+        .item-price span { color: #ff7300; font-size: 10px; font-weight: 800; }
+        
+        .btn-buy {
+            width: 35px; height: 35px; border-radius: 10px; border: none;
+            background: #ff7300; color: white; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 5px 15px rgba(255, 115, 0, 0.3); font-size: 14px;
+        }
+        .btn-locked {
+            background: rgba(255,255,255,0.05); color: #6c7080; box-shadow: none; border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute; bottom: 0; width: 100%; height: 85px;
+            background: rgba(8, 9, 12, 0.85); backdrop-filter: blur(25px); border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; z-index: 50;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #6c7080; font-size: 10px; font-weight: 500; text-decoration: none; }
+        .nav-item.active { color: #ff7300; }
+        .nav-item.active i { text-shadow: 0 0 15px rgba(255, 115, 0, 0.5); }
+        .nav-item i { font-size: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="phone-mockup">
+        <div class="notch"></div>
+
+        <div class="top-bar">
+            <h1>Tienda Exclusiva</h1>
+            <div class="profile-btn"><i class="fa-solid fa-box-open"></i></div> <!-- Icono de inventario arriba -->
+        </div>
+
+        <div class="content-scroll">
+            
+            <!-- EL HERO DE LA BILLETERA -->
+            <div class="wallet-hero">
+                <div class="wallet-label">Poder Adquisitivo</div>
+                <div class="wallet-balance">
+                    <span class="amount">14</span>
+                    <span class="currency">XP</span>
+                </div>
+                <div class="wallet-action">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Ver historial de puntos
+                </div>
+            </div>
+
+            <!-- CHIPS DE FILTRO -->
+            <div class="categories">
+                <div class="chip active">Todo</div>
+                <div class="chip">🚀 Ventajas</div>
+                <div class="chip">📚 Materiales</div>
+                <div class="chip">⏳ Tiempo</div>
+            </div>
+
+            <!-- SECCIÓN FOMO (Fear Of Missing Out) -->
+            <div class="section-header">
+                <div class="section-title">Oferta Limitada</div>
+                <div class="timer"><i class="fa-solid fa-bolt"></i> 12h 45m</div>
+            </div>
+
+            <div class="legendary-card">
+                <div class="legendary-inner">
+                    <div class="badge-legendary">MÍTICO</div>
+                    <div class="legendary-icon">🔮</div>
+                    <div class="legendary-title">Inmunidad a Parcial</div>
+                    <div class="legendary-desc">Te permite saltar el próximo examen parcial y mantener tu nota promedio actual.</div>
+                    
+                    <div class="stock-bar-bg"><div class="stock-bar-fill"></div></div>
+                    <div class="stock-text">Solo quedan 2 disponibles</div>
+
+                    <button class="btn-legendary">
+                        Reclamar por 50 XP
+                    </button>
+                </div>
+            </div>
+
+            <!-- CATÁLOGO ESTÁNDAR -->
+            <div class="section-header">
+                <div class="section-title">Catálogo Regular</div>
+            </div>
+
+            <div class="store-grid">
+                
+                <!-- Item Premium (Gold) -->
+                <div class="item-card gold">
+                    <div class="item-icon">👑</div>
+                    <div class="item-title">Salvación de Oro</div>
+                    <div class="item-desc">+4 puntos directos a tu nota final.</div>
+                    
+                    <div class="item-footer">
+                        <div class="item-price">25 <span>XP</span></div>
+                        <button class="btn-buy btn-locked"><i class="fa-solid fa-lock"></i></button> <!-- Bloqueado porque cuesta 25 y tiene 14 -->
+                    </div>
+                </div>
+
+                <!-- Item Alcanzable -->
+                <div class="item-card">
+                    <div class="item-icon item-icon-normal">📘</div>
+                    <div class="item-title">Resumen VIP</div>
+                    <div class="item-desc">PDF con los temas clave del parcial.</div>
+                    
+                    <div class="item-footer">
+                        <div class="item-price">10 <span>XP</span></div>
+                        <button class="btn-buy"><i class="fa-solid fa-plus"></i></button> <!-- Comprable -->
+                    </div>
+                </div>
+
+                <!-- Item Alcanzable -->
+                <div class="item-card">
+                    <div class="item-icon item-icon-normal">⌛</div>
+                    <div class="item-title">Extensión 24hs</div>
+                    <div class="item-desc">Añade 1 día extra a tu entrega.</div>
+                    
+                    <div class="item-footer">
+                        <div class="item-price">5 <span>XP</span></div>
+                        <button class="btn-buy"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+
+                <!-- Item Bloqueado -->
+                <div class="item-card">
+                    <div class="item-icon item-icon-normal">🥈</div>
+                    <div class="item-title">Empujón de Plata</div>
+                    <div class="item-desc">+2 puntos en un Trabajo Práctico.</div>
+                    
+                    <div class="item-footer">
+                        <div class="item-price">15 <span>XP</span></div>
+                        <button class="btn-buy btn-locked"><i class="fa-solid fa-lock"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Barra inferior -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-house"></i><span>Inicio</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-user-circle"></i><span>Perfil</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-book-open"></i><span>Clases</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa-solid fa-store"></i><span>Tienda</span>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

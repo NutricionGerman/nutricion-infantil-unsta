@@ -80,38 +80,40 @@
         const now = new Date();
         const activeItems = items.filter(i => !i.expiresAt || new Date(i.expiresAt) > now);
 
-        let itemsHTML = '';
+        let legendaryHTML = '';
+        let regularHTML = '';
+        let hasLegendary = false;
+
         if (activeItems.length === 0) {
-            itemsHTML = '<p style="text-align:center; width:100%; color:#aaa; font-size: 1.2rem; padding: 40px;">La tienda está vacía en este momento. ¡Vuelve pronto!</p>';
+            regularHTML = '<p style="text-align:center; width:100%; color:#aaa; font-size: 1.2rem; padding: 40px;">La tienda está vacía en este momento. ¡Vuelve pronto!</p>';
         } else {
             activeItems.forEach(item => {
                 let timeIndicator = '';
                 if (item.expiresAt) {
-                    const expDate = new Date(item.expiresAt);
-                    timeIndicator = `<div class="tienda-countdown" data-expires="${item.expiresAt}" style="color: #ff4757; font-size: 0.75rem; font-weight: bold; margin-bottom: 5px;"><i class="fas fa-stopwatch"></i> Expira en: Calculando...</div>`;
+                    timeIndicator = `<div class="tienda-countdown timer" data-expires="${item.expiresAt}" style="justify-content: center; margin-bottom: 15px;"><i class="fa-solid fa-bolt"></i> Calculando...</div>`;
                 }
 
-                // Soporte para imágenes personalizadas (SVGs) o iconos
                 const imageUrl = item.image || (item.downloadUrl && item.downloadUrl.match(/\.(jpeg|jpg|gif|png|svg)(\?.*)?$/i) ? item.downloadUrl : null);
-                const mediaHTML = imageUrl 
-                    ? `<div class="tienda-item-icon" style="text-align: center; margin-bottom: 10px; height: 80px; display: flex; align-items: center; justify-content: center;"><img src="${imageUrl}" style="max-height: 100%; max-width: 100%; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));" alt="Item Image"/></div>`
-                    : `<div class="tienda-item-icon" style="color:${item.type === 'auction' ? '#FFA500' : 'var(--accent-teal)'}; font-size: 2.5rem; text-align: center; margin-bottom: 10px;"><i class="${item.icon || (item.type === 'auction' ? 'fas fa-gavel' : 'fas fa-box')}"></i></div>`;
 
                 if (item.type === 'auction') {
+                    hasLegendary = true;
                     const canAffordBid = currentXP > (item.currentBid || item.cost);
                     const currentBid = item.currentBid || item.cost;
-                    const bidderInfo = item.highestBidderName ? `<div style="color:#FFA500; font-size:0.8rem; margin-top:5px; font-weight:bold;"><i class="fas fa-crown"></i> Ganando: ${item.highestBidderName}</div>` : `<div style="color:#aaa; font-size:0.8rem; margin-top:5px;">Sé el primero en pujar</div>`;
+                    const bidderInfo = item.highestBidderName ? `Ganando: ${item.highestBidderName}` : `Sé el primero en pujar`;
                     
-                    itemsHTML += `
-                        <div class="tienda-item-card" style="border: 2px solid #FFA500; box-shadow: 0 0 15px rgba(255,165,0,0.3); background: rgba(255,165,0,0.05); border-radius: 15px;">
-                            <div class="tienda-item-inner" style="padding: 20px; display: flex; flex-direction: column; height: 100%;">
-                                <div class="tienda-item-glare"></div>
+                    const mediaHTML = imageUrl 
+                        ? `<div class="legendary-icon"><img src="${imageUrl}" alt="Item Image"/></div>`
+                        : `<div class="legendary-icon"><i class="${item.icon || 'fas fa-gavel'}"></i></div>`;
+
+                    legendaryHTML += `
+                        <div class="legendary-card">
+                            <div class="legendary-inner">
+                                <div class="badge-legendary">SUBASTA</div>
                                 ${mediaHTML}
-                                <div class="tienda-item-title" style="font-weight: bold; font-size: 1.2rem; text-align: center; margin-bottom: 10px; z-index: 2;">${item.name} <br><span style="font-size:0.7rem; background:#FFA500; color:#000; padding:3px 6px; border-radius:5px; display:inline-block; margin-top:5px;">SUBASTA</span></div>
+                                <div class="legendary-title">${item.name}</div>
+                                <div class="legendary-desc">${item.desc} <br><br><span style="color:#FFA500; font-size:12px; font-weight:bold;">${bidderInfo}</span></div>
                                 ${timeIndicator}
-                                <div class="tienda-item-desc" style="color: #ccc; font-size: 0.9rem; flex-grow: 1; text-align: center; margin-bottom: 15px; z-index: 2;">${item.desc}</div>
-                                ${bidderInfo}
-                                <button class="tienda-item-buy" onclick="placeTiendaBid('${item.id}')" style="position: relative; background: linear-gradient(45deg, #f59e0b, #d97706); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; width: 100%; z-index: 100; pointer-events: auto; ${!canAffordBid ? 'filter: grayscale(1) opacity(0.6);' : ''}">
+                                <button class="btn-legendary" onclick="placeTiendaBid('${item.id}')">
                                     <i class="fas fa-gavel"></i> Pujar (Mín. ${currentBid + 1} XP)
                                 </button>
                             </div>
@@ -119,15 +121,22 @@
                     `;
                 } else {
                     const canAfford = currentXP >= item.cost;
-                    itemsHTML += `
-                        <div class="tienda-item-card" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px;">
-                            <div class="tienda-item-inner" style="padding: 20px; display: flex; flex-direction: column; height: 100%;">
-                                <div class="tienda-item-glare"></div>
-                                ${mediaHTML}
-                                <div class="tienda-item-title" style="font-weight: bold; font-size: 1.2rem; text-align: center; margin-bottom: 10px; z-index: 2;">${item.name}</div>
-                                ${timeIndicator}
-                                <button class="tienda-item-buy" onclick="buyTiendaItem('${item.id}')" style="position: relative; background: var(--accent-teal); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; width: 100%; transition: filter 0.2s; z-index: 100; pointer-events: auto; ${!canAfford ? 'filter: grayscale(1) opacity(0.6);' : ''}">
-                                    <i class="fas fa-shopping-cart"></i> Comprar (${item.cost} XP)
+                    const isGold = item.cost >= 20;
+                    
+                    const mediaHTML = imageUrl 
+                        ? `<div class="item-icon"><img src="${imageUrl}" alt="Item Image"/></div>`
+                        : `<div class="item-icon ${!isGold ? 'item-icon-normal' : ''}"><i class="${item.icon || 'fas fa-box'}"></i></div>`;
+
+                    regularHTML += `
+                        <div class="item-card ${isGold ? 'gold' : ''}">
+                            ${mediaHTML}
+                            <div class="item-title">${item.name}</div>
+                            <div class="item-desc">${item.desc}</div>
+                            ${timeIndicator}
+                            <div class="item-footer">
+                                <div class="item-price">${item.cost} <span>XP</span></div>
+                                <button class="btn-buy" onclick="buyTiendaItem('${item.id}')">
+                                    <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
                         </div>
@@ -187,35 +196,43 @@
                 .toast-text h4 { color: #FFDF00; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; margin-top: 0; }
                 .toast-text p { font-size: 1.1rem; font-weight: bold; margin: 0; color: #fff; }
                 @keyframes spin-pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 223, 0, 0.7); } 50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 223, 0, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 223, 0, 0); } }
-
-                .tienda-item-card { position: relative; overflow: hidden; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-                .tienda-item-card::after { content: ''; position: absolute; top: -100%; left: -100%; width: 50%; height: 300%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent); transform: rotate(45deg); transition: 0.6s; pointer-events: none; z-index: 10; }
-                .tienda-item-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
-                .tienda-item-card:hover::after { left: 200%; }
-                .tienda-item-inner { width: 100%; height: 100%; position: relative; z-index: 5; }
             </style>
 
-            ${adminBadge}
-            <div class="tienda-header-tab" style="background: linear-gradient(135deg, rgba(255,165,0,0.1) 0%, rgba(255,165,0,0.2) 100%); border: 1px solid rgba(255,165,0,0.3); border-radius: 20px; padding: 30px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                <div>
-                    <h3 style="margin: 0 0 10px 0; color: #fff; font-size: 1.8rem;"><i class="fas fa-wallet" style="color:#FFA500;"></i> Tu Billetera Virtual</h3>
-                    <p style="margin: 0; color: #ddd; font-size: 1.1rem;">Hola <strong>${studentData.firstName || studentData.nombre || 'Alumno'}</strong>, este es tu poder adquisitivo actual.</p>
+            <div class="tienda-wrapper">
+                ${adminBadge}
+                
+                <!-- BILLETERA HERO -->
+                <div class="wallet-hero">
+                    <div class="wallet-label">Poder Adquisitivo</div>
+                    <div class="wallet-balance">
+                        <span class="amount">${currentXP}</span>
+                        <span class="currency">XP</span>
+                    </div>
                 </div>
-                <div class="tienda-balance" style="font-size: 3.5rem; font-weight: 800; color: #FFA500; text-shadow: 0 0 20px rgba(255,165,0,0.4);">
-                    <i class="fas fa-star" style="font-size: 2.8rem; margin-right:10px;"></i>${currentXP} <span style="font-size:1.5rem; font-weight:bold; color:#fff;">XP</span>
-                </div>
-            </div>
 
-            <div style="margin-bottom: 40px;">
-                <h3 style="margin-bottom: 25px; color: #fff; font-size:1.5rem; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px;"><i class="fas fa-shopping-bag"></i> Catálogo de Recompensas</h3>
-                <div class="tienda-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;">
-                    ${itemsHTML}
+                <!-- OFERTAS ESPECIALES / SUBASTAS -->
+                ${hasLegendary ? `
+                <div class="section-header">
+                    <div class="section-title">Oferta Limitada / Subastas</div>
                 </div>
-            </div>
+                <div class="legendaries-grid">
+                    ${legendaryHTML}
+                </div>
+                ` : ''}
 
-            <div style="background: rgba(0,0,0,0.2); padding: 35px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05);">
-                <h3 style="color: #fff; margin-top: 0; margin-bottom: 10px; font-size:1.5rem;"><i class="fas fa-backpack" style="color:var(--accent-teal);"></i> Mi Inventario</h3>
-                <p style="color: #aaa; font-size: 1rem; margin-bottom: 25px;">Aquí se guardan tus recompensas adquiridas.</p>
+                <!-- CATÁLOGO REGULAR -->
+                <div class="section-header">
+                    <div class="section-title">Catálogo Regular</div>
+                </div>
+                <div class="store-grid">
+                    ${regularHTML}
+                </div>
+
+                <!-- INVENTARIO -->
+                <div class="section-header" style="margin-top: 40px;">
+                    <div class="section-title">Mi Inventario</div>
+                </div>
+                <p style="color: #8a8d99; font-size: 13px; margin-bottom: 20px;">Aquí se guardan tus recompensas adquiridas.</p>
                 <div class="inventory-grid">
                     ${inventorySlotsHTML}
                 </div>

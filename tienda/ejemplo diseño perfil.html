@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Premium UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #2a2a35;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* MOCKUP DEL CELULAR */
+        .phone-mockup {
+            width: 390px; height: 844px;
+            background-color: #12141D;
+            border-radius: 45px; border: 10px solid #1a1c23;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 30px; background-color: #1a1c23;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 50;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: sticky; top: 0; z-index: 40;
+            display: flex; justify-content: center; align-items: center;
+            padding: 45px 20px 15px 20px;
+            background: rgba(18, 20, 29, 0.85); backdrop-filter: blur(12px);
+        }
+        .top-bar h1 { font-size: 16px; font-weight: 600; color: white; letter-spacing: 0.5px; }
+
+        .content-scroll { flex-grow: 1; overflow-y: auto; padding: 20px 20px 100px 20px; }
+        .content-scroll::-webkit-scrollbar { display: none; }
+
+        /* CABECERA DE PERFIL */
+        .profile-header {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            margin-bottom: 25px; position: relative;
+        }
+        
+        .avatar-container { position: relative; margin-bottom: 15px; }
+        .avatar {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: linear-gradient(135deg, #2a2d3e, #1a1c29);
+            border: 3px solid #2a2d3e; display: flex; justify-content: center; align-items: center;
+            font-size: 35px; color: #8a8d99; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        .edit-btn {
+            position: absolute; bottom: 0; right: 0;
+            width: 32px; height: 32px; border-radius: 50%;
+            background: #00cec9; color: white;
+            display: flex; justify-content: center; align-items: center; font-size: 12px;
+            border: 3px solid #12141D; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 206, 201, 0.4);
+        }
+
+        .user-name { color: white; font-size: 22px; font-weight: 700; line-height: 1.2; }
+        .user-role { color: #8a8d99; font-size: 13px; font-weight: 400; margin-top: 2px; }
+
+        /* BANNER DE ESTADO (Condición) */
+        .status-banner {
+            background: linear-gradient(90deg, rgba(255, 71, 87, 0.15), rgba(255, 71, 87, 0.05));
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            border-radius: 16px; padding: 15px 20px; margin-bottom: 25px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .status-left { display: flex; align-items: center; gap: 12px; }
+        .status-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            background: rgba(255, 71, 87, 0.2); color: #ff4757;
+            display: flex; justify-content: center; align-items: center; font-size: 20px;
+        }
+        .status-text p { color: #8a8d99; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+        .status-text h3 { color: #ff4757; font-size: 18px; font-weight: 700; }
+        .detail-btn { color: #ff4757; font-size: 12px; font-weight: 500; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 5px; }
+
+        /* TARJETA GAMIFICADA XP */
+        .xp-card {
+            background: linear-gradient(145deg, #1C1E2A, #151720);
+            border: 1px solid rgba(255, 215, 0, 0.15); border-radius: 20px;
+            padding: 20px; margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2), inset 0 0 20px rgba(255, 215, 0, 0.02);
+        }
+        .xp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .xp-title { display: flex; align-items: center; gap: 8px; color: #FFD700; font-weight: 600; font-size: 15px; }
+        .xp-value { color: white; font-size: 20px; font-weight: 700; font-family: 'Inter', sans-serif; }
+        
+        .progress-track { width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; }
+        .progress-fill { width: 15%; height: 100%; background: linear-gradient(90deg, #FFD700, #ff9f43); border-radius: 10px; }
+        .xp-footer { display: flex; justify-content: space-between; margin-top: 8px; color: #8a8d99; font-size: 11px; font-family: 'Inter', sans-serif; }
+
+        /* GRID DE ESTADÍSTICAS */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        
+        .stat-card {
+            background: #1C1E2A; border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 20px; padding: 18px 15px;
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+        }
+        .stat-icon { font-size: 20px; margin-bottom: 10px; }
+        .stat-icon.teal { color: #00cec9; text-shadow: 0 0 15px rgba(0, 206, 201, 0.4); }
+        .stat-icon.blue { color: #0984e3; text-shadow: 0 0 15px rgba(9, 132, 227, 0.4); }
+        
+        .stat-value { color: white; font-size: 24px; font-weight: 700; font-family: 'Inter', sans-serif; line-height: 1; margin-bottom: 4px; }
+        .stat-label { color: #8a8d99; font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+        .stat-sub { color: #6c7080; font-size: 10px; font-family: 'Inter', sans-serif; }
+        
+        .value-na { color: #6c7080; }
+
+        /* SECCIÓN MI GRUPO */
+        .group-section {
+            background: #1C1E2A; border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 24px; padding: 20px;
+        }
+        .section-title { display: flex; align-items: center; gap: 8px; color: white; font-size: 16px; font-weight: 600; margin-bottom: 15px; }
+        .section-title i { color: #ff7300; }
+        
+        .empty-state { color: #8a8d99; font-size: 13px; margin-bottom: 20px; line-height: 1.5; }
+        
+        /* Select Premium */
+        .custom-select-wrapper { position: relative; margin-bottom: 15px; }
+        .custom-select {
+            appearance: none; -webkit-appearance: none; width: 100%;
+            background: #12141D; border: 1px solid rgba(255,255,255,0.1);
+            color: white; font-size: 14px; font-family: 'Inter', sans-serif;
+            padding: 14px 20px; border-radius: 12px; outline: none;
+        }
+        .custom-select:focus { border-color: #ff7300; }
+        .select-icon {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            color: #8a8d99; pointer-events: none;
+        }
+
+        /* Botón de Guardar Premium */
+        .btn-primary {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: linear-gradient(90deg, #ff7300, #ff5500);
+            color: white; font-size: 15px; font-weight: 600; font-family: 'Poppins', sans-serif;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 8px 20px rgba(255, 115, 0, 0.3); cursor: pointer;
+        }
+        .btn-primary:active { transform: scale(0.98); }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute; bottom: 0; width: 100%; height: 85px;
+            background: rgba(18, 20, 29, 0.95); backdrop-filter: blur(20px); border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; z-index: 50;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #6c7080; font-size: 10px; font-weight: 500; text-decoration: none; }
+        .nav-item.active { color: #ff7300; }
+        .nav-item.active i { text-shadow: 0 0 15px rgba(255, 115, 0, 0.5); }
+        .nav-item i { font-size: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="phone-mockup">
+        <div class="notch"></div>
+
+        <div class="top-bar">
+            <h1>Perfil de Alumno</h1>
+        </div>
+
+        <div class="content-scroll">
+            
+            <!-- Foto y Nombre -->
+            <div class="profile-header">
+                <div class="avatar-container">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="edit-btn"><i class="fa-solid fa-pen"></i></div>
+                </div>
+                <h2 class="user-name">Prueba Alumno</h2>
+                <p class="user-role">Nutrición Infantil</p>
+            </div>
+
+            <!-- Banner de Condición (Rediseño de la tarjeta Roja) -->
+            <div class="status-banner">
+                <div class="status-left">
+                    <div class="status-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div class="status-text">
+                        <p>Condición Actual</p>
+                        <h3>LIBRE</h3>
+                    </div>
+                </div>
+                <div class="detail-btn">
+                    Ver detalle <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </div>
+
+            <!-- Tarjeta XP Gamificada -->
+            <div class="xp-card">
+                <div class="xp-header">
+                    <div class="xp-title"><i class="fa-solid fa-star"></i> Experiencia</div>
+                    <div class="xp-value">5 <span style="font-size: 14px; color: #8a8d99; font-weight: 500;">XP</span></div>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="xp-footer">
+                    <span>Nivel Principiante</span>
+                    <span>Meta: 50 XP</span>
+                </div>
+            </div>
+
+            <!-- Grilla de Desempeño -->
+            <div class="stats-grid">
+                
+                <div class="stat-card">
+                    <div class="stat-icon teal"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="stat-value">43%</div>
+                    <div class="stat-label">Asistencia</div>
+                    <div class="stat-sub">(3 de 7)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon teal"><i class="fa-solid fa-file-circle-check"></i></div>
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">TPs Aprobados</div>
+                    <div class="stat-sub">(0 de 2)</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-file-pen"></i></div>
+                    <div class="stat-value value-na">N/A</div>
+                    <div class="stat-label">1er Parcial</div>
+                    <div class="stat-sub">Sin calificar</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-file-pen"></i></div>
+                    <div class="stat-value value-na">N/A</div>
+                    <div class="stat-label">2do Parcial</div>
+                    <div class="stat-sub">Sin calificar</div>
+                </div>
+
+            </div>
+
+            <!-- Sección de Grupo -->
+            <div class="group-section">
+                <h3 class="section-title"><i class="fa-solid fa-users"></i> Mi Grupo</h3>
+                <p class="empty-state">Aún no estás asignado a ningún grupo de trabajo para los prácticos.</p>
+                
+                <div class="custom-select-wrapper">
+                    <!-- El select original estilizado -->
+                    <select class="custom-select">
+                        <option value="" disabled selected>(Sin Grupo)</option>
+                        <option value="1">Unirme al Grupo 1</option>
+                        <option value="2">Unirme al Grupo 2</option>
+                        <option value="3">Unirme al Grupo 3</option>
+                    </select>
+                    <div class="select-icon"><i class="fa-solid fa-chevron-down"></i></div>
+                </div>
+
+                <!-- Botón guardar premium -->
+                <button class="btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Barra inferior indicando que estamos en perfil -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-house"></i><span>Inicio</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa-solid fa-user-circle"></i><span>Perfil</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-book-open"></i><span>Clases</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-store"></i><span>Tienda</span>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
