@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio de Medallas Interactivas</title>
+    <style>
+        /* Variables CSS dinámicas (se modifican con JavaScript según la medalla) */
+        :root {
+            --theme-light: #FFDF00;
+            --theme-mid: #D4AF37;
+            --theme-dark: #996515;
+            
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* --- NAVEGACIÓN PRINCIPAL --- */
+        nav {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--theme-dark);
+            z-index: 100;
+            transition: border-color 0.5s;
+        }
+
+        button.tab-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid #475569;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.tab-btn:hover, button.tab-btn.active {
+            background: var(--theme-mid);
+            color: black;
+            border-color: var(--theme-light);
+            box-shadow: 0 0 15px var(--theme-dark);
+        }
+
+        main {
+            flex: 1;
+            position: relative;
+        }
+
+        .view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .view.active {
+            display: flex;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- VISTA 1: SHOWCASE 3D --- */
+        #view-showcase {
+            perspective: 1000px;
+        }
+
+        /* Botones de Selección de Medalla */
+        .medal-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            z-index: 10;
+        }
+
+        .select-btn {
+            background: #1e293b;
+            color: white;
+            border: 2px solid transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .select-btn.oro.active { border-color: #FFDF00; background: rgba(255, 223, 0, 0.2); }
+        .select-btn.plata.active { border-color: #E3E4E5; background: rgba(227, 228, 229, 0.2); }
+        .select-btn.bronce.active { border-color: #CD7F32; background: rgba(205, 127, 50, 0.2); }
+
+        canvas#sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .medal-container {
+            position: relative;
+            z-index: 10;
+            width: 350px;
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            cursor: grab;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* Brillo de fondo estático para resaltar el SVG */
+        .medal-container::before {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            background: var(--theme-light);
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.2;
+            z-index: -1;
+            transition: background 0.5s;
+        }
+
+        .medal-container:active {
+            cursor: grabbing;
+        }
+
+        .medal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transform: translateZ(50px); 
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.7));
+            transition: opacity 0.3s;
+        }
+
+        /* Reflejo/Brillo interactivo con el ratón */
+        .medal-glare {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.3) 25%, transparent 30%);
+            transform: translateZ(60px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            mix-blend-mode: overlay;
+        }
+
+        .medal-container:hover .medal-glare {
+            opacity: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .showcase-text {
+            margin-top: 40px; 
+            text-align: center; 
+            z-index: 10;
+        }
+
+        .showcase-text h1 {
+            color: var(--theme-light);
+            margin-bottom: 5px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            transition: color 0.5s;
+        }
+        
+        .showcase-text h3 {
+            color: var(--theme-mid);
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        /* --- VISTA 2: NOTIFICACIÓN --- */
+        .trigger-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .trigger-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            color: black;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s, background 0.3s;
+        }
+        
+        .trigger-btn.oro { background: linear-gradient(45deg, #996515, #FFDF00); }
+        .trigger-btn.plata { background: linear-gradient(45deg, #707070, #E3E4E5); }
+        .trigger-btn.bronce { background: linear-gradient(45deg, #8c521d, #CD7F32); }
+        
+        .trigger-btn:active { transform: scale(0.95); }
+
+        .achievement-toast {
+            position: fixed;
+            bottom: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, #111, #222);
+            border: 2px solid var(--theme-mid);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 10px 30px 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5) inset;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.5s;
+            z-index: 1000;
+            min-width: 350px;
+        }
+
+        .achievement-toast.show {
+            bottom: 50px;
+        }
+
+        .toast-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse-ring 2s infinite linear;
+        }
+
+        .toast-icon img {
+            width: 120%;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.8));
+        }
+
+        .toast-text h4 {
+            color: var(--theme-light);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+        .toast-text p {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .toast-text span {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- VISTA 3: INVENTARIO --- */
+        .inventory-grid {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .inventory-slot {
+            width: 180px;
+            height: 180px;
+            background: #1e293b;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Colores específicos para los bordes en el inventario */
+        .inventory-slot.oro { border-color: #996515; }
+        .inventory-slot.plata { border-color: #707070; }
+        .inventory-slot.bronce { border-color: #8c521d; }
+
+        .inventory-slot:hover {
+            transform: translateY(-10px);
+        }
+
+        .inventory-slot.oro:hover { box-shadow: 0 15px 30px rgba(255, 223, 0, 0.2); border-color: #FFDF00;}
+        .inventory-slot.plata:hover { box-shadow: 0 15px 30px rgba(227, 228, 229, 0.2); border-color: #E3E4E5;}
+        .inventory-slot.bronce:hover { box-shadow: 0 15px 30px rgba(205, 127, 50, 0.2); border-color: #CD7F32;}
+
+        .inventory-slot img {
+            width: 80%;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.6));
+            transition: transform 0.3s;
+        }
+
+        .inventory-slot:hover img {
+            transform: scale(1.1);
+        }
+
+        .slot-label {
+            position: absolute;
+            bottom: -30px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #cbd5e1;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <button class="tab-btn active" onclick="showView('showcase')">Inspección 3D</button>
+        <button class="tab-btn" onclick="showView('notification')">Animación Sistema</button>
+        <button class="tab-btn" onclick="showView('inventory')">Tu Colección</button>
+    </nav>
+
+    <main>
+        <!-- VISTA 1: SHOWCASE 3D -->
+        <div id="view-showcase" class="view active">
+            <canvas id="sparkles"></canvas>
+            
+            <div class="medal-selector">
+                <button class="select-btn bronce" onclick="loadMedal('bronce')">Bronce</button>
+                <button class="select-btn plata" onclick="loadMedal('plata')">Plata</button>
+                <button class="select-btn oro active" onclick="loadMedal('oro')">Oro</button>
+            </div>
+
+            <div class="medal-container" id="card3d">
+                <div class="medal-glare" id="glare"></div>
+                <!-- ID añadido para cambiar la imagen con JS -->
+                <img id="main-medal-img" src="oro +4.svg" alt="Medalla Principal" class="medal-image">
+            </div>
+            
+            <div class="showcase-text">
+                <h1 id="main-title">La Salvación de Oro</h1>
+                <h3 id="main-points">+4 Puntos en el Parcial</h3>
+                <p style="color: #64748b; font-size: 0.9rem;">(Pasa el ratón sobre la medalla para interactuar)</p>
+            </div>
+        </div>
+
+        <!-- VISTA 2: NOTIFICACIÓN -->
+        <div id="view-notification" class="view">
+            <h2 style="margin-bottom: 30px; color: white;">Probar Evento de Desbloqueo</h2>
+            
+            <div class="trigger-container">
+                <button class="trigger-btn bronce" onclick="triggerAchievement('bronce')">Bronce +1</button>
+                <button class="trigger-btn plata" onclick="triggerAchievement('plata')">Plata +2</button>
+                <button class="trigger-btn oro" onclick="triggerAchievement('oro')">Oro +4</button>
+            </div>
+            <p style="color: #64748b;">(Haz clic en un botón para invocar la notificación inferior)</p>
+
+            <!-- Toast Notification -->
+            <div class="achievement-toast" id="toast">
+                <div class="toast-icon">
+                    <img id="toast-img" src="oro +4.svg" alt="Icono">
+                </div>
+                <div class="toast-text">
+                    <h4>Logro Desbloqueado</h4>
+                    <p id="toast-title">La Salvación de Oro</p>
+                    <span id="toast-points">+4 Puntos en el Parcial</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 3: INVENTARIO -->
+        <div id="view-inventory" class="view">
+            <h2 style="margin-bottom: 50px; color: white;">Tus Recompensas Activas</h2>
+            <div class="inventory-grid">
+                
+                <div class="inventory-slot bronce">
+                    <img src="bronce +1.svg" alt="Bronce">
+                    <div class="slot-label">Bronce (+1)</div>
+                </div>
+                
+                <div class="inventory-slot plata">
+                    <img src="plata+2.svg" alt="Plata">
+                    <div class="slot-label">Plata (+2)</div>
+                </div>
+
+                <div class="inventory-slot oro">
+                    <img src="oro +4.svg" alt="Oro">
+                    <div class="slot-label">Oro (+4)</div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- BASE DE DATOS DE TUS MEDALLAS ---
+        // Aquí están los nombres EXACTOS de tus archivos tal como los enviaste en la foto
+        const medalData = {
+            bronce: {
+                file: 'bronce +1.svg',
+                title: 'Medalla de Bronce',
+                points: '+1 Punto en el Parcial',
+                colorLight: '#CD7F32', // Naranja/Bronce claro
+                colorMid: '#A0522D',
+                colorDark: '#8c521d',
+                particleHue: 30 // Tono naranja para partículas
+            },
+            plata: {
+                file: 'plata+2.svg',
+                title: 'Escudo de Plata',
+                points: '+2 Puntos en el Parcial',
+                colorLight: '#E3E4E5', // Blanco grisáceo brillante
+                colorMid: '#A9A9A9',
+                colorDark: '#707070',
+                particleHue: 0 // Blanco/Gris para partículas
+            },
+            oro: {
+                file: 'oro +4.svg',
+                title: 'La Salvación de Oro',
+                points: '+4 Puntos en el Parcial',
+                colorLight: '#FFDF00', // Amarillo Oro brillante
+                colorMid: '#D4AF37',
+                colorDark: '#996515',
+                particleHue: 45 // Tono amarillo/dorado para partículas
+            }
+        };
+
+        let currentType = 'oro'; // Medalla por defecto al cargar
+
+        // --- SISTEMA DE PESTAÑAS ---
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('view-' + viewId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // --- LÓGICA: CARGAR MEDALLA SELECCIONADA ---
+        function loadMedal(type) {
+            currentType = type;
+            const data = medalData[type];
+
+            // 1. Actualizar botones activos
+            document.querySelectorAll('.select-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.select-btn.' + type).classList.add('active');
+
+            // 2. Actualizar imagen principal suavemente
+            const imgEl = document.getElementById('main-medal-img');
+            imgEl.style.opacity = 0; // Desaparece rápido
+            
+            setTimeout(() => {
+                imgEl.src = data.file;
+                imgEl.style.opacity = 1; // Aparece la nueva
+            }, 300); // 300ms de espera
+
+            // 3. Actualizar Textos
+            document.getElementById('main-title').innerText = data.title;
+            document.getElementById('main-points').innerText = data.points;
+
+            // 4. Cambiar variables CSS (Tematización global)
+            const root = document.documentElement;
+            root.style.setProperty('--theme-light', data.colorLight);
+            root.style.setProperty('--theme-mid', data.colorMid);
+            root.style.setProperty('--theme-dark', data.colorDark);
+        }
+
+        // --- LÓGICA: DISPARAR NOTIFICACIÓN (TOAST) ---
+        let toastTimeout;
+        function triggerAchievement(type) {
+            const data = medalData[type];
+            const toast = document.getElementById('toast');
+            
+            // Actualizar contenido del toast antes de subirlo
+            document.getElementById('toast-img').src = data.file;
+            document.getElementById('toast-title').innerText = data.title;
+            document.getElementById('toast-points').innerText = data.points;
+            
+            // Forzar colores en el toast
+            toast.style.borderColor = data.colorMid;
+            toast.querySelector('h4').style.color = data.colorLight;
+
+            // Animar subida
+            toast.classList.remove('show'); // Resetea si ya estaba arriba
+            clearTimeout(toastTimeout);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+
+            // Bajar después de 4 segundos
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // --- EFECTO 3D INTERACTIVO ---
+        const card = document.getElementById('card3d');
+        const glare = document.getElementById('glare');
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top;  
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = ((y - centerY) / centerY) * -20;
+            const rotateY = ((x - centerX) / centerX) * 20;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            glare.style.background = `linear-gradient(105deg, transparent ${x/rect.width*100 - 20}%, rgba(255,255,255,0.4) ${x/rect.width*100}%, transparent ${x/rect.width*100 + 20}%)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            glare.style.background = `linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.3) 25%, transparent 30%)`;
+        });
+
+        // --- MOTOR DE PARTÍCULAS (DINÁMICO SEGÚN LA MEDALLA) ---
+        const canvas = document.getElementById('sparkles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(hue, isSilver) {
+                this.x = canvas.width / 2 + (Math.random() - 0.5) * 250;
+                this.y = canvas.height / 2 + (Math.random() - 0.5) * 250 - 50;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 1.5;
+                this.speedY = (Math.random() - 0.5) * 1.5 - 1;
+                
+                // Si es plata, usamos escala de grises. Si no, usamos el color (Oro o Bronce).
+                if (isSilver) {
+                    this.color = `rgba(255, 255, 255, ${Math.random() * 0.8})`;
+                } else {
+                    this.color = `hsla(${hue + (Math.random() * 15 - 7)}, 100%, 60%, ${Math.random() * 0.8})`;
+                }
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.size -= 0.015;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            if(document.getElementById('view-showcase').classList.contains('active')) {
+                if (Math.random() < 0.25) {
+                    const data = medalData[currentType];
+                    const isSilver = currentType === 'plata';
+                    particlesArray.push(new Particle(data.particleHue, isSilver));
+                }
+            }
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2) {
+                    particlesArray.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animateCanvas);
+        }
+        
+        // Iniciar todo
+        loadMedal('oro'); // Asegura que las variables CSS arranquen en Oro
+        animateCanvas();
+
+    </script>
+</body>
+</html>

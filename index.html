@@ -230,9 +230,9 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -2987,6 +2987,8 @@
     <link rel="icon" type="image/png" sizes="192x192" href="iconos/web-app-manifest-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="iconos/web-app-manifest-512x512.png">
     <link rel="manifest" href="iconos/site.webmanifest">
+    <link rel="stylesheet" href="tienda.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -3062,7 +3064,7 @@
             <span>🎉 ¡Hay una nueva versión de la plataforma disponible! Para ver los últimos cambios, actualizá la página.</span>
         </div>
         <div class="banner-actions">
-            <button class="btn-update" onclick="location.reload(true)"><i class="fas fa-sync-alt"></i> Actualizar ahora</button>
+            <button class="btn-update" id="btn-update-now"><i class="fas fa-sync-alt"></i> Actualizar ahora</button>
             <button class="btn-dismiss" onclick="document.getElementById('update-banner').style.display='none'">Después</button>
         </div>
     </div>
@@ -3074,6 +3076,7 @@
                     <li><button class="nav-button" data-tab-target="#panel-honor">Inicio</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-perfil"><i class="fas fa-user-circle"></i> Mi Perfil</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-clases">Clases</button></li>
+                    <li><button class="nav-button" data-tab-target="#panel-tienda" style="color: #FFA500;"><i class="fas fa-store"></i> Tienda</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-herramientas">Herramientas</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-proyectos">Proyectos</button></li>
                     <li><button class="nav-button" data-tab-target="#panel-contacto"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
@@ -3329,6 +3332,22 @@
                 </div>
             </div>
 
+            <!-- TABS: TIENDA -->
+            <div id="panel-tienda" class="tab-panel">
+                <div class="panel-header" style="text-align: center; margin-bottom: 2rem;">
+                    <h2 style="color: #FFA500; font-size: 2.5rem; text-shadow: 0 0 20px rgba(255,165,0,0.4);"><i class="fas fa-store"></i> Tienda de Recompensas</h2>
+                    <p>Canjea tus XP por ventajas y bonificaciones increíbles.</p>
+                </div>
+                <div id="tienda-tab-content">
+                    <div style="text-align:center; padding: 40px; background: rgba(0,0,0,0.3); border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fas fa-lock" style="font-size: 3rem; color: #ccc; margin-bottom: 15px;"></i>
+                        <h3 style="color: #fff;">Inicia Sesión</h3>
+                        <p style="color: #ccc;">Debes iniciar sesión en la pestaña <strong>Mi Perfil</strong> para ver tu saldo y acceder a la Tienda.</p>
+                        <button class="nav-button" data-tab-target="#panel-perfil" style="background: var(--success-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 15px; cursor: pointer; font-weight: bold; font-size: 1.1rem;"><i class="fas fa-user-circle"></i> Ir a Mi Perfil</button>
+                    </div>
+                </div>
+            </div>
+
             <div id="panel-contacto" class="tab-panel">
                 <div class="content-panel-container">
                     <div class="section-header" style="margin-top: 0;">
@@ -3366,6 +3385,8 @@
                             <button onclick="switchAdminTab('grupos-admin')" class="admin-tab-btn" id="btn-admin-grupos-admin"><i class="fas fa-users-cog"></i> Contenidos Grupos</button>
                             <button onclick="switchAdminTab('grupos-keys')" class="admin-tab-btn" id="btn-admin-grupos-keys"><i class="fas fa-key"></i> Claves de Grupos</button>
                             <button onclick="switchAdminTab('sistema')" class="admin-tab-btn" id="btn-admin-sistema"><i class="fas fa-sliders-h"></i> Gestión Sistema</button>
+                            <button onclick="switchAdminTab('tienda')" class="admin-tab-btn" id="btn-admin-tienda" style="background: linear-gradient(45deg, #a855f7, #ec4899); color: white; border: none; box-shadow: 0 0 10px rgba(236,72,153,0.3);"><i class="fas fa-store"></i> Gestión Tienda XP</button>
+                            <button onclick="openBannerLibrary()" class="admin-tab-btn" id="btn-admin-banners" style="background: linear-gradient(45deg, #10b981, #059669); color: white; border: none; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);"><i class="fas fa-images"></i> Biblioteca Banners</button>
                         </div>
 
                         <!-- SUB-PANEL: GESTIÓN DE CONTENIDOS DE GRUPOS -->
@@ -3444,6 +3465,25 @@
 
                             <div id="admin-sess-list-container" style="max-height: 450px; overflow-y: auto;">
                                 <!-- Clases Cargadas -->
+                            </div>
+                        </div>
+
+                        <!-- SUB-PANEL: TIENDA XP -->
+                        <div id="sub-panel-tienda" class="admin-sub-panel" style="display: none;">
+                            <h5 style="color: #ec4899; margin-bottom: 10px;"><i class="fas fa-store"></i> Gestión de la Tienda XP</h5>
+                            <p style="font-size: 0.8rem; color: var(--text-muted-light); margin-bottom: 15px;">Administrá los ítems disponibles en la tienda. Añade premios, modelos de parciales y establece sus costos.</p>
+                            
+                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <button onclick="openCreateTiendaItemModal()" style="flex: 1; justify-content: center; background: #ec4899; border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                    <i class="fas fa-plus"></i> Añadir Nuevo Ítem
+                                </button>
+                                <button onclick="downloadTiendaCSV()" style="flex: 1; justify-content: center; background: var(--success-color); border: none; color: white; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                                    <i class="fas fa-file-excel"></i> Descargar Historial (CSV)
+                                </button>
+                            </div>
+
+                            <div id="admin-tienda-list" style="display: flex; flex-direction: column; gap: 10px;">
+                                <!-- Tienda items dynamically injected here via tienda.js -->
                             </div>
                         </div>
 
@@ -3907,15 +3947,15 @@
                         style="width: 200px; margin-top: 6px; accent-color: var(--accent-teal); display: none;">
                 </div>
                 <!-- Botón seleccionar -->
-                <div style="text-align: center; margin-bottom: 16px;">
-                    <label class="nav-button" style="cursor: pointer; display: inline-block; background: var(--accent-teal);">
-                        <i class="fas fa-upload"></i> Seleccionar Imagen
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <label style="cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: rgba(79, 209, 197, 0.15); border: 1px solid var(--accent-teal); color: var(--accent-teal); padding: 12px 24px; border-radius: 30px; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" onmouseover="this.style.background='var(--accent-teal)'; this.style.color='#1a1a2e'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(79, 209, 197, 0.15)'; this.style.color='var(--accent-teal)'; this.style.transform='translateY(0)'">
+                        <i class="fas fa-image"></i> Cambiar Imagen
                         <input type="file" id="student-photo-input" accept="image/*" style="display: none;">
                     </label>
                 </div>
                 <div style="text-align: center;">
-                    <button id="save-student-photo-btn" class="nav-button active" style="width: 100%;">
-                        <i class="fas fa-save"></i> Guardar Foto
+                    <button id="save-student-photo-btn" style="width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(45deg, #a855f7, #ec4899); border: none; color: white; padding: 14px 24px; border-radius: 30px; font-weight: bold; font-size: 1.1rem; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(236, 72, 153, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(236, 72, 153, 0.4)'">
+                        <i class="fas fa-save"></i> Guardar Cambios
                     </button>
                 </div>
                 <div id="student-photo-editor-status" style="margin-top: 15px; text-align: center;"></div>
@@ -4146,6 +4186,9 @@
                     tabPanels.forEach(panel => panel.classList.remove('active'));
                     if (targetPanel) {
                         targetPanel.classList.add('active');
+                        if (button.dataset.tabTarget === '#panel-tienda' && typeof window.renderTiendaTab === 'function') {
+                            window.renderTiendaTab();
+                        }
                     }
                 });
             });
@@ -5892,7 +5935,12 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             rankNumberStyle = 'background: linear-gradient(135deg, #b45309, #d97706); color: #fff; font-weight: 800; box-shadow: 0 0 10px rgba(180,83,9,0.4);';
                         }
                         
-                        listHTML += `<li class="ranking-list-item group-member-item" data-up="${student.up}">
+                        let rowStyle = '';
+                        if (student.customBackground) {
+                            rowStyle = `style="background: linear-gradient(rgba(26,26,46,0.4), rgba(26,26,46,0.4)), url('${student.customBackground}') center/cover no-repeat; text-shadow: 0 2px 4px rgba(0,0,0,0.8);"`;
+                        }
+                        
+                        listHTML += `<li class="ranking-list-item group-member-item" data-up="${student.up}" ${rowStyle}>
                         <div class="rank-number" style="${rankNumberStyle}">${rankNumberContent}</div>
                         <div class="rank-photo" id="photo-stu-${student.up}"></div>
                         <div class="rank-details">
@@ -6400,12 +6448,13 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 // --- FIN ALERTA ---
 
                 // --- HERRAMIENTAS DE ADMIN ---
-                if (firebase.auth().currentUser && window.currentView === 'admin') {
+                if (firebase.auth().currentUser) {
                     portalHTML += `
                     <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--accent-orange); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
                         <h4 style="color: var(--accent-orange); margin: 0 0 10px 0; font-size: 1rem;"><i class="fas fa-tools"></i> Herramientas de Docente</h4>
                         <div style="display:flex; gap: 10px; flex-wrap: wrap;">
                             <button class="nav-button" onclick="adminModXP('${student.up}')" style="border-color: var(--xp-color); color: var(--xp-color); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-star"></i> Modificar XP</button>
+                            <button class="nav-button" onclick="adminModBackground('${student.up}')" style="border-color: #ec4899; color: #ec4899; padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-image"></i> Fondo Animado</button>
                             <button class="nav-button" onclick="adminModManualAtt('${student.up}')" style="border-color: var(--accent-teal); color: var(--accent-teal); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-user-check"></i> Asistencia Normal</button>
                         </div>
                     </div>
@@ -6435,9 +6484,14 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 }
                 const nameDisplayWithCromos = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
 
+                let headerBg = '';
+                if (student.customBackground) {
+                    headerBg = `background: linear-gradient(rgba(26,26,46,0.1), rgba(26,26,46,0.7)), url('${student.customBackground}') center/cover no-repeat; border-radius: 20px; border: 1px solid var(--accent-orange); text-shadow: 0 2px 5px rgba(0,0,0,0.9);`;
+                }
+
                 portalHTML += `
                 <div class="result-card">
-                    <div class="profile-header" style="display:flex; align-items:center;">
+                    <div class="profile-header" style="display:flex; align-items:center; ${headerBg}">
                         <div id="portal-photo" style="position: relative;"></div>
                         <div class="edit-photo-trigger" id="edit-student-photo-btn" title="Editar Foto de Perfil" style="position: absolute; bottom: 5px; left: 60px; background: var(--accent-teal); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--bg-dark); z-index: 5; color: white;">
                             <i class="fas fa-pencil-alt"></i>
@@ -7847,6 +7901,45 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         status.style.color = 'var(--success-color)';
                         status.innerText = '¡Foto guardada con éxito!';
 
+                        // === LÓGICA DE RECOMPENSA POR FOTO ===
+                        const studentToReward = fullData.students.find(s => String(s.up).trim() === String(currentEditingStudentUp).trim());
+                        if (studentToReward) {
+                            if (!studentToReward.xpHistory) studentToReward.xpHistory = [];
+                            const rewardReason = "+1 Perfil de jugador al 100% 🔋";
+                            const alreadyReceived = studentToReward.xpHistory.some(entry => entry.reason && entry.reason === rewardReason);
+                            
+                            if (!alreadyReceived) {
+                                studentToReward.xp = (studentToReward.xp || 0) + 1;
+                                studentToReward.xpHistory.push({
+                                    timestamp: new Date().toISOString(),
+                                    amount: 1,
+                                    reason: rewardReason,
+                                    newXP: studentToReward.xp
+                                });
+                                
+                                await db.collection('students').doc(String(currentEditingStudentUp).trim()).update({
+                                    xp: studentToReward.xp,
+                                    xpHistory: studentToReward.xpHistory
+                                });
+                                
+                                if (typeof confetti === 'function') {
+                                    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: ['#00ff00', '#FFA500', '#ffffff'] });
+                                }
+                                
+                                setTimeout(() => {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '¡Logro Desbloqueado!',
+                                        text: 'Felicidades, ganaste +1 XP por completar tu perfil de jugador al 100% 🔋',
+                                        background: '#1a1a2e',
+                                        color: '#fff',
+                                        confirmButtonColor: '#a855f7'
+                                    });
+                                }, 500);
+                            }
+                        }
+                        // === FIN LÓGICA DE RECOMPENSA ===
+
                         setTimeout(() => {
                             document.getElementById('student-photo-editor-modal').classList.remove('active');
                             document.getElementById('crop-hint').style.display = 'none';
@@ -8737,6 +8830,8 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                             createdAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
 
+                        window.loggedInStudentUP = currentStudentUP;
+                        localStorage.setItem('userUP', currentStudentUP);
                         alert("¡Perfil vinculado con éxito!");
                         loadProfileContent(currentStudentData);
                     } catch (e) {
@@ -8759,6 +8854,8 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     try {
                         const authDoc = await db.collection('student_auth').doc(currentStudentUP).get();
                         if (authDoc.exists && authDoc.data().password === pass) {
+                            window.loggedInStudentUP = currentStudentUP;
+                            localStorage.setItem('userUP', currentStudentUP);
                             loadProfileContent(currentStudentData);
                         } else {
                             alert("Contraseña incorrecta.");
@@ -8967,6 +9064,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 if (tabId === 'clases') refreshAdminSessList();
                 if (tabId === 'grupos-keys') loadAdminGroupKeys();
                 if (tabId === 'grupos-admin') loadAdminGroupContents();
+                if (tabId === 'tienda') { if(typeof loadAdminTienda === 'function') loadAdminTienda(); }
             };
 
             // ============================================================
@@ -9393,6 +9491,116 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         </div>
                     </div>
                 `).join('');
+            };
+
+            window.openBannerLibrary = async () => {
+                Swal.fire({
+                    title: 'Cargando Biblioteca...',
+                    didOpen: () => Swal.showLoading(),
+                    background: '#1a1a2e',
+                    color: '#fff'
+                });
+                
+                try {
+                    const res = await fetch('tienda/banners.txt?t=' + Date.now());
+                    const text = await res.text();
+                    
+                    // Si el servidor local manda un 404 disfrazado de index.html
+                    if (text.toLowerCase().includes('<!doctype html>') || text.toLowerCase().includes('<html')) {
+                        Swal.fire('Error', 'Se detectó que el servidor devolvió la página web en lugar del archivo banners.txt. Asegúrate de que el archivo esté exactamente en la carpeta "tienda".', 'error');
+                        return;
+                    }
+
+                    const lines = text.split('\n');
+                    
+                    let bannersHtml = '<div style="max-height: 60vh; overflow-y: auto; padding: 10px; text-align: left;">';
+                    let count = 0;
+                    
+                    for (let i = 0; i < lines.length; i++) {
+                        let line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        let url = "";
+                        let desc = "Banner " + (count + 1);
+                        
+                        if (line.includes('http')) {
+                            const parts = line.split(' ');
+                            url = parts.find(p => p.startsWith('http'));
+                            const descPart = line.replace(url, '').replace(/[()]/g, '').trim();
+                            if (descPart) desc = descPart;
+                        } else {
+                            continue;
+                        }
+                        
+                        if (url) {
+                            bannersHtml += `
+                            <div style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.5);">
+                                <div style="padding: 10px 15px; background: rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <span style="color: var(--accent-orange); font-weight: bold; font-size: 1rem;">${desc}</span>
+                                    <button class="nav-button active" onclick="navigator.clipboard.writeText('${url}'); alert('Enlace copiado al portapapeles!');" style="padding: 5px 12px; font-size: 0.8rem;"><i class="fas fa-copy"></i> Copiar</button>
+                                </div>
+                                <div style="padding: 20px; background: linear-gradient(rgba(26,26,46,0.3), rgba(26,26,46,0.5)), url('${url}') center/cover no-repeat; height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
+                                    <!-- Vista limpia del GIF -->
+                                </div>
+                            </div>
+                            `;
+                            count++;
+                        }
+                    }
+                    
+                    if (count === 0) {
+                        bannersHtml += '<div style="text-align:center; padding: 30px; color: #ccc;">El archivo se leyó pero no se encontraron enlaces (http/https).</div>';
+                    }
+                    
+                    bannersHtml += '</div>';
+                    
+                    Swal.fire({
+                        title: '<i class="fas fa-images"></i> Biblioteca (' + count + ' encontrados)',
+                        html: bannersHtml,
+                        width: '800px',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Cerrar',
+                        background: '#1a1a2e',
+                        color: '#fff'
+                    });
+                    
+                } catch (e) {
+                    console.error(e);
+                    Swal.fire('Error Crítico', 'Fallo al leer banners.txt: ' + e.message, 'error');
+                }
+            };
+
+            window.adminModBackground = async (up) => {
+                const s = window.fullData.students.find(st => String(st.up) === String(up));
+                if(!s) return;
+                const { value: url, isConfirmed } = await Swal.fire({
+                    title: 'Fondo Animado',
+                    input: 'text',
+                    inputLabel: 'URL del GIF/Imagen (vacío para quitar)',
+                    inputValue: s.customBackground || '',
+                    showCancelButton: true,
+                    confirmButtonText: 'Guardar',
+                    background: '#1a1a2e',
+                    color: '#fff'
+                });
+                
+                if (isConfirmed) {
+                    try {
+                        const newUrl = (url || '').trim();
+                        if (newUrl) {
+                            await db.collection('students').doc(String(up).trim()).update({ customBackground: newUrl });
+                        } else {
+                            await db.collection('students').doc(String(up).trim()).update({ customBackground: firebase.firestore.FieldValue.delete() });
+                        }
+                        s.customBackground = newUrl;
+                        Swal.fire('Guardado', 'El fondo ha sido actualizado.', 'success').then(() => {
+                            location.reload(true);
+                        });
+                    } catch (e) {
+                        console.error(e);
+                        Swal.fire('Error', 'Hubo un problema al guardar.', 'error');
+                    }
+                }
             };
 
             window.adminModXP = async (up) => {
@@ -10257,7 +10465,10 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                 document.getElementById('student-form-question').innerText = decodeURIComponent(q);
                 document.getElementById('student-attendance-modal').dataset.sessionId = sid;
                 const savedUP = localStorage.getItem('userUP');
-                if (savedUP) document.getElementById('student-up-input').value = savedUP;
+                if (savedUP) {
+                    document.getElementById('student-up-input').value = savedUP;
+                    window.loggedInStudentUP = savedUP;
+                }
 
                 // Mostrar nombre de la sesión para que el alumno pueda verificar
                 const sessionInfoEl = document.getElementById('student-session-info');
@@ -10418,7 +10629,17 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     localStorage.setItem(STORAGE_KEY, latestVersion);
                 } else if (storedVersion !== latestVersion) {
                     // ¡Nueva versión detectada! Mostrar banner
-                    showUpdateBanner();
+                    const banner = document.getElementById('update-banner');
+                    if (banner) {
+                        banner.style.display = 'flex';
+                        const btnUpdate = document.getElementById('btn-update-now');
+                        if (btnUpdate) {
+                            btnUpdate.onclick = () => {
+                                localStorage.setItem(STORAGE_KEY, latestVersion);
+                                location.reload(true);
+                            };
+                        }
+                    }
                 }
             }
 
@@ -10593,6 +10814,7 @@ animation: slideUp 0.5s ease-out; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
         })();
     </script>
+    <script src="tienda.js?v=1.28"></script>
 </body>
 
 </html>

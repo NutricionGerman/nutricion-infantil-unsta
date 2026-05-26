@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Medalla - Estilo Videojuego</title>
+    <style>
+        :root {
+            --gold-light: #FFDF00;
+            --gold-mid: #D4AF37;
+            --gold-dark: #996515;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Navegación de Vistas */
+        nav {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gold-dark);
+            z-index: 100;
+        }
+
+        button.tab-btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--gold-mid);
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button.tab-btn:hover, button.tab-btn.active {
+            background: var(--gold-mid);
+            color: black;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        main {
+            flex: 1;
+            position: relative;
+        }
+
+        .view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 2rem;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        /* =========================================
+           VISTA 1: SHOWCASE (INTERACTIVO 3D + CANVAS)
+           ========================================= */
+        #view-showcase {
+            perspective: 1000px; /* Para el efecto 3D */
+        }
+
+        canvas#sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .medal-container {
+            position: relative;
+            z-index: 10;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Truco visual para disimular el fondo blanco de la imagen original */
+            background: radial-gradient(circle, rgba(255,255,255,1) 30%, rgba(255,223,0,0.2) 60%, transparent 70%);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            cursor: grab;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .medal-container:active {
+            cursor: grabbing;
+        }
+
+        .medal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            /* Hacemos que la imagen estática parezca interactiva */
+            transform: translateZ(50px); 
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+            /* mix-blend-mode: multiply; (Opcional si quieres quitar el fondo blanco en fondos claros) */
+        }
+
+        /* Reflejo/Brillo dinámico sobre la imagen */
+        .medal-glare {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%);
+            transform: translateZ(60px);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .medal-container:hover .medal-glare {
+            opacity: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); box-shadow: 0 20px 60px rgba(212, 175, 55, 0.5); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* =========================================
+           VISTA 2: NOTIFICACIÓN (LOGRO DESBLOQUEADO)
+           ========================================= */
+        .trigger-btn {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            border: none;
+            color: black;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+        .trigger-btn:active { transform: scale(0.95); }
+
+        .achievement-toast {
+            position: fixed;
+            bottom: -150px; /* Escondido por defecto */
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, #111, #222);
+            border: 2px solid var(--gold-mid);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            padding: 10px 30px 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 223, 0, 0.3) inset;
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+        }
+
+        .achievement-toast.show {
+            bottom: 50px;
+        }
+
+        .toast-icon {
+            width: 80px;
+            height: 80px;
+            background: white; /* Para el fondo de la imagen */
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            animation: spin-pulse 2s infinite linear;
+        }
+
+        .toast-icon img {
+            width: 150%; /* Zoom para centrar en la medalla */
+        }
+
+        .toast-text h4 {
+            color: var(--gold-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+        .toast-text p {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        @keyframes spin-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 223, 0, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 223, 0, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 223, 0, 0); }
+        }
+
+        /* =========================================
+           VISTA 3: INVENTARIO (GRID)
+           ========================================= */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .inventory-slot {
+            background: rgba(255,255,255,0.05);
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 12px;
+            aspect-ratio: 1/1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inventory-slot.filled {
+            border-style: solid;
+            border-color: var(--gold-dark);
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(30,41,59,1) 70%);
+            cursor: pointer;
+        }
+
+        .inventory-slot.filled::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--gold-light));
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .inventory-slot.filled:hover::before {
+            opacity: 1;
+        }
+
+        .inventory-slot.filled::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: #111;
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .inventory-slot img {
+            width: 90%;
+            z-index: 2;
+            transition: transform 0.3s;
+        }
+
+        .inventory-slot.filled:hover img {
+            transform: scale(1.1);
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* URL DE LA IMAGEN EXTRAIDA DE TU PROMPT */
+        /* Nota: Para este demo, usaremos la imagen subida codificada en Base64 o su ruta.
+           Como no tengo la URL directa de la imagen subida en el servidor de chat, 
+           usaré un placeholder, DEBES CAMBIAR el src de las imagenes abajo por la tuya. */
+    </style>
+</head>
+<body>
+
+    <nav>
+        <button class="tab-btn active" onclick="showView('showcase')">Vista Principal</button>
+        <button class="tab-btn" onclick="showView('notification')">Notificación</button>
+        <button class="tab-btn" onclick="showView('inventory')">Inventario</button>
+    </nav>
+
+    <main>
+        <!-- VISTA 1: SHOWCASE 3D -->
+        <div id="view-showcase" class="view active">
+            <canvas id="sparkles"></canvas>
+            
+            <div class="medal-container" id="card3d">
+                <div class="medal-glare" id="glare"></div>
+                <!-- REEMPLAZA ESTE SRC POR LA RUTA DE TU IMAGEN -->
+                <img src="https://i.imgur.com/gK99q0p.jpeg" alt="La Salvación de Oro" class="medal-image">
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center; z-index: 10;">
+                <h1 style="color: var(--gold-light); margin-bottom: 10px;">La Salvación de Oro</h1>
+                <p style="color: #cbd5e1;">(Pasa el ratón sobre la medalla para interactuar)</p>
+            </div>
+        </div>
+
+        <!-- VISTA 2: NOTIFICACIÓN -->
+        <div id="view-notification" class="view">
+            <button class="trigger-btn" onclick="triggerAchievement()">Simular Desbloqueo</button>
+            <p style="margin-top: 20px; color: #94a3b8;">Haz clic para ver la animación de entrada fluida.</p>
+
+            <div class="achievement-toast" id="toast">
+                <div class="toast-icon">
+                    <img src="https://i.imgur.com/gK99q0p.jpeg" alt="Icono">
+                </div>
+                <div class="toast-text">
+                    <h4>Logro Desbloqueado</h4>
+                    <p>La Salvación de Oro</p>
+                    <span style="color: var(--gold-dark); font-size: 0.8rem;">+4 Puntos en el Parcial</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA 3: INVENTARIO -->
+        <div id="view-inventory" class="view">
+            <h2 style="margin-bottom: 30px; color: var(--gold-light);">Tus Recompensas</h2>
+            <div class="inventory-grid">
+                <div class="inventory-slot filled" title="La Salvación de Oro">
+                    <img src="https://i.imgur.com/gK99q0p.jpeg" alt="Item">
+                </div>
+                <div class="inventory-slot"></div>
+                <div class="inventory-slot"></div>
+                <div class="inventory-slot"></div>
+                <div class="inventory-slot"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- LÓGICA DE PESTAÑAS (TABS) ---
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById('view-' + viewId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // --- LÓGICA VISTA 1: EFECTO 3D HOVER (Estilo Lottie/Videojuego) ---
+        const card = document.getElementById('card3d');
+        const glare = document.getElementById('glare');
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; // Posición X dentro del contenedor
+            const y = e.clientY - rect.top;  // Posición Y dentro del contenedor
+            
+            // Calcular centro
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Calcular rotación (máximo 20 grados)
+            const rotateX = ((y - centerY) / centerY) * -20;
+            const rotateY = ((x - centerX) / centerX) * 20;
+
+            // Aplicar transformación 3D
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            
+            // Mover el brillo (Glare)
+            glare.style.background = `linear-gradient(105deg, transparent ${x/rect.width*100 - 20}%, rgba(255,255,255,0.5) ${x/rect.width*100}%, transparent ${x/rect.width*100 + 20}%)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            // Volver a la posición original suavemente
+            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+            glare.style.background = `linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.4) 25%, transparent 30%)`;
+        });
+
+        // --- LÓGICA VISTA 1: MOTOR DE PARTÍCULAS (Canvas) ---
+        // Simula la "explosión de partículas" o "destellos" mencionada en tu tabla
+        const canvas = document.getElementById('sparkles');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = canvas.width / 2 + (Math.random() - 0.5) * 200;
+                this.y = canvas.height / 2 + (Math.random() - 0.5) * 200;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2 - 1; // Tienden a subir
+                this.color = `hsla(${40 + Math.random() * 20}, 100%, 50%, ${Math.random()})`; // Tonos dorados
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.size -= 0.02; // Se encogen con el tiempo
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#FFDF00';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            if(document.getElementById('view-showcase').classList.contains('active')) {
+                // Crear nuevas partículas solo si estamos en la vista principal
+                if (Math.random() < 0.3) {
+                    particlesArray.push(new Particle());
+                }
+            }
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2) {
+                    particlesArray.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            handleParticles();
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        // --- LÓGICA VISTA 2: NOTIFICACIÓN ---
+        function triggerAchievement() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            
+            // Ocultar después de 4 segundos
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
