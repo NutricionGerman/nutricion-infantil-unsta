@@ -86,10 +86,10 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background-image: url('https://i.postimg.cc/bwd1p28N/Image-fx-6.png');
-            background-size: cover;
-            background-position: center;
-            background-color: #1c1d21;
+            background-color: #0d1117;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(20, 184, 166, 0.15) 0%, transparent 60%),
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
         }
         #auth-wall::before {
             content: '';
@@ -284,12 +284,11 @@
             font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: var(--text-light);
-            background-image: url('https://i.postimg.cc/bwd1p28N/Image-fx-6.png');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
+            background-color: #0d1117;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(20, 184, 166, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             background-attachment: fixed;
-            background-color: var(--primary-dark);
         }
 
         .container {
@@ -891,6 +890,163 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* ESTILOS PREMIUM PARA EL RANKING DE ALUMNOS (INSPIRADO EN EJEMPLO RANKING.HTML) */
+        .rank-row {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-bottom: 10px;
+            transition: transform 0.2s, background-color 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+        .rank-row:hover {
+            transform: scale(1.015);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .rank-row:active {
+            transform: scale(0.99);
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-right: 15px;
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .avatar-container .student-photo {
+            width: 45px;
+            height: 45px;
+            border-radius: 50% !important;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .avatar-container .student-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .crown-icon {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FFD700;
+            font-size: 14px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+            z-index: 2;
+        }
+
+        .rank-row.rank-1 {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%);
+            border: 1px solid rgba(255, 215, 0, 0.25);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.03);
+        }
+        .rank-row.rank-1 .rank-number {
+            color: #FFD700;
+            font-size: 1.3rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            font-weight: 800;
+        }
+        .rank-row.rank-1 .student-photo {
+            border: 2px solid #FFD700 !important;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .rank-row.rank-2 {
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%);
+            border: 1px solid rgba(192, 192, 192, 0.2);
+        }
+        .rank-row.rank-2 .rank-number {
+            color: #C0C0C0;
+            font-weight: 800;
+        }
+        .rank-row.rank-2 .student-photo {
+            border: 2px solid #C0C0C0 !important;
+        }
+
+        .rank-row.rank-3 {
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.08) 0%, rgba(255, 255, 255, 0.02) 60%);
+            border: 1px solid rgba(205, 127, 50, 0.2);
+        }
+        .rank-row.rank-3 .rank-number {
+            color: #CD7F32;
+            font-weight: 800;
+        }
+        .rank-row.rank-3 .student-photo {
+            border: 2px solid #CD7F32 !important;
+        }
+
+        /* STICKY CURRENT USER BAR */
+        .ranking-current-user-wrapper {
+            margin-top: 15px;
+            position: sticky;
+            bottom: 75px;
+            z-index: 100;
+            padding: 5px 0;
+            background: transparent;
+        }
+        .current-user-bar {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 12px 30px rgba(29, 78, 216, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .current-user-bar:hover {
+            transform: translateY(-2px);
+        }
+        .current-user-bar .rank-number {
+            color: white !important;
+            font-weight: 800;
+            background: rgba(0, 0, 0, 0.2) !important;
+        }
+        .current-user-bar .user-name {
+            color: white !important;
+            font-weight: 700;
+        }
+        .current-user-bar .xp-score {
+            color: white !important;
+        }
+        .current-user-bar .xp-score span {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .current-user-bar .student-photo {
+            border: 2px solid white !important;
+        }
+        .badge-you {
+            position: absolute;
+            top: -9px;
+            right: 20px;
+            background: #FFD700;
+            color: black;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.05em;
         }
 
         /* ESTILOS PORTAL ALUMNO Y GRUPO */
@@ -3620,6 +3776,14 @@
 <body>
 
     <!-- ============================================================
+         GLOBAL APP LOADER
+    ============================================================ -->
+    <div id="global-app-loader" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-dark); z-index: 999999; display: none; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease;">
+        <div class="loading-spinner" style="width: 50px; height: 50px; border-width: 4px; border-color: rgba(255,255,255,0.1); border-top-color: var(--accent-teal); margin-bottom: 20px;"></div>
+        <p style="color: var(--text-light); font-weight: 500; font-size: 1.1rem; letter-spacing: 0.5px; animation: pulse 1.5s infinite;">Cargando entorno...</p>
+    </div>
+
+    <!-- ============================================================
          AUTH WALL - Pantalla de acceso obligatoria
     ============================================================ -->
     <div id="auth-wall">
@@ -3725,7 +3889,7 @@
             <button class="close-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
         </div>
         <ul class="mobile-side-nav-list">
-            <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-herramientas" onclick="toggleMobileMenu()"><i class="fas fa-tools"></i> Herramientas</button></li>
+            <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-clases" onclick="toggleMobileMenu()"><i class="fas fa-chalkboard-teacher"></i> Clases</button></li>
             <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-proyectos" onclick="toggleMobileMenu()"><i class="fas fa-folder-open"></i> Proyectos</button></li>
             <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-contacto" onclick="toggleMobileMenu()"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
         </ul>
@@ -3794,7 +3958,7 @@
             <div id="panel-honor" class="tab-panel active">
                 <section id="xp-ranking-section" style="display: block;">
                     <div id="dashboard-header-container">
-                        <div id="global-stats-container" class="stats-grid" style="margin-bottom: 40px;">
+                        <div id="global-stats-container" style="margin-bottom: 40px;">
                             <!-- Las tarjetas/pestañas del dashboard se generarán aquí -->
                         </div>
                     </div>
@@ -3802,18 +3966,13 @@
                     <div id="dashboard-content-wrapper">
                         <!-- VISTA PARA GALERÍA DE TPS -->
                         <div id="hitos-dashboard-content" class="dashboard-content-panel">
-                            <div class="section-header" style="margin-top: 0;">
-                                <i class="fas fa-play-circle header-icon" style="color:var(--accent-orange);"></i>
-                                <h2>Galería de Producciones</h2>
-                                <p>Explora los trabajos prácticos realizados por todos los grupos.</p>
-                            </div>
                             <div id="recent-activity-container" class="ranking-list-container" style="background: transparent; border: none; padding: 0; max-width: 100%; margin: 0 auto;">
                                 <!-- La galería se generará aquí -->
                             </div>
                         </div>
 
                         <!-- VISTA PARA ALUMNOS -->
-                        <div id="alumnos-dashboard-content" class="dashboard-content-panel active">
+                        <div id="alumnos-dashboard-content" class="dashboard-content-panel">
                             <!-- SEARCH RAPIDO PARA ADMIN -->
                             <div id="admin-rapid-search-container" style="display: none; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,165,0,0.5); border-radius: 12px; padding: 20px; margin-bottom: 25px;">
                                 <h3 style="color: var(--accent-orange); margin: 0 0 15px 0; font-size:1.1rem;"><i class="fas fa-search"></i> Administrar Alumnos (Panel Rápido)</h3>
@@ -3849,7 +4008,7 @@
                             <div id="admin-cromos-gallery" style="display:flex; gap: 10px; flex-wrap: wrap; max-height: 150px; overflow-y: auto; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1);"></div>
                         </div>
 
-                        <div id="student-podium-container" class="podium-container"></div>
+                        <div id="student-podium-container" class="podium-container" style="display:none; min-height:0; padding:0; margin:0;"></div>
                             <div class="extended-rankings-wrapper">
                                 <div id="top-alumnos-container" class="ranking-list-container"></div>
                             </div>
@@ -3857,11 +4016,7 @@
 
                         <!-- VISTA PARA GRUPOS -->
                         <div id="grupos-dashboard-content" class="dashboard-content-panel">
-                            <div class="section-header" style="margin-top: 0;">
-                                <i class="fas fa-users header-icon" style="color:var(--accent-teal);"></i>
-                                <h2>Ranking de Grupos</h2>
-                                <p>¡Los equipos con el mejor desempeño!</p>
-                            </div>
+
                             <div id="group-podium-container" class="podium-container"></div>
                             <div class="extended-rankings-wrapper">
                                 <div id="top-grupos-container" class="ranking-list-container"></div>
@@ -3870,11 +4025,6 @@
 
                         <!-- VISTA PARA REGULARIDAD -->
                         <div id="regularidad-dashboard-content" class="dashboard-content-panel">
-                            <div class="section-header" style="margin-top: 0;">
-                                <i class="fas fa-user-check header-icon" style="color:var(--success-color);"></i>
-                                <h2>Análisis de Regularidad</h2>
-                                <p>Estado actual de la condición de los alumnos en la cursada.</p>
-                            </div>
                             <div id="regularity-charts-container">
                                 <!-- Los gráficos de regularidad se insertarán aquí -->
                             </div>
@@ -3909,46 +4059,116 @@
             <div id="panel-herramientas" class="tab-panel">
                 <div class="content-panel-container">
                     <div id="herramientas-content-container">
+                        <style>
+                        .premium-tool-card {
+                            display: block; background: #1c212a; border-radius: 16px; padding: 20px;
+                            text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.05);
+                            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+                        }
+                        .premium-tool-card:hover {
+                            background: #232936; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+                        }
+                        .ptc-header {
+                            display: flex; align-items: center; margin-bottom: 15px;
+                        }
+                        .ptc-icon-wrap {
+                            width: 48px; height: 48px; border-radius: 14px; background: rgba(79, 209, 197, 0.1);
+                            display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
+                            color: var(--accent-teal); margin-right: 15px;
+                        }
+                        .ptc-title {
+                            flex: 1; font-weight: 800; font-size: 1.15rem; letter-spacing: 0.5px;
+                        }
+                        .ptc-action {
+                            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+                            padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 800;
+                            color: #a0aec0; display: flex; align-items: center; gap: 6px;
+                            transition: background 0.3s, color 0.3s;
+                        }
+                        .premium-tool-card:hover .ptc-action {
+                            background: rgba(79, 209, 197, 0.15); color: var(--accent-teal); border-color: var(--accent-teal);
+                        }
+                        .ptc-description {
+                            font-size: 0.95rem; color: var(--text-muted-light); margin: 0; line-height: 1.5;
+                        }
+
+                        @keyframes discordGlow {
+                            0% { box-shadow: 0 0 10px rgba(88, 101, 242, 0.4); }
+                            50% { box-shadow: 0 0 30px rgba(88, 101, 242, 0.8); }
+                            100% { box-shadow: 0 0 10px rgba(88, 101, 242, 0.4); }
+                        }
+                        .premium-discord-btn {
+                            display: flex; align-items: center; justify-content: space-between;
+                            background: linear-gradient(135deg, #5865F2, #4752C4);
+                            border-radius: 20px; padding: 25px; text-decoration: none; color: white;
+                            margin-top: 40px; transition: transform 0.3s;
+                            animation: discordGlow 3s infinite ease-in-out;
+                        }
+                        .premium-discord-btn:hover { transform: translateY(-4px); }
+                        .pd-icon { font-size: 3rem; margin-right: 20px; }
+                        .pd-text { flex: 1; display: flex; flex-direction: column; }
+                        .pd-title { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5px; margin-bottom: 2px; }
+                        .pd-subtitle { font-size: 0.95rem; opacity: 0.9; font-weight: 500; }
+                        .pd-arrow { width: 45px; height: 45px; border-radius: 50%; background: white; color: #5865F2; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+                        </style>
+
                         <div class="section-header" style="margin-top: 20px;">
                             <i class="fas fa-tools header-icon" style="color:var(--accent-teal);"></i>
                             <h2>Calculadoras Principales</h2>
-                            <p>Herramientas de valoración nutricional elaboradas para la cátedra.</p>
                         </div>
-                        <div class="tool-grid" style="margin-top: 30px;">
-                            <a href="https://nutriciongerman.github.io/valora-gest/" class="tool-card" target="_blank" rel="noopener noreferrer">
-                                <div class="tool-card-icon"><i class="fas fa-calculator"></i></div>
-                                <h4 class="tool-card-title">ValoraGest</h4>
-                                <p class="tool-card-description">Herramienta completa de valoración nutricional gestacional. Calculá requerimientos, ganancia de peso, suplementación y más.</p>
-                                <span style="display:inline-block; margin-top:12px; font-size:0.78rem; color:var(--accent-teal); font-weight:600;"><i class="fas fa-external-link-alt"></i> Abrir herramienta</span>
+                        <div class="premium-tool-list" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                            
+                            <a href="https://nutriciongerman.github.io/valora-gest/" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap"><i class="fas fa-calculator"></i></div>
+                                    <div class="ptc-title">ValoraGest</div>
+                                    <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
+                                </div>
+                                <p class="ptc-description">Herramienta completa de valoración nutricional gestacional. Calculá requerimientos, ganancia de peso, suplementación y más.</p>
                             </a>
 
-                            <a href="https://discord.gg/2HcHk9bsmr" class="tool-card" target="_blank" rel="noopener noreferrer">
-                                <div class="tool-card-icon"><i class="fab fa-discord" style="color: #7289DA;"></i></div>
-                                <h4 class="tool-card-title">Comunidad de Discord</h4>
-                                <p class="tool-card-description">Únete a nuestra comunidad oficial. Aquí podrás interactuar con tus compañeros, realizar consultas y estar al tanto de las novedades.</p>
-                                <span style="display:inline-block; margin-top:12px; font-size:0.78rem; color:var(--accent-teal); font-weight:600;"><i class="fas fa-external-link-alt"></i> Unirse al servidor</span>
+                            <a href="https://www.nal.usda.gov/human-nutrition-and-food-safety/dri-calculator" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #a855f7; background: rgba(168,85,247,0.1);"><i class="fas fa-chart-pie"></i></div>
+                                    <div class="ptc-title">Calculadora DRI</div>
+                                    <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
+                                </div>
+                                <p class="ptc-description">Calculadora interactiva oficial del USDA para establecer las Ingestas Dietéticas de Referencia (IDR) según perfil.</p>
                             </a>
 
-                            <a href="https://www.nal.usda.gov/human-nutrition-and-food-safety/dri-calculator" class="tool-card" target="_blank" rel="noopener noreferrer">
-                                <div class="tool-card-icon"><i class="fas fa-chart-pie"></i></div>
-                                <h4 class="tool-card-title">Calculadora DRI</h4>
-                                <p class="tool-card-description">Calculadora interactiva oficial del USDA para establecer las Ingestas Dietéticas de Referencia (IDR) según perfil.</p>
-                                <span style="display:inline-block; margin-top:12px; font-size:0.78rem; color:var(--accent-teal); font-weight:600;"><i class="fas fa-external-link-alt"></i> Abrir calculadora</span>
+                            <a href="HERRAMIENTAS/who_anthro_setup (1).zip" class="premium-tool-card" download>
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #3b82f6; background: rgba(59,130,246,0.1);"><i class="fas fa-download"></i></div>
+                                    <div class="ptc-title">WHO Anthro</div>
+                                    <div class="ptc-action"><i class="fas fa-file-archive"></i> .ZIP</div>
+                                </div>
+                                <p class="ptc-description">Software antropométrico oficial de la Organización Mundial de la Salud para evaluación del crecimiento infantil.</p>
                             </a>
 
-                            <a href="HERRAMIENTAS/who_anthro_setup (1).zip" class="tool-card" download>
-                                <div class="tool-card-icon"><i class="fas fa-download"></i></div>
-                                <h4 class="tool-card-title">WHO Anthro</h4>
-                                <p class="tool-card-description">Software antropométrico oficial de la Organización Mundial de la Salud para evaluación del crecimiento infantil.</p>
-                                <span style="display:inline-block; margin-top:12px; font-size:0.78rem; color:var(--accent-teal); font-weight:600;"><i class="fas fa-file-archive"></i> Descargar instalador (.zip)</span>
+                            <a href="https://nutriciongerman.github.io/mamaderas/Teoria/tp6-teoria.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #ec4899; background: rgba(236,72,153,0.1);"><i class="fas fa-baby-carriage"></i></div>
+                                    <div class="ptc-title">Calculadora de Mamaderas</div>
+                                    <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
+                                </div>
+                                <p class="ptc-description">Herramienta para calcular preparaciones de fórmulas infantiles, diluciones y requerimientos hídricos.</p>
                             </a>
-
-                            <a href="https://nutriciongerman.github.io/mamaderas/Teoria/tp6-teoria.html" class="tool-card" target="_blank" rel="noopener noreferrer">
-                                <div class="tool-card-icon"><i class="fas fa-baby-carriage"></i></div>
-                                <h4 class="tool-card-title">Calculadora de Mamaderas</h4>
-                                <p class="tool-card-description">Herramienta para calcular preparaciones de fórmulas infantiles, diluciones y requerimientos hídricos.</p>
-                                <span style="display:inline-block; margin-top:12px; font-size:0.78rem; color:var(--accent-teal); font-weight:600;"><i class="fas fa-external-link-alt"></i> Abrir calculadora</span>
-                            </a>
+                        </div>
+                        
+                        <!-- Discord Community -->
+                        <a href="https://discord.gg/2HcHk9bsmr" class="premium-discord-btn" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-discord pd-icon"></i>
+                            <div class="pd-text">
+                                <span class="pd-title">Comunidad Oficial</span>
+                                <span class="pd-subtitle">Únete a nuestro Discord</span>
+                            </div>
+                            <div class="pd-arrow"><i class="fas fa-chevron-right"></i></div>
+                        </a>
+                        
+                        <!-- UNSTA bottom label -->
+                        <div style="text-align: center; margin-top: 50px; margin-bottom: 30px; opacity: 0.3;">
+                            <i class="fas fa-university" style="font-size: 1.5rem; margin-bottom: 5px;"></i>
+                            <div style="font-weight: 800; letter-spacing: 2px;">UNSTA</div>
                         </div>
                     </div>
                 </div>
@@ -4608,15 +4828,6 @@
     <!-- FIN: MODAL DE REPRODUCTOR DE VIDEO (Eliminado por redundancia) -->
     <!-- FIN: MODAL -->
 
-    <footer class="site-footer">
-        <div class="container footer-content">
-            <div class="footer-branding">
-                <img src="iconos/logo.png" alt="Logo Cátedra Nutrición Infantil" class="logo">
-                <h1>Cátedra de Nutrición Infantil</h1>
-                <p>Universidad del Norte Santo Tomás de Aquino</p>
-            </div>
-        </div>
-    </footer>
 
     <!-- INICIO: MODAL PARA GRÁFICO DE ASISTENCIA GLOBAL -->
     <div class="modal" id="session-stats-modal">
@@ -4823,6 +5034,21 @@
                     // Flujo normal para el resto de las pestañas
                     const targetPanel = document.querySelector(button.dataset.tabTarget);
                     showHonorPanelView('main');
+
+                    if (button.dataset.tabTarget === '#panel-honor') {
+                        const dashHeader = document.getElementById('dashboard-header-container');
+                        const btnVolver = document.getElementById('volver-dashboard-btn');
+                        if (dashHeader) {
+                            dashHeader.style.display = '';
+                            dashHeader.style.height = '';
+                            dashHeader.style.overflow = '';
+                            dashHeader.style.margin = '';
+                            dashHeader.style.padding = '';
+                        }
+                        if (btnVolver) btnVolver.style.display = 'none';
+                        document.querySelectorAll('.dashboard-content-panel').forEach(panel => panel.classList.remove('active'));
+                    }
+
                     tabButtons.forEach(btn => btn.classList.remove('active'));
                     button.classList.add('active');
                     tabPanels.forEach(panel => panel.classList.remove('active'));
@@ -5035,7 +5261,12 @@
                                 window.currentStudentData = matchedStudent;
                                 currentStudentUP = String(currentStudentUP);
                                 currentStudentData = matchedStudent;
-                                displayStudentPortalView(matchedStudent);
+                                
+                                // Sólo forzar la actualización de la vista del portal si ya está abierto
+                                const portalContainer = document.getElementById('student-portal-result-container');
+                                if (portalContainer && portalContainer.classList.contains('active')) {
+                                    displayStudentPortalView(matchedStudent);
+                                }
                             }
                         }
 
@@ -5077,8 +5308,19 @@
                     });
 
 
-                    // Navegación inicial
-                    switchDashboardTab('alumnos');
+                    // Navegación inicial - Ir al Centro de Control (Inicio)
+                    document.querySelectorAll('.dashboard-content-panel').forEach(panel => panel.classList.remove('active'));
+                    const dashHeader = document.getElementById('dashboard-header-container');
+                    if(dashHeader) {
+                        dashHeader.style.display = '';
+                        dashHeader.style.height = '';
+                        dashHeader.style.overflow = '';
+                        dashHeader.style.margin = '';
+                        dashHeader.style.padding = '';
+                    }
+                    const btnVolver = document.getElementById('volver-dashboard-btn');
+                    if(btnVolver) btnVolver.style.display = 'none';
+
                     try { initializeShop(); } catch (e) {}
 
                     // Eventos de reportes
@@ -5099,8 +5341,20 @@
                         };
                     });
 
+                    // Ocultar Loader Global cuando termina de inicializar
+                    const loader = document.getElementById('global-app-loader');
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.style.display = 'none', 400);
+                    }
+
                 } catch (error) {
                     console.error('Error crítico en el inicio de la app:', error);
+                    const loader = document.getElementById('global-app-loader');
+                    if (loader) {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.style.display = 'none', 400);
+                    }
                 }
             }
 
@@ -5526,20 +5780,44 @@
             }
 
             function switchDashboardTab(tabName) {
-                document.querySelectorAll('#global-stats-container .stat-card').forEach(card => card.classList.remove('active', 'hitos-border', 'grupos-border', 'regularidad-border', 'asistencia-border', 'alumnos-border'));
+                // Ocultar el Centro de Control completamente (sin dejar espacio)
+                const dashHeader = document.getElementById('dashboard-header-container');
+                if(dashHeader) {
+                    dashHeader.style.display = 'none';
+                    dashHeader.style.height = '0';
+                    dashHeader.style.overflow = 'hidden';
+                    dashHeader.style.margin = '0';
+                    dashHeader.style.padding = '0';
+                }
+
+                // Crear o mostrar botón volver si no existe
+                let btnVolver = document.getElementById('volver-dashboard-btn');
+                if(!btnVolver) {
+                    btnVolver = document.createElement('button');
+                    btnVolver.id = 'volver-dashboard-btn';
+                    btnVolver.className = 'volver-dashboard-btn';
+                    btnVolver.innerHTML = '<i class="fas fa-arrow-left"></i> Volver al Centro de Control';
+                    btnVolver.onclick = () => {
+                        document.querySelectorAll('.dashboard-content-panel').forEach(panel => panel.classList.remove('active'));
+                        if(dashHeader) {
+                            dashHeader.style.display = '';
+                            dashHeader.style.height = '';
+                            dashHeader.style.overflow = '';
+                            dashHeader.style.margin = '';
+                            dashHeader.style.padding = '';
+                        }
+                        btnVolver.style.display = 'none';
+                    };
+                    const dashWrapper = document.getElementById('dashboard-content-wrapper');
+                    if(dashWrapper && dashWrapper.parentNode) {
+                        dashWrapper.parentNode.insertBefore(btnVolver, dashWrapper);
+                    }
+                }
+                if(btnVolver) btnVolver.style.display = 'inline-flex';
+
                 document.querySelectorAll('.dashboard-content-panel').forEach(panel => panel.classList.remove('active'));
 
-                const activeCard = document.querySelector(`.stat-card[data-dashboard-tab="${tabName}"]`);
                 const activePanel = document.getElementById(`${tabName}-dashboard-content`);
-
-                if (activeCard) {
-                    activeCard.classList.add('active');
-                    if (tabName === 'hitos') activeCard.classList.add('hitos-border');
-                    if (tabName === 'grupos') activeCard.classList.add('grupos-border');
-                    if (tabName === 'regularidad') activeCard.classList.add('regularidad-border');
-                    if (tabName === 'asistencia') activeCard.classList.add('asistencia-border');
-                    if (tabName === 'alumnos') activeCard.classList.add('alumnos-border');
-                }
 
                 if (activePanel) {
                     activePanel.classList.add('active');
@@ -5613,27 +5891,229 @@
                     lastSessionAttendance = totalStudentsInGroupsOfSession > 0 ? `${Math.round((present / totalStudentsInGroupsOfSession) * 100)}%` : '0%';
                 }
 
+                let currentStudentXP = 0;
+                let currentStudentName = 'Alumno';
+                let awUP = window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up');
+                if (awUP) {
+                    const st = fullData.students.find(s => String(s.up).trim() === String(awUP).trim());
+                    if (st) {
+                        currentStudentXP = st.xp || 0;
+                        currentStudentName = st.firstName || st.nombre || 'Alumno';
+                    }
+                }
+
                 container.innerHTML = `
-                <button class="stat-card" data-dashboard-tab="hitos" title="Ver galería de videos">
-                    <i class="fas fa-video stat-icon" style="color: var(--accent-orange);"></i>
-                    <div class="stat-value" id="global-videos-count">0</div>
-                    <div class="stat-label">Galería</div>
-                </button>
-                <button class="stat-card" data-dashboard-tab="alumnos" title="Ver ranking de alumnos.">
-                    <i class="fas fa-user-graduate stat-icon" style="color: #60a5fa;"></i>
-                    <div class="stat-value">${totalStudents}</div>
-                    <div class="stat-label">Alumnos Activos</div>
-                </button>
-                <button class="stat-card" data-dashboard-tab="grupos" title="Ver ranking de grupos.">
-                    <i class="fas fa-users stat-icon" style="color: var(--accent-teal);"></i>
-                    <div class="stat-value">${totalGroups}</div>
-                    <div class="stat-label">Grupos Activos</div>
-                </button>
-                <button class="stat-card" data-dashboard-tab="regularidad" title="Estado actual de la condición de los alumnos en la cursada.">
-                    <i class="fas fa-chart-pie stat-icon" style="color: var(--success-color);"></i>
-                    <div class="stat-value" style="font-size: 1.4rem; padding-top: 5px;">Análisis</div>
-                    <div class="stat-label">Estadísticas</div>
-                </button>
+                <style>
+                    .dashboard-grid {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 15px;
+                        margin-bottom: 20px;
+                    }
+                    .dash-hero-card {
+                        grid-column: 1 / -1;
+                        position: relative;
+                        border-radius: 24px;
+                        overflow: hidden;
+                        aspect-ratio: 21/9;
+                        display: flex;
+                        align-items: flex-end;
+                        padding: 20px;
+                        cursor: pointer;
+                        box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+                        border: 1px solid rgba(0, 191, 255, 0.25);
+                        background: linear-gradient(135deg, rgba(26, 26, 36, 0.65) 0%, rgba(13, 13, 18, 0.85) 100%);
+                        backdrop-filter: blur(12px);
+                        -webkit-backdrop-filter: blur(12px);
+                        transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+                        animation: projectsHeroGlow 4s infinite ease-in-out;
+                    }
+                    @keyframes projectsHeroGlow {
+                        0% {
+                            border-color: rgba(0, 191, 255, 0.2);
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(0, 191, 255, 0.05), inset 0 1px 1px rgba(255,255,255,0.05);
+                        }
+                        50% {
+                            border-color: rgba(0, 242, 254, 0.4);
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 25px rgba(0, 242, 254, 0.15), inset 0 1px 1px rgba(255,255,255,0.15);
+                        }
+                        100% {
+                            border-color: rgba(0, 191, 255, 0.2);
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(0, 191, 255, 0.05), inset 0 1px 1px rgba(255,255,255,0.05);
+                        }
+                    }
+                    .dash-hero-card:hover {
+                        transform: scale(1.02);
+                        border-color: rgba(0, 242, 254, 0.6);
+                        box-shadow: 0 12px 35px rgba(0,0,0,0.6), 0 0 25px rgba(0, 242, 254, 0.25), inset 0 1px 1px rgba(255,255,255,0.2);
+                    }
+                    .dash-hero-bg {
+                        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                        background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.12) 0%, transparent 60%);
+                        z-index: 1;
+                        pointer-events: none;
+                    }
+                    .dash-hero-content { position: relative; z-index: 2; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+                    .dash-hero-title { color: white; font-size: 20px; font-weight: 800; margin: 0; }
+                    .dash-hero-subtitle { color: #aaa; font-size: 13px; margin: 5px 0 0 0; }
+                    .dash-play-btn {
+                        background: rgba(0, 242, 254, 0.15);
+                        border: 1px solid rgba(0, 242, 254, 0.35);
+                        backdrop-filter: blur(5px);
+                        -webkit-backdrop-filter: blur(5px);
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 50%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: #00f2fe;
+                        font-size: 18px;
+                        box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+                        transition: all 0.3s ease;
+                    }
+                    .dash-hero-card:hover .dash-play-btn {
+                        background: rgba(0, 242, 254, 0.35);
+                        border-color: rgba(0, 242, 254, 0.7);
+                        color: white;
+                        box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+                        transform: scale(1.1);
+                    }
+                    
+                    .dash-card {
+                        background: #1A1A24;
+                        border-radius: 20px;
+                        padding: 20px;
+                        position: relative;
+                        cursor: pointer;
+                        transition: transform 0.3s;
+                        border: 1px solid rgba(255,255,255,0.02);
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    .dash-card:hover { transform: translateY(-5px); }
+                    .dash-card-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 18px; margin-bottom: 15px; }
+                    .dash-card-rank { position: absolute; top: 20px; right: 20px; color: #8a8d99; font-weight: 800; font-size: 16px; }
+                    .dash-card-title { color: white; font-size: 16px; font-weight: 700; margin: 0; }
+                    .dash-card-subtitle { color: #6c7080; font-size: 12px; margin: 5px 0 0 0; }
+                    
+                    .dash-row-card {
+                        grid-column: 1 / -1;
+                        background: #1A1A24;
+                        border-radius: 20px;
+                        padding: 20px;
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        cursor: pointer;
+                        transition: transform 0.3s;
+                        border: 1px solid rgba(16,185,129,0.1);
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    }
+                    .dash-row-card:hover { transform: scale(1.02); }
+                    
+                    .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+                    .dash-greeting { color: white; font-size: 24px; font-weight: 800; margin: 0; }
+                    .dash-app-name { color: #8a8d99; font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+                    .dash-wallet { background: rgba(255,115,0,0.1); border: 1px solid rgba(255,115,0,0.3); padding: 8px 15px; border-radius: 20px; color: white; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+                    .dash-wallet i { color: #ff7300; }
+
+                    .volver-dashboard-btn {
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        background: rgba(255,255,255,0.1);
+                        border: none;
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 20px;
+                        cursor: pointer;
+                        margin-bottom: 20px;
+                        font-weight: 600;
+                        font-size: 13px;
+                        transition: 0.3s;
+                    }
+                    .volver-dashboard-btn:hover { background: rgba(255,255,255,0.2); }
+
+                    .dash-top-hero-container {
+                        position: relative;
+                        margin: -20px -20px 25px -20px;
+                        padding: 30px 20px;
+                        min-height: 240px;
+                    }
+                    .dash-top-hero-bg {
+                        position: absolute;
+                        top: 0; left: 0; right: 0; bottom: 0;
+                        opacity: 0.65;
+                        -webkit-mask-image: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%);
+                        mask-image: radial-gradient(ellipse at 50% 40%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 80%);
+                        overflow: hidden;
+                    }
+                    .dash-top-hero-bg video {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .dash-top-hero-content-wrapper {
+                        position: relative;
+                        z-index: 1;
+                    }
+                </style>
+
+                <div class="dash-top-hero-container">
+                    <div class="dash-top-hero-bg">
+                        <video src="tienda/hero.mp4" autoplay loop muted playsinline></video>
+                    </div>
+                    
+                    <div class="dash-top-hero-content-wrapper">
+                        <div class="dash-header">
+                            <div>
+                                <div class="dash-app-name" style="color: rgba(255,255,255,0.7); font-weight: 600;">Nutrición Infantil</div>
+                                <h2 class="dash-greeting" style="text-shadow: 0 2px 8px rgba(0,0,0,0.8);">Hola, ${currentStudentName}</h2>
+                            </div>
+                            <div class="dash-wallet" style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,115,0,0.5); backdrop-filter: blur(5px);">
+                                <i class="fas fa-coins"></i> ${currentStudentXP} XP
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dash-hero-card stat-card" data-dashboard-tab="hitos">
+                        <div class="dash-hero-bg"></div>
+                        <div class="dash-hero-content">
+                            <div>
+                                <h3 class="dash-hero-title"><i class="fas fa-folder-open" style="color: #00f2fe; margin-right: 8px;"></i>Galería de Proyectos</h3>
+                                <p class="dash-hero-subtitle">Explora los TPs de todos los grupos</p>
+                            </div>
+                            <div class="dash-play-btn"><i class="fas fa-play"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card stat-card" data-dashboard-tab="alumnos" style="background: linear-gradient(180deg, #1A1A24 0%, rgba(255,165,0,0.05) 100%);">
+                        <div class="dash-card-icon" style="background: rgba(255,165,0,0.1); color: #FFA500;"><i class="fas fa-user-graduate"></i></div>
+                        <div class="dash-card-rank">#${totalStudents}</div>
+                        <h3 class="dash-card-title">Ranking<br>Alumnos</h3>
+                        <p class="dash-card-subtitle">Posición global</p>
+                    </div>
+
+                    <div class="dash-card stat-card" data-dashboard-tab="grupos" style="background: linear-gradient(180deg, #1A1A24 0%, rgba(138,43,226,0.05) 100%);">
+                        <div class="dash-card-icon" style="background: rgba(138,43,226,0.1); color: #8A2BE2;"><i class="fas fa-shield-alt"></i></div>
+                        <div class="dash-card-rank">#${totalGroups}</div>
+                        <h3 class="dash-card-title">Ranking<br>Grupal</h3>
+                        <p class="dash-card-subtitle">Batalla de equipos</p>
+                    </div>
+
+                    <div class="dash-row-card stat-card" data-dashboard-tab="regularidad">
+                        <div class="dash-card-icon" style="background: rgba(16,185,129,0.1); color: #10b981; margin: 0;"><i class="fas fa-chart-line"></i></div>
+                        <div style="flex-grow: 1;">
+                            <h3 class="dash-card-title">Mi Rendimiento</h3>
+                            <p class="dash-card-subtitle">Asistencia, notas y regularidad</p>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color: #6c7080;"></i>
+                    </div>
+                </div>
             `;
 
                 container.querySelectorAll('.stat-card[data-dashboard-tab]').forEach(button => {
@@ -5668,6 +6148,9 @@
                 const tpConfigs = (window.tpGlobalConfig && window.tpGlobalConfig.tps) || {};
                 const galleryByTP = {};
 
+                // Identificar usuario actual
+                let awUP = window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up');
+
                 // Organizar videos por TP
                 Object.entries(sharedGroupMetadata).forEach(([groupId, data]) => {
                     if (data.videos) {
@@ -5675,10 +6158,12 @@
                             if (!galleryByTP[tpIndex]) galleryByTP[tpIndex] = [];
                             
                             // Calcular promedio para este video específico
-                            const videoRatings = allRatings.filter(r => r.tpIndex === tpIndex && r.targetGroupId === groupId);
+                            const videoRatings = allRatings.filter(r => String(r.tpIndex) === String(tpIndex) && String(r.targetGroupId) === String(groupId));
                             const avgRating = videoRatings.length > 0 
-                                ? videoRatings.reduce((sum, r) => sum + r.stars, 0) / videoRatings.length 
+                                ? videoRatings.reduce((sum, r) => sum + parseInt(r.stars), 0) / videoRatings.length 
                                 : 0;
+                                
+                            const currentUserHasVoted = awUP ? videoRatings.some(r => String(r.voterUP).trim() === String(awUP).trim()) : false;
 
                             galleryByTP[tpIndex].push({
                                 groupId,
@@ -5687,7 +6172,8 @@
                                 uploadedAt: videoInfo.uploadedAt,
                                 logo: data.logo,
                                 avgRating,
-                                voteCount: videoRatings.length
+                                voteCount: videoRatings.length,
+                                currentUserHasVoted
                             });
                         });
                     }
@@ -5704,69 +6190,258 @@
                     return;
                 }
 
-                let html = '';
+                let html = `
+                <style>
+                    .gallery-header-v2 {
+                        display: flex;
+                        align-items: center;
+                        gap: 15px;
+                        margin-bottom: 25px;
+                    }
+                    .btn-back-v2 {
+                        background: none; border: none; color: white; font-size: 20px; cursor: pointer;
+                    }
+                    .gallery-title-v2 {
+                        color: white; font-size: 22px; font-weight: 700; margin: 0;
+                    }
+
+                    .tp-tabs-container-v2 {
+                        background: #1A1A24;
+                        border-radius: 12px;
+                        padding: 5px;
+                        display: flex;
+                        margin-bottom: 25px;
+                        border: 1px solid rgba(255,255,255,0.05);
+                    }
+                    .tp-tab-pill-v2 {
+                        flex: 1;
+                        text-align: center;
+                        padding: 12px;
+                        color: #8a8d99;
+                        font-weight: 600;
+                        font-size: 14px;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: 0.3s;
+                    }
+                    .tp-tab-pill-v2.active {
+                        background: rgba(255,255,255,0.1);
+                        color: white;
+                    }
+
+                    .gallery-controls-v2 {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 20px;
+                    }
+                    .gallery-count-v2 {
+                        color: #8a8d99;
+                        font-size: 13px;
+                    }
+                    .sort-btn-v2 {
+                        background: rgba(255,255,255,0.05);
+                        border: 1px solid rgba(255,255,255,0.1);
+                        color: white;
+                        padding: 8px 12px;
+                        border-radius: 20px;
+                        font-size: 13px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+
+                    .app-video-card-v2 {
+                        position: relative;
+                        width: 100%;
+                        aspect-ratio: 4/3;
+                        border-radius: 24px;
+                        overflow: hidden;
+                        margin-bottom: 25px;
+                        box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+                        background-color: #111;
+                    }
+                    .app-video-card-v2 img.bg-thumb {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .app-video-card-v2 .overlay-gradient {
+                        position: absolute;
+                        bottom: 0; left: 0; width: 100%; height: 70%;
+                        background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+                        pointer-events: none;
+                    }
+                    .app-video-card-v2 .top-badge {
+                        position: absolute;
+                        top: 15px; left: 15px;
+                        background: #ff4757;
+                        color: white;
+                        padding: 4px 10px;
+                        border-radius: 12px;
+                        font-size: 12px;
+                        font-weight: 800;
+                        z-index: 2;
+                        box-shadow: 0 4px 10px rgba(255,71,87,0.4);
+                    }
+                    .app-video-card-v2 .play-btn-center {
+                        position: absolute;
+                        top: 50%; left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 60px; height: 60px;
+                        background: rgba(255,255,255,0.25);
+                        backdrop-filter: blur(5px);
+                        border-radius: 50%;
+                        display: flex; justify-content: center; align-items: center;
+                        color: white; font-size: 24px;
+                        cursor: pointer;
+                        z-index: 2;
+                        transition: 0.2s;
+                    }
+                    .app-video-card-v2 .play-btn-center:active { transform: translate(-50%, -50%) scale(0.9); }
+                    
+                    .app-video-card-v2 .info-row {
+                        position: absolute;
+                        bottom: 75px; left: 20px; right: 20px;
+                        display: flex; justify-content: space-between; align-items: flex-end;
+                        z-index: 2;
+                    }
+                    .app-video-card-v2 .group-info { display: flex; align-items: center; gap: 12px; }
+                    .app-video-card-v2 .group-logo {
+                        width: 45px; height: 45px; border-radius: 50%;
+                        background: #ff7300; color: white;
+                        display: flex; justify-content: center; align-items: center;
+                        font-weight: 800; font-size: 18px;
+                    }
+                    .app-video-card-v2 .group-logo img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+                    .app-video-card-v2 .group-text h4 { margin: 0; color: white; font-size: 18px; font-weight: 700; }
+                    .app-video-card-v2 .group-text p { margin: 0; color: rgba(255,255,255,0.5); font-size: 12px; }
+                    
+                    .app-video-card-v2 .rating-info { text-align: right; }
+                    .app-video-card-v2 .rating-info .score { color: white; font-size: 22px; font-weight: 800; display:flex; align-items:center; gap:5px; }
+                    .app-video-card-v2 .rating-info .score i { color: #ffd32a; font-size: 18px; }
+                    .app-video-card-v2 .rating-info .votes { color: rgba(255,255,255,0.4); font-size: 11px; margin-top:2px; }
+
+                    .app-video-card-v2 .actions-row {
+                        position: absolute;
+                        bottom: 20px; left: 20px; right: 20px;
+                        display: flex; gap: 10px;
+                        z-index: 2;
+                        border-top: 1px solid rgba(255,255,255,0.1);
+                        padding-top: 15px;
+                    }
+                    .app-video-card-v2 .btn-rate {
+                        flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+                        color: white; padding: 10px; border-radius: 12px; font-weight: 600; font-size: 14px;
+                        cursor: pointer; transition: 0.2s;
+                    }
+                    .app-video-card-v2 .btn-rate:hover { background: rgba(255,255,255,0.2); }
+                    .app-video-card-v2 .btn-comment {
+                        width: 45px; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+                        color: white; border-radius: 12px; display: flex; justify-content: center; align-items: center;
+                        cursor: pointer;
+                    }
+                </style>
+                `;
+
+                // Configuración de ordenamiento global (estado)
+                window.tpSortMode = window.tpSortMode || 'top'; // 'top' o 'recent'
+
                 const sortedTPs = Object.keys(galleryByTP).sort((a, b) => parseInt(a) - parseInt(b));
 
+                html += `
+                <div class="gallery-header-v2">
+                    <button class="btn-back-v2" onclick="document.querySelector('.nav-button[data-tab-target=\\'#panel-honor\\']').click()"><i class="fas fa-chevron-left"></i></button>
+                    <h2 class="gallery-title-v2">Producciones</h2>
+                </div>
+                `;
+
                 // 1. GENERATE TABS NAVIGATION (PILLS)
-                html += '<div class="tp-tabs-container">';
+                html += '<div class="tp-tabs-container-v2">';
                 sortedTPs.forEach((tpIndex, i) => {
                     const config = tpConfigs[tpIndex] || {};
                     const tpName = config.name || `Práctico #${parseInt(tpIndex) + 1}`;
                     const isActive = i === sortedTPs.length - 1 ? 'active' : ''; // Default to latest TP
-                    html += `<div class="tp-tab-pill ${isActive}" onclick="window.switchTPGallery('${tpIndex}')" data-target-tp="${tpIndex}">${tpName}</div>`;
+                    html += `<div class="tp-tab-pill-v2 ${isActive}" onclick="window.switchTPGallery('${tpIndex}')" data-target-tp="${tpIndex}">${tpName}</div>`;
                 });
                 html += '</div>';
 
                 // 2. GENERATE CONTENT SECTIONS FOR EACH TP
                 sortedTPs.forEach((tpIndex, i) => {
-                    // ORDENAR VIDEOS POR PROMEDIO (Mayor a menor)
-                    const sortedVideos = galleryByTP[tpIndex].sort((a, b) => b.avgRating - a.avgRating);
+                    let sortedVideos = [...galleryByTP[tpIndex]];
+                    
+                    if (window.tpSortMode === 'top') {
+                        sortedVideos.sort((a, b) => b.avgRating - a.avgRating);
+                    } else {
+                        // Ordenar por fecha (uploadedAt) asumiendo que es timestamp
+                        sortedVideos.sort((a, b) => b.uploadedAt - a.uploadedAt);
+                    }
+
                     const isActive = i === sortedTPs.length - 1 ? 'active' : '';
+                    const sortIcon = window.tpSortMode === 'top' ? 'fa-sort-amount-down' : 'fa-clock';
+                    const sortText = window.tpSortMode === 'top' ? 'Top Valorados' : 'Más Recientes';
                     
                     html += `
                         <div class="gallery-tp-content ${isActive}" id="tp-content-${tpIndex}">
-                            <div class="gallery-header-row">
-                                <div class="count-text">${sortedVideos.length} trabajos entregados</div>
-                                <button class="sort-btn"><i class="fas fa-sort-amount-down"></i> Valoración</button>
+                            <div class="gallery-controls-v2">
+                                <div class="gallery-count-v2">${sortedVideos.length} entregas</div>
+                                <button class="sort-btn-v2" onclick="window.toggleSortMode()"><i class="fas ${sortIcon}"></i> ${sortText}</button>
                             </div>
-                            <div class="gallery-cards-grid">
+                            <div class="gallery-cards-grid-v2">
                     `;
 
                     sortedVideos.forEach((v, index) => {
                         const thumbnail = getYouTubeThumbnail(v.videoUrl);
-                        const isTop = index === 0 && v.avgRating > 0;
-                        const badgeClass = isTop ? 'orange' : '';
-                        const badgeText = isTop ? '<i class="fas fa-crown"></i> MEJOR CALIFICADO' : '<i class="fas fa-fire"></i> DESTACADO';
+                        const isTop = index === 0 && v.avgRating > 0 && window.tpSortMode === 'top';
+                        const badgeText = isTop ? '<i class="fas fa-crown"></i> TOP 1' : '';
+                        const groupShortText = v.groupName.substring(0, 2).toUpperCase();
                         
                         html += `
-                        <div class="app-video-card">
-                            <div class="app-video-thumbnail">
-                                ${isTop ? `<div class="app-video-badge ${badgeClass}">${badgeText}</div>` : ''}
-                                <img src="${thumbnail}">
-                                <div class="app-video-play-btn" id="play-group-video" data-video-url="${v.videoUrl}">
-                                    <i class="fas fa-play" style="margin-left: 4px;"></i>
+                        <div class="app-video-card-v2">
+                            <img src="${thumbnail}" class="bg-thumb">
+                            <div class="overlay-gradient"></div>
+                            
+                            ${isTop ? `<div class="top-badge">${badgeText}</div>` : ''}
+                            
+                            <div class="play-btn-center" data-video-url="${v.videoUrl}" onclick="window.openVideoModal('${v.videoUrl}')">
+                                <i class="fas fa-play" style="margin-left: 4px;"></i>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="group-info">
+                                    <div class="group-logo">
+                                        ${v.logo ? `<img src="${v.logo}">` : groupShortText}
+                                    </div>
+                                    <div class="group-text">
+                                        <h4>${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</h4>
+                                        <p>ID: ${v.groupId.replace('g_', '')}</p>
+                                    </div>
+                                </div>
+                                <div class="rating-info">
+                                    <div class="score">${v.avgRating > 0 ? v.avgRating.toFixed(1) : '---'} <i class="fas fa-star"></i></div>
+                                    <div class="votes">(${v.voteCount} votos)</div>
                                 </div>
                             </div>
-                            <div class="app-video-info">
-                                <div class="app-video-avatar">
-                                    ${v.logo ? `<img src="${v.logo}">` : `<i class="fas fa-users"></i>`}
-                                </div>
-                                <div class="app-video-text">
-                                    <h4 class="app-video-title">${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</h4>
-                                    <p class="app-video-subtitle">ID: ${v.groupId.replace('g_', '')}</p>
-                                </div>
-                                <div class="app-video-rating">
-                                    <div class="stars-container" data-tp="${tpIndex}" data-target-group="${v.groupId}">
-                                        ${renderStars(v.avgRating)}
-                                    </div>
-                                    <div class="score">${v.avgRating > 0 ? v.avgRating.toFixed(1) : '---'} <span>(${v.voteCount})</span></div>
-                                </div>
+
+                            <div class="actions-row">
+                                ${v.currentUserHasVoted 
+                                    ? `<button class="btn-rate" style="background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.4); color: #10b981; cursor: default;">
+                                        <i class="fas fa-check-circle"></i> Valoración Enviada
+                                       </button>`
+                                    : `<button class="btn-rate" onclick="window.triggerRatingModal('${tpIndex}', '${v.groupId}')">
+                                        <i class="far fa-star"></i> Dar Valoración
+                                       </button>`
+                                }
+                                <button class="btn-comment" onclick="Swal.fire('Comentarios', 'La sección de comentarios estará disponible próximamente.', 'info')">
+                                    <i class="far fa-comment-alt"></i>
+                                </button>
                             </div>
                         </div>
                         `;
                     });
 
-                    html += `</div></div>`; // Close gallery-cards-grid and gallery-tp-content
+                    html += `</div></div>`;
                 });
 
                 container.innerHTML = html;
@@ -5774,7 +6449,7 @@
                 window.switchTPGallery = function(tpIndex) {
                     const cont = document.getElementById('recent-activity-container');
                     if(!cont) return;
-                    cont.querySelectorAll('.tp-tab-pill').forEach(pill => {
+                    cont.querySelectorAll('.tp-tab-pill-v2').forEach(pill => {
                         if(pill.dataset.targetTp === String(tpIndex)) pill.classList.add('active');
                         else pill.classList.remove('active');
                     });
@@ -5783,42 +6458,59 @@
                         else content.classList.remove('active');
                     });
                 };
-                
-                function renderStars(rating) {
-                    let stars = '';
-                    const rounded = Math.round(rating);
-                    for (let i = 1; i <= 5; i++) {
-                        if (i <= rounded) {
-                            stars += `<i class="fas fa-star" data-star-value="${i}"></i>`;
-                        } else {
-                            stars += `<i class="far fa-star" data-star-value="${i}"></i>`;
+
+                window.toggleSortMode = function() {
+                    window.tpSortMode = window.tpSortMode === 'top' ? 'recent' : 'top';
+                    displayTPGallery(); // Re-renderizar con el nuevo orden
+                };
+
+                window.triggerRatingModal = function(tpIndex, targetGroupId) {
+                    Swal.fire({
+                        title: 'Dar Valoración',
+                        html: `
+                            <p style="margin-bottom: 20px; color: #aaa;">¿Cuántas estrellas le das a este video?</p>
+                            <div id="swal-rating-stars" style="font-size: 35px; color: #ffd32a; cursor: pointer; display: flex; justify-content: center; gap: 10px;">
+                                <i class="far fa-star" data-val="1"></i>
+                                <i class="far fa-star" data-val="2"></i>
+                                <i class="far fa-star" data-val="3"></i>
+                                <i class="far fa-star" data-val="4"></i>
+                                <i class="far fa-star" data-val="5"></i>
+                            </div>
+                        `,
+                        background: '#1A1A24',
+                        color: '#fff',
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        cancelButtonText: 'Cancelar',
+                        didOpen: () => {
+                            const stars = document.querySelectorAll('#swal-rating-stars i');
+                            let selectedRating = 0;
+                            stars.forEach(star => {
+                                star.addEventListener('mouseover', (e) => {
+                                    const val = parseInt(e.target.dataset.val);
+                                    stars.forEach(s => {
+                                        s.classList.toggle('fas', parseInt(s.dataset.val) <= val);
+                                        s.classList.toggle('far', parseInt(s.dataset.val) > val);
+                                    });
+                                });
+                                star.addEventListener('mouseout', () => {
+                                    stars.forEach(s => {
+                                        s.classList.toggle('fas', parseInt(s.dataset.val) <= selectedRating);
+                                        s.classList.toggle('far', parseInt(s.dataset.val) > selectedRating);
+                                    });
+                                });
+                                star.addEventListener('click', (e) => {
+                                    selectedRating = parseInt(e.target.dataset.val);
+                                    Swal.close();
+                                    handleVideoVoting(tpIndex, targetGroupId, selectedRating);
+                                });
+                            });
                         }
-                    }
-                    return stars;
-                }
-
-                // Listener delegado para clicks
-                container.onclick = async (e) => {
-                    const playBtn = e.target.closest('#play-group-video');
-                    if (playBtn) {
-                        const videoUrl = playBtn.dataset.videoUrl;
-                        openVideoModal(videoUrl);
-                        return;
-                    }
-
-                    const star = e.target.closest('[data-star-value]');
-                    if (star) {
-                        const container = star.parentElement;
-                        const tpIndex = container.dataset.tp;
-                        const targetId = container.dataset.targetGroup;
-                        const stars = star.dataset.starValue;
-
-                        handleVideoVoting(tpIndex, targetId, stars);
-                    }
+                    });
                 };
             }
 
-            function openVideoModal(videoUrl) {
+            window.openVideoModal = function(videoUrl) {
                 const info = getVideoInfo(videoUrl);
                 const modal = document.getElementById('videoModal');
                 const iframe = document.getElementById('youtubeVideo');
@@ -6391,20 +7083,104 @@
                     };
                 }
 
+                const totalStudents = promocionCount + regularCount + libreCount;
+                const promPerc = totalStudents > 0 ? Math.round((promocionCount/totalStudents)*100) : 0;
+                const regPerc = totalStudents > 0 ? Math.round((regularCount/totalStudents)*100) : 0;
+                const libPerc = totalStudents > 0 ? Math.round((libreCount/totalStudents)*100) : 0;
+
                 container.innerHTML = `
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <h3 style="color: var(--accent-teal); font-size: 1.8rem; margin-bottom: 5px;">Análisis de Regularidad</h3>
-                    <p style="color: var(--text-muted-light); font-size: 0.95rem; margin-bottom: 15px;">Estado actual de la condición de los alumnos en la cursada.</p>
-                    <button onclick="downloadGeneralAttendanceReport()" class="nav-button active" style="margin: 0 auto 10px auto; display: block; border-radius: 8px; font-size: 0.9rem; padding: 10px 20px;"><i class="fas fa-file-excel"></i> Descargar Planilla de Cursada</button>
-                </div>
-                <div class="extended-rankings-wrapper" style="margin-top:0; display: grid; grid-template-columns: 1fr 1fr;">
-                    <div class="ranking-list-container">
-                        <canvas id="regularityDonutChart"></canvas>
+                <style>
+                    @keyframes downloadBtnGlow {
+                        0% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.3); }
+                        50% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.6); border-color: rgba(34, 197, 94, 0.8); }
+                        100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.3); }
+                    }
+                    .btn-download-glow {
+                        animation: downloadBtnGlow 2s infinite ease-in-out;
+                    }
+                    .btn-download-glow:hover {
+                        background: rgba(34, 197, 94, 0.1) !important;
+                    }
+                </style>
+                <div class="premium-analytics-container" style="max-width: 600px; margin: 0 auto; color: white;">
+                    <!-- Header -->
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 15px 0; margin-bottom: 20px;">
+                        <button onclick="document.getElementById('volver-dashboard-btn').click()" style="background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <h2 style="margin: 0; font-size: 1.4rem; font-weight: 700;">Analíticas</h2>
+                        <div style="width: 24px;"></div>
                     </div>
-                    <div class="ranking-list-container">
+
+                    <!-- Main Title Area -->
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(34, 197, 94, 0.1); color: var(--accent-teal); display: inline-flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 15px; box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3 style="font-size: 2rem; font-weight: 800; margin-bottom: 10px;">Regularidad</h3>
+                        <p style="color: var(--text-muted-light); font-size: 1rem; line-height: 1.5; padding: 0 15px;">Estado actual de la condición de los alumnos en la cursada.</p>
+                    </div>
+
+                    <!-- The Card -->
+                    <div style="background: #1c212a; border-radius: 20px; padding: 30px 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px;">
+                        
+                        <div style="position: relative; width: 220px; height: 220px; margin: 0 auto 40px auto;">
+                            <canvas id="regularityDonutChart"></canvas>
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none;">
+                                <span style="font-size: 2.5rem; font-weight: 800; line-height: 1;">${totalStudents}</span>
+                                <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted-light); letter-spacing: 1px; margin-top: 5px;">ALUMNOS</span>
+                            </div>
+                        </div>
+
+                        <div class="analytics-legends" style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="width: 14px; height: 14px; border-radius: 4px; background: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);"></div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <span style="font-weight: 700; font-size: 1.05rem;">Promoción</span>
+                                        <span style="font-size: 0.85rem; color: var(--text-muted-light);">${promocionCount} alumnos</span>
+                                    </div>
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 800;">${promPerc}%</span>
+                            </div>
+                            
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="width: 14px; height: 14px; border-radius: 4px; background: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.5);"></div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <span style="font-weight: 700; font-size: 1.05rem;">Regular</span>
+                                        <span style="font-size: 0.85rem; color: var(--text-muted-light);">${regularCount} alumnos</span>
+                                    </div>
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 800;">${regPerc}%</span>
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="width: 14px; height: 14px; border-radius: 4px; background: #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"></div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <span style="font-weight: 700; font-size: 1.05rem;">Libre</span>
+                                        <span style="font-size: 0.85rem; color: var(--text-muted-light);">${libreCount} alumnos</span>
+                                    </div>
+                                </div>
+                                <span style="font-size: 1.2rem; font-weight: 800;">${libPerc}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="downloadGeneralAttendanceReport()" class="btn-download-glow" style="width: 100%; background: #1c212a; border: 1px solid rgba(255,255,255,0.05); color: white; padding: 18px; border-radius: 16px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.3s;">
+                        <i class="fas fa-file-excel" style="color: #22c55e; font-size: 1.2rem;"></i> Descargar Planilla de Cursada
+                    </button>
+
+                    <div style="background: #1c212a; border-radius: 20px; padding: 25px 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-top: 20px;">
+                        <h4 style="text-align:center; font-size: 1.1rem; color:white; margin: 0 0 20px 0;">Motivos de Quedar Libre</h4>
                         <canvas id="regularityReasonBarChart"></canvas>
                     </div>
                 </div>`;
+
+                // Ocultar botón Volver predeterminado ya que tenemos el nuestro
+                const btnVolver = document.getElementById('volver-dashboard-btn');
+                if (btnVolver) btnVolver.style.display = 'none';
 
                 if (regularityDonutChart) regularityDonutChart.destroy();
                 regularityDonutChart = new Chart(document.getElementById('regularityDonutChart'), {
@@ -6413,16 +7189,17 @@
                         labels: ['Promoción', 'Regular', 'Libre'],
                         datasets: [{
                             data: [promocionCount, regularCount, libreCount],
-                            backgroundColor: ['rgba(59, 130, 246, 0.8)', 'rgba(34, 197, 94, 0.8)', 'rgba(239, 68, 68, 0.8)'],
-                            borderColor: 'var(--primary-dark)',
-                            borderWidth: 4
+                            backgroundColor: ['#3b82f6', '#22c55e', '#ef4444'],
+                            borderWidth: 0,
+                            hoverOffset: 4
                         }]
                     },
                     options: {
                         responsive: true,
+                        cutout: '75%',
                         plugins: {
-                            legend: { position: 'bottom', labels: { color: 'white', font: { size: 14 } } },
-                            title: { display: true, text: 'Desglose de Condición', color: 'white', font: { size: 18 } }
+                            legend: { display: false },
+                            tooltip: { enabled: false }
                         }
                     }
                 });
@@ -6465,72 +7242,18 @@
 
             function displayStudentPodium() {
                 const container = document.getElementById('student-podium-container');
-                const topStudents = fullData.students.filter(s => (s.xp || 0) > 0).sort((a, b) => (b.xp || 0) - (a.xp || 0)).slice(0, 3);
-                container.innerHTML = '';
-                if (topStudents.length === 0) { container.innerHTML = '<div class="ranking-placeholder"><p>El podio espera a sus héroes. ¡A sumar XP!</p></div>'; return; }
-                topStudents.forEach((student, index) => {
-                    const card = document.createElement('div');
-                    card.className = `podium-card rank-${index + 1}`;
-                    findImage(student.up, (photoHTML) => {
-                        const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
-                        
-                        let cromosHTML = '';
-                        if (student.cromos && student.cromos.length > 0 && window.cromosGallery) {
-                            student.cromos.forEach(cId => {
-                                const cData = window.cromosGallery.find(c => c.id === cId);
-                                if (cData) {
-                                    cromosHTML += `<div class="cromo-tooltip-container" style="margin-left: 0; margin-top: 4px;">
-                                        <img src="${cData.img}" class="cromo-badge" onclick="openCromoModal('${cData.img}')" style="margin-left: 2px;">
-                                        <div class="cromo-tooltip">
-                                            <strong style="color:var(--accent-orange); display:block; margin-bottom:4px;">${cData.name}</strong>
-                                            ${cData.desc}
-                                        </div>
-                                    </div>`;
-                                }
-                            });
-                        }
-                        const nameDisplayWithCromos = cromosHTML ? `<span style="display:inline-block;">${displayName}</span><div style="display:flex; justify-content:center; align-items:center; flex-wrap:wrap;">${cromosHTML}</div>` : displayName;
-
-                        card.innerHTML = `${photoHTML}<div class="podium-info"><p class="podium-name">${nameDisplayWithCromos}</p><p class="podium-xp"><i class="fas fa-star"></i> ${student.xp || 0} XP</p></div>`;
-                        container.appendChild(card);
-                    });
-                });
-                setTimeout(() => initPodiumCarousel('student-podium-container'), 800);
+                if (container) {
+                    container.innerHTML = '';
+                    container.style.cssText = 'display:none !important; min-height:0 !important; padding:0 !important; margin:0 !important; height:0 !important;';
+                }
             }
 
             function displayGroupPodium() {
                 const container = document.getElementById('group-podium-container');
-                if (!container) return;
-                const groupData = {};
-                fullData.students.forEach(student => {
-                    if (student.group) {
-                        const cleanGroupId = String(student.group).trim();
-                        if (!groupData[cleanGroupId]) { groupData[cleanGroupId] = { xp: 0 }; }
-                        groupData[cleanGroupId].xp += (student.xp || 0);
-                    }
-                });
-                const topGroups = Object.entries(groupData).filter(([, data]) => data.xp > 0).sort(([, a], [, b]) => b.xp - a.xp).slice(0, 3);
-
-                container.innerHTML = '';
-                if (topGroups.length === 0) { container.innerHTML = '<div class="ranking-placeholder"><p>Los grupos aún no han sumado puntos.</p></div>'; return; }
-
-                topGroups.forEach(([groupId, data], index) => {
-                    const card = document.createElement('div');
-                    card.className = `podium-card rank-${index + 1} group-podium-clickable`;
-                    card.style.cursor = 'pointer';
-                    card.dataset.groupId = groupId;
-                    card.addEventListener('click', () => {
-                        displayGroupPortalView(groupId);
-                    });
-
-                    findGroupImage(groupId, (logoHTML) => {
-                        const gName = (typeof sharedGroupMetadata !== 'undefined' && sharedGroupMetadata[groupId] && sharedGroupMetadata[groupId].name) ? sharedGroupMetadata[groupId].name : ('Grupo ' + groupId);
-                        card.innerHTML = `<div class="group-podium-logo">${logoHTML}</div>
-                                      <div class="podium-info"><p class="podium-name">${gName}</p><p class="podium-xp"><i class="fas fa-star"></i> ${data.xp} XP</p></div>`;
-                        container.appendChild(card);
-                    });
-                });
-                setTimeout(() => initPodiumCarousel('group-podium-container'), 800);
+                if (container) {
+                    container.innerHTML = '';
+                    container.style.cssText = 'display:none !important; min-height:0 !important; padding:0 !important; margin:0 !important; height:0 !important;';
+                }
             }
 
             // Global intervals for carousels
@@ -6586,36 +7309,36 @@
                 
                 if(cards[index]) cards[index].classList.add('carousel-active');
                 if(dots[index]) dots[index].classList.add('active');
-                
-                if (window.podiumIntervals[containerId]) {
-                    clearInterval(window.podiumIntervals[containerId]);
-                    window.podiumIntervals[containerId] = setInterval(() => {
-                        let nextSlide = (index + 1) % cards.length;
-                        showCarouselSlide(containerId, nextSlide);
-                    }, 4000);
-                }
             }
 
             function displayExtendedStudentRanking(showAll = false) {
                 const container = document.getElementById('top-alumnos-container');
                 if (!container) return;
-                const sortedStudents = fullData.students.sort((a, b) => (b.xp || 0) - (a.xp || 0));
+                
+                const sortedStudents = [...fullData.students].sort((a, b) => (b.xp || 0) - (a.xp || 0));
                 const studentsToDisplay = showAll ? sortedStudents : sortedStudents.slice(0, 10);
 
-                let listHTML = '<h3><i class="fas fa-user-friends"></i> Ranking de Alumnos</h3><ul class="ranking-list">';
-                if (studentsToDisplay.length === 0) { listHTML += '<li class="ranking-list-item-empty">No hay alumnos en el ranking.</li>'; }
-                else {
+                let listHTML = '<h3 style="margin-bottom: 1.5rem; font-size: 1.3rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.75rem;"><i class="fas fa-user-friends" style="color: var(--accent-teal); margin-right: 0.75rem;"></i> Ranking de Alumnos</h3><div class="leaderboard-list">';
+                
+                if (studentsToDisplay.length === 0) {
+                    listHTML += '<div class="ranking-placeholder"><p>No hay alumnos en el ranking.</p></div>';
+                } else {
                     studentsToDisplay.forEach((student, index) => {
-                        const rank = getStudentRank(student.xp || 0);
-                        const displayName = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
-                        
+                        const rawName = student.firstName || student.nombre || student.name || '';
+                        let firstNameOnly = rawName.trim().split(/\s+/)[0];
+                        if (firstNameOnly) {
+                            firstNameOnly = firstNameOnly.charAt(0).toUpperCase() + firstNameOnly.slice(1).toLowerCase();
+                        } else {
+                            firstNameOnly = 'Alumno';
+                        }
+
                         let cromosHTML = '';
                         if (student.cromos && student.cromos.length > 0 && window.cromosGallery) {
                             student.cromos.forEach(cId => {
                                 const cData = window.cromosGallery.find(c => c.id === cId);
                                 if (cData) {
-                                    cromosHTML += `<div class="cromo-tooltip-container">
-                                        <img src="${cData.img}" class="cromo-badge" onclick="openCromoModal('${cData.img}')">
+                                    cromosHTML += `<div class="cromo-tooltip-container" style="margin-left: 4px;">
+                                        <img src="${cData.img}" class="cromo-badge" onclick="event.stopPropagation(); openCromoModal('${cData.img}')" style="width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
                                         <div class="cromo-tooltip">
                                             <strong style="color:var(--accent-orange); display:block; margin-bottom:4px;">${cData.name}</strong>
                                             ${cData.desc}
@@ -6624,42 +7347,47 @@
                                 }
                             });
                         }
-                        const nameDisplayWithCromos = cromosHTML ? `<span style="display:flex; align-items:center;">${displayName}${cromosHTML}</span>` : displayName;
-                        
-                        // Medal styling for top 3
-                        let rankNumberStyle = '';
-                        let rankNumberContent = index + 1;
+
+                        let crownHTML = '';
+                        let rankClass = '';
                         if (index === 0) {
-                            rankNumberStyle = 'background: linear-gradient(135deg, #f59e0b, #fbbf24); color: #1a1a1a; font-weight: 800; box-shadow: 0 0 12px rgba(245,158,11,0.5);';
+                            crownHTML = '<i class="fa-solid fa-crown crown-icon"></i>';
+                            rankClass = 'rank-1';
                         } else if (index === 1) {
-                            rankNumberStyle = 'background: linear-gradient(135deg, #9ca3af, #d1d5db); color: #1a1a1a; font-weight: 800; box-shadow: 0 0 10px rgba(156,163,175,0.4);';
+                            rankClass = 'rank-2';
                         } else if (index === 2) {
-                            rankNumberStyle = 'background: linear-gradient(135deg, #b45309, #d97706); color: #fff; font-weight: 800; box-shadow: 0 0 10px rgba(180,83,9,0.4);';
+                            rankClass = 'rank-3';
                         }
-                        
+
                         let rowStyle = '';
                         if (student.customBackground) {
-                            rowStyle = `style="background: linear-gradient(rgba(26,26,46,0.4), rgba(26,26,46,0.4)), url('${student.customBackground}') center/cover no-repeat; text-shadow: 0 2px 4px rgba(0,0,0,0.8);"`;
+                            rowStyle = `style="background: linear-gradient(rgba(26,26,46,0.5), rgba(26,26,46,0.5)), url('${student.customBackground}') center/cover no-repeat; text-shadow: 0 2px 4px rgba(0,0,0,0.8);"`;
                         }
-                        
-                        listHTML += `<li class="ranking-list-item group-member-item" data-up="${student.up}" ${rowStyle}>
-                        <div class="rank-number" style="${rankNumberStyle}">${rankNumberContent}</div>
-                        <div class="rank-photo" id="photo-stu-${student.up}"></div>
-                        <div class="rank-details">
-                             <div>
-                                <div class="rank-name">${nameDisplayWithCromos}</div>
-                                <div class="rank-subtext">Grupo ${student.group || 'N/A'}</div>
+
+                        listHTML += `
+                        <div class="rank-row ${rankClass} group-member-item" data-up="${student.up}" ${rowStyle}>
+                            <div class="rank-number">${index + 1}</div>
+                            <div class="avatar-container">
+                                ${crownHTML}
+                                <div id="photo-stu-${student.up}"></div>
                             </div>
-                        </div>
-                        <div class="rank-xp">${student.xp || 0} XP</div>
-                    </li>`;
+                            <div class="user-info">
+                                <div class="name-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                                    <div class="user-name" style="color: white; font-size: 14px; font-weight: 600;">${firstNameOnly}</div>
+                                    ${cromosHTML}
+                                </div>
+                            </div>
+                            <div class="xp-score" style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; color: #ff7300; text-align: right; flex-shrink: 0; margin-left: 10px; display: flex; flex-direction: column; align-items: flex-end;">
+                                ${student.xp || 0} <span style="font-size: 9px; font-weight: 600; color: #8a8d99; margin-top: -2px;">XP</span>
+                            </div>
+                        </div>`;
                     });
                 }
-                listHTML += '</ul>';
+                listHTML += '</div>';
 
-                if (!showAll && fullData.students.length > 10) {
+                if (!showAll && sortedStudents.length > 10) {
                     listHTML += `
-                    <div style="margin-top: 1.5rem; padding: 0 0.5rem;">
+                    <div style="margin-top: 1.5rem; padding: 0 0.5rem; margin-bottom: 20px;">
                         <button id="show-all-students-btn" style="
                             width: 100%;
                             padding: 14px 0;
@@ -6682,12 +7410,95 @@
                     </div>`;
                 }
 
-                container.innerHTML = listHTML;
-                studentsToDisplay.forEach(student => { findImage(student.up, (photoHTML) => { const photoDiv = document.getElementById(`photo-stu-${student.up}`); if (photoDiv) photoDiv.innerHTML = photoHTML; }); });
+                const loggedInUP = window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up');
+                let currentUserBarHTML = '';
+                if (loggedInUP) {
+                    const cleanLoggedInUP = String(loggedInUP).trim();
+                    const myIndex = sortedStudents.findIndex(s => String(s.up).trim() === cleanLoggedInUP);
+                    if (myIndex !== -1) {
+                        const me = sortedStudents[myIndex];
+                        const rawMyName = me.firstName || me.nombre || me.name || '';
+                        let myFirstNameOnly = rawMyName.trim().split(/\s+/)[0];
+                        if (myFirstNameOnly) {
+                            myFirstNameOnly = myFirstNameOnly.charAt(0).toUpperCase() + myFirstNameOnly.slice(1).toLowerCase();
+                        } else {
+                            myFirstNameOnly = 'Tú';
+                        }
+                        
+                        let myCromosHTML = '';
+                        if (me.cromos && me.cromos.length > 0 && window.cromosGallery) {
+                            me.cromos.forEach(cId => {
+                                const cData = window.cromosGallery.find(c => c.id === cId);
+                                if (cData) {
+                                    myCromosHTML += `<div class="cromo-tooltip-container" style="margin-left: 4px;">
+                                        <img src="${cData.img}" class="cromo-badge" onclick="event.stopPropagation(); openCromoModal('${cData.img}')" style="width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2);">
+                                    </div>`;
+                                }
+                            });
+                        }
 
-                container.querySelectorAll('.group-member-item').forEach(item => { item.addEventListener('click', () => { const s = fullData.students.find(st => st.up == item.dataset.up); if (s) displayStudentPortalView(s); }); });
+                        currentUserBarHTML = `
+                        <div class="ranking-current-user-wrapper">
+                            <div class="current-user-bar" data-up="${me.up}">
+                                <div class="badge-you">ESTE ERES TÚ</div>
+                                <div class="rank-number" style="width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 1rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);">${myIndex + 1}</div>
+                                <div class="avatar-container">
+                                    <div id="photo-stu-current-user"></div>
+                                </div>
+                                <div class="user-info" style="flex-grow: 1;">
+                                    <div class="name-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                                        <div class="user-name" style="color: white; font-size: 14px; font-weight: 700;">${myFirstNameOnly}</div>
+                                        ${myCromosHTML}
+                                    </div>
+                                </div>
+                                <div class="xp-score" style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; color: white; text-align: right; flex-shrink: 0; margin-left: 10px; display: flex; flex-direction: column; align-items: flex-end;">
+                                    ${me.xp || 0} <span style="font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.8); margin-top: -2px;">XP</span>
+                                </div>
+                            </div>
+                        </div>
+                        `;
+                    }
+                }
+
+                container.innerHTML = listHTML + currentUserBarHTML;
+
+                studentsToDisplay.forEach(student => {
+                    findImage(student.up, (photoHTML) => {
+                        const photoDiv = document.getElementById(`photo-stu-${student.up}`);
+                        if (photoDiv) photoDiv.innerHTML = photoHTML;
+                    });
+                });
+
+                if (loggedInUP) {
+                    const cleanLoggedInUP = String(loggedInUP).trim();
+                    const me = sortedStudents.find(s => String(s.up).trim() === cleanLoggedInUP);
+                    if (me) {
+                        findImage(me.up, (photoHTML) => {
+                            const photoDiv = document.getElementById('photo-stu-current-user');
+                            if (photoDiv) photoDiv.innerHTML = photoHTML;
+                        });
+                    }
+                }
+
+                container.querySelectorAll('.group-member-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const s = fullData.students.find(st => st.up == item.dataset.up);
+                        if (s) displayStudentPortalView(s);
+                    });
+                });
+
+                const currentUserBarEl = container.querySelector('.current-user-bar');
+                if (currentUserBarEl) {
+                    currentUserBarEl.addEventListener('click', () => {
+                        const s = fullData.students.find(st => st.up == currentUserBarEl.dataset.up);
+                        if (s) displayStudentPortalView(s);
+                    });
+                }
+
                 const showAllBtn = document.getElementById('show-all-students-btn');
-                if (showAllBtn) { showAllBtn.addEventListener('click', () => displayExtendedStudentRanking(true)); }
+                if (showAllBtn) {
+                    showAllBtn.addEventListener('click', () => displayExtendedStudentRanking(true));
+                }
             }
 
             function displayExtendedGroupRanking(showAll = false) {
@@ -6708,30 +7519,71 @@
                 const sortedGroups = Object.entries(groupData).sort(([, a], [, b]) => b.xp - a.xp);
 
                 const groupsToDisplay = showAll ? sortedGroups : sortedGroups.slice(0, 10);
-                const title = showAll ? "Todos los Grupos" : "Top 10 Grupos";
+                const title = showAll ? "Todos los Grupos" : "Ranking de Grupos";
 
-                let listHTML = `<h3><i class="fas fa-users"></i> ${title}</h3><ul class="ranking-list">`;
+                let listHTML = `<h3 style="margin-bottom: 1.5rem; font-size: 1.3rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 0.75rem;"><i class="fas fa-users" style="color: var(--accent-teal); margin-right: 0.75rem;"></i> ${title}</h3><div class="leaderboard-list">`;
 
                 if (groupsToDisplay.length === 0) {
-                    listHTML += '<li class="ranking-list-item-empty">No hay grupos definidos.</li>';
+                    listHTML += '<div class="ranking-placeholder"><p>No hay grupos definidos.</p></div>';
                 } else {
                     groupsToDisplay.forEach(([group, data], index) => {
                         const gName = (typeof sharedGroupMetadata !== 'undefined' && sharedGroupMetadata[group] && sharedGroupMetadata[group].name) ? sharedGroupMetadata[group].name : ('Grupo ' + group);
-                        listHTML += `<li class="ranking-list-item group-list-item-clickable" data-group-id="${group}">
-                        <div class="rank-number">${index + 1}</div>
-                        <div class="rank-photo" id="photo-group-${group}"></div>
-                        <div class="rank-details">
-                            <div class="rank-name">${gName}</div>
-                            <div class="rank-subtext">${data.members} miembros</div>
-                        </div>
-                        <div class="rank-xp"><i class="fas fa-star" style="color: var(--xp-color); font-size: 0.8rem; margin-right: 4px;"></i>${data.xp} XP</div>
-                    </li>`;
+                        
+                        let crownHTML = '';
+                        let rankClass = '';
+                        if (index === 0) {
+                            crownHTML = '<i class="fa-solid fa-crown crown-icon"></i>';
+                            rankClass = 'rank-1';
+                        } else if (index === 1) {
+                            rankClass = 'rank-2';
+                        } else if (index === 2) {
+                            rankClass = 'rank-3';
+                        }
+
+                        listHTML += `
+                        <div class="rank-row ${rankClass} group-list-item-clickable" data-group-id="${group}">
+                            <div class="rank-number">${index + 1}</div>
+                            <div class="avatar-container">
+                                ${crownHTML}
+                                <div id="photo-group-${group}" class="student-photo"></div>
+                            </div>
+                            <div class="user-info">
+                                <div class="name-wrapper" style="display: flex; flex-direction: column; justify-content: center; gap: 2px;">
+                                    <div class="user-name" style="color: white; font-size: 14px; font-weight: 600;">${gName}</div>
+                                    <div style="font-size: 11px; color: var(--text-muted-light);"><i class="fas fa-user-friends" style="margin-right: 4px;"></i>${data.members} miembros</div>
+                                </div>
+                            </div>
+                            <div class="xp-score" style="font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; color: #ff7300; text-align: right; flex-shrink: 0; margin-left: 10px; display: flex; flex-direction: column; align-items: flex-end;">
+                                ${data.xp} <span style="font-size: 9px; font-weight: 600; color: #8a8d99; margin-top: -2px;">XP</span>
+                            </div>
+                        </div>`;
                     });
                 }
-                listHTML += '</ul>';
+                listHTML += '</div>';
 
                 if (!showAll && sortedGroups.length > 10) {
-                    listHTML += `<div class="text-center mt-4"><button id="show-all-groups-btn" class="nav-button" style="display:inline-block; border: 1px solid var(--glass-border);">Ver Todos los Grupos</button></div>`;
+                    listHTML += `
+                    <div style="margin-top: 1.5rem; padding: 0 0.5rem; margin-bottom: 20px;">
+                        <button id="show-all-groups-btn" style="
+                            width: 100%;
+                            padding: 14px 0;
+                            background: transparent;
+                            border: 1px solid var(--glass-border);
+                            border-radius: 12px;
+                            color: var(--text-muted-light);
+                            font-size: 0.9rem;
+                            letter-spacing: 0.05em;
+                            cursor: pointer;
+                            transition: all 0.25s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                        "
+                        onmouseover="this.style.background='rgba(255,255,255,0.05)'; this.style.color='var(--text-light)'; this.style.borderColor='rgba(255,255,255,0.3)';"
+                        onmouseout="this.style.background='transparent'; this.style.color='var(--text-muted-light)'; this.style.borderColor='var(--glass-border)';"
+                        ><i class="fas fa-chevron-down"></i> Ver todos los grupos</button>
+                    </div>`;
                 }
 
                 container.innerHTML = listHTML;
@@ -6739,7 +7591,10 @@
                 groupsToDisplay.forEach(([group]) => {
                     findGroupImage(group, (logoHTML) => {
                         const photoDiv = document.getElementById(`photo-group-${group}`);
-                        if (photoDiv) photoDiv.innerHTML = `<div class="group-rank-logo">${logoHTML}</div>`;
+                        if (photoDiv) {
+                            // findGroupImage returns either an <img> tag or an <i> tag. We can inject it directly since student-photo class already has the proper image sizing rules.
+                            photoDiv.innerHTML = logoHTML;
+                        }
                     });
                 });
 
@@ -10930,6 +11785,11 @@
 
                 function dismissWall() {
                     wall.classList.add('hidden');
+                    const loader = document.getElementById('global-app-loader');
+                    if (loader) {
+                        loader.style.display = 'flex';
+                        setTimeout(() => loader.style.opacity = '1', 10);
+                    }
                     setTimeout(() => wall.remove(), 500);
                     initializeApp();
                 }
@@ -11547,13 +12407,13 @@
             <i class="fas fa-user-circle"></i>
             <span>Perfil</span>
         </button>
-        <button class="nav-button mobile-bottom-item" data-tab-target="#panel-clases">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <span>Clases</span>
-        </button>
         <button class="nav-button mobile-bottom-item" data-tab-target="#panel-tienda" style="color: #FFA500;">
             <i class="fas fa-store"></i>
             <span>Tienda</span>
+        </button>
+        <button class="nav-button mobile-bottom-item" data-tab-target="#panel-herramientas">
+            <i class="fas fa-tools"></i>
+            <span>Herramientas</span>
         </button>
     </nav>
 
