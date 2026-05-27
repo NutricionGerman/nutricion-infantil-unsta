@@ -5902,116 +5902,204 @@
                     }
                 }
 
+                // 🌟 NUEVO: Resolver Fondos Individuales de Tarjetas 🌟
+                let cardBgs = {};
+                if (window.fullData && window.fullData.config && window.fullData.config.cardBgs) {
+                    cardBgs = { ...window.fullData.config.cardBgs };
+                }
+                
+                let localBgs = localStorage.getItem('preview_card_bgs');
+                if (localBgs) {
+                    try { 
+                        localBgs = JSON.parse(localBgs); 
+                        cardBgs = { ...cardBgs, ...localBgs }; 
+                    } catch(e) {}
+                }
+
+                let extraGridStyles = '';
+                ['hitos', 'alumnos', 'grupos', 'regularidad'].forEach(tab => {
+                    if (cardBgs[tab]) {
+                        extraGridStyles += `
+                            .dash-interactive-row[data-dashboard-tab="${tab}"]::after {
+                                content: '';
+                                position: absolute;
+                                top: 0; left: 0; right: 0; bottom: 0;
+                                background-image: url('${cardBgs[tab]}');
+                                background-size: cover;
+                                background-position: center;
+                                opacity: 0.15;
+                                filter: grayscale(80%) brightness(0.5);
+                                z-index: 0;
+                                transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+                                pointer-events: none;
+                            }
+                            .dash-interactive-row[data-dashboard-tab="${tab}"]:hover::after {
+                                opacity: 0.45;
+                                filter: grayscale(0%) brightness(1.2);
+                            }
+                        `;
+                    }
+                });
+
                 container.innerHTML = `
                 <style>
                     .dashboard-grid {
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 15px;
-                        margin-bottom: 20px;
-                    }
-                    .dash-hero-card {
-                        grid-column: 1 / -1;
                         position: relative;
-                        border-radius: 24px;
-                        overflow: hidden;
-                        aspect-ratio: 21/9;
-                        display: flex;
-                        align-items: flex-end;
-                        padding: 20px;
-                        cursor: pointer;
-                        box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
-                        border: 1px solid rgba(0, 191, 255, 0.25);
-                        background: linear-gradient(135deg, rgba(26, 26, 36, 0.65) 0%, rgba(13, 13, 18, 0.85) 100%);
-                        backdrop-filter: blur(12px);
-                        -webkit-backdrop-filter: blur(12px);
-                        transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-                        animation: projectsHeroGlow 4s infinite ease-in-out;
-                    }
-                    @keyframes projectsHeroGlow {
-                        0% {
-                            border-color: rgba(0, 191, 255, 0.2);
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(0, 191, 255, 0.05), inset 0 1px 1px rgba(255,255,255,0.05);
-                        }
-                        50% {
-                            border-color: rgba(0, 242, 254, 0.4);
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 25px rgba(0, 242, 254, 0.15), inset 0 1px 1px rgba(255,255,255,0.15);
-                        }
-                        100% {
-                            border-color: rgba(0, 191, 255, 0.2);
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 15px rgba(0, 191, 255, 0.05), inset 0 1px 1px rgba(255,255,255,0.05);
-                        }
-                    }
-                    .dash-hero-card:hover {
-                        transform: scale(1.02);
-                        border-color: rgba(0, 242, 254, 0.6);
-                        box-shadow: 0 12px 35px rgba(0,0,0,0.6), 0 0 25px rgba(0, 242, 254, 0.25), inset 0 1px 1px rgba(255,255,255,0.2);
-                    }
-                    .dash-hero-bg {
-                        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-                        background: radial-gradient(circle at 80% 20%, rgba(0, 242, 254, 0.12) 0%, transparent 60%);
-                        z-index: 1;
-                        pointer-events: none;
-                    }
-                    .dash-hero-content { position: relative; z-index: 2; width: 100%; display: flex; justify-content: space-between; align-items: center; }
-                    .dash-hero-title { color: white; font-size: 20px; font-weight: 800; margin: 0; }
-                    .dash-hero-subtitle { color: #aaa; font-size: 13px; margin: 5px 0 0 0; }
-                    .dash-play-btn {
-                        background: rgba(0, 242, 254, 0.15);
-                        border: 1px solid rgba(0, 242, 254, 0.35);
-                        backdrop-filter: blur(5px);
-                        -webkit-backdrop-filter: blur(5px);
-                        width: 45px;
-                        height: 45px;
-                        border-radius: 50%;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        color: #00f2fe;
-                        font-size: 18px;
-                        box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
-                        transition: all 0.3s ease;
-                    }
-                    .dash-hero-card:hover .dash-play-btn {
-                        background: rgba(0, 242, 254, 0.35);
-                        border-color: rgba(0, 242, 254, 0.7);
-                        color: white;
-                        box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-                        transform: scale(1.1);
-                    }
-                    
-                    .dash-card {
-                        background: #1A1A24;
-                        border-radius: 20px;
-                        padding: 20px;
-                        position: relative;
-                        cursor: pointer;
-                        transition: transform 0.3s;
-                        border: 1px solid rgba(255,255,255,0.02);
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
                         display: flex;
                         flex-direction: column;
+                        gap: 8px;
+                        margin-bottom: 20px;
                     }
-                    .dash-card:hover { transform: translateY(-5px); }
-                    .dash-card-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 18px; margin-bottom: 15px; }
-                    .dash-card-rank { position: absolute; top: 20px; right: 20px; color: #8a8d99; font-weight: 800; font-size: 16px; }
-                    .dash-card-title { color: white; font-size: 16px; font-weight: 700; margin: 0; }
-                    .dash-card-subtitle { color: #6c7080; font-size: 12px; margin: 5px 0 0 0; }
-                    
-                    .dash-row-card {
-                        grid-column: 1 / -1;
-                        background: #1A1A24;
-                        border-radius: 20px;
-                        padding: 20px;
-                        display: flex;
-                        align-items: center;
-                        gap: 15px;
+                    ${extraGridStyles}
+
+                    .dash-interactive-row {
+                        position: relative;
+                        display: flex !important;
+                        flex-direction: row !important;
+                        align-items: center !important;
+                        justify-content: flex-start !important;
+                        text-align: left !important;
+                        gap: 12px !important;
+                        padding: 12px 16px !important;
+                        margin: 0 !important;
+                        border-radius: 16px;
                         cursor: pointer;
-                        transition: transform 0.3s;
-                        border: 1px solid rgba(16,185,129,0.1);
-                        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                        
+                        /* Estado Apagado (Default) */
+                        background: rgba(20, 20, 30, 0.4);
+                        border: 1px solid rgba(255, 255, 255, 0.05);
+                        opacity: 0.85;
+                        filter: grayscale(40%);
+                        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                        
+                        transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+                        overflow: hidden;
                     }
-                    .dash-row-card:hover { transform: scale(1.02); }
+
+                    /* Efecto de luz interior sutil apagada */
+                    .dash-interactive-row::before {
+                        content: '';
+                        position: absolute;
+                        top: 0; left: 0; right: 0; bottom: 0;
+                        background: linear-gradient(90deg, rgba(var(--card-rgb), 0.05) 0%, transparent 100%);
+                        opacity: 0.5;
+                        transition: opacity 0.4s;
+                        pointer-events: none;
+                        z-index: 1;
+                    }
+
+                    /* Estado Encendido (Hover/Active) */
+                    .dash-interactive-row:hover {
+                        opacity: 1;
+                        filter: grayscale(0%);
+                        background: linear-gradient(135deg, rgba(26, 26, 36, 0.95) 0%, rgba(var(--card-rgb), 0.08) 100%);
+                        border-color: rgba(var(--card-rgb), 0.5);
+                        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--card-rgb), 0.2), inset 0 1px 1px rgba(255,255,255,0.1);
+                        transform: translateX(6px);
+                    }
+
+                    .dash-interactive-row:hover::before {
+                        opacity: 1;
+                        background: linear-gradient(90deg, rgba(var(--card-rgb), 0.15) 0%, transparent 100%);
+                    }
+
+                    .di-icon-box {
+                        position: relative;
+                        z-index: 2;
+                        width: 40px !important;
+                        height: 40px !important;
+                        border-radius: 12px;
+                        display: flex !important;
+                        justify-content: center !important;
+                        align-items: center !important;
+                        font-size: 18px !important;
+                        background: rgba(var(--card-rgb), 0.1);
+                        color: rgb(var(--card-rgb));
+                        transition: all 0.4s;
+                        margin: 0 !important;
+                    }
+
+                    .dash-interactive-row:hover .di-icon-box {
+                        background: rgba(var(--card-rgb), 0.25);
+                        box-shadow: 0 0 15px rgba(var(--card-rgb), 0.4);
+                        transform: scale(1.1);
+                    }
+
+                    .di-content {
+                        position: relative;
+                        z-index: 2;
+                        flex-grow: 1;
+                        display: flex !important;
+                        flex-direction: column !important;
+                        align-items: flex-start !important;
+                        justify-content: center !important;
+                    }
+
+                    .di-title {
+                        color: white;
+                        font-size: 15px !important;
+                        font-weight: 800 !important;
+                        margin: 0 0 2px 0 !important;
+                        transition: color 0.3s;
+                        line-height: 1.2 !important;
+                    }
+
+                    .di-subtitle {
+                        color: #8a8d99;
+                        font-size: 11px !important;
+                        margin: 0 !important;
+                        font-weight: 500 !important;
+                        transition: color 0.3s;
+                        line-height: 1.2 !important;
+                    }
+
+                    .dash-interactive-row:hover .di-title {
+                        color: rgb(var(--card-rgb));
+                        text-shadow: 0 0 10px rgba(var(--card-rgb), 0.3);
+                    }
+
+                    .dash-interactive-row:hover .di-subtitle {
+                        color: #c0c2cc;
+                    }
+
+                    .di-stat-box {
+                        position: relative;
+                        z-index: 2;
+                        display: flex !important;
+                        align-items: center !important;
+                        gap: 10px !important;
+                    }
+
+                    .di-stat {
+                        background: rgba(255,255,255,0.05);
+                        color: white;
+                        font-weight: 800 !important;
+                        font-size: 13px !important;
+                        padding: 4px 10px !important;
+                        border-radius: 10px !important;
+                        border: 1px solid rgba(255,255,255,0.05) !important;
+                        transition: all 0.4s;
+                        margin: 0 !important;
+                    }
+
+                    .dash-interactive-row:hover .di-stat {
+                        background: rgba(var(--card-rgb), 0.15);
+                        color: rgb(var(--card-rgb));
+                        border-color: rgba(var(--card-rgb), 0.3) !important;
+                        box-shadow: 0 0 10px rgba(var(--card-rgb), 0.2);
+                    }
+
+                    .di-chevron {
+                        color: #555;
+                        font-size: 14px !important;
+                        transition: all 0.4s;
+                        margin: 0 !important;
+                    }
+
+                    .dash-interactive-row:hover .di-chevron {
+                        color: rgb(var(--card-rgb));
+                        transform: translateX(3px);
+                    }
                     
                     .dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
                     .dash-greeting { color: white; font-size: 24px; font-weight: 800; margin: 0; }
@@ -6080,38 +6168,54 @@
                 </div>
 
                 <div class="dashboard-grid">
-                    <div class="dash-hero-card stat-card" data-dashboard-tab="hitos">
-                        <div class="dash-hero-bg"></div>
-                        <div class="dash-hero-content">
-                            <div>
-                                <h3 class="dash-hero-title"><i class="fas fa-folder-open" style="color: #00f2fe; margin-right: 8px;"></i>Galería de Proyectos</h3>
-                                <p class="dash-hero-subtitle">Explora los TPs de todos los grupos</p>
-                            </div>
-                            <div class="dash-play-btn"><i class="fas fa-play"></i></div>
+                    <!-- Galería de Proyectos (Cian) -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="hitos" style="--card-rgb: 255, 165, 0;">
+                        <div class="di-icon-box"><i class="fas fa-folder-open"></i></div>
+                        <div class="di-content">
+                            <h3 class="di-title">Galería de Proyectos</h3>
+                            <p class="di-subtitle">Explora los TPs de todos los grupos</p>
+                        </div>
+                        <div class="di-stat-box">
+                            <i class="fas fa-chevron-right di-chevron"></i>
                         </div>
                     </div>
 
-                    <div class="dash-card stat-card" data-dashboard-tab="alumnos" style="background: linear-gradient(180deg, #1A1A24 0%, rgba(255,165,0,0.05) 100%);">
-                        <div class="dash-card-icon" style="background: rgba(255,165,0,0.1); color: #FFA500;"><i class="fas fa-user-graduate"></i></div>
-                        <div class="dash-card-rank">#${totalStudents}</div>
-                        <h3 class="dash-card-title">Ranking<br>Alumnos</h3>
-                        <p class="dash-card-subtitle">Posición global</p>
-                    </div>
-
-                    <div class="dash-card stat-card" data-dashboard-tab="grupos" style="background: linear-gradient(180deg, #1A1A24 0%, rgba(138,43,226,0.05) 100%);">
-                        <div class="dash-card-icon" style="background: rgba(138,43,226,0.1); color: #8A2BE2;"><i class="fas fa-shield-alt"></i></div>
-                        <div class="dash-card-rank">#${totalGroups}</div>
-                        <h3 class="dash-card-title">Ranking<br>Grupal</h3>
-                        <p class="dash-card-subtitle">Batalla de equipos</p>
-                    </div>
-
-                    <div class="dash-row-card stat-card" data-dashboard-tab="regularidad">
-                        <div class="dash-card-icon" style="background: rgba(16,185,129,0.1); color: #10b981; margin: 0;"><i class="fas fa-chart-line"></i></div>
-                        <div style="flex-grow: 1;">
-                            <h3 class="dash-card-title">Mi Rendimiento</h3>
-                            <p class="dash-card-subtitle">Asistencia, notas y regularidad</p>
+                    <!-- Ranking Alumnos (Naranja) -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="alumnos" style="--card-rgb: 16, 185, 129;">
+                        <div class="di-icon-box"><i class="fas fa-user-graduate"></i></div>
+                        <div class="di-content">
+                            <h3 class="di-title">Ranking Alumnos</h3>
+                            <p class="di-subtitle">Posición global</p>
                         </div>
-                        <i class="fas fa-chevron-right" style="color: #6c7080;"></i>
+                        <div class="di-stat-box">
+                            <span class="di-stat">#${totalStudents}</span>
+                            <i class="fas fa-chevron-right di-chevron"></i>
+                        </div>
+                    </div>
+
+                    <!-- Ranking Grupal (Púrpura) -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="grupos" style="--card-rgb: 239, 68, 68;">
+                        <div class="di-icon-box"><i class="fas fa-shield-alt"></i></div>
+                        <div class="di-content">
+                            <h3 class="di-title">Ranking Grupal</h3>
+                            <p class="di-subtitle">Batalla de equipos</p>
+                        </div>
+                        <div class="di-stat-box">
+                            <span class="di-stat">#${totalGroups}</span>
+                            <i class="fas fa-chevron-right di-chevron"></i>
+                        </div>
+                    </div>
+
+                    <!-- Mi Rendimiento (Verde) -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="regularidad" style="--card-rgb: 0, 242, 254;">
+                        <div class="di-icon-box"><i class="fas fa-chart-line"></i></div>
+                        <div class="di-content">
+                            <h3 class="di-title">Mi Rendimiento</h3>
+                            <p class="di-subtitle">Asistencia, notas y regularidad</p>
+                        </div>
+                        <div class="di-stat-box">
+                            <i class="fas fa-chevron-right di-chevron"></i>
+                        </div>
                     </div>
                 </div>
             `;
@@ -11071,6 +11175,76 @@
                 `).join('');
             };
 
+            window.testCardBackground = (tabId, url) => {
+                let localBgs = localStorage.getItem('preview_card_bgs');
+                let cardBgs = localBgs ? JSON.parse(localBgs) : {};
+                cardBgs[tabId] = url;
+                localStorage.setItem('preview_card_bgs', JSON.stringify(cardBgs));
+                
+                Swal.close();
+                // Re-render
+                if (document.getElementById('panel-inicio').classList.contains('active')) {
+                    if (typeof displayGlobalStats === 'function') displayGlobalStats();
+                } else {
+                    document.querySelector('.nav-button[data-tab-target="#panel-inicio"]').click();
+                }
+                showTestingBgUI();
+            };
+
+            window.publishDashboardBackground = async () => {
+                let localBgs = localStorage.getItem('preview_card_bgs');
+                if(!localBgs) return;
+                try {
+                    let parsedBgs = JSON.parse(localBgs);
+                    let currentBgs = (window.fullData.config && window.fullData.config.cardBgs) ? { ...window.fullData.config.cardBgs } : {};
+                    let finalBgs = { ...currentBgs, ...parsedBgs };
+                    
+                    await db.collection('app_state').doc('main').set({
+                        config: { ...window.fullData.config, cardBgs: finalBgs }
+                    }, { merge: true });
+                    
+                    localStorage.removeItem('preview_card_bgs');
+                    document.getElementById('testing-bg-ui')?.remove();
+                    Swal.fire('¡Fondos Publicados!', 'La combinación de banners ha sido publicada. Todos los alumnos la están viendo ahora.', 'success');
+                } catch(e) {
+                    Swal.fire('Error', e.message, 'error');
+                }
+            };
+
+            window.cancelTestBackground = () => {
+                localStorage.removeItem('preview_card_bgs');
+                document.getElementById('testing-bg-ui')?.remove();
+                if (document.getElementById('panel-inicio').classList.contains('active')) {
+                    if (typeof displayGlobalStats === 'function') displayGlobalStats();
+                }
+            };
+
+            window.showTestingBgUI = () => {
+                let ui = document.getElementById('testing-bg-ui');
+                if(!ui) {
+                    ui = document.createElement('div');
+                    ui.id = 'testing-bg-ui';
+                    ui.style.cssText = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); border:2px solid var(--accent-orange); padding:15px 25px; border-radius:30px; z-index:99999; display:flex; gap:15px; align-items:center; box-shadow:0 10px 40px rgba(0,0,0,0.8); backdrop-filter:blur(10px); flex-wrap: wrap; justify-content: center; width: max-content; max-width: 90vw;';
+                    document.body.appendChild(ui);
+                }
+                ui.innerHTML = `
+                    <div style="display:flex; flex-direction:column; align-items:center; text-align: center;">
+                        <span style="color:#ffcc00; font-weight:900; font-size:14px; margin-bottom:2px; text-transform: uppercase;"><i class="fas fa-user-secret"></i> MODO ENSAYO (TARJETAS)</span>
+                        <span style="color:#ccc; font-size:11px;">Nadie más ve estos cambios.</span>
+                    </div>
+                    <div style="display:flex; gap: 10px;">
+                        <button onclick="cancelTestBackground()" style="background:#ef4444; color:white; border:none; padding:8px 15px; border-radius:20px; cursor:pointer; font-weight:bold; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);"><i class="fas fa-times"></i> Cancelar</button>
+                        <button onclick="publishDashboardBackground()" style="background:#10b981; color:white; border:none; padding:8px 15px; border-radius:20px; cursor:pointer; font-weight:bold; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);"><i class="fas fa-check-circle"></i> Publicar a Todos</button>
+                    </div>
+                `;
+            };
+
+            setTimeout(() => {
+                if(localStorage.getItem('preview_card_bgs')) {
+                    showTestingBgUI();
+                }
+            }, 1500);
+
             window.openBannerLibrary = async () => {
                 Swal.fire({
                     title: 'Cargando Biblioteca...',
@@ -11101,12 +11275,15 @@
                         let url = "";
                         let desc = "Banner " + (count + 1);
                         
-                        if (line.includes('http')) {
-                            const parts = line.split(' ');
-                            url = parts.find(p => p.startsWith('http'));
+                        const parts = line.split(' ');
+                        // Buscar una URL (http) o una ruta local (tienda/..., .png, .gif, .jpg)
+                        url = parts.find(p => p.startsWith('http') || p.startsWith('tienda/') || p.match(/\.(png|gif|jpe?g|webp)$/i));
+                        
+                        if (url) {
                             const descPart = line.replace(url, '').replace(/[()]/g, '').trim();
                             if (descPart) desc = descPart;
                         } else {
+                            // Si no hay url reconocible, ignoramos la línea
                             continue;
                         }
                         
@@ -11115,10 +11292,18 @@
                             <div style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 20px; border-radius: 8px; overflow: hidden; background: rgba(0,0,0,0.5);">
                                 <div style="padding: 10px 15px; background: rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
                                     <span style="color: var(--accent-orange); font-weight: bold; font-size: 1rem;">${desc}</span>
-                                    <button class="nav-button active" onclick="navigator.clipboard.writeText('${url}'); alert('Enlace copiado al portapapeles!');" style="padding: 5px 12px; font-size: 0.8rem;"><i class="fas fa-copy"></i> Copiar</button>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button class="nav-button active" onclick="navigator.clipboard.writeText('${url}'); alert('Enlace copiado al portapapeles!');" style="padding: 5px 12px; font-size: 0.8rem;"><i class="fas fa-copy"></i></button>
+                                    </div>
                                 </div>
                                 <div style="padding: 20px; background: linear-gradient(rgba(26,26,46,0.3), rgba(26,26,46,0.5)), url('${url}') center/cover no-repeat; height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-shadow: 0 2px 4px rgba(0,0,0,0.8);">
                                     <!-- Vista limpia del GIF -->
+                                </div>
+                                <div style="background: rgba(0,0,0,0.8); padding: 10px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; border-top: 1px solid rgba(255,255,255,0.05);">
+                                    <button class="nav-button" onclick="testCardBackground('hitos', '${url}')" style="background:rgba(255, 165, 0, 0.2); color:#ffa500; border:1px solid #ffa500; padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-folder"></i> Galería</button>
+                                    <button class="nav-button" onclick="testCardBackground('alumnos', '${url}')" style="background:rgba(16, 185, 129, 0.2); color:#10b981; border:1px solid #10b981; padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-user-graduate"></i> Alumnos</button>
+                                    <button class="nav-button" onclick="testCardBackground('grupos', '${url}')" style="background:rgba(239, 68, 68, 0.2); color:#ef4444; border:1px solid #ef4444; padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-users"></i> Grupal</button>
+                                    <button class="nav-button" onclick="testCardBackground('regularidad', '${url}')" style="background:rgba(0, 242, 254, 0.2); color:#00f2fe; border:1px solid #00f2fe; padding: 4px 10px; font-size: 0.75rem;"><i class="fas fa-chart-line"></i> Rendimiento</button>
                                 </div>
                             </div>
                             `;

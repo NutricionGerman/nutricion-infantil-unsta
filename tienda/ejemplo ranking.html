@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking Ultra Pro UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: #0c0c0c; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* MOCKUP DEL CELULAR */
+        .phone-mockup {
+            width: 390px; height: 844px; background-color: #050505;
+            border-radius: 45px; border: 8px solid #222; box-shadow: 0 40px 100px rgba(0,0,0,1);
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+            background-image: radial-gradient(circle at top, rgba(255, 215, 0, 0.05) 0%, transparent 40%);
+        }
+
+        .notch {
+            position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 150px; height: 30px; background-color: #222;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; z-index: 50;
+        }
+
+        /* HEADER */
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 50px 20px 15px 20px; position: sticky; top: 0; z-index: 40;
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .top-bar h1 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; color: white; letter-spacing: -0.5px; }
+        .top-bar i { color: #FFD700; font-size: 20px; filter: drop-shadow(0 0 10px rgba(255,215,0,0.5)); }
+
+        .content-scroll { flex-grow: 1; overflow-y: auto; padding: 15px 15px 160px 15px; }
+        .content-scroll::-webkit-scrollbar { display: none; }
+
+        /* LISTA DE RANKING */
+        .leaderboard-list { display: flex; flex-direction: column; gap: 10px; }
+
+        /* FILA BASE (Para todos los alumnos) */
+        .rank-row {
+            display: flex; align-items: center; background: #121215;
+            border-radius: 20px; padding: 12px 15px; border: 1px solid rgba(255,255,255,0.03);
+            transition: transform 0.2s; position: relative;
+        }
+        .rank-row:active { transform: scale(0.98); }
+
+        /* NÚMERO DE PUESTO */
+        .rank-number {
+            width: 35px; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700;
+            color: #666; text-align: center; margin-right: 10px; flex-shrink: 0;
+        }
+
+        /* AVATAR */
+        .avatar-container { position: relative; margin-right: 15px; flex-shrink: 0; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #222; }
+        
+        /* TEXTOS (Con truncamiento para evitar que rompan la fila) */
+        .user-info { flex-grow: 1; min-width: 0; /* min-width:0 es el truco para que el truncamiento funcione en flexbox */ }
+        .user-name {
+            color: white; font-size: 14px; font-weight: 600; line-height: 1.2; margin-bottom: 2px;
+            /* TRUNCAMIENTO MÁGICO */
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .user-group { color: #8a8d99; font-size: 11px; font-family: 'Inter'; }
+
+        /* PUNTOS XP */
+        .xp-score {
+            font-family: 'Inter', sans-serif; font-weight: 800; font-size: 16px; color: #ff7300;
+            text-align: right; flex-shrink: 0; margin-left: 10px; display: flex; flex-direction: column; align-items: flex-end;
+        }
+        .xp-score span { font-size: 9px; font-weight: 600; color: #8a8d99; margin-top: -2px; }
+
+        /* ESTILOS DEL PODIO (Top 1, 2 y 3) */
+        /* TOP 1 - ORO */
+        .rank-1 {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1) 0%, #121215 50%);
+            border: 1px solid rgba(255, 215, 0, 0.3); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.05);
+            padding: 16px 15px; /* Un poco más grande */
+        }
+        .rank-1 .rank-number { color: #FFD700; font-size: 22px; text-shadow: 0 0 15px rgba(255,215,0,0.5); }
+        .rank-1 .avatar { border: 2px solid #FFD700; }
+        .crown-icon { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); color: #FFD700; font-size: 14px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
+        /* TOP 2 - PLATA */
+        .rank-2 {
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.1) 0%, #121215 50%);
+            border: 1px solid rgba(192, 192, 192, 0.2);
+        }
+        .rank-2 .rank-number { color: #C0C0C0; }
+        .rank-2 .avatar { border: 2px solid #C0C0C0; }
+
+        /* TOP 3 - BRONCE */
+        .rank-3 {
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.1) 0%, #121215 50%);
+            border: 1px solid rgba(205, 127, 50, 0.2);
+        }
+        .rank-3 .rank-number { color: #CD7F32; }
+        .rank-3 .avatar { border: 2px solid #CD7F32; }
+
+        /* ITEM EXTRA (Como la carta del alumno 3) */
+        .special-badge { width: 20px; height: 28px; border-radius: 4px; object-fit: cover; margin-left: 8px; flex-shrink: 0; box-shadow: 0 0 10px rgba(255,115,0,0.3); border: 1px solid rgba(255,115,0,0.5); }
+        
+        .name-wrapper { display: flex; align-items: center; }
+
+        /* BARRA DEL USUARIO ACTUAL (Sticky Bottom) */
+        .current-user-bar {
+            position: absolute; bottom: 95px; left: 15px; right: 15px; z-index: 45;
+            background: linear-gradient(135deg, #4752C4, #5865F2); border-radius: 20px;
+            padding: 12px 15px; display: flex; align-items: center;
+            box-shadow: 0 15px 30px rgba(88, 101, 242, 0.4); border: 1px solid rgba(255,255,255,0.2);
+        }
+        .current-user-bar .rank-number { color: white; }
+        .current-user-bar .user-name { color: white; }
+        .current-user-bar .user-group { color: rgba(255,255,255,0.7); }
+        .current-user-bar .xp-score { color: white; }
+        .current-user-bar .xp-score span { color: rgba(255,255,255,0.7); }
+        .badge-you { position: absolute; top: -10px; right: 20px; background: #FFD700; color: black; font-size: 9px; font-weight: 800; padding: 3px 8px; border-radius: 10px; }
+
+        /* Bottom Nav - Flotante estilo iOS */
+        .bottom-nav-wrapper {
+            position: absolute; bottom: 20px; left: 20px; right: 20px; z-index: 50;
+        }
+        .bottom-nav {
+            background: rgba(15, 15, 20, 0.9); backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 30px;
+            display: flex; justify-content: space-between; align-items: center; padding: 12px 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #555; text-decoration: none; }
+        .nav-item.active { color: white; }
+        .nav-item i { font-size: 18px; transition: 0.3s; }
+        .nav-item.active i { color: #00F0FF; filter: drop-shadow(0 0 8px rgba(0,240,255,0.5)); transform: translateY(-2px); }
+        .nav-item.active::after { content: ''; width: 4px; height: 4px; background: #00F0FF; border-radius: 50%; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="phone-mockup">
+        <div class="notch"></div>
+
+        <div class="top-bar">
+            <h1>Global Ranking</h1>
+            <i class="fa-solid fa-trophy"></i>
+        </div>
+
+        <div class="content-scroll">
+            <div class="leaderboard-list">
+
+                <!-- TOP 1 -->
+                <div class="rank-row rank-1">
+                    <div class="rank-number">1</div>
+                    <div class="avatar-container">
+                        <i class="fa-solid fa-crown crown-icon"></i>
+                        <img src="https://ui-avatars.com/api/?name=Gianluca+Vargiu&background=111&color=FFD700" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Vargiu, Gianluca</div>
+                        <div class="user-group">Grupo g_1</div>
+                    </div>
+                    <div class="xp-score">20 <span>XP</span></div>
+                </div>
+
+                <!-- TOP 2 -->
+                <div class="rank-row rank-2">
+                    <div class="rank-number">2</div>
+                    <div class="avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=Santiago+Vazquez&background=111&color=C0C0C0" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Vazquez, Santiago Jesús</div>
+                        <div class="user-group">Grupo g_1</div>
+                    </div>
+                    <div class="xp-score">19 <span>XP</span></div>
+                </div>
+
+                <!-- TOP 3 (Con el item especial/carta que me mostraste) -->
+                <div class="rank-row rank-3">
+                    <div class="rank-number">3</div>
+                    <div class="avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=Agustin+Linares&background=111&color=CD7F32" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <!-- El texto larguísimo ahora se corta mágicamente con "..." gracias a CSS -->
+                        <div class="name-wrapper">
+                            <div class="user-name">Linares Gonzalez, Agustín Octavio</div>
+                            <!-- La carta de recompensa que tiene al lado -->
+                            <img src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="special-badge">
+                        </div>
+                        <div class="user-group">Grupo g_13</div>
+                    </div>
+                    <div class="xp-score">19 <span>XP</span></div>
+                </div>
+
+                <!-- PUESTO 4 -->
+                <div class="rank-row">
+                    <div class="rank-number">4</div>
+                    <div class="avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=Massimo+Santucci&background=222&color=fff" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Santucci, Massimo</div>
+                        <div class="user-group">Grupo g_1</div>
+                    </div>
+                    <div class="xp-score">19 <span>XP</span></div>
+                </div>
+
+                <!-- PUESTO 5 -->
+                <div class="rank-row">
+                    <div class="rank-number">5</div>
+                    <div class="avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=Rodrigo+Lescano&background=222&color=fff" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Lescano, Rodrigo Jesús</div>
+                        <div class="user-group">Grupo g_1</div>
+                    </div>
+                    <div class="xp-score">18 <span>XP</span></div>
+                </div>
+                
+                <!-- PUESTO 6 -->
+                <div class="rank-row">
+                    <div class="rank-number">6</div>
+                    <div class="avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=Mariana+Roldan&background=222&color=fff" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Roldán Jaimez, Mariana</div>
+                        <div class="user-group">Grupo g_5</div>
+                    </div>
+                    <div class="xp-score">17 <span>XP</span></div>
+                </div>
+
+                <!-- Simulamos más scroll -->
+                <div class="rank-row">
+                    <div class="rank-number">7</div>
+                    <div class="avatar-container">
+                        <img src="https://ui-avatars.com/api/?name=Ana+Perez&background=222&color=fff" class="avatar">
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">Pérez, Ana María</div>
+                        <div class="user-group">Grupo g_2</div>
+                    </div>
+                    <div class="xp-score">15 <span>XP</span></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BARRA DEL USUARIO ACTUAL (Sticky) -->
+        <!-- Supongamos que el usuario que está viendo la app es el puesto 12 -->
+        <div class="current-user-bar">
+            <div class="badge-you">ESTE ERES TÚ</div>
+            <div class="rank-number">12</div>
+            <div class="avatar-container">
+                <img src="https://ui-avatars.com/api/?name=Prueba+Alumno&background=fff&color=5865F2" class="avatar" style="border: 2px solid white;">
+            </div>
+            <div class="user-info">
+                <div class="user-name">Prueba Alumno</div>
+                <div class="user-group">Sin Grupo</div>
+            </div>
+            <div class="xp-score">5 <span>XP</span></div>
+        </div>
+
+        <!-- Barra inferior tipo Isla Flotante (Apple Style) -->
+        <div class="bottom-nav-wrapper">
+            <div class="bottom-nav">
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-user"></i>
+                </a>
+                <a href="#" class="nav-item active"> <!-- Icono de ranking -->
+                    <i class="fa-solid fa-ranking-star"></i>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-store"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
