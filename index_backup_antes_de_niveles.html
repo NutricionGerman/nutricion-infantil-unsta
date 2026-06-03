@@ -3863,87 +3863,6 @@
                 height: 100%;
             }
         }
-        
-        /* =========================================
-           NIVELES ÉPICOS (TIENDA/NIVELES.HTML)
-           ========================================= */
-        .levels-section { background: #101014; border-radius: 24px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-top: 20px; }
-        .levels-section-title { color: white; font-size: 16px; font-weight: 600; margin-bottom: 20px; font-family: 'Poppins', sans-serif; }
-
-        .xp-container { margin-bottom: 25px; }
-        .xp-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 8px; }
-        .tier-name { color: white; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
-        .tier-xp { color: white; font-size: 16px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
-        .tier-xp span { color: #8a8d99; font-size: 11px; }
-
-        .progress-track { width: 100%; height: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; position: relative; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
-        .progress-fill { height: 100%; border-radius: 10px; position: relative; transition: width 1.5s ease-out; width: 0%; } 
-
-        @keyframes shimmer { 0% { transform: translateX(-100%) skewX(-20deg); } 100% { transform: translateX(200%) skewX(-20deg); } }
-        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        .tier-iron .tier-name i { color: #a4b0be; }
-        .fill-iron { background: linear-gradient(90deg, #57606f, #a4b0be); }
-
-        .tier-bronze .tier-name i { color: #CD7F32; }
-        .fill-bronze { background: linear-gradient(90deg, #8b5a2b, #CD7F32); }
-
-        .tier-silver .tier-name i { color: #C0C0C0; }
-        .fill-silver { background: linear-gradient(90deg, #7f8c8d, #e0e0e0); box-shadow: 0 0 10px rgba(192, 192, 192, 0.4); }
-
-        .tier-gold .tier-name i { color: #FFD700; filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)); }
-        .fill-gold { background: linear-gradient(90deg, #f39c12, #FFD700); box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
-
-        .tier-plat .tier-name i { color: #00cec9; filter: drop-shadow(0 0 8px rgba(0,206,201,0.6)); }
-        .fill-plat { background: linear-gradient(90deg, #0984e3, #00cec9); box-shadow: 0 0 20px rgba(0, 206, 201, 0.6); }
-
-        .tier-diamond .tier-name i { color: #74b9ff; filter: drop-shadow(0 0 8px #74b9ff); }
-        .fill-diamond { background: linear-gradient(90deg, #0984e3, #74b9ff); box-shadow: 0 0 20px rgba(116, 185, 255, 0.8); overflow: hidden; }
-        .fill-diamond::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); animation: shimmer 2s infinite;
-        }
-
-        @keyframes pulseMaster { 0% { box-shadow: 0 0 15px #8e44ad; } 50% { box-shadow: 0 0 35px #e056fd; } 100% { box-shadow: 0 0 15px #8e44ad; } }
-        .tier-master .tier-name i { color: #e056fd; filter: drop-shadow(0 0 10px #e056fd); }
-        .fill-master { background: linear-gradient(90deg, #6c5ce7, #e056fd); animation: pulseMaster 2s infinite; }
-
-        .tier-radiant .tier-name i { color: #ff4757; filter: drop-shadow(0 0 12px #ff4757); }
-        .fill-radiant { 
-            background: linear-gradient(90deg, #ff4757, #ffa502, #2ed573, #1e90ff, #ff4757); background-size: 300% 300%; 
-            animation: gradientShift 3s ease infinite; box-shadow: 0 0 25px rgba(255, 71, 87, 0.6);
-        }
-
-        @keyframes electricPulse { 0% { box-shadow: 0 0 15px #ccff00; } 50% { box-shadow: 0 0 35px #ccff00, 0 0 15px white; } 100% { box-shadow: 0 0 15px #ccff00; } }
-        @keyframes superShimmer { 0% { transform: translateX(-150%) skewX(-30deg); } 100% { transform: translateX(250%) skewX(-30deg); } }
-        
-        .tier-mythic .tier-name i { color: #ccff00; filter: drop-shadow(0 0 12px #ccff00); }
-        .fill-mythic { 
-            background: linear-gradient(90deg, #00c853, #b2ff59, #ffffff, #b2ff59, #00c853); 
-            background-size: 300% 300%; 
-            animation: gradientShift 1.5s linear infinite, electricPulse 1.5s infinite; 
-            overflow: hidden;
-        }
-        .fill-mythic::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 40%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); 
-            animation: superShimmer 1s linear infinite;
-        }
-
-        @keyframes energyStripes { 0% { background-position: 0 0; } 100% { background-position: 50px 0; } }
-        .tier-supreme .tier-name i { color: #00F0FF; filter: drop-shadow(0 0 15px #00F0FF); }
-        .fill-supreme { 
-            background: linear-gradient(90deg, #180033, #e056fd, #00F0FF, #180033);
-            background-size: 300% 300%; border-radius: 10px;
-            animation: gradientShift 3s ease infinite; 
-            box-shadow: 0 0 15px rgba(224, 86, 253, 0.8), 0 0 30px rgba(0, 240, 255, 0.6);
-            position: relative; overflow: hidden;
-        }
-        .fill-supreme::before {
-            content: ''; position: absolute; inset: 0;
-            background: repeating-linear-gradient( -45deg, rgba(255,255,255,0.3), rgba(255,255,255,0.3) 10px, transparent 10px, transparent 20px );
-            background-size: 56px 56px; animation: energyStripes 1s linear infinite;
-        }
     </style>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -5299,17 +5218,29 @@
             let overallAttendanceChart, lastSessionDonutChart, lastSessionGroupBarChart, historicalLineChart, regularityDonutChart, regularityReasonBarChart, groupHistoricalLineChart, xpOriginDonutChart, xpComparisonBarChart;
 
             const rankList = [
-                { xp: 0, name: 'Sin Rango', fillClass: '', icon: 'fa-solid fa-user' },
-                { xp: 5, name: 'Hierro', fillClass: 'fill-iron', icon: 'fa-solid fa-shield-halved' },
-                { xp: 10, name: 'Bronce', fillClass: 'fill-bronze', icon: 'fa-solid fa-medal' },
-                { xp: 15, name: 'Plata', fillClass: 'fill-silver', icon: 'fa-solid fa-medal' },
-                { xp: 20, name: 'Oro', fillClass: 'fill-gold', icon: 'fa-solid fa-star' },
-                { xp: 25, name: 'Platino', fillClass: 'fill-plat', icon: 'fa-solid fa-gem' },
-                { xp: 30, name: 'Diamante', fillClass: 'fill-diamond', icon: 'fa-regular fa-gem' },
-                { xp: 35, name: 'Maestro', fillClass: 'fill-master', icon: 'fa-solid fa-eye' },
-                { xp: 40, name: 'Leyenda', fillClass: 'fill-radiant', icon: 'fa-solid fa-fire-flame-curved' },
-                { xp: 45, name: 'Mítico', fillClass: 'fill-mythic', icon: 'fa-solid fa-bolt' },
-                { xp: 50, name: 'Supremo', fillClass: 'fill-supreme', icon: 'fa-solid fa-infinity' }
+                { xp: 0, name: 'Sin Rango', image: '0.png' },
+                { xp: 10, name: 'Bronce I', image: '10.png' },
+                { xp: 15, name: 'Bronce II', image: '15.png' },
+                { xp: 20, name: 'Bronce III', image: '20.png' },
+                { xp: 30, name: 'Plata I', image: '30.png' },
+                { xp: 35, name: 'Plata II', image: '35.png' },
+                { xp: 40, name: 'Plata III', image: '40.png' },
+                { xp: 45, name: 'Oro I', image: '45.png' },
+                { xp: 50, name: 'Oro II', image: '50.png' },
+                { xp: 55, name: 'Oro III', image: '55.png' },
+                { xp: 60, name: 'Diamante I', image: '60.png' },
+                { xp: 65, name: 'Diamante II', image: '65.png' },
+                { xp: 70, name: 'Diamante III', image: '70.png' },
+                { xp: 75, name: 'Campeón I', image: '75.png' },
+                { xp: 80, name: 'Campeón II', image: '80.png' },
+                { xp: 85, name: 'Campeón III', image: '85.png' },
+                { xp: 90, name: 'Gran Campeón I', image: '90.png' },
+                { xp: 95, name: 'Gran Campeón II', image: '95.png' },
+                { xp: 100, name: 'Gran Campeón III', image: '100.png' },
+                { xp: 105, name: 'Supersónico I', image: '105.png' },
+                { xp: 110, name: 'Supersónico II', image: '110.png' },
+                { xp: 115, name: 'Supersónico III', image: '115.png' },
+                { xp: 120, name: 'Leyenda Supersónica', image: '120.png' }
             ];
             
             // --- VIDEO UTILITIES ---
@@ -8494,16 +8425,16 @@
                         </div>
                     </div>
                     
-                    <div class="app-xp-card" data-modal-target="#xp-modal" style="position: relative; overflow: hidden; ${currentRank.xp >= 50 ? 'box-shadow: 0 0 15px rgba(0,240,255,0.2);' : ''}">
+                    <div class="app-xp-card" data-modal-target="#xp-modal">
                         <div class="app-xp-header">
-                            <div class="app-xp-title"><i class="${currentRank.icon || 'fas fa-star'}" style="color: inherit;"></i> Experiencia</div>
+                            <div class="app-xp-title"><i class="fas fa-star"></i> Experiencia</div>
                             <div class="app-xp-amount">${studentXP} <span>XP</span></div>
                         </div>
-                        <div class="app-xp-bar-bg" style="background: rgba(255,255,255,0.05); box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); overflow: visible;">
-                            <div class="app-xp-bar-fill ${currentRank.fillClass || ''} delayed-progress" style="width: 0%;" data-target-width="${nextRank ? Math.round(((studentXP - currentRank.xp) / (nextRank.xp - currentRank.xp)) * 100) : 100}"></div>
+                        <div class="app-xp-bar-bg">
+                            <div class="app-xp-bar-fill" style="width: ${nextRank ? Math.round(((studentXP - currentRank.xp) / (nextRank.xp - currentRank.xp)) * 100) : 100}%;"></div>
                         </div>
                         <div class="app-xp-footer">
-                            <div style="font-weight: bold;">${currentRank.name}</div>
+                            <div>${currentRank.name}</div>
                             <div>${nextRank ? `Meta: ${nextRank.xp} XP` : 'Max Level'}</div>
                         </div>
                     </div>
@@ -8540,7 +8471,6 @@
                     ${fullCromosHTML ? `<div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 24px;">${fullCromosHTML}</div>` : ''}
                     
                 </div>
-                
                 ${attendanceModalHTML}${tpModalHTML}${xpHistoryModalHTML}
                 <!-- MODAL DE CONDICIÓN -->
                 <div class="modal" id="condition-modal">
@@ -8620,15 +8550,6 @@
 
                 portalContainer.innerHTML = portalHTML;
                 
-                // Activar las animaciones de las barras de progreso
-                setTimeout(() => {
-                    const progressBars = document.querySelectorAll('.delayed-progress');
-                    progressBars.forEach(bar => {
-                        const targetWidth = bar.getAttribute('data-target-width');
-                        bar.style.width = targetWidth + '%';
-                    });
-                }, 100);
-
                 const portalLogoutBtn = document.getElementById('portal-logout-btn');
                 if (portalLogoutBtn) {
                     portalLogoutBtn.addEventListener('click', () => {

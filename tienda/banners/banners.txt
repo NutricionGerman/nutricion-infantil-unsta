@@ -43,10 +43,10 @@ https://garystanton.co.uk/content/images/2020/05/Banner01.gif (pato y gnomos)
 https://i.pinimg.com/originals/f6/7a/12/f67a122b8f6af771bcabd8db7c641c5e.gif (pacman)
 https://i.pinimg.com/originals/e5/07/36/e507364557703858ff50f33d8a08404c.gif (fantasma lobo)
 https://64.media.tumblr.com/31384150d8f0e0036e8371fe1fade386/70e5f7eb31cb06ac-3d/s540x810/b2c2dfa665c4e1a007ad2a8e544698e9f7a1b5a0.gifv (hollow knight)
-tienda/rendimiento.png (imagen)
-tienda/grupal.png (imagen2)
-tienda/individual.png (imagen 3)
-tienda/3.png (imagen 3)
+tienda/banners/rendimiento.png (imagen)
+tienda/banners/grupal.png (imagen2)
+tienda/banners/individual.png (imagen 3)
+tienda/banners/3.png (imagen 3)
 
 
 
