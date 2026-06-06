@@ -4376,6 +4376,15 @@
                                 </div>
                                 <p class="ptc-description">Herramienta para calcular preparaciones de fórmulas infantiles, diluciones y requerimientos hídricos.</p>
                             </a>
+
+                            <a href="HERRAMIENTAS/interpretaciones.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.1);"><i class="fas fa-book-medical"></i></div>
+                                    <div class="ptc-title">Interpretaciones Clínicas</div>
+                                    <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
+                                </div>
+                                <p class="ptc-description">Guía rápida y visual para la interpretación de parámetros nutricionales y clínicos.</p>
+                            </a>
                         </div>
                         
                         <!-- Discord Community -->
@@ -9341,10 +9350,15 @@
                     `;
                 }
 
+                let adminButtonHTML = '';
+                if (firebase.auth().currentUser && !tpData) {
+                    adminButtonHTML = `<button onclick="window.adminManualUploadVideo(${tpIndex}, '${groupId}')" style="background: transparent; color: var(--success-color); border: 1px solid var(--success-color); padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; margin-left: 10px;" title="Forzar entrega como Admin"><i class="fas fa-tools"></i> Forzar Entrega (Admin)</button>`;
+                }
+
                 container.innerHTML = `
                     <div style="display: flex; flex-direction: column; height: 100%;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <h2 style="font-size: 2rem; margin: 0;">Trabajo Práctico #${tpIndex}</h2>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                            <h2 style="font-size: 2rem; margin: 0; display: flex; align-items: center; flex-wrap: wrap;">Trabajo Práctico #${tpIndex} ${adminButtonHTML}</h2>
                             ${statusHTML}
                         </div>
                         <div style="flex: 1; margin-top: 10px;">
@@ -9353,6 +9367,52 @@
                     </div>
                 `;
             }
+
+            window.adminManualUploadVideo = async function(tpIndex, groupId) {
+                if (!firebase.auth().currentUser) {
+                    alert("Acceso denegado: Solo administradores.");
+                    return;
+                }
+                const videoUrl = prompt(`[MODO ADMIN]\nIngresa el enlace de YouTube para el TP #${tpIndex} del grupo ${groupId}:\n(Aparecerá como entregado a tiempo)`);
+                if (!videoUrl || videoUrl.trim() === '') return;
+                
+                try {
+                    const tpKey = String(tpIndex - 1);
+                    const timestampStr = new Date().toISOString();
+                    
+                    await db.collection('grupos').doc(groupId).set({
+                        videos: {
+                            [tpKey]: {
+                                url: videoUrl.trim(),
+                                uploadedAt: timestampStr,
+                                isManualAdmin: true
+                            }
+                        }
+                    }, { merge: true });
+                    
+                    // Actualizar caché local
+                    if (!sharedGroupMetadata[groupId]) sharedGroupMetadata[groupId] = {};
+                    if (!sharedGroupMetadata[groupId].videos) sharedGroupMetadata[groupId].videos = {};
+                    sharedGroupMetadata[groupId].videos[tpKey] = {
+                        url: videoUrl.trim(),
+                        uploadedAt: timestampStr,
+                        isManualAdmin: true
+                    };
+                    
+                    alert("Video cargado exitosamente. La vista se actualizará ahora.");
+                    // Refrescar la vista
+                    updateTPDisplay(tpIndex, groupId, sharedGroupMetadata[groupId]);
+                    
+                    // Forzar re-cálculo global de porcentaje de entrega si fuera necesario,
+                    // actualizando la pestaña "Desafíos / TPs" de fondo
+                    const targetTabBtn = document.querySelector('.portal-tab[data-tab="tps"]');
+                    if (targetTabBtn) targetTabBtn.click();
+                    
+                } catch (e) {
+                    console.error("Error al cargar video manual:", e);
+                    alert("Error al cargar el video: " + e.message);
+                }
+            };
 
             // openTPConfigEditor removida - acceso vía pestaña Panel Docente
 
