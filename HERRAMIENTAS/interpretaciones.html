@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Avanzado OMS: Z-Score y Percentiles</title>
+    <!-- Fuente moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0f172a; 
+            --panel-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Colores OMS */
+            --color-normal: #10b981; /* Verde */
+            --color-riesgo: #f59e0b; /* Dorado */
+            --color-mod: #ef4444;    /* Rojo */
+            --color-sev: #8b5cf6;    /* Violeta (para extremos) */
+            
+            --color-practice: #475569; 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Barra superior */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--panel-bg);
+            padding: 15px 30px;
+            border-radius: 15px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .app-title { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 15px;}
+
+        /* Selector de Indicador */
+        .indicator-select {
+            background-color: #0f172a;
+            color: var(--text-main);
+            border: 1px solid #3b82f6;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Botón Modo Práctica */
+        .btn-toggle {
+            background-color: #3b82f6; color: white; border: none;
+            padding: 10px 20px; border-radius: 8px; cursor: pointer;
+            font-weight: 800; font-size: 0.9rem; transition: all 0.3s;
+        }
+
+        .btn-toggle.active {
+            background-color: var(--color-practice); border: 1px solid #94a3b8;
+        }
+
+        /* Grid de Tarjetas */
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 1024px) { .grid-container { grid-template-columns: 1fr; } }
+
+        /* Tarjetas */
+        .card {
+            background-color: var(--panel-bg); border-radius: 20px; padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid #334155; display: flex; flex-direction: column;
+        }
+
+        .card-header { margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start;}
+        .card-title { font-size: 1.1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; }
+
+        /* Estadísticas */
+        .stats-container { display: flex; gap: 30px; margin-bottom: 20px; }
+        .stat-box { display: flex; flex-direction: column; }
+        .stat-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600; }
+        .stat-value { font-size: 1.4rem; font-weight: 800; transition: color 0.3s ease; }
+        .diag-box { background: #0f172a; padding: 10px 20px; border-radius: 10px; border: 1px solid #334155; }
+
+        /* Gráficos */
+        .chart-container { position: relative; height: 350px; width: 100%; flex-grow: 1; }
+
+        /* Controles */
+        .controls {
+            display: flex; align-items: center; gap: 20px; background: #0f172a;
+            padding: 15px 25px; border-radius: 15px; border: 1px solid #334155; margin-top: 20px;
+        }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+            background: #ffffff; cursor: pointer; margin-top: -10px;
+            border: 3px solid #3b82f6; box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 6px; cursor: pointer; background: #475569; border-radius: 3px;
+        }
+
+        /* Selector de Tipo de Curva */
+        .radio-group {
+            display: flex; gap: 10px; background: #0f172a; padding: 5px; 
+            border-radius: 8px; border: 1px solid #334155;
+        }
+        .radio-group label {
+            padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+            color: var(--text-muted); transition: all 0.2s;
+        }
+        .radio-group input[type="radio"] { display: none; }
+        .radio-group input[type="radio"]:checked + label {
+            background: #3b82f6; color: white;
+        }
+
+        .disclaimer {
+            text-align: center; font-size: 0.8rem; color: #475569; margin-top: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- BARRA SUPERIOR -->
+        <div class="top-bar">
+            <div class="app-title">
+                Simulador WHO Anthro
+                <select id="indicatorSelect" class="indicator-select" onchange="changeIndicator()">
+                    <option value="imc_edad" selected>IMC p. edad</option>
+                    <option value="peso_longitud">Peso p. longitud/talla</option>
+                    <option value="peso_edad">Peso p. edad</option>
+                    <option value="talla_edad">Longitud/talla p. edad</option>
+                    <option value="pc_edad">Perímetro Cefálico p. edad (PC)</option>
+                    <option value="ppmb_edad">Perímetro Braquial p. edad (PPMB)</option>
+                    <option value="ptr_edad">Pliegue Tricipital p. edad (PTr)</option>
+                    <option value="pss_edad">Pliegue Subescapular p. edad (PSs)</option>
+                </select>
+            </div>
+            <button id="btn-practice" class="btn-toggle" onclick="togglePracticeMode()">
+                🙈 Ocultar Diagnóstico (Modo Práctica)
+            </button>
+        </div>
+
+        <div class="grid-container">
+            <!-- PANEL IZQUIERDO -->
+            <div class="card">
+                <div class="card-header" style="flex-direction: column;">
+                    <h2 class="card-title">1. Curva de Distribución (Población Referencia)</h2>
+                    <div class="stats-container" style="margin-top: 15px;">
+                        <div class="stat-box diag-box">
+                            <span class="stat-label">Diagnóstico Clínico Real</span>
+                            <span class="stat-value" id="val-diag">Normal</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Percentil</span>
+                            <span class="stat-value" id="val-p" style="color: #38bdf8;">50.0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="bellCurveChart"></canvas>
+                </div>
+                <div class="controls">
+                    <span style="font-weight: 600;">Puntaje Z: <span id="val-z" style="color: #38bdf8;">0.00</span></span>
+                    <input type="range" id="zSlider" min="-4" max="4" step="0.01" value="0">
+                </div>
+            </div>
+
+            <!-- PANEL DERECHO -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title" id="chart-title">2. Gráfico Clínico OMS: IMC p. edad</h2>
+                    </div>
+                    <!-- SELECTOR DE CURVA -->
+                    <div class="radio-group">
+                        <input type="radio" id="mode-z" name="curveMode" value="z" checked onchange="switchCurveMode()">
+                        <label for="mode-z">Puntaje Z</label>
+                        
+                        <input type="radio" id="mode-p" name="curveMode" value="p" onchange="switchCurveMode()">
+                        <label for="mode-p">Percentiles</label>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <p class="disclaimer">Nota: Las curvas generadas son aproximaciones matemáticas diseñadas exclusivamente para fines pedagógicos. Para un diagnóstico formal, utilice las tablas oficiales provistas por la OMS o el software Anthro.</p>
+    </div>
+
+    <script>
+        let practiceMode = false;
+        let curveMode = 'z'; // 'z' o 'p'
+        let currentIndicatorKey = 'imc_edad';
+
+        // Configuración Simulada de cada Indicador para darle realismo a las gráficas
+        const indicatorConfigs = {
+            'imc_edad': { title: "IMC p. edad", unit: "IMC (kg/m²)", base: 16, growth: 0.1, sd_factor: 0.08 },
+            'peso_longitud': { title: "Peso p. longitud/talla", unit: "Peso (kg)", base: 8, growth: 0.5, sd_factor: 0.10 },
+            'peso_edad': { title: "Peso p. edad", unit: "Peso (kg)", base: 3, growth: 0.6, sd_factor: 0.12 },
+            'talla_edad': { title: "Longitud/talla p. edad", unit: "Longitud/Talla (cm)", base: 50, growth: 1.5, sd_factor: 0.04 },
+            'pc_edad': { title: "PC p. edad", unit: "Perímetro Cefálico (cm)", base: 35, growth: 0.8, sd_factor: 0.03 },
+            'ppmb_edad': { title: "PPMB p. edad", unit: "Perímetro Braquial (cm)", base: 12, growth: 0.2, sd_factor: 0.08 },
+            'ptr_edad': { title: "PTr p. edad", unit: "Pliegue Tricipital (mm)", base: 8, growth: 0.1, sd_factor: 0.2 },
+            'pss_edad': { title: "PSs p. edad", unit: "Pliegue Subescapular (mm)", base: 7, growth: 0.1, sd_factor: 0.2 },
+        };
+
+        // ==========================================
+        // MATEMÁTICAS OMS Y DIAGNÓSTICOS
+        // ==========================================
+        function gaussian(x) { return (1 / Math.sqrt(2 * Math.PI)) * Math.exp(-0.5 * x * x); }
+
+        function getPercentile(z) {
+            let sign = z < 0 ? -1 : 1; let zz = Math.abs(z) / Math.sqrt(2.0);
+            let t = 1.0 / (1.0 + 0.3275911 * zz);
+            let a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741, a4 = -1.453152027, a5 = 1.061405429;
+            let exp = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-zz * zz);
+            let percentile = 0.5 * (1.0 + sign * exp) * 100;
+            if (percentile > 99.9) return "> 99.9"; if (percentile < 0.1) return "< 0.1";
+            return percentile.toFixed(1);
+        }
+
+        // Lógica Clínica Dinámica según el indicador seleccionado
+        function getDiagnosisStatus(z) {
+            let zF = parseFloat(z);
+            let ind = currentIndicatorKey;
+
+            // IMC y Peso para la Longitud
+            if (ind === 'imc_edad' || ind === 'peso_longitud') {
+                if (zF > 3) return { text: "Obesidad (+3 DE)", color: "var(--color-sev)" };
+                if (zF > 2) return { text: "Sobrepeso (+2 DE)", color: "var(--color-mod)" };
+                if (zF > 1) return { text: "Riesgo de sobrepeso", color: "var(--color-riesgo)" };
+                if (zF >= -2) return { text: "Normal", color: "var(--color-normal)" };
+                if (zF >= -3) return { text: "Desnutrición moderada", color: "var(--color-mod)" };
+                return { text: "Desnutrición severa", color: "var(--color-sev)" };
+            }
+
+            // Longitud / Talla para la edad
+            if (ind === 'talla_edad') {
+                if (zF > 3) return { text: "Muy alto (Infrecuente)", color: "var(--color-sev)" };
+                if (zF >= -2) return { text: "Normal", color: "var(--color-normal)" };
+                if (zF >= -3) return { text: "Retraso del crecimiento (Talla baja)", color: "var(--color-mod)" };
+                return { text: "Retraso del crecimiento severo", color: "var(--color-sev)" };
+            }
+
+            // Peso para la edad
+            if (ind === 'peso_edad') {
+                if (zF > 1) return { text: "Precaución (Evaluar IMC)", color: "var(--color-riesgo)" };
+                if (zF >= -2) return { text: "Normal", color: "var(--color-normal)" };
+                if (zF >= -3) return { text: "Bajo peso", color: "var(--color-mod)" };
+                return { text: "Bajo peso severo", color: "var(--color-sev)" };
+            }
+
+            // Perímetro Cefálico
+            if (ind === 'pc_edad') {
+                if (zF > 2) return { text: "Macrocefalia", color: "var(--color-mod)" };
+                if (zF >= -2) return { text: "Normal", color: "var(--color-normal)" };
+                if (zF >= -3) return { text: "Microcefalia", color: "var(--color-mod)" };
+                return { text: "Microcefalia severa", color: "var(--color-sev)" };
+            }
+
+            // Perímetro Braquial (MUAC)
+            if (ind === 'ppmb_edad') {
+                if (zF >= -2) return { text: "Normal", color: "var(--color-normal)" };
+                if (zF >= -3) return { text: "Desnutrición Aguda Moderada", color: "var(--color-mod)" };
+                return { text: "Desnutrición Aguda Severa", color: "var(--color-sev)" };
+            }
+
+            // Pliegues cutáneos
+            if (ind === 'ptr_edad' || ind === 'pss_edad') {
+                if (zF > 2) return { text: "Adiposidad alta", color: "var(--color-mod)" };
+                if (zF >= -2) return { text: "Normal", color: "var(--color-normal)" };
+                return { text: "Baja reserva grasa", color: "var(--color-mod)" };
+            }
+
+            return { text: "Normal", color: "var(--color-normal)" };
+        }
+
+        // ==========================================
+        // GENERADOR DINÁMICO DE CURVAS
+        // ==========================================
+        const ageMonths = Array.from({length: 25}, (_, i) => i);
+        
+        function getMValue(x) {
+            let conf = indicatorConfigs[currentIndicatorKey];
+            return conf.base + Math.pow(x, 0.75) * conf.growth;
+        }
+
+        function getSValue(x) {
+            return getMValue(x) * indicatorConfigs[currentIndicatorKey].sd_factor;
+        }
+
+        function generateCurveData(sdMultiplier) {
+            return ageMonths.map((x) => ({ x: x, y: getMValue(x) + (sdMultiplier * getSValue(x)) }));
+        }
+
+        // ==========================================
+        // GRÁFICO 1: CAMPANA
+        // ==========================================
+        const bellLabels = []; const bellData = [];
+        for (let i = -4; i <= 4; i += 0.1) { bellLabels.push(i.toFixed(1)); bellData.push(gaussian(i)); }
+
+        const backgroundZonesPlugin = {
+            id: 'backgroundZones',
+            beforeDraw: (chart) => {
+                const ctx = chart.canvas.getContext('2d'); const xAxis = chart.scales.x; const yAxis = chart.scales.y;
+                function drawZ(start, end, color) {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(Math.max(xAxis.getPixelForValue(start), xAxis.left), yAxis.top, 
+                                 Math.min(xAxis.getPixelForValue(end), xAxis.right) - Math.max(xAxis.getPixelForValue(start), xAxis.left), 
+                                 yAxis.bottom - yAxis.top);
+                }
+                drawZ(-4, -3, 'rgba(139, 92, 246, 0.15)'); drawZ(-3, -2, 'rgba(239, 68, 68, 0.15)');
+                drawZ(-2, -1, 'rgba(245, 158, 11, 0.15)'); drawZ(-1, 1, 'rgba(16, 185, 129, 0.15)');
+                drawZ(1, 2, 'rgba(245, 158, 11, 0.15)'); drawZ(2, 3, 'rgba(239, 68, 68, 0.15)'); drawZ(3, 4, 'rgba(139, 92, 246, 0.15)');
+            }
+        };
+
+        let currentZScore = 0;
+        const currentMarkerPlugin = {
+            id: 'currentMarker',
+            afterDraw: (chart) => {
+                const ctx = chart.canvas.getContext('2d');
+                const xPos = chart.scales.x.getPixelForValue(currentZScore);
+                const yPos = chart.scales.y.getPixelForValue(gaussian(currentZScore));
+                ctx.beginPath(); ctx.setLineDash([5, 5]); ctx.moveTo(xPos, chart.scales.y.bottom); ctx.lineTo(xPos, yPos);
+                ctx.lineWidth = 2; ctx.strokeStyle = '#38bdf8'; ctx.stroke(); ctx.setLineDash([]);
+                ctx.beginPath(); ctx.arc(xPos, yPos, 8, 0, 2 * Math.PI);
+                ctx.fillStyle = '#38bdf8'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#0f172a'; ctx.stroke();
+            }
+        };
+
+        const ctxBell = document.getElementById('bellCurveChart').getContext('2d');
+        const bellChart = new Chart(ctxBell, {
+            type: 'line',
+            data: { labels: bellLabels, datasets: [{ data: bellData, borderColor: '#94a3b8', borderWidth: 2, pointRadius: 0, tension: 0.4 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false, animation: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: { x: { type: 'linear', min: -4, max: 4, grid: { color: '#334155' }, ticks: { color: '#94a3b8', stepSize: 1 } }, y: { display: false, min: 0, max: 0.45 } }
+            }, plugins: [backgroundZonesPlugin, currentMarkerPlugin]
+        });
+
+        // ==========================================
+        // GRÁFICO 2: CURVAS CLINICAS (DINÁMICAS)
+        // ==========================================
+        const cNorm = '#10b981'; const cRies = '#f59e0b'; const cMod = '#ef4444'; const cSev = '#8b5cf6';
+        
+        function getPatientDataset() {
+            let yPaciente = getMValue(12) + (currentZScore * getSValue(12));
+            return {
+                label: 'Paciente Ficticio (12 meses)', data: [{x: 12, y: yPaciente}], type: 'scatter',
+                backgroundColor: '#38bdf8', borderColor: '#ffffff', borderWidth: 2, pointRadius: 8, pointHoverRadius: 10
+            };
+        }
+
+        function getChartDatasets() {
+            if(curveMode === 'z') {
+                return [
+                    { label: '+3 SD', data: generateCurveData(3), borderColor: cSev, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: '+2 SD', data: generateCurveData(2), borderColor: cMod, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: '+1 SD', data: generateCurveData(1), borderColor: cRies, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: 'Mediana (0)', data: generateCurveData(0), borderColor: cNorm, borderWidth: 2.5, pointRadius: 0, tension: 0.4 },
+                    { label: '-1 SD', data: generateCurveData(-1), borderColor: cRies, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: '-2 SD', data: generateCurveData(-2), borderColor: cMod, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: '-3 SD', data: generateCurveData(-3), borderColor: cSev, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    getPatientDataset()
+                ];
+            } else {
+                return [
+                    { label: 'Percentil 97', data: generateCurveData(1.88), borderColor: cMod, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: 'Percentil 85', data: generateCurveData(1.04), borderColor: cRies, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: 'Percentil 50', data: generateCurveData(0), borderColor: cNorm, borderWidth: 2.5, pointRadius: 0, tension: 0.4 },
+                    { label: 'Percentil 15', data: generateCurveData(-1.04), borderColor: cRies, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    { label: 'Percentil 3', data: generateCurveData(-1.88), borderColor: cMod, borderWidth: 1.5, pointRadius: 0, tension: 0.4 },
+                    getPatientDataset()
+                ];
+            }
+        }
+
+        const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(ctxGrowth, {
+            type: 'line',
+            data: { datasets: getChartDatasets() },
+            options: {
+                responsive: true, maintainAspectRatio: false, animation: false,
+                plugins: {
+                    legend: { display: false }, 
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: { type: 'linear', min: 0, max: 24, title: { display: true, text: 'Edad (meses)', color: '#94a3b8' }, grid: { color: '#334155', drawBorder: false }, ticks: { color: '#94a3b8', stepSize: 3 } },
+                    y: { title: { display: true, text: indicatorConfigs['imc_edad'].unit, color: '#94a3b8' }, grid: { color: '#334155', drawBorder: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+
+        // ==========================================
+        // FUNCIONES DE UI
+        // ==========================================
+        
+        function changeIndicator() {
+            currentIndicatorKey = document.getElementById('indicatorSelect').value;
+            let conf = indicatorConfigs[currentIndicatorKey];
+            
+            // Actualizar Textos
+            document.getElementById('chart-title').innerText = `2. Gráfico Clínico OMS: ${conf.title}`;
+            growthChart.options.scales.y.title.text = conf.unit;
+
+            updateUI(document.getElementById('zSlider').value);
+        }
+
+        function togglePracticeMode() {
+            practiceMode = !practiceMode;
+            const btn = document.getElementById('btn-practice');
+            if(practiceMode) {
+                btn.innerHTML = "👁️ Revelar Diagnóstico"; btn.classList.add('active');
+            } else {
+                btn.innerHTML = "🙈 Ocultar Diagnóstico (Modo Práctica)"; btn.classList.remove('active');
+            }
+            updateUI(document.getElementById('zSlider').value);
+        }
+
+        function switchCurveMode() {
+            curveMode = document.querySelector('input[name="curveMode"]:checked').value;
+            updateUI(document.getElementById('zSlider').value);
+        }
+
+        const slider = document.getElementById('zSlider');
+        const valZ = document.getElementById('val-z');
+        const valP = document.getElementById('val-p');
+        const valDiag = document.getElementById('val-diag');
+
+        function updateUI(zValue) {
+            currentZScore = parseFloat(zValue);
+            let zString = currentZScore > 0 ? `+${currentZScore.toFixed(2)}` : currentZScore.toFixed(2);
+            let percentilStr = `${getPercentile(currentZScore)}%`;
+            const status = getDiagnosisStatus(currentZScore);
+
+            valZ.textContent = zString;
+            
+            if (practiceMode) {
+                valP.textContent = "???"; valP.style.color = "var(--text-muted)";
+                valDiag.textContent = "???"; valDiag.style.color = "var(--text-main)";
+            } else {
+                valP.textContent = percentilStr; valP.style.color = "#38bdf8";
+                valDiag.textContent = status.text; valDiag.style.color = status.color;
+            }
+
+            bellChart.update();
+            growthChart.data.datasets = getChartDatasets();
+            growthChart.update();
+        }
+
+        slider.addEventListener('input', (e) => updateUI(e.target.value));
+        updateUI(0);
+
+    </script>
+</body>
+</html>
