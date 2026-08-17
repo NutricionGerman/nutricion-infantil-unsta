@@ -6,6 +6,7 @@ node_modules/
 CLASES/
 HERRAMIENTAS/
 *.mp4
+!tienda/hero-simple/hero.mp4
 *.pdf
 
 # Archivos de entorno y logs
