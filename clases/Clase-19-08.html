@@ -1,0 +1,2742 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 19/08: Antropometría 5-19 Años - Cátedra de Nutrición Infantil UNSTA</title>
+    
+    <!-- Fuentes e Iconos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="../iconos/favicon.ico">
+
+    <!-- Librerías para Gráficos y PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.85);
+            --bg-card-hover: rgba(30, 38, 48, 0.95);
+            --primary-dark: #161b22;
+            --accent-teal: #4c9a9b;
+            --accent-teal-light: #2dd4bf;
+            --accent-teal-subtle: rgba(76, 154, 155, 0.12);
+            --accent-orange: #e87a3d;
+            --accent-orange-subtle: rgba(232, 122, 61, 0.12);
+            --text-light: #f0f6fc;
+            --text-muted: #8b949e;
+            --text-muted-light: rgba(240, 246, 252, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-focus: rgba(76, 154, 155, 0.5);
+            --valid-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --danger-red: #ef4444;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(76, 154, 155, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(232, 122, 61, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(13, 17, 23, 0.96) 0%, #0d1117 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER SUPERIOR ===== */
+        .class-header {
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 16px 28px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .header-logo-wrap {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--accent-teal-subtle);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-logo-wrap img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .header-info h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2px;
+        }
+
+        .header-info .header-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .badge-cuatrimestre {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+            background: var(--accent-teal-subtle);
+            color: var(--accent-teal-light);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-back-home:hover {
+            background: var(--accent-teal-subtle);
+            border-color: var(--accent-teal);
+            color: #fff;
+            transform: translateX(-3px);
+        }
+
+        /* ===== HERO BANNER DE LA CLASE ===== */
+        .class-hero {
+            max-width: 1080px;
+            margin: 28px auto 18px;
+            padding: 0 20px;
+        }
+
+        .class-hero-card {
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.95) 0%, rgba(13, 17, 23, 0.98) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 30px 36px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .class-hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 280px; height: 280px;
+            background: radial-gradient(circle, rgba(76, 154, 155, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .class-meta-tags {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .tag-pill {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-teal-subtle);
+            color: var(--accent-teal-light);
+            border: 1px solid rgba(76, 154, 155, 0.25);
+        }
+
+        .class-hero-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.25;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .class-hero-desc {
+            color: var(--text-muted-light);
+            font-size: 0.94rem;
+            max-width: 840px;
+            line-height: 1.6;
+        }
+
+        /* ===== BARRA DE PESTAÑAS PRINCIPALES ===== */
+        .tabs-wrapper {
+            max-width: 1080px;
+            margin: 20px auto 0;
+            padding: 0 20px;
+        }
+
+        .main-tabs-nav {
+            display: flex;
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 5px;
+            gap: 6px;
+        }
+
+        .main-tab-btn {
+            flex: 1;
+            padding: 11px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .main-tab-btn i {
+            font-size: 1rem;
+        }
+
+        .main-tab-btn:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .main-tab-btn.active {
+            color: #fff;
+            background: var(--accent-teal);
+            box-shadow: 0 4px 14px rgba(76, 154, 155, 0.35);
+        }
+
+        .tab-lock-badge {
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted-light);
+            margin-left: 4px;
+            font-weight: 500;
+        }
+
+        /* ===== CONTENEDOR DE PANELES ===== */
+        .main-content {
+            max-width: 1080px;
+            margin: 24px auto 60px;
+            padding: 0 20px;
+        }
+
+        .tab-panel-view {
+            display: none;
+            animation: panelFadeIn 0.3s ease-out;
+        }
+
+        .tab-panel-view.active {
+            display: block;
+        }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== CARDS Y SECCIONES ===== */
+        .content-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 26px 30px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(12px);
+        }
+
+        .section-header-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .section-header-block i {
+            font-size: 1.3rem;
+            color: var(--accent-teal-light);
+        }
+
+        .section-header-block h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .section-subtitle-text {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
+        /* Categorías (Datos Brutos / Índices / Indicadores) */
+        .framework-category-card {
+            background: rgba(13, 17, 23, 0.6);
+            border: 1px solid rgba(76, 154, 155, 0.25);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .framework-badge-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--accent-teal-light);
+            background: var(--accent-teal-subtle);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .info-badge-box {
+            background: rgba(0, 0, 0, 0.35);
+            border-left: 3px solid var(--accent-teal);
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            margin: 10px 0 14px 0;
+            font-size: 0.84rem;
+            line-height: 1.5;
+        }
+
+        .info-badge-box .info-label {
+            font-weight: 700;
+            color: var(--accent-teal-light);
+            margin-right: 4px;
+        }
+
+        .info-badge-box .info-source {
+            display: block;
+            margin-top: 3px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        /* ===== ACCORDION DE PROTOCOLOS ===== */
+        .accordion-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .acc-item {
+            background: rgba(22, 27, 34, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .acc-item:hover {
+            border-color: rgba(76, 154, 155, 0.3);
+        }
+
+        .acc-item.active {
+            border-color: rgba(76, 154, 155, 0.45);
+        }
+
+        .acc-header {
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+
+        .acc-header:hover {
+            background: rgba(76, 154, 155, 0.08);
+        }
+
+        .acc-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .acc-badge-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: var(--accent-teal-subtle);
+            color: var(--accent-teal-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .acc-title-wrap h4 {
+            font-size: 0.94rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .acc-toggle-icon {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .acc-item.active .acc-toggle-icon {
+            transform: rotate(180deg);
+            color: var(--accent-teal-light);
+        }
+
+        .acc-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+            padding: 0 18px;
+            background: rgba(10, 13, 18, 0.4);
+        }
+
+        .acc-item.active .acc-body {
+            padding: 16px 18px 20px 18px;
+        }
+
+        .acc-body p {
+            font-size: 0.88rem;
+            color: var(--text-muted-light);
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        /* Sub-Acordeón */
+        .sub-accordion-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .sub-acc-item {
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .sub-acc-item.active {
+            border-color: rgba(76, 154, 155, 0.35);
+        }
+
+        .sub-acc-header {
+            padding: 11px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+
+        .sub-acc-header:hover {
+            background: rgba(76, 154, 155, 0.1);
+        }
+
+        .sub-acc-header h5 {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-acc-header i.sub-toggle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            transition: transform 0.25s;
+        }
+
+        .sub-acc-item.active .sub-acc-header i.sub-toggle {
+            transform: rotate(180deg);
+            color: var(--accent-teal-light);
+        }
+
+        .sub-acc-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 15px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .sub-acc-item.active .sub-acc-body {
+            padding: 12px 15px;
+        }
+
+        .video-box {
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid var(--glass-border);
+            margin: 12px 0;
+        }
+
+        .video-box video {
+            width: 100%;
+            display: block;
+            max-height: 400px;
+        }
+
+        .img-instruction-box {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .img-instruction-box img {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* ===== VISOR INTERACTIVO DE PERCENTILES ===== */
+        .chart-explorer-card {
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .chart-nav-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        .chart-nav-btn {
+            padding: 8px 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chart-nav-btn:hover {
+            background: rgba(76, 154, 155, 0.15);
+            color: #fff;
+        }
+
+        .chart-nav-btn.active {
+            background: var(--accent-teal);
+            border-color: var(--accent-teal);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(76, 154, 155, 0.35);
+        }
+
+        .chart-embed-viewer {
+            width: 100%;
+            height: 680px;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .chart-embed-viewer iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Tablas */
+        .standard-table-wrap {
+            overflow-x: auto;
+            margin: 14px 0;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .academic-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .academic-table th {
+            background: rgba(76, 154, 155, 0.2);
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(76, 154, 155, 0.3);
+        }
+
+        .academic-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted-light);
+        }
+
+        .formula-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed var(--accent-teal);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: #fff;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        /* ===== BIBLIOGRAFÍA LIMPIA ===== */
+        .biblio-clean-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .biblio-clean-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: rgba(13, 17, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .biblio-clean-item .bib-num {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--accent-teal-light);
+            background: var(--accent-teal-subtle);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .biblio-clean-item .bib-text {
+            font-size: 0.84rem;
+            color: var(--text-muted-light);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .btn-download-bib {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: var(--accent-teal-subtle);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            color: var(--accent-teal-light);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-top: 6px;
+        }
+
+        .btn-download-bib:hover {
+            background: var(--accent-teal);
+            color: #fff;
+        }
+
+        /* ===== ESTADO BLOQUEADO / NO DISPONIBLE DEL TP ===== */
+        .tp-locked-container {
+            text-align: center;
+            padding: 50px 24px;
+            background: rgba(22, 27, 34, 0.6);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: var(--radius-md);
+        }
+
+        .tp-locked-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0 auto 16px;
+        }
+
+        .tp-locked-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .tp-locked-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            max-width: 520px;
+            margin: 0 auto 18px;
+            line-height: 1.5;
+        }
+
+        .tp-locked-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: var(--accent-teal-subtle);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            color: var(--accent-teal-light);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        /* ===== CALCULADORA WIZARD ===== */
+        .wizard-container {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .wizard-stepper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin-bottom: 28px;
+            padding: 0 10px;
+        }
+
+        .wizard-stepper-header::before {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 25px;
+            right: 25px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            z-index: 1;
+        }
+
+        .step-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-dark);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.25s ease;
+        }
+
+        .step-label {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step-node.active .step-circle {
+            border-color: var(--accent-teal);
+            color: #fff;
+            background: var(--accent-teal);
+            box-shadow: 0 0 12px rgba(76, 154, 155, 0.5);
+            transform: scale(1.08);
+        }
+
+        .step-node.active .step-label {
+            color: var(--accent-teal-light);
+            font-weight: 600;
+        }
+
+        .step-node.completed .step-circle {
+            background: rgba(76, 154, 155, 0.3);
+            border-color: var(--accent-teal);
+            color: #fff;
+        }
+
+        .wizard-form-step {
+            display: none;
+            animation: fadeInStep 0.25s ease-out;
+        }
+
+        .wizard-form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeInStep {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Campos de Entrada */
+        .form-grid-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .input-card {
+            background: rgba(13, 17, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 12px 14px;
+            transition: border-color 0.2s;
+        }
+
+        .input-card:focus-within {
+            border-color: var(--accent-teal);
+        }
+
+        .input-card.valid {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.04);
+        }
+
+        .input-card.warning {
+            border-color: rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.04);
+        }
+
+        .input-card label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .input-card input, .input-card select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.92rem;
+            outline: none;
+        }
+
+        .input-card input:focus, .input-card select:focus {
+            border-color: var(--accent-teal);
+        }
+
+        .measurement-inputs-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .measurement-inputs-row input {
+            text-align: center;
+        }
+
+        .measurement-status-indicator {
+            width: 24px;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+
+        .measurement-status-indicator .fa-check-circle { color: var(--valid-green); }
+        .measurement-status-indicator .fa-exclamation-triangle { color: var(--warning-yellow); }
+
+        /* ===== BARRA DE BOTONES REDISEÑADA Y ORGANIZADA ===== */
+        .calculator-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 9px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            font-family: inherit;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-action-primary {
+            background: var(--accent-teal);
+            border-color: var(--accent-teal);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(76, 154, 155, 0.35);
+        }
+
+        .btn-action-primary:hover {
+            background: #5ab1b2;
+        }
+
+        .btn-action-outline {
+            border-color: rgba(76, 154, 155, 0.35);
+            color: var(--accent-teal-light);
+            background: var(--accent-teal-subtle);
+        }
+
+        .btn-action-outline:hover {
+            background: rgba(76, 154, 155, 0.25);
+            color: #fff;
+        }
+
+        .btn-action-danger {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        .btn-action-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fff;
+        }
+
+        /* ===== PANEL DE RESULTADOS ===== */
+        #resultados-box {
+            margin-top: 24px;
+            padding: 22px;
+            background: rgba(13, 17, 23, 0.92);
+            border: 1px solid rgba(76, 154, 155, 0.4);
+            border-radius: 12px;
+            display: none;
+            animation: fadeInStep 0.3s ease-out;
+        }
+
+        .results-section-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--accent-teal-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 14px 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .result-tile {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .result-tile-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .result-tile-val {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .result-badge {
+            display: inline-block;
+            margin-top: 4px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ===== CONTENEDOR DE GRÁFICOS ===== */
+        .chart-section-card {
+            background: rgba(13, 17, 23, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+            display: none;
+            flex-direction: column;
+            height: 480px;
+        }
+
+        .chart-filter-pills {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        .chart-filter-btn {
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted-light);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .chart-filter-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .chart-filter-btn.active {
+            background: var(--accent-teal);
+            border-color: var(--accent-teal);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Tooltip Flotante */
+        #chart-photo-tooltip {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 1000;
+            background: rgba(22, 27, 34, 0.96);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 10px 12px;
+            width: 160px;
+            text-align: center;
+            transform: translate(-50%, -120%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        #chart-photo-tooltip img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--accent-teal);
+            margin-bottom: 6px;
+            background-color: var(--primary-dark);
+        }
+
+        #chart-photo-tooltip p {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 860px) {
+            .class-header { padding: 12px 16px; flex-wrap: wrap; }
+            .class-hero-card { padding: 22px 18px; }
+            .class-hero-title { font-size: 1.45rem; }
+            .wizard-container { padding: 18px 14px; }
+            .step-label { display: none; }
+            .chart-section-card { height: 400px; padding: 12px; }
+            .chart-embed-viewer { height: 520px; }
+            .calculator-toolbar { flex-direction: column; align-items: stretch; }
+            .toolbar-group { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER SUPERIOR ===== -->
+    <header class="class-header">
+        <a href="../index.html" class="header-brand">
+            <div class="header-logo-wrap">
+                <img src="../iconos/favicon.ico" onerror="this.src='https://ui-avatars.com/api/?name=NI&background=4c9a9b&color=fff'" alt="Logo UNSTA">
+            </div>
+            <div class="header-info">
+                <h1>Nutrición Infantil <span class="badge-cuatrimestre">2° Cuatrimestre</span></h1>
+                <div class="header-subtitle">Universidad del Norte Santo Tomás de Aquino</div>
+            </div>
+        </a>
+
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <a href="presentacion-19-08.html" target="_blank" class="btn-action btn-action-primary" style="text-decoration: none; padding: 7px 14px; font-size: 0.82rem;">
+                <i class="fas fa-desktop"></i> Ver Diapositivas
+            </a>
+            <a href="../index.html" class="btn-back-home">
+                <i class="fas fa-arrow-left"></i> Volver a la Cátedra
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== HERO BANNER DE LA CLASE ===== -->
+    <section class="class-hero">
+        <div class="class-hero-card">
+            <div class="class-meta-tags">
+                <span class="tag-pill"><i class="far fa-calendar-alt"></i> 19 de Agosto</span>
+                <span class="tag-pill"><i class="fas fa-layer-group"></i> Unidad 1</span>
+                <span class="tag-pill"><i class="fas fa-vial"></i> Teórico - Práctico</span>
+            </div>
+            <h1 class="class-hero-title">Evaluación Antropométrica (5 a 19 Años)</h1>
+            <p class="class-hero-desc">
+                Marco metodológico estructurado en <strong>Datos Brutos</strong> (mediciones primarias), <strong>Índices</strong> (relaciones matemáticas) e <strong>Indicadores</strong> diagnósticos basados en patrones OMS 2007, CDC y Frisancho.
+            </p>
+            <div style="margin-top: 18px; display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="presentacion-19-08.html" target="_blank" class="btn-action btn-action-primary" style="text-decoration: none; padding: 9px 18px; font-size: 0.88rem;">
+                    <i class="fas fa-chalkboard-teacher"></i> Iniciar Modo Diapositivas (Presentación)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BARRA DE PESTAÑAS PRINCIPALES ===== -->
+    <div class="tabs-wrapper">
+        <nav class="main-tabs-nav">
+            <button class="main-tab-btn active" data-tab-target="#tab-teoria">
+                <i class="fas fa-book-open"></i>
+                <span>1. Material y Protocolos</span>
+            </button>
+            <button class="main-tab-btn" data-tab-target="#tab-tp">
+                <i class="fas fa-clipboard-list"></i>
+                <span>2. Trabajo Práctico N° 3</span>
+                <span class="tab-lock-badge"><i class="fas fa-lock"></i> Próx.</span>
+            </button>
+            <button class="main-tab-btn" data-tab-target="#tab-calculadora">
+                <i class="fas fa-calculator"></i>
+                <span>3. Calculadora MQI & App</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main class="main-content">
+
+        <!-- ==========================================
+             PESTAÑA 1: MATERIAL Y PROTOCOLOS
+        ========================================== -->
+        <div id="tab-teoria" class="tab-panel-view active">
+            
+            <!-- 1. BLOQUE: DATOS BRUTOS -->
+            <div class="framework-category-card">
+                <div class="framework-badge-header">
+                    <i class="fas fa-ruler"></i> Nivel 1: Datos Brutos (Mediciones Primarias Directas)
+                </div>
+                <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">Mediciones Antropométricas y Dinamometría de Campo</h3>
+                <p class="section-subtitle-text">
+                    Variables directas obtenidas con instrumental calibrado sobre el sujeto evaluado.
+                </p>
+
+                <div class="accordion-group">
+
+                    <!-- Talla -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-ruler-vertical"></i></div>
+                                <h4>Estatura / Talla de Pie (cm)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué mide?:</span> Crecimiento lineal esquelético máximo entre vértex y plano de sustentación.<br>
+                                <span class="info-label">📖 Referencia:</span> Estandarización CDC / NHANES y OMS.<br>
+                                <span class="info-source">Instrumental: Estadiómetro de pared con precisión de 0.1 cm.</span>
+                            </div>
+                            <p>Mide la distancia vertical con plano de Frankfort horizontal. Fundamental para la estimación del ritmo de crecimiento y base para los índices corporales.</p>
+                            <div class="video-box">
+                                <video controls preload="metadata">
+                                    <source src="videos/talla-cdc.mp4" type="video/mp4">
+                                    Tu navegador no soporta reproducción de video directo.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marcación Anatómica Desplegable -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <h4>Marcación de Puntos Anatómicos (Hitos Óseos)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué mide?:</span> Localización exacta de referencias óseas para garantizar precisión y reproducibilidad.<br>
+                                <span class="info-source">Referencia metodológica: Manual de Antropometría ISAK / CDC NHANES.</span>
+                            </div>
+                            <p>Despliega cada punto para ver la imagen anatómica de referencia:</p>
+                            
+                            <div class="sub-accordion-group">
+                                
+                                <!-- Punto 1: Acromion -->
+                                <div class="sub-acc-item">
+                                    <div class="sub-acc-header">
+                                        <h5><i class="fas fa-crosshairs" style="color: var(--accent-teal-light);"></i> 1. Punto Acromial (Acromion)</h5>
+                                        <i class="fas fa-chevron-down sub-toggle"></i>
+                                    </div>
+                                    <div class="sub-acc-body">
+                                        <p style="font-size: 0.84rem; margin-bottom: 8px;">Punto más lateral y superior del borde externo del proceso acromial de la escápula.</p>
+                                        <div class="img-instruction-box">
+                                            <img src="img/acromion.png" onerror="this.parentElement.innerHTML='<p style=\'color:#666; font-size:0.85rem; padding:10px;\'>Imagen: acromion.png (Punto Acromial)</p>'" alt="Punto Acromion">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Punto 2: Marca Mesobraquial -->
+                                <div class="sub-acc-item">
+                                    <div class="sub-acc-header">
+                                        <h5><i class="fas fa-arrows-alt-v" style="color: var(--accent-teal-light);"></i> 2. Marca Mesobraquial (Punto Medio)</h5>
+                                        <i class="fas fa-chevron-down sub-toggle"></i>
+                                    </div>
+                                    <div class="sub-acc-body">
+                                        <p style="font-size: 0.84rem; margin-bottom: 8px;">Punto equidistante exacto entre acromion y olécranon con codo flexionado a 90°.</p>
+                                        <div class="img-instruction-box">
+                                            <img src="img/marca mesobraquial.png" onerror="this.parentElement.innerHTML='<p style=\'color:#666; font-size:0.85rem; padding:10px;\'>Imagen: marca mesobraquial.png (Marca Mesobraquial)</p>'" alt="Marca Mesobraquial">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Punto 3: Cresta Ilíaca -->
+                                <div class="sub-acc-item">
+                                    <div class="sub-acc-header">
+                                        <h5><i class="fas fa-shield-alt" style="color: var(--accent-teal-light);"></i> 3. Cresta Ilíaca y Punto Medio de Cintura</h5>
+                                        <i class="fas fa-chevron-down sub-toggle"></i>
+                                    </div>
+                                    <div class="sub-acc-body">
+                                        <p style="font-size: 0.84rem; margin-bottom: 8px;">Punto lateral sobre línea axilar media para la localización de la circunferencia de cintura.</p>
+                                        <div class="img-instruction-box">
+                                            <img src="img/Cresta ileaca.png" onerror="this.parentElement.innerHTML='<p style=\'color:#666; font-size:0.85rem; padding:10px;\'>Imagen: Cresta ileaca.png (Cresta Ilíaca)</p>'" alt="Cresta Ilíaca">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Video de Marcación General -->
+                                <div class="sub-acc-item">
+                                    <div class="sub-acc-header">
+                                        <h5><i class="fas fa-play-circle" style="color: var(--accent-teal-light);"></i> Video Demostrativo de Marcación (CDC)</h5>
+                                        <i class="fas fa-chevron-down sub-toggle"></i>
+                                    </div>
+                                    <div class="sub-acc-body">
+                                        <div class="video-box">
+                                            <video controls preload="metadata">
+                                                <source src="videos/marcacion-cdc.mp4" type="video/mp4">
+                                                Tu navegador no soporta reproducción de video directo.
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perímetro Braquial -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-circle"></i></div>
+                                <h4>Perímetro Braquial - PB (cm)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué mide?:</span> Masa y volumen global del segmento braquial (músculo + grasa subcutánea + hueso húmero).<br>
+                                <span class="info-label">📖 Referencia:</span> Curvas y percentiles CDC / NCHS (2 meses a 19 años).<br>
+                                <span class="info-source">Instrumental: Cinta métrica inextensible de fibra de vidrio / metálica flexible.</span>
+                            </div>
+                            <p>Circunferencia tomada en el punto mesobraquial con el brazo relajado.</p>
+                            <div class="video-box">
+                                <video controls preload="metadata">
+                                    <source src="videos/circunferencia braquial.mp4" type="video/mp4">
+                                    Tu navegador no soporta reproducción de video directo.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Perímetro de Cintura -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-arrows-alt-h"></i></div>
+                                <h4>Perímetro de Cintura - PC (cm)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué mide?:</span> Adiposidad central, grasa visceral y riesgo cardiometabólico.<br>
+                                <span class="info-label">📖 Referencia:</span> Tablas percentilares CDC / NCHS (2 a 19 años).<br>
+                                <span class="info-source">Punto de medición: Punto medio entre reborde costal inferior y cresta ilíaca al final de espiración normal.</span>
+                            </div>
+                            <div class="video-box">
+                                <video controls preload="metadata">
+                                    <source src="videos/cintura-cdc.mp4" type="video/mp4">
+                                    Tu navegador no soporta reproducción de video directo.
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pliegue Tricipital -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-layer-group"></i></div>
+                                <h4>Pliegue Cutáneo Tricipital - PT (mm)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué mide?:</span> Espesor del tejido adiposo subcutáneo y reserva energética periférica.<br>
+                                <span class="info-label">📖 Referencia:</span> Curvas percentilares CDC / NCHS (NHANES).<br>
+                                <span class="info-source">Instrumental: Plicómetro o Caliper calibrado (presión constante de 10 g/mm²).</span>
+                            </div>
+                            <div class="video-box">
+                                <p style="color: var(--text-muted); font-size: 0.85rem; padding: 8px;">Protocolo de toma a 1 cm distal de la marca mesobraquial con pinza vertical.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fuerza de Prensión -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-hand-rock"></i></div>
+                                <h4>Fuerza de Prensión Manual - Dinamometría (kg)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué mide?:</span> Fuerza isométrica máxima y capacidad funcional de contracción muscular periférica.<br>
+                                <span class="info-label">📖 Referencia:</span> Manual Camry EH101 y valores normativos poblacionales.<br>
+                                <span class="info-source">Protocolo: 3 intentos de 3 a 5 segundos con brazo a 90° registrando el valor pico más elevado.</span>
+                            </div>
+                            <div class="video-box">
+                                <video controls preload="metadata">
+                                    <source src="videos/fuerza-prension.mp4" type="video/mp4">
+                                    Tu navegador no soporta reproducción de video directo.
+                                </video>
+                            </div>
+                            <div class="img-instruction-box">
+                                <p style="color: #333; font-weight: 600; margin-bottom: 6px;">Escala Normativa del Dinamómetro Camry EH101</p>
+                                <img src="img/fuerza.png" onerror="this.style.display='none'" alt="Dinamometría Normativa">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 2. BLOQUE: ÍNDICES ANTROPOMÉTRICOS -->
+            <div class="framework-category-card">
+                <div class="framework-badge-header">
+                    <i class="fas fa-calculator"></i> Nivel 2: Índices Antropométricos (Construcción Matemática)
+                </div>
+                <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">Relaciones Matemáticas entre Variables Crudas</h3>
+                <p class="section-subtitle-text">
+                    Un <strong>índice</strong> surge de la combinación de dos o más datos brutos para cuantificar dimensiones o proporciones corporales.
+                </p>
+
+                <div class="accordion-group">
+
+                    <!-- IMC -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-weight"></i></div>
+                                <h4>Índice de Masa Corporal (IMC / Quetelet)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué expresa?:</span> Densidad o volumen de masa corporal global relativo a la talla.<br>
+                                <span class="info-label">📖 Fórmula:</span> <strong>IMC = Peso (kg) / [ Talla (m) ]²</strong>
+                            </div>
+                            <div class="formula-box">
+                                IMC (kg/m²) = Peso (kg) / [ Estatura (m) ]²
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- cAMB -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-dumbbell"></i></div>
+                                <h4>Área Muscular del Brazo Corregida (cAMB)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué expresa?:</span> Área de sección transversal muscular braquial libre de grasa y componente óseo.<br>
+                                <span class="info-label">📖 Ecuación:</span> <strong>cAMB (cm²) = [ (PB - π · PT/10)² / 4π ] - Corrección Ósea</strong>
+                            </div>
+                            <div class="formula-box">
+                                cAMB (cm²) = [ (PB - π · PT/10)² / 4π ] - Corrección Ósea<br>
+                                <span style="font-size: 0.82rem; color: var(--accent-teal-light);">(Corrección: 10.0 en varones | 6.5 en mujeres)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MQI -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-bolt"></i></div>
+                                <h4>Índice de Calidad Muscular Funcional (MQI)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué expresa?:</span> Eficiencia neuromuscular y fuerza generada por cada cm² de área muscular magra.<br>
+                                <span class="info-label">📖 Fórmula:</span> <strong>MQI (kg/cm²) = Fuerza de Prensión (kg) / cAMB (cm²)</strong>
+                            </div>
+                            <div class="formula-box">
+                                MQI (kg/cm²) = Fuerza de Prensión (kg) / cAMB (cm²)
+                            </div>
+                            <div class="img-instruction-box" style="margin-top: 10px;">
+                                <img src="img/calidad muscular.png" onerror="this.style.display='none'" alt="Calidad Muscular">
+                                <img src="img/mqi.png" onerror="this.style.display='none'" alt="MQI Eficiencia" style="margin-top: 8px;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ICE -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-percentage"></i></div>
+                                <h4>Índice Cintura / Estatura (ICE)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué expresa?:</span> Proporción entre la circunferencia abdominal y la estatura total.<br>
+                                <span class="info-label">📖 Fórmula:</span> <strong>ICE = Perímetro de Cintura (cm) / Estatura (cm)</strong>
+                            </div>
+                            <div class="formula-box">
+                                ICE = Perímetro de Cintura (cm) / Estatura (cm)
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 3. BLOQUE: INDICADORES ANTROPOMÉTRICOS -->
+            <div class="framework-category-card">
+                <div class="framework-badge-header">
+                    <i class="fas fa-stethoscope"></i> Nivel 3: Indicadores Antropométricos (Interpretación y Patrones OMS)
+                </div>
+                <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 4px;">Evaluación Diagnóstica frente a Patrones de Referencia</h3>
+                <p class="section-subtitle-text">
+                    Un <strong>indicador</strong> es la interpretación diagnóstica que resulta al comparar un índice o dato bruto con una población de referencia normativa.
+                </p>
+
+                <div class="accordion-group">
+
+                    <!-- Indicador IMC para la Edad (OMS 2007) -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-chart-bar"></i></div>
+                                <h4>Indicador: IMC para la Edad (Patrón OMS 2007, 5 a 19 Años)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué diagnostica?:</span> Estado nutricional global (Eutrofia, Sobrepeso, Obesidad, Delgadez) ajustado por edad y sexo.<br>
+                                <span class="info-label">📖 Estándar Oficial:</span> Patrones de Crecimiento de la Organización Mundial de la Salud (OMS 2007).
+                            </div>
+
+                            <div class="standard-table-wrap">
+                                <table class="academic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Puntaje Z (Desvío Estándar)</th>
+                                            <th>Percentil Equivalente</th>
+                                            <th>Diagnóstico Nutricional (OMS 5-19 Años)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Z > +2 DE</td><td>> Percentil 97</td><td><strong style="color: var(--danger-red);">Obesidad</strong></td></tr>
+                                        <tr><td>Z > +1 a +2 DE</td><td>Percentil 85 a 97</td><td><strong style="color: var(--warning-yellow);">Sobrepeso</strong></td></tr>
+                                        <tr><td>Z -2 a +1 DE</td><td>Percentil 3 a 85</td><td><strong style="color: var(--valid-green);">Eutrofia / Normopeso</strong></td></tr>
+                                        <tr><td>Z < -2 DE</td><td>< Percentil 3</td><td><strong style="color: var(--warning-yellow);">Delgadez</strong></td></tr>
+                                        <tr><td>Z < -3 DE</td><td>< Percentil 0.1</td><td><strong style="color: var(--danger-red);">Delgadez Severa</strong></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indicador de Muscularidad (Percentiles Frisancho) -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-user-shield"></i></div>
+                                <h4>Indicador: Muscularidad y Reserva Proteica (Percentiles Frisancho)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué diagnostica?:</span> Grado de desarrollo y reserva proteica muscular somática.<br>
+                                <span class="info-label">📖 Estándar:</span> Tablas antropométricas de Frisancho (1990) y NHANES.
+                            </div>
+                            <div class="standard-table-wrap">
+                                <table class="academic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Percentil de cAMB</th>
+                                            <th>Clasificación de Muscularidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>≤ Percentil 5</td><td><strong style="color: var(--danger-red);">Baja Muscularidad / Depleción Magra</strong></td></tr>
+                                        <tr><td>> P5 a ≤ P15</td><td><strong style="color: var(--warning-yellow);">Abajo del Promedio</strong></td></tr>
+                                        <tr><td>> P15 a ≤ P85</td><td><strong style="color: var(--valid-green);">Muscularidad Adecuada (Promedio)</strong></td></tr>
+                                        <tr><td>> P85 a ≤ P95</td><td><strong style="color: var(--accent-teal-light);">Arriba del Promedio</strong></td></tr>
+                                        <tr><td>> Percentil 95</td><td><strong style="color: var(--accent-teal-light);">Alta Muscularidad / Hipertrofia</strong></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indicador de Riesgo Cardiometabólico (ICE) -->
+                    <div class="acc-item">
+                        <div class="acc-header">
+                            <div class="acc-title-wrap">
+                                <div class="acc-badge-icon"><i class="fas fa-heartbeat"></i></div>
+                                <h4>Indicador: Riesgo Cardiometabólico (Punto de Corte ICE)</h4>
+                            </div>
+                            <i class="fas fa-chevron-down acc-toggle-icon"></i>
+                        </div>
+                        <div class="acc-body">
+                            <div class="info-badge-box">
+                                <span class="info-label">🎯 ¿Qué diagnostica?:</span> Riesgo cardiometabólico y exceso de grasa visceral centralizada.<br>
+                                <span class="info-label">📖 Criterio:</span> Punto de corte universal validado (Ashwell et al.).
+                            </div>
+                            <div class="standard-table-wrap">
+                                <table class="academic-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Valor de ICE</th>
+                                            <th>Evaluación Diagnóstica</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>ICE < 0.50</td><td><strong style="color: var(--valid-green);">Sin Riesgo Aumentado</strong> (Cintura menor a la mitad de la talla)</td></tr>
+                                        <tr><td>ICE ≥ 0.50</td><td><strong style="color: var(--danger-red);">Riesgo Cardiometabólico Aumentado</strong></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 4. BLOQUE: EXPLORADOR DE CURVAS Y CALCULADORAS PERCENTILARES -->
+            <div class="chart-explorer-card">
+                <div class="section-header-block" style="border-bottom: none; margin-bottom: 12px; padding-bottom: 0;">
+                    <i class="fas fa-chart-area"></i>
+                    <h2>Explorador de Curvas y Calculadoras Percentilares</h2>
+                </div>
+                <p class="section-subtitle-text" style="margin-bottom: 16px;">
+                    Selecciona una variable para consultar su ficha técnica diagnóstica y utilizar su curva percentilar interactiva:
+                </p>
+
+                <!-- Pestañas de Selección de Gráficos -->
+                <div class="chart-nav-pills">
+                    <button class="chart-nav-btn active" data-chart-file="herramientas/IMC 5 a 19 años.html" data-chart-name="IMC para la Edad (5-19 Años)" data-chart-measure="Estado Nutricional Global Pondero-Estatural" data-chart-ref="Organización Mundial de la Salud (OMS 2007)">
+                        <i class="fas fa-child"></i> IMC 5-19 Años (OMS)
+                    </button>
+                    <button class="chart-nav-btn" data-chart-file="herramientas/AMB.html" data-chart-name="Área Muscular del Brazo (cAMB)" data-chart-measure="Reserva Proteica y Masa Muscular Esquelética" data-chart-ref="Estándares Antropométricos de Frisancho (1990)">
+                        <i class="fas fa-dumbbell"></i> AMB / cAMB (Frisancho)
+                    </button>
+                    <button class="chart-nav-btn" data-chart-file="herramientas/pliegue-triceps.html" data-chart-name="Pliegue Cutáneo Tricipital" data-chart-measure="Grasa Corporal Subcutánea y Reserva Energética" data-chart-ref="Centros para el Control y Prevención de Enfermedades (CDC/NCHS)">
+                        <i class="fas fa-layer-group"></i> Pliegue Tríceps (CDC)
+                    </button>
+                    <button class="chart-nav-btn" data-chart-file="herramientas/cintura.html" data-chart-name="Circunferencia de Cintura" data-chart-measure="Distribución de Adiposidad Central y Riesgo Metabólico" data-chart-ref="Curvas Percentilares CDC/NCHS (2 a 19 años)">
+                        <i class="fas fa-arrows-alt-h"></i> Cintura (CDC)
+                    </button>
+                    <button class="chart-nav-btn" data-chart-file="herramientas/perimetro-braquial.html" data-chart-name="Perímetro Braquial" data-chart-measure="Masa y Volumen Global del Segmento Braquial" data-chart-ref="Tablas Percentilares CDC/NCHS (2m a 19 años)">
+                        <i class="fas fa-circle"></i> Perímetro Braquial (CDC)
+                    </button>
+                </div>
+
+                <!-- Ficha Informativa Dinámica -->
+                <div id="dynamic-chart-info-card" class="info-badge-box" style="margin-bottom: 16px; background: rgba(0,0,0,0.5); border-left-color: var(--accent-teal); padding: 12px 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <h4 id="chart-info-title" style="color: #fff; font-size: 1rem; margin-bottom: 2px;">IMC para la Edad (5-19 Años)</h4>
+                            <div id="chart-info-measure" style="color: var(--accent-teal-light); font-size: 0.85rem;"><strong>🎯 ¿Qué mide?:</strong> Estado Nutricional Global Pondero-Estatural</div>
+                            <div id="chart-info-ref" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 2px;"><strong>📖 Referencia / Población Estándar:</strong> Organización Mundial de la Salud (OMS 2007)</div>
+                        </div>
+                        <a id="chart-info-open-btn" href="herramientas/IMC 5 a 19 años.html" target="_blank" class="btn-download-bib" style="margin: 0; padding: 6px 14px;">
+                            <i class="fas fa-external-link-alt"></i> Abrir Pantalla Completa
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visor Embebido -->
+                <div class="chart-embed-viewer">
+                    <iframe id="chart-embed-iframe" src="herramientas/IMC 5 a 19 años.html" title="Visualizador de Percentiles"></iframe>
+                </div>
+            </div>
+
+            <!-- 5. BLOQUE: BIBLIOGRAFÍA -->
+            <div class="content-card" style="margin-top: 24px;">
+                <div class="section-header-block">
+                    <i class="fas fa-book"></i>
+                    <h2>Bibliografía y Manuales de Referencia</h2>
+                </div>
+
+                <div class="biblio-clean-list">
+                    
+                    <!-- 1. Manual Dinamómetro -->
+                    <div class="biblio-clean-item">
+                        <div class="bib-num">1</div>
+                        <div class="bib-text">
+                            <strong>Manual del Dinamómetro Digital Camry EH101:</strong> Protocolo de calibración, escalas normativas y procedimiento de medición de fuerza isométrica de prensión.<br>
+                            <a href="docs/manual-dinamometro-camry-eh101.pdf" target="_blank" class="btn-download-bib">
+                                <i class="fas fa-file-pdf"></i> Abrir / Descargar Manual Dinamómetro (PDF)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 2. Frisancho -->
+                    <div class="biblio-clean-item">
+                        <div class="bib-num">2</div>
+                        <div class="bib-text">
+                            <strong>Estándares Antropométricos de Composición Muscular y Grasa:</strong> Frisancho, A. R. (1990). <em>Anthropometric Standards for the Assessment of Growth and Nutritional Status</em>. University of Michigan Press, Ann Arbor. (Valores de referencia para cAMB y pliegues cutáneos en población infanto-juvenil y adultos).
+                        </div>
+                    </div>
+
+                    <!-- 3. OMS 2007 -->
+                    <div class="biblio-clean-item">
+                        <div class="bib-num">3</div>
+                        <div class="bib-text">
+                            <strong>Patrones de Crecimiento OMS (5 a 19 Años):</strong> World Health Organization. (2007). <em>Growth reference 5-19 years</em>. WHO Child Growth Standards.<br>
+                            <a href="https://www.who.int/tools/growth-reference-data-for-5to19-years" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal-light); font-size: 0.8rem; text-decoration: underline; margin-top: 4px; display: inline-block;">
+                                <i class="fas fa-external-link-alt"></i> Portal Oficial OMS 2007 (Tablas y Calculadoras)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 4. Calidad Muscular -->
+                    <div class="biblio-clean-item">
+                        <div class="bib-num">4</div>
+                        <div class="bib-text">
+                            <strong>Concepto y Evolución de Calidad Muscular:</strong> Coronado-Zarco, R., & de León, A. O. (2023). Muscle quality an evolving concept. <em>Journal of Frailty, Sarcopenia and Falls</em>, 8(4), 254–260.<br>
+                            <a href="https://doi.org/10.22540/JFSF-08-254" target="_blank" rel="noopener noreferrer" style="color: var(--accent-teal-light); font-size: 0.8rem; text-decoration: underline; margin-top: 4px; display: inline-block;">
+                                <i class="fas fa-external-link-alt"></i> Ver artículo científico (DOI)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 5. Manual CDC -->
+                    <div class="biblio-clean-item">
+                        <div class="bib-num">5</div>
+                        <div class="bib-text">
+                            <strong>Manual Estandarizado de Antropometría:</strong> Centers for Disease Control and Prevention (CDC). (2017). <em>NHANES Anthropometry Procedures Manual</em>. National Center for Health Statistics.<br>
+                            <a href="../bibliografia/CDC antropometria 2020.pdf" target="_blank" class="btn-download-bib">
+                                <i class="fas fa-file-pdf"></i> Ver Manual CDC / NHANES (PDF)
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+             PESTAÑA 2: TRABAJO PRÁCTICO N° 3 (BLOQUEADO)
+        ========================================== -->
+        <div id="tab-tp" class="tab-panel-view">
+            
+            <div class="content-card">
+                <div class="tp-locked-container">
+                    <div class="tp-locked-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="tp-locked-title">Trabajo Práctico N° 3: Evaluación Antropométrica y Calidad Muscular</h3>
+                    <p class="tp-locked-desc">
+                        El material, consignas de recolección de datos y pautas metodológicas de entrega se habilitarán en la próxima clase una vez finalizadas las instancias teóricas de la unidad.
+                    </p>
+                    <div class="tp-locked-badge">
+                        <i class="fas fa-calendar-alt"></i> Disponible en la próxima clase
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ==========================================
+             PESTAÑA 3: CALCULADORA MQI & APP
+        ========================================== -->
+        <div id="tab-calculadora" class="tab-panel-view">
+            
+            <div class="wizard-container">
+                
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <h2 style="font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px;">Calculadora y Evaluador Integral (MQI, cAMB e IMC/E)</h2>
+                    <p style="color: var(--text-muted); font-size: 0.86rem;">Ingresa los datos brutos del paciente en 5 pasos para obtener automáticamente sus índices e indicadores diagnósticos.</p>
+                </div>
+
+                <!-- Stepper de Pasos -->
+                <div class="wizard-stepper-header" id="wizard-progress">
+                    <div class="step-node active" data-step-index="0">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Datos Paciente</div>
+                    </div>
+                    <div class="step-node" data-step-index="1">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Puntos Anatómicos</div>
+                    </div>
+                    <div class="step-node" data-step-index="2">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Perímetros</div>
+                    </div>
+                    <div class="step-node" data-step-index="3">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">Pliegues</div>
+                    </div>
+                    <div class="step-node" data-step-index="4">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">Dinamometría</div>
+                    </div>
+                </div>
+
+                <!-- PASO 1: Datos del Paciente -->
+                <div class="wizard-form-step active" id="wizard-step-0">
+                    <h3 style="font-size: 1.05rem; color: var(--accent-teal-light); margin-bottom: 14px;"><i class="fas fa-user-circle"></i> Paso 1: Identificación y Datos del Paciente</h3>
+                    
+                    <div class="form-grid-fields">
+                        <div class="input-card" style="grid-column: 1 / -1;">
+                            <label for="patientName"><i class="fas fa-user" style="color: var(--accent-teal-light); margin-right: 4px;"></i> Nombre y Apellido del Paciente / Sujeto</label>
+                            <input type="text" id="patientName" placeholder="Ej: Juan Pérez" autocomplete="off">
+                        </div>
+
+                        <div class="input-card">
+                            <label for="sexo"><i class="fas fa-venus-mars" style="margin-right: 4px;"></i> Sexo Biológico</label>
+                            <select id="sexo">
+                                <option value="">-- Seleccionar --</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                            </select>
+                        </div>
+
+                        <div class="input-card">
+                            <label for="peso"><i class="fas fa-weight" style="margin-right: 4px;"></i> Peso Corporal (kg)</label>
+                            <input type="number" id="peso" placeholder="Ej: 68.4" step="0.1" min="20">
+                        </div>
+
+                        <div class="input-card">
+                            <label for="talla"><i class="fas fa-ruler-vertical" style="margin-right: 4px;"></i> Estatura / Talla (cm)</label>
+                            <input type="number" id="talla" placeholder="Ej: 172.5" step="0.1" min="100">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 2: Puntos Anatómicos -->
+                <div class="wizard-form-step" id="wizard-step-1">
+                    <h3 style="font-size: 1.05rem; color: var(--accent-teal-light); margin-bottom: 14px;"><i class="fas fa-crosshairs"></i> Paso 2: Verificación de Puntos Anatómicos</h3>
+                    <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 16px;">Asegúrate de haber identificado y marcado con lápiz dermográfico los puntos de referencia antes de medir:</p>
+                    
+                    <div class="highlights-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+                        <div class="highlight-item" style="background: rgba(13, 17, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 14px; display: flex; gap: 12px; align-items: center;">
+                            <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--accent-teal-subtle); color: var(--accent-teal-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fas fa-bone"></i></div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 2px;">Punto Acromial</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted);">Borde lateral superior del acromion.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item" style="background: rgba(13, 17, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 14px; display: flex; gap: 12px; align-items: center;">
+                            <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--accent-teal-subtle); color: var(--accent-teal-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fas fa-arrows-alt-v"></i></div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 2px;">Marca Mesobraquial</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted);">Punto medio acromion-olécranon en 90°.</p>
+                            </div>
+                        </div>
+                        <div class="highlight-item" style="background: rgba(13, 17, 23, 0.6); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 14px; display: flex; gap: 12px; align-items: center;">
+                            <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--accent-teal-subtle); color: var(--accent-teal-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;"><i class="fas fa-shield-alt"></i></div>
+                            <div>
+                                <h4 style="font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 2px;">Cresta Ilíaca</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted);">Borde superior lateral en línea axilar media.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 3: Perímetros -->
+                <div class="wizard-form-step" id="wizard-step-2">
+                    <h3 style="font-size: 1.05rem; color: var(--accent-teal-light); margin-bottom: 14px;"><i class="fas fa-ring"></i> Paso 3: Perímetros Antropométricos (cm)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 16px;">Ingresa la 1ra y 2da medición (tolerancia del 1% permitida; si excede, se habilitará la 3ra toma):</p>
+
+                    <div class="form-grid-fields">
+                        <div class="input-card" data-type="perimeter">
+                            <label>Circunferencia de Cintura (cm)</label>
+                            <div class="measurement-inputs-row">
+                                <input type="number" id="perimetroCintura1" data-name="perimetroCintura" step="0.1" placeholder="1ra">
+                                <input type="number" id="perimetroCintura2" data-name="perimetroCintura" step="0.1" placeholder="2da">
+                                <div id="perimetroCintura-3rd-container" style="display: none; width: 100%;">
+                                    <input type="number" id="perimetroCintura3" data-name="perimetroCintura" step="0.1" placeholder="3ra">
+                                </div>
+                                <span id="perimetroCintura-status" class="measurement-status-indicator"></span>
+                            </div>
+                        </div>
+
+                        <div class="input-card" data-type="perimeter">
+                            <label>Perímetro Braquial Relajado (cm)</label>
+                            <div class="measurement-inputs-row">
+                                <input type="number" id="perimetroBraquial1" data-name="perimetroBraquial" step="0.1" placeholder="1ra">
+                                <input type="number" id="perimetroBraquial2" data-name="perimetroBraquial" step="0.1" placeholder="2da">
+                                <div id="perimetroBraquial-3rd-container" style="display: none; width: 100%;">
+                                    <input type="number" id="perimetroBraquial3" data-name="perimetroBraquial" step="0.1" placeholder="3ra">
+                                </div>
+                                <span id="perimetroBraquial-status" class="measurement-status-indicator"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 4: Pliegues Cutáneos -->
+                <div class="wizard-form-step" id="wizard-step-3">
+                    <h3 style="font-size: 1.05rem; color: var(--accent-teal-light); margin-bottom: 14px;"><i class="fas fa-compress-arrows-alt"></i> Paso 4: Pliegues Cutáneos (mm)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 16px;">Ingresa la 1ra y 2da lectura con plicómetro (tolerancia del 5% permitida):</p>
+
+                    <div class="form-grid-fields">
+                        <div class="input-card" data-type="skinfold">
+                            <label>Pliegue Tricipital (mm)</label>
+                            <div class="measurement-inputs-row">
+                                <input type="number" id="pliegueTriceps1" data-name="pliegueTriceps" step="0.1" placeholder="1ra">
+                                <input type="number" id="pliegueTriceps2" data-name="pliegueTriceps" step="0.1" placeholder="2da">
+                                <div id="pliegueTriceps-3rd-container" style="display: none; width: 100%;">
+                                    <input type="number" id="pliegueTriceps3" data-name="pliegueTriceps" step="0.1" placeholder="3ra">
+                                </div>
+                                <span id="pliegueTriceps-status" class="measurement-status-indicator"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO 5: Fuerza de Prensión -->
+                <div class="wizard-form-step" id="wizard-step-4">
+                    <h3 style="font-size: 1.05rem; color: var(--accent-teal-light); margin-bottom: 14px;"><i class="fas fa-hand-rock"></i> Paso 5: Dinamometría de Prensión Manual</h3>
+                    <p style="color: var(--text-muted); font-size: 0.86rem; margin-bottom: 16px;">Ingresa el valor máximo registrado con el dinamómetro digital Camry EH101:</p>
+
+                    <div class="form-grid-fields" style="max-width: 380px;">
+                        <div class="input-card">
+                            <label for="fuerza">Fuerza Máxima de Prensión (kg)</label>
+                            <input type="number" id="fuerza" placeholder="Ej: 42.5" step="0.1" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== BOTONERA REDISEÑADA Y ORGANIZADA ===== -->
+                <div class="calculator-toolbar">
+                    <!-- Grupo 1: Navegación del Paso a Paso -->
+                    <div class="toolbar-group">
+                        <button id="wizard-prev-btn" class="btn-action" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button id="wizard-next-btn" class="btn-action btn-action-primary">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                    <!-- Grupo 2: Acciones Principales y Reportes -->
+                    <div class="toolbar-group">
+                        <button id="new-measurement-btn" class="btn-action">
+                            <i class="fas fa-plus"></i> Nuevo Paciente
+                        </button>
+                        <button id="export-pdf-btn" class="btn-action btn-action-outline">
+                            <i class="fas fa-file-pdf"></i> Exportar Informe (PDF)
+                        </button>
+                    </div>
+
+                    <!-- Grupo 3: Vistas de Gráficos y Utilidades -->
+                    <div class="toolbar-group">
+                        <button id="show-male-chart-btn" class="btn-action">
+                            <i class="fas fa-mars" style="color: #60a5fa;"></i> Varones
+                        </button>
+                        <button id="show-female-chart-btn" class="btn-action">
+                            <i class="fas fa-venus" style="color: #f472b6;"></i> Mujeres
+                        </button>
+                        <button id="clear-history-btn" class="btn-action btn-action-danger" title="Borrar historial guardado">
+                            <i class="fas fa-trash-alt"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel de Resultados Estructurado: Datos Brutos, Índices, Indicadores -->
+                <div id="resultados-box"></div>
+
+                <!-- Gráfico de Dispersión Varones -->
+                <div id="male-chart-container" class="chart-section-card">
+                    <div class="chart-filter-pills" id="male-chart-controls">
+                        <button data-view="correlation" class="chart-filter-btn active">Fuerza vs cAMB</button>
+                        <button data-view="amb_only" class="chart-filter-btn">Sólo cAMB</button>
+                        <button data-view="strength_only" class="chart-filter-btn">Sólo Fuerza</button>
+                        <button data-view="mqi_only" class="chart-filter-btn">Sólo MQI</button>
+                    </div>
+                    <div style="position: relative; flex-grow: 1;">
+                        <canvas id="maleChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Dispersión Mujeres -->
+                <div id="female-chart-container" class="chart-section-card">
+                    <div class="chart-filter-pills" id="female-chart-controls">
+                        <button data-view="correlation" class="chart-filter-btn active">Fuerza vs cAMB</button>
+                        <button data-view="amb_only" class="chart-filter-btn">Sólo cAMB</button>
+                        <button data-view="strength_only" class="chart-filter-btn">Sólo Fuerza</button>
+                        <button data-view="mqi_only" class="chart-filter-btn">Sólo MQI</button>
+                    </div>
+                    <div style="position: relative; flex-grow: 1;">
+                        <canvas id="femaleChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ===== SCRIPT DE FUNCIONALIDAD COMPLETA ===== -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // --- 1. Control de Pestañas Principales ---
+        const mainTabBtns = document.querySelectorAll('.main-tab-btn');
+        const mainTabPanels = document.querySelectorAll('.tab-panel-view');
+
+        mainTabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-tab-target');
+                mainTabBtns.forEach(b => b.classList.remove('active'));
+                mainTabPanels.forEach(p => p.classList.remove('active'));
+
+                btn.classList.add('active');
+                const activePanel = document.querySelector(targetId);
+                if (activePanel) activePanel.classList.add('active');
+            });
+        });
+
+        // --- 2. Acordeón Principal de Protocolos ---
+        const accHeaders = document.querySelectorAll('.acc-header');
+        accHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.closest('.acc-item');
+                const body = item.querySelector('.acc-body');
+                const isCurrentlyActive = item.classList.contains('active');
+
+                document.querySelectorAll('.acc-item').forEach(other => {
+                    other.classList.remove('active');
+                    const otherBody = other.querySelector('.acc-body');
+                    if (otherBody) otherBody.style.maxHeight = null;
+                });
+
+                if (!isCurrentlyActive) {
+                    item.classList.add('active');
+                    body.style.maxHeight = (body.scrollHeight + 500) + 'px';
+                }
+            });
+        });
+
+        // --- 3. Sub-Acordeón Desplegable de Puntos Anatómicos ---
+        const subAccHeaders = document.querySelectorAll('.sub-acc-header');
+        subAccHeaders.forEach(subHeader => {
+            subHeader.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const subItem = subHeader.closest('.sub-acc-item');
+                const subBody = subItem.querySelector('.sub-acc-body');
+                const parentAccBody = subItem.closest('.acc-body');
+                const isSubActive = subItem.classList.contains('active');
+
+                if (isSubActive) {
+                    subItem.classList.remove('active');
+                    subBody.style.maxHeight = null;
+                } else {
+                    subItem.classList.add('active');
+                    subBody.style.maxHeight = (subBody.scrollHeight + 100) + 'px';
+                    if (parentAccBody) {
+                        parentAccBody.style.maxHeight = (parentAccBody.scrollHeight + subBody.scrollHeight + 200) + 'px';
+                    }
+                }
+            });
+        });
+
+        // --- 4. Control del Explorador Interactivo de Gráficos ---
+        const chartNavBtns = document.querySelectorAll('.chart-nav-btn');
+        const chartIframe = document.getElementById('chart-embed-iframe');
+        const chartTitleEl = document.getElementById('chart-info-title');
+        const chartMeasureEl = document.getElementById('chart-info-measure');
+        const chartRefEl = document.getElementById('chart-info-ref');
+        const chartOpenBtn = document.getElementById('chart-info-open-btn');
+
+        chartNavBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                chartNavBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const fileName = btn.dataset.chartFile;
+                const name = btn.dataset.chartName;
+                const measure = btn.dataset.chartMeasure;
+                const ref = btn.dataset.chartRef;
+
+                if (chartIframe) chartIframe.src = fileName;
+                if (chartTitleEl) chartTitleEl.textContent = name;
+                if (chartMeasureEl) chartMeasureEl.innerHTML = `<strong>🎯 ¿Qué mide?:</strong> ${measure}`;
+                if (chartRefEl) chartRefEl.innerHTML = `<strong>📖 Referencia / Población Estándar:</strong> ${ref}`;
+                if (chartOpenBtn) chartOpenBtn.href = fileName;
+            });
+        });
+
+        // --- 5. Wizard Multietapa ---
+        let currentStepIndex = 0;
+        const formSteps = document.querySelectorAll('.wizard-form-step');
+        const stepNodes = document.querySelectorAll('.step-node');
+        const prevBtn = document.getElementById('wizard-prev-btn');
+        const nextBtn = document.getElementById('wizard-next-btn');
+
+        function updateWizardView() {
+            formSteps.forEach((step, idx) => {
+                step.classList.toggle('active', idx === currentStepIndex);
+            });
+
+            stepNodes.forEach((node, idx) => {
+                node.classList.remove('active', 'completed');
+                if (idx < currentStepIndex) node.classList.add('completed');
+                else if (idx === currentStepIndex) node.classList.add('active');
+            });
+
+            prevBtn.style.display = currentStepIndex === 0 ? 'none' : 'inline-flex';
+            nextBtn.innerHTML = (currentStepIndex === formSteps.length - 1) 
+                ? '<i class="fas fa-check-circle"></i> Calcular y Evaluar' 
+                : 'Siguiente <i class="fas fa-arrow-right"></i>';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStepIndex < formSteps.length - 1) {
+                currentStepIndex++;
+                updateWizardView();
+            } else {
+                calcularResultados();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                updateWizardView();
+            }
+        });
+
+        stepNodes.forEach(node => {
+            node.addEventListener('click', () => {
+                const targetIdx = parseInt(node.getAttribute('data-step-index'));
+                if (!isNaN(targetIdx)) {
+                    currentStepIndex = targetIdx;
+                    updateWizardView();
+                }
+            });
+        });
+
+        // --- 6. Validación de Tolerancia en Mediciones ---
+        const measurementInputs = document.querySelectorAll('input[data-name]');
+        measurementInputs.forEach(input => input.addEventListener('input', handleMeasurementValidation));
+
+        function handleMeasurementValidation(event) {
+            const input = event.target;
+            const name = input.dataset.name;
+            const card = input.closest('.input-card');
+            if (!card) return;
+
+            const type = card.dataset.type;
+            const m1 = parseFloat(document.getElementById(name + '1')?.value);
+            const m2 = parseFloat(document.getElementById(name + '2')?.value);
+            const thirdContainer = document.getElementById(name + '-3rd-container');
+            const statusIcon = document.getElementById(name + '-status');
+
+            card.classList.remove('valid', 'warning');
+            if (statusIcon) statusIcon.innerHTML = '';
+
+            if (!isNaN(m1) && !isNaN(m2)) {
+                const avg = (m1 + m2) / 2;
+                if (avg === 0) return;
+
+                const diff = Math.abs(m1 - m2);
+                const tolerancePercentage = (type === 'skinfold') ? 5 : 1;
+                const isTolerable = (diff / avg) * 100 <= tolerancePercentage;
+
+                if (isTolerable) {
+                    if (statusIcon) statusIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    card.classList.add('valid');
+                    if (thirdContainer) thirdContainer.style.display = 'none';
+                } else {
+                    if (statusIcon) statusIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                    card.classList.add('warning');
+                    if (thirdContainer) thirdContainer.style.display = 'block';
+                }
+            }
+        }
+
+        function getFinalMeasurementValue(name) {
+            const m1 = parseFloat(document.getElementById(name + '1')?.value);
+            const m2 = parseFloat(document.getElementById(name + '2')?.value);
+            const m3Input = document.getElementById(name + '3');
+            const m3 = parseFloat(m3Input?.value);
+
+            if (isNaN(m1) || isNaN(m2)) return null;
+
+            if (!isNaN(m3)) {
+                const diff12 = Math.abs(m1 - m2);
+                const diff13 = Math.abs(m1 - m3);
+                const diff23 = Math.abs(m2 - m3);
+
+                if (diff12 <= diff13 && diff12 <= diff23) return (m1 + m2) / 2;
+                if (diff13 <= diff12 && diff13 <= diff23) return (m1 + m3) / 2;
+                return (m2 + m3) / 2;
+            }
+            return (m1 + m2) / 2;
+        }
+
+        // --- 7. Diagnósticos Normativos ---
+        const FIXED_AGE = 19.0;
+        
+        function getImcDiagnosisInfo(imcValue) {
+            if (imcValue < 18.5) return { text: 'Delgadez / Bajo Peso', tag: 'Z < -2 / < P3', color: '#f59e0b' };
+            if (imcValue <= 24.9) return { text: 'Eutrófico / Adecuado', tag: 'Z -2 a +1 / P3 a P85', color: '#10b981' };
+            if (imcValue <= 29.9) return { text: 'Sobrepeso', tag: 'Z > +1 a +2 / P85 a P97', color: '#f59e0b' };
+            return { text: 'Obesidad', tag: 'Z > +2 / > P97', color: '#ef4444' };
+        }
+
+        const percentiles_data_AMB = { 
+            "Male": { "18.9": {5: 26.3, 15: 29.2, 50: 34.7, 85: 43.8, 95: 51.1} }, 
+            "Female": { "18.9": {5: 40.2, 15: 45.2, 50: 53.8, 85: 64.6, 95: 73.5} } 
+        };
+
+        function getAmbiagnosisInfo(ambValue, sexo) {
+            const genderKey = (sexo === 'masculino') ? 'Male' : 'Female';
+            const dataRow = percentiles_data_AMB[genderKey]["18.9"];
+            const { 5: p5, 15: p15, 85: p85, 95: p95 } = dataRow;
+
+            if (ambValue <= p5) return { text: 'Baja Muscularidad', percentileText: '≤ P5', color: '#ef4444' };
+            if (ambValue <= p15) return { text: 'Abajo del Promedio', percentileText: '>P5-≤P15', color: '#f59e0b' };
+            if (ambValue <= p85) return { text: 'Promedio (Adecuado)', percentileText: '>P15-≤P85', color: '#10b981' };
+            if (ambValue <= p95) return { text: 'Arriba del Promedio', percentileText: '>P85-≤P95', color: '#2dd4bf' };
+            return { text: 'Alta Muscularidad', percentileText: '> P95', color: '#4c9a9b' };
+        }
+
+        function getFuerzaDiagnosisInfo(fuerzaValue, sexo) {
+            const colors = { muyBaja: '#ef4444', baja: '#f59e0b', normal: '#10b981', alta: '#2dd4bf', muyAlta: '#4c9a9b' };
+            if (sexo === 'masculino') {
+                if (fuerzaValue < 36) return { text: 'Muy baja', color: colors.muyBaja };
+                if (fuerzaValue <= 40.9) return { text: 'Baja', color: colors.baja };
+                if (fuerzaValue <= 52) return { text: 'Normal', color: colors.normal };
+                if (fuerzaValue <= 55) return { text: 'Alta', color: colors.alta };
+                return { text: 'Muy Alta', color: colors.muyAlta };
+            } else {
+                if (fuerzaValue < 23) return { text: 'Muy baja', color: colors.muyBaja };
+                if (fuerzaValue <= 26) return { text: 'Baja', color: colors.baja };
+                if (fuerzaValue <= 32) return { text: 'Normal', color: colors.normal };
+                if (fuerzaValue <= 41) return { text: 'Alta', color: colors.alta };
+                return { text: 'Muy Alta', color: colors.muyAlta };
+            }
+        }
+
+        function getMqiDiagnosisInfo(mqiValue, sexo) {
+            const colors = { baja: '#f59e0b', normal: '#10b981', alta: '#4c9a9b' };
+            if (sexo === 'masculino') {
+                if (mqiValue < 1.0) return { text: 'Eficiencia Baja', color: colors.baja };
+                if (mqiValue <= 1.3) return { text: 'Eficiencia Normal', color: colors.normal };
+                return { text: 'Eficiencia Alta', color: colors.alta };
+            } else {
+                if (mqiValue < 0.7) return { text: 'Eficiencia Baja', color: colors.baja };
+                if (mqiValue <= 1.0) return { text: 'Eficiencia Normal', color: colors.normal };
+                return { text: 'Eficiencia Alta', color: colors.alta };
+            }
+        }
+
+        // --- 8. Cálculo y Almacenamiento ---
+        let patientHistory = [];
+        const savedHistory = localStorage.getItem('patientHistory');
+        if (savedHistory) {
+            try { patientHistory = JSON.parse(savedHistory); } catch(e) {}
+        }
+
+        const resultadosBox = document.getElementById('resultados-box');
+
+        window.calcularResultados = function() {
+            const patientName = document.getElementById('patientName').value.trim() || 'Paciente Sin Nombre';
+            const sexo = document.getElementById('sexo').value;
+            const peso = parseFloat(document.getElementById('peso').value);
+            const talla = parseFloat(document.getElementById('talla').value);
+            const pliegueTriceps = getFinalMeasurementValue('pliegueTriceps');
+            const perimetroBraquial = getFinalMeasurementValue('perimetroBraquial');
+            const perimetroCintura = getFinalMeasurementValue('perimetroCintura');
+            const fuerza = parseFloat(document.getElementById('fuerza').value);
+
+            if (!sexo || isNaN(peso) || isNaN(talla) || pliegueTriceps === null || perimetroBraquial === null || isNaN(fuerza)) {
+                alert("Por favor completa los campos requeridos: Sexo, Peso, Talla, Perímetro Braquial, Pliegue Tricipital y Dinamometría.");
+                return;
+            }
+
+            const tallaMetros = talla / 100;
+            const imc = peso / (tallaMetros * tallaMetros);
+            
+            let amb = Math.pow((perimetroBraquial - (Math.PI * (pliegueTriceps / 10))), 2) / (4 * Math.PI);
+            amb -= (sexo === 'masculino' ? 10.0 : 6.5);
+            amb = Math.max(0.1, amb);
+
+            const mqi = fuerza / amb;
+            const ice = perimetroCintura ? (perimetroCintura / talla) : null;
+
+            const imcDiagnosis = getImcDiagnosisInfo(imc);
+            const ambDiagnosis = getAmbiagnosisInfo(amb, sexo);
+            const fuerzaDiagnosis = getFuerzaDiagnosisInfo(fuerza, sexo);
+            const mqiDiagnosis = getMqiDiagnosisInfo(mqi, sexo);
+            const iceRiesgo = ice ? (ice >= 0.50 ? 'Riesgo Aumentado (≥ 0.50)' : 'Sin Riesgo (< 0.50)') : 'N/A';
+            const iceColor = (ice && ice >= 0.50) ? '#ef4444' : '#10b981';
+
+            const patientData = {
+                patientName,
+                sexo,
+                edadAnos: FIXED_AGE,
+                peso: parseFloat(peso.toFixed(1)),
+                talla: parseFloat(talla.toFixed(1)),
+                cintura: perimetroCintura ? parseFloat(perimetroCintura.toFixed(1)) : 'N/A',
+                pb: parseFloat(perimetroBraquial.toFixed(1)),
+                pt: parseFloat(pliegueTriceps.toFixed(1)),
+                fuerza: parseFloat(fuerza.toFixed(1)),
+                imc: parseFloat(imc.toFixed(2)),
+                imcDiagnosisText: imcDiagnosis.text,
+                amb: parseFloat(amb.toFixed(1)),
+                ambDiagnosisText: ambDiagnosis.text,
+                ambDiagnosisPercentil: ambDiagnosis.percentileText,
+                mqi: parseFloat(mqi.toFixed(2)),
+                mqiDiagnosisText: mqiDiagnosis.text,
+                ice: ice ? parseFloat(ice.toFixed(2)) : 'N/A',
+                timestamp: new Date().toLocaleString()
+            };
+
+            patientHistory.push(patientData);
+            localStorage.setItem('patientHistory', JSON.stringify(patientHistory));
+
+            resultadosBox.style.display = 'block';
+            resultadosBox.innerHTML = `
+                <div class="results-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.06);">
+                    <div>
+                        <h3 style="color: #fff; font-size: 1.15rem; margin-bottom: 2px;">Paciente: ${patientName}</h3>
+                        <p style="color: var(--text-muted); font-size: 0.82rem;">${sexo.toUpperCase()} | Fecha: ${patientData.timestamp}</p>
+                    </div>
+                    <span class="tag-pill" style="background: rgba(16, 185, 129, 0.15); color: var(--valid-green); border: 1px solid var(--valid-green);">
+                        <i class="fas fa-check-circle"></i> Evaluación Guardada
+                    </span>
+                </div>
+
+                <div class="results-section-title"><i class="fas fa-ruler"></i> 1. Datos Brutos Registrados</div>
+                <div class="results-grid">
+                    <div class="result-tile"><div class="result-tile-label">Peso</div><div class="result-tile-val">${peso.toFixed(1)} <span style="font-size: 0.8rem; color: var(--text-muted);">kg</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Talla</div><div class="result-tile-val">${talla.toFixed(1)} <span style="font-size: 0.8rem; color: var(--text-muted);">cm</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Perímetro Braquial</div><div class="result-tile-val">${perimetroBraquial.toFixed(1)} <span style="font-size: 0.8rem; color: var(--text-muted);">cm</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Pliegue Tricipital</div><div class="result-tile-val">${pliegueTriceps.toFixed(1)} <span style="font-size: 0.8rem; color: var(--text-muted);">mm</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Fuerza Dinamometría</div><div class="result-tile-val">${fuerza.toFixed(1)} <span style="font-size: 0.8rem; color: var(--text-muted);">kg</span></div></div>
+                </div>
+
+                <div class="results-section-title"><i class="fas fa-calculator"></i> 2. Índices Antropométricos</div>
+                <div class="results-grid">
+                    <div class="result-tile"><div class="result-tile-label">Índice Masa Corporal (IMC)</div><div class="result-tile-val">${imc.toFixed(2)} <span style="font-size: 0.8rem; color: var(--text-muted);">kg/m²</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Área Muscular Corregida (cAMB)</div><div class="result-tile-val">${amb.toFixed(1)} <span style="font-size: 0.8rem; color: var(--text-muted);">cm²</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Calidad Muscular (MQI)</div><div class="result-tile-val">${mqi.toFixed(2)} <span style="font-size: 0.8rem; color: var(--text-muted);">kg/cm²</span></div></div>
+                    <div class="result-tile"><div class="result-tile-label">Índice Cintura/Estatura (ICE)</div><div class="result-tile-val">${ice ? ice.toFixed(2) : 'N/A'}</div></div>
+                </div>
+
+                <div class="results-section-title"><i class="fas fa-stethoscope"></i> 3. Indicadores Clínicos y Diagnóstico</div>
+                <div class="results-grid">
+                    <div class="result-tile"><div class="result-tile-label">IMC para la Edad (OMS)</div><span class="result-badge" style="background: ${imcDiagnosis.color}20; color: ${imcDiagnosis.color}; border: 1px solid ${imcDiagnosis.color}60;">${imcDiagnosis.text} (${imcDiagnosis.tag})</span></div>
+                    <div class="result-tile"><div class="result-tile-label">cAMB (Frisancho)</div><span class="result-badge" style="background: ${ambDiagnosis.color}20; color: ${ambDiagnosis.color}; border: 1px solid ${ambDiagnosis.color}60;">${ambDiagnosis.text} (${ambDiagnosis.percentileText})</span></div>
+                    <div class="result-tile"><div class="result-tile-label">Fuerza Dinamométrica</div><span class="result-badge" style="background: ${fuerzaDiagnosis.color}20; color: ${fuerzaDiagnosis.color}; border: 1px solid ${fuerzaDiagnosis.color}60;">${fuerzaDiagnosis.text}</span></div>
+                    <div class="result-tile"><div class="result-tile-label">Eficiencia MQI</div><span class="result-badge" style="background: ${mqiDiagnosis.color}20; color: ${mqiDiagnosis.color}; border: 1px solid ${mqiDiagnosis.color}60;">${mqiDiagnosis.text}</span></div>
+                    <div class="result-tile"><div class="result-tile-label">Riesgo Metabólico (ICE)</div><span class="result-badge" style="background: ${iceColor}20; color: ${iceColor}; border: 1px solid ${iceColor}60;">${iceRiesgo}</span></div>
+                </div>
+            `;
+
+            updateAllCharts();
+            showChart(sexo);
+            resultadosBox.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // --- 9. Exportar a PDF Profesional ---
+        function exportHistoryToPDF() {
+            if (patientHistory.length === 0) {
+                alert("El historial de evaluaciones está vacío. Realiza al menos una medición para exportar.");
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape');
+            let yPos = 16;
+
+            doc.setFontSize(15);
+            doc.setTextColor(30);
+            doc.text("Cátedra de Nutrición Infantil - UNSTA", 14, yPos);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(100);
+            doc.text(`Informe Consolidado de Evaluaciones Antropométricas y MQI - Fecha: ${new Date().toLocaleDateString()}`, 14, yPos + 6);
+            yPos += 14;
+
+            const tableColumn = ["Paciente", "Sexo", "Peso", "Talla", "Cintura", "IMC", "Diag. IMC/E (OMS)", "cAMB", "Muscularidad (Frisancho)", "Fuerza", "MQI"];
+            const tableRows = patientHistory.map(p => [
+                p.patientName,
+                p.sexo === 'masculino' ? 'Masc' : 'Fem',
+                `${p.peso} kg`,
+                `${p.talla} cm`,
+                p.cintura !== 'N/A' ? `${p.cintura} cm` : '-',
+                `${p.imc}`,
+                p.imcDiagnosisText,
+                `${p.amb} cm²`,
+                p.ambDiagnosisPercentil,
+                `${p.fuerza} kg`,
+                `${p.mqi}`
+            ]);
+
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: yPos,
+                theme: 'grid',
+                headStyles: { fillColor: [76, 154, 155], textColor: 255, fontStyle: 'bold', fontSize: 8 },
+                styles: { fontSize: 8, cellPadding: 3 },
+                didDrawPage: (data) => { yPos = data.cursor.y + 12; }
+            });
+
+            doc.save(`Informe_Antropometria_UNSTA_${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        function clearHistory() {
+            if (patientHistory.length > 0 && confirm("¿Estás seguro de vaciar todo el historial de evaluaciones guardadas?")) {
+                patientHistory = [];
+                localStorage.removeItem('patientHistory');
+                document.getElementById('male-chart-container').style.display = 'none';
+                document.getElementById('female-chart-container').style.display = 'none';
+                resultadosBox.style.display = 'none';
+                updateAllCharts();
+                alert("Historial eliminado.");
+            } else if (patientHistory.length === 0) {
+                alert("El historial ya está vacío.");
+            }
+        }
+
+        // --- 10. Gráficos de Dispersión (Chart.js) ---
+        let maleChart = null;
+        let femaleChart = null;
+        let chartViewMode = 'correlation';
+
+        const calculateRadius = (value, minValue, maxValue) => {
+            const minR = 6, maxR = 18;
+            if (maxValue === minValue) return (minR + maxR) / 2;
+            const scaledR = ((value - minValue) / (maxValue - minValue)) * (maxR - minR) + minR;
+            return Math.max(minR, Math.min(scaledR, maxR));
+        };
+
+        const hexToRgba = (hex, alpha) => {
+            const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        };
+
+        const pointGlowPlugin = {
+            id: 'pointGlow',
+            beforeDatasetsDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                const meta = chart.getDatasetMeta(0);
+                meta.data.forEach((element, index) => {
+                    const data = chart.data.datasets[0].data[index];
+                    if (data && data.radius) {
+                        const { x, y } = element.getProps(['x', 'y'], true);
+                        ctx.fillStyle = hexToRgba(data.pointColor || '#4c9a9b', 0.35);
+                        ctx.beginPath();
+                        ctx.arc(x, y, data.radius + 3, 0, Math.PI * 2, false);
+                        ctx.fill();
+                    }
+                });
+                ctx.restore();
+            }
+        };
+
+        const getOrCreateTooltip = () => {
+            let tooltipEl = document.getElementById('chart-photo-tooltip');
+            if (!tooltipEl) {
+                tooltipEl = document.createElement('div');
+                tooltipEl.id = 'chart-photo-tooltip';
+                tooltipEl.innerHTML = `<img><p></p>`;
+                document.body.appendChild(tooltipEl);
+            }
+            return tooltipEl;
+        };
+
+        const externalTooltipHandler = (context) => {
+            const { chart, tooltip } = context;
+            const tooltipEl = getOrCreateTooltip();
+
+            if (tooltip.opacity === 0) {
+                tooltipEl.style.opacity = '0';
+                return;
+            }
+
+            const dataPoint = tooltip.dataPoints[0]?.raw;
+            if (dataPoint) {
+                const patientName = dataPoint.patientName;
+                const imgEl = tooltipEl.querySelector('img');
+                const pEl = tooltipEl.querySelector('p');
+
+                imgEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(patientName)}&background=4c9a9b&color=fff&size=100`;
+
+                let detailsHtml = `cAMB: ${dataPoint.amb.toFixed(1)} cm²<br>Fuerza: ${dataPoint.fuerza.toFixed(1)} kg<br><strong>MQI: ${dataPoint.mqi.toFixed(2)}</strong>`;
+                pEl.innerHTML = `<strong>${patientName}</strong><br>${detailsHtml}`;
+
+                const canvasRect = chart.canvas.getBoundingClientRect();
+                tooltipEl.style.opacity = '1';
+                tooltipEl.style.left = canvasRect.left + window.pageXOffset + tooltip.caretX + 'px';
+                tooltipEl.style.top = canvasRect.top + window.pageYOffset + tooltip.caretY + 'px';
+            }
+        };
+
+        function createScatterChart(canvasId, title) {
+            const ctx = document.getElementById(canvasId)?.getContext('2d');
+            if (!ctx) return null;
+
+            const textColor = 'rgba(240, 246, 252, 0.75)';
+            const gridColor = 'rgba(255, 255, 255, 0.06)';
+
+            return new Chart(ctx, {
+                type: 'scatter',
+                plugins: [pointGlowPlugin],
+                data: {
+                    datasets: [{
+                        data: [],
+                        pointRadius: 6,
+                        pointHoverRadius: 9,
+                        pointBorderWidth: 1.5,
+                        pointBorderColor: '#fff',
+                        pointBackgroundColor: context => context.raw ? context.raw.pointColor : '#4c9a9b'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: true,
+                            title: { display: true, text: 'Área Muscular del Brazo - cAMB (cm²)', color: textColor, font: { weight: 'bold' } },
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        },
+                        y: {
+                            display: true,
+                            title: { display: true, text: 'Fuerza de Prensión (kg)', color: textColor, font: { weight: 'bold' } },
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        }
+                    },
+                    plugins: {
+                        title: { display: true, text: title, color: '#fff', font: { size: 14, weight: 'bold' } },
+                        legend: { display: false },
+                        tooltip: { enabled: false, external: externalTooltipHandler }
+                    }
+                }
+            });
+        }
+
+        function updateAllCharts() {
+            if (patientHistory.length === 0) {
+                if (maleChart) { maleChart.data.datasets[0].data = []; maleChart.update('none'); }
+                if (femaleChart) { femaleChart.data.datasets[0].data = []; femaleChart.update('none'); }
+                return;
+            }
+
+            const allAmbs = patientHistory.map(p => p.amb), minAmb = Math.min(...allAmbs), maxAmb = Math.max(...allAmbs);
+            const allFuerzas = patientHistory.map(p => p.fuerza), minFuerza = Math.min(...allFuerzas), maxFuerza = Math.max(...allFuerzas);
+            const allMqi = patientHistory.map(p => p.mqi), minMqi = Math.min(...allMqi), maxMqi = Math.max(...allMqi);
+
+            const processPatient = (p) => {
+                const ambDiag = getAmbiagnosisInfo(p.amb, p.sexo);
+                const fuerzaDiag = getFuerzaDiagnosisInfo(p.fuerza, p.sexo);
+                const mqiDiag = getMqiDiagnosisInfo(p.mqi, p.sexo);
+
+                let dataPoint = {
+                    patientName: p.patientName,
+                    amb: p.amb,
+                    fuerza: p.fuerza,
+                    mqi: p.mqi,
+                    pointColor: ambDiag.color,
+                    radius: calculateRadius(p.amb, minAmb, maxAmb)
+                };
+
+                switch (chartViewMode) {
+                    case 'amb_only':
+                        dataPoint.x = p.amb;
+                        dataPoint.y = p.amb;
+                        dataPoint.pointColor = ambDiag.color;
+                        dataPoint.radius = calculateRadius(p.amb, minAmb, maxAmb);
+                        break;
+                    case 'strength_only':
+                        dataPoint.x = p.fuerza;
+                        dataPoint.y = p.fuerza;
+                        dataPoint.pointColor = fuerzaDiag.color;
+                        dataPoint.radius = calculateRadius(p.fuerza, minFuerza, maxFuerza);
+                        break;
+                    case 'mqi_only':
+                        dataPoint.x = p.mqi;
+                        dataPoint.y = p.mqi;
+                        dataPoint.pointColor = mqiDiag.color;
+                        dataPoint.radius = calculateRadius(p.mqi, minMqi, maxMqi);
+                        break;
+                    case 'correlation':
+                    default:
+                        dataPoint.x = p.amb;
+                        dataPoint.y = p.fuerza;
+                        dataPoint.pointColor = fuerzaDiag.color;
+                        dataPoint.radius = calculateRadius(p.amb, minAmb, maxAmb);
+                        break;
+                }
+                return dataPoint;
+            };
+
+            const malePatients = patientHistory.filter(p => p.sexo === 'masculino').map(processPatient);
+            const femalePatients = patientHistory.filter(p => p.sexo === 'femenino').map(processPatient);
+
+            if (maleChart) {
+                maleChart.data.datasets[0].data = malePatients;
+                maleChart.update('none');
+            }
+            if (femaleChart) {
+                femaleChart.data.datasets[0].data = femalePatients;
+                femaleChart.update('none');
+            }
+        }
+
+        function showChart(gender) {
+            const maleContainer = document.getElementById('male-chart-container');
+            const femaleContainer = document.getElementById('female-chart-container');
+
+            maleContainer.style.display = 'none';
+            femaleContainer.style.display = 'none';
+
+            if (gender === 'masculino') {
+                if (patientHistory.some(p => p.sexo === 'masculino')) {
+                    maleContainer.style.display = 'flex';
+                } else {
+                    alert("Aún no hay pacientes masculinos registrados.");
+                }
+            } else if (gender === 'femenino') {
+                if (patientHistory.some(p => p.sexo === 'femenino')) {
+                    femaleContainer.style.display = 'flex';
+                } else {
+                    alert("Aún no hay pacientes femeninos registrados.");
+                }
+            }
+        }
+
+        function setupChartControls() {
+            document.querySelectorAll('.chart-filter-pills').forEach(container => {
+                container.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'BUTTON') {
+                        const newView = e.target.dataset.view;
+                        chartViewMode = newView;
+                        updateAllCharts();
+                        document.querySelectorAll('.chart-filter-pills').forEach(c => {
+                            c.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                            c.querySelector(`button[data-view="${newView}"]`)?.classList.add('active');
+                        });
+                    }
+                });
+            });
+        }
+
+        function resetForm() {
+            document.querySelectorAll('#patientName, #peso, #talla, #fuerza, input[data-name]').forEach(i => i.value = '');
+            document.getElementById('sexo').selectedIndex = 0;
+            document.querySelectorAll('.input-card').forEach(c => c.classList.remove('valid', 'warning'));
+            document.querySelectorAll('.measurement-status-indicator').forEach(s => s.innerHTML = '');
+            document.querySelectorAll('[id$="-3rd-container"]').forEach(tc => tc.style.display = 'none');
+            resultadosBox.style.display = 'none';
+            document.getElementById('male-chart-container').style.display = 'none';
+            document.getElementById('female-chart-container').style.display = 'none';
+            currentStepIndex = 0;
+            updateWizardView();
+        }
+
+        // --- 11. Inicialización ---
+        updateWizardView();
+        maleChart = createScatterChart('maleChart', 'Distribución de Pacientes Masculinos');
+        femaleChart = createScatterChart('femaleChart', 'Distribución de Pacientes Femeninos');
+        updateAllCharts();
+        setupChartControls();
+
+        document.getElementById('new-measurement-btn').addEventListener('click', resetForm);
+        document.getElementById('export-pdf-btn').addEventListener('click', exportHistoryToPDF);
+        document.getElementById('clear-history-btn').addEventListener('click', clearHistory);
+        document.getElementById('show-male-chart-btn').addEventListener('click', () => showChart('masculino'));
+        document.getElementById('show-female-chart-btn').addEventListener('click', () => showChart('femenino'));
+
+    });
+    </script>
+</body>
+</html>

@@ -5908,21 +5908,18 @@
                 const container = document.getElementById('clases-content-container');
                 if (!container) return;
 
-                const startDate = new Date('2025-08-14T12:00:00Z');
-                const endDate = new Date('2025-12-20T12:00:00Z');
-                const classDates = [];
-                let currentDate = new Date(startDate);
-
-                // Encontrar el primer Jueves
-                while (currentDate.getUTCDay() !== 4) {
-                    currentDate.setUTCDate(currentDate.getUTCDate() + 1);
-                }
-
-                // Generar todas las fechas de los Jueves
-                while (currentDate <= endDate) {
-                    classDates.push(new Date(currentDate));
-                    currentDate.setUTCDate(currentDate.getUTCDate() + 7);
-                }
+                // Registro estructurado de clases 2026
+                const knownClasses2026 = [
+                    {
+                        date: new Date('2026-08-19T12:00:00Z'),
+                        fileName: 'Clase-19-08.html',
+                        filePath: 'clases/Clase-19-08.html',
+                        title: 'Antropometría 5-19 Años: Introducción',
+                        subtitle: 'Protocolos de medición, cAMB, Dinamometría y Calidad Muscular (MQI)',
+                        tags: ['TP N° 3 (Próximamente)', 'Calculadora MQI', 'Video Protocolos'],
+                        isFeatured: true
+                    }
+                ];
 
                 const checkFile = async (url) => {
                     try {
@@ -5933,49 +5930,82 @@
                     }
                 };
 
-                const fileCheckPromises = classDates.map(date => {
-                    const day = String(date.getUTCDate()).padStart(2, '0');
-                    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-                    const fileName = `Clase-${day}-${month}.html`;
-                    const filePath = `CLASES/${fileName}`;
-                    return checkFile(filePath).then(exists => exists ? { date, filePath, fileName } : null);
-                });
-
-                const existingFilesRaw = await Promise.all(fileCheckPromises);
-                const existingClasses = existingFilesRaw
-                    .filter(Boolean)
-                    .sort((a, b) => b.date - a.date);
-
-                if (existingClasses.length === 0) {
-                    container.innerHTML = '<p class="text-center text-lg text-muted-light">Aún no se han cargado clases.</p>';
-                    return;
+                // Verificar clases disponibles
+                const existingClasses = [];
+                for (const cls of knownClasses2026) {
+                    const exists = await checkFile(cls.filePath);
+                    if (exists) {
+                        existingClasses.push(cls);
+                    }
                 }
+
+                // Fallback si fetch da error en modo local
+                if (existingClasses.length === 0) {
+                    existingClasses.push(knownClasses2026[0]);
+                }
+
+                existingClasses.sort((a, b) => b.date - a.date);
 
                 let html = '';
                 const latestClass = existingClasses[0];
                 const olderClasses = existingClasses.slice(1);
 
-                // Tarjeta destacada para la última clase
                 const latestDate = new Date(latestClass.date);
-                const formattedDate = latestDate.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+                const formattedDate = latestDate.toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' });
 
+                const tagsHtml = (latestClass.tags || []).map(tag => 
+                    `<span style="display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:20px; background:rgba(76,154,155,0.2); color:#2dd4bf; border:1px solid rgba(76,154,155,0.4); margin-right:6px; margin-top:6px;">${tag}</span>`
+                ).join('');
+
+                // Tarjeta destacada de la última clase
                 html += `
-                <a href="${latestClass.filePath}" class="featured-class-card" target="_blank">
-                    <span class="featured-tag">Última Clase</span>
-                    <div class="class-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                    <h3>Clase del ${formattedDate.split(' de ')[0]} de ${formattedDate.split(' de ')[1]}</h3>
-                    <p>Accede al material de la clase más reciente.</p>
-                </a>
-            `;
+                    <div style="background: linear-gradient(135deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.98)); border: 1px solid rgba(232, 122, 61, 0.5); border-radius: 16px; padding: 28px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(232,122,61,0.15) 0%, transparent 70%); pointer-events: none;"></div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                            <span style="background: var(--accent-orange); color: #fff; font-size: 0.8rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                <i class="fas fa-star" style="margin-right: 4px;"></i> Clase Más Reciente
+                            </span>
+                            <span style="color: var(--text-muted-light); font-size: 0.9rem; font-weight: 500;">
+                                <i class="far fa-calendar-alt" style="color: var(--accent-teal); margin-right: 6px;"></i>${formattedDate}
+                            </span>
+                        </div>
 
-                // Cuadrícula para clases anteriores
+                        <h3 style="color: #fff; font-size: 1.6rem; font-weight: 800; margin: 10px 0 6px 0;">
+                            ${latestClass.title || `Clase del ${formattedDate}`}
+                        </h3>
+                        <p style="color: var(--text-muted-light); font-size: 0.95rem; line-height: 1.5; margin-bottom: 16px;">
+                            ${latestClass.subtitle || 'Accede al material teórico, protocolos y herramientas interactivas de la clase.'}
+                        </p>
+
+                        <div style="margin-bottom: 20px;">
+                            ${tagsHtml}
+                        </div>
+
+                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                            <a href="${latestClass.filePath}" target="_blank" class="nav-button" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--accent-orange), #d4622a); color: #fff; font-weight: 700; padding: 12px 24px; border-radius: 10px; text-decoration: none; border: none; box-shadow: 0 4px 15px rgba(232,122,61,0.4); cursor: pointer;">
+                                <i class="fas fa-door-open"></i> Abrir Clase <i class="fas fa-arrow-right" style="font-size: 0.85rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+
+                // Cuadrícula para clases anteriores si las hay
                 if (olderClasses.length > 0) {
-                    html += '<h3 class="subsection-title">Clases Anteriores</h3>';
+                    html += '<h3 class="subsection-title" style="color: #fff; margin-bottom: 15px;"><i class="fas fa-history" style="color: var(--accent-teal); margin-right: 8px;"></i>Clases Anteriores</h3>';
                     html += '<div class="content-grid">';
                     olderClasses.forEach(classFile => {
                         const day = String(classFile.date.getUTCDate()).padStart(2, '0');
                         const month = String(classFile.date.getUTCMonth() + 1).padStart(2, '0');
-                        html += `<a href="${classFile.filePath}" class="content-grid-item" target="_blank">Clase ${day}/${month}</a>`;
+                        html += `
+                            <a href="${classFile.filePath}" class="content-grid-item" target="_blank" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: rgba(22,27,34,0.8); border: 1px solid var(--glass-border); border-radius: 12px; text-decoration: none; color: #fff; transition: all 0.25s;">
+                                <div>
+                                    <div style="font-weight: 700; font-size: 1rem; color: #fff;">${classFile.title || `Clase ${day}/${month}`}</div>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted);">${day}/${month}/2026</div>
+                                </div>
+                                <i class="fas fa-chevron-right" style="color: var(--accent-teal);"></i>
+                            </a>
+                        `;
                     });
                     html += '</div>';
                 }

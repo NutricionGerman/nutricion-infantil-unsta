@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento IMC-Edad (5-19 años, OMS)</title>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Favicon Links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; background-color: #f9f9f9; }
+        .container { width: 95%; max-width: 950px; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+        h2 { text-align: center; color: #333; margin-bottom: 25px; }
+        .input-section { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; row-gap: 20px; margin-bottom: 25px; padding: 20px; background-color: #eef; border-radius: 6px; }
+        .input-group { display: flex; flex-direction: column; align-items: flex-start; }
+        .input-group label { margin-bottom: 5px; font-size: 0.9em; color: #555; }
+        .input-group input, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 130px; box-sizing: border-box; height: 40px; }
+        .input-section .button-group { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 10px; width: 100%; margin-top: 10px;}
+        .input-section button { padding: 10px 15px; border: none; color: white; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease; height: 40px; font-size: 0.9em;}
+        #addBtnBmi519 { background-color: #007bff;}
+        #addBtnBmi519:hover { background-color: #0056b3;}
+        #clearBtnBmi519 { background-color: #6c757d; }
+        #clearBtnBmi519:hover { background-color: #5a6268; }
+        #savePdfBtnBmi519 { background-color: #17a2b8; }
+        #savePdfBtnBmi519:hover { background-color: #138496; }
+        #resultAreaBmi519, #calculatedBmiAreaBmi519 { text-align: center; margin-top: -15px; margin-bottom: 10px; font-size: 1.1em; font-weight: bold; min-height: 1.5em; color: #333; }
+        #calculatedBmiAreaBmi519 { margin-top: 5px; font-size: 1em; font-weight: normal; }
+        .diagnostic-badge { display: inline-block; padding: 3px 8px; margin-left: 10px; font-size: 0.9em; font-weight: bold; color: white; border-radius: 4px; vertical-align: middle; }
+        
+        .diag-delgadez-severa-bmi { background-color: #8B0000; }
+        .diag-delgadez-bmi { background-color: #dc3545; }
+        .diag-normal-bmi { background-color: #28a745; }
+        .diag-sobrepeso-bmi { background-color: #fd7e14; } 
+        .diag-obesidad-bmi { background-color: #dc3545; } 
+        .diag-obesidad-severa-bmi { background-color: #800080; }
+
+        .chart-container { position: relative; width: 100%; height: 500px; margin-bottom: 20px; }
+        .notes { width: 100%; margin-top: 15px; padding: 15px; background-color: #f0f0f0; border-left: 5px solid #ccc; font-size: 0.9em; border-radius: 4px; box-sizing: border-box; }
+        .notes ul { margin-top: 8px; margin-bottom: 8px; padding-left: 20px; }
+        .notes li { margin-bottom: 4px; }
+        .source { width: 100%; font-size: 0.8em; color: #555; text-align: right; margin-top: 10px; box-sizing: border-box; }
+        .error-message { color: red; font-size: 0.9em; text-align: center; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="captureAreaBmi519">
+        <h2 id="mainTitleBmi519">Seguimiento IMC para la Edad (5-19 años, OMS 2007)</h2>
+
+        <div class="input-section">
+             <div class="input-group">
+                <label for="genderSelectBmi519">Sexo:</label>
+                <select id="genderSelectBmi519">
+                    <option value="boys" selected>Niño</option>
+                    <option value="girls">Niña</option>
+                </select>
+             </div>
+             <div class="input-group"> <label for="ageYearsInputBmi519">Edad (Años):</label> <input type="number" id="ageYearsInputBmi519" placeholder="Ej: 10" min="5" max="19"> </div>
+             <div class="input-group"> <label for="ageMonthsInputBmi519">Edad (Meses):</label> <input type="number" id="ageMonthsInputBmi519" placeholder="Ej: 6" min="0" max="11"> </div>
+             <div class="input-group"> <label for="weightKgInputBmi519">Peso (kg):</label> <input type="number" id="weightKgInputBmi519" step="0.1" placeholder="Ej: 35.5"> </div>
+             <div class="input-group"> <label for="heightInputBmi519">Talla (cm):</label> <input type="number" id="heightInputBmi519" step="0.1" placeholder="Ej: 140.0"> </div>
+             <div class="button-group"> <button id="addBtnBmi519">Agregar y Graficar Punto</button> <button id="clearBtnBmi519">Limpiar Historial</button> <button id="savePdfBtnBmi519">Guardar Resultados (PDF)</button> </div>
+        </div>
+        <div id="calculatedBmiAreaBmi519"></div>
+        <div id="resultAreaBmi519"></div>
+
+        <div class="chart-container" id="chartContainerDivBmi519"> <canvas id="bmiAge519ChartCanvas"></canvas> </div>
+
+        <div class="notes">
+             <strong>Interpretación de la Gráfica IMC-Edad (OMS 2007) para 5 a 19 años:</strong> Las líneas de color muestran los percentiles de referencia. La línea azul con puntos marca la trayectoria de IMC del niño/a. El diagnóstico arriba corresponde al último punto ingresado.
+             <ul>
+                 <li>El IMC se calcula como: Peso (kg) / (Talla en metros)².</li>
+                 <li>Esta gráfica utiliza los estándares de crecimiento de la OMS para el grupo de edad de 5 a 19 años (Referencia 2007). Siempre se mide la <strong>talla</strong> (de pie).</li>
+                 <li>Consulte a un profesional de la salud para una interpretación completa y adecuada.</li>
+             </ul>
+        </div>
+         <div class="source">
+             Datos: Tablas IMC-Edad, 5 a 19 años (Percentiles), Organización Mundial de la Salud (Referencia 2007).
+         </div>
+    </div>
+
+    <script>
+        const ctxBmi519 = document.getElementById('bmiAge519ChartCanvas').getContext('2d');
+        const resultAreaBmi519 = document.getElementById('resultAreaBmi519');
+        const calculatedBmiAreaBmi519 = document.getElementById('calculatedBmiAreaBmi519');
+        const genderSelectBmi519 = document.getElementById('genderSelectBmi519');
+        const ageYearsInputBmi519 = document.getElementById('ageYearsInputBmi519');
+        const ageMonthsInputBmi519 = document.getElementById('ageMonthsInputBmi519');
+        const weightKgInputBmi519 = document.getElementById('weightKgInputBmi519');
+        const heightInputBmi519 = document.getElementById('heightInputBmi519');
+        const addBtnBmi519 = document.getElementById('addBtnBmi519');
+        const clearBtnBmi519 = document.getElementById('clearBtnBmi519');
+        const savePdfBtnBmi519 = document.getElementById('savePdfBtnBmi519');
+        const mainTitleBmi519 = document.getElementById('mainTitleBmi519');
+
+        let userBmiHistory519 = []; 
+        let currentGenderBmi519 = 'boys'; 
+        
+        const totalMonthsRef_bmi_519 = [61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228];
+
+        // --- BOYS Data (BMI-for-Age 5-19 years) ---
+        const p3_data_boys_bmi_519 = [13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.1,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.2,13.3,13.3,13.3,13.3,13.3,13.3,13.3,13.3,13.4,13.4,13.4,13.4,13.4,13.4,13.4,13.5,13.5,13.5,13.5,13.5,13.5,13.5,13.6,13.6,13.6,13.6,13.6,13.7,13.7,13.7,13.7,13.7,13.8,13.8,13.8,13.8,13.8,13.9,13.9,13.9,13.9,14.0,14.0,14.0,14.0,14.1,14.1,14.1,14.2,14.2,14.2,14.3,14.3,14.3,14.4,14.4,14.4,14.5,14.5,14.5,14.5,14.6,14.6,14.6,14.7,14.7,14.7,14.8,14.8,14.8,14.8,14.9,14.9,15.0,15.0,15.0,15.1,15.1,15.2,15.2,15.3,15.3,15.4,15.4,15.5,15.5,15.5,15.6,15.6,15.6,15.7,15.7,15.8,15.8,15.9,15.9,16.0,16.0,16.1,16.1,16.1,16.2,16.2,16.3,16.3,16.4,16.4,16.4,16.5,16.5,16.6,16.6,16.7,16.7,16.7,16.8,16.8,16.8,16.9,16.9,16.9,17.0,17.0,17.0,17.1,17.1,17.1,17.1,17.2,17.2,17.2,17.3,17.3,17.3,17.3,17.4,17.4,17.4,17.4,17.5,17.5,17.5,17.5,17.6,17.6,17.6,17.6,17.7,17.7,17.7,17.7,17.8,17.8,17.8];
+        const p15_data_boys_bmi_519 = [14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.1,14.2,14.2,14.2,14.2,14.2,14.2,14.2,14.3,14.3,14.3,14.3,14.3,14.3,14.4,14.4,14.4,14.4,14.4,14.4,14.5,14.5,14.5,14.5,14.5,14.6,14.6,14.6,14.6,14.6,14.7,14.7,14.7,14.7,14.8,14.8,14.8,14.8,14.9,14.9,14.9,15.0,15.0,15.0,15.1,15.1,15.1,15.2,15.2,15.2,15.3,15.3,15.3,15.4,15.4,15.4,15.5,15.5,15.6,15.6,15.6,15.6,15.7,15.7,15.7,15.8,15.8,15.8,15.9,15.9,15.9,16.0,16.0,16.1,16.1,16.1,16.2,16.2,16.3,16.3,16.4,16.4,16.4,16.5,16.5,16.6,16.6,16.7,16.7,16.8,16.8,16.9,16.9,17.0,17.0,17.1,17.1,17.2,17.2,17.3,17.3,17.3,17.4,17.4,17.5,17.5,17.6,17.6,17.6,17.7,17.7,17.8,17.8,17.9,17.9,18.0,18.0,18.0,18.1,18.1,18.1,18.2,18.2,18.2,18.3,18.3,18.3,18.4,18.4,18.4,18.5,18.5,18.5,18.6,18.6,18.6,18.7,18.7,18.7,18.7,18.8,18.8,18.9,18.9,18.9,18.9,19.0,19.0,19.0,19.0,19.1,19.1,19.1,19.2,19.2,19.2,19.3,19.3,19.3,19.4,19.4,19.4,19.5,19.5,19.5,19.5];
+        const median_data_boys_bmi_519 = [15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.4,15.4,15.4,15.4,15.4,15.4,15.4,15.5,15.5,15.5,15.5,15.5,15.6,15.6,15.6,15.6,15.6,15.7,15.7,15.7,15.7,15.8,15.8,15.8,15.8,15.9,15.9,15.9,15.9,16.0,16.0,16.0,16.0,16.1,16.1,16.1,16.2,16.2,16.2,16.2,16.3,16.3,16.3,16.4,16.4,16.5,16.5,16.6,16.6,16.6,16.7,16.7,16.8,16.8,16.9,16.9,16.9,17.0,17.0,17.1,17.1,17.2,17.2,17.3,17.3,17.4,17.4,17.4,17.5,17.5,17.6,17.6,17.7,17.7,17.8,17.8,17.9,17.9,18.0,18.0,18.1,18.2,18.2,18.3,18.4,18.4,18.5,18.5,18.6,18.6,18.7,18.7,18.8,18.9,18.9,19.0,19.0,19.1,19.1,19.2,19.2,19.3,19.3,19.4,19.4,19.5,19.5,19.6,19.6,19.7,19.7,19.8,19.8,19.9,19.9,20.0,20.0,20.1,20.1,20.2,20.3,20.3,20.4,20.4,20.4,20.5,20.5,20.6,20.6,20.7,20.7,20.8,20.8,20.9,20.9,21.0,21.0,21.1,21.1,21.2,21.2,21.3,21.3,21.4,21.4,21.5,21.5,21.5,21.6,21.6,21.7,21.7,21.8,21.8,21.8,21.9,21.9,21.9,22.0,22.0,22.0,22.1,22.1,22.1,22.2,22.2,22.2];
+        const p85_data_boys_bmi_519 = [16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.8,16.8,16.8,16.8,16.8,16.8,16.9,16.9,16.9,16.9,16.9,17.0,17.0,17.0,17.1,17.1,17.1,17.1,17.2,17.2,17.2,17.3,17.3,17.3,17.4,17.4,17.4,17.5,17.5,17.5,17.6,17.6,17.7,17.7,17.7,17.8,17.8,17.9,17.9,17.9,18.0,18.0,18.1,18.1,18.2,18.2,18.3,18.3,18.3,18.4,18.4,18.5,18.6,18.6,18.7,18.7,18.8,18.8,18.9,19.0,19.0,19.1,19.1,19.2,19.3,19.3,19.4,19.4,19.5,19.5,19.6,19.6,19.7,19.7,19.8,19.8,19.9,19.9,20.0,20.0,20.1,20.1,20.2,20.3,20.3,20.4,20.5,20.5,20.6,20.6,20.7,20.8,20.9,20.9,21.0,21.0,21.1,21.2,21.2,21.3,21.3,21.4,21.5,21.5,21.6,21.7,21.7,21.8,21.9,21.9,22.0,22.0,22.1,22.2,22.2,22.3,22.4,22.4,22.5,22.5,22.6,22.7,22.7,22.8,22.9,23.0,23.0,23.1,23.2,23.2,23.3,23.4,23.5,23.5,23.6,23.7,23.7,23.8,23.9,23.9,24.0,24.1,24.1,24.2,24.3,24.4,24.4,24.5,24.6,24.6,24.7,24.7,24.8,24.8,24.8,24.9,24.9,25.0,25.0,25.1,25.1,25.1,25.2,25.2,25.3,25.3,25.4,25.4,25.4,25.5,25.5,25.5,25.5,25.5,25.6];
+        const p97_data_boys_bmi_519 = [18.1,18.1,18.1,18.1,18.1,18.1,18.2,18.2,18.2,18.2,18.3,18.3,18.3,18.4,18.4,18.4,18.5,18.5,18.5,18.6,18.6,18.7,18.7,18.8,18.8,18.8,18.9,18.9,19.0,19.0,19.1,19.2,19.2,19.3,19.3,19.4,19.4,19.5,19.5,19.6,19.7,19.7,19.8,19.9,19.9,20.0,20.0,20.1,20.2,20.2,20.3,20.4,20.5,20.5,20.6,20.7,20.8,20.8,20.9,21.0,21.1,21.1,21.2,21.3,21.4,21.5,21.6,21.6,21.7,21.8,21.9,22.0,22.1,22.2,22.2,22.3,22.4,22.5,22.6,22.7,22.7,22.8,22.9,23.0,23.1,23.1,23.2,23.3,23.4,23.5,23.6,23.7,23.8,23.9,24.0,24.1,24.2,24.3,24.4,24.5,24.6,24.7,24.7,24.8,24.9,24.9,25.0,25.1,25.1,25.2,25.3,25.4,25.4,25.5,25.6,25.7,25.8,25.8,25.9,26.0,26.0,26.1,26.2,26.2,26.3,26.4,26.4,26.5,26.6,26.6,26.7,26.7,26.8,26.9,26.9,27.0,27.0,27.1,27.2,27.2,27.3,27.3,27.4,27.4,27.5,27.5,27.6,27.6,27.7,27.7,27.8,27.8,27.9,27.9,28.0,28.0,28.1,28.1,28.2,28.2,28.3,28.3,28.4,28.4,28.5,28.5,28.5,28.6,28.6,28.6,28.7,28.7,28.8,28.8,28.9,28.9,28.9,29.0,29.0,29.0,29.0,29.1,29.1,29.1,29.1];
+
+        // --- GIRLS Data (BMI-for-Age 5-19 years) --- From OCR "BMI-for-age GIRLS 5 to 19 years (percentiles)"
+        const p3_data_girls_bmi_519 = [12.9,12.9,12.9,12.9,12.9,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.8,12.9,12.9,12.9,12.9,12.9,12.9,12.9,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.0,13.1,13.1,13.1,13.1,13.1,13.1,13.2,13.2,13.2,13.2,13.3,13.3,13.3,13.3,13.3,13.4,13.4,13.4,13.4,13.5,13.5,13.5,13.6,13.6,13.6,13.6,13.7,13.7,13.7,13.8,13.8,13.8,13.9,13.9,13.9,14.0,14.0,14.0,14.1,14.1,14.1,14.2,14.2,14.2,14.3,14.3,14.3,14.4,14.4,14.5,14.5,14.5,14.6,14.6,14.6,14.7,14.7,14.8,14.8,14.9,14.9,14.9,15.0,15.0,15.0,15.1,15.1,15.2,15.2,15.2,15.3,15.3,15.3,15.4,15.4,15.4,15.5,15.5,15.5,15.6,15.6,15.6,15.6,15.7,15.7,15.7,15.7,15.8,15.8,15.8,15.8,15.8,15.8,15.8,15.8,15.8,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9,15.9];
+        const p15_data_girls_bmi_519 = [13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.8,13.9,13.9,13.9,13.9,13.9,13.9,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.0,14.1,14.1,14.1,14.1,14.1,14.1,14.2,14.2,14.2,14.2,14.2,14.2,14.3,14.3,14.3,14.3,14.3,14.3,14.3,14.4,14.4,14.4,14.4,14.4,14.5,14.5,14.5,14.5,14.6,14.6,14.6,14.6,14.7,14.7,14.7,14.7,14.8,14.8,14.8,14.9,14.9,14.9,15.0,15.0,15.0,15.1,15.1,15.1,15.2,15.2,15.3,15.3,15.3,15.4,15.4,15.4,15.5,15.5,15.6,15.6,15.6,15.7,15.7,15.7,15.8,15.8,15.9,15.9,15.9,16.0,16.0,16.0,16.1,16.1,16.1,16.2,16.2,16.2,16.3,16.3,16.3,16.3,16.4,16.4,16.4,16.5,16.5,16.5,16.6,16.6,16.6,16.6,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.7,16.6,16.7,16.7,16.7,16.7,16.7,16.7,16.7]; // Last values adjusted to match length
+        const median_data_girls_bmi_519 = [15.2,15.2,15.2,15.2,15.2,15.2,15.2,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.3,15.4,15.4,15.4,15.4,15.4,15.4,15.5,15.5,15.5,15.5,15.5,15.5,15.5,15.5,15.6,15.6,15.6,15.6,15.7,15.7,15.7,15.7,15.7,15.8,15.8,15.8,15.8,15.8,15.9,15.9,15.9,16.0,16.0,16.0,16.1,16.1,16.1,16.2,16.2,16.3,16.3,16.3,16.4,16.4,16.4,16.5,16.5,16.6,16.6,16.6,16.7,16.7,16.7,16.8,16.8,16.9,16.9,16.9,17.0,17.0,17.0,17.1,17.1,17.2,17.2,17.2,17.3,17.3,17.4,17.4,17.5,17.5,17.6,17.6,17.7,17.7,17.8,17.8,17.9,17.9,18.0,18.0,18.1,18.1,18.1,18.2,18.2,18.3,18.3,18.4,18.4,18.4,18.5,18.5,18.6,18.6,18.7,18.7,18.8,18.8,18.9,18.9,19.0,19.0,19.0,19.1,19.1,19.2,19.2,19.3,19.3,19.3,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.4,19.5,19.5,19.5,19.5];
+        const p85_data_girls_bmi_519 = [16.9,16.9,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.0,17.1,17.1,17.1,17.1,17.1,17.2,17.2,17.2,17.2,17.2,17.3,17.3,17.3,17.4,17.4,17.4,17.5,17.5,17.5,17.6,17.6,17.6,17.6,17.7,17.7,17.8,17.8,17.8,17.9,17.9,17.9,18.0,18.0,18.0,18.1,18.1,18.2,18.2,18.2,18.3,18.3,18.4,18.4,18.5,18.5,18.6,18.6,18.7,18.8,18.8,18.9,18.9,19.0,19.0,19.1,19.2,19.2,19.3,19.3,19.4,19.5,19.5,19.6,19.6,19.7,19.7,19.8,19.9,19.9,20.0,20.0,20.1,20.2,20.2,20.3,20.3,20.4,20.4,20.5,20.6,20.6,20.7,20.7,20.8,20.9,20.9,21.0,21.0,21.1,21.1,21.2,21.2,21.3,21.4,21.4,21.5,21.6,21.6,21.7,21.7,21.8,21.9,21.9,22.0,22.0,22.1,22.2,22.2,22.3,22.4,22.4,22.5,22.6,22.6,22.7,22.7,22.8,22.8,22.9,23.0,23.0,23.1,23.2,23.2,23.3,23.3,23.4,23.4,23.5,23.5,23.5,23.6,23.6,23.6,23.6,23.7,23.7,23.7,23.7,23.7,23.7,23.7,23.6,23.6,23.6,23.6,23.6,23.6,23.7,23.7,23.7]; // Last values adjusted
+        const p97_data_girls_bmi_519 = [18.6,18.6,18.7,18.7,18.7,18.7,18.8,18.8,18.8,18.9,18.9,18.9,19.0,19.0,19.0,19.1,19.1,19.1,19.2,19.3,19.3,19.3,19.4,19.4,19.5,19.6,19.6,19.7,19.7,19.8,19.8,19.8,19.9,20.0,20.0,20.1,20.1,20.2,20.2,20.3,20.4,20.4,20.5,20.5,20.6,20.7,20.7,20.8,20.9,20.9,21.0,21.1,21.2,21.2,21.3,21.4,21.5,21.6,21.7,21.8,21.9,22.0,22.1,22.2,22.3,22.4,22.5,22.6,22.7,22.8,22.9,23.0,23.1,23.2,23.3,23.4,23.5,23.6,23.7,23.9,24.0,24.1,24.2,24.3,24.4,24.5,24.6,24.7,24.9,25.0,25.1,25.2,25.3,25.4,25.6,25.7,25.8,25.9,26.0,26.1,26.2,26.3,26.4,26.5,26.6,26.7,26.8,26.9,27.0,27.1,27.2,27.3,27.4,27.5,27.6,27.7,27.7,27.8,27.9,28.0,28.1,28.2,28.3,28.4,28.4,28.5,28.6,28.6,28.7,28.7,28.8,28.8,28.8,28.9,28.9,28.9,28.9,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0];
+        // The provided OCR for girls BMI 5-19 ends at month 228 (19:0).
+        // To match the length of the boys' data (168 points), I'll use the data as is.
+        // The arrays above for girls are based on the OCR'd images for girls BMI 5-19, 
+        // which go up to Year 19: Month 0 (228 months total). 
+        // The `totalMonthsRef_bmi_519` is the same for boys and girls if we consider the full 5y1m to 19y0m range.
+
+        const userTrajectoryDatasetBmi519 = {
+            label: 'IMC del Niño/a', data: new Array(totalMonthsRef_bmi_519.length).fill(null),
+            borderColor: 'blue', backgroundColor: 'blue', showLine: true, borderWidth: 2,
+            spanGaps: true, pointStyle: 'circle', pointRadius: 6, pointHoverRadius: 8, tension: 0.1, order: 0
+        };
+
+        const chartDataBmi519 = { 
+            labels: totalMonthsRef_bmi_519,
+            datasets: [] 
+        };
+
+        const chartOptionsBmi519 = {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'Edad (Meses cumplidos)' }, min: 61, max: 228, ticks: { stepSize: 12 } },
+                y: { title: { display: true, text: 'IMC (kg/m²)' }, min: 11, max: 32 } // Adjusted Y range
+            },
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: false }, 
+                tooltip: { 
+                    mode: 'index', 
+                    intersect: false,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            let totalMonths = tooltipItems[0].label;
+                            let years = Math.floor(totalMonths / 12);
+                            let months = totalMonths % 12;
+                            return `Edad: ${years}a ${months}m (${totalMonths}m)`;
+                        }
+                    }
+                }
+            },
+            interaction: { mode: 'nearest', axis: 'x', intersect: false }
+        };
+
+        const bmiAge519Chart = new Chart(ctxBmi519, { type: 'line', data: chartDataBmi519, options: chartOptionsBmi519 });
+
+        const categoryTextColorsPdfBmi519 = {
+             'diag-delgadez-severa-bmi': '#8B0000', 'diag-delgadez-bmi': '#dc3545', 
+             'diag-normal-bmi': '#28a745', 'diag-sobrepeso-bmi': '#fd7e14', 
+             'diag-obesidad-bmi': '#dc3545', 'diag-obesidad-severa-bmi': '#800080'
+        };
+        
+        function updateChartForGenderBmi519() {
+            let p3_data, p15_data, median_data, p85_data, p97_data;
+            let genderTextForTitle, genderTextForLabel;
+
+            if (currentGenderBmi519 === 'boys') {
+                p3_data = p3_data_boys_bmi_519; p15_data = p15_data_boys_bmi_519; median_data = median_data_boys_bmi_519;
+                p85_data = p85_data_boys_bmi_519; p97_data = p97_data_boys_bmi_519;
+                genderTextForTitle = 'NIÑOS'; genderTextForLabel = 'Niño';
+            } else { // girls
+                p3_data = p3_data_girls_bmi_519; p15_data = p15_data_girls_bmi_519; median_data = median_data_girls_bmi_519;
+                p85_data = p85_data_girls_bmi_519; p97_data = p97_data_girls_bmi_519;
+                genderTextForTitle = 'NIÑAS'; genderTextForLabel = 'Niña';
+            }
+            mainTitleBmi519.textContent = `Seguimiento IMC para la Edad - ${genderTextForTitle} (5-19 años, OMS 2007)`;
+            userTrajectoryDatasetBmi519.label = `IMC del ${genderTextForLabel}`;
+
+            bmiAge519Chart.data.datasets = [
+                { label: 'P3', data: p3_data, borderColor: 'red', fill: false, borderWidth: 1.5, pointRadius: 0, order: 5 },
+                { label: 'P15', data: p15_data, borderColor: 'orange', fill: false, borderWidth: 1.5, pointRadius: 0, order: 4 },
+                { label: 'P50 (Mediana)', data: median_data, borderColor: 'green', fill: false, borderWidth: 2, pointRadius: 0, order: 3 },
+                { label: 'P85 (>+1SD)', data: p85_data, borderColor: 'orange', fill: false, borderWidth: 1.5, pointRadius: 0, order: 2 },
+                { label: 'P97 (>+2SD)', data: p97_data, borderColor: 'red', fill: false, borderWidth: 1.5, pointRadius: 0, order: 1 },
+                userTrajectoryDatasetBmi519
+            ];
+            
+            userTrajectoryDatasetBmi519.data = new Array(totalMonthsRef_bmi_519.length).fill(null);
+            userBmiHistory519 = [];
+            resultAreaBmi519.innerHTML = '';
+            calculatedBmiAreaBmi519.innerHTML = '';
+            bmiAge519Chart.update();
+        }
+
+        function getDiagnosisInfoBmi519(bmi, totalMonths) {
+            const index = totalMonthsRef_bmi_519.indexOf(totalMonths);
+            if (index === -1) return { text: 'Edad no tabulada', percentileText: 'N/A', cssClass: '' };
+
+            let p3_val, p85_val, p97_val;
+            let p3_ref_data; 
+
+            if (currentGenderBmi519 === 'boys') {
+                p3_val = p3_data_boys_bmi_519[index];
+                p85_val = p85_data_boys_bmi_519[index]; p97_val = p97_data_boys_bmi_519[index];
+                p3_ref_data = p3_data_boys_bmi_519;
+            } else { // girls
+                p3_val = p3_data_girls_bmi_519[index];
+                p85_val = p85_data_girls_bmi_519[index]; p97_val = p97_data_girls_bmi_519[index];
+                p3_ref_data = p3_data_girls_bmi_519;
+            }
+            
+            let diagnosisText = '', percentileText = '', cssClass = '';
+
+            if (bmi < p3_val) { // Approx < -2SD
+                // Approximation for severe thinness if significantly below P3 (e.g., < -3SD)
+                const approx_severe_thinness_threshold = p3_ref_data[index] * 0.92; // Example: 8% below P3 is a rough guide
+                if (bmi < approx_severe_thinness_threshold) {
+                     diagnosisText = 'Delgadez Severa'; percentileText = '< P3 (severo)'; cssClass = 'diag-delgadez-severa-bmi';
+                } else {
+                     diagnosisText = 'Delgadez'; percentileText = '< P3'; cssClass = 'diag-delgadez-bmi';
+                }
+            } else if (bmi <= p85_val) { // Normal range is up to P85 (inclusive of P85 as not >+1SD)
+                diagnosisText = 'Peso Normal (IMC)'; percentileText = 'P3-P85'; cssClass = 'diag-normal-bmi';
+            } else if (bmi <= p97_val) { // Overweight is > P85 (approx >+1SD) up to P97
+                diagnosisText = 'Sobrepeso'; percentileText = '>P85-P97'; cssClass = 'diag-sobrepeso-bmi';
+            } else { // bmi > p97_val (Obesity, approx >+2SD)
+                // Severe Obesity would be >+3SD, not directly on these simplified charts.
+                // For simplicity, classifying >P97 as Obesity.
+                diagnosisText = 'Obesidad'; percentileText = '> P97'; cssClass = 'diag-obesidad-bmi';
+            }
+            return { text: diagnosisText, percentileText: percentileText, cssClass: cssClass };
+        }
+
+        function updateChartAndDiagnosisDisplayBmi519() {
+            userBmiHistory519.sort((a, b) => a.totalMonths - b.totalMonths);
+            const trajectoryPoints = new Array(totalMonthsRef_bmi_519.length).fill(null);
+            userBmiHistory519.forEach(point => {
+                const index = totalMonthsRef_bmi_519.indexOf(point.totalMonths);
+                if (index !== -1) {
+                    trajectoryPoints[index] = point.bmi;
+                }
+            });
+
+            const trajectoryDatasetIndex = bmiAge519Chart.data.datasets.findIndex(ds => ds.label === userTrajectoryDatasetBmi519.label);
+            if (trajectoryDatasetIndex > -1) {
+                bmiAge519Chart.data.datasets[trajectoryDatasetIndex].data = trajectoryPoints;
+            }
+
+            resultAreaBmi519.innerHTML = ''; 
+            if (userBmiHistory519.length > 0) {
+                const lastPoint = userBmiHistory519[userBmiHistory519.length - 1];
+                const diagnosisInfo = getDiagnosisInfoBmi519(lastPoint.bmi, lastPoint.totalMonths); 
+                resultAreaBmi519.innerHTML = `Último registro (${Math.floor(lastPoint.totalMonths/12)}a ${lastPoint.totalMonths%12}m): IMC ${lastPoint.bmi.toFixed(1)}. Percentil: ${diagnosisInfo.percentileText} <span class="diagnostic-badge ${diagnosisInfo.cssClass}">${diagnosisInfo.text}</span>`;
+            }
+            bmiAge519Chart.update();
+        }
+
+        genderSelectBmi519.addEventListener('change', (event) => {
+            currentGenderBmi519 = event.target.value;
+            updateChartForGenderBmi519(); 
+        });
+
+        addBtnBmi519.addEventListener('click', () => {
+            resultAreaBmi519.classList.remove('error-message');
+            calculatedBmiAreaBmi519.textContent = ''; 
+
+            const ageY = parseInt(ageYearsInputBmi519.value, 10);
+            const ageM = parseInt(ageMonthsInputBmi519.value, 10);
+            const weight = parseFloat(weightKgInputBmi519.value);
+            const heightCm = parseFloat(heightInputBmi519.value);
+
+            let error = false; let errorMsg = '';
+            if (isNaN(ageY) || ageY < 5 || ageY > 19 || (ageY === 19 && ageM > 0) ) { error = true; errorMsg = 'años (5-19)'; }
+            if (!error && (isNaN(ageM) || ageM < 0 || ageM > 11)) { error = true; errorMsg = 'meses (0-11)'; }
+            const totalMonths = (ageY * 12) + ageM;
+
+            if (!error && (totalMonths < 61 || totalMonths > 228)) { 
+                error = true; 
+                errorMsg = `edad total (${totalMonths}m). Rango válido: 5a 1m (61m) a 19a 0m (228m)`;
+            }
+            
+            if (!error && (isNaN(weight) || weight <= 5 || weight >= 200)) { error = true; errorMsg = 'peso'; } 
+            if (!error && (isNaN(heightCm) || heightCm < 80 || heightCm > 220)) { error = true; errorMsg = 'talla'; } 
+            
+            if (error) {
+                resultAreaBmi519.textContent = `Error: Ingresa un(a) ${errorMsg} válido(a).`; resultAreaBmi519.classList.add('error-message'); return;
+            }
+            if (!totalMonthsRef_bmi_519.includes(totalMonths)) {
+                 resultAreaBmi519.textContent = `Error: La edad de ${totalMonths} meses no está en la tabla. Use meses exactos según la referencia.`; resultAreaBmi519.classList.add('error-message'); return;
+            }
+            
+            const heightM = heightCm / 100;
+            if (heightM === 0) {
+                resultAreaBmi519.textContent = 'Error: La talla no puede ser cero.'; resultAreaBmi519.classList.add('error-message'); return;
+            }
+            const bmi = weight / (heightM * heightM);
+            calculatedBmiAreaBmi519.textContent = `IMC Calculado: ${bmi.toFixed(1)} kg/m²`;
+
+            const existingIndexInHistory = userBmiHistory519.findIndex(p => p.totalMonths === totalMonths);
+            if (existingIndexInHistory > -1) {
+                userBmiHistory519[existingIndexInHistory].bmi = bmi;
+                userBmiHistory519[existingIndexInHistory].weight = weight;
+                userBmiHistory519[existingIndexInHistory].height = heightCm;
+            } else {
+                userBmiHistory519.push({ totalMonths: totalMonths, bmi: bmi, weight: weight, height: heightCm });
+            }
+            updateChartAndDiagnosisDisplayBmi519();
+        });
+
+        clearBtnBmi519.addEventListener('click', () => {
+            userBmiHistory519 = [];
+            resultAreaBmi519.innerHTML = '';
+            calculatedBmiAreaBmi519.textContent = '';
+            const trajectoryDatasetIndex = bmiAge519Chart.data.datasets.findIndex(ds => ds.label === userTrajectoryDatasetBmi519.label);
+            if (trajectoryDatasetIndex > -1) {
+                bmiAge519Chart.data.datasets[trajectoryDatasetIndex].data = new Array(totalMonthsRef_bmi_519.length).fill(null);
+            }
+            bmiAge519Chart.update();
+        });
+
+        savePdfBtnBmi519.addEventListener('click', () => {
+            const genderTextForPdf = currentGenderBmi519 === 'boys' ? 'Niño' : 'Niña';
+            const genderTextForFile = currentGenderBmi519 === 'boys' ? 'nino' : 'nina';
+            
+            const elementsToHideForPdf = [addBtnBmi519, clearBtnBmi519, savePdfBtnBmi519, genderSelectBmi519.parentElement, ageYearsInputBmi519.parentElement, ageMonthsInputBmi519.parentElement, weightKgInputBmi519.parentElement, heightInputBmi519.parentElement];
+            elementsToHideForPdf.forEach(el => el.style.visibility = 'hidden');
+
+            html2canvas(document.getElementById('chartContainerDivBmi519'), { scale: 2, logging: false, useCORS: true }).then(canvas => {
+                elementsToHideForPdf.forEach(el => el.style.visibility = 'visible');
+
+                const imgData = canvas.toDataURL('image/png');
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pdfWidth = pdf.internal.pageSize.getWidth(); const pdfHeight = pdf.internal.pageSize.getHeight();
+                const margin = 15; const contentWidth = pdfWidth - 2 * margin;
+                const defaultTextColor = '#333333'; const titleColor = '#0056b3';
+                const sectionTitleColor = '#17a2b8'; const labelColor = '#555555';
+
+                pdf.setTextColor(titleColor); pdf.setFontSize(18); pdf.setFont(undefined, 'bold');
+                pdf.text(`Reporte IMC-Edad (${genderTextForPdf} 5-19 años, OMS 2007)`, pdfWidth / 2, margin + 5, { align: 'center' });
+                pdf.setFont(undefined, 'normal');
+
+                pdf.setDrawColor(titleColor); pdf.setLineWidth(0.5);
+                pdf.line(margin, margin + 10, pdfWidth - margin, margin + 10);
+                let currentY = margin + 25;
+
+                pdf.setTextColor(labelColor); pdf.setFontSize(10);
+                pdf.text(`Fecha: ${new Date().toLocaleDateString()}`, margin, currentY);
+                pdf.text(`Sexo: ${genderTextForPdf}`, pdfWidth - margin, currentY, { align: 'right' });
+                currentY += 10;
+
+                if (userBmiHistory519.length > 0) {
+                    const lastPoint = userBmiHistory519[userBmiHistory519.length - 1];
+                    const diagnosisInfo = getDiagnosisInfoBmi519(lastPoint.bmi, lastPoint.totalMonths);
+                    const diagColor = categoryTextColorsPdfBmi519[diagnosisInfo.cssClass] || defaultTextColor;
+
+                    pdf.setTextColor(sectionTitleColor); pdf.setFontSize(14); pdf.setFont(undefined, 'bold');
+                    pdf.text(`Último Registro (${genderTextForPdf})`, margin, currentY);
+                    pdf.setFont(undefined, 'normal'); currentY += 8;
+
+                    pdf.setFontSize(11); pdf.setTextColor(labelColor);
+                    pdf.text('Edad:', margin, currentY); pdf.setTextColor(defaultTextColor);
+                     pdf.text(`${Math.floor(lastPoint.totalMonths / 12)} años, ${lastPoint.totalMonths % 12} meses (${lastPoint.totalMonths}m)`, margin + 35, currentY);
+                    currentY += 7;
+
+                    pdf.text('Peso:', margin, currentY); pdf.setTextColor(defaultTextColor);
+                    pdf.text(`${lastPoint.weight.toFixed(1)} kg`, margin + 35, currentY); currentY += 7;
+
+                    pdf.text('Talla:', margin, currentY); pdf.setTextColor(defaultTextColor);
+                    pdf.text(`${lastPoint.height.toFixed(1)} cm`, margin + 35, currentY); currentY += 7;
+                    
+                    pdf.text('IMC:', margin, currentY); pdf.setTextColor(defaultTextColor);
+                    pdf.text(`${lastPoint.bmi.toFixed(1)} kg/m²`, margin + 35, currentY); currentY += 7;
+
+                    pdf.setTextColor(labelColor); pdf.text('Percentil (aprox.):', margin, currentY); pdf.setTextColor(defaultTextColor);
+                    pdf.text(`${diagnosisInfo.percentileText}`, margin + 35, currentY); currentY += 7;
+
+                    pdf.setTextColor(labelColor); pdf.text('Diagnóstico IMC:', margin, currentY);
+                    pdf.setFont(undefined, 'bold'); pdf.setTextColor(diagColor);
+                    pdf.text(`${diagnosisInfo.text}`, margin + 35, currentY);
+                    pdf.setFont(undefined, 'normal'); pdf.setTextColor(defaultTextColor); currentY += 12;
+                } else {
+                    pdf.setTextColor(defaultTextColor); pdf.setFontSize(11);
+                    pdf.text('No hay registros de IMC para mostrar.', margin, currentY); currentY += 10;
+                }
+
+                const imgProps = pdf.getImageProperties(imgData);
+                const aspectRatio = imgProps.height / imgProps.width;
+                const imgWidthPdf = contentWidth; const imgHeightPdf = imgWidthPdf * aspectRatio;
+                if (currentY + imgHeightPdf + margin + 20 > pdfHeight) { 
+                     pdf.addPage(); currentY = margin;
+                }
+                pdf.addImage(imgData, 'PNG', margin, currentY, imgWidthPdf, imgHeightPdf); currentY += imgHeightPdf + 10;
+
+                pdf.setFontSize(8); pdf.setTextColor(labelColor);
+                const disclaimerText1 = `Nota: Esta gráfica y diagnóstico son herramientas de referencia basadas en los estándares de crecimiento de la OMS (Referencia 2007) para ${genderTextForPdf.toLowerCase()}s de 5 a 19 años. El IMC se calcula como Peso(kg)/Talla(m)². Siempre consulte a un profesional de la salud para una evaluación completa.`;
+                var textLines1 = pdf.splitTextToSize(disclaimerText1, contentWidth);
+                 if (currentY + (textLines1.length * 3.5) + margin > pdfHeight) { pdf.addPage(); currentY = margin; }
+                pdf.text(textLines1, margin, currentY);
+                
+                pdf.save(`reporte_imc_edad_${genderTextForFile}_5-19_oms2007.pdf`);
+            }).catch(err => {
+                elementsToHideForPdf.forEach(el => el.style.visibility = 'visible');
+                console.error("Error al generar el PDF:", err); alert("Error al generar el PDF. Revisa la consola.");
+            });
+        });
+
+        // Initial setup
+        updateChartForGenderBmi519();
+
+    </script>
+
+</body>
+</html>
