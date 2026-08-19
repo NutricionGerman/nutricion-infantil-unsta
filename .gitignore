@@ -9,6 +9,7 @@ node_modules/
 /HERRAMIENTAS/
 *.mp4
 !tienda/hero-simple/hero.mp4
+!clases/videos/*.mp4
 *.pdf
 !clases/docs/*.pdf
 !bibliografia/*.pdf
