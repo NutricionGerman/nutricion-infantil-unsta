@@ -712,172 +712,6 @@
             transform: none;
         }
 
-        /* ===== PANTALLA DE BLOQUEO DOCENTE ===== */
-        .teacher-lock-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(5, 7, 10, 0.96);
-            backdrop-filter: blur(25px);
-            z-index: 99999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            transition: opacity 0.35s ease, visibility 0.35s ease;
-        }
-
-        .teacher-lock-overlay.unlocked {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        .teacher-lock-modal {
-            background: linear-gradient(145deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.98));
-            border: 1.5px solid rgba(76, 154, 155, 0.4);
-            border-radius: 20px;
-            padding: 36px 32px;
-            max-width: 440px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(76, 154, 155, 0.18);
-            animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        @keyframes modalFadeIn {
-            from { transform: scale(0.92) translateY(10px); opacity: 0; }
-            to { transform: scale(1) translateY(0); opacity: 1; }
-        }
-
-        .lock-icon-wrap {
-            width: 66px;
-            height: 66px;
-            background: var(--accent-teal-subtle);
-            border: 2px solid rgba(76, 154, 155, 0.5);
-            color: var(--accent-teal-light);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.65rem;
-            margin: 0 auto 18px;
-            box-shadow: 0 0 25px rgba(76, 154, 155, 0.35);
-        }
-
-        .lock-modal-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .lock-modal-desc {
-            font-size: 0.86rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 22px;
-        }
-
-        .lock-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .lock-input-group {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .lock-input-icon {
-            position: absolute;
-            left: 16px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .lock-input-group input {
-            width: 100%;
-            background: rgba(9, 13, 18, 0.85);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            padding: 12px 14px 12px 42px;
-            color: #fff;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .lock-input-group input:focus {
-            border-color: var(--accent-teal-light);
-            box-shadow: 0 0 14px rgba(45, 212, 191, 0.35);
-        }
-
-        .lock-error-text {
-            color: var(--danger-red);
-            font-size: 0.82rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .lock-submit-btn {
-            background: linear-gradient(135deg, var(--accent-teal), #357c7d);
-            border: none;
-            color: #fff;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 0.92rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            margin-top: 4px;
-        }
-
-        .lock-submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(76, 154, 155, 0.4);
-            background: linear-gradient(135deg, #5bb2b3, var(--accent-teal));
-        }
-
-        .lock-back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.82rem;
-            margin-top: 18px;
-            transition: color 0.2s;
-        }
-
-        .lock-back-link:hover {
-            color: #fff;
-        }
-
-        @keyframes shakeInput {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-
-        .input-shake {
-            animation: shakeInput 0.35s ease;
-            border-color: var(--danger-red) !important;
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 900px) {
             .slide-view { padding: 20px 18px; width: 96%; }
@@ -890,36 +724,6 @@
     </style>
 </head>
 <body>
-
-    <!-- ===== PANTALLA DE BLOQUEO / MODO DOCENTE ===== -->
-    <div class="teacher-lock-overlay" id="teacher-lock-screen">
-        <div class="teacher-lock-modal">
-            <div class="lock-icon-wrap">
-                <i class="fas fa-lock"></i>
-            </div>
-            <h2 class="lock-modal-title">Acceso Docente Requerido</h2>
-            <p class="lock-modal-desc">
-                Las diapositivas interactivas están bloqueadas para los alumnos y se habilitarán luego de la clase presencial.
-            </p>
-            
-            <form id="teacher-auth-form" class="lock-form" onsubmit="return false;">
-                <div class="lock-input-group">
-                    <i class="fas fa-key lock-input-icon"></i>
-                    <input type="password" id="teacher-pin-input" placeholder="Ingresa el código docente..." autocomplete="off" autofocus>
-                </div>
-                <div id="lock-error-msg" class="lock-error-text" style="display: none;">
-                    <i class="fas fa-exclamation-triangle"></i> Código incorrecto. Inténtalo de nuevo.
-                </div>
-                <button type="submit" class="lock-submit-btn" id="btn-unlock-deck">
-                    <i class="fas fa-unlock-alt"></i> Desbloquear Diapositivas
-                </button>
-            </form>
-
-            <a href="Clase-19-08.html" class="lock-back-link">
-                <i class="fas fa-arrow-left"></i> Volver a la Clase
-            </a>
-        </div>
-    </div>
 
     <!-- ===== BARRA SUPERIOR ===== -->
     <header class="presentation-header">
@@ -934,9 +738,6 @@
         </a>
 
         <div class="pres-controls-right">
-            <button class="control-btn" id="btn-relock-deck" title="Bloquear Presentación">
-                <i class="fas fa-lock"></i> Bloquear
-            </button>
             <button class="control-btn" id="toggle-fullscreen-btn" title="Pantalla Completa (F)">
                 <i class="fas fa-expand"></i> Pantalla Completa
             </button>
@@ -1491,52 +1292,8 @@
         }
 
         fullscreenBtn.addEventListener('click', toggleFullscreen);
-        
-        // ===== AUTENTICACIÓN / BLOQUEO DOCENTE =====
-        const VALID_PINS = ['1908', 'unsta', 'unsta2026', 'docente', 'profesor', 'nutricion'];
-        const lockScreen = document.getElementById('teacher-lock-screen');
-        const pinInput = document.getElementById('teacher-pin-input');
-        const authForm = document.getElementById('teacher-auth-form');
-        const lockErrorMsg = document.getElementById('lock-error-msg');
-        const btnRelock = document.getElementById('btn-relock-deck');
 
-        function checkAuth() {
-            if (sessionStorage.getItem('unsta_docente_auth') === 'true') {
-                lockScreen?.classList.add('unlocked');
-            } else {
-                lockScreen?.classList.remove('unlocked');
-                if (pinInput) {
-                    pinInput.value = '';
-                    setTimeout(() => pinInput.focus(), 150);
-                }
-            }
-        }
-
-        function unlockPresentation() {
-            const entered = pinInput?.value.trim().toLowerCase();
-            if (entered && VALID_PINS.includes(entered)) {
-                sessionStorage.setItem('unsta_docente_auth', 'true');
-                if (lockErrorMsg) lockErrorMsg.style.display = 'none';
-                lockScreen?.classList.add('unlocked');
-                goToSlide(0);
-            } else {
-                if (lockErrorMsg) lockErrorMsg.style.display = 'flex';
-                pinInput?.classList.add('input-shake');
-                setTimeout(() => pinInput?.classList.remove('input-shake'), 400);
-            }
-        }
-
-        authForm?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            unlockPresentation();
-        });
-
-        btnRelock?.addEventListener('click', () => {
-            sessionStorage.removeItem('unsta_docente_auth');
-            checkAuth();
-        });
-
-        checkAuth();
+        // Inicializar presentación directamente
         goToSlide(0);
     });
     </script>
