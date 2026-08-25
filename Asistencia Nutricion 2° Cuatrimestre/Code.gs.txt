@@ -1,0 +1,142 @@
+function doPost(e) {
+  try {
+    // Parsear los datos enviados desde la página web
+    var data = JSON.parse(e.postData.contents);
+    
+    // Identificar a qué clase pertenece la petición
+    var claseNombre = data.clase ? data.clase : "General";
+    
+    // Obtener la planilla completa
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Buscar si ya existe la pestaña (hoja) para esta clase
+    var sheet = spreadsheet.getSheetByName(claseNombre);
+    
+    // Si no existe, crear la hoja
+    if (!sheet) {
+      sheet = spreadsheet.insertSheet(claseNombre);
+    }
+    
+    // =========================================================================
+    // CASO 1: REGISTRO DE TALLER ANTROPOMÉTRICO (2 FILAS: EVALUADOR Y EVALUADO)
+    // =========================================================================
+    if (data.tipo === "antropometria" || data.up_evaluado) {
+      
+      // Encabezados sin emojis
+      if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === "") {
+        var headersAntropo = [
+          "Fecha y Hora", 
+          "UP / Legajo", 
+          "Nombre del Alumno", 
+          "Rol en la Medicion", 
+          "Companero Vinculado", 
+          "Peso (kg)", 
+          "Talla (cm)", 
+          "IMC (kg/m2)", 
+          "PB (cm)", 
+          "Cintura CC (cm)", 
+          "RCE (Cintura/Talla)", 
+          "Pliegue PT (mm)", 
+          "Fuerza HGS (kg)", 
+          "AMB (cm2)", 
+          "cAMB (cm2)", 
+          "MQI (kg/cm2)"
+        ];
+        sheet.getRange(1, 1, 1, headersAntropo.length).setValues([headersAntropo]);
+        sheet.getRange(1, 1, 1, headersAntropo.length).setFontWeight("bold");
+      }
+      
+      var fechaActual = new Date();
+      var evaluadorUp = data.up_evaluador || data.up || "";
+      var evaluadorNombre = data.nombre_evaluador || data.nombre || "";
+      var evaluadoUp = data.up_evaluado || "";
+      var evaluadoNombre = data.nombre_evaluado || "";
+      
+      // Fila 1: Registro del Alumno EVALUADOR (El que realizó la medición)
+      var rowEvaluador = [
+        fechaActual,
+        evaluadorUp,
+        evaluadorNombre,
+        "Evaluador (Mide)",
+        evaluadoNombre + " (" + evaluadoUp + ")",
+        data.peso || "",
+        data.talla || "",
+        data.imc || "",
+        data.pb || "",
+        data.cc || "",
+        data.rce || "",
+        data.pt || "",
+        data.hgs || "",
+        data.amb || "",
+        data.camb || "",
+        data.mqi || ""
+      ];
+      sheet.appendRow(rowEvaluador);
+      
+      // Fila 2: Registro del Alumno EVALUADO (El paciente / sujeto de prueba)
+      // Solo se inserta como segunda fila si es un compañero distinto al evaluador
+      if (evaluadoUp && evaluadoUp !== evaluadorUp) {
+        var rowEvaluado = [
+          fechaActual,
+          evaluadoUp,
+          evaluadoNombre,
+          "Evaluado (Sujeto)",
+          evaluadorNombre + " (" + evaluadorUp + ")",
+          data.peso || "",
+          data.talla || "",
+          data.imc || "",
+          data.pb || "",
+          data.cc || "",
+          data.rce || "",
+          data.pt || "",
+          data.hgs || "",
+          data.amb || "",
+          data.camb || "",
+          data.mqi || ""
+        ];
+        sheet.appendRow(rowEvaluado);
+      }
+      
+    } else {
+      // =========================================================================
+      // CASO 2: CUESTIONARIO / ASISTENCIA TEÓRICA TRADICIONAL (1 FILA)
+      // =========================================================================
+      
+      if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === "") {
+        var headers = ["Fecha y Hora", "UP / Legajo", "Nombre del Alumno", "Puntaje", "Tiempo", "Infracciones"];
+        for (var j = 1; j <= (data.respuestas ? data.respuestas.length : 0); j++) {
+          headers.push("Pregunta " + j);
+        }
+        sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+        sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
+      }
+      
+      var rowData = [
+        new Date(),
+        data.up || "",
+        data.nombre || "",
+        data.puntaje || "",
+        data.tiempo || "",
+        data.trampas !== undefined ? data.trampas : ""
+      ];
+      
+      if (data.respuestas && Array.isArray(data.respuestas)) {
+        for (var i = 0; i < data.respuestas.length; i++) {
+          var ans = data.respuestas[i];
+          var esCorrectaStr = (ans.es_correcta === "SI" || ans.es_correcta === "SÍ") ? "Correcta" : "Incorrecta";
+          var textoCelda = ans.respuesta_alumno + " [" + esCorrectaStr + "]";
+          rowData.push(textoCelda);
+        }
+      }
+      
+      sheet.appendRow(rowData);
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+      
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({"error": error.message}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}

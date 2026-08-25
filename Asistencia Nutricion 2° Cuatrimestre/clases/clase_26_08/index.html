@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Taller Antropométrico - Asistencia & Registro Clínico | UNSTA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+
+    <div id="app">
+        <!-- PANTALLA PRINCIPAL: FORMULARIO DE REGISTRO CLÍNICO -->
+        <div id="form-screen" class="screen active">
+            <div class="card">
+                <h1>Taller Antropométrico<br>Asistencia & Registro Clínico</h1>
+                <p style="margin-bottom: 18px;">Ingresa tus datos como <strong>Evaluador</strong> y los datos de tu compañero <strong>Evaluado</strong> en cada estación.</p>
+                
+                <!-- SECCIÓN 1: EVALUADOR Y EVALUADO -->
+                <div class="form-section">
+                    <div class="form-section-title">👤 1. Identificación de Roles</div>
+                    
+                    <div class="field-group" style="margin-bottom: 12px;">
+                        <label class="field-label" for="evaluator-input">¿Quién está midiendo? (TÚ - Evaluador):</label>
+                        <input type="text" id="evaluator-input" list="student-list" placeholder="Busca tu nombre o UP..." autocomplete="off">
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label" for="evaluated-input">¿A quién estás evaluando? (Compañero medido):</label>
+                        <input type="text" id="evaluated-input" list="student-list" placeholder="Busca el nombre o UP de tu compañero..." autocomplete="off">
+                    </div>
+                    
+                    <datalist id="student-list"></datalist>
+                </div>
+
+                <!-- SECCIÓN 2: DATOS BRUTOS DE MEDICIÓN -->
+                <div class="form-section">
+                    <div class="form-section-title">🩺 2. Mediciones Antropométricas (Estaciones)</div>
+                    
+                    <div class="grid-2" style="margin-bottom: 12px;">
+                        <div>
+                            <label class="field-label" for="med-peso">Peso Corporal (kg):</label>
+                            <input type="number" step="0.1" id="med-peso" placeholder="Ej: 65.4" oninput="updateLiveCalculations()">
+                        </div>
+                        <div>
+                            <label class="field-label" for="med-talla">Talla (cm):</label>
+                            <input type="number" step="0.1" id="med-talla" placeholder="Ej: 168.0" oninput="updateLiveCalculations()">
+                        </div>
+                    </div>
+
+                    <div class="grid-2" style="margin-bottom: 12px;">
+                        <div>
+                            <label class="field-label" for="med-pb">Perím. Brazo PB (cm):</label>
+                            <input type="number" step="0.1" id="med-pb" placeholder="Ej: 28.5" oninput="updateLiveCalculations()">
+                        </div>
+                        <div>
+                            <label class="field-label" for="med-cc">Circunf. Cintura CC (cm):</label>
+                            <input type="number" step="0.1" id="med-cc" placeholder="Ej: 74.0" oninput="updateLiveCalculations()">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div>
+                            <label class="field-label" for="med-pt">Pliegue Tríceps PT (mm):</label>
+                            <input type="number" step="0.5" id="med-pt" placeholder="Ej: 14.5" oninput="updateLiveCalculations()">
+                        </div>
+                        <div>
+                            <label class="field-label" for="med-hgs">Dinamometría HGS (kg):</label>
+                            <input type="number" step="0.1" id="med-hgs" placeholder="Ej: 32.0" oninput="updateLiveCalculations()">
+                        </div>
+                    </div>
+
+                    <!-- CÁLCULOS AUTOMÁTICOS EN TIEMPO REAL -->
+                    <div class="calc-preview-card">
+                        <div>
+                            <div class="calc-item-label">IMC</div>
+                            <div class="calc-item-val" id="disp-imc">--</div>
+                        </div>
+                        <div>
+                            <div class="calc-item-label">RCE (Cint/Talla)</div>
+                            <div class="calc-item-val" id="disp-rce">--</div>
+                        </div>
+                        <div>
+                            <div class="calc-item-label">cAMB (Músculo)</div>
+                            <div class="calc-item-val" id="disp-camb">--</div>
+                        </div>
+                        <div>
+                            <div class="calc-item-label">MQI (Calidad)</div>
+                            <div class="calc-item-val" id="disp-mqi">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="btn-submit-record" class="btn primary" onclick="submitAnthropometryRecord()">
+                    💾 Guardar y Registrar Medición
+                </button>
+
+                <!-- HISTORIAL DE MEDICIONES DE ESTA SESIÓN -->
+                <div id="session-history-container" style="margin-top: 24px; text-align: left; display: none;">
+                    <h3 style="font-size: 0.95rem; color: var(--text-main); margin-bottom: 8px;">✅ Mediciones enviadas en esta sesión:</h3>
+                    <div id="history-list"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PANTALLA DE ÉXITO INDIVIDUAL -->
+        <div id="success-modal" class="screen">
+            <div class="card">
+                <div class="success-icon" style="font-size: 3rem; margin-bottom: 10px;">🎉</div>
+                <h1 style="color: var(--secondary-color);">¡Medición Registrada!</h1>
+                <p id="success-msg-text">Los datos han sido enviados correctamente a la base de datos de la cátedra.</p>
+                
+                <div style="background: #f3f4f6; border-radius: 8px; padding: 14px; margin-bottom: 20px; text-align: left; font-size: 0.88rem;">
+                    <div id="summary-evaluator"></div>
+                    <div id="summary-evaluated"></div>
+                    <div id="summary-indices" style="margin-top: 8px; font-weight: bold; color: var(--primary-color);"></div>
+                </div>
+
+                <button class="btn primary" onclick="resetFormForNextPeer()">
+                    ➕ Evaluar a otro compañero
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- OVERLAY DE CARGA -->
+    <div id="loading-overlay" class="overlay">
+        <div class="spinner"></div>
+        <p>Guardando medición en la planilla...</p>
+    </div>
+
+    <script src="../../assets/students.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

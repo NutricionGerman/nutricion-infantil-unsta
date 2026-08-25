@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller de Antropometría Clínica & Calidad Muscular - TP 3 | UNSTA</title>
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="../iconos/favicon.ico">
+
+    <!-- Librería jsPDF y Autotable para exportar reportes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0d1117;
+            --bg-card: rgba(22, 27, 34, 0.92);
+            --bg-card-hover: rgba(30, 38, 48, 0.98);
+            --primary-dark: #161b22;
+            --accent-teal: #4c9a9b;
+            --accent-teal-light: #2dd4bf;
+            --accent-teal-subtle: rgba(76, 154, 155, 0.15);
+            --accent-orange: #e87a3d;
+            --accent-orange-subtle: rgba(232, 122, 61, 0.15);
+            --text-light: #f0f6fc;
+            --text-muted: #8b949e;
+            --text-muted-light: rgba(240, 246, 252, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-border-focus: rgba(76, 154, 155, 0.55);
+            --valid-green: #10b981;
+            --warning-yellow: #f59e0b;
+            --danger-red: #ef4444;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(76, 154, 155, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 85% 85%, rgba(232, 122, 61, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(13, 17, 23, 0.98) 0%, #0d1117 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
+
+        /* ===== HEADER PRINCIPAL ===== */
+        .app-header {
+            background: rgba(13, 17, 23, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 14px 28px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        .header-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--accent-teal-subtle);
+            border: 1px solid rgba(76, 154, 155, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .header-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .header-title-wrap h1 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-badge {
+            background: linear-gradient(135deg, var(--accent-orange), #d96224);
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-header {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-header:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-header-primary {
+            background: linear-gradient(135deg, var(--accent-teal), #357c7d);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .btn-header-primary:hover {
+            background: linear-gradient(135deg, #5bb2b3, var(--accent-teal));
+            box-shadow: 0 4px 15px rgba(76, 154, 155, 0.4);
+        }
+
+        /* ===== CONTENEDOR PRINCIPAL ===== */
+        .main-container {
+            max-width: 1240px;
+            margin: 28px auto 0;
+            padding: 0 20px;
+        }
+
+        /* ===== HERO BANNER ===== */
+        .workshop-hero {
+            background: linear-gradient(145deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.9));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 26px 30px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .workshop-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background: radial-gradient(circle at 100% 0%, rgba(76, 154, 155, 0.18), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hero-tag {
+            background: var(--accent-teal-subtle);
+            border: 1px solid rgba(76, 154, 155, 0.35);
+            color: var(--accent-teal-light);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hero-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .hero-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted-light);
+            max-width: 900px;
+            line-height: 1.5;
+        }
+
+        /* ===== NAVEGACIÓN POR PESTAÑAS ===== */
+        .tabs-nav-bar {
+            display: flex;
+            gap: 8px;
+            background: rgba(13, 17, 23, 0.85);
+            border: 1px solid var(--glass-border);
+            padding: 6px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            overflow-x: auto;
+            scrollbar-width: thin;
+        }
+
+        .tab-btn {
+            flex: 1;
+            min-width: 170px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-light);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(76, 154, 155, 0.25), rgba(76, 154, 155, 0.1));
+            color: var(--accent-teal-light);
+            border: 1px solid rgba(76, 154, 155, 0.4);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-badge {
+            background: rgba(0, 0, 0, 0.35);
+            font-size: 0.7rem;
+            padding: 1px 6px;
+            border-radius: 10px;
+        }
+
+        /* ===== VISTAS DE PESTAÑA ===== */
+        .tab-content-panel {
+            display: none;
+            animation: fadeInTab 0.3s ease;
+        }
+
+        .tab-content-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeInTab {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== TARJETAS Y CONTENEDORES ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 24px 26px;
+            margin-bottom: 22px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--accent-teal-light);
+        }
+
+        /* ===== FORMULARIO EQUIPO (5 INTEGRANTES) ===== */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .member-card {
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .member-card.patron-selected {
+            border-color: var(--accent-orange);
+            background: rgba(232, 122, 61, 0.06);
+        }
+
+        .member-num-badge {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 10px;
+        }
+
+        .member-card.patron-selected .member-num-badge {
+            background: var(--accent-orange);
+            color: #fff;
+        }
+
+        .field-group {
+            margin-bottom: 12px;
+        }
+
+        .field-group label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: var(--text-muted-light);
+            margin-bottom: 4px;
+        }
+
+        .app-input, .app-select {
+            width: 100%;
+            background: rgba(9, 13, 18, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.86rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .app-input:focus, .app-select:focus {
+            border-color: var(--accent-teal-light);
+            box-shadow: 0 0 10px rgba(45, 212, 191, 0.25);
+            background: rgba(9, 13, 18, 0.95);
+        }
+
+        .app-select option {
+            background: #161b22;
+            color: #fff;
+        }
+
+        /* ===== SELECTOR DE ALUMNO EN ESTACIONES ===== */
+        .student-selector-bar {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            scrollbar-width: thin;
+        }
+
+        .student-pill-btn {
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid var(--glass-border);
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.84rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .student-pill-btn:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .student-pill-btn.active {
+            background: linear-gradient(135deg, rgba(76, 154, 155, 0.3), rgba(76, 154, 155, 0.12));
+            border-color: var(--accent-teal-light);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .student-pill-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent-teal);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .student-pill-status {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .student-pill-status.complete {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--valid-green);
+        }
+
+        /* ===== ESTACIONES GRID ===== */
+        .stations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .station-box {
+            background: rgba(13, 17, 23, 0.75);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .station-box:hover {
+            border-color: rgba(76, 154, 155, 0.3);
+        }
+
+        .station-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 3px 9px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .st-1 { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .st-2 { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .st-3 { background: rgba(234, 179, 8, 0.15); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+        .st-4 { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .station-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+
+        .quick-calc-box {
+            margin-top: 14px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quick-calc-val {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-teal-light);
+        }
+
+        /* ===== TABLA INTER-EVALUADOR ===== */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.84rem;
+            text-align: left;
+        }
+
+        .custom-table th {
+            background: rgba(13, 17, 23, 0.95);
+            color: var(--text-muted-light);
+            padding: 12px 14px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--glass-border);
+            white-space: nowrap;
+        }
+
+        .custom-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-light);
+            vertical-align: middle;
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table-input {
+            width: 90px;
+            background: rgba(9, 13, 18, 0.9);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.84rem;
+            outline: none;
+            text-align: center;
+        }
+
+        .table-input:focus {
+            border-color: var(--accent-teal-light);
+            box-shadow: 0 0 8px rgba(45, 212, 191, 0.3);
+        }
+
+        /* ===== STATUS BADGES & SEMÁFOROS ===== */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .status-green {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .status-yellow {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .status-red {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        /* ===== BOTONES DE ACCIÓN ===== */
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent-teal), #357c7d);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(76, 154, 155, 0.4);
+            background: linear-gradient(135deg, #5bb2b3, var(--accent-teal));
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+        }
+
+        /* ===== CALLOUT / ALERTA METODOLÓGICA ===== */
+        .method-callout {
+            background: rgba(76, 154, 155, 0.08);
+            border-left: 4px solid var(--accent-teal-light);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted-light);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .method-callout i {
+            color: var(--accent-teal-light);
+            font-size: 1.1rem;
+            margin-top: 2px;
+        }
+
+        /* ===== TEXTAREA PARA CONCLUSIONES ===== */
+        .app-textarea {
+            width: 100%;
+            background: rgba(9, 13, 18, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.2s;
+            margin-bottom: 14px;
+        }
+
+        .app-textarea:focus {
+            border-color: var(--accent-teal-light);
+            box-shadow: 0 0 10px rgba(45, 212, 191, 0.25);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .app-header { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+            .header-actions { width: 100%; justify-content: flex-start; }
+            .workshop-hero { padding: 20px 18px; }
+            .hero-title { font-size: 1.25rem; }
+            .stations-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+        <a href="Clase-19-08.html" class="header-brand">
+            <div class="header-logo">
+                <img src="../iconos/favicon.ico" onerror="this.src='https://ui-avatars.com/api/?name=UNSTA&background=4c9a9b&color=fff'" alt="UNSTA">
+            </div>
+            <div class="header-title-wrap">
+                <h1>Taller de Antropometría Clínica <span class="header-badge">TP N° 3</span></h1>
+                <div class="header-subtitle">Nutrición Infantil • Práctica de Consultorio & Error Técnico</div>
+            </div>
+        </a>
+
+        <div class="header-actions">
+            <button class="btn-header" onclick="loadSampleData()" title="Cargar datos de ejemplo para demostración">
+                <i class="fas fa-magic"></i> Cargar Ejemplo
+            </button>
+            <button class="btn-header" onclick="clearAllData()" title="Borrar datos y empezar de cero">
+                <i class="fas fa-trash-alt"></i> Reiniciar
+            </button>
+            <button class="btn-header btn-header-primary" onclick="exportToPDF()" title="Descargar o Imprimir Informe del TP">
+                <i class="fas fa-file-pdf"></i> Exportar Informe
+            </button>
+            <a href="Clase-19-08.html" class="btn-header">
+                <i class="fas fa-arrow-left"></i> Volver a la Clase
+            </a>
+        </div>
+    </header>
+
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main class="main-container">
+
+        <!-- HERO BANNER -->
+        <section class="workshop-hero">
+            <div class="hero-tags">
+                <span class="hero-tag"><i class="fas fa-users"></i> Equipos de 5 Alumnos</span>
+                <span class="hero-tag"><i class="fas fa-stopwatch"></i> Duración: 90 min</span>
+                <span class="hero-tag"><i class="fas fa-balance-scale"></i> 4 Estaciones Rotativas</span>
+                <span class="hero-tag"><i class="fas fa-calculator"></i> Análisis Inter-Evaluador</span>
+            </div>
+            <h2 class="hero-title">Simulador & Registro de Consultorio Antropométrico</h2>
+            <p class="hero-desc">
+                Herramienta digital para la toma en tiempo real de <strong>Datos Brutos</strong>, cálculo automático de índices de composición y calidad muscular (<strong>IMC, AMB, cAMB, MQI</strong>) y evaluación del <strong>Error Técnico de Medición (ETM)</strong> entre evaluadores.
+            </p>
+        </section>
+
+        <!-- NAVEGACIÓN POR PESTAÑAS -->
+        <nav class="tabs-nav-bar">
+            <button class="tab-btn active" data-tab="tab-team">
+                <i class="fas fa-users-cog"></i> 1. Equipo (5 Alumnos)
+            </button>
+            <button class="tab-btn" data-tab="tab-stations">
+                <i class="fas fa-clinic-medical"></i> 2. Estaciones de Medición
+            </button>
+            <button class="tab-btn" data-tab="tab-inter">
+                <i class="fas fa-bullseye"></i> 3. Control Inter-Evaluador
+                <span class="tab-badge">ETM</span>
+            </button>
+            <button class="tab-btn" data-tab="tab-results">
+                <i class="fas fa-chart-pie"></i> 4. Resultados & MQI
+            </button>
+            <button class="tab-btn" data-tab="tab-report">
+                <i class="fas fa-file-alt"></i> 5. Conclusiones y Entrega
+            </button>
+        </nav>
+
+        <!-- ==========================================
+             PESTAÑA 1: EQUIPO (5 INTEGRANTES)
+        ========================================== -->
+        <div id="tab-team" class="tab-content-panel active">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-id-card"></i> Datos Generales del Grupo</h3>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span style="font-size: 0.82rem; color: var(--text-muted);">Grupo N°:</span>
+                        <select id="group-number" class="app-select" style="width: 120px;" onchange="saveState()">
+                            <option value="1">Grupo 1</option>
+                            <option value="2">Grupo 2</option>
+                            <option value="3">Grupo 3</option>
+                            <option value="4">Grupo 4</option>
+                            <option value="5">Grupo 5</option>
+                            <option value="6">Grupo 6</option>
+                            <option value="7">Grupo 7</option>
+                            <option value="8">Grupo 8</option>
+                            <option value="9">Grupo 9</option>
+                            <option value="10">Grupo 10</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="method-callout">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Instrucciones:</strong> Ingresen los datos de los 5 integrantes del equipo. Designen a <strong>1 compañero como "Paciente Patrón/Control"</strong> para el análisis inter-evaluador de variabilidad técnica.
+                    </div>
+                </div>
+
+                <div class="team-grid" id="team-members-container">
+                    <!-- Generado dinámicamente con JS (5 tarjetas) -->
+                </div>
+
+                <div style="text-align: right; margin-top: 15px;">
+                    <button class="btn-action" onclick="switchTab('tab-stations')">
+                        Continuar a Estaciones de Medición <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             PESTAÑA 2: ESTACIONES DE MEDICIÓN (DATOS BRUTOS)
+        ========================================== -->
+        <div id="tab-stations" class="tab-content-panel">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title"><i class="fas fa-stethoscope"></i> Registro por Estaciones Clínicas</h3>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                            Selecciona al compañero que está siendo evaluado en este momento:
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Selector del Alumno Activo -->
+                <div class="student-selector-bar" id="active-student-selector">
+                    <!-- Generado dinámicamente -->
+                </div>
+
+                <!-- 4 Estaciones de Medición -->
+                <div class="stations-grid">
+                    
+                    <!-- ESTACIÓN 1: PESO Y TALLA -->
+                    <div class="station-box">
+                        <span class="station-badge st-1"><i class="fas fa-weight"></i> Estación 1: Dimensiones Globales</span>
+                        <h4 class="station-title">Peso y Talla</h4>
+                        
+                        <div class="field-group">
+                            <label for="input-peso">Peso Corporal (kg):</label>
+                            <input type="number" step="0.1" id="input-peso" class="app-input" placeholder="Ej: 64.5" oninput="updateCurrentStudentData()">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="input-talla">Talla en Bipedestación (cm):</label>
+                            <input type="number" step="0.1" id="input-talla" class="app-input" placeholder="Ej: 168.0 (Frankfort)" oninput="updateCurrentStudentData()">
+                        </div>
+
+                        <div class="quick-calc-box">
+                            <span>IMC Calculado:</span>
+                            <span class="quick-calc-val" id="calc-imc">-- kg/m²</span>
+                        </div>
+                    </div>
+
+                    <!-- ESTACIÓN 2: PERÍMETROS -->
+                    <div class="station-box">
+                        <span class="station-badge st-2"><i class="fas fa-ruler-horizontal"></i> Estación 2: Perímetros Corporales</span>
+                        <h4 class="station-title">Brazo y Cintura</h4>
+
+                        <div class="field-group">
+                            <label for="input-pb">Circunferencia de Brazo (PB en cm):</label>
+                            <input type="number" step="0.1" id="input-pb" class="app-input" placeholder="Punto mesobraquial" oninput="updateCurrentStudentData()">
+                        </div>
+
+                        <div class="field-group">
+                            <label for="input-cc">Circunferencia de Cintura (CC en cm):</label>
+                            <input type="number" step="0.1" id="input-cc" class="app-input" placeholder="Cresta ilíaca CDC" oninput="updateCurrentStudentData()">
+                        </div>
+
+                        <div class="quick-calc-box">
+                            <span>Razón Cintura/Talla (RCE):</span>
+                            <span class="quick-calc-val" id="calc-rce">--</span>
+                        </div>
+                    </div>
+
+                    <!-- ESTACIÓN 3: PLIEGUES -->
+                    <div class="station-box">
+                        <span class="station-badge st-3"><i class="fas fa-compress-arrows-alt"></i> Estación 3: Composición Grasa</span>
+                        <h4 class="station-title">Pliegue Tricipital (PCT)</h4>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="field-group">
+                                <label for="input-pt1">Toma 1 (mm):</label>
+                                <input type="number" step="0.5" id="input-pt1" class="app-input" placeholder="Toma 1" oninput="updateCurrentStudentData()">
+                            </div>
+                            <div class="field-group">
+                                <label for="input-pt2">Toma 2 (mm):</label>
+                                <input type="number" step="0.5" id="input-pt2" class="app-input" placeholder="Toma 2" oninput="updateCurrentStudentData()">
+                            </div>
+                        </div>
+
+                        <div class="field-group">
+                            <label for="input-pt3">Toma 3 (mm - opcional):</label>
+                            <input type="number" step="0.5" id="input-pt3" class="app-input" placeholder="Si difieren >10%" oninput="updateCurrentStudentData()">
+                        </div>
+
+                        <div class="quick-calc-box">
+                            <span>Promedio Pliegue:</span>
+                            <span class="quick-calc-val" id="calc-pt">-- mm</span>
+                        </div>
+                    </div>
+
+                    <!-- ESTACIÓN 4: DINAMOMETRÍA -->
+                    <div class="station-box">
+                        <span class="station-badge st-4"><i class="fas fa-hand-rock"></i> Estación 4: Dinamometría</span>
+                        <h4 class="station-title">Fuerza de Prensión (Camry EH101)</h4>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+                            <div class="field-group">
+                                <label for="input-grip1">Int. 1 (kg):</label>
+                                <input type="number" step="0.1" id="input-grip1" class="app-input" placeholder="T1" oninput="updateCurrentStudentData()">
+                            </div>
+                            <div class="field-group">
+                                <label for="input-grip2">Int. 2 (kg):</label>
+                                <input type="number" step="0.1" id="input-grip2" class="app-input" placeholder="T2" oninput="updateCurrentStudentData()">
+                            </div>
+                            <div class="field-group">
+                                <label for="input-grip3">Int. 3 (kg):</label>
+                                <input type="number" step="0.1" id="input-grip3" class="app-input" placeholder="T3" oninput="updateCurrentStudentData()">
+                            </div>
+                        </div>
+
+                        <div class="quick-calc-box">
+                            <span>Mejor Marca (HGS):</span>
+                            <span class="quick-calc-val" id="calc-hgs">-- kg</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 24px; flex-wrap: wrap; gap: 10px;">
+                    <button class="btn-action btn-secondary" onclick="switchTab('tab-team')">
+                        <i class="fas fa-arrow-left"></i> Volver a Equipo
+                    </button>
+                    <button class="btn-action" onclick="switchTab('tab-inter')">
+                        Ir a Control Inter-Evaluador <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             PESTAÑA 3: CONTROL INTER-EVALUADOR (ETM)
+        ========================================== -->
+        <div id="tab-inter" class="tab-content-panel">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title"><i class="fas fa-crosshairs"></i> Matriz de Control Inter-Evaluador</h3>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                            Evaluación de precisión sobre el Paciente Patrón: <strong id="patron-name-display" style="color: var(--accent-orange);">Compañero 1</strong>
+                        </p>
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">
+                        4 Evaluadores independientes midiendo al mismo sujeto
+                    </div>
+                </div>
+
+                <div class="method-callout">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <strong>¿Cómo funciona?</strong> Cada uno de los 4 evaluadores mide al compañero patrón de manera independiente. El sistema calcula automáticamente el <strong>Promedio ($\bar{X}$)</strong>, el <strong>Rango de Dispersión ($\text{Máx} - \text{Mín}$)</strong>, el <strong>Coeficiente de Variación ($CV\%$)</strong> y evalúa si la variabilidad está dentro de la tolerancia clínica aceptada.
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table" id="inter-evaluator-table">
+                        <thead>
+                            <tr>
+                                <th>Variable Medida</th>
+                                <th>Eval. 1</th>
+                                <th>Eval. 2</th>
+                                <th>Eval. 3</th>
+                                <th>Eval. 4</th>
+                                <th>Promedio</th>
+                                <th>Rango (Máx-Mín)</th>
+                                <th>CV %</th>
+                                <th>Tolerancia Clínica</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Fila 1: Pliegue Tricipital -->
+                            <tr>
+                                <td><strong>Pliegue Tricipital</strong> (mm)</td>
+                                <td><input type="number" step="0.5" id="inter-pt-1" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.5" id="inter-pt-2" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.5" id="inter-pt-3" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.5" id="inter-pt-4" class="table-input" oninput="calcInterStats()"></td>
+                                <td id="res-pt-mean" style="font-weight:700;">--</td>
+                                <td id="res-pt-range">--</td>
+                                <td id="res-pt-cv">--</td>
+                                <td style="font-size:0.75rem; color:var(--text-muted);">≤ 1.5 mm</td>
+                                <td id="res-pt-badge"><span class="status-pill status-yellow">Pendiente</span></td>
+                            </tr>
+                            <!-- Fila 2: Perímetro Braquial -->
+                            <tr>
+                                <td><strong>Circunf. Brazo (PB)</strong> (cm)</td>
+                                <td><input type="number" step="0.1" id="inter-pb-1" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-pb-2" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-pb-3" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-pb-4" class="table-input" oninput="calcInterStats()"></td>
+                                <td id="res-pb-mean" style="font-weight:700;">--</td>
+                                <td id="res-pb-range">--</td>
+                                <td id="res-pb-cv">--</td>
+                                <td style="font-size:0.75rem; color:var(--text-muted);">≤ 0.5 cm</td>
+                                <td id="res-pb-badge"><span class="status-pill status-yellow">Pendiente</span></td>
+                            </tr>
+                            <!-- Fila 3: Circunferencia de Cintura -->
+                            <tr>
+                                <td><strong>Circunf. Cintura (CC)</strong> (cm)</td>
+                                <td><input type="number" step="0.1" id="inter-cc-1" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-cc-2" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-cc-3" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-cc-4" class="table-input" oninput="calcInterStats()"></td>
+                                <td id="res-cc-mean" style="font-weight:700;">--</td>
+                                <td id="res-cc-range">--</td>
+                                <td id="res-cc-cv">--</td>
+                                <td style="font-size:0.75rem; color:var(--text-muted);">≤ 1.0 cm</td>
+                                <td id="res-cc-badge"><span class="status-pill status-yellow">Pendiente</span></td>
+                            </tr>
+                            <!-- Fila 4: Dinamometría -->
+                            <tr>
+                                <td><strong>Fuerza Dinamometría</strong> (kg)</td>
+                                <td><input type="number" step="0.1" id="inter-hgs-1" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-hgs-2" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-hgs-3" class="table-input" oninput="calcInterStats()"></td>
+                                <td><input type="number" step="0.1" id="inter-hgs-4" class="table-input" oninput="calcInterStats()"></td>
+                                <td id="res-hgs-mean" style="font-weight:700;">--</td>
+                                <td id="res-hgs-range">--</td>
+                                <td id="res-hgs-cv">--</td>
+                                <td style="font-size:0.75rem; color:var(--text-muted);">≤ 2.0 kg</td>
+                                <td id="res-hgs-badge"><span class="status-pill status-yellow">Pendiente</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <button class="btn-action btn-secondary" onclick="switchTab('tab-stations')">
+                        <i class="fas fa-arrow-left"></i> Volver a Estaciones
+                    </button>
+                    <button class="btn-action" onclick="switchTab('tab-results')">
+                        Ver Resultados & MQI <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             PESTAÑA 4: RESULTADOS & DIAGNÓSTICO INTEGRAL (MQI)
+        ========================================== -->
+        <div id="tab-results" class="tab-content-panel">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title"><i class="fas fa-microscope"></i> Composición Corporal & Calidad Muscular (MQI)</h3>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                            Cálculos automáticos de Área Muscular del Brazo ($AMB$), $cAMB$, $AGB$ y $MQI$ para los 5 integrantes:
+                        </p>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="custom-table" id="summary-results-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Alumno</th>
+                                <th>Sexo / Edad</th>
+                                <th>IMC (kg/m²)</th>
+                                <th>RCE (Cint/Talla)</th>
+                                <th>AMB (cm²)</th>
+                                <th>cAMB (cm²)</th>
+                                <th>AGB (cm²)</th>
+                                <th>Fuerza (kg)</th>
+                                <th>MQI (kg/cm²)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-results-tbody">
+                            <!-- Generado dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="method-callout" style="background: rgba(232, 122, 61, 0.08); border-left-color: var(--accent-orange);">
+                    <i class="fas fa-dumbbell" style="color: var(--accent-orange);"></i>
+                    <div>
+                        <strong>Interpretación de Fórmulas:</strong><br>
+                        • $AMB = \frac{(PB - \pi \times \frac{PT}{10})^2}{4\pi}$ | $cAMB = AMB - 10$ (Hombres) / $AMB - 6.5$ (Mujeres)<br>
+                        • $MQI = \frac{\text{Fuerza (kg)}}{AMB \text{ o } cAMB (cm^2)}$ (Fuerza generada por unidad de masa muscular esquelética braquial).
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <button class="btn-action btn-secondary" onclick="switchTab('tab-inter')">
+                        <i class="fas fa-arrow-left"></i> Volver a Inter-Evaluador
+                    </button>
+                    <button class="btn-action" onclick="switchTab('tab-report')">
+                        Redactar Conclusiones y Reporte <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             PESTAÑA 5: CONCLUSIONES Y REPORTE FINAL
+        ========================================== -->
+        <div id="tab-report" class="tab-content-panel">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title"><i class="fas fa-clipboard-check"></i> Informe y Conclusiones del Trabajo Práctico</h3>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                            Respondan las preguntas metodológicas antes de descargar o imprimir el informe final:
+                        </p>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label for="conclusion-q1">
+                        <strong>1. Análisis de Variabilidad Técnica:</strong> ¿En qué medición se observó la mayor diferencia entre evaluadores y a qué factores anatómicos o instrumentales lo atribuyen?
+                    </label>
+                    <textarea id="conclusion-q1" class="app-textarea" placeholder="Ej: Se observó mayor variación en el pliegue tricipital debido a la dificultad para separar completamente el tejido celular subcutáneo del músculo tríceps..."></textarea>
+                </div>
+
+                <div class="field-group">
+                    <label for="conclusion-q2">
+                        <strong>2. Impacto en los Índices Clínicos:</strong> Si un evaluador mide 14 mm y otro 18 mm en el pliegue tricipital del mismo sujeto, ¿cómo repercute ese error en el cálculo del Área Muscular ($AMB$) y en el Índice de Calidad Muscular ($MQI$)?
+                    </label>
+                    <textarea id="conclusion-q2" class="app-textarea" placeholder="Ej: Una sobreestimación del pliegue reduce artificialmente el AMB, lo que generaría un falso aumento del MQI o una subestimación de la masa muscular libre de grasa..."></textarea>
+                </div>
+
+                <div class="field-group">
+                    <label for="conclusion-q3">
+                        <strong>3. Conclusiones Generales del Grupo:</strong> Breve síntesis sobre la experiencia en las 4 estaciones de consultorio y medidas de estandarización aprendidas.
+                    </label>
+                    <textarea id="conclusion-q3" class="app-textarea" placeholder="Ej: El uso del protocolo estandarizado (plano de Frankfort, marcación mesobraquial previa y 3 intentos de dinamometría) reduce significativamente la variabilidad..."></textarea>
+                </div>
+
+                <div style="background: rgba(13, 17, 23, 0.9); padding: 18px; border-radius: var(--radius-md); border: 1px dashed var(--accent-teal); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div>
+                        <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 3px;"><i class="fas fa-file-pdf" style="color: var(--danger-red);"></i> Exportar Informe Final</h4>
+                        <p style="font-size: 0.78rem; color: var(--text-muted);">Genera el documento en PDF con formato membretado oficial de la cátedra para su entrega.</p>
+                    </div>
+                    <button class="btn-action" onclick="exportToPDF()" style="padding: 12px 24px;">
+                        <i class="fas fa-download"></i> Descargar Informe PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== JAVASCRIPT DEL TALLER ===== -->
+    <script>
+    // 1. Control Global e Inmediato de Pestañas
+    window.switchTab = function(tabId) {
+        try {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-content-panel');
+
+            tabBtns.forEach(btn => {
+                const isActive = (btn.dataset.tab === tabId);
+                btn.classList.toggle('active', isActive);
+            });
+
+            tabPanels.forEach(panel => {
+                const isActive = (panel.id === tabId);
+                panel.classList.toggle('active', isActive);
+            });
+
+            if (tabId === 'tab-stations' && window.renderStudentSelector) {
+                window.renderStudentSelector();
+                if (window.loadStudentToForm && window.appData) {
+                    window.loadStudentToForm(window.appData.activeStudentId || 1);
+                }
+            }
+
+            if (tabId === 'tab-inter' && window.updatePatronNameDisplay) {
+                window.updatePatronNameDisplay();
+                if (window.calcInterStats) window.calcInterStats();
+            }
+
+            if (tabId === 'tab-results' && window.renderSummaryTable) {
+                window.renderSummaryTable();
+            }
+
+            // Scroll suave hacia la barra de pestañas
+            const navBar = document.querySelector('.tabs-nav-bar');
+            if (navBar) {
+                navBar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        } catch (err) {
+            console.error("Error al cambiar de pestaña:", err);
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        
+        // Estado de la aplicación
+        const DEFAULT_MEMBERS = [
+            { id: 1, name: '', up: '', sex: 'F', age: 21, isPatron: true, peso: '', talla: '', pb: '', cc: '', pt1: '', pt2: '', pt3: '', grip1: '', grip2: '', grip3: '' },
+            { id: 2, name: '', up: '', sex: 'M', age: 22, isPatron: false, peso: '', talla: '', pb: '', cc: '', pt1: '', pt2: '', pt3: '', grip1: '', grip2: '', grip3: '' },
+            { id: 3, name: '', up: '', sex: 'F', age: 21, isPatron: false, peso: '', talla: '', pb: '', cc: '', pt1: '', pt2: '', pt3: '', grip1: '', grip2: '', grip3: '' },
+            { id: 4, name: '', up: '', sex: 'F', age: 23, isPatron: false, peso: '', talla: '', pb: '', cc: '', pt1: '', pt2: '', pt3: '', grip1: '', grip2: '', grip3: '' },
+            { id: 5, name: '', up: '', sex: 'M', age: 22, isPatron: false, peso: '', talla: '', pb: '', cc: '', pt1: '', pt2: '', pt3: '', grip1: '', grip2: '', grip3: '' }
+        ];
+
+        window.appData = {
+            groupNum: '1',
+            members: JSON.parse(JSON.stringify(DEFAULT_MEMBERS)),
+            activeStudentId: 1,
+            interData: {
+                pt: ['', '', '', ''],
+                pb: ['', '', '', ''],
+                cc: ['', '', '', ''],
+                hgs: ['', '', '', '']
+            },
+            conclusions: { q1: '', q2: '', q3: '' }
+        };
+
+        var appData = window.appData;
+
+        // Cargar desde localStorage si existe
+        const saved = localStorage.getItem('unsta_taller_antropometria_tp3');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (parsed && Array.isArray(parsed.members) && parsed.members.length === 5) {
+                    window.appData = parsed;
+                    appData = window.appData;
+                }
+            } catch(e) { console.error("Error cargando guardado", e); }
+        }
+
+        // Exponer funciones clave a window
+        window.renderTeamMembers = renderTeamMembers;
+        window.renderStudentSelector = renderStudentSelector;
+        window.loadStudentToForm = loadStudentToForm;
+        window.calcInterStats = calcInterStats;
+        window.renderSummaryTable = renderSummaryTable;
+        window.updatePatronNameDisplay = updatePatronNameDisplay;
+
+        // Render inicial protegido
+        try { renderTeamMembers(); } catch(e) { console.error(e); }
+        try { renderStudentSelector(); } catch(e) { console.error(e); }
+        try { loadStudentToForm(window.appData.activeStudentId || 1); } catch(e) { console.error(e); }
+        try { loadInterDataInputs(); } catch(e) { console.error(e); }
+        try { calcInterStats(); } catch(e) { console.error(e); }
+        try { renderSummaryTable(); } catch(e) { console.error(e); }
+        try { loadConclusions(); } catch(e) { console.error(e); }
+
+        // Asignar listeners a los botones de pestañas
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.switchTab(btn.dataset.tab);
+            });
+        });
+
+        // 1. Renderizar tarjetas de los 5 miembros en Tab 1
+        function renderTeamMembers() {
+            const container = document.getElementById('team-members-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            window.appData.members.forEach((m, idx) => {
+                const card = document.createElement('div');
+                card.className = `member-card ${m.isPatron ? 'patron-selected' : ''}`;
+                card.id = `member-card-${m.id}`;
+                card.innerHTML = `
+                    <span class="member-num-badge">${m.isPatron ? '★ PACIENTE PATRÓN' : '#' + m.id}</span>
+                    <div style="font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 10px;">
+                        ${m.name ? m.name : 'Alumno ' + m.id}
+                    </div>
+                    <div class="field-group">
+                        <label>Nombre y Apellido:</label>
+                        <input type="text" class="app-input" placeholder="Nombre completo" value="${m.name}" oninput="updateMemberInfo(${m.id}, 'name', this.value)">
+                    </div>
+                    <div class="field-group">
+                        <label>UP / Legajo:</label>
+                        <input type="text" class="app-input" placeholder="Ej: 344015" value="${m.up}" oninput="updateMemberInfo(${m.id}, 'up', this.value)">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <div class="field-group">
+                            <label>Sexo:</label>
+                            <select class="app-select" onchange="updateMemberInfo(${m.id}, 'sex', this.value)">
+                                <option value="F" ${m.sex === 'F' ? 'selected' : ''}>Femenino</option>
+                                <option value="M" ${m.sex === 'M' ? 'selected' : ''}>Masculino</option>
+                            </select>
+                        </div>
+                        <div class="field-group">
+                            <label>Edad:</label>
+                            <input type="number" class="app-input" value="${m.age}" oninput="updateMemberInfo(${m.id}, 'age', this.value)">
+                        </div>
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <label style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: var(--accent-orange); cursor: pointer;">
+                            <input type="radio" name="patron_radio" ${m.isPatron ? 'checked' : ''} onchange="setPatronMember(${m.id})">
+                            Designar Paciente Control
+                        </label>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            const groupSelect = document.getElementById('group-number');
+            if (groupSelect) groupSelect.value = window.appData.groupNum || '1';
+        }
+
+        window.updateMemberInfo = function(id, field, val) {
+            const member = window.appData.members.find(m => m.id === id);
+            if (member) {
+                member[field] = val;
+                saveState();
+                renderStudentSelector();
+                updatePatronNameDisplay();
+            }
+        };
+
+        window.setPatronMember = function(id) {
+            window.appData.members.forEach(m => m.isPatron = (m.id === id));
+            saveState();
+            renderTeamMembers();
+            updatePatronNameDisplay();
+        };
+
+        function updatePatronNameDisplay() {
+            const patron = window.appData.members.find(m => m.isPatron) || window.appData.members[0];
+            const disp = document.getElementById('patron-name-display');
+            if (disp) disp.innerText = patron.name ? patron.name : `Alumno ${patron.id} (UP: ${patron.up || '---'})`;
+        }
+
+        // 2. Renderizar selector de estudiante en Tab 2
+        function renderStudentSelector() {
+            const container = document.getElementById('active-student-selector');
+            if (!container) return;
+            container.innerHTML = '';
+
+            window.appData.members.forEach(m => {
+                const btn = document.createElement('button');
+                const isComplete = m.peso && m.talla && m.pb && m.cc && (m.pt1 || m.pt2) && (m.grip1 || m.grip2);
+                btn.className = `student-pill-btn ${m.id === window.appData.activeStudentId ? 'active' : ''}`;
+                btn.innerHTML = `
+                    <div class="student-pill-avatar">${m.name ? m.name.charAt(0).toUpperCase() : m.id}</div>
+                    <div>
+                        <div>${m.name ? m.name : 'Alumno ' + m.id}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted);">${m.sex === 'M' ? 'Masc.' : 'Fem.'} • ${m.age || 20}a</div>
+                    </div>
+                    <span class="student-pill-status ${isComplete ? 'complete' : ''}">
+                        ${isComplete ? '<i class="fas fa-check"></i> Listo' : 'Incompleto'}
+                    </span>
+                `;
+                btn.onclick = () => {
+                    appData.activeStudentId = m.id;
+                    saveState();
+                    renderStudentSelector();
+                    loadStudentToForm(m.id);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // Cargar datos del alumno activo a los inputs de las estaciones
+        function loadStudentToForm(id) {
+            const m = appData.members.find(x => x.id === id);
+            if (!m) return;
+
+            document.getElementById('input-peso').value = m.peso || '';
+            document.getElementById('input-talla').value = m.talla || '';
+            document.getElementById('input-pb').value = m.pb || '';
+            document.getElementById('input-cc').value = m.cc || '';
+            document.getElementById('input-pt1').value = m.pt1 || '';
+            document.getElementById('input-pt2').value = m.pt2 || '';
+            document.getElementById('input-pt3').value = m.pt3 || '';
+            document.getElementById('input-grip1').value = m.grip1 || '';
+            document.getElementById('input-grip2').value = m.grip2 || '';
+            document.getElementById('input-grip3').value = m.grip3 || '';
+
+            updateLiveCalculations(m);
+        }
+
+        // Actualizar datos del estudiante activo al tipear
+        window.updateCurrentStudentData = function() {
+            const m = appData.members.find(x => x.id === appData.activeStudentId);
+            if (!m) return;
+
+            m.peso = parseFloat(document.getElementById('input-peso').value) || '';
+            m.talla = parseFloat(document.getElementById('input-talla').value) || '';
+            m.pb = parseFloat(document.getElementById('input-pb').value) || '';
+            m.cc = parseFloat(document.getElementById('input-cc').value) || '';
+            m.pt1 = parseFloat(document.getElementById('input-pt1').value) || '';
+            m.pt2 = parseFloat(document.getElementById('input-pt2').value) || '';
+            m.pt3 = parseFloat(document.getElementById('input-pt3').value) || '';
+            m.grip1 = parseFloat(document.getElementById('input-grip1').value) || '';
+            m.grip2 = parseFloat(document.getElementById('input-grip2').value) || '';
+            m.grip3 = parseFloat(document.getElementById('input-grip3').value) || '';
+
+            updateLiveCalculations(m);
+            saveState();
+            renderStudentSelector();
+        };
+
+        // Cálculos en vivo en las tarjetas de estación
+        function updateLiveCalculations(m) {
+            // IMC
+            const imcElem = document.getElementById('calc-imc');
+            if (m.peso && m.talla) {
+                const tallaM = m.talla / 100;
+                const imc = m.peso / (tallaM * tallaM);
+                imcElem.innerText = `${imc.toFixed(1)} kg/m²`;
+            } else {
+                imcElem.innerText = '-- kg/m²';
+            }
+
+            // RCE
+            const rceElem = document.getElementById('calc-rce');
+            if (m.cc && m.talla) {
+                const rce = m.cc / m.talla;
+                rceElem.innerText = `${rce.toFixed(2)} ${rce >= 0.5 ? '⚠️' : '✅'}`;
+            } else {
+                rceElem.innerText = '--';
+            }
+
+            // Pliegue Promedio
+            const ptElem = document.getElementById('calc-pt');
+            const pts = [m.pt1, m.pt2, m.pt3].filter(x => typeof x === 'number' && !isNaN(x) && x > 0);
+            if (pts.length > 0) {
+                const avgPT = pts.reduce((a, b) => a + b, 0) / pts.length;
+                ptElem.innerText = `${avgPT.toFixed(1)} mm`;
+            } else {
+                ptElem.innerText = '-- mm';
+            }
+
+            // Mejor Dinamometría
+            const hgsElem = document.getElementById('calc-hgs');
+            const grips = [m.grip1, m.grip2, m.grip3].filter(x => typeof x === 'number' && !isNaN(x) && x > 0);
+            if (grips.length > 0) {
+                const maxGrip = Math.max(...grips);
+                hgsElem.innerText = `${maxGrip.toFixed(1)} kg`;
+            } else {
+                hgsElem.innerText = '-- kg';
+            }
+        }
+
+        // 3. Tab 3: Cálculo y Estadísticas Inter-Evaluador
+        function loadInterDataInputs() {
+            ['pt', 'pb', 'cc', 'hgs'].forEach(param => {
+                for (let i = 1; i <= 4; i++) {
+                    const input = document.getElementById(`inter-${param}-${i}`);
+                    if (input && appData.interData && appData.interData[param]) {
+                        input.value = appData.interData[param][i - 1] || '';
+                    }
+                }
+            });
+        }
+
+        window.calcInterStats = function() {
+            const params = [
+                { key: 'pt', maxTol: 1.5, unit: 'mm' },
+                { key: 'pb', maxTol: 0.5, unit: 'cm' },
+                { key: 'cc', maxTol: 1.0, unit: 'cm' },
+                { key: 'hgs', maxTol: 2.0, unit: 'kg' }
+            ];
+
+            params.forEach(p => {
+                const values = [];
+                for (let i = 1; i <= 4; i++) {
+                    const val = parseFloat(document.getElementById(`inter-${p.key}-${i}`)?.value);
+                    if (!isNaN(val) && val > 0) {
+                        values.push(val);
+                        if (!appData.interData[p.key]) appData.interData[p.key] = ['', '', '', ''];
+                        appData.interData[p.key][i - 1] = val;
+                    } else {
+                        if (appData.interData[p.key]) appData.interData[p.key][i - 1] = '';
+                    }
+                }
+
+                const meanElem = document.getElementById(`res-${p.key}-mean`);
+                const rangeElem = document.getElementById(`res-${p.key}-range`);
+                const cvElem = document.getElementById(`res-${p.key}-cv`);
+                const badgeElem = document.getElementById(`res-${p.key}-badge`);
+
+                if (values.length >= 2) {
+                    const mean = values.reduce((a, b) => a + b, 0) / values.length;
+                    const max = Math.max(...values);
+                    const min = Math.min(...values);
+                    const range = max - min;
+
+                    // Desvío estándar y CV
+                    const variance = values.reduce((acc, v) => acc + Math.pow(v - mean, 2), 0) / (values.length - 1);
+                    const sd = Math.sqrt(variance);
+                    const cv = (sd / mean) * 100;
+
+                    meanElem.innerText = `${mean.toFixed(1)} ${p.unit}`;
+                    rangeElem.innerText = `${range.toFixed(1)} ${p.unit}`;
+                    cvElem.innerText = `${cv.toFixed(1)} %`;
+
+                    if (range <= p.maxTol) {
+                        badgeElem.innerHTML = `<span class="status-pill status-green"><i class="fas fa-check-circle"></i> Excelente</span>`;
+                    } else if (range <= p.maxTol * 1.8) {
+                        badgeElem.innerHTML = `<span class="status-pill status-yellow"><i class="fas fa-exclamation-triangle"></i> Aceptable</span>`;
+                    } else {
+                        badgeElem.innerHTML = `<span class="status-pill status-red"><i class="fas fa-times-circle"></i> Discrepante</span>`;
+                    }
+                } else {
+                    meanElem.innerText = '--';
+                    rangeElem.innerText = '--';
+                    cvElem.innerText = '--';
+                    badgeElem.innerHTML = `<span class="status-pill status-yellow">Faltan datos</span>`;
+                }
+            });
+
+            saveState();
+        };
+
+        // 4. Tab 4: Tabla de Resultados & MQI
+        function renderSummaryTable() {
+            const tbody = document.getElementById('summary-results-tbody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            appData.members.forEach((m, idx) => {
+                const tr = document.createElement('tr');
+
+                // IMC
+                let imcStr = '--';
+                if (m.peso && m.talla) {
+                    const tM = m.talla / 100;
+                    imcStr = (m.peso / (tM * tM)).toFixed(1);
+                }
+
+                // RCE
+                let rceStr = '--';
+                if (m.cc && m.talla) {
+                    rceStr = (m.cc / m.talla).toFixed(2);
+                }
+
+                // Pliegue PT (Promedio)
+                const pts = [m.pt1, m.pt2, m.pt3].filter(x => typeof x === 'number' && !isNaN(x) && x > 0);
+                const pt = pts.length > 0 ? (pts.reduce((a, b) => a + b, 0) / pts.length) : null;
+
+                // Dinamometría HGS (Max)
+                const grips = [m.grip1, m.grip2, m.grip3].filter(x => typeof x === 'number' && !isNaN(x) && x > 0);
+                const hgs = grips.length > 0 ? Math.max(...grips) : null;
+
+                // AMB, cAMB, AGB
+                let ambStr = '--', cambStr = '--', agbStr = '--', mqiStr = '--';
+                if (m.pb && pt) {
+                    const ptCm = pt / 10;
+                    const amb = Math.pow(m.pb - (Math.PI * ptCm), 2) / (4 * Math.PI);
+                    const areaTotal = Math.pow(m.pb, 2) / (4 * Math.PI);
+                    const agb = areaTotal - amb;
+                    const camb = (m.sex === 'M') ? Math.max(0, amb - 10) : Math.max(0, amb - 6.5);
+
+                    ambStr = amb.toFixed(1);
+                    cambStr = camb.toFixed(1);
+                    agbStr = agb.toFixed(1);
+
+                    if (hgs && camb > 0) {
+                        const mqi = hgs / camb;
+                        mqiStr = `<strong style="color: var(--accent-teal-light);">${mqi.toFixed(2)}</strong>`;
+                    }
+                }
+
+                tr.innerHTML = `
+                    <td style="color: var(--text-muted); font-weight: 700;">#${m.id}</td>
+                    <td><strong>${m.name ? m.name : 'Alumno ' + m.id}</strong> ${m.isPatron ? '<span style="font-size:0.65rem; color:var(--accent-orange);">(Patrón)</span>' : ''}</td>
+                    <td>${m.sex === 'M' ? 'Masc.' : 'Fem.'} • ${m.age || 20}a</td>
+                    <td>${imcStr}</td>
+                    <td>${rceStr}</td>
+                    <td>${ambStr}</td>
+                    <td>${cambStr}</td>
+                    <td>${agbStr}</td>
+                    <td><strong>${hgs ? hgs.toFixed(1) : '--'}</strong></td>
+                    <td>${mqiStr}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 5. Conclusiones
+        function loadConclusions() {
+            const q1 = document.getElementById('conclusion-q1');
+            const q2 = document.getElementById('conclusion-q2');
+            const q3 = document.getElementById('conclusion-q3');
+            if (q1 && appData.conclusions) q1.value = appData.conclusions.q1 || '';
+            if (q2 && appData.conclusions) q2.value = appData.conclusions.q2 || '';
+            if (q3 && appData.conclusions) q3.value = appData.conclusions.q3 || '';
+
+            [q1, q2, q3].forEach(elem => {
+                elem?.addEventListener('input', () => {
+                    appData.conclusions.q1 = q1.value;
+                    appData.conclusions.q2 = q2.value;
+                    appData.conclusions.q3 = q3.value;
+                    saveState();
+                });
+            });
+        }
+
+        // Guardar estado local
+        window.saveState = function() {
+            const groupSelect = document.getElementById('group-number');
+            if (groupSelect && window.appData) window.appData.groupNum = groupSelect.value;
+            localStorage.setItem('unsta_taller_antropometria_tp3', JSON.stringify(window.appData));
+        };
+
+        // Cargar datos de prueba
+        window.loadSampleData = function() {
+            window.appData = {
+                groupNum: '3',
+                activeStudentId: 1,
+                members: [
+                    { id: 1, name: 'Santucci, Massimo', up: '344098', sex: 'M', age: 22, isPatron: true, peso: 74.5, talla: 178.5, pb: 31.5, cc: 82.0, pt1: 12.0, pt2: 12.5, pt3: '', grip1: 42.0, grip2: 44.5, grip3: 43.8 },
+                    { id: 2, name: 'Bilbao, Alaina Fátima', up: '341189', sex: 'F', age: 21, isPatron: false, peso: 58.2, talla: 164.0, pb: 26.8, cc: 71.5, pt1: 17.0, pt2: 16.5, pt3: '', grip1: 26.5, grip2: 28.0, grip3: 27.5 },
+                    { id: 3, name: 'Godoy, Gimena Mariana', up: '344025', sex: 'F', age: 21, isPatron: false, peso: 61.0, talla: 166.5, pb: 27.5, cc: 74.0, pt1: 18.5, pt2: 18.0, pt3: '', grip1: 27.0, grip2: 29.0, grip3: 28.2 },
+                    { id: 4, name: 'Gerez, Ana Belén', up: '344094', sex: 'F', age: 22, isPatron: false, peso: 54.0, talla: 160.0, pb: 25.2, cc: 68.0, pt1: 15.0, pt2: 15.5, pt3: '', grip1: 24.5, grip2: 25.5, grip3: 25.0 },
+                    { id: 5, name: 'Lescano, Rodrigo Jesús', up: '343872', sex: 'M', age: 23, isPatron: false, peso: 79.0, talla: 181.0, pb: 33.0, cc: 86.5, pt1: 13.5, pt2: 14.0, pt3: '', grip1: 46.0, grip2: 48.2, grip3: 47.5 }
+                ],
+                interData: {
+                    pt: [12.0, 13.0, 12.5, 12.0],
+                    pb: [31.5, 31.8, 31.4, 31.6],
+                    cc: [82.0, 82.5, 81.8, 82.2],
+                    hgs: [44.5, 44.0, 45.0, 44.5]
+                },
+                conclusions: {
+                    q1: 'Se observó una pequeña variación de 1.0 mm en el pliegue tricipital entre evaluadores debido a la presión inicial aplicada con el plicómetro y el tiempo de lectura (se corrigió esperando exactamente 2 segundos antes de registrar).',
+                    q2: 'Una variación de 4 mm en el pliegue cutáneo subestima el Área Muscular del Brazo (AMB) en casi 5 cm², lo que distorsiona el cálculo del MQI aumentando falsamente el ratio de fuerza relativa.',
+                    q3: 'La estandarización de las marcas anatómicas previas (mesobraquial y cresta ilíaca) permitió mantener el Error Técnico de Medición en rangos de excelencia clínica para perímetros y dinamometría.'
+                }
+            };
+            appData = window.appData;
+            saveState();
+            renderTeamMembers();
+            renderStudentSelector();
+            loadStudentToForm(1);
+            loadInterDataInputs();
+            calcInterStats();
+            renderSummaryTable();
+            loadConclusions();
+            alert("✅ Datos de ejemplo cargados con éxito.");
+        };
+
+        // Limpiar todo
+        window.clearAllData = function() {
+            if (confirm("¿Estás seguro de que deseas borrar todos los datos ingresados en el taller?")) {
+                localStorage.removeItem('unsta_taller_antropometria_tp3');
+                location.reload();
+            }
+        };
+
+        // 6. Exportar a PDF oficial
+        window.exportToPDF = function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+
+            // Encabezado
+            doc.setFillColor(22, 27, 34);
+            doc.rect(0, 0, 210, 32, 'F');
+
+            doc.setTextColor(45, 212, 191);
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.text("UNSTA - Cátedra de Nutrición Infantil", 14, 14);
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(11);
+            doc.text(`Informe TP N° 3: Taller de Antropometría Clínica & Calidad Muscular - Grupo ${appData.groupNum || '1'}`, 14, 22);
+
+            doc.setFontSize(8);
+            doc.setTextColor(180, 180, 180);
+            doc.text(`Fecha de Realización: ${new Date().toLocaleDateString('es-AR')}`, 14, 28);
+
+            let startY = 40;
+
+            // Tabla 1: Integrantes
+            doc.setTextColor(22, 27, 34);
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "bold");
+            doc.text("1. Nómina del Equipo de Trabajo", 14, startY);
+
+            const teamRows = appData.members.map(m => [
+                `#${m.id}`,
+                m.name || '---',
+                m.up || '---',
+                m.sex === 'M' ? 'Masculino' : 'Femenino',
+                `${m.age || 20} años`,
+                m.isPatron ? '★ Paciente Patrón' : 'Evaluador'
+            ]);
+
+            doc.autoTable({
+                startY: startY + 3,
+                head: [['#', 'Nombre y Apellido', 'UP / Legajo', 'Sexo', 'Edad', 'Rol en Matriz']],
+                body: teamRows,
+                theme: 'striped',
+                headStyles: { fillColor: [76, 154, 155] },
+                styles: { fontSize: 8 }
+            });
+
+            // Tabla 2: Resultados y Fórmulas
+            startY = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "bold");
+            doc.text("2. Datos Brutos e Índices de Composición y Calidad Muscular (MQI)", 14, startY);
+
+            const resultsRows = appData.members.map(m => {
+                const tM = (m.talla || 0) / 100;
+                const imc = (m.peso && tM) ? (m.peso / (tM * tM)).toFixed(1) : '--';
+                const rce = (m.cc && m.talla) ? (m.cc / m.talla).toFixed(2) : '--';
+
+                const pts = [m.pt1, m.pt2, m.pt3].filter(x => typeof x === 'number' && !isNaN(x) && x > 0);
+                const pt = pts.length > 0 ? (pts.reduce((a, b) => a + b, 0) / pts.length) : null;
+                const grips = [m.grip1, m.grip2, m.grip3].filter(x => typeof x === 'number' && !isNaN(x) && x > 0);
+                const hgs = grips.length > 0 ? Math.max(...grips) : null;
+
+                let amb = '--', camb = '--', mqi = '--';
+                if (m.pb && pt) {
+                    const ptCm = pt / 10;
+                    const ambNum = Math.pow(m.pb - (Math.PI * ptCm), 2) / (4 * Math.PI);
+                    const cambNum = (m.sex === 'M') ? Math.max(0, ambNum - 10) : Math.max(0, ambNum - 6.5);
+                    amb = ambNum.toFixed(1);
+                    camb = cambNum.toFixed(1);
+                    if (hgs && cambNum > 0) mqi = (hgs / cambNum).toFixed(2);
+                }
+
+                return [
+                    m.name || `Alumno ${m.id}`,
+                    m.peso ? `${m.peso} kg` : '--',
+                    m.talla ? `${m.talla} cm` : '--',
+                    imc,
+                    m.pb ? `${m.pb} cm` : '--',
+                    pt ? `${pt.toFixed(1)} mm` : '--',
+                    amb,
+                    camb,
+                    hgs ? `${hgs.toFixed(1)} kg` : '--',
+                    mqi
+                ];
+            });
+
+            doc.autoTable({
+                startY: startY + 3,
+                head: [['Alumno', 'Peso', 'Talla', 'IMC', 'PB', 'PT (mm)', 'AMB', 'cAMB', 'Fuerza', 'MQI']],
+                body: resultsRows,
+                theme: 'striped',
+                headStyles: { fillColor: [53, 124, 125] },
+                styles: { fontSize: 8 }
+            });
+
+            // Tabla 3: Control Inter-evaluador
+            startY = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "bold");
+            const patron = appData.members.find(m => m.isPatron) || appData.members[0];
+            doc.text(`3. Matriz Inter-Evaluador sobre Paciente Patrón: ${patron.name || 'Alumno 1'}`, 14, startY);
+
+            const interRows = [
+                ['Pliegue Tricipital (mm)', ...(appData.interData.pt || ['-', '-', '-', '-']), document.getElementById('res-pt-mean')?.innerText || '--', document.getElementById('res-pt-range')?.innerText || '--', '≤ 1.5 mm'],
+                ['Circunf. Brazo PB (cm)', ...(appData.interData.pb || ['-', '-', '-', '-']), document.getElementById('res-pb-mean')?.innerText || '--', document.getElementById('res-pb-range')?.innerText || '--', '≤ 0.5 cm'],
+                ['Circunf. Cintura CC (cm)', ...(appData.interData.cc || ['-', '-', '-', '-']), document.getElementById('res-cc-mean')?.innerText || '--', document.getElementById('res-cc-range')?.innerText || '--', '≤ 1.0 cm'],
+                ['Dinamometría (kg)', ...(appData.interData.hgs || ['-', '-', '-', '-']), document.getElementById('res-hgs-mean')?.innerText || '--', document.getElementById('res-hgs-range')?.innerText || '--', '≤ 2.0 kg']
+            ];
+
+            doc.autoTable({
+                startY: startY + 3,
+                head: [['Variable', 'Eval 1', 'Eval 2', 'Eval 3', 'Eval 4', 'Promedio', 'Rango', 'Tolerancia']],
+                body: interRows,
+                theme: 'grid',
+                headStyles: { fillColor: [232, 122, 61] },
+                styles: { fontSize: 8 }
+            });
+
+            // Conclusiones
+            startY = doc.lastAutoTable.finalY + 10;
+            if (startY > 230) {
+                doc.addPage();
+                startY = 20;
+            }
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "bold");
+            doc.text("4. Conclusiones y Discusión Metodológica", 14, startY);
+
+            doc.setFontSize(8);
+            doc.setFont("helvetica", "bold");
+            doc.text("A. Variabilidad Inter-evaluador:", 14, startY + 6);
+            doc.setFont("helvetica", "normal");
+            const q1Text = doc.splitTextToSize(appData.conclusions?.q1 || "Sin respuesta redactada.", 180);
+            doc.text(q1Text, 14, startY + 10);
+
+            let nextY = startY + 10 + (q1Text.length * 4) + 4;
+            if (nextY > 260) { doc.addPage(); nextY = 20; }
+
+            doc.setFont("helvetica", "bold");
+            doc.text("B. Repercusión en AMB y MQI:", 14, nextY);
+            doc.setFont("helvetica", "normal");
+            const q2Text = doc.splitTextToSize(appData.conclusions?.q2 || "Sin respuesta redactada.", 180);
+            doc.text(q2Text, 14, nextY + 4);
+
+            nextY = nextY + 4 + (q2Text.length * 4) + 4;
+            if (nextY > 260) { doc.addPage(); nextY = 20; }
+
+            doc.setFont("helvetica", "bold");
+            doc.text("C. Conclusiones de Cátedra:", 14, nextY);
+            doc.setFont("helvetica", "normal");
+            const q3Text = doc.splitTextToSize(appData.conclusions?.q3 || "Sin respuesta redactada.", 180);
+            doc.text(q3Text, 14, nextY + 4);
+
+            // Guardar PDF
+            doc.save(`Informe_TP3_Grupo_${appData.groupNum || '1'}_Nutricion_Infantil_UNSTA.pdf`);
+        };
+
+    });
+    </script>
+</body>
+</html>
