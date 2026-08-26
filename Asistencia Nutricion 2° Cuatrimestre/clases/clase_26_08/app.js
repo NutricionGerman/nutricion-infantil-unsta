@@ -1,4 +1,5 @@
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOxUYe6QJehfXRehv4Rr8xrlJ63SmfPE3rccACnmtYnlRXAWezUrDWa4aDpRsnkdsDPA/exec";
+const TP3_PASS = "tp3";
 
 // Elementos DOM
 const datalist = document.getElementById('student-list');
@@ -17,11 +18,51 @@ const dispRCE = document.getElementById('disp-rce');
 const dispCAMB = document.getElementById('disp-camb');
 const dispMQI = document.getElementById('disp-mqi');
 
+const passwordScreen = document.getElementById('password-screen');
 const formScreen = document.getElementById('form-screen');
 const successModal = document.getElementById('success-modal');
 const loadingOverlay = document.getElementById('loading-overlay');
 
 let sessionRecords = [];
+
+// 0. Control de Acceso por Contraseña (tp3)
+function checkStoredAccess() {
+    if (localStorage.getItem('tp3_access_granted') === 'true') {
+        if (passwordScreen) passwordScreen.classList.remove('active');
+        if (formScreen) formScreen.classList.add('active');
+    } else {
+        if (passwordScreen) {
+            passwordScreen.classList.add('active');
+            const passInput = document.getElementById('tp-password-input');
+            if (passInput) setTimeout(() => passInput.focus(), 150);
+        }
+        if (formScreen) formScreen.classList.remove('active');
+    }
+}
+
+function verifyPassword() {
+    const passInput = document.getElementById('tp-password-input');
+    const errEl = document.getElementById('password-error');
+    if (!passInput) return;
+    
+    const val = passInput.value.trim().toLowerCase();
+    if (val === TP3_PASS) {
+        localStorage.setItem('tp3_access_granted', 'true');
+        if (errEl) errEl.style.display = 'none';
+        if (passwordScreen) passwordScreen.classList.remove('active');
+        if (formScreen) formScreen.classList.add('active');
+    } else {
+        if (errEl) {
+            errEl.innerText = "❌ Contraseña incorrecta. Inténtalo nuevamente.";
+            errEl.style.display = 'block';
+        }
+        passInput.value = '';
+        passInput.focus();
+    }
+}
+
+// Ejecutar verificación inicial de contraseña
+checkStoredAccess();
 
 // 1. Cargar lista de estudiantes en el autocompletado
 if (typeof studentsData !== 'undefined' && datalist) {
