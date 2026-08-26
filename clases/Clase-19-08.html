@@ -1170,81 +1170,94 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 860px) {
             .class-header { 
-                padding: 10px 14px; 
+                padding: 10px 12px; 
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
+                gap: 8px;
+                position: relative; /* Evita que tape el título en pantallas móviles */
             }
-            .class-header > div {
-                display: flex;
-                width: 100%;
-                gap: 6px;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                scrollbar-width: none;
-            }
-            .class-header > div::-webkit-scrollbar { display: none; }
-            .class-header .btn-action, .class-header .btn-back-home {
-                flex: 1 0 auto;
-                padding: 7px 10px;
-                font-size: 0.76rem;
+            .header-brand {
                 justify-content: center;
+            }
+            .header-actions {
+                display: grid;
+                grid-template-columns: 1.3fr 1fr 0.9fr;
+                gap: 6px;
+                width: 100%;
+            }
+            .header-actions .btn-action, .header-actions .btn-back-home {
+                padding: 7px 4px;
+                font-size: 0.74rem;
+                justify-content: center;
+                text-align: center;
                 white-space: nowrap;
+                border-radius: 6px;
+                min-width: 0;
             }
             .class-hero {
                 padding: 0 12px;
-                margin: 14px auto 12px;
+                margin: 12px auto 10px;
             }
             .class-hero-card { 
-                padding: 18px 14px; 
+                padding: 16px 14px; 
             }
             .class-hero-title { 
-                font-size: 1.3rem; 
+                font-size: 1.25rem; 
                 line-height: 1.25;
             }
             .class-hero-desc {
-                font-size: 0.85rem;
+                font-size: 0.82rem;
             }
 
-            /* Pestañas Principales en Móvil (Scroll Horizontal Suave) */
+            /* Pestañas Principales en Móvil (Formato App 3 Columnas) */
             .tabs-wrapper { 
-                padding: 0 12px; 
-                margin: 12px auto 0;
+                padding: 0 10px; 
+                margin: 10px auto 0;
             }
             .main-tabs-nav {
-                display: flex;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
                 padding: 4px;
-                gap: 6px;
+                gap: 4px;
                 border-radius: 10px;
+                background: rgba(22, 27, 34, 0.9);
             }
-            .main-tabs-nav::-webkit-scrollbar { display: none; }
             .main-tab-btn {
-                flex: 1 0 auto;
-                min-width: 130px;
-                padding: 9px 12px;
-                font-size: 0.82rem;
+                width: 100%;
+                min-width: 0;
+                padding: 8px 2px;
+                font-size: 0.74rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                text-align: center;
+                border-radius: 6px;
+            }
+            .main-tab-btn i {
+                font-size: 1.05rem;
+            }
+            .main-tab-btn span {
                 white-space: nowrap;
-                gap: 6px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
             }
             .tab-lock-badge {
-                margin-left: 2px;
-                padding: 1px 5px;
-                font-size: 0.65rem;
+                display: none;
             }
 
             /* Calculadora en Móvil */
             .main-content {
-                padding: 0 12px 30px;
+                padding: 0 10px 30px;
             }
             .wizard-container { 
-                padding: 16px 12px; 
+                padding: 14px 10px; 
                 border-radius: 12px;
             }
             .wizard-stepper-header {
-                margin-bottom: 18px;
+                margin-bottom: 16px;
                 padding: 0 4px;
             }
             .wizard-stepper-header::before {
@@ -1338,15 +1351,15 @@
             </div>
         </a>
 
-        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <a href="../Asistencia Nutricion 2° Cuatrimestre/clases/clase_26_08/index.html" target="_blank" class="btn-action" style="text-decoration: none; padding: 7px 14px; font-size: 0.82rem; background: linear-gradient(135deg, var(--accent-orange), #d96224); color: #fff;">
-                <i class="fas fa-clipboard-check"></i> Asistencia & Registro (26/08)
+        <div class="header-actions">
+            <a href="../Asistencia Nutricion 2° Cuatrimestre/clases/clase_26_08/index.html" target="_blank" class="btn-action btn-asistencia" style="text-decoration: none; background: linear-gradient(135deg, var(--accent-orange), #d96224); color: #fff;">
+                <i class="fas fa-clipboard-check"></i> <span>Asistencia (26/08)</span>
             </a>
-            <a href="presentacion-19-08.html" target="_blank" class="btn-action btn-action-primary" style="text-decoration: none; padding: 7px 14px; font-size: 0.82rem;">
-                <i class="fas fa-desktop"></i> Ver Diapositivas
+            <a href="presentacion-19-08.html" target="_blank" class="btn-action btn-action-primary" style="text-decoration: none;">
+                <i class="fas fa-desktop"></i> <span>Diapositivas</span>
             </a>
             <a href="../index.html" class="btn-back-home">
-                <i class="fas fa-arrow-left"></i> Volver a la Cátedra
+                <i class="fas fa-arrow-left"></i> <span>Volver</span>
             </a>
         </div>
     </header>
@@ -1379,16 +1392,16 @@
         <nav class="main-tabs-nav">
             <button class="main-tab-btn active" data-tab-target="#tab-teoria">
                 <i class="fas fa-book-open"></i>
-                <span>1. Material y Protocolos</span>
+                <span>1. Material</span>
             </button>
             <button class="main-tab-btn" data-tab-target="#tab-tp">
-                <i class="fas fa-clipboard-list"></i>
-                <span>2. Trabajo Práctico N° 3</span>
-                <span class="tab-lock-badge" style="background: var(--accent-teal); color: #fff;"><i class="fas fa-flask"></i> Taller</span>
+                <i class="fas fa-flask"></i>
+                <span>2. TP N° 3</span>
+                <span class="tab-lock-badge" style="background: var(--accent-teal); color: #fff;">Taller</span>
             </button>
             <button class="main-tab-btn" data-tab-target="#tab-calculadora">
                 <i class="fas fa-calculator"></i>
-                <span>3. Calculadora MQI & App</span>
+                <span>3. Calculadora</span>
             </button>
         </nav>
     </div>
