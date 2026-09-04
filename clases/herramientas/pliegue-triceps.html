@@ -335,13 +335,13 @@
 
         addBtnTriceps.addEventListener('click', () => {
             resultAreaTriceps.classList.remove('error-message');
-            const ageY = parseInt(ageYearsInputTriceps.value, 10);
-            const ageM = parseInt(ageMonthsInputTriceps.value, 10);
+            const ageY = parseInt(ageYearsInputTriceps.value || '0', 10);
+            const ageM = parseInt(ageMonthsInputTriceps.value || '0', 10);
             const measurement = parseFloat(measurementInputTriceps.value);
             const totalMonths = (ageY * 12) + ageM;
 
-            if (isNaN(ageY) || isNaN(ageM) || ageY < 0 || ageM < 0 || ageM > 11 || ageY > 19 || (ageY === 19 && ageM > 0) || totalMonths < 2) {
-                resultAreaTriceps.textContent = `Error: Edad inválida. Rango: 0a 2m hasta 19a 0m.`; resultAreaTriceps.classList.add('error-message'); return;
+            if (isNaN(ageY) || isNaN(ageM) || ageY < 0 || ageM < 0 || ageM > 11 || totalMonths < 2 || totalMonths > 900) {
+                resultAreaTriceps.textContent = `Error: Edad inválida. Rango: 0a 2m hasta 74a 11m.`; resultAreaTriceps.classList.add('error-message'); return;
             }
             if (isNaN(measurement) || measurement <= 0) {
                 resultAreaTriceps.textContent = `Error: Ingrese una medida válida en mm.`; resultAreaTriceps.classList.add('error-message'); return;

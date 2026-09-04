@@ -321,13 +321,13 @@
 
         addBtnMidarm.addEventListener('click', () => {
             resultAreaMidarm.classList.remove('error-message');
-            const ageY = parseInt(ageYearsInputMidarm.value, 10);
-            const ageM = parseInt(ageMonthsInputMidarm.value, 10);
+            const ageY = parseInt(ageYearsInputMidarm.value || '0', 10);
+            const ageM = parseInt(ageMonthsInputMidarm.value || '0', 10);
             const measurement = parseFloat(measurementInputMidarm.value);
             const totalMonths = (ageY * 12) + ageM;
 
-            if (isNaN(ageY) || isNaN(ageM) || totalMonths < 2 || totalMonths > 239) {
-                resultAreaMidarm.textContent = `Error: Edad inválida. Rango: 0a 2m hasta 19a 11m.`; resultAreaMidarm.classList.add('error-message'); return;
+            if (isNaN(ageY) || isNaN(ageM) || ageY < 0 || ageM < 0 || ageM > 11 || totalMonths < 2 || totalMonths > 900) {
+                resultAreaMidarm.textContent = `Error: Edad inválida. Rango: 0a 2m hasta 74a 11m.`; resultAreaMidarm.classList.add('error-message'); return;
             }
             if (isNaN(measurement) || measurement < 10 || measurement > 50) {
                 resultAreaMidarm.textContent = `Error: Ingrese una medida válida en cm (ej. 10-50).`; resultAreaMidarm.classList.add('error-message'); return;
