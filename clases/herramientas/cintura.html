@@ -441,16 +441,21 @@
             return null;
         }
 
-        const ageLabels = Array.from({length: (19 * 12 + 12) - 24}, (_, i) => i + 24);
-
         function generatePercentileData(gender, percentile) {
-            return ageLabels.map(totalMonths => {
-                const ageGroup = getAgeGroup(totalMonths);
-                if (ageGroup && percentiles_data[gender][ageGroup]) {
-                    return percentiles_data[gender][ageGroup][percentile] || null;
+            const points = [];
+            for (let m = 24; m <= 239; m += 2) {
+                const group = getAgeGroup(m);
+                if (group && percentiles_data[gender][group]) {
+                    points.push({ x: m, y: percentiles_data[gender][group][percentile] });
                 }
-                return null;
-            });
+            }
+            if (points.length > 0 && points[points.length - 1].x !== 239) {
+                const group = getAgeGroup(239);
+                if (group && percentiles_data[gender][group]) {
+                    points.push({ x: 239, y: percentiles_data[gender][group][percentile] });
+                }
+            }
+            return points;
         }
 
         const waistBackgroundZonesPlugin = {
@@ -533,8 +538,8 @@
         };
 
         const userTrajectoryDatasetWaist = {
-            label: 'Medición (Paciente)',
-            data: new Array(ageLabels.length).fill(null),
+            label: 'Medición del Paciente',
+            data: [],
             borderColor: '#2d3748',
             borderDash: [3, 3],
             borderWidth: 2,
@@ -546,11 +551,9 @@
             pointBorderWidth: 2.5,
             pointBorderColor: '#ffffff',
             pointBackgroundColor: function(context) {
-                const index = context.dataIndex;
-                const val = context.dataset.data[index];
-                if (val === null || val === undefined) return '#3182ce';
-                const totalMonths = ageLabels[index];
-                const diag = getDiagnosisInfoWaist(val, totalMonths);
+                const point = context.raw;
+                if (!point) return '#3182ce';
+                const diag = getDiagnosisInfoWaist(point.y, point.x);
                 if (diag.cssClass === 'diag-riesgo-elevado') return '#dc3545';
                 if (diag.cssClass === 'diag-riesgo-aumentado') return '#fd7e14';
                 if (diag.cssClass === 'diag-normal') return '#198754';
@@ -673,7 +676,7 @@
             const ageM = parseInt(ageMonthsInputWaist.value || '0', 10);
             updateZonesReferenceCardWaist((ageY * 12) + ageM);
 
-            userTrajectoryDatasetWaist.data = new Array(ageLabels.length).fill(null);
+            userTrajectoryDatasetWaist.data = [];
             userMeasurementHistoryWaist = [];
             resultAreaWaist.innerHTML = '';
             waistChart.update();
@@ -703,16 +706,10 @@
 
         function updateChartAndDiagnosisDisplayWaist() {
             userMeasurementHistoryWaist.sort((a, b) => a.totalMonths - b.totalMonths);
-            const trajectoryPoints = new Array(ageLabels.length).fill(null);
-            
-            userMeasurementHistoryWaist.forEach(point => {
-                const index = ageLabels.indexOf(point.totalMonths);
-                if (index !== -1) {
-                    trajectoryPoints[index] = point.measurement;
-                }
-            });
-
-            userTrajectoryDatasetWaist.data = trajectoryPoints;
+            const trajectoryDataset = waistChart.data.datasets.find(ds => ds.label.includes('Paciente') || ds.label.includes('Medición'));
+            if (trajectoryDataset) {
+                trajectoryDataset.data = userMeasurementHistoryWaist.map(p => ({ x: p.totalMonths, y: p.measurement }));
+            }
 
             resultAreaWaist.innerHTML = '';
             if (userMeasurementHistoryWaist.length > 0) {

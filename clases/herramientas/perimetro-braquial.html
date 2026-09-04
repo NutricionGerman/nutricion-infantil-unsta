@@ -490,13 +490,21 @@
             return null;
         }
 
-        const ageLabels = Array.from({length: (75 * 12 + 1) - 2}, (_, i) => i + 2);
-
         function generatePercentileData(gender, percentile) {
-            return ageLabels.map(totalMonths => {
-                const group = getAgeGroup(totalMonths);
-                return (group && percentiles_data[gender][group]) ? percentiles_data[gender][group][percentile] : null;
-            });
+            const points = [];
+            for (let m = 2; m <= 900; m += 2) {
+                const group = getAgeGroup(m);
+                if (group && percentiles_data[gender][group]) {
+                    points.push({ x: m, y: percentiles_data[gender][group][percentile] });
+                }
+            }
+            if (points.length > 0 && points[points.length - 1].x !== 900) {
+                const group = getAgeGroup(900);
+                if (group && percentiles_data[gender][group]) {
+                    points.push({ x: 900, y: percentiles_data[gender][group][percentile] });
+                }
+            }
+            return points;
         }
 
         const midarmBackgroundZonesPlugin = {
@@ -579,8 +587,8 @@
         };
 
         const userTrajectoryDatasetMidarm = {
-            label: 'Medición (Paciente)',
-            data: new Array(ageLabels.length).fill(null),
+            label: 'Medición del Paciente',
+            data: [],
             borderColor: '#2d3748',
             borderDash: [3, 3],
             borderWidth: 2,
@@ -592,11 +600,9 @@
             pointBorderWidth: 2.5,
             pointBorderColor: '#ffffff',
             pointBackgroundColor: function(context) {
-                const index = context.dataIndex;
-                const val = context.dataset.data[index];
-                if (val === null || val === undefined) return '#3182ce';
-                const totalMonths = ageLabels[index];
-                const diag = getDiagnosisInfoMidarm(val, totalMonths);
+                const point = context.raw;
+                if (!point) return '#3182ce';
+                const diag = getDiagnosisInfoMidarm(point.y, point.x);
                 if (diag.cssClass === 'diag-deplecion') return '#dc3545';
                 if (diag.cssClass === 'diag-abajo-promedio') return '#fd7e14';
                 if (diag.cssClass === 'diag-promedio') return '#198754';
@@ -720,7 +726,7 @@
             const ageM = parseInt(ageMonthsInputMidarm.value || '0', 10);
             updateZonesReferenceCardMidarm((ageY * 12) + ageM);
 
-            userTrajectoryDatasetMidarm.data = new Array(ageLabels.length).fill(null);
+            userTrajectoryDatasetMidarm.data = [];
             userMeasurementHistoryMidarm = [];
             resultAreaMidarm.innerHTML = '';
             midarmChart.update();
@@ -742,16 +748,10 @@
 
         function updateChartAndDiagnosisDisplayMidarm() {
             userMeasurementHistoryMidarm.sort((a, b) => a.totalMonths - b.totalMonths);
-            const trajectoryPoints = new Array(ageLabels.length).fill(null);
-            
-            userMeasurementHistoryMidarm.forEach(point => {
-                const index = ageLabels.indexOf(point.totalMonths);
-                if (index !== -1) {
-                    trajectoryPoints[index] = point.measurement;
-                }
-            });
-
-            userTrajectoryDatasetMidarm.data = trajectoryPoints;
+            const trajectoryDataset = midarmChart.data.datasets.find(ds => ds.label.includes('Paciente') || ds.label.includes('Medición'));
+            if (trajectoryDataset) {
+                trajectoryDataset.data = userMeasurementHistoryMidarm.map(p => ({ x: p.totalMonths, y: p.measurement }));
+            }
 
             resultAreaMidarm.innerHTML = '';
             if (userMeasurementHistoryMidarm.length > 0) {

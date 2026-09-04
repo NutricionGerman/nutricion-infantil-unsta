@@ -14,12 +14,12 @@
         :root {
             --p5-color: #dc3545;
             --p5-bg: rgba(220, 53, 69, 0.08);
-            --p25-color: #fd7e14;
-            --p25-bg: rgba(253, 126, 20, 0.08);
+            --p15-color: #fd7e14;
+            --p15-bg: rgba(253, 126, 20, 0.08);
             --p50-color: #198754;
             --p50-bg: rgba(25, 135, 84, 0.10);
-            --p75-color: #0d6efd;
-            --p75-bg: rgba(13, 110, 253, 0.08);
+            --p85-color: #0d6efd;
+            --p85-bg: rgba(13, 110, 253, 0.08);
             --p95-color: #6f42c1;
             --p95-bg: rgba(111, 66, 193, 0.08);
         }
@@ -87,7 +87,7 @@
         .input-group label { 
             margin-bottom: 6px; 
             font-size: 0.85rem; 
-            font-weight: 600;
+            font-weight: 600; 
             color: #4a5568; 
         }
 
@@ -183,11 +183,11 @@
             letter-spacing: 0.2px;
         }
         
-        .diag-muy-bajo { background-color: var(--p5-color); }
-        .diag-bajo { background-color: var(--p25-color); }
+        .diag-deplecion { background-color: var(--p5-color); }
+        .diag-abajo-promedio { background-color: var(--p15-color); }
         .diag-promedio { background-color: var(--p50-color); }
-        .diag-alto { background-color: var(--p75-color); }
-        .diag-muy-alto { background-color: var(--p95-color); }
+        .diag-arriba-promedio { background-color: var(--p85-color); }
+        .diag-alta-hipertrofia { background-color: var(--p95-color); }
 
         .zones-reference-card {
             background: #ffffff;
@@ -244,9 +244,9 @@
         }
 
         .zp-deplecion { border-color: var(--p5-color); background: var(--p5-bg); color: #9b1c1c; }
-        .zp-abajo-promedio { border-color: var(--p25-color); background: var(--p25-bg); color: #9a3412; }
+        .zp-abajo-promedio { border-color: var(--p15-color); background: var(--p15-bg); color: #9a3412; }
         .zp-promedio { border-color: var(--p50-color); background: var(--p50-bg); color: #166534; }
-        .zp-arriba-promedio { border-color: var(--p75-color); background: var(--p75-bg); color: #1e40af; }
+        .zp-arriba-promedio { border-color: var(--p85-color); background: var(--p85-bg); color: #1e40af; }
         .zp-hipertrofia { border-color: var(--p95-color); background: var(--p95-bg); color: #581c87; }
 
         .chart-container { 
@@ -334,24 +334,24 @@
             </div>
             <div class="zones-pills-container">
                 <div class="zone-pill zp-deplecion">
-                    <span class="zp-title">≤ P5 Reserva Muy Baja</span>
+                    <span class="zp-title">≤ P5 Depleción Grasa</span>
                     <span class="zp-range" id="zpP5RangeTriceps">≤ 10.0 mm</span>
                 </div>
                 <div class="zone-pill zp-abajo-promedio">
-                    <span class="zp-title">>P5 a ≤P25 Reserva Baja</span>
-                    <span class="zp-range" id="zpP25RangeTriceps">10.0 - 14.5 mm</span>
+                    <span class="zp-title">>P5 a ≤P15 Abajo del Promedio</span>
+                    <span class="zp-range" id="zpP15RangeTriceps">10.0 - 12.5 mm</span>
                 </div>
                 <div class="zone-pill zp-promedio">
-                    <span class="zp-title">>P25 a ≤P75 Promedio / Adecuada</span>
-                    <span class="zp-range" id="zpP50RangeTriceps">14.5 - 22.5 mm (Mediana: 18.0)</span>
+                    <span class="zp-title">>P15 a ≤P85 Promedio / Adecuada</span>
+                    <span class="zp-range" id="zpP50RangeTriceps">12.5 - 25.5 mm (Mediana: 18.0)</span>
                 </div>
                 <div class="zone-pill zp-arriba-promedio">
-                    <span class="zp-title">>P75 a ≤P90 Reserva Elevada</span>
-                    <span class="zp-range" id="zpP75RangeTriceps">22.5 - 27.5 mm</span>
+                    <span class="zp-title">>P85 a ≤P95 Arriba del Promedio</span>
+                    <span class="zp-range" id="zpP85RangeTriceps">25.5 - 31.0 mm</span>
                 </div>
                 <div class="zone-pill zp-hipertrofia">
-                    <span class="zp-title">> P90 / > P95 Obesidad / Muy Alta</span>
-                    <span class="zp-range" id="zpP95RangeTriceps">> 27.5 mm</span>
+                    <span class="zp-title">> P95 Exceso de Grasa / Muy Alta</span>
+                    <span class="zp-range" id="zpP95RangeTriceps">> 31.0 mm</span>
                 </div>
             </div>
         </div>
@@ -361,15 +361,15 @@
         </div>
 
         <div class="notes">
-             <strong>Interpretación de la Gráfica de Pliegue del Tríceps:</strong>
+             <strong>Interpretación de la Gráfica de Pliegue del Tríceps (Frisancho 1990):</strong>
              <ul>
-                 <li>Esta gráfica integra los estándares antropométricos de <strong>Frisancho (1990) y CDC/NHANES</strong> para población infanto-juvenil y adultos (1 a 74 años).</li>
-                 <li>El pliegue del tríceps es un indicador directo de la grasa corporal subcutánea y de la reserva calórica periférica.</li>
-                 <li><strong>≤ P5:</strong> Reserva grasa muy baja / Depleción calórica.</li>
-                 <li><strong>> P5 a ≤ P25:</strong> Reserva grasa por debajo del promedio.</li>
-                 <li><strong>> P25 a ≤ P75:</strong> Reserva grasa promedio y normonutrida (Eutrofia).</li>
-                 <li><strong>> P75 a ≤ P90:</strong> Reserva grasa elevada / Riesgo de sobrepeso.</li>
-                 <li><strong>> P90:</strong> Reserva grasa muy alta / Obesidad.</li>
+                 <li>El pliegue cutáneo del tríceps evalúa la grasa corporal subcutánea y las reservas energéticas calóricas periféricas.</li>
+                 <li>Esta herramienta integra los estándares antropométricos de <strong>Frisancho (1990) y CDC/NHANES (1 a 74 años)</strong>.</li>
+                 <li><strong>≤ P5:</strong> Depleción calórico-grasa severa (<em>Depleted</em>).</li>
+                 <li><strong>> P5 a ≤ P15:</strong> Reserva grasa por debajo del promedio (<em>Below average</em>).</li>
+                 <li><strong>> P15 a ≤ P85:</strong> Reserva grasa promedio y normonutrida (<em>Average / Eutrofia</em>).</li>
+                 <li><strong>> P85 a ≤ P95:</strong> Reserva grasa por encima del promedio / Riesgo de sobrepeso (<em>Above average</em>).</li>
+                 <li><strong>> P95:</strong> Exceso de reserva grasa / Adiposidad muy alta (<em>Excess fat</em>).</li>
              </ul>
         </div>
         <div class="source">
@@ -391,9 +391,9 @@
         const inputSectionTriceps = document.getElementById('inputSectionTriceps');
         const zonesCardTitleTriceps = document.getElementById('zonesCardTitleTriceps');
         const zpP5RangeTriceps = document.getElementById('zpP5RangeTriceps');
-        const zpP25RangeTriceps = document.getElementById('zpP25RangeTriceps');
+        const zpP15RangeTriceps = document.getElementById('zpP15RangeTriceps');
         const zpP50RangeTriceps = document.getElementById('zpP50RangeTriceps');
-        const zpP75RangeTriceps = document.getElementById('zpP75RangeTriceps');
+        const zpP85RangeTriceps = document.getElementById('zpP85RangeTriceps');
         const zpP95RangeTriceps = document.getElementById('zpP95RangeTriceps');
 
         let userMeasurementHistoryTriceps = []; 
@@ -490,13 +490,21 @@
             return null;
         }
 
-        const ageLabels = Array.from({length: (75 * 12 + 1) - 2}, (_, i) => i + 2);
-
         function generatePercentileData(gender, percentile) {
-            return ageLabels.map(totalMonths => {
-                const group = getAgeGroup(totalMonths);
-                return (group && percentiles_data[gender][group]) ? percentiles_data[gender][group][percentile] : null;
-            });
+            const points = [];
+            for (let m = 2; m <= 900; m += 2) {
+                const group = getAgeGroup(m);
+                if (group && percentiles_data[gender][group]) {
+                    points.push({ x: m, y: percentiles_data[gender][group][percentile] });
+                }
+            }
+            if (points.length > 0 && points[points.length - 1].x !== 900) {
+                const group = getAgeGroup(900);
+                if (group && percentiles_data[gender][group]) {
+                    points.push({ x: 900, y: percentiles_data[gender][group][percentile] });
+                }
+            }
+            return points;
         }
 
         const tricepsBackgroundZonesPlugin = {
@@ -524,8 +532,8 @@
                 }
 
                 const p5Coords = getCoords(5);
-                const p25Coords = getCoords(25);
-                const p75Coords = getCoords(75);
+                const p15Coords = getCoords(15);
+                const p85Coords = getCoords(85);
                 const p95Coords = getCoords(95);
 
                 const topPixel = chartArea.top;
@@ -533,7 +541,7 @@
 
                 ctx.save();
 
-                // Zona > P95 (Muy Alta / Obesidad) - Púrpura suave
+                // Zona > P95 (Exceso de Grasa / Muy Alta) - Púrpura suave
                 ctx.fillStyle = 'rgba(111, 66, 193, 0.08)';
                 ctx.beginPath();
                 ctx.moveTo(p95Coords[0].xPix, topPixel);
@@ -542,26 +550,26 @@
                 ctx.closePath();
                 ctx.fill();
 
-                // Zona P75 - P95 (Elevada) - Azul suave
+                // Zona P85 - P95 (Arriba del Promedio / Riesgo) - Azul suave
                 ctx.fillStyle = 'rgba(13, 110, 253, 0.08)';
                 ctx.beginPath();
                 for (let i = 0; i < p95Coords.length; i++) ctx.lineTo(p95Coords[i].xPix, p95Coords[i].yPix);
-                for (let i = p75Coords.length - 1; i >= 0; i--) ctx.lineTo(p75Coords[i].xPix, p75Coords[i].yPix);
+                for (let i = p85Coords.length - 1; i >= 0; i--) ctx.lineTo(p85Coords[i].xPix, p85Coords[i].yPix);
                 ctx.closePath();
                 ctx.fill();
 
-                // Zona P25 - P75 (Normonutrido / Adecuado) - Verde suave
+                // Zona P15 - P85 (Promedio / Eutrofia) - Verde suave
                 ctx.fillStyle = 'rgba(25, 135, 84, 0.10)';
                 ctx.beginPath();
-                for (let i = 0; i < p75Coords.length; i++) ctx.lineTo(p75Coords[i].xPix, p75Coords[i].yPix);
-                for (let i = p25Coords.length - 1; i >= 0; i--) ctx.lineTo(p25Coords[i].xPix, p25Coords[i].yPix);
+                for (let i = 0; i < p85Coords.length; i++) ctx.lineTo(p85Coords[i].xPix, p85Coords[i].yPix);
+                for (let i = p15Coords.length - 1; i >= 0; i--) ctx.lineTo(p15Coords[i].xPix, p15Coords[i].yPix);
                 ctx.closePath();
                 ctx.fill();
 
-                // Zona P5 - P25 (Bajo Promedio) - Ámbar suave
+                // Zona P5 - P15 (Abajo del Promedio / Baja Reserva) - Ámbar suave
                 ctx.fillStyle = 'rgba(253, 126, 20, 0.08)';
                 ctx.beginPath();
-                for (let i = 0; i < p25Coords.length; i++) ctx.lineTo(p25Coords[i].xPix, p25Coords[i].yPix);
+                for (let i = 0; i < p15Coords.length; i++) ctx.lineTo(p15Coords[i].xPix, p15Coords[i].yPix);
                 for (let i = p5Coords.length - 1; i >= 0; i--) ctx.lineTo(p5Coords[i].xPix, p5Coords[i].yPix);
                 ctx.closePath();
                 ctx.fill();
@@ -579,8 +587,8 @@
         };
 
         const userTrajectoryDatasetTriceps = {
-            label: 'Medición (Paciente)',
-            data: new Array(ageLabels.length).fill(null),
+            label: 'Medición del Paciente',
+            data: [],
             borderColor: '#2d3748',
             borderDash: [3, 3],
             borderWidth: 2,
@@ -592,16 +600,14 @@
             pointBorderWidth: 2.5,
             pointBorderColor: '#ffffff',
             pointBackgroundColor: function(context) {
-                const index = context.dataIndex;
-                const val = context.dataset.data[index];
-                if (val === null || val === undefined) return '#3182ce';
-                const totalMonths = ageLabels[index];
-                const diag = getDiagnosisInfoTriceps(val, totalMonths);
-                if (diag.cssClass === 'diag-muy-bajo') return '#dc3545';
-                if (diag.cssClass === 'diag-bajo') return '#fd7e14';
+                const point = context.raw;
+                if (!point) return '#3182ce';
+                const diag = getDiagnosisInfoTriceps(point.y, point.x);
+                if (diag.cssClass === 'diag-deplecion') return '#dc3545';
+                if (diag.cssClass === 'diag-abajo-promedio') return '#fd7e14';
                 if (diag.cssClass === 'diag-promedio') return '#198754';
-                if (diag.cssClass === 'diag-alto') return '#0d6efd';
-                if (diag.cssClass === 'diag-muy-alto') return '#6f42c1';
+                if (diag.cssClass === 'diag-arriba-promedio') return '#0d6efd';
+                if (diag.cssClass === 'diag-alta-hipertrofia') return '#6f42c1';
                 return '#3182ce';
             },
             tension: 0.1,
@@ -686,10 +692,10 @@
 
             zonesCardTitleTriceps.textContent = `🎯 Zonas de Interpretación (Frisancho 1990) - Grupo de Edad: ${ageGroup}`;
             zpP5RangeTriceps.textContent = `≤ ${dataRow[5].toFixed(1)} mm`;
-            zpP25RangeTriceps.textContent = `${dataRow[5].toFixed(1)} - ${dataRow[25].toFixed(1)} mm`;
-            zpP50RangeTriceps.textContent = `${dataRow[25].toFixed(1)} - ${dataRow[75].toFixed(1)} mm (Mediana: ${dataRow[50].toFixed(1)})`;
-            zpP75RangeTriceps.textContent = `${dataRow[75].toFixed(1)} - ${dataRow[90].toFixed(1)} mm`;
-            zpP95RangeTriceps.textContent = `> ${dataRow[90].toFixed(1)} mm`;
+            zpP15RangeTriceps.textContent = `${dataRow[5].toFixed(1)} - ${dataRow[15].toFixed(1)} mm`;
+            zpP50RangeTriceps.textContent = `${dataRow[15].toFixed(1)} - ${dataRow[85].toFixed(1)} mm (Mediana: ${dataRow[50].toFixed(1)})`;
+            zpP85RangeTriceps.textContent = `${dataRow[85].toFixed(1)} - ${dataRow[95].toFixed(1)} mm`;
+            zpP95RangeTriceps.textContent = `> ${dataRow[95].toFixed(1)} mm`;
         }
 
         function updateChartForGenderTriceps() {
@@ -709,10 +715,10 @@
 
             tricepsChart.data.datasets = [
                 { label: 'P5 (Depleción)', data: generatePercentileData(currentGenderTriceps, 5), borderColor: '#dc3545', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 5 },
-                { label: 'P25 (Baja)', data: generatePercentileData(currentGenderTriceps, 25), borderColor: '#fd7e14', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 4 },
+                { label: 'P15 (Límite)', data: generatePercentileData(currentGenderTriceps, 15), borderColor: '#fd7e14', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 4 },
                 { label: 'P50 (Mediana)', data: generatePercentileData(currentGenderTriceps, 50), borderColor: '#198754', borderDash: [4, 4], fill: false, borderWidth: 2.5, pointRadius: 0, order: 3 },
-                { label: 'P75 (Sobrepeso)', data: generatePercentileData(currentGenderTriceps, 75), borderColor: '#0d6efd', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 2 },
-                { label: 'P95 (Obesidad)', data: generatePercentileData(currentGenderTriceps, 95), borderColor: '#6f42c1', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 1 },
+                { label: 'P85 (Alta)', data: generatePercentileData(currentGenderTriceps, 85), borderColor: '#0d6efd', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 2 },
+                { label: 'P95 (Exceso)', data: generatePercentileData(currentGenderTriceps, 95), borderColor: '#6f42c1', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 1 },
                 userTrajectoryDatasetTriceps
             ];
             
@@ -720,7 +726,7 @@
             const ageM = parseInt(ageMonthsInputTriceps.value || '0', 10);
             updateZonesReferenceCardTriceps((ageY * 12) + ageM);
 
-            userTrajectoryDatasetTriceps.data = new Array(ageLabels.length).fill(null);
+            userTrajectoryDatasetTriceps.data = [];
             userMeasurementHistoryTriceps = [];
             resultAreaTriceps.innerHTML = '';
             tricepsChart.update();
@@ -733,25 +739,19 @@
             }
 
             const dataRow = percentiles_data[currentGenderTriceps][ageGroup];
-            if (measurement <= dataRow[5]) return { text: 'Reserva Muy Baja / Depleción', cssClass: 'diag-muy-bajo', percentileText: '≤ P5' };
-            if (measurement < dataRow[25]) return { text: 'Reserva Grasa Baja', cssClass: 'diag-bajo', percentileText: 'P5 - P25' };
-            if (measurement <= dataRow[75]) return { text: 'Reserva Grasa Adecuada (Eutrofia)', cssClass: 'diag-promedio', percentileText: 'P25 - P75' };
-            if (measurement <= dataRow[90]) return { text: 'Reserva Grasa Elevada', cssClass: 'diag-alto', percentileText: 'P75 - P90' };
-            return { text: 'Reserva Grasa Muy Alta / Obesidad', cssClass: 'diag-muy-alto', percentileText: '> P90' };
+            if (measurement <= dataRow[5]) return { text: 'Depleción Severa', cssClass: 'diag-deplecion', percentileText: '≤ P5' };
+            if (measurement <= dataRow[15]) return { text: 'Abajo del Promedio / Baja Reserva', cssClass: 'diag-abajo-promedio', percentileText: '>P5 - ≤P15' };
+            if (measurement <= dataRow[85]) return { text: 'Reserva Grasa Adecuada (Eutrofia)', cssClass: 'diag-promedio', percentileText: '>P15 - ≤P85' };
+            if (measurement <= dataRow[95]) return { text: 'Arriba del Promedio / Riesgo', cssClass: 'diag-arriba-promedio', percentileText: '>P85 - ≤P95' };
+            return { text: 'Exceso de Grasa / Muy Alta', cssClass: 'diag-alta-hipertrofia', percentileText: '> P95' };
         }
 
         function updateChartAndDiagnosisDisplayTriceps() {
             userMeasurementHistoryTriceps.sort((a, b) => a.totalMonths - b.totalMonths);
-            const trajectoryPoints = new Array(ageLabels.length).fill(null);
-            
-            userMeasurementHistoryTriceps.forEach(point => {
-                const index = ageLabels.indexOf(point.totalMonths);
-                if (index !== -1) {
-                    trajectoryPoints[index] = point.measurement;
-                }
-            });
-
-            userTrajectoryDatasetTriceps.data = trajectoryPoints;
+            const trajectoryDataset = tricepsChart.data.datasets.find(ds => ds.label.includes('Paciente') || ds.label.includes('Medición'));
+            if (trajectoryDataset) {
+                trajectoryDataset.data = userMeasurementHistoryTriceps.map(p => ({ x: p.totalMonths, y: p.measurement }));
+            }
 
             resultAreaTriceps.innerHTML = '';
             if (userMeasurementHistoryTriceps.length > 0) {
