@@ -524,18 +524,36 @@
         const defaultYMax = 85;
 
         function getAgeGroupKey(ageInput) {
-             const ageRanges = Object.keys(percentiles_data_AMB.Male).map(parseFloat).sort((a,b) => a-b);
-             if (ageInput < ageRanges[0]) return null;
-             for (let i = 0; i < ageRanges.length - 1; i++) {
-                if(ageInput >= ageRanges[i] && ageInput < ageRanges[i+1]) {
-                    return `${ageRanges[i]}`;
-                }
-             }
-             const lastAge = ageRanges[ageRanges.length - 1];
-             if (ageInput >= lastAge && ageInput < lastAge + 5) {
-                return `${lastAge}`;
-             }
-             return null;
+            if (isNaN(ageInput) || ageInput < 1.0 || ageInput > 75.0) return null;
+            if (ageInput < 2.0) return "1.9";
+            if (ageInput < 3.0) return "2.9";
+            if (ageInput < 4.0) return "3.9";
+            if (ageInput < 5.0) return "4.9";
+            if (ageInput < 6.0) return "5.9";
+            if (ageInput < 7.0) return "6.9";
+            if (ageInput < 8.0) return "7.9";
+            if (ageInput < 9.0) return "8.9";
+            if (ageInput < 10.0) return "9.9";
+            if (ageInput < 11.0) return "10.9";
+            if (ageInput < 12.0) return "11.9";
+            if (ageInput < 13.0) return "12.9";
+            if (ageInput < 14.0) return "13.9";
+            if (ageInput < 15.0) return "14.9";
+            if (ageInput < 16.0) return "15.9";
+            if (ageInput < 17.0) return "16.9";
+            if (ageInput < 18.0) return "17.9";
+            if (ageInput < 25.0) return "24.9";
+            if (ageInput < 30.0) return "29.9";
+            if (ageInput < 35.0) return "34.9";
+            if (ageInput < 40.0) return "39.9";
+            if (ageInput < 45.0) return "44.9";
+            if (ageInput < 50.0) return "49.9";
+            if (ageInput < 55.0) return "54.9";
+            if (ageInput < 60.0) return "59.9";
+            if (ageInput < 65.0) return "64.9";
+            if (ageInput < 70.0) return "69.9";
+            if (ageInput <= 75.0) return "74.9";
+            return null;
         }
 
         function getAgeGroupLabelText(key) {
