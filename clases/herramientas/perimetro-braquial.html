@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Percentiles Perímetro Braquial (CDC/NCHS 2 meses - 19 años)</title>
+    <title>Calculadora Percentiles Perímetro Braquial (Frisancho 1990 / CDC NHANES)</title>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <!-- jsPDF -->
@@ -11,40 +11,286 @@
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 20px; background-color: #f9f9f9; }
-        .container { width: 95%; max-width: 950px; background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
-        h2 { text-align: center; color: #333; margin-bottom: 25px; }
-        .input-section { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; row-gap: 20px; margin-bottom: 25px; padding: 20px; background-color: #eef; border-radius: 6px; }
-        .input-group { display: flex; flex-direction: column; align-items: flex-start; }
-        .input-group label { margin-bottom: 5px; font-size: 0.9em; color: #555; }
-        .input-group input, .input-group select { padding: 10px; border: 1px solid #ccc; border-radius: 4px; width: 150px; box-sizing: border-box; height: 40px; }
-        .input-section .button-group { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 10px; width: 100%; margin-top: 10px;}
-        .input-section button { padding: 10px 15px; border: none; color: white; border-radius: 4px; cursor: pointer; transition: background-color 0.3s ease; height: 40px; font-size: 0.9em;}
-        #addBtnMidarm { background-color: #007bff;}
-        #addBtnMidarm:hover { background-color: #0056b3;}
-        #clearBtnMidarm { background-color: #6c757d; }
-        #clearBtnMidarm:hover { background-color: #5a6268; }
-        #savePdfBtnMidarm { background-color: #17a2b8; }
-        #savePdfBtnMidarm:hover { background-color: #138496; }
-        #resultAreaMidarm { text-align: center; margin-top: -15px; margin-bottom: 20px; font-size: 1.1em; font-weight: bold; min-height: 1.5em; color: #333; }
-        .diagnostic-badge { display: inline-block; padding: 3px 8px; margin-left: 10px; font-size: 0.9em; font-weight: bold; color: white; border-radius: 4px; vertical-align: middle; }
-        
-        .diag-adecuado { background-color: #28a745; }
-        .diag-riesgo-desnutricion { background-color: #ffc107; color: #333;}
-        .diag-exceso-reservas { background-color: #dc3545; }
+        :root {
+            --p5-color: #dc3545;
+            --p5-bg: rgba(220, 53, 69, 0.08);
+            --p15-color: #fd7e14;
+            --p15-bg: rgba(253, 126, 20, 0.08);
+            --p50-color: #198754;
+            --p50-bg: rgba(25, 135, 84, 0.10);
+            --p85-color: #0d6efd;
+            --p85-bg: rgba(13, 110, 253, 0.08);
+            --p95-color: #6f42c1;
+            --p95-bg: rgba(111, 66, 193, 0.08);
+        }
 
-        .chart-container { position: relative; width: 100%; height: 500px; margin-bottom: 20px; }
-        .notes { width: 100%; margin-top: 15px; padding: 15px; background-color: #f0f0f0; border-left: 5px solid #ccc; font-size: 0.9em; border-radius: 4px; box-sizing: border-box; }
-        .notes ul { margin-top: 8px; margin-bottom: 8px; padding-left: 20px; }
-        .notes li { margin-bottom: 4px; }
-        .source { width: 100%; font-size: 0.8em; color: #555; text-align: right; margin-top: 10px; box-sizing: border-box; }
-        .error-message { color: red; font-size: 0.9em; text-align: center; margin-top: 5px; }
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            background-color: #f4f7fa; 
+            color: #2d3748;
+        }
+
+        .container { 
+            width: 95%; 
+            max-width: 980px; 
+            background-color: #ffffff; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06); 
+            margin-bottom: 25px; 
+        }
+
+        h2 { 
+            text-align: center; 
+            color: #1a202c; 
+            font-weight: 700;
+            font-size: 1.45rem;
+            margin-top: 0;
+            margin-bottom: 20px; 
+        }
+
+        .input-section { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 15px; 
+            row-gap: 18px; 
+            margin-bottom: 20px; 
+            padding: 20px; 
+            border-radius: 10px; 
+            transition: all 0.3s ease; 
+            border: 1px solid #e2e8f0;
+        }
+
+        .male-theme { 
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0fa 100%); 
+            border-color: #bee3f8;
+        }
+
+        .female-theme { 
+            background: linear-gradient(135deg, #fff0f6 0%, #fae6ee 100%); 
+            border-color: #fed7e2;
+        }
+
+        .input-group { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-start; 
+            min-width: 140px; 
+            flex: 1 1 140px;
+        }
+
+        .input-group label { 
+            margin-bottom: 6px; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            color: #4a5568; 
+        }
+
+        .input-group input, .input-group select { 
+            padding: 9px 12px; 
+            border: 1px solid #cbd5e0; 
+            border-radius: 6px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            height: 40px; 
+            font-size: 0.95rem;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+
+        .input-section .button-group { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 12px; 
+            width: 100%; 
+            margin-top: 8px;
+        }
+
+        .input-section button { 
+            padding: 10px 18px; 
+            border: none; 
+            color: white; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            height: 42px; 
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        #addBtnMidarm { 
+            background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%);
+            box-shadow: 0 4px 10px rgba(49, 130, 206, 0.3);
+        }
+        #addBtnMidarm:hover { 
+            background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%);
+            transform: translateY(-1px);
+        }
+
+        #clearBtnMidarm { 
+            background: #718096; 
+        }
+        #clearBtnMidarm:hover { 
+            background: #4a5568; 
+            transform: translateY(-1px);
+        }
+
+        #savePdfBtnMidarm { 
+            background: linear-gradient(135deg, #319795 0%, #285e61 100%); 
+            box-shadow: 0 4px 10px rgba(49, 151, 149, 0.3);
+        }
+        #savePdfBtnMidarm:hover { 
+            background: linear-gradient(135deg, #285e61 0%, #234e52 100%); 
+            transform: translateY(-1px);
+        }
+
+        #resultAreaMidarm { 
+            text-align: center; 
+            margin-top: -5px; 
+            margin-bottom: 18px; 
+            font-size: 1.05rem; 
+            font-weight: 600; 
+            min-height: 1.6em; 
+            color: #2d3748; 
+        }
+
+        .diagnostic-badge { 
+            display: inline-block; 
+            padding: 4px 10px; 
+            margin-left: 8px; 
+            font-size: 0.88rem; 
+            font-weight: 700; 
+            color: white; 
+            border-radius: 6px; 
+            vertical-align: middle; 
+            letter-spacing: 0.2px;
+        }
+        
+        .diag-deplecion { background-color: var(--p5-color); }
+        .diag-abajo-promedio { background-color: var(--p15-color); }
+        .diag-promedio { background-color: var(--p50-color); }
+        .diag-arriba-promedio { background-color: var(--p85-color); }
+        .diag-alta-hipertrofia { background-color: var(--p95-color); }
+
+        .zones-reference-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .zones-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.88rem;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .zones-pills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: space-between;
+        }
+
+        .zone-pill {
+            flex: 1 1 170px;
+            display: flex;
+            flex-direction: column;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            border-left: 4px solid;
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.15s;
+        }
+
+        .zone-pill:hover {
+            transform: translateY(-2px);
+        }
+
+        .zone-pill .zp-title {
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .zone-pill .zp-range {
+            font-size: 0.74rem;
+            color: #718096;
+            font-weight: 600;
+        }
+
+        .zp-deplecion { border-color: var(--p5-color); background: var(--p5-bg); color: #9b1c1c; }
+        .zp-abajo-promedio { border-color: var(--p15-color); background: var(--p15-bg); color: #9a3412; }
+        .zp-promedio { border-color: var(--p50-color); background: var(--p50-bg); color: #166534; }
+        .zp-arriba-promedio { border-color: var(--p85-color); background: var(--p85-bg); color: #1e40af; }
+        .zp-hipertrofia { border-color: var(--p95-color); background: var(--p95-bg); color: #581c87; }
+
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            height: 520px; 
+            margin-bottom: 20px; 
+            border-radius: 10px;
+            background: #ffffff;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .notes { 
+            width: 100%; 
+            margin-top: 15px; 
+            padding: 16px 20px; 
+            background-color: #f8fafc; 
+            border-left: 4px solid #3182ce; 
+            font-size: 0.88rem; 
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        .notes ul { margin-top: 8px; margin-bottom: 4px; padding-left: 20px; }
+        .notes li { margin-bottom: 6px; }
+
+        .source { width: 100%; font-size: 0.8rem; color: #718096; text-align: right; margin-top: 12px; box-sizing: border-box; }
+        .error-message { color: #e53e3e; font-size: 0.9rem; text-align: center; margin-top: 5px; font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .chart-container { height: 420px; }
+            .zone-pill { flex: 1 1 100%; }
+        }
     </style>
 </head>
-<body>    <div class="container" id="captureAreaMidarm">
+<body>
+    <div class="container" id="captureAreaMidarm">
         <h2 id="mainTitleMidarm">Percentiles Perímetro Braquial (1 a 74 años)</h2>
 
-        <div class="input-section">
+        <div class="input-section female-theme" id="inputSectionMidarm">
             <div class="input-group">
                 <label for="genderSelectMidarm">Sexo:</label>
                 <select id="genderSelectMidarm">
@@ -52,27 +298,83 @@
                     <option value="Male">Masculino</option>
                 </select>
              </div>
-             <div class="input-group"> <label for="ageYearsInputMidarm">Edad (Años):</label> <input type="number" id="ageYearsInputMidarm" placeholder="Ej: 21" min="0" max="75"> </div>
-             <div class="input-group"> <label for="ageMonthsInputMidarm">Edad (Meses):</label> <input type="number" id="ageMonthsInputMidarm" placeholder="Ej: 6" min="0" max="11"> </div>
-             <div class="input-group"> <label for="measurementInputMidarm">Perímetro (cm):</label> <input type="number" id="measurementInputMidarm" step="0.1" placeholder="Ej: 28.5"> </div>
-             <div class="button-group"> <button id="addBtnMidarm">Agregar y Graficar Punto</button> <button id="clearBtnMidarm">Limpiar Historial</button> <button id="savePdfBtnMidarm">Guardar Resultados (PDF)</button> </div>
+             <div class="input-group"> 
+                <label for="ageYearsInputMidarm">Edad (Años):</label> 
+                <input type="number" id="ageYearsInputMidarm" placeholder="Ej: 21" min="0" max="75"> 
+             </div>
+             <div class="input-group"> 
+                <label for="ageMonthsInputMidarm">Edad (Meses):</label> 
+                <input type="number" id="ageMonthsInputMidarm" placeholder="Ej: 0" min="0" max="11"> 
+             </div>
+             <div class="input-group"> 
+                <label for="measurementInputMidarm">Perímetro Braquial (cm):</label> 
+                <input type="number" id="measurementInputMidarm" step="0.1" placeholder="Ej: 28.5"> 
+             </div>
+             <div class="button-group"> 
+                <button id="addBtnMidarm">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+                    Agregar y Graficar Punto
+                </button> 
+                <button id="clearBtnMidarm">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/></svg>
+                    Limpiar Historial
+                </button> 
+                <button id="savePdfBtnMidarm">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+                    Guardar Resultados (PDF)
+                </button> 
+             </div>
         </div>
         <div id="resultAreaMidarm"></div>
 
-        <div class="chart-container" id="chartContainerDivMidarm"> <canvas id="midarmChartCanvas"></canvas> </div>
+        <div class="zones-reference-card" id="zonesReferenceCardMidarm">
+            <div class="zones-card-header">
+                <span id="zonesCardTitleMidarm">🎯 Zonas de Interpretación (Frisancho 1990) - Grupo de Edad: 18 a 24 años</span>
+                <span style="font-size: 0.75rem; color: #718096;">(Perímetro Braquial en cm)</span>
+            </div>
+            <div class="zones-pills-container">
+                <div class="zone-pill zp-deplecion">
+                    <span class="zp-title">≤ P5 Depleción Severa</span>
+                    <span class="zp-range" id="zpP5RangeMidarm">≤ 23.3 cm</span>
+                </div>
+                <div class="zone-pill zp-abajo-promedio">
+                    <span class="zp-title">>P5 a ≤P15 Abajo del Promedio</span>
+                    <span class="zp-range" id="zpP15RangeMidarm">23.3 - 25.1 cm</span>
+                </div>
+                <div class="zone-pill zp-promedio">
+                    <span class="zp-title">>P15 a ≤P85 Promedio / Adecuada</span>
+                    <span class="zp-range" id="zpP50RangeMidarm">25.1 - 32.6 cm (Mediana: 28.3)</span>
+                </div>
+                <div class="zone-pill zp-arriba-promedio">
+                    <span class="zp-title">>P85 a ≤P95 Arriba del Promedio</span>
+                    <span class="zp-range" id="zpP85RangeMidarm">32.6 - 36.2 cm</span>
+                </div>
+                <div class="zone-pill zp-hipertrofia">
+                    <span class="zp-title">> P95 Exceso / Muy Alto</span>
+                    <span class="zp-range" id="zpP95RangeMidarm">> 36.2 cm</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container" id="chartContainerDivMidarm"> 
+            <canvas id="midarmChartCanvas"></canvas> 
+        </div>
 
         <div class="notes">
-             <strong>Interpretación del Perímetro Braquial:</strong> Esta medida refleja las reservas de energía (grasa subcutánea) y de proteína (masa muscular) del cuerpo.
+             <strong>Interpretación del Perímetro Braquial:</strong>
              <ul>
-                 <li>Un percentil bajo (ej. &lt; P15) puede sugerir un riesgo de desnutrición o bajas reservas corporales. Es una medida clave en el tamizaje nutricional.</li>
-                 <li>Un percentil alto (ej. &gt; P85) puede indicar un exceso de reservas de grasa y un posible riesgo de sobrepeso u obesidad.</li>
-                 <li>Cuando se combina con la medida del pliegue del tríceps, permite estimar el área muscular del brazo (cAMB), indicador directo de la masa magra esquelética.</li>
+                 <li>Esta medida refleja de forma integrada las reservas corporales de energía (tejido adiposo) y de proteína somática (masa muscular esquelética).</li>
                  <li>Esta herramienta integra los datos de referencia de <strong>Frisancho (1990) y CDC/NHANES (1 a 74 años)</strong>.</li>
+                 <li><strong>≤ P5:</strong> Depleción calórico-proteica severa.</li>
+                 <li><strong>> P5 a ≤ P15:</strong> Reservas por debajo del promedio / Riesgo de desnutrición.</li>
+                 <li><strong>> P15 a ≤ P85:</strong> Reservas adecuadas y promedio (Eutrofia).</li>
+                 <li><strong>> P85 a ≤ P95:</strong> Reservas por encima del promedio / Riesgo de sobrepeso.</li>
+                 <li><strong>> P95:</strong> Exceso elevado de reservas / Obesidad.</li>
              </ul>
         </div>
-         <div class="source">
+        <div class="source">
              Datos: Frisancho, A.R. (1990) Anthropometric Standards & CDC/NCHS (NHANES).
-         </div>
+        </div>
     </div>
 
     <script>
@@ -86,6 +388,13 @@
         const clearBtnMidarm = document.getElementById('clearBtnMidarm');
         const savePdfBtnMidarm = document.getElementById('savePdfBtnMidarm');
         const mainTitleMidarm = document.getElementById('mainTitleMidarm');
+        const inputSectionMidarm = document.getElementById('inputSectionMidarm');
+        const zonesCardTitleMidarm = document.getElementById('zonesCardTitleMidarm');
+        const zpP5RangeMidarm = document.getElementById('zpP5RangeMidarm');
+        const zpP15RangeMidarm = document.getElementById('zpP15RangeMidarm');
+        const zpP50RangeMidarm = document.getElementById('zpP50RangeMidarm');
+        const zpP85RangeMidarm = document.getElementById('zpP85RangeMidarm');
+        const zpP95RangeMidarm = document.getElementById('zpP95RangeMidarm');
 
         let userMeasurementHistoryMidarm = []; 
         let currentGenderMidarm = 'Female';
@@ -185,29 +494,134 @@
 
         function generatePercentileData(gender, percentile) {
             return ageLabels.map(totalMonths => {
-                const ageGroup = getAgeGroup(totalMonths);
-                if (ageGroup && percentiles_data[gender][ageGroup]) {
-                    return percentiles_data[gender][ageGroup][percentile] || null;
-                }
-                return null;
+                const group = getAgeGroup(totalMonths);
+                return (group && percentiles_data[gender][group]) ? percentiles_data[gender][group][percentile] : null;
             });
         }
-        
-        const userTrajectoryDatasetMidarm = {
-            label: 'Medición', data: new Array(ageLabels.length).fill(null),
-            borderColor: 'blue', backgroundColor: 'blue', showLine: true, borderWidth: 2,
-            spanGaps: true, pointStyle: 'circle', pointRadius: 6, pointHoverRadius: 8, tension: 0.1, order: 0
+
+        const midarmBackgroundZonesPlugin = {
+            id: 'midarmBackgroundZones',
+            beforeDatasetsDraw(chart) {
+                const { ctx, chartArea, scales: { x, y } } = chart;
+                if (!chartArea) return;
+
+                const genderData = percentiles_data[currentGenderMidarm];
+                if (!genderData) return;
+
+                const sampledMonths = [];
+                for (let m = 2; m <= 900; m += 6) sampledMonths.push(m);
+                if (sampledMonths[sampledMonths.length - 1] !== 900) sampledMonths.push(900);
+
+                function getCoords(p) {
+                    return sampledMonths.map(m => {
+                        const grp = getAgeGroup(m);
+                        const val = (grp && genderData[grp]) ? genderData[grp][p] : 20;
+                        return {
+                            xPix: x.getPixelForValue(m),
+                            yPix: y.getPixelForValue(val)
+                        };
+                    });
+                }
+
+                const p5Coords = getCoords(5);
+                const p15Coords = getCoords(15);
+                const p85Coords = getCoords(85);
+                const p95Coords = getCoords(95);
+
+                const topPixel = chartArea.top;
+                const bottomPixel = chartArea.bottom;
+
+                ctx.save();
+
+                // Zona > P95 (Muy Alta / Obesidad) - Púrpura suave
+                ctx.fillStyle = 'rgba(111, 66, 193, 0.08)';
+                ctx.beginPath();
+                ctx.moveTo(p95Coords[0].xPix, topPixel);
+                for (let i = 0; i < p95Coords.length; i++) ctx.lineTo(p95Coords[i].xPix, topPixel);
+                for (let i = p95Coords.length - 1; i >= 0; i--) ctx.lineTo(p95Coords[i].xPix, p95Coords[i].yPix);
+                ctx.closePath();
+                ctx.fill();
+
+                // Zona P85 - P95 (Arriba del Promedio) - Azul suave
+                ctx.fillStyle = 'rgba(13, 110, 253, 0.08)';
+                ctx.beginPath();
+                for (let i = 0; i < p95Coords.length; i++) ctx.lineTo(p95Coords[i].xPix, p95Coords[i].yPix);
+                for (let i = p85Coords.length - 1; i >= 0; i--) ctx.lineTo(p85Coords[i].xPix, p85Coords[i].yPix);
+                ctx.closePath();
+                ctx.fill();
+
+                // Zona P15 - P85 (Adecuada / Eutrofia) - Verde suave
+                ctx.fillStyle = 'rgba(25, 135, 84, 0.10)';
+                ctx.beginPath();
+                for (let i = 0; i < p85Coords.length; i++) ctx.lineTo(p85Coords[i].xPix, p85Coords[i].yPix);
+                for (let i = p15Coords.length - 1; i >= 0; i--) ctx.lineTo(p15Coords[i].xPix, p15Coords[i].yPix);
+                ctx.closePath();
+                ctx.fill();
+
+                // Zona P5 - P15 (Abajo del Promedio / Riesgo Desnutrición) - Ámbar suave
+                ctx.fillStyle = 'rgba(253, 126, 20, 0.08)';
+                ctx.beginPath();
+                for (let i = 0; i < p15Coords.length; i++) ctx.lineTo(p15Coords[i].xPix, p15Coords[i].yPix);
+                for (let i = p5Coords.length - 1; i >= 0; i--) ctx.lineTo(p5Coords[i].xPix, p5Coords[i].yPix);
+                ctx.closePath();
+                ctx.fill();
+
+                // Zona <= P5 (Depleción Severa) - Rojo suave
+                ctx.fillStyle = 'rgba(220, 53, 69, 0.08)';
+                ctx.beginPath();
+                for (let i = 0; i < p5Coords.length; i++) ctx.lineTo(p5Coords[i].xPix, p5Coords[i].yPix);
+                for (let i = p5Coords.length - 1; i >= 0; i--) ctx.lineTo(p5Coords[i].xPix, bottomPixel);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore();
+            }
         };
 
-        const chartDataMidarm = { labels: ageLabels, datasets: [] };
+        const userTrajectoryDatasetMidarm = {
+            label: 'Medición (Paciente)',
+            data: new Array(ageLabels.length).fill(null),
+            borderColor: '#2d3748',
+            borderDash: [3, 3],
+            borderWidth: 2,
+            showLine: true,
+            spanGaps: true,
+            pointStyle: 'circle',
+            pointRadius: 7,
+            pointHoverRadius: 10,
+            pointBorderWidth: 2.5,
+            pointBorderColor: '#ffffff',
+            pointBackgroundColor: function(context) {
+                const index = context.dataIndex;
+                const val = context.dataset.data[index];
+                if (val === null || val === undefined) return '#3182ce';
+                const totalMonths = ageLabels[index];
+                const diag = getDiagnosisInfoMidarm(val, totalMonths);
+                if (diag.cssClass === 'diag-deplecion') return '#dc3545';
+                if (diag.cssClass === 'diag-abajo-promedio') return '#fd7e14';
+                if (diag.cssClass === 'diag-promedio') return '#198754';
+                if (diag.cssClass === 'diag-arriba-promedio') return '#0d6efd';
+                if (diag.cssClass === 'diag-alta-hipertrofia') return '#6f42c1';
+                return '#3182ce';
+            },
+            tension: 0.1,
+            order: 0
+        };
 
         const chartOptionsMidarm = {
-            responsive: true, maintainAspectRatio: false,
+            responsive: true, 
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'nearest',
+                intersect: false
+            },
             scales: {
                 x: { 
-                    title: { display: true, text: 'Edad (Años cumplidos)' }, 
+                    type: 'linear',
+                    title: { display: true, text: 'Edad (Años cumplidos)', font: { size: 13, weight: 'bold' } }, 
                     min: 2, 
                     max: 900, 
+                    grid: { color: 'rgba(0,0,0,0.04)' },
                     ticks: { 
                         stepSize: 60,
                         callback: function(value) {
@@ -216,44 +630,96 @@
                         }
                     } 
                 },
-                y: { title: { display: true, text: 'Perímetro Braquial (cm)' }, min: 10, max: 48 }
+                y: { 
+                    title: { display: true, text: 'Perímetro Braquial (cm)', font: { size: 13, weight: 'bold' } }, 
+                    min: 10, 
+                    max: 48,
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                }
             },
             plugins: {
-                legend: { position: 'top' },
-                title: { display: false },
+                legend: { 
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 8,
+                        padding: 15,
+                        font: { size: 12, weight: '600' }
+                    }
+                },
                 tooltip: { 
-                    mode: 'index', intersect: false,
+                    backgroundColor: 'rgba(26, 32, 44, 0.92)',
+                    titleFont: { size: 13, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    padding: 10,
+                    cornerRadius: 8,
                     callbacks: {
-                        title: function(tooltipItems) {
-                            let totalMonths = tooltipItems[0].label;
-                            let years = Math.floor(totalMonths / 12);
-                            let months = totalMonths % 12;
-                            return `Edad: ${years}a ${months}m (${totalMonths}m)`;
+                        title: function(context) {
+                            const totalMonths = context[0].parsed.x;
+                            return `Edad: ${Math.floor(totalMonths / 12)} años, ${totalMonths % 12} meses`;
+                        },
+                        label: function(context) {
+                            const datasetLabel = context.dataset.label || '';
+                            const val = context.parsed.y;
+                            if (datasetLabel.includes('Paciente')) {
+                                const diag = getDiagnosisInfoMidarm(val, context.parsed.x);
+                                return ` Paciente: ${val.toFixed(1)} cm [${diag.text}]`;
+                            }
+                            return ` ${datasetLabel}: ${val.toFixed(1)} cm`;
                         }
                     }
                 }
-            },
-            interaction: { mode: 'nearest', axis: 'x', intersect: false }
+            }
         };
 
-        const midarmChart = new Chart(ctxMidarm, { type: 'line', data: chartDataMidarm, options: chartOptionsMidarm });
+        const midarmChart = new Chart(ctxMidarm, {
+            type: 'line',
+            data: { datasets: [] },
+            options: chartOptionsMidarm,
+            plugins: [midarmBackgroundZonesPlugin]
+        });
+
+        function updateZonesReferenceCardMidarm(totalMonths) {
+            const ageGroup = getAgeGroup(totalMonths) || "18-24 years";
+            const dataRow = percentiles_data[currentGenderMidarm][ageGroup];
+            if (!dataRow) return;
+
+            zonesCardTitleMidarm.textContent = `🎯 Zonas de Interpretación (Frisancho 1990) - Grupo de Edad: ${ageGroup}`;
+            zpP5RangeMidarm.textContent = `≤ ${dataRow[5].toFixed(1)} cm`;
+            zpP15RangeMidarm.textContent = `${dataRow[5].toFixed(1)} - ${dataRow[15].toFixed(1)} cm`;
+            zpP50RangeMidarm.textContent = `${dataRow[15].toFixed(1)} - ${dataRow[85].toFixed(1)} cm (Mediana: ${dataRow[50].toFixed(1)})`;
+            zpP85RangeMidarm.textContent = `${dataRow[85].toFixed(1)} - ${dataRow[95].toFixed(1)} cm`;
+            zpP95RangeMidarm.textContent = `> ${dataRow[95].toFixed(1)} cm`;
+        }
 
         function updateChartForGenderMidarm() {
             let genderTextForTitle = (currentGenderMidarm === 'Male') ? 'MASCULINO' : 'FEMENINO';
-            let genderTextForLabel = (currentGenderMidarm === 'Male') ? 'Paciente' : 'Paciente';
+            let genderTextForLabel = 'Paciente';
             
             mainTitleMidarm.textContent = `Percentiles Perímetro Braquial (1 a 74 años) - ${genderTextForTitle}`;
             userTrajectoryDatasetMidarm.label = `Medición (${genderTextForLabel})`;
 
+            if (currentGenderMidarm === 'Male') {
+                inputSectionMidarm.classList.remove('female-theme');
+                inputSectionMidarm.classList.add('male-theme');
+            } else {
+                inputSectionMidarm.classList.remove('male-theme');
+                inputSectionMidarm.classList.add('female-theme');
+            }
+
             midarmChart.data.datasets = [
-                { label: 'P5', data: generatePercentileData(currentGenderMidarm, 5), borderColor: '#dc3545', fill: false, borderWidth: 1.5, pointRadius: 0, order: 5 },
-                { label: 'P15', data: generatePercentileData(currentGenderMidarm, 15), borderColor: '#ffc107', fill: false, borderWidth: 1.5, pointRadius: 0, order: 4 },
-                { label: 'P50 (Mediana)', data: generatePercentileData(currentGenderMidarm, 50), borderColor: '#28a745', fill: false, borderWidth: 2, pointRadius: 0, order: 3 },
-                { label: 'P85', data: generatePercentileData(currentGenderMidarm, 85), borderColor: '#ffc107', fill: false, borderWidth: 1.5, pointRadius: 0, order: 2 },
-                { label: 'P95', data: generatePercentileData(currentGenderMidarm, 95), borderColor: '#dc3545', fill: false, borderWidth: 1.5, pointRadius: 0, order: 1 },
+                { label: 'P5 (Depleción)', data: generatePercentileData(currentGenderMidarm, 5), borderColor: '#dc3545', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 5 },
+                { label: 'P15 (Límite)', data: generatePercentileData(currentGenderMidarm, 15), borderColor: '#fd7e14', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 4 },
+                { label: 'P50 (Mediana)', data: generatePercentileData(currentGenderMidarm, 50), borderColor: '#198754', borderDash: [4, 4], fill: false, borderWidth: 2.5, pointRadius: 0, order: 3 },
+                { label: 'P85 (Alta)', data: generatePercentileData(currentGenderMidarm, 85), borderColor: '#0d6efd', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 2 },
+                { label: 'P95 (Exceso)', data: generatePercentileData(currentGenderMidarm, 95), borderColor: '#6f42c1', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 1 },
                 userTrajectoryDatasetMidarm
             ];
             
+            const ageY = parseInt(ageYearsInputMidarm.value || '21', 10);
+            const ageM = parseInt(ageMonthsInputMidarm.value || '0', 10);
+            updateZonesReferenceCardMidarm((ageY * 12) + ageM);
+
             userTrajectoryDatasetMidarm.data = new Array(ageLabels.length).fill(null);
             userMeasurementHistoryMidarm = [];
             resultAreaMidarm.innerHTML = '';
@@ -267,26 +733,11 @@
             }
 
             const dataRow = percentiles_data[currentGenderMidarm][ageGroup];
-            const p15 = dataRow[15];
-            const p85 = dataRow[85];
-            
-            let diagnosisText, percentileText, cssClass;
-
-            if (p15 != null && measurement < p15) {
-                diagnosisText = 'Riesgo de Desnutrición';
-                percentileText = '< P15';
-                cssClass = 'diag-riesgo-desnutricion';
-            } else if (p85 != null && measurement > p85) {
-                diagnosisText = 'Exceso de Reservas / Riesgo de Sobrepeso';
-                percentileText = '> P85';
-                cssClass = 'diag-exceso-reservas';
-            } else {
-                diagnosisText = 'Reservas Adecuadas';
-                percentileText = 'P15 - P85';
-                cssClass = 'diag-adecuado';
-            }
-            
-            return { text: diagnosisText, percentileText: percentileText, cssClass: cssClass };
+            if (measurement <= dataRow[5]) return { text: 'Depleción Severa', cssClass: 'diag-deplecion', percentileText: '≤ P5' };
+            if (measurement <= dataRow[15]) return { text: 'Abajo del Promedio / Riesgo', cssClass: 'diag-abajo-promedio', percentileText: '>P5 - ≤P15' };
+            if (measurement <= dataRow[85]) return { text: 'Reservas Adecuadas (Eutrofia)', cssClass: 'diag-promedio', percentileText: '>P15 - ≤P85' };
+            if (measurement <= dataRow[95]) return { text: 'Arriba del Promedio / Sobrepeso', cssClass: 'diag-arriba-promedio', percentileText: '>P85 - ≤P95' };
+            return { text: 'Exceso Elevado / Obesidad', cssClass: 'diag-alta-hipertrofia', percentileText: '> P95' };
         }
 
         function updateChartAndDiagnosisDisplayMidarm() {
@@ -300,115 +751,115 @@
                 }
             });
 
-            const trajectoryDatasetIndex = midarmChart.data.datasets.findIndex(ds => ds.label.startsWith('Medición'));
-            if (trajectoryDatasetIndex > -1) {
-                midarmChart.data.datasets[trajectoryDatasetIndex].data = trajectoryPoints;
-            }
+            userTrajectoryDatasetMidarm.data = trajectoryPoints;
 
             resultAreaMidarm.innerHTML = '';
             if (userMeasurementHistoryMidarm.length > 0) {
                 const lastPoint = userMeasurementHistoryMidarm[userMeasurementHistoryMidarm.length - 1];
                 const diagnosisInfo = getDiagnosisInfoMidarm(lastPoint.measurement, lastPoint.totalMonths);
-                resultAreaMidarm.innerHTML = `Último registro (${Math.floor(lastPoint.totalMonths/12)}a ${lastPoint.totalMonths%12}m): ${lastPoint.measurement.toFixed(1)} cm. Clasificación: ${diagnosisInfo.percentileText} <span class="diagnostic-badge ${diagnosisInfo.cssClass}">${diagnosisInfo.text}</span>`;
+                resultAreaMidarm.innerHTML = `Último registro (${Math.floor(lastPoint.totalMonths/12)}a ${lastPoint.totalMonths%12}m): <strong>${lastPoint.measurement.toFixed(1)} cm</strong>. Percentil: <strong>${diagnosisInfo.percentileText}</strong> <span class="diagnostic-badge ${diagnosisInfo.cssClass}">${diagnosisInfo.text}</span>`;
             }
             midarmChart.update();
         }
 
+        // Eventos
         genderSelectMidarm.addEventListener('change', (event) => {
             currentGenderMidarm = event.target.value;
-            updateChartForGenderMidarm(); 
+            updateChartForGenderMidarm();
         });
+
+        function handleAgeInputMidarm() {
+            const ageY = parseInt(ageYearsInputMidarm.value || '0', 10);
+            const ageM = parseInt(ageMonthsInputMidarm.value || '0', 10);
+            const totalMonths = (ageY * 12) + ageM;
+            if (totalMonths >= 2 && totalMonths <= 900) {
+                updateZonesReferenceCardMidarm(totalMonths);
+            }
+        }
+
+        ageYearsInputMidarm.addEventListener('input', handleAgeInputMidarm);
+        ageMonthsInputMidarm.addEventListener('input', handleAgeInputMidarm);
 
         addBtnMidarm.addEventListener('click', () => {
             resultAreaMidarm.classList.remove('error-message');
-            const ageY = parseInt(ageYearsInputMidarm.value || '0', 10);
+            const ageY = parseInt(ageYearsInputMidarm.value, 10);
             const ageM = parseInt(ageMonthsInputMidarm.value || '0', 10);
             const measurement = parseFloat(measurementInputMidarm.value);
-            const totalMonths = (ageY * 12) + ageM;
 
-            if (isNaN(ageY) || isNaN(ageM) || ageY < 0 || ageM < 0 || ageM > 11 || totalMonths < 2 || totalMonths > 900) {
-                resultAreaMidarm.textContent = `Error: Edad inválida. Rango: 0a 2m hasta 74a 11m.`; resultAreaMidarm.classList.add('error-message'); return;
+            if (isNaN(ageY) || isNaN(ageM) || ageY < 0 || ageM < 0 || ageM > 11) {
+                resultAreaMidarm.textContent = `Error: Ingrese una edad válida en años y meses.`;
+                resultAreaMidarm.classList.add('error-message');
+                return;
             }
-            if (isNaN(measurement) || measurement < 10 || measurement > 50) {
-                resultAreaMidarm.textContent = `Error: Ingrese una medida válida en cm (ej. 10-50).`; resultAreaMidarm.classList.add('error-message'); return;
+
+            const totalMonths = (ageY * 12) + ageM;
+            if (totalMonths < 2 || totalMonths > 900) {
+                resultAreaMidarm.textContent = `Error: Edad fuera de rango (0a 2m a 74a 11m).`;
+                resultAreaMidarm.classList.add('error-message');
+                return;
             }
-            
-            const existingIndexInHistory = userMeasurementHistoryMidarm.findIndex(p => p.totalMonths === totalMonths);
-            if (existingIndexInHistory > -1) {
-                userMeasurementHistoryMidarm[existingIndexInHistory].measurement = measurement;
+
+            if (isNaN(measurement) || measurement < 8 || measurement > 60) {
+                resultAreaMidarm.textContent = `Error: Ingrese un perímetro braquial válido en cm (ej: 8 a 60 cm).`;
+                resultAreaMidarm.classList.add('error-message');
+                return;
+            }
+
+            updateZonesReferenceCardMidarm(totalMonths);
+
+            const existingIndex = userMeasurementHistoryMidarm.findIndex(p => p.totalMonths === totalMonths);
+            if (existingIndex > -1) {
+                userMeasurementHistoryMidarm[existingIndex].measurement = measurement;
             } else {
                 userMeasurementHistoryMidarm.push({ totalMonths: totalMonths, measurement: measurement });
             }
+
             updateChartAndDiagnosisDisplayMidarm();
-            ageYearsInputMidarm.value = ''; 
-            ageMonthsInputMidarm.value = '';
-            measurementInputMidarm.value = '';
         });
 
         clearBtnMidarm.addEventListener('click', () => {
             userMeasurementHistoryMidarm = [];
+            measurementInputMidarm.value = '';
+            resultAreaMidarm.innerHTML = '';
             updateChartAndDiagnosisDisplayMidarm();
         });
 
         savePdfBtnMidarm.addEventListener('click', () => {
-            const genderTextForPdf = currentGenderMidarm === 'Male' ? 'Masculino' : 'Femenino';
-            const genderTextForFile = currentGenderMidarm === 'Male' ? 'masculino' : 'femenino';
+            if (userMeasurementHistoryMidarm.length === 0) {
+                alert("Por favor, agregue al menos un punto antes de guardar el PDF.");
+                return;
+            }
 
-            const elementsToHideForPdf = [addBtnMidarm, clearBtnMidarm, savePdfBtnMidarm, genderSelectMidarm.parentElement, ageYearsInputMidarm.parentElement, ageMonthsInputMidarm.parentElement, measurementInputMidarm.parentElement];
-            elementsToHideForPdf.forEach(el => el.style.visibility = 'hidden');
+            const elementsToHide = [document.querySelector('.button-group')];
+            elementsToHide.forEach(el => el.style.visibility = 'hidden');
 
-            html2canvas(document.getElementById('chartContainerDivMidarm'), { scale: 2, logging: false, useCORS: true }).then(canvas => {
-                elementsToHideForPdf.forEach(el => el.style.visibility = 'visible');
+            html2canvas(document.getElementById('captureAreaMidarm'), { scale: 2, logging: false, useCORS: true }).then(canvas => {
+                elementsToHide.forEach(el => el.style.visibility = 'visible');
 
                 const imgData = canvas.toDataURL('image/png');
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth(); const margin = 15;
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const margin = 12;
                 const contentWidth = pdfWidth - 2 * margin;
-
-                pdf.setFontSize(18); pdf.setFont(undefined, 'bold');
-                pdf.text(`Reporte Perímetro Braquial (${genderTextForPdf})`, pdfWidth / 2, margin + 5, { align: 'center' });
-                pdf.setFont(undefined, 'normal');
-                let currentY = margin + 25;
-
-                if (userMeasurementHistoryMidarm.length > 0) {
-                    const lastPoint = userMeasurementHistoryMidarm[userMeasurementHistoryMidarm.length - 1];
-                    const diagnosisInfo = getDiagnosisInfoMidarm(lastPoint.measurement, lastPoint.totalMonths);
-
-                    pdf.setFontSize(14); pdf.setFont(undefined, 'bold');
-                    pdf.text(`Último Registro`, margin, currentY); currentY += 8;
-                    pdf.setFont(undefined, 'normal');
-                    
-                    pdf.setFontSize(11);
-                    pdf.text(`Edad: ${Math.floor(lastPoint.totalMonths / 12)} años, ${lastPoint.totalMonths % 12} meses`, margin, currentY);
-                    currentY += 7;
-                    pdf.text(`Perímetro Braquial: ${lastPoint.measurement.toFixed(1)} cm`, margin, currentY);
-                    currentY += 7;
-                    pdf.text(`Clasificación: ${diagnosisInfo.percentileText} (${diagnosisInfo.text})`, margin, currentY);
-                    currentY += 12;
-                }
 
                 const imgProps = pdf.getImageProperties(imgData);
                 const aspectRatio = imgProps.height / imgProps.width;
                 const imgHeightPdf = contentWidth * aspectRatio;
-                pdf.addImage(imgData, 'PNG', margin, currentY, contentWidth, imgHeightPdf);
-                currentY += imgHeightPdf + 10;
+
+                pdf.addImage(imgData, 'PNG', margin, margin, contentWidth, imgHeightPdf);
                 
-                pdf.setFontSize(8);
-                const disclaimer = `Nota: Esta es una herramienta de referencia basada en datos de NHANES 2007-2010. Consulte siempre a un profesional de la salud.`;
-                pdf.text(disclaimer, pdfWidth / 2, currentY, { align: 'center', maxWidth: contentWidth });
-                
-                pdf.save(`reporte_perimetro_braquial_${genderTextForFile}.pdf`);
+                const genderText = currentGenderMidarm === 'Male' ? 'masculino' : 'femenino';
+                pdf.save(`reporte_perimetro_braquial_${genderText}.pdf`);
             }).catch(err => {
-                elementsToHideForPdf.forEach(el => el.style.visibility = 'visible');
+                elementsToHide.forEach(el => el.style.visibility = 'visible');
                 console.error("Error al generar PDF:", err);
                 alert("Error al generar el PDF.");
             });
         });
 
-        // Initial setup
+        // Setup Inicial
         updateChartForGenderMidarm();
     </script>
-
 </body>
 </html>
