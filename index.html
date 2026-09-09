@@ -4333,39 +4333,58 @@
                         .pd-title { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5px; margin-bottom: 2px; }
                         .pd-subtitle { font-size: 0.95rem; opacity: 0.9; font-weight: 500; }
                         .pd-arrow { width: 45px; height: 45px; border-radius: 50%; background: white; color: #5865F2; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+                        .premium-tool-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+                            gap: 15px;
+                            margin-top: 20px;
+                            margin-bottom: 35px;
+                        }
+                        .featured-tool {
+                            border: 1px solid rgba(56, 189, 248, 0.45) !important;
+                            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), #1c212a 70%) !important;
+                            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.12);
+                        }
+                        .featured-tool:hover {
+                            border-color: rgba(56, 189, 248, 0.9) !important;
+                            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.25) !important;
+                        }
+                        .ptc-badge-pill {
+                            display: inline-block;
+                            font-size: 0.72rem;
+                            font-weight: 700;
+                            padding: 2px 8px;
+                            border-radius: 8px;
+                            margin-left: 8px;
+                            vertical-align: middle;
+                        }
                         </style>
 
+                        <!-- GRUPO 1: PLANIFICACIÓN Y CÁLCULO DIETOTERÁPICO -->
                         <div class="section-header" style="margin-top: 20px;">
-                            <i class="fas fa-tools header-icon" style="color:var(--accent-teal);"></i>
-                            <h2>Calculadoras Principales</h2>
+                            <i class="fas fa-calculator header-icon" style="color: #38bdf8;"></i>
+                            <h2>Planificación Nutricional & Dietoterapia</h2>
                         </div>
-                        <div class="premium-tool-list" style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
-                            
+                        <div class="premium-tool-grid">
+                            <a href="https://nutriciongerman.github.io/valora-gest/planificador-nutricional/planificacion-nutricional.html" class="premium-tool-card featured-tool" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #38bdf8; background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3);"><i class="fas fa-utensils"></i></div>
+                                    <div class="ptc-title">
+                                        Fórmula Desarrollada & R24H
+                                        <span class="ptc-badge-pill" style="background: rgba(56,189,248,0.2); color: #38bdf8; border: 1px solid rgba(56,189,248,0.4);">⭐ Clave TPs y Parcial</span>
+                                    </div>
+                                    <div class="ptc-action" style="color: #38bdf8; border-color: rgba(56,189,248,0.3);"><i class="fas fa-external-link-alt"></i> Abrir</div>
+                                </div>
+                                <p class="ptc-description">Cálculo del GET, distribución sintética, armado dinámico de fórmula desarrollada por alimentos y diagnóstico de adecuación para Recordatorio de 24 Horas.</p>
+                            </a>
+
                             <a href="https://nutriciongerman.github.io/valora-gest/" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
                                 <div class="ptc-header">
-                                    <div class="ptc-icon-wrap"><i class="fas fa-calculator"></i></div>
-                                    <div class="ptc-title">ValoraGest</div>
+                                    <div class="ptc-icon-wrap" style="color: var(--accent-teal); background: rgba(79, 209, 197, 0.1);"><i class="fas fa-female"></i></div>
+                                    <div class="ptc-title">ValoraGest (Embarazo)</div>
                                     <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
                                 </div>
-                                <p class="ptc-description">Herramienta completa de valoración nutricional gestacional. Calculá requerimientos, ganancia de peso, suplementación y más.</p>
-                            </a>
-
-                            <a href="https://www.nal.usda.gov/human-nutrition-and-food-safety/dri-calculator" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
-                                <div class="ptc-header">
-                                    <div class="ptc-icon-wrap" style="color: #a855f7; background: rgba(168,85,247,0.1);"><i class="fas fa-chart-pie"></i></div>
-                                    <div class="ptc-title">Calculadora DRI</div>
-                                    <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
-                                </div>
-                                <p class="ptc-description">Calculadora interactiva oficial del USDA para establecer las Ingestas Dietéticas de Referencia (IDR) según perfil.</p>
-                            </a>
-
-                            <a href="HERRAMIENTAS/who_anthro_setup (1).zip" class="premium-tool-card" download>
-                                <div class="ptc-header">
-                                    <div class="ptc-icon-wrap" style="color: #3b82f6; background: rgba(59,130,246,0.1);"><i class="fas fa-download"></i></div>
-                                    <div class="ptc-title">WHO Anthro</div>
-                                    <div class="ptc-action"><i class="fas fa-file-archive"></i> .ZIP</div>
-                                </div>
-                                <p class="ptc-description">Software antropométrico oficial de la Organización Mundial de la Salud para evaluación del crecimiento infantil.</p>
+                                <p class="ptc-description">Herramienta completa de valoración nutricional gestacional. Calculá requerimientos, ganancia de peso semanal y total, suplementación y curvas.</p>
                             </a>
 
                             <a href="https://nutriciongerman.github.io/mamaderas/Teoria/tp6-teoria.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
@@ -4374,16 +4393,108 @@
                                     <div class="ptc-title">Calculadora de Mamaderas</div>
                                     <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
                                 </div>
-                                <p class="ptc-description">Herramienta para calcular preparaciones de fórmulas infantiles, diluciones y requerimientos hídricos.</p>
+                                <p class="ptc-description">Cálculo de preparaciones de fórmulas infantiles, diluciones porcentuales, calorías por biberón y cobertura de requerimientos hídricos.</p>
                             </a>
 
+                            <a href="https://www.nal.usda.gov/human-nutrition-and-food-safety/dri-calculator" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #a855f7; background: rgba(168,85,247,0.1);"><i class="fas fa-chart-pie"></i></div>
+                                    <div class="ptc-title">Calculadora DRI (USDA)</div>
+                                    <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
+                                </div>
+                                <p class="ptc-description">Calculadora interactiva oficial del USDA para establecer las Ingestas Dietéticas de Referencia (IDR) según perfil biológico y actividad física.</p>
+                            </a>
+                        </div>
+
+                        <!-- GRUPO 2: EVALUACIÓN ANTROPOMÉTRICA Y CURVAS PERCENTILARES -->
+                        <div class="section-header" style="margin-top: 35px;">
+                            <i class="fas fa-child header-icon" style="color: #10b981;"></i>
+                            <h2>Evaluación Antropométrica & Curvas Percentilares</h2>
+                        </div>
+                        <div class="premium-tool-grid">
+                            <a href="clases/herramientas/IMC%205%20a%2019%20a%C3%B1os.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #06b6d4; background: rgba(6,182,212,0.1);"><i class="fas fa-child"></i></div>
+                                    <div class="ptc-title">
+                                        IMC para la Edad (5 a 19 Años)
+                                        <span class="ptc-badge-pill" style="background: rgba(6,182,212,0.2); color: #06b6d4;">OMS 2007</span>
+                                    </div>
+                                    <div class="ptc-action"><i class="fas fa-chart-line"></i> Abrir Curva</div>
+                                </div>
+                                <p class="ptc-description">Curvas oficiales OMS. Gráfica interactiva de percentiles y puntaje Z, cálculo de IMC, diagnóstico pondero-estatural y exportación a PDF.</p>
+                            </a>
+
+                            <a href="clases/herramientas/pliegue-triceps.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #f59e0b; background: rgba(245,158,11,0.1);"><i class="fas fa-layer-group"></i></div>
+                                    <div class="ptc-title">
+                                        Pliegue Cutáneo Tricipital (PT)
+                                        <span class="ptc-badge-pill" style="background: rgba(245,158,11,0.2); color: #f59e0b;">Frisancho / CDC</span>
+                                    </div>
+                                    <div class="ptc-action"><i class="fas fa-chart-line"></i> Abrir Curva</div>
+                                </div>
+                                <p class="ptc-description">Evaluación de tejido adiposo subcutáneo y reservas energéticas (1 a 74 años). Graficador percentilar con estándares Frisancho (1990) y CDC/NHANES.</p>
+                            </a>
+
+                            <a href="clases/herramientas/cintura.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #ec4899; background: rgba(236,72,153,0.1);"><i class="fas fa-arrows-alt-h"></i></div>
+                                    <div class="ptc-title">
+                                        Circunferencia de Cintura
+                                        <span class="ptc-badge-pill" style="background: rgba(236,72,153,0.2); color: #ec4899;">CDC/NCHS</span>
+                                    </div>
+                                    <div class="ptc-action"><i class="fas fa-chart-line"></i> Abrir Curva</div>
+                                </div>
+                                <p class="ptc-description">Evaluación de adiposidad central y riesgo cardiometabólico en niños y adolescentes (2 a 19 años) con percentiles oficiales CDC.</p>
+                            </a>
+
+                            <a href="clases/herramientas/perimetro-braquial.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #8b5cf6; background: rgba(139,92,246,0.1);"><i class="fas fa-circle-notch"></i></div>
+                                    <div class="ptc-title">
+                                        Perímetro Braquial (PB)
+                                        <span class="ptc-badge-pill" style="background: rgba(139,92,246,0.2); color: #8b5cf6;">Frisancho / CDC</span>
+                                    </div>
+                                    <div class="ptc-action"><i class="fas fa-chart-line"></i> Abrir Curva</div>
+                                </div>
+                                <p class="ptc-description">Medición de la circunferencia de brazo para valoración rápida de reservas proteico-calóricas integradas según Frisancho y CDC/NHANES.</p>
+                            </a>
+
+                            <a href="clases/herramientas/AMB.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.1);"><i class="fas fa-dumbbell"></i></div>
+                                    <div class="ptc-title">
+                                        Área Muscular del Brazo (cAMB)
+                                        <span class="ptc-badge-pill" style="background: rgba(16,185,129,0.2); color: #10b981;">Heymsfield</span>
+                                    </div>
+                                    <div class="ptc-action"><i class="fas fa-chart-line"></i> Abrir Calculadora</div>
+                                </div>
+                                <p class="ptc-description">Estimación de masa muscular esquelética libre de hueso corregida (cAMB) y percentiles de reserva proteica somática según Frisancho (1990).</p>
+                            </a>
+                        </div>
+
+                        <!-- GRUPO 3: GUÍAS CLÍNICAS Y SOFTWARE -->
+                        <div class="section-header" style="margin-top: 35px;">
+                            <i class="fas fa-book-medical header-icon" style="color: #f97316;"></i>
+                            <h2>Guías Clínicas & Software de Apoyo</h2>
+                        </div>
+                        <div class="premium-tool-grid">
                             <a href="HERRAMIENTAS/interpretaciones.html" class="premium-tool-card" target="_blank" rel="noopener noreferrer">
                                 <div class="ptc-header">
                                     <div class="ptc-icon-wrap" style="color: #10b981; background: rgba(16,185,129,0.1);"><i class="fas fa-book-medical"></i></div>
                                     <div class="ptc-title">Interpretaciones Clínicas</div>
                                     <div class="ptc-action"><i class="fas fa-external-link-alt"></i> Abrir</div>
                                 </div>
-                                <p class="ptc-description">Guía rápida y visual para la interpretación de parámetros nutricionales y clínicos.</p>
+                                <p class="ptc-description">Guía rápida y visual para la interpretación de puntos de corte de parámetros antropométricos y clínicos.</p>
+                            </a>
+
+                            <a href="HERRAMIENTAS/who_anthro_setup (1).zip" class="premium-tool-card" download>
+                                <div class="ptc-header">
+                                    <div class="ptc-icon-wrap" style="color: #3b82f6; background: rgba(59,130,246,0.1);"><i class="fas fa-download"></i></div>
+                                    <div class="ptc-title">WHO Anthro (PC)</div>
+                                    <div class="ptc-action"><i class="fas fa-file-archive"></i> .ZIP</div>
+                                </div>
+                                <p class="ptc-description">Software antropométrico oficial de la Organización Mundial de la Salud para evaluación del crecimiento infantil.</p>
                             </a>
                         </div>
                         
