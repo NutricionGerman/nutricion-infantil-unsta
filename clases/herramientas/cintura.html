@@ -286,7 +286,7 @@
 </head>
 <body>
     <div class="container" id="captureAreaWaist">
-        <h2 id="mainTitleWaist">Percentiles Circunferencia de Cintura (2 a 19 años)</h2>
+        <h2 id="mainTitleWaist">Percentiles Circunferencia de Cintura (2 a 17 años, CDC) - FEMENINO</h2>
 
         <div class="input-section female-theme" id="inputSectionWaist">
             <div class="input-group">
@@ -297,10 +297,13 @@
                 </select>
              </div>
              <div class="input-group"> 
-                <label for="ageYearsInputWaist">Edad (Años):</label> 
-                <input type="number" id="ageYearsInputWaist" placeholder="Ej: 8" min="2" max="19"> 
+                <label for="ageYearsInputWaist">
+                    Edad (Años):
+                    <span id="populationBadgeWaist" style="display:inline-block; font-size:0.72rem; font-weight:700; padding:1px 6px; border-radius:4px; background:rgba(49,130,206,0.12); color:#2b6cb0; border:1px solid rgba(49,130,206,0.25); margin-left:4px;">Pediatría (CDC)</span>
+                </label> 
+                <input type="number" id="ageYearsInputWaist" placeholder="Ej: 8 (o 25 en adulto)" min="2" max="100"> 
              </div>
-             <div class="input-group"> 
+             <div class="input-group" id="ageMonthsGroupWaist"> 
                 <label for="ageMonthsInputWaist">Edad (Meses):</label> 
                 <input type="number" id="ageMonthsInputWaist" placeholder="Ej: 0" min="0" max="11"> 
              </div>
@@ -327,10 +330,10 @@
 
         <div class="zones-reference-card" id="zonesReferenceCardWaist">
             <div class="zones-card-header">
-                <span id="zonesCardTitleWaist">🎯 Zonas de Interpretación (CDC/NHANES) - Grupo de Edad: 8 años</span>
+                <span id="zonesCardTitleWaist">🎯 Zonas de Interpretación Pediátrica (CDC/NHANES) - Grupo de Edad: 8 años</span>
                 <span style="font-size: 0.75rem; color: #718096;">(Circunferencia de Cintura en cm)</span>
             </div>
-            <div class="zones-pills-container">
+            <div class="zones-pills-container" id="zonesPillsContainerWaist">
                 <div class="zone-pill zp-bajo">
                     <span class="zp-title">≤ P25 Normal Bajo</span>
                     <span class="zp-range" id="zpP25RangeWaist">≤ 55.2 cm</span>
@@ -355,17 +358,41 @@
         </div>
 
         <div class="notes">
-             <strong>Interpretación de la Circunferencia de Cintura:</strong>
-             <ul>
-                 <li>La circunferencia de cintura es un marcador antropométrico fundamental para evaluar la distribución de la grasa abdominal y el tejido adiposo visceral.</li>
-                 <li>Esta herramienta integra los datos de referencia poblacionales de <strong>CDC/NCHS (NHANES 2007-2010)</strong> para niños y jóvenes de 2 a 19 años.</li>
-                 <li><strong>≤ P75:</strong> Circunferencia normal, sin riesgo cardiovascular/metabólico aumentado.</li>
-                 <li><strong>> P75 a ≤ P90:</strong> Riesgo cardiometabólico aumentado / Alerta preventiva.</li>
-                 <li><strong>> P90:</strong> Riesgo cardiometabólico elevado / Criterio para obesidad abdominal.</li>
-             </ul>
+             <strong>Interpretación Clínica de la Circunferencia de Cintura:</strong>
+             <p style="margin-top: 6px; margin-bottom: 10px;">
+                 La circunferencia de cintura es el marcador antropométrico fundamental para cuantificar la acumulación de <strong>tejido adiposo visceral y adiposidad intraabdominal</strong>, directamente correlacionada con resistencia a la insulina, dislipidemia aterogénica, hipertensión y riesgo cardiometabólico.
+             </p>
+             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 10px; margin-bottom: 10px;">
+                 <div style="background: rgba(49, 130, 206, 0.05); border-left: 3px solid #3182ce; padding: 10px 14px; border-radius: 6px;">
+                     <h4 style="margin: 0 0 6px 0; color: #2b6cb0; font-size: 0.9rem;">🧒 1. Niños y Adolescentes (2 a 17 años - CDC/NHANES)</h4>
+                     <ul style="margin: 0; padding-left: 18px; font-size: 0.83rem;">
+                         <li><strong>≤ P75:</strong> Circunferencia normal, sin riesgo cardiovascular aumentado (Eutrofia).</li>
+                         <li><strong>> P75 a ≤ P90:</strong> Riesgo cardiometabólico aumentado / Alerta preventiva.</li>
+                         <li><strong>> P90:</strong> Riesgo cardiometabólico elevado / Criterio para obesidad abdominal.</li>
+                     </ul>
+                 </div>
+                 <div style="background: rgba(16, 185, 129, 0.05); border-left: 3px solid #10b981; padding: 10px 14px; border-radius: 6px;">
+                     <h4 style="margin: 0 0 6px 0; color: #065f46; font-size: 0.9rem;">🧑 2. Adultos (≥ 18 años - Estándares Oficiales OMS)</h4>
+                     <ul style="margin: 0; padding-left: 18px; font-size: 0.83rem;">
+                         <li><strong>Mujeres:</strong>
+                             <br>• &lt; 80 cm: <em>Normal / Bajo Riesgo</em>
+                             <br>• 80.0 - 87.9 cm: <em>Riesgo Aumentado (Acción Nivel 1)</em>
+                             <br>• ≥ 88.0 cm: <em>Riesgo Muy Elevado (Acción Nivel 2 / Obesidad)</em>
+                         </li>
+                         <li style="margin-top: 4px;"><strong>Hombres:</strong>
+                             <br>• &lt; 94 cm: <em>Normal / Bajo Riesgo</em>
+                             <br>• 94.0 - 101.9 cm: <em>Riesgo Aumentado (Acción Nivel 1)</em>
+                             <br>• ≥ 102.0 cm: <em>Riesgo Muy Elevado (Acción Nivel 2 / Obesidad)</em>
+                         </li>
+                     </ul>
+                 </div>
+             </div>
+             <p style="font-size: 0.78rem; color: #718096; margin-top: 8px; margin-bottom: 0;">
+                 <strong>Fuentes oficiales:</strong> OMS (2008). <em>Waist Circumference and Waist-Hip Ratio: Report of a WHO Expert Consultation</em>. Ginebra. | CDC/NCHS (NHANES 2007–2010). Table 18: <em>Anthropometric Reference Data for Children and Adults</em>.
+             </p>
         </div>
         <div class="source">
-             Datos: CDC/NCHS, National Health and Nutrition Examination Survey (NHANES 2007–2010). Table 18.
+             Cátedra de Nutrición Infantil - Universidad del Norte Santo Tomás de Aquino (UNSTA)
         </div>
     </div>
 
@@ -382,13 +409,29 @@
         const mainTitleWaist = document.getElementById('mainTitleWaist');
         const inputSectionWaist = document.getElementById('inputSectionWaist');
         const zonesCardTitleWaist = document.getElementById('zonesCardTitleWaist');
-        const zpP25RangeWaist = document.getElementById('zpP25RangeWaist');
-        const zpP50RangeWaist = document.getElementById('zpP50RangeWaist');
-        const zpP75RangeWaist = document.getElementById('zpP75RangeWaist');
-        const zpP90RangeWaist = document.getElementById('zpP90RangeWaist');
+        const zonesPillsContainerWaist = document.getElementById('zonesPillsContainerWaist');
+        const populationBadgeWaist = document.getElementById('populationBadgeWaist');
 
         let userMeasurementHistoryWaist = []; 
         let currentGenderWaist = 'Female';
+        let currentModeWaist = 'pediatric'; // 'pediatric' (<18 años) o 'adult' (>=18 años)
+
+        const WHO_ADULT_CUTOFFS = {
+            Female: {
+                normalMax: 80.0,
+                riskMax: 88.0,
+                labelNormal: '< 80.0 cm',
+                labelRisk1: '80.0 - 87.9 cm',
+                labelRisk2: '≥ 88.0 cm'
+            },
+            Male: {
+                normalMax: 94.0,
+                riskMax: 102.0,
+                labelNormal: '< 94.0 cm',
+                labelRisk1: '94.0 - 101.9 cm',
+                labelRisk2: '≥ 102.0 cm'
+            }
+        };
         
         const percentiles_data = {
             "Male": {
@@ -464,74 +507,94 @@
                 const { ctx, chartArea, scales: { x, y } } = chart;
                 if (!chartArea) return;
 
-                const genderData = percentiles_data[currentGenderWaist];
-                if (!genderData) return;
-
-                const sampledMonths = [];
-                for (let m = 24; m <= 239; m += 6) sampledMonths.push(m);
-                if (sampledMonths[sampledMonths.length - 1] !== 239) sampledMonths.push(239);
-
-                function getCoords(p) {
-                    return sampledMonths.map(m => {
-                        const grp = getAgeGroup(m);
-                        const val = (grp && genderData[grp]) ? genderData[grp][p] : 50;
-                        return {
-                            xPix: x.getPixelForValue(m),
-                            yPix: y.getPixelForValue(val)
-                        };
-                    });
-                }
-
-                const p10Coords = getCoords(10);
-                const p25Coords = getCoords(25);
-                const p75Coords = getCoords(75);
-                const p90Coords = getCoords(90);
-
-                const topPixel = chartArea.top;
-                const bottomPixel = chartArea.bottom;
-
                 ctx.save();
 
-                // Zona > P90 (Riesgo Elevado / Obesidad) - Rojo suave
-                ctx.fillStyle = 'rgba(220, 53, 69, 0.08)';
-                ctx.beginPath();
-                ctx.moveTo(p90Coords[0].xPix, topPixel);
-                for (let i = 0; i < p90Coords.length; i++) ctx.lineTo(p90Coords[i].xPix, topPixel);
-                for (let i = p90Coords.length - 1; i >= 0; i--) ctx.lineTo(p90Coords[i].xPix, p90Coords[i].yPix);
-                ctx.closePath();
-                ctx.fill();
+                if (currentModeWaist === 'adult') {
+                    const isFemale = currentGenderWaist === 'Female';
+                    const cut1 = isFemale ? 80 : 94;
+                    const cut2 = isFemale ? 88 : 102;
+                    const yCut1 = y.getPixelForValue(cut1);
+                    const yCut2 = y.getPixelForValue(cut2);
 
-                // Zona P75 - P90 (Riesgo Aumentado) - Ámbar suave
-                ctx.fillStyle = 'rgba(253, 126, 20, 0.08)';
-                ctx.beginPath();
-                for (let i = 0; i < p90Coords.length; i++) ctx.lineTo(p90Coords[i].xPix, p90Coords[i].yPix);
-                for (let i = p75Coords.length - 1; i >= 0; i--) ctx.lineTo(p75Coords[i].xPix, p75Coords[i].yPix);
-                ctx.closePath();
-                ctx.fill();
+                    // Zona > cut2: Riesgo Muy Elevado (Rojo suave)
+                    ctx.fillStyle = 'rgba(220, 53, 69, 0.08)';
+                    ctx.fillRect(chartArea.left, chartArea.top, chartArea.width, yCut2 - chartArea.top);
 
-                // Zona P25 - P75 (Normal / Adecuado) - Verde suave
-                ctx.fillStyle = 'rgba(25, 135, 84, 0.10)';
-                ctx.beginPath();
-                for (let i = 0; i < p75Coords.length; i++) ctx.lineTo(p75Coords[i].xPix, p75Coords[i].yPix);
-                for (let i = p25Coords.length - 1; i >= 0; i--) ctx.lineTo(p25Coords[i].xPix, p25Coords[i].yPix);
-                ctx.closePath();
-                ctx.fill();
+                    // Zona cut1 a cut2: Riesgo Aumentado (Ámbar suave)
+                    ctx.fillStyle = 'rgba(253, 126, 20, 0.08)';
+                    ctx.fillRect(chartArea.left, yCut2, chartArea.width, yCut1 - yCut2);
 
-                // Zona P10 - P25 (Normal Bajo) - Azul suave
-                ctx.fillStyle = 'rgba(13, 110, 253, 0.08)';
-                ctx.beginPath();
-                for (let i = 0; i < p25Coords.length; i++) ctx.lineTo(p25Coords[i].xPix, p25Coords[i].yPix);
-                for (let i = p10Coords.length - 1; i >= 0; i--) ctx.lineTo(p10Coords[i].xPix, p10Coords[i].yPix);
-                ctx.closePath();
-                ctx.fill();
+                    // Zona < cut1: Normal / Bajo Riesgo (Verde suave)
+                    ctx.fillStyle = 'rgba(25, 135, 84, 0.10)';
+                    ctx.fillRect(chartArea.left, yCut1, chartArea.width, chartArea.bottom - yCut1);
+                } else {
+                    const genderData = percentiles_data[currentGenderWaist];
+                    if (!genderData) { ctx.restore(); return; }
 
-                // Zona <= P10 (Bajo) - Púrpura suave
-                ctx.fillStyle = 'rgba(111, 66, 193, 0.08)';
-                ctx.beginPath();
-                for (let i = 0; i < p10Coords.length; i++) ctx.lineTo(p10Coords[i].xPix, p10Coords[i].yPix);
-                for (let i = p10Coords.length - 1; i >= 0; i--) ctx.lineTo(p10Coords[i].xPix, bottomPixel);
-                ctx.closePath();
-                ctx.fill();
+                    const sampledMonths = [];
+                    for (let m = 24; m <= 216; m += 6) sampledMonths.push(m);
+                    if (sampledMonths[sampledMonths.length - 1] !== 216) sampledMonths.push(216);
+
+                    function getCoords(p) {
+                        return sampledMonths.map(m => {
+                            const grp = getAgeGroup(m);
+                            const val = (grp && genderData[grp]) ? genderData[grp][p] : 50;
+                            return {
+                                xPix: x.getPixelForValue(m),
+                                yPix: y.getPixelForValue(val)
+                            };
+                        });
+                    }
+
+                    const p10Coords = getCoords(10);
+                    const p25Coords = getCoords(25);
+                    const p75Coords = getCoords(75);
+                    const p90Coords = getCoords(90);
+
+                    const topPixel = chartArea.top;
+                    const bottomPixel = chartArea.bottom;
+
+                    // Zona > P90 (Riesgo Elevado / Obesidad) - Rojo suave
+                    ctx.fillStyle = 'rgba(220, 53, 69, 0.08)';
+                    ctx.beginPath();
+                    ctx.moveTo(p90Coords[0].xPix, topPixel);
+                    for (let i = 0; i < p90Coords.length; i++) ctx.lineTo(p90Coords[i].xPix, topPixel);
+                    for (let i = p90Coords.length - 1; i >= 0; i--) ctx.lineTo(p90Coords[i].xPix, p90Coords[i].yPix);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Zona P75 - P90 (Riesgo Aumentado) - Ámbar suave
+                    ctx.fillStyle = 'rgba(253, 126, 20, 0.08)';
+                    ctx.beginPath();
+                    for (let i = 0; i < p90Coords.length; i++) ctx.lineTo(p90Coords[i].xPix, p90Coords[i].yPix);
+                    for (let i = p75Coords.length - 1; i >= 0; i--) ctx.lineTo(p75Coords[i].xPix, p75Coords[i].yPix);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Zona P25 - P75 (Normal / Adecuado) - Verde suave
+                    ctx.fillStyle = 'rgba(25, 135, 84, 0.10)';
+                    ctx.beginPath();
+                    for (let i = 0; i < p75Coords.length; i++) ctx.lineTo(p75Coords[i].xPix, p75Coords[i].yPix);
+                    for (let i = p25Coords.length - 1; i >= 0; i--) ctx.lineTo(p25Coords[i].xPix, p25Coords[i].yPix);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Zona P10 - P25 (Normal Bajo) - Azul suave
+                    ctx.fillStyle = 'rgba(13, 110, 253, 0.08)';
+                    ctx.beginPath();
+                    for (let i = 0; i < p25Coords.length; i++) ctx.lineTo(p25Coords[i].xPix, p25Coords[i].yPix);
+                    for (let i = p10Coords.length - 1; i >= 0; i--) ctx.lineTo(p10Coords[i].xPix, p10Coords[i].yPix);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Zona <= P10 (Bajo) - Púrpura suave
+                    ctx.fillStyle = 'rgba(111, 66, 193, 0.08)';
+                    ctx.beginPath();
+                    for (let i = 0; i < p10Coords.length; i++) ctx.lineTo(p10Coords[i].xPix, p10Coords[i].yPix);
+                    for (let i = p10Coords.length - 1; i >= 0; i--) ctx.lineTo(p10Coords[i].xPix, bottomPixel);
+                    ctx.closePath();
+                    ctx.fill();
+                }
 
                 ctx.restore();
             }
@@ -553,7 +616,16 @@
             pointBackgroundColor: function(context) {
                 const point = context.raw;
                 if (!point) return '#3182ce';
-                const diag = getDiagnosisInfoWaist(point.y, point.x);
+                let diag;
+                if (currentModeWaist === 'adult') {
+                    const yr = Math.floor(point.x);
+                    const mo = Math.round((point.x % 1) * 12);
+                    diag = getDiagnosisInfoWaist(point.y, yr, mo);
+                } else {
+                    const yr = Math.floor(point.x / 12);
+                    const mo = Math.round(point.x % 12);
+                    diag = getDiagnosisInfoWaist(point.y, yr, mo);
+                }
                 if (diag.cssClass === 'diag-riesgo-elevado') return '#dc3545';
                 if (diag.cssClass === 'diag-riesgo-aumentado') return '#fd7e14';
                 if (diag.cssClass === 'diag-normal') return '#198754';
@@ -576,7 +648,7 @@
                     type: 'linear',
                     title: { display: true, text: 'Edad (Años y Meses)', font: { size: 13, weight: 'bold' } }, 
                     min: 24, 
-                    max: 239, 
+                    max: 216, 
                     grid: { color: 'rgba(0,0,0,0.04)' },
                     ticks: { 
                         stepSize: 12,
@@ -612,14 +684,27 @@
                     cornerRadius: 8,
                     callbacks: {
                         title: function(context) {
-                            const totalMonths = context[0].parsed.x;
-                            return `Edad: ${Math.floor(totalMonths / 12)} años, ${totalMonths % 12} meses`;
+                            const xVal = context[0].parsed.x;
+                            if (currentModeWaist === 'adult') {
+                                const yr = Math.floor(xVal);
+                                const mo = Math.round((xVal % 1) * 12);
+                                return mo > 0 ? `Edad: ${yr} años, ${mo} meses (Adulto)` : `Edad: ${yr} años (Adulto)`;
+                            } else {
+                                const totalMonths = xVal;
+                                return `Edad: ${Math.floor(totalMonths / 12)} años, ${totalMonths % 12} meses (Pediatría)`;
+                            }
                         },
                         label: function(context) {
                             const datasetLabel = context.dataset.label || '';
                             const val = context.parsed.y;
-                            if (datasetLabel.includes('Paciente')) {
-                                const diag = getDiagnosisInfoWaist(val, context.parsed.x);
+                            if (datasetLabel.includes('Paciente') || datasetLabel.includes('Medición')) {
+                                let diag;
+                                if (currentModeWaist === 'adult') {
+                                    const xVal = context.parsed.x;
+                                    diag = getDiagnosisInfoWaist(val, Math.floor(xVal), Math.round((xVal % 1) * 12));
+                                } else {
+                                    diag = getDiagnosisInfoWaist(val, Math.floor(context.parsed.x / 12), context.parsed.x % 12);
+                                }
                                 return ` Paciente: ${val.toFixed(1)} cm [${diag.text}]`;
                             }
                             return ` ${datasetLabel}: ${val.toFixed(1)} cm`;
@@ -636,24 +721,115 @@
             plugins: [waistBackgroundZonesPlugin]
         });
 
-        function updateZonesReferenceCardWaist(totalMonths) {
-            const ageGroup = getAgeGroup(totalMonths) || "8 years";
-            const dataRow = percentiles_data[currentGenderWaist][ageGroup];
-            if (!dataRow) return;
+        function updateZonesReferenceCardWaist(ageY, ageM) {
+            if (!zonesPillsContainerWaist) return;
 
-            zonesCardTitleWaist.textContent = `🎯 Zonas de Interpretación (CDC/NHANES) - Grupo de Edad: ${ageGroup}`;
-            zpP25RangeWaist.textContent = `≤ ${dataRow[25].toFixed(1)} cm`;
-            zpP50RangeWaist.textContent = `${dataRow[25].toFixed(1)} - ${dataRow[75].toFixed(1)} cm (Mediana: ${dataRow[50].toFixed(1)})`;
-            zpP75RangeWaist.textContent = `${dataRow[75].toFixed(1)} - ${dataRow[90].toFixed(1)} cm`;
-            zpP90RangeWaist.textContent = `> ${dataRow[90].toFixed(1)} cm`;
+            if (ageY >= 18) {
+                const isFemale = currentGenderWaist === 'Female';
+                const genderLabel = isFemale ? 'Femenino (Mujer)' : 'Masculino (Varón)';
+                const c = WHO_ADULT_CUTOFFS[currentGenderWaist];
+
+                zonesCardTitleWaist.textContent = `🎯 Criterios de Riesgo Cardiometabólico en Adultos (OMS) - ${genderLabel}`;
+                zonesPillsContainerWaist.innerHTML = `
+                    <div class="zone-pill zp-normal">
+                        <span class="zp-title">Normal / Bajo Riesgo</span>
+                        <span class="zp-range">${c.labelNormal} (Eutrofia / Sin riesgo)</span>
+                    </div>
+                    <div class="zone-pill zp-aumentado">
+                        <span class="zp-title">Riesgo Aumentado (Acción 1)</span>
+                        <span class="zp-range">${c.labelRisk1} (Alerta preventiva)</span>
+                    </div>
+                    <div class="zone-pill zp-elevado">
+                        <span class="zp-title">Riesgo Muy Elevado (Acción 2)</span>
+                        <span class="zp-range">${c.labelRisk2} (Obesidad Abdominal)</span>
+                    </div>
+                `;
+            } else {
+                const totalMonths = (ageY * 12) + (ageM || 0);
+                const ageGroup = getAgeGroup(totalMonths) || "8 years";
+                const dataRow = percentiles_data[currentGenderWaist][ageGroup];
+                if (!dataRow) return;
+
+                zonesCardTitleWaist.textContent = `🎯 Zonas de Interpretación Pediátrica (CDC/NHANES) - Grupo de Edad: ${ageGroup}`;
+                zonesPillsContainerWaist.innerHTML = `
+                    <div class="zone-pill zp-bajo">
+                        <span class="zp-title">≤ P25 Normal Bajo</span>
+                        <span class="zp-range">≤ ${dataRow[25].toFixed(1)} cm</span>
+                    </div>
+                    <div class="zone-pill zp-normal">
+                        <span class="zp-title">>P25 a ≤P75 Normal / Adecuado</span>
+                        <span class="zp-range">${dataRow[25].toFixed(1)} - ${dataRow[75].toFixed(1)} cm (Mediana: ${dataRow[50].toFixed(1)})</span>
+                    </div>
+                    <div class="zone-pill zp-aumentado">
+                        <span class="zp-title">>P75 a ≤P90 Riesgo Aumentado</span>
+                        <span class="zp-range">${dataRow[75].toFixed(1)} - ${dataRow[90].toFixed(1)} cm</span>
+                    </div>
+                    <div class="zone-pill zp-elevado">
+                        <span class="zp-title">> P90 Riesgo Elevado (Obesidad)</span>
+                        <span class="zp-range">> ${dataRow[90].toFixed(1)} cm</span>
+                    </div>
+                `;
+            }
         }
 
-        function updateChartForGenderWaist() {
-            let genderTextForTitle = (currentGenderWaist === 'Male') ? 'MASCULINO' : 'FEMENINO';
-            let genderTextForLabel = 'Paciente';
-            
-            mainTitleWaist.textContent = `Percentiles Circunferencia de Cintura (2 a 19 años) - ${genderTextForTitle}`;
-            userTrajectoryDatasetWaist.label = `Medición (${genderTextForLabel})`;
+        function getDiagnosisInfoWaist(measurement, ageY, ageM) {
+            if (ageY >= 18) {
+                const isFemale = currentGenderWaist === 'Female';
+                const cut1 = isFemale ? 80.0 : 94.0;
+                const cut2 = isFemale ? 88.0 : 102.0;
+
+                if (measurement < cut1) {
+                    return {
+                        text: 'Normal / Bajo Riesgo Cardiometabólico',
+                        percentileText: `< ${cut1.toFixed(0)} cm (OMS)`,
+                        cssClass: 'diag-normal',
+                        category: 'normal'
+                    };
+                } else if (measurement < cut2) {
+                    return {
+                        text: 'Riesgo Cardiometabólico Aumentado (Nivel de Acción 1)',
+                        percentileText: `${cut1.toFixed(0)} - ${(cut2 - 0.1).toFixed(1)} cm (OMS)`,
+                        cssClass: 'diag-riesgo-aumentado',
+                        category: 'aumentado'
+                    };
+                } else {
+                    return {
+                        text: 'Riesgo Muy Elevado / Obesidad Abdominal (Nivel de Acción 2)',
+                        percentileText: `≥ ${cut2.toFixed(0)} cm (OMS)`,
+                        cssClass: 'diag-riesgo-elevado',
+                        category: 'elevado'
+                    };
+                }
+            } else {
+                const totalMonths = (ageY * 12) + (ageM || 0);
+                const ageGroup = getAgeGroup(totalMonths);
+                if (!ageGroup || !percentiles_data[currentGenderWaist][ageGroup]) {
+                    return { text: 'Edad fuera de rango', percentileText: 'N/A', cssClass: '' };
+                }
+
+                const dataRow = percentiles_data[currentGenderWaist][ageGroup];
+                const p25 = dataRow[25];
+                const p75 = dataRow[75];
+                const p90 = dataRow[90];
+                
+                if (measurement <= p25) {
+                    return { text: 'Normal / Bajo', percentileText: '≤ P25', cssClass: 'diag-normal-bajo' };
+                } else if (measurement <= p75) {
+                    return { text: 'Normal / Adecuado (Eutrofia)', percentileText: '>P25 - ≤P75', cssClass: 'diag-normal' };
+                } else if (measurement <= p90) {
+                    return { text: 'Riesgo Cardiometabólico Aumentado', percentileText: '>P75 - ≤P90', cssClass: 'diag-riesgo-aumentado' };
+                } else {
+                    return { text: 'Riesgo Elevado / Obesidad Abdominal', percentileText: '> P90', cssClass: 'diag-riesgo-elevado' };
+                }
+            }
+        }
+
+        function updateChartForCurrentMode() {
+            const isFemale = currentGenderWaist === 'Female';
+            const genderTextForTitle = isFemale ? 'FEMENINO' : 'MASCULINO';
+            const ageY = parseInt(ageYearsInputWaist.value || '8', 10);
+            const ageM = parseInt(ageMonthsInputWaist.value || '0', 10);
+            currentModeWaist = (ageY >= 18) ? 'adult' : 'pediatric';
 
             if (currentGenderWaist === 'Male') {
                 inputSectionWaist.classList.remove('female-theme');
@@ -663,75 +839,141 @@
                 inputSectionWaist.classList.add('female-theme');
             }
 
-            waistChart.data.datasets = [
-                { label: 'P10 (Bajo)', data: generatePercentileData(currentGenderWaist, 10), borderColor: '#6f42c1', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 5 },
-                { label: 'P25 (Normal Bajo)', data: generatePercentileData(currentGenderWaist, 25), borderColor: '#0d6efd', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 4 },
-                { label: 'P50 (Mediana)', data: generatePercentileData(currentGenderWaist, 50), borderColor: '#198754', borderDash: [4, 4], fill: false, borderWidth: 2.5, pointRadius: 0, order: 3 },
-                { label: 'P75 (Riesgo Aumentado)', data: generatePercentileData(currentGenderWaist, 75), borderColor: '#fd7e14', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 2 },
-                { label: 'P90 (Riesgo Elevado)', data: generatePercentileData(currentGenderWaist, 90), borderColor: '#dc3545', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 1 },
-                userTrajectoryDatasetWaist
-            ];
-            
-            const ageY = parseInt(ageYearsInputWaist.value || '8', 10);
-            const ageM = parseInt(ageMonthsInputWaist.value || '0', 10);
-            updateZonesReferenceCardWaist((ageY * 12) + ageM);
+            if (currentModeWaist === 'adult') {
+                mainTitleWaist.textContent = `Circunferencia de Cintura en Adultos (≥ 18 años, OMS) - ${genderTextForTitle}`;
+                if (populationBadgeWaist) {
+                    populationBadgeWaist.textContent = 'Adultos (OMS ≥ 18 años)';
+                    populationBadgeWaist.style.background = 'rgba(16, 185, 129, 0.15)';
+                    populationBadgeWaist.style.color = '#059669';
+                    populationBadgeWaist.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                }
 
-            userTrajectoryDatasetWaist.data = [];
-            userMeasurementHistoryWaist = [];
-            resultAreaWaist.innerHTML = '';
-            waistChart.update();
-        }
-        
-        function getDiagnosisInfoWaist(measurement, totalMonths) {
-            const ageGroup = getAgeGroup(totalMonths);
-            if (!ageGroup || !percentiles_data[currentGenderWaist][ageGroup]) {
-                return { text: 'Edad fuera de rango', percentileText: 'N/A', cssClass: '' };
-            }
+                waistChart.options.scales.x.min = 18;
+                waistChart.options.scales.x.max = 80;
+                waistChart.options.scales.x.title.text = 'Edad del Adulto (Años)';
+                waistChart.options.scales.x.ticks = {
+                    stepSize: 5,
+                    callback: function(val) { return val + 'a'; }
+                };
+                waistChart.options.scales.y.min = 50;
+                waistChart.options.scales.y.max = 135;
+                waistChart.options.scales.y.title.text = 'Circunferencia de Cintura en Adultos (cm) - OMS';
 
-            const dataRow = percentiles_data[currentGenderWaist][ageGroup];
-            const p25 = dataRow[25];
-            const p75 = dataRow[75];
-            const p90 = dataRow[90];
-            
-            if (measurement <= p25) {
-                return { text: 'Normal / Bajo', percentileText: '≤ P25', cssClass: 'diag-normal-bajo' };
-            } else if (measurement <= p75) {
-                return { text: 'Normal / Adecuado (Eutrofia)', percentileText: '>P25 - ≤P75', cssClass: 'diag-normal' };
-            } else if (measurement <= p90) {
-                return { text: 'Riesgo Cardiometabólico Aumentado', percentileText: '>P75 - ≤P90', cssClass: 'diag-riesgo-aumentado' };
+                const cut1 = isFemale ? 80 : 94;
+                const cut2 = isFemale ? 88 : 102;
+
+                waistChart.data.datasets = [
+                    {
+                        label: `Límite Riesgo Aumentado (≥ ${cut1} cm)`,
+                        data: [{ x: 18, y: cut1 }, { x: 80, y: cut1 }],
+                        borderColor: '#fd7e14',
+                        borderDash: [6, 4],
+                        fill: false,
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        order: 2
+                    },
+                    {
+                        label: `Límite Riesgo Muy Elevado (≥ ${cut2} cm)`,
+                        data: [{ x: 18, y: cut2 }, { x: 80, y: cut2 }],
+                        borderColor: '#dc3545',
+                        borderDash: [4, 4],
+                        fill: false,
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        order: 1
+                    },
+                    userTrajectoryDatasetWaist
+                ];
             } else {
-                return { text: 'Riesgo Elevado / Obesidad Abdominal', percentileText: '> P90', cssClass: 'diag-riesgo-elevado' };
+                mainTitleWaist.textContent = `Percentiles Circunferencia de Cintura (2 a 17 años, CDC) - ${genderTextForTitle}`;
+                if (populationBadgeWaist) {
+                    populationBadgeWaist.textContent = 'Pediatría (CDC 2 a 17 años)';
+                    populationBadgeWaist.style.background = 'rgba(49, 130, 206, 0.12)';
+                    populationBadgeWaist.style.color = '#2b6cb0';
+                    populationBadgeWaist.style.borderColor = 'rgba(49, 130, 206, 0.25)';
+                }
+
+                waistChart.options.scales.x.min = 24;
+                waistChart.options.scales.x.max = 216; // 18 años (216 meses)
+                waistChart.options.scales.x.title.text = 'Edad (Años y Meses)';
+                waistChart.options.scales.x.ticks = {
+                    stepSize: 12,
+                    callback: function(value) {
+                        let y = Math.floor(value / 12);
+                        let m = value % 12;
+                        return m === 0 ? y + 'a' : y + 'a ' + m + 'm';
+                    }
+                };
+                waistChart.options.scales.y.min = 40;
+                waistChart.options.scales.y.max = 125;
+                waistChart.options.scales.y.title.text = 'Circunferencia de Cintura (cm) - CDC';
+
+                waistChart.data.datasets = [
+                    { label: 'P10 (Bajo)', data: generatePercentileData(currentGenderWaist, 10), borderColor: '#6f42c1', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 5 },
+                    { label: 'P25 (Normal Bajo)', data: generatePercentileData(currentGenderWaist, 25), borderColor: '#0d6efd', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 4 },
+                    { label: 'P50 (Mediana)', data: generatePercentileData(currentGenderWaist, 50), borderColor: '#198754', borderDash: [4, 4], fill: false, borderWidth: 2.5, pointRadius: 0, order: 3 },
+                    { label: 'P75 (Riesgo Aumentado)', data: generatePercentileData(currentGenderWaist, 75), borderColor: '#fd7e14', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 2 },
+                    { label: 'P90 (Riesgo Elevado)', data: generatePercentileData(currentGenderWaist, 90), borderColor: '#dc3545', borderDash: [6, 4], fill: false, borderWidth: 2, pointRadius: 0, order: 1 },
+                    userTrajectoryDatasetWaist
+                ];
             }
+
+            updateZonesReferenceCardWaist(ageY, ageM);
+            waistChart.update();
         }
 
         function updateChartAndDiagnosisDisplayWaist() {
-            userMeasurementHistoryWaist.sort((a, b) => a.totalMonths - b.totalMonths);
-            const trajectoryDataset = waistChart.data.datasets.find(ds => ds.label.includes('Paciente') || ds.label.includes('Medición'));
-            if (trajectoryDataset) {
-                trajectoryDataset.data = userMeasurementHistoryWaist.map(p => ({ x: p.totalMonths, y: p.measurement }));
+            const trajectoryDataset = waistChart.data.datasets.find(ds => ds.label && (ds.label.includes('Paciente') || ds.label.includes('Medición')));
+
+            if (currentModeWaist === 'adult') {
+                const adultPoints = userMeasurementHistoryWaist.filter(p => p.isAdult);
+                adultPoints.sort((a, b) => a.totalMonths - b.totalMonths);
+                if (trajectoryDataset) {
+                    trajectoryDataset.data = adultPoints.map(p => ({ x: p.ageYears + (p.ageMonths / 12), y: p.measurement }));
+                }
+                resultAreaWaist.innerHTML = '';
+                if (adultPoints.length > 0) {
+                    const lastPoint = adultPoints[adultPoints.length - 1];
+                    const diag = getDiagnosisInfoWaist(lastPoint.measurement, lastPoint.ageYears, lastPoint.ageMonths);
+                    const moText = lastPoint.ageMonths > 0 ? ` ${lastPoint.ageMonths}m` : '';
+                    resultAreaWaist.innerHTML = `Último registro (${lastPoint.ageYears}a${moText} - Adulto): <strong>${lastPoint.measurement.toFixed(1)} cm</strong>. Criterio OMS: <strong>${diag.percentileText}</strong> <span class="diagnostic-badge ${diag.cssClass}">${diag.text}</span>`;
+                }
+            } else {
+                const pedPoints = userMeasurementHistoryWaist.filter(p => !p.isAdult);
+                pedPoints.sort((a, b) => a.totalMonths - b.totalMonths);
+                if (trajectoryDataset) {
+                    trajectoryDataset.data = pedPoints.map(p => ({ x: p.totalMonths, y: p.measurement }));
+                }
+                resultAreaWaist.innerHTML = '';
+                if (pedPoints.length > 0) {
+                    const lastPoint = pedPoints[pedPoints.length - 1];
+                    const diag = getDiagnosisInfoWaist(lastPoint.measurement, lastPoint.ageYears, lastPoint.ageMonths);
+                    resultAreaWaist.innerHTML = `Último registro (${Math.floor(lastPoint.totalMonths/12)}a ${lastPoint.totalMonths%12}m - Pediátrico): <strong>${lastPoint.measurement.toFixed(1)} cm</strong>. Percentil: <strong>${diag.percentileText}</strong> <span class="diagnostic-badge ${diag.cssClass}">${diag.text}</span>`;
+                }
             }
 
-            resultAreaWaist.innerHTML = '';
-            if (userMeasurementHistoryWaist.length > 0) {
-                const lastPoint = userMeasurementHistoryWaist[userMeasurementHistoryWaist.length - 1];
-                const diagnosisInfo = getDiagnosisInfoWaist(lastPoint.measurement, lastPoint.totalMonths);
-                resultAreaWaist.innerHTML = `Último registro (${Math.floor(lastPoint.totalMonths/12)}a ${lastPoint.totalMonths%12}m): <strong>${lastPoint.measurement.toFixed(1)} cm</strong>. Percentil: <strong>${diagnosisInfo.percentileText}</strong> <span class="diagnostic-badge ${diagnosisInfo.cssClass}">${diagnosisInfo.text}</span>`;
-            }
             waistChart.update();
         }
 
         // Eventos
         genderSelectWaist.addEventListener('change', (event) => {
             currentGenderWaist = event.target.value;
-            updateChartForGenderWaist(); 
+            updateChartForCurrentMode(); 
+            updateChartAndDiagnosisDisplayWaist();
         });
 
         function handleAgeInputWaist() {
             const ageY = parseInt(ageYearsInputWaist.value || '0', 10);
             const ageM = parseInt(ageMonthsInputWaist.value || '0', 10);
-            const totalMonths = (ageY * 12) + ageM;
-            if (totalMonths >= 24 && totalMonths <= 239) {
-                updateZonesReferenceCardWaist(totalMonths);
+            
+            const newMode = (ageY >= 18) ? 'adult' : 'pediatric';
+            if (newMode !== currentModeWaist) {
+                currentModeWaist = newMode;
+                updateChartForCurrentMode();
+                updateChartAndDiagnosisDisplayWaist();
+            } else {
+                updateZonesReferenceCardWaist(ageY, ageM);
             }
         }
 
@@ -744,46 +986,69 @@
             const ageM = parseInt(ageMonthsInputWaist.value || '0', 10);
             const measurement = parseFloat(measurementInputWaist.value);
 
-            if (isNaN(ageY) || isNaN(ageM) || ageY < 2 || ageY > 19 || ageM < 0 || ageM > 11) {
-                resultAreaWaist.textContent = `Error: Rango de edad válido: 2a 0m hasta 19a 11m.`; 
+            if (isNaN(ageY) || ageY < 2 || ageY > 100) {
+                resultAreaWaist.textContent = `Error: Ingrese una edad válida entre 2 y 100 años.`; 
                 resultAreaWaist.classList.add('error-message'); 
                 return;
+            }
+
+            const isAdult = ageY >= 18;
+
+            if (!isAdult && (isNaN(ageM) || ageM < 0 || ageM > 11)) {
+                resultAreaWaist.textContent = `Error: En edad pediátrica, ingrese los meses entre 0 y 11.`; 
+                resultAreaWaist.classList.add('error-message'); 
+                return;
+            }
+
+            if (isNaN(measurement) || measurement < 35 || measurement > 200) {
+                resultAreaWaist.textContent = `Error: Ingrese una circunferencia de cintura válida en cm (ej: 35 a 200 cm).`; 
+                resultAreaWaist.classList.add('error-message'); 
+                return;
+            }
+
+            // Asegurar que el modo y la vista coincidan con la edad ingresada
+            if ((isAdult && currentModeWaist !== 'adult') || (!isAdult && currentModeWaist !== 'pediatric')) {
+                currentModeWaist = isAdult ? 'adult' : 'pediatric';
+                updateChartForCurrentMode();
+            } else {
+                updateZonesReferenceCardWaist(ageY, ageM);
             }
 
             const totalMonths = (ageY * 12) + ageM;
-            if (totalMonths < 24 || totalMonths > 239) {
-                resultAreaWaist.textContent = `Error: Edad fuera de rango (2a 0m hasta 19a 11m).`; 
-                resultAreaWaist.classList.add('error-message'); 
-                return;
-            }
-
-            if (isNaN(measurement) || measurement < 35 || measurement > 160) {
-                resultAreaWaist.textContent = `Error: Ingrese una circunferencia de cintura válida en cm (ej: 35 a 160 cm).`; 
-                resultAreaWaist.classList.add('error-message'); 
-                return;
-            }
-
-            updateZonesReferenceCardWaist(totalMonths);
-
             const existingIndex = userMeasurementHistoryWaist.findIndex(p => p.totalMonths === totalMonths);
             if (existingIndex > -1) {
                 userMeasurementHistoryWaist[existingIndex].measurement = measurement;
+                userMeasurementHistoryWaist[existingIndex].isAdult = isAdult;
             } else {
-                userMeasurementHistoryWaist.push({ totalMonths: totalMonths, measurement: measurement });
+                userMeasurementHistoryWaist.push({
+                    ageYears: ageY,
+                    ageMonths: ageM,
+                    totalMonths: totalMonths,
+                    measurement: measurement,
+                    isAdult: isAdult
+                });
             }
 
             updateChartAndDiagnosisDisplayWaist();
         });
 
         clearBtnWaist.addEventListener('click', () => {
-            userMeasurementHistoryWaist = [];
+            if (currentModeWaist === 'adult') {
+                userMeasurementHistoryWaist = userMeasurementHistoryWaist.filter(p => !p.isAdult);
+            } else {
+                userMeasurementHistoryWaist = userMeasurementHistoryWaist.filter(p => p.isAdult);
+            }
             measurementInputWaist.value = '';
             resultAreaWaist.innerHTML = '';
             updateChartAndDiagnosisDisplayWaist();
         });
 
         savePdfBtnWaist.addEventListener('click', () => {
-            if (userMeasurementHistoryWaist.length === 0) {
+            const currentPoints = currentModeWaist === 'adult' 
+                ? userMeasurementHistoryWaist.filter(p => p.isAdult)
+                : userMeasurementHistoryWaist.filter(p => !p.isAdult);
+
+            if (currentPoints.length === 0) {
                 alert("Por favor, agregue al menos un punto antes de guardar el PDF.");
                 return;
             }
@@ -808,7 +1073,8 @@
                 pdf.addImage(imgData, 'PNG', margin, margin, contentWidth, imgHeightPdf);
                 
                 const genderText = currentGenderWaist === 'Male' ? 'masculino' : 'femenino';
-                pdf.save(`reporte_cintura_edad_${genderText}.pdf`);
+                const modeText = currentModeWaist === 'adult' ? 'adultos_oms' : 'pediatrico_cdc';
+                pdf.save(`reporte_cintura_${modeText}_${genderText}.pdf`);
             }).catch(err => {
                 elementsToHide.forEach(el => el.style.visibility = 'visible');
                 console.error("Error al generar PDF:", err);
@@ -817,7 +1083,7 @@
         });
 
         // Setup Inicial
-        updateChartForGenderWaist();
+        updateChartForCurrentMode();
     </script>
 </body>
 </html>
