@@ -7334,19 +7334,51 @@
             }
 
             async function handleVideoVoting(tpIndex, targetId, stars) {
-                // 1. Identificar al votante (usar sesión activa o pedir login)
-                let voterUP = currentStudentUP;
-                let studentData = currentStudentData;
+                // Función auxiliar para buscar al alumno de forma flexible
+                const findStudentFlexible = (upStr) => {
+                    if (!upStr || !fullData || !fullData.students) return null;
+                    const clean = String(upStr).trim().toUpperCase();
+                    const cleanNoUP = clean.replace(/^UP/, '');
+                    const cleanWithUP = 'UP' + cleanNoUP;
+                    return fullData.students.find(s => {
+                        const sUP = String(s.up || '').trim().toUpperCase();
+                        return sUP === clean || sUP === cleanNoUP || sUP === cleanWithUP;
+                    }) || null;
+                };
 
-                if (!voterUP) {
-                    voterUP = prompt("Para votar individualmente, ingresa tu número de Legajo (UP):");
-                    if (!voterUP) return;
+                // 1. Identificar al votante (usar sesión activa o pedir login)
+                let voterUP = currentStudentUP || window.currentStudentUP || window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up');
+                let studentData = currentStudentData || window.currentStudentData;
+
+                // Si ya tenemos el UP pero no studentData, resolverlo desde la lista de alumnos
+                if (voterUP && !studentData) {
+                    studentData = findStudentFlexible(voterUP);
+                    if (studentData) {
+                        currentStudentData = studentData;
+                        window.currentStudentData = studentData;
+                        voterUP = studentData.up;
+                    }
+                }
+
+                // Si todavía no está identificado, pedir legajo y contraseña
+                if (!voterUP || !studentData) {
+                    const rawInputUP = prompt("Para votar individualmente, ingresa tu número de Legajo (UP):");
+                    if (!rawInputUP) return;
+                    voterUP = rawInputUP.trim();
 
                     const password = prompt("Ingresa tu Contraseña Personal de 'Mi Perfil':");
                     if (!password) return;
 
                     try {
-                        const authDoc = await db.collection('student_auth').doc(voterUP).get();
+                        const cleanUP = voterUP.toUpperCase();
+                        const noUP = cleanUP.replace(/^UP/, '');
+                        const withUP = 'UP' + noUP;
+
+                        let authDoc = await db.collection('student_auth').doc(voterUP).get();
+                        if (!authDoc.exists) authDoc = await db.collection('student_auth').doc(cleanUP).get();
+                        if (!authDoc.exists) authDoc = await db.collection('student_auth').doc(noUP).get();
+                        if (!authDoc.exists) authDoc = await db.collection('student_auth').doc(withUP).get();
+
                         if (!authDoc.exists) {
                             alert("Primero debes crear tu contraseña en la pestaña 'Mi Perfil' para poder votar.");
                             return;
@@ -7355,9 +7387,18 @@
                             alert("Contraseña incorrecta.");
                             return;
                         }
+
                         // Buscar datos del alumno para saber su grupo
-                        studentData = fullData.students.find(s => String(s.up) === String(voterUP));
+                        studentData = findStudentFlexible(voterUP);
+                        if (studentData) {
+                            currentStudentData = studentData;
+                            window.currentStudentData = studentData;
+                            voterUP = studentData.up;
+                            currentStudentUP = voterUP;
+                            window.currentStudentUP = voterUP;
+                        }
                     } catch (e) {
+                        console.error("Error al verificar identidad para votación:", e);
                         alert("Error al verificar identidad.");
                         return;
                     }
@@ -7369,7 +7410,9 @@
                 }
 
                 // 2. Evitar que vote por su propio grupo
-                if (String(studentData.group) === String(targetId)) {
+                const studentGroupClean = String(studentData.group || '').replace(/\D/g, '');
+                const targetGroupClean = String(targetId || '').replace(/\D/g, '');
+                if ((studentGroupClean && targetGroupClean && studentGroupClean === targetGroupClean) || String(studentData.group).trim() === String(targetId).trim()) {
                     alert("¡Ups! No puedes votar por el video de tu propio grupo.");
                     return;
                 }
@@ -7404,7 +7447,7 @@
                     // Cada 10 votos = +2 XP (milestones: 10, 20, 30...)
                     if (totalVotesCast % 10 === 0) {
                         voterXPBonus = 2;
-                        const voterStudent = currentStudents.find(s => String(s.up).trim() === String(voterUP).trim());
+                        const voterStudent = studentData || (fullData && fullData.students ? fullData.students.find(s => String(s.up).trim().toUpperCase() === String(voterUP).trim().toUpperCase()) : null);
                         if (voterStudent) {
                             voterStudent.xp = (voterStudent.xp || 0) + voterXPBonus;
                             if (!voterStudent.xpHistory) voterStudent.xpHistory = [];
