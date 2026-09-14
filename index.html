@@ -1157,6 +1157,55 @@
             letter-spacing: 0.05em;
         }
 
+        /* ESTILOS PARA BANNER DE VIDEO EN RANKING Y PORTAL */
+        .rank-row.has-video-banner, .current-user-bar.has-video-banner {
+            position: relative;
+            overflow: hidden;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+        }
+        .rank-row.has-video-banner > *:not(.rank-row-video-bg):not(.rank-row-video-overlay),
+        .current-user-bar.has-video-banner > *:not(.rank-row-video-bg):not(.rank-row-video-overlay) {
+            position: relative;
+            z-index: 2;
+        }
+        .rank-row-video-bg {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 0 !important;
+            pointer-events: none;
+            opacity: 0.65;
+            transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .rank-row:hover .rank-row-video-bg, .current-user-bar:hover .rank-row-video-bg {
+            opacity: 0.95;
+            transform: scale(1.03);
+        }
+        .rank-row-video-overlay {
+            position: absolute !important;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(12, 14, 24, 0.85) 0%, rgba(12, 14, 24, 0.35) 50%, rgba(12, 14, 24, 0.85) 100%);
+            z-index: 1 !important;
+            pointer-events: none;
+            transition: background 0.3s ease;
+        }
+        .rank-row:hover .rank-row-video-overlay {
+            background: linear-gradient(90deg, rgba(12, 14, 24, 0.75) 0%, rgba(12, 14, 24, 0.15) 50%, rgba(12, 14, 24, 0.7) 100%);
+        }
+        .app-profile-header.has-video-banner {
+            position: relative;
+            overflow: hidden;
+        }
+        .app-profile-header.has-video-banner > * {
+            position: relative;
+            z-index: 2;
+        }
+
         /* ESTILOS PORTAL ALUMNO Y GRUPO */
         .back-button {
             display: inline-block;
@@ -3613,38 +3662,53 @@
         }
         .app-profile-header {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+            flex-direction: row;
+            align-items: flex-end;
+            text-align: left;
+            justify-content: flex-start;
             margin-bottom: 25px;
+            min-height: 230px;
+            padding: 24px 20px 20px 20px;
+            gap: 16px;
+            position: relative;
+            box-sizing: border-box;
         }
         .app-avatar-wrapper {
             position: relative;
-            width: 100px;
-            height: 100px;
-            margin-bottom: 16px;
+            width: 72px;
+            height: 72px;
+            margin-bottom: 0;
             border-radius: 50%;
             background: rgba(255,255,255,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+            border: 2.5px solid rgba(255, 255, 255, 0.35);
+            flex-shrink: 0;
         }
+        #portal-photo,
+        #portal-photo .student-photo,
+        #portal-photo .student-photo img,
         .app-avatar-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100% !important;
+            max-height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
         }
         .app-avatar-wrapper .fas.fa-user {
-            font-size: 3rem;
+            font-size: 2.2rem;
             color: rgba(255,255,255,0.3);
         }
         .app-avatar-edit-btn {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 32px;
-            height: 32px;
+            bottom: -2px;
+            right: -2px;
+            width: 26px;
+            height: 26px;
+            font-size: 0.75rem;
             background: #00e5ff;
             border-radius: 50%;
             display: flex;
@@ -3652,16 +3716,19 @@
             justify-content: center;
             color: #000;
             cursor: pointer;
-            border: 3px solid #13141c;
+            border: 2.5px solid #13141c;
             box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
             transition: transform 0.2s;
         }
         .app-avatar-edit-btn:hover { transform: scale(1.1); }
         
         .app-profile-name {
-            font-size: 1.6rem;
+            font-size: 1.35rem;
             font-weight: 800;
             margin: 0;
+            line-height: 1.2;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.95);
+            color: #ffffff;
         }
         .app-profile-subtitle {
             color: rgba(255,255,255,0.5);
@@ -3845,10 +3912,18 @@
                 grid-column: 1 / -1;
                 flex-direction: row;
                 text-align: left;
-                gap: 20px;
+                gap: 22px;
+                min-height: 270px;
+                padding: 35px 35px;
+                align-items: flex-end;
             }
             .app-profile-header .app-avatar-wrapper {
+                width: 86px;
+                height: 86px;
                 margin-bottom: 0;
+            }
+            .app-profile-header .app-profile-name {
+                font-size: 1.65rem;
             }
             .app-stats-2x2 {
                 grid-column: 1 / -1;
@@ -5111,6 +5186,86 @@
     </div>
     <!-- FIN: MODAL -->
 
+    <!-- INICIO: MODAL DE ENTREGA DIRECTA DE TP -->
+    <div class="modal" id="direct-tp-submission-modal" style="z-index: 10001;">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h4><i class="fas fa-file-upload" style="color: var(--xp-color);"></i> Entregar Trabajo Práctico</h4>
+                <button type="button" class="close-modal" onclick="document.getElementById('direct-tp-submission-modal').classList.remove('active');">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 14px; margin-bottom: 18px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                        <span id="dtp-title" style="font-weight:700; color:var(--xp-color); font-size:1.05rem;">Trabajo Práctico</span>
+                        <span id="dtp-group-badge" style="background:rgba(255,255,255,0.12); padding:3px 10px; border-radius:20px; font-size:0.8rem; font-weight:600; color:var(--text-light);"></span>
+                    </div>
+                    <div id="dtp-deadline-info" style="font-size:0.82rem; color:var(--text-muted-light);"></div>
+                </div>
+
+                <form id="direct-tp-form">
+                    <input type="hidden" id="dtp-tp-index" value="">
+                    <input type="hidden" id="dtp-group-id" value="">
+                    <input type="hidden" id="dtp-student-up" value="">
+
+                    <div class="input-group" style="margin-bottom: 16px;">
+                        <label style="font-size:0.85rem; color:var(--text-light); margin-bottom:6px; display:block; font-weight:600;">
+                            <i class="fas fa-key" style="color:var(--xp-color); margin-right:4px;"></i> Contraseña del Grupo:
+                        </label>
+                        <input type="password" id="dtp-group-password" placeholder="Ingresá la contraseña de tu grupo" required
+                            style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); color:white; padding:10px 12px; border-radius:8px; font-size:0.95rem; outline:none; box-sizing:border-box;">
+                        <span style="font-size:0.75rem; color:var(--text-muted-light); margin-top:5px; display:block;">
+                            <i class="fas fa-shield-alt"></i> La clave que comparten los integrantes de tu grupo.
+                        </span>
+                    </div>
+
+                    <div class="input-group" style="margin-bottom: 20px;">
+                        <label style="font-size:0.85rem; color:var(--text-light); margin-bottom:6px; display:block; font-weight:600;">
+                            <i class="fas fa-link" style="color:var(--accent-teal); margin-right:4px;"></i> Link del Video / Entrega (YouTube / Drive):
+                        </label>
+                        <input type="url" id="dtp-video-url" placeholder="https://www.youtube.com/watch?v=..." required
+                            style="width:100%; background:rgba(0,0,0,0.3); border:1px solid var(--border-color); color:white; padding:10px 12px; border-radius:8px; font-size:0.95rem; outline:none; box-sizing:border-box;">
+                    </div>
+
+                    <div id="dtp-status" style="text-align:center; font-size:0.88rem; min-height:22px; margin-bottom:15px;"></div>
+
+                    <div style="display:flex; gap:10px;">
+                        <button type="button" class="close-modal" onclick="document.getElementById('direct-tp-submission-modal').classList.remove('active');" style="
+                            flex: 1;
+                            background: rgba(255,255,255,0.1);
+                            border: 1px solid var(--border-color);
+                            color: var(--text-light);
+                            padding: 11px 16px;
+                            border-radius: 20px;
+                            cursor: pointer;
+                            font-size: 0.9rem;
+                            font-weight: 600;
+                        ">Cancelar</button>
+                        <button type="submit" id="dtp-submit-btn" style="
+                            flex: 2;
+                            background: linear-gradient(135deg, var(--accent-teal), #128c7e);
+                            border: none;
+                            color: white;
+                            padding: 11px 20px;
+                            border-radius: 20px;
+                            cursor: pointer;
+                            font-weight: bold;
+                            font-size: 0.95rem;
+                            box-shadow: 0 4px 15px rgba(26, 188, 156, 0.35);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 8px;
+                            transition: all 0.2s ease;
+                        ">
+                            <i class="fas fa-paper-plane"></i> Subir Entrega
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- FIN: MODAL DE ENTREGA DIRECTA DE TP -->
+
     <!-- INICIO: MODAL DE ACCESO ALUMNO -->
     <div class="modal" id="student-access-modal">
         <div class="modal-content">
@@ -5553,6 +5708,18 @@
                         }
                     }
 
+                    function applyLocalTestBanner(arr) {
+                        if (!arr) return;
+                        const testStu = arr.find(s => String(s.up).trim() === '999999' || (s.name && s.name.toUpperCase().includes('PRUEBA')));
+                        if (testStu) {
+                            testStu.customBackground = 'Crear_animacion_para_video_musica_20260913180349.mp4';
+                            if ((testStu.xp || 0) < 15) {
+                                testStu.xp = 15; // Puesto #1 en ranking para prueba visual directa
+                            }
+                        }
+                    }
+                    applyLocalTestBanner(studentsArray);
+
                     // 3. RECONSTRUIR OBJETO GLOBAL PARA COMPATIBILIDAD
                     fullData = {
                         ...masterData,
@@ -5580,6 +5747,7 @@
                     db.collection('students').onSnapshot(snap => {
                         let updatedStudents = [];
                         snap.forEach(doc => updatedStudents.push(doc.data()));
+                        applyLocalTestBanner(updatedStudents);
                         
                         fullData.students = updatedStudents;
                         window.fullData = fullData;
@@ -6258,7 +6426,18 @@
                 if (localBgs) {
                     try { 
                         localBgs = JSON.parse(localBgs); 
-                        cardBgs = { ...cardBgs, ...localBgs }; 
+                        if (localBgs.alumnos) {
+                            delete localBgs.alumnos;
+                            if (Object.keys(localBgs).length === 0) {
+                                localStorage.removeItem('preview_card_bgs');
+                                localBgs = null;
+                            } else {
+                                localStorage.setItem('preview_card_bgs', JSON.stringify(localBgs));
+                            }
+                        }
+                        if (localBgs) {
+                            cardBgs = { ...cardBgs, ...localBgs }; 
+                        }
                     } catch(e) {}
                 }
 
@@ -6599,6 +6778,14 @@
                     ratingsSnap.forEach(doc => allRatings.push(doc.data()));
                 } catch (e) { console.error("Error cargando calificaciones:", e); }
 
+                // Asegurar que la configuración global de TPs esté cargada
+                if (!window.tpGlobalConfig) {
+                    try {
+                        const configDoc = await db.collection('config').doc('tp_settings').get();
+                        if (configDoc.exists) window.tpGlobalConfig = configDoc.data();
+                    } catch (e) { console.warn("No se pudo cargar tpGlobalConfig en galería:", e); }
+                }
+
                 const tpConfigs = (window.tpGlobalConfig && window.tpGlobalConfig.tps) || {};
                 const galleryByTP = {};
 
@@ -6633,15 +6820,20 @@
                     }
                 });
 
-                if (Object.keys(galleryByTP).length === 0) {
-                    container.innerHTML = `
-                        <div style="text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.3);">
-                            <i class="fas fa-video-slash" style="font-size: 3rem; margin-bottom: 20px;"></i>
-                            <h3>Aún no hay videos en la galería</h3>
-                            <p>Las producciones de los grupos aparecerán aquí conforme se realicen las entregas.</p>
-                        </div>
-                    `;
-                    return;
+                // Asegurar que los TPs activos/evaluables (incluyendo TP 1, TP 2 y TP 3) estén siempre disponibles en la galería
+                const minTPsToShow = 3;
+                for (let i = 1; i <= minTPsToShow; i++) {
+                    const videoKey = String(i - 1);
+                    if (!galleryByTP[videoKey]) galleryByTP[videoKey] = [];
+                }
+                if (tpConfigs) {
+                    Object.entries(tpConfigs).forEach(([configKey, cfg]) => {
+                        const idx = parseInt(configKey);
+                        if (!isNaN(idx) && (cfg.isEvaluable || cfg.unlockDate || cfg.deadline)) {
+                            const videoKey = String(idx - 1);
+                            if (!galleryByTP[videoKey]) galleryByTP[videoKey] = [];
+                        }
+                    });
                 }
 
                 let html = `
@@ -6907,27 +7099,36 @@
                 `;
 
                 // 1. GENERATE TABS NAVIGATION (PILLS)
+                const activeTPIndex = (window.currentGalleryTP !== undefined && sortedTPs.includes(String(window.currentGalleryTP)))
+                    ? String(window.currentGalleryTP)
+                    : (sortedTPs.includes('2') ? '2' : sortedTPs[sortedTPs.length - 1]);
+
                 html += '<div class="tp-tabs-container-v2">';
-                sortedTPs.forEach((tpIndex, i) => {
-                    const config = tpConfigs[tpIndex] || {};
+                sortedTPs.forEach((tpIndex) => {
+                    const configKey = String(parseInt(tpIndex) + 1);
+                    const config = tpConfigs[configKey] || tpConfigs[tpIndex] || {};
                     const tpName = config.name || `Práctico #${parseInt(tpIndex) + 1}`;
-                    const isActive = i === sortedTPs.length - 1 ? 'active' : ''; // Default to latest TP
+                    const isActive = String(tpIndex) === String(activeTPIndex) ? 'active' : '';
                     html += `<div class="tp-tab-pill-v2 ${isActive}" onclick="window.switchTPGallery('${tpIndex}')" data-target-tp="${tpIndex}">${tpName}</div>`;
                 });
                 html += '</div>';
 
                 // 2. GENERATE CONTENT SECTIONS FOR EACH TP
-                sortedTPs.forEach((tpIndex, i) => {
-                    let sortedVideos = [...galleryByTP[tpIndex]];
+                sortedTPs.forEach((tpIndex) => {
+                    let sortedVideos = [...(galleryByTP[tpIndex] || [])];
                     
                     if (window.tpSortMode === 'top') {
                         sortedVideos.sort((a, b) => b.avgRating - a.avgRating);
                     } else {
-                        // Ordenar por fecha (uploadedAt) asumiendo que es timestamp
-                        sortedVideos.sort((a, b) => b.uploadedAt - a.uploadedAt);
+                        // Ordenar por fecha (uploadedAt)
+                        sortedVideos.sort((a, b) => {
+                            const dateA = a.uploadedAt ? (a.uploadedAt.toDate ? a.uploadedAt.toDate().getTime() : new Date(a.uploadedAt).getTime()) : 0;
+                            const dateB = b.uploadedAt ? (b.uploadedAt.toDate ? b.uploadedAt.toDate().getTime() : new Date(b.uploadedAt).getTime()) : 0;
+                            return dateB - dateA;
+                        });
                     }
 
-                    const isActive = i === sortedTPs.length - 1 ? 'active' : '';
+                    const isActive = String(tpIndex) === String(activeTPIndex) ? 'active' : '';
                     const sortIcon = window.tpSortMode === 'top' ? 'fa-sort-amount-down' : 'fa-clock';
                     const sortText = window.tpSortMode === 'top' ? 'Top Valorados' : 'Más Recientes';
                     
@@ -6940,52 +7141,64 @@
                             <div class="gallery-cards-grid-v2">
                     `;
 
-                    sortedVideos.forEach((v, index) => {
-                        const thumbnail = getYouTubeThumbnail(v.videoUrl);
-                        const isTop = index === 0 && v.avgRating > 0 && window.tpSortMode === 'top';
-                        const badgeText = isTop ? '<i class="fas fa-crown"></i> TOP 1' : '';
-                        const groupShortText = v.groupName.substring(0, 2).toUpperCase();
-                        
+                    if (sortedVideos.length === 0) {
                         html += `
-                        <div class="app-video-card-v2">
-                            <!-- Lado Izquierdo: Miniatura -->
-                            <div class="thumb-container">
-                                <img src="${thumbnail}" class="bg-thumb" onclick="window.openVideoModal('${v.videoUrl}')" style="cursor: pointer;">
-                                <div class="play-btn-center" data-video-url="${v.videoUrl}" onclick="window.openVideoModal('${v.videoUrl}')">
-                                    <i class="fas fa-play" style="margin-left: 3px;"></i>
-                                </div>
+                            <div style="text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.02); border: 2px dashed rgba(245, 158, 11, 0.25); border-radius: 20px; margin: 10px 0 20px 0; width: 100%;">
+                                <i class="fas fa-video-slash" style="font-size: 3rem; margin-bottom: 18px; color: #f59e0b; opacity: 0.85;"></i>
+                                <h3 style="color: white; font-size: 1.25rem; font-weight: 700; margin-bottom: 8px;">Aún no hay producciones para el Trabajo Práctico #${parseInt(tpIndex) + 1}</h3>
+                                <p style="color: var(--text-muted-light); font-size: 0.9rem; max-width: 480px; margin: 0 auto; line-height: 1.6;">
+                                    Los videos de los clanes aparecerán aquí en tiempo real a medida que los grupos carguen sus entregas desde su panel grupal.
+                                </p>
                             </div>
+                        `;
+                    } else {
+                        sortedVideos.forEach((v, index) => {
+                            const thumbnail = getYouTubeThumbnail(v.videoUrl);
+                            const isTop = index === 0 && v.avgRating > 0 && window.tpSortMode === 'top';
+                            const badgeText = isTop ? '<i class="fas fa-crown"></i> TOP 1' : '';
+                            const groupShortText = v.groupName.substring(0, 2).toUpperCase();
                             
-                            <!-- Lado Derecho: Contenido -->
-                            <div class="list-content">
-                                ${isTop ? `<div class="top-badge">${badgeText}</div>` : ''}
-                                
-                                <div class="group-text">
-                                    <h4>${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</h4>
-                                    <p>ID: ${v.groupId.replace('g_', '')}</p>
+                            html += `
+                            <div class="app-video-card-v2">
+                                <!-- Lado Izquierdo: Miniatura -->
+                                <div class="thumb-container">
+                                    <img src="${thumbnail}" class="bg-thumb" onclick="window.openVideoModal('${v.videoUrl}')" style="cursor: pointer;">
+                                    <div class="play-btn-center" data-video-url="${v.videoUrl}" onclick="window.openVideoModal('${v.videoUrl}')">
+                                        <i class="fas fa-play" style="margin-left: 3px;"></i>
+                                    </div>
                                 </div>
                                 
-                                <div class="actions-row">
-                                    ${v.currentUserHasVoted 
-                                        ? `<button class="btn-rate" style="background: transparent; border-color: transparent; color: #10b981; padding: 4px 0; cursor: default;">
-                                            <i class="fas fa-check-circle"></i> Votado
-                                           </button>`
-                                        : `<button class="btn-rate" onclick="window.triggerRatingModal('${tpIndex}', '${v.groupId}')">
-                                            <i class="far fa-star"></i> Votar
-                                           </button>`
-                                    }
-                                    <button class="btn-comment" onclick="Swal.fire('Comentarios', 'La sección de comentarios estará disponible próximamente.', 'info')">
-                                        <i class="far fa-comment-alt"></i>
-                                    </button>
+                                <!-- Lado Derecho: Contenido -->
+                                <div class="list-content">
+                                    ${isTop ? `<div class="top-badge">${badgeText}</div>` : ''}
                                     
-                                    <div class="rating-badge">
-                                        ${v.avgRating > 0 ? v.avgRating.toFixed(1) : '-.-'} <i class="fas fa-star"></i>
+                                    <div class="group-text">
+                                        <h4>${v.groupName.replace(/#/g, '').replace(/_/g, ' ')}</h4>
+                                        <p>ID: ${v.groupId.replace('g_', '')}</p>
+                                    </div>
+                                    
+                                    <div class="actions-row">
+                                        ${v.currentUserHasVoted 
+                                            ? `<button class="btn-rate" style="background: transparent; border-color: transparent; color: #10b981; padding: 4px 0; cursor: default;">
+                                                <i class="fas fa-check-circle"></i> Votado
+                                               </button>`
+                                            : `<button class="btn-rate" onclick="window.triggerRatingModal('${tpIndex}', '${v.groupId}')">
+                                                <i class="far fa-star"></i> Votar
+                                               </button>`
+                                        }
+                                        <button class="btn-comment" onclick="Swal.fire('Comentarios', 'La sección de comentarios estará disponible próximamente.', 'info')">
+                                            <i class="far fa-comment-alt"></i>
+                                        </button>
+                                        
+                                        <div class="rating-badge">
+                                            ${v.avgRating > 0 ? v.avgRating.toFixed(1) : '-.-'} <i class="fas fa-star"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        `;
-                    });
+                            `;
+                        });
+                    }
 
                     html += `</div></div>`;
                 });
@@ -7028,6 +7241,7 @@
                 }, 100);
                 
                 window.switchTPGallery = function(tpIndex) {
+                    window.currentGalleryTP = String(tpIndex);
                     const cont = document.getElementById('recent-activity-container');
                     if(!cont) return;
                     cont.querySelectorAll('.tp-tab-pill-v2').forEach(pill => {
@@ -7935,12 +8149,30 @@
                         }
 
                         let rowStyle = '';
+                        let videoHTML = '';
+                        const isVideo = student.customBackground && (
+                            student.customBackground.endsWith('.mp4') || 
+                            student.customBackground.endsWith('.webm') || 
+                            student.customBackground.includes('.mp4?') ||
+                            student.customBackground.includes('Crear_animacion')
+                        );
+
                         if (student.customBackground) {
-                            rowStyle = `style="background: linear-gradient(rgba(26,26,46,0.5), rgba(26,26,46,0.5)), url('${student.customBackground}') center/cover no-repeat; text-shadow: 0 2px 4px rgba(0,0,0,0.8);"`;
+                            if (isVideo) {
+                                videoHTML = `
+                                    <video class="rank-row-video-bg" autoplay loop muted playsinline>
+                                        <source src="${student.customBackground}" type="video/mp4">
+                                    </video>
+                                    <div class="rank-row-video-overlay"></div>
+                                `;
+                            } else {
+                                rowStyle = `style="background: linear-gradient(rgba(26,26,46,0.5), rgba(26,26,46,0.5)), url('${student.customBackground}') center/cover no-repeat; text-shadow: 0 2px 4px rgba(0,0,0,0.8);"`;
+                            }
                         }
 
                         listHTML += `
-                        <div class="rank-row ${rankClass} group-member-item" data-up="${student.up}" ${rowStyle}>
+                        <div class="rank-row ${rankClass} group-member-item ${isVideo ? 'has-video-banner' : ''}" data-up="${student.up}" ${rowStyle}>
+                            ${videoHTML}
                             <div class="rank-number">${index + 1}</div>
                             <div class="avatar-container">
                                 ${crownHTML}
@@ -8253,6 +8485,7 @@
                 }
                 const rawConfig = window.tpGlobalConfig || (fullData && fullData.tpGlobalConfig) || (fullData && fullData.config) || {};
                 const tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
+                window.tpConfig = tpConfig;
                 
                 // Calculamos el denominador: cuántos TPs tienen isEvaluable == true
                 let denominator = 0;
@@ -8547,24 +8780,49 @@
                             </div>
                         </div>`;
                     } else {
+                        const safeGroup = String(student.group).replace(/'/g, "\\'");
+                        const safeUP = String(student.up).replace(/'/g, "\\'");
+                        const actionButtons = pendingTPs.map(num => `
+                            <button type="button" onclick="openDirectTPSubmissionModal(${num}, '${safeGroup}', '${safeUP}')" style="
+                                background: linear-gradient(135deg, #f59e0b, #d97706);
+                                color: #111;
+                                font-weight: 700;
+                                border: none;
+                                padding: 9px 20px;
+                                border-radius: 20px;
+                                cursor: pointer;
+                                font-size: 0.9rem;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 8px;
+                                box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+                                transition: all 0.2s ease;
+                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(245, 158, 11, 0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 14px rgba(245, 158, 11, 0.4)';">
+                                <i class="fas fa-cloud-upload-alt"></i> Entregar TP ${num} ahora
+                            </button>
+                        `).join(' ');
+
                         portalHTML += `
                         <div id="tp-alert-banner" style="
-                            background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.05));
+                            background: linear-gradient(135deg, rgba(245,158,11,0.14), rgba(245,158,11,0.06));
                             border: 1px solid rgba(245,158,11,0.45);
                             border-radius: 14px;
-                            padding: 1rem 1.25rem;
+                            padding: 1.1rem 1.25rem;
                             margin-bottom: 1.25rem;
                         ">
                             <div style="display:flex; align-items:flex-start; gap:0.9rem;">
-                                <div style="font-size:1.6rem; flex-shrink:0;">📋</div>
+                                <div style="font-size:1.7rem; flex-shrink:0;">📋</div>
                                 <div style="flex:1;">
-                                    <p style="font-weight:700; color:#fbbf24; margin:0 0 8px;">Tenés ${tpLabelShort} para entregar</p>
-                                    <p style="color:var(--text-muted-light); font-size:0.85rem; margin:0 0 8px;">Para subir la entrega, seguí estos pasos:</p>
-                                    <ol style="color:var(--text-muted-light); font-size:0.85rem; margin:0; padding-left:1.2rem; line-height:1.8;">
-                                        <li>Más abajo en esta misma página, hacé clic en el <strong style="color:var(--text-light);">ícono de tu grupo</strong></li>
-                                        <li>En el portal del grupo, hacé clic en la pestaña <strong style="color:#fbbf24;">Desafíos / TPs</strong></li>
-                                        <li>Subí el link del video de entrega</li>
-                                    </ol>
+                                    <p style="font-weight:700; color:#fbbf24; margin:0 0 6px; font-size:1.02rem;">Tenés ${tpLabelShort} para entregar</p>
+                                    <p style="color:var(--text-light); font-size:0.86rem; margin:0 0 12px; line-height:1.4;">
+                                        Podés subir la entrega directamente haciendo clic en el botón de abajo con la contraseña de tu grupo:
+                                    </p>
+                                    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom: 8px;">
+                                        ${actionButtons}
+                                    </div>
+                                    <p style="color:var(--text-muted-light); font-size:0.78rem; margin:8px 0 0; opacity:0.85;">
+                                        <i class="fas fa-info-circle"></i> También podés hacerlo navegando a tu grupo más abajo en la pestaña <em>Desafíos / TPs</em>.
+                                    </p>
                                 </div>
                             </div>
                         </div>`;
@@ -8610,15 +8868,33 @@
                 const nameDisplayWithCromos = `${student.lastName || student.apellido || ''} ${(student.lastName || student.apellido) ? ',' : ''} ${student.firstName || student.nombre || student.name || 'Alumno sin nombre'}`;
 
                 let headerBg = '';
+                let videoHeaderHTML = '';
+                const isVideo = student.customBackground && (
+                    student.customBackground.endsWith('.mp4') || 
+                    student.customBackground.endsWith('.webm') || 
+                    student.customBackground.includes('.mp4?') ||
+                    student.customBackground.includes('Crear_animacion')
+                );
+
                 if (student.customBackground) {
-                    headerBg = `background: linear-gradient(rgba(26,26,46,0.1), rgba(26,26,46,0.7)), url('${student.customBackground}') center/cover no-repeat; border-radius: 20px; border: 1px solid var(--accent-orange); text-shadow: 0 2px 5px rgba(0,0,0,0.9);`;
+                    if (isVideo) {
+                        videoHeaderHTML = `
+                            <video class="portal-header-video-bg" autoplay loop muted playsinline style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 0; pointer-events: none; opacity: 0.85;">
+                                <source src="${student.customBackground}" type="video/mp4">
+                            </video>
+                            <div class="portal-header-video-overlay" style="position: absolute; inset:0; background: linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(15,17,23,0.35) 45%, rgba(15,17,23,0.1) 100%); z-index: 1; pointer-events: none;"></div>
+                        `;
+                    } else {
+                        headerBg = `background: linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(26,26,46,0.35) 50%, rgba(26,26,46,0.1) 100%), url('${student.customBackground}') center/cover no-repeat; border-radius: 24px; border: 1px solid var(--accent-orange); text-shadow: 0 2px 5px rgba(0,0,0,0.9);`;
+                    }
                 }
 
                 portalHTML += `
                 <div class="app-profile-container">
                     
-                    <div class="app-profile-header" ${headerBg ? `style="${headerBg} padding: 20px; border-radius: 20px;"` : ''}>
-                        <div class="app-avatar-wrapper">
+                    <div class="app-profile-header ${isVideo ? 'has-video-banner' : ''}" style="${isVideo ? 'position: relative; overflow: hidden; border-radius: 24px; border: 1px solid var(--accent-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.6);' : (headerBg ? `${headerBg}` : '')}">
+                        ${videoHeaderHTML}
+                        <div class="app-avatar-wrapper" style="position: relative; z-index: 2;">
                             <div id="portal-photo" style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
                                 <i class="fas fa-user"></i>
                             </div>
@@ -8627,7 +8903,7 @@
                             </div>
                         </div>
                         
-                        <div class="app-profile-name">${nameDisplayWithCromos}</div>
+                        <div class="app-profile-name" style="position: relative; z-index: 2;">${nameDisplayWithCromos}</div>
                     </div>
                     
                     
@@ -10635,6 +10911,187 @@
             }
 
             // ============================================================
+            // SISTEMA DE ENTREGA DIRECTA DE TP DESDE CARTEL DE ALERTA
+            // ============================================================
+            window.openDirectTPSubmissionModal = function(tpIndex, groupId, studentUP) {
+                const modal = document.getElementById('direct-tp-submission-modal');
+                if (!modal) return;
+
+                document.getElementById('dtp-tp-index').value = tpIndex;
+                document.getElementById('dtp-group-id').value = groupId;
+                document.getElementById('dtp-student-up').value = studentUP || '';
+                document.getElementById('dtp-group-password').value = '';
+                document.getElementById('dtp-video-url').value = '';
+
+                const statusEl = document.getElementById('dtp-status');
+                if (statusEl) statusEl.innerHTML = '';
+
+                const titleEl = document.getElementById('dtp-title');
+                if (titleEl) titleEl.innerText = `Trabajo Práctico #${tpIndex}`;
+
+                const cleanGroupNum = String(groupId).replace(/\D/g, '') || groupId;
+                const groupBadge = document.getElementById('dtp-group-badge');
+                if (groupBadge) groupBadge.innerText = `Grupo ${cleanGroupNum}`;
+
+                const deadlineEl = document.getElementById('dtp-deadline-info');
+                if (deadlineEl) {
+                    const tpEntry = (window.tpConfig && (window.tpConfig[tpIndex] || window.tpConfig[String(tpIndex)] || window.tpConfig[tpIndex - 1])) ||
+                                    (window.tpGlobalConfig && (window.tpGlobalConfig[tpIndex] || window.tpGlobalConfig[String(tpIndex)] || window.tpGlobalConfig[tpIndex - 1])) || {};
+                    if (tpEntry.deadline) {
+                        const d = new Date(tpEntry.deadline);
+                        deadlineEl.innerHTML = `<i class="fas fa-clock" style="color:var(--xp-color);"></i> Fecha límite: <strong>${d.toLocaleDateString('es-AR')} ${d.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })} hs</strong>`;
+                    } else {
+                        deadlineEl.innerHTML = `<i class="fas fa-info-circle"></i> Entrega abierta (sin fecha límite configurada).`;
+                    }
+                }
+
+                // Cargar enlace previo si ya existía
+                const originalId = String(groupId).trim();
+                const cleanId = originalId.replace(/\D/g, '') || originalId;
+                const gIdWithG = 'g_' + cleanId;
+                const gMetaRef = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData && fullData.sharedGroupMetadata ? fullData.sharedGroupMetadata : {});
+                const groupData = gMetaRef[originalId] || gMetaRef[cleanId] || gMetaRef[gIdWithG] || null;
+                const tpKey = String(tpIndex - 1);
+                const existingVideo = groupData && groupData.videos && (groupData.videos[tpKey] || groupData.videos[String(tpIndex)]);
+                if (existingVideo && existingVideo.url) {
+                    document.getElementById('dtp-video-url').value = existingVideo.url;
+                }
+
+                modal.classList.add('active');
+                setTimeout(() => {
+                    const passInput = document.getElementById('dtp-group-password');
+                    if (passInput) passInput.focus();
+                }, 150);
+            };
+
+            const directTpForm = document.getElementById('direct-tp-form');
+            if (directTpForm) {
+                directTpForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const statusEl = document.getElementById('dtp-status');
+                    const submitBtn = document.getElementById('dtp-submit-btn');
+                    const tpIndex = parseInt(document.getElementById('dtp-tp-index').value, 10);
+                    const groupId = document.getElementById('dtp-group-id').value;
+                    const studentUP = document.getElementById('dtp-student-up').value;
+                    const passwordInput = document.getElementById('dtp-group-password').value.trim();
+                    const videoUrl = document.getElementById('dtp-video-url').value.trim();
+
+                    if (!passwordInput || !videoUrl || !tpIndex || !groupId) {
+                        statusEl.style.color = 'var(--danger-color)';
+                        statusEl.innerText = 'Por favor, completá todos los campos.';
+                        return;
+                    }
+
+                    statusEl.style.color = 'var(--xp-color)';
+                    statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando contraseña del grupo...';
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.7';
+
+                    try {
+                        const originalId = String(groupId).trim();
+                        const cleanId = originalId.replace(/\D/g, '') || originalId;
+
+                        // Validar clave en group_keys
+                        let keyDoc = await db.collection('group_keys').doc(cleanId).get();
+                        if (!keyDoc.exists) {
+                            keyDoc = await db.collection('group_keys').doc(originalId).get();
+                        }
+
+                        const validKey = keyDoc.exists ? keyDoc.data().key : ('g' + cleanId);
+
+                        if (passwordInput.toLowerCase() !== validKey.toLowerCase()) {
+                            statusEl.style.color = 'var(--danger-color)';
+                            statusEl.innerHTML = '<i class="fas fa-times-circle"></i> Contraseña incorrecta. Verificá con tus compañeros de grupo.';
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = '1';
+                            return;
+                        }
+
+                        // Contraseña correcta -> Guardar entrega
+                        statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando entrega...';
+
+                        const tpKey = String(tpIndex - 1);
+                        const timestampStr = new Date().toISOString();
+                        const updateData = {
+                            videos: {
+                                [tpKey]: {
+                                    url: videoUrl,
+                                    uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+                                }
+                            }
+                        };
+
+                        // Guardar en Firestore con merge
+                        await db.collection('grupos').doc(originalId).set(updateData, { merge: true });
+                        if (cleanId && cleanId !== originalId) {
+                            await db.collection('grupos').doc(cleanId).set(updateData, { merge: true }).catch(() => {});
+                        }
+                        if (!originalId.startsWith('g_')) {
+                            await db.collection('grupos').doc('g_' + cleanId).set(updateData, { merge: true }).catch(() => {});
+                        }
+
+                        // Actualizar caché local sharedGroupMetadata
+                        const targetKeys = [originalId, cleanId, 'g_' + cleanId];
+                        targetKeys.forEach(k => {
+                            if (!k) return;
+                            if (!sharedGroupMetadata[k]) sharedGroupMetadata[k] = {};
+                            if (!sharedGroupMetadata[k].videos) sharedGroupMetadata[k].videos = {};
+                            sharedGroupMetadata[k].videos[tpKey] = {
+                                url: videoUrl,
+                                uploadedAt: timestampStr
+                            };
+                        });
+
+                        if (typeof fullData !== 'undefined' && fullData.sharedGroupMetadata) {
+                            targetKeys.forEach(k => {
+                                if (!k) return;
+                                if (!fullData.sharedGroupMetadata[k]) fullData.sharedGroupMetadata[k] = {};
+                                if (!fullData.sharedGroupMetadata[k].videos) fullData.sharedGroupMetadata[k].videos = {};
+                                fullData.sharedGroupMetadata[k].videos[tpKey] = {
+                                    url: videoUrl,
+                                    uploadedAt: timestampStr
+                                };
+                            });
+                        }
+
+                        if (typeof activeGroupSession !== 'undefined' && activeGroupSession && (activeGroupSession.id === originalId || activeGroupSession.id === cleanId)) {
+                            if (!activeGroupSession.data) activeGroupSession.data = {};
+                            if (!activeGroupSession.data.videos) activeGroupSession.data.videos = {};
+                            activeGroupSession.data.videos[tpKey] = {
+                                url: videoUrl,
+                                uploadedAt: timestampStr
+                            };
+                        }
+
+                        statusEl.style.color = 'var(--success-color)';
+                        statusEl.innerHTML = `<i class="fas fa-check-circle"></i> ¡TP ${tpIndex} entregado con éxito!`;
+
+                        setTimeout(() => {
+                            document.getElementById('direct-tp-submission-modal').classList.remove('active');
+                            submitBtn.disabled = false;
+                            submitBtn.style.opacity = '1';
+                            statusEl.innerHTML = '';
+
+                            // Refrescar perfil del alumno de inmediato
+                            if (studentUP && typeof fullData !== 'undefined' && fullData.students) {
+                                const studentObj = fullData.students.find(s => String(s.up).trim().toUpperCase() === String(studentUP).trim().toUpperCase());
+                                if (studentObj && typeof displayStudentPortalView === 'function') {
+                                    displayStudentPortalView(studentObj);
+                                }
+                            }
+                        }, 1200);
+
+                    } catch (error) {
+                        console.error("Error al guardar entrega directa:", error);
+                        statusEl.style.color = 'var(--danger-color)';
+                        statusEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error al guardar. Por favor, reintentá.';
+                        submitBtn.disabled = false;
+                        submitBtn.style.opacity = '1';
+                    }
+                });
+            }
+
+            // ============================================================
             // SISTEMA DE CLAVES DE GRUPO - Perfil Alumno
             // ============================================================
 
@@ -11728,6 +12185,65 @@
                 }
             };
 
+            window.removeCardBackground = async (tabId) => {
+                let localBgs = localStorage.getItem('preview_card_bgs');
+                if (localBgs) {
+                    try {
+                        let parsed = JSON.parse(localBgs);
+                        if (tabId === 'all') {
+                            localStorage.removeItem('preview_card_bgs');
+                        } else {
+                            delete parsed[tabId];
+                            if (Object.keys(parsed).length === 0) {
+                                localStorage.removeItem('preview_card_bgs');
+                            } else {
+                                localStorage.setItem('preview_card_bgs', JSON.stringify(parsed));
+                            }
+                        }
+                    } catch(e) {
+                        localStorage.removeItem('preview_card_bgs');
+                    }
+                }
+
+                try {
+                    let currentBgs = (window.fullData && window.fullData.config && window.fullData.config.cardBgs) 
+                        ? { ...window.fullData.config.cardBgs } 
+                        : {};
+                    
+                    if (tabId === 'all') {
+                        currentBgs = {};
+                    } else {
+                        delete currentBgs[tabId];
+                    }
+
+                    if (window.fullData && window.fullData.config) {
+                        window.fullData.config.cardBgs = currentBgs;
+                    }
+
+                    await db.collection('app_state').doc('main').set({
+                        config: { ...((window.fullData && window.fullData.config) || {}), cardBgs: currentBgs }
+                    }, { merge: true });
+
+                    if (!localStorage.getItem('preview_card_bgs')) {
+                        document.getElementById('testing-bg-ui')?.remove();
+                    }
+
+                    if (document.getElementById('panel-inicio')?.classList.contains('active')) {
+                        if (typeof displayGlobalStats === 'function') displayGlobalStats();
+                    }
+
+                    Swal.fire({
+                        title: '¡Fondo eliminado!',
+                        text: tabId === 'all' ? 'Se han quitado todos los fondos de las tarjetas.' : 'Se quitó el fondo de la tarjeta seleccionada.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                } catch(err) {
+                    Swal.fire('Error', err.message, 'error');
+                }
+            };
+
             window.showTestingBgUI = () => {
                 let ui = document.getElementById('testing-bg-ui');
                 if(!ui) {
@@ -11775,6 +12291,20 @@
                     const lines = text.split('\n');
                     
                     let bannersHtml = '<div style="max-height: 60vh; overflow-y: auto; padding: 10px; text-align: left;">';
+                    bannersHtml += `
+                        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; text-align: center;">
+                            <div style="font-weight: bold; color: #fca5a5; margin-bottom: 8px; font-size: 0.85rem;">
+                                <i class="fas fa-ban"></i> QUITAR FONDOS DE TARJETAS
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
+                                <button class="nav-button" onclick="removeCardBackground('hitos')" style="background: rgba(255, 165, 0, 0.15); color: #ffa500; border: 1px solid #ffa500; padding: 4px 8px; font-size: 0.75rem;"><i class="fas fa-times"></i> Sin Galería</button>
+                                <button class="nav-button" onclick="removeCardBackground('alumnos')" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 4px 8px; font-size: 0.75rem;"><i class="fas fa-times"></i> Sin Alumnos</button>
+                                <button class="nav-button" onclick="removeCardBackground('grupos')" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 4px 8px; font-size: 0.75rem;"><i class="fas fa-times"></i> Sin Grupal</button>
+                                <button class="nav-button" onclick="removeCardBackground('regularidad')" style="background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid #00f2fe; padding: 4px 8px; font-size: 0.75rem;"><i class="fas fa-times"></i> Sin Rendimiento</button>
+                                <button class="nav-button" onclick="removeCardBackground('all')" style="background: #ef4444; color: white; border: none; padding: 4px 10px; font-size: 0.75rem; font-weight: bold;"><i class="fas fa-trash-alt"></i> Quitar Todos</button>
+                            </div>
+                        </div>
+                    `;
                     let count = 0;
                     
                     for (let i = 0; i < lines.length; i++) {
