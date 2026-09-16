@@ -1,0 +1,2593 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NutriPortal - Dieta & RDA</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jsPDF para exportación vectorial de alta resolución -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Configuración de claves de IA protegidas -->
+  <script src="keys.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            appbg: '#080B12',
+            cardbg: '#0E1320',
+            cardhover: '#131826',
+            cardborder: 'rgba(255, 255, 255, 0.06)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #080B12;
+      color: #F8FAFC;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    
+    .modal-backdrop {
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: opacity 0.2s ease;
+    }
+    .modal-content {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex justify-center p-2 sm:p-4 selection:bg-cyan-500/30">
+
+  <!-- TOAST NOTIFICATIONS FLOTANTES -->
+  <div id="toast-container" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none flex flex-col gap-2 w-11/12 max-w-sm"></div>
+
+  <!-- CONTENEDOR PRINCIPAL MOBILE-FIRST (MAX 540PX) -->
+  <div class="w-full max-w-[540px] flex flex-col pb-16">
+
+    <!-- CABECERA DE LA APP -->
+    <header class="flex items-center justify-between py-2.5 px-1 border-b border-white/[0.06] mb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-400 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+          <span class="text-base">🥗</span>
+        </div>
+        <div>
+          <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
+            NutriPortal <span class="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-cyan-950/80 text-cyan-300 border border-cyan-800/40">RDA 1:1</span>
+          </h1>
+          <p id="header-profile-text" class="text-[11px] font-mono text-slate-400">Adolescente Masc (14-18a) · 70 kg</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <button onclick="enviarDietaAGoogleSheets()" class="px-2.5 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-300 active:scale-95 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-emerald-950/40" title="Enviar todos los datos a la Hoja de Cálculo">
+          <span>📤</span>
+          <span>Enviar a Sheets</span>
+        </button>
+        <button onclick="toggleSettingsModal()" class="p-2 rounded-xl bg-cardbg border border-cardborder text-slate-300 hover:text-white hover:bg-white/[0.04] active:scale-95 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm">
+          <span>⚙️ Metas</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- NAVEGACIÓN PRINCIPAL (TABS TIPO PÍLDORA) -->
+    <nav class="grid grid-cols-4 gap-1 p-1 rounded-2xl bg-cardbg border border-cardborder shadow-xl shadow-black/40 mb-3">
+      <button onclick="switchTab('cargar')" id="tab-btn-cargar" class="py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">➕ Cargar</button>
+      <button onclick="switchTab('nutrientes')" id="tab-btn-nutrientes" class="py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/30 transition-all">📊 Nutrientes</button>
+      <button onclick="switchTab('pauta')" id="tab-btn-pauta" class="py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">📋 Mi Pauta</button>
+      <button onclick="switchTab('compartir')" id="tab-btn-compartir" class="py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all">📤 Compartir</button>
+    </nav>
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 1: CARGAR ALIMENTOS -->
+    <!-- =================================================================== -->
+    <section id="tab-cargar" class="hidden flex-col gap-3">
+      <!-- Mini resumen en vivo -->
+      <div class="p-3.5 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-2.5">
+        <div class="flex justify-between items-baseline">
+          <span class="text-[11px] font-mono uppercase tracking-wider text-slate-400">Energía Acumulada</span>
+          <span class="text-sm font-bold font-mono text-white"><span id="kpi-cal">0</span> <span class="text-xs font-normal text-slate-400">/ <span id="kpi-meta-cal">2500</span> kcal</span></span>
+        </div>
+        <div class="w-full h-2 bg-black/50 rounded-full overflow-hidden border border-white/[0.03]">
+          <div id="kpi-bar" class="h-full bg-gradient-to-r from-sky-500 to-emerald-400 rounded-full transition-all duration-300" style="width: 0%;"></div>
+        </div>
+        <div class="grid grid-cols-4 text-center text-[11px] font-mono text-slate-300 pt-1 border-t border-white/[0.04]">
+          <div>P: <b id="kpi-p" class="text-slate-200">0g</b></div>
+          <div title="Rango IOM 45-65%">C: <b id="kpi-c" class="text-slate-200">0g</b></div>
+          <div title="Rango IOM 20-35%">G: <b id="kpi-g" class="text-slate-200">0g</b></div>
+          <div>F: <b id="kpi-f" class="text-slate-200">0g</b></div>
+        </div>
+      </div>
+
+      <!-- Formulario de adición interactivo -->
+      <div class="p-4 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">➕ Agregar Alimento al Menú</h2>
+        
+        <div>
+          <label class="text-[11px] font-medium text-slate-400 mb-1 block">Momento del día:</label>
+          <select id="meal-select" class="w-full p-2.5 rounded-xl bg-appbg border border-white/[0.08] text-xs font-semibold text-white focus:outline-none focus:border-cyan-500">
+            <option value="Desayuno">Desayuno</option>
+            <option value="Almuerzo" selected>Almuerzo</option>
+            <option value="Merienda">Merienda</option>
+            <option value="Cena">Cena</option>
+            <option value="Colación">Colación</option>
+          </select>
+        </div>
+
+        <!-- Buscador Autocomplete Limpio con Botón de Asistente IA -->
+        <div class="relative flex flex-col gap-1.5">
+          <label class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (555 disponibles):</label>
+          <div class="flex gap-1.5">
+            <div class="relative flex-1">
+              <input type="text" id="food-search-input" 
+                     placeholder="🔍 Escribe para buscar (ej: coco, avena, pollo)..." 
+                     oninput="handleSearchInput()" 
+                     onfocus="handleSearchFocus()"
+                     autocomplete="off"
+                     class="w-full p-2.5 pr-8 rounded-xl bg-appbg border border-white/[0.1] text-xs text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all placeholder:text-slate-500" />
+              <button id="clear-search-btn" onclick="clearSearchInput()" class="hidden absolute right-2.5 top-2.5 text-slate-400 hover:text-white text-xs font-bold p-0.5">✕</button>
+            </div>
+            <button type="button" onclick="openAiModal()" class="px-3 py-2 rounded-xl bg-gradient-to-r from-cyan-600/30 to-blue-600/30 hover:from-cyan-500/40 hover:to-blue-500/40 border border-cyan-500/40 text-cyan-300 font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow-md shadow-cyan-950/40 flex-shrink-0" title="Consultar si no aparece el alimento">
+              <span class="text-sm">🔍</span>
+              <span>Consultar si no aparece</span>
+            </button>
+          </div>
+
+          <!-- Caja flotante de resultados -->
+          <div id="search-results-box" class="hidden absolute left-0 right-0 top-full mt-1.5 p-1.5 rounded-xl bg-[#0E1320] border border-cyan-500/40 shadow-2xl max-h-56 overflow-y-auto z-30 flex flex-col gap-1">
+            <!-- Items inyectados dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Tarjeta de Alimento Seleccionado -->
+        <div id="selected-food-card" class="hidden p-3 rounded-xl bg-teal-950/40 border border-teal-500/40 flex items-center justify-between transition-all">
+          <div class="flex items-center gap-2.5 min-w-0 pr-2">
+            <span class="text-base text-teal-400">✅</span>
+            <div class="min-w-0">
+              <span id="selected-food-name" class="text-xs font-bold text-white block truncate">Nombre del Alimento</span>
+              <span id="selected-food-meta" class="text-[10px] font-mono text-teal-300 block">0 kcal / 100g</span>
+            </div>
+          </div>
+          <button onclick="clearSelectedFood()" class="text-xs text-slate-400 hover:text-white p-1 flex-shrink-0" title="Quitar selección">✕</button>
+        </div>
+
+        <!-- Input de Gramos -->
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-[11px] font-medium text-slate-400 block">Cantidad en gramos:</label>
+            <span id="live-portion-calc" class="text-[10.5px] font-mono text-cyan-400 font-bold">100g</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="number" id="food-grams-input" value="100" min="1" max="2000" step="5" oninput="updateLivePortionCalc()" class="w-24 p-2.5 rounded-xl bg-appbg border border-white/[0.08] text-xs font-mono font-bold text-white focus:outline-none focus:border-cyan-500" />
+            <div class="flex gap-1 flex-wrap">
+              <button onclick="setGrams(50)" class="px-2.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-[11px] font-mono text-slate-300 border border-white/[0.05]">50g</button>
+              <button onclick="setGrams(100)" class="px-2.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-[11px] font-mono text-slate-300 border border-white/[0.05]">100g</button>
+              <button onclick="addGrams(50)" class="px-2.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-[11px] font-mono text-slate-300 border border-white/[0.05]">+50g</button>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="handleAddFood()" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-cyan-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+          <span>➕ Agregar al Menú</span>
+        </button>
+      </div>
+
+      <!-- Lista de alimentos agregados -->
+      <div class="p-4 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-2.5">
+        <div class="flex justify-between items-center">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-slate-200">🍽️ Alimentos en el Menú (<span id="diet-count">0</span>)</h2>
+          <button onclick="clearDiet()" class="text-[10px] text-rose-400 hover:text-rose-300 underline font-mono">Vaciar todo</button>
+        </div>
+        <div id="diet-list" class="flex flex-col gap-1.5 divide-y divide-white/[0.04]">
+          <p class="text-xs text-slate-500 py-3 text-center">Todavía no has agregado ningún alimento.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 2: 📊 NUTRIENTES (RANGOS IOM Y LISTA ULTRA-COMPACTA) -->
+    <!-- =================================================================== -->
+    <section id="tab-nutrientes" class="flex flex-col gap-2.5">
+      
+      <!-- HIGHLIGHT CARD DE MACROS -->
+      <div class="p-3.5 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-2.5">
+        <div class="flex items-center justify-between pb-2 border-b border-white/[0.06]">
+          <div>
+            <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">ENERGÍA TOTAL</span>
+            <div class="text-lg font-bold font-mono text-white leading-tight">
+              <span id="macro-cal-val">0</span> <span class="text-xs font-normal text-slate-400">/ <span id="macro-cal-target">2500</span> kcal</span>
+            </div>
+          </div>
+          <span id="macro-cal-badge" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg">0%</span>
+        </div>
+
+        <!-- Barras de Macros con adecuación clínica y rangos IOM -->
+        <div class="flex flex-col gap-2 text-xs">
+          <!-- Proteínas -->
+          <div onclick="openNutrientModal('proteinas_g')" class="p-1 -mx-1 rounded-xl hover:bg-white/[0.04] active:scale-[0.99] transition-all cursor-pointer group" title="Toca para ver qué alimentos aportaron proteínas">
+            <div class="flex justify-between items-center text-slate-300 mb-1">
+              <span class="group-hover:text-cyan-300 transition-colors">🥩 Proteínas: <b id="macro-p-val" class="text-white">0.0g</b> / <span id="macro-p-target">59.5g</span> (<span id="macro-p-gkg">0.0</span> g/kg)</span>
+              <div class="flex items-center gap-1">
+                <span id="macro-p-badge" class="font-mono font-bold">0%</span>
+                <span class="text-slate-500 text-xs">›</span>
+              </div>
+            </div>
+            <div class="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-white/[0.03]">
+              <div id="macro-p-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Carbohidratos (Rango IOM 45-65% VCT) -->
+          <div onclick="openNutrientModal('carbohidratos_g')" class="p-1 -mx-1 rounded-xl hover:bg-white/[0.04] active:scale-[0.99] transition-all cursor-pointer group" title="Toca para ver qué alimentos aportaron carbohidratos">
+            <div class="flex justify-between items-center text-slate-300 mb-1">
+              <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                <span class="group-hover:text-cyan-300 transition-colors font-medium">🍞 Carbohidratos: <b id="macro-c-val" class="text-white">0.0g</b></span>
+                <span id="macro-c-vct" class="text-[10px] font-mono text-cyan-400 font-bold bg-cyan-950/60 px-1.5 py-0.2 rounded border border-cyan-800/40">0% VCT</span>
+                <span class="text-slate-400 text-xs">/ <span id="macro-c-target" class="font-mono text-slate-200">281-406g</span></span>
+                <span class="text-[9.5px] font-mono text-slate-400 bg-white/[0.04] px-1 py-0.2 rounded border border-white/[0.05]">IOM 45-65%</span>
+              </div>
+              <div class="flex items-center gap-1 flex-shrink-0">
+                <span id="macro-c-badge" class="font-mono font-bold text-xs px-1.5 py-0.2 rounded">0%</span>
+                <span class="text-slate-500 text-xs">›</span>
+              </div>
+            </div>
+            <div class="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-white/[0.03]">
+              <div id="macro-c-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Grasas Totales (Rango IOM 20-35% VCT) -->
+          <div onclick="openNutrientModal('grasas_g')" class="p-1 -mx-1 rounded-xl hover:bg-white/[0.04] active:scale-[0.99] transition-all cursor-pointer group" title="Toca para ver qué alimentos aportaron grasas totales">
+            <div class="flex justify-between items-center text-slate-300 mb-1">
+              <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                <span class="group-hover:text-cyan-300 transition-colors font-medium">🥑 Grasas Totales: <b id="macro-g-val" class="text-white">0.0g</b></span>
+                <span id="macro-g-vct" class="text-[10px] font-mono text-cyan-400 font-bold bg-cyan-950/60 px-1.5 py-0.2 rounded border border-cyan-800/40">0% VCT</span>
+                <span class="text-slate-400 text-xs">/ <span id="macro-g-target" class="font-mono text-slate-200">56-97g</span></span>
+                <span class="text-[9.5px] font-mono text-slate-400 bg-white/[0.04] px-1 py-0.2 rounded border border-white/[0.05]">IOM 20-35%</span>
+              </div>
+              <div class="flex items-center gap-1 flex-shrink-0">
+                <span id="macro-g-badge" class="font-mono font-bold text-xs px-1.5 py-0.2 rounded">0%</span>
+                <span class="text-slate-500 text-xs">›</span>
+              </div>
+            </div>
+            <div class="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-white/[0.03]">
+              <div id="macro-g-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Fibra Dietética -->
+          <div onclick="openNutrientModal('fibra_g')" class="p-1 -mx-1 rounded-xl hover:bg-white/[0.04] active:scale-[0.99] transition-all cursor-pointer group" title="Toca para ver qué alimentos aportaron fibra dietética">
+            <div class="flex justify-between items-center text-slate-300 mb-1">
+              <span class="group-hover:text-cyan-300 transition-colors">🌾 Fibra Dietética: <b id="macro-f-val" class="text-white">0.0g</b> / <span id="macro-f-target">38.0g</span></span>
+              <div class="flex items-center gap-1">
+                <span id="macro-f-badge" class="font-mono font-bold">0%</span>
+                <span class="text-slate-500 text-xs">›</span>
+              </div>
+            </div>
+            <div class="w-full h-1.5 bg-black/50 rounded-full overflow-hidden border border-white/[0.03]">
+              <div id="macro-f-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SELECTOR DE VISTA: TARJETAS VS REPORTE GRÁFICO RDA -->
+      <div class="flex items-center justify-between p-1 bg-cardbg rounded-xl border border-cardborder">
+        <span class="text-[11px] font-medium text-slate-400 pl-1.5">Visualización:</span>
+        <div class="flex gap-1">
+          <button id="view-mode-cards-btn" onclick="setNutrientViewMode('cards')" class="px-3 py-1 rounded-lg text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sm transition-all">📋 Tarjetas</button>
+          <button id="view-mode-chart-btn" onclick="setNutrientViewMode('chart')" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">📊 Reporte Gráfico (% RDA)</button>
+        </div>
+      </div>
+
+      <!-- FILTRO DE CATEGORÍAS -->
+      <div id="category-filter-bar" class="flex gap-1.5 overflow-x-auto py-0.5 scrollbar-none">
+        <button onclick="filterCategory('all')" id="cat-btn-all" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/40">Todos</button>
+        <button onclick="filterCategory('Vitaminas')" id="cat-btn-Vitaminas" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-cardbg text-slate-400 border border-cardborder hover:text-white">Vitaminas</button>
+        <button onclick="filterCategory('Minerales')" id="cat-btn-Minerales" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-cardbg text-slate-400 border border-cardborder hover:text-white">Minerales</button>
+        <button onclick="filterCategory('Grasas')" id="cat-btn-Grasas" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-cardbg text-slate-400 border border-cardborder hover:text-white">Grasas</button>
+        <button onclick="filterCategory('Límites')" id="cat-btn-Límites" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-cardbg text-slate-400 border border-cardborder hover:text-white">Límites</button>
+      </div>
+
+      <div id="nutrient-tap-hint" class="flex justify-between items-center px-0.5">
+        <p class="text-[10.5px] text-slate-400">👆 <b>Toca cualquier nutriente</b> para ver sus alimentos:</p>
+        <span class="text-[9.5px] font-mono text-slate-500">RDA 100%</span>
+      </div>
+
+      <!-- LISTA DE NUTRIENTES ULTRA-COMPACTA -->
+      <div id="nutrient-cards-container" class="rounded-2xl bg-cardbg/95 border border-cardborder divide-y divide-white/[0.04] overflow-hidden shadow-sm">
+        <!-- Inyectadas dinámicamente -->
+      </div>
+
+      <!-- CONTENEDOR REPORTE GRÁFICO RDA (2 SUBPLOTS OFICIALES: MINERALES Y VITAMINAS) -->
+      <div id="nutrient-graphic-report-container" class="hidden flex-col gap-3 p-3 rounded-2xl bg-cardbg border border-cardborder shadow-sm">
+        <div class="flex items-center justify-between pb-2 border-b border-white/[0.06] flex-wrap gap-2">
+          <div>
+            <span class="text-xs font-bold text-white block">📊 Reporte Gráfico Nutricional (% RDA Cubierto)</span>
+            <span class="text-[10.5px] text-slate-400">Minerales y Electrolitos vs. Vitaminas Completas</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="downloadReportPDF()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs shadow-md shadow-sky-500/20 active:scale-95 transition-all flex items-center gap-1.5">
+              <span>📄 Descargar PDF</span>
+            </button>
+            <button onclick="generateInfographicPNG(true)" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-md shadow-emerald-500/20 active:scale-95 transition-all flex items-center gap-1.5">
+              <span>🖼️ PNG</span>
+            </button>
+          </div>
+        </div>
+        <div class="w-full rounded-xl bg-white p-1.5 shadow-inner overflow-hidden flex justify-center">
+          <img id="nutrient-chart-inline-img" class="w-full h-auto object-contain rounded-lg" alt="Reporte Nutricional Gráfico" />
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 3: 📋 MI PAUTA Y RECETAS -->
+    <!-- =================================================================== -->
+    <section id="tab-pauta" class="hidden flex-col gap-3">
+      <div class="p-3.5 rounded-2xl bg-cardbg border border-cardborder shadow-sm">
+        <h2 class="text-sm font-bold text-white mb-0.5">📋 Pauta Alimentaria del Día</h2>
+        <p class="text-xs text-slate-400">Anota el modo de preparación o receta para cada momento del día:</p>
+      </div>
+      <div id="pauta-container" class="flex flex-col gap-2.5">
+        <!-- Generado dinámicamente -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- PESTAÑA 4: 📤 COMPARTIR Y DESCARGAR -->
+    <!-- =================================================================== -->
+    <section id="tab-compartir" class="hidden flex-col gap-3">
+
+      <!-- CARD DESTACADA: ENVIAR A GOOGLE SHEETS -->
+      <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950/50 via-cardbg to-teal-950/40 border border-emerald-500/40 shadow-xl flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-sm">
+              📊
+            </div>
+            <div>
+              <h2 class="text-sm font-bold text-white">Enviar Dieta a Hoja de Cálculo</h2>
+              <span class="text-[10px] font-mono text-emerald-400">Registro de Asistencia & Nutrientes</span>
+            </div>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/60 font-bold">Google Sheets</span>
+        </div>
+
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Presiona el botón para registrar tu dieta completa (calorías totales, meta 2500 kcal, adecuación, macronutrientes, desglose de comidas y el 100% de los micronutrientes calculados) en la hoja de cálculo de Google Sheets.
+        </p>
+
+        <div class="flex flex-col gap-2 pt-1 border-t border-white/[0.06]">
+          <div>
+            <label class="text-[11px] font-medium text-slate-400 block mb-1">Nombre / Identificación del Alumno:</label>
+            <input type="text" id="sheets-student-name" placeholder="Ej: Mateo Pérez - Legajo / UP..." class="w-full p-2.5 rounded-xl bg-appbg border border-white/[0.1] text-xs text-white focus:outline-none focus:border-emerald-400" />
+          </div>
+
+          <button onclick="enviarDietaAGoogleSheets()" id="btn-enviar-sheets" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            <span class="text-base">📤</span>
+            <span>Mandar Todo a la Hoja de Cálculos</span>
+          </button>
+          <div id="sheets-status-msg" class="hidden text-center text-xs font-mono py-1"></div>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-3">
+        <h2 class="text-sm font-bold text-white">🔗 Enlace Compartible Online</h2>
+        <p class="text-xs text-slate-400">Este enlace codifica la dieta, cantidades y recetas para que cualquier alumno o colega lo abra en su teléfono con todos los cálculos cargados:</p>
+        
+        <div class="flex gap-2">
+          <input type="text" id="share-link-input" readonly class="w-full p-2.5 rounded-xl bg-appbg border border-white/[0.08] text-xs font-mono text-cyan-300 select-all" />
+          <button onclick="copyShareLink()" id="copy-btn" class="px-3.5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold whitespace-nowrap active:scale-95 transition-all">
+            Copiar
+          </button>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <span>📄</span> Reporte Nutricional Oficial en PDF (% RDA Cubierto)
+          </h2>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-950/60 text-sky-300 border border-sky-800/40 font-bold">Vectorial HD</span>
+        </div>
+        <p class="text-xs text-slate-400">Genera y descarga el informe clínico oficial en PDF con los 2 gráficos horizontales comparando la ingesta vs. meta 100% RDA (Minerales & Electrolitos y Vitaminas Completas):</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <button onclick="downloadReportPDF()" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-500/25 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            <span class="text-base">📄</span>
+            <span>Descargar Reporte en PDF</span>
+          </button>
+          <button onclick="generateInfographicPNG(true)" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-500/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            <span class="text-base">🖼️</span>
+            <span>Descargar como Imagen PNG</span>
+          </button>
+        </div>
+
+        <div id="infographic-preview-container" class="hidden flex-col gap-2 pt-2 border-t border-white/[0.06]">
+          <span class="text-xs font-semibold text-slate-300">Vista previa del reporte:</span>
+          <div class="w-full rounded-xl bg-white p-1.5 shadow-inner overflow-hidden flex justify-center">
+            <img id="infographic-preview-img" class="w-full h-auto object-contain rounded-lg" alt="Reporte Nutricional Gráfico" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL / DRAWER INTERACTIVO: ALIMENTOS CONTRIBUYENTES (FOTO 4) -->
+  <!-- ===================================================================== -->
+  <div id="nutrient-detail-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 modal-backdrop opacity-0 pointer-events-none transition-opacity duration-200" onclick="handleBackdropClick(event)">
+    <div class="modal-content w-full max-w-[500px] bg-[#0B0E14] border border-slate-800/90 rounded-2xl p-4 shadow-2xl flex flex-col gap-3 transform scale-95 max-h-[90vh] overflow-hidden" onclick="event.stopPropagation()">
+      
+      <!-- Header del Modal -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800/80">
+        <div class="flex items-center gap-2">
+          <span class="text-teal-400 text-lg">🍽️</span>
+          <div>
+            <h3 class="text-sm font-bold text-slate-100">Alimentos Contribuyentes</h3>
+            <p id="modal-nutrient-subtitle" class="text-[11px] font-mono text-slate-400">Nutriente</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="modal-nutrient-total-badge" class="text-[11px] font-mono text-teal-300 font-semibold bg-teal-950/60 px-2.5 py-1 rounded-md border border-teal-800/50">
+            Total: 0
+          </span>
+          <button onclick="closeNutrientModal()" class="w-7 h-7 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabla Formateada Idéntica a Foto 4 -->
+      <div class="overflow-y-auto max-h-[60vh] pr-1">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="text-[10px] font-mono uppercase tracking-wider text-slate-400 border-b border-slate-800/90">
+              <th class="pb-2 font-semibold pr-2">ALIMENTO</th>
+              <th class="pb-2 font-semibold px-2 text-right whitespace-nowrap w-20">CONSUMO</th>
+              <th class="pb-2 font-semibold px-2 text-right whitespace-nowrap w-24">APORTE</th>
+              <th class="pb-2 font-semibold pl-2 text-right whitespace-nowrap w-16">% TOTAL</th>
+            </tr>
+          </thead>
+          <tbody id="modal-contributors-tbody" class="divide-y divide-slate-800/40">
+            <!-- Inyectado dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pie del Modal con botón Cerrar -->
+      <div class="pt-2 border-t border-slate-800/80 flex justify-end">
+        <button onclick="closeNutrientModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-all">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL DEL ASISTENTE DE IA: CONSULTA RÁPIDA Y LIMPIA (SIN RELLENO) -->
+  <!-- ===================================================================== -->
+  <div id="ai-assistant-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 modal-backdrop opacity-0 pointer-events-none transition-opacity duration-200" onclick="handleAiBackdropClick(event)">
+    <div class="modal-content w-full max-w-[460px] bg-[#0B0E14] border border-cyan-500/40 rounded-2xl p-4 shadow-2xl flex flex-col gap-3 transform scale-95" onclick="event.stopPropagation()">
+      
+      <!-- Header limpio -->
+      <div class="flex items-center justify-between pb-2 border-b border-white/[0.08]">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <span>🔍</span> Consultar si no aparece un alimento
+        </h3>
+        <button onclick="closeAiModal()" class="w-7 h-7 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white flex items-center justify-center text-sm font-bold">
+          ✕
+        </button>
+      </div>
+
+      <!-- Formulario con submit nativo (compatible con Enter / Ir en móvil y PC) -->
+      <form onsubmit="handleAiFormSubmit(event)" class="flex gap-1.5">
+        <input type="text" id="ai-query-input" placeholder="¿Qué alimento buscas? Ej: pollo, bife, margarina, palta..." class="w-full p-2.5 rounded-xl bg-appbg border border-white/[0.1] text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-400 font-medium" autocomplete="off" />
+        <button type="submit" id="ai-query-btn" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold text-xs whitespace-nowrap active:scale-95 transition-all shadow-md shadow-cyan-500/20">
+          Preguntar
+        </button>
+      </form>
+
+      <!-- Respuesta Directa (Limpia, sin relleno) -->
+      <div id="ai-response-box" class="flex flex-col gap-2 min-h-[30px] max-h-[50vh] overflow-y-auto">
+        <!-- Inyectado dinámicamente -->
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIGURACIÓN DE METAS (CON GESTIÓN DE CLAVES Y RANGOS IOM) -->
+  <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 modal-backdrop opacity-0 pointer-events-none transition-opacity duration-200">
+    <div class="modal-content w-full max-w-[460px] bg-cardbg border border-cardborder rounded-2xl p-4 shadow-2xl flex flex-col gap-3 transform scale-95 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex justify-between items-center pb-2 border-b border-white/[0.06]">
+        <h3 class="text-sm font-bold text-white">⚙️ Configurar Caso del Alumno</h3>
+        <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+      </div>
+      
+      <div class="flex flex-col gap-2.5 text-xs">
+        <div>
+          <label class="text-slate-400 block mb-1">Nombre Alumno/a:</label>
+          <input type="text" id="setting-name" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white" placeholder="Ej: Mateo Pérez" />
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Grupo Etario / Perfil:</label>
+          <select id="setting-profile" onchange="onProfileChange()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-semibold">
+            <option value="Adolescente Masculino (14-18 años)">Adolescente Masculino (14-18 años)</option>
+            <option value="Adolescente Femenino (14-18 años)">Adolescente Femenino (14-18 años)</option>
+            <option value="Adulto Masculino (19-30 años)">Adulto Masculino (19-30 años)</option>
+            <option value="Adulto Femenino (19-30 años)">Adulto Femenino (19-30 años)</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-slate-400 block mb-1">Peso (kg):</label>
+            <input type="number" id="setting-weight" value="70" step="1" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
+          </div>
+          <div>
+            <label class="text-slate-400 block mb-1">Calorías Meta:</label>
+            <input type="number" id="setting-cal" value="2500" step="50" oninput="updateSettingsIomGrams()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
+          </div>
+        </div>
+        <div>
+          <label class="text-slate-400 block mb-1">Factor Proteína (g/kg): <span id="setting-prot-label" class="text-cyan-400 font-mono">0.85</span></label>
+          <input type="range" id="setting-prot-factor" min="0.80" max="2.40" step="0.05" value="0.85" oninput="document.getElementById('setting-prot-label').innerText = this.value" class="w-full" />
+        </div>
+
+        <!-- Rangos de Distribución Aceptables del IOM (AMDR) Preseleccionados -->
+        <div class="p-2.5 rounded-xl bg-appbg/80 border border-white/[0.06] flex flex-col gap-2">
+          <div class="flex justify-between items-center">
+            <span class="text-[11px] font-bold text-cyan-300">⚖️ Rangos Aceptables IOM (AMDR)</span>
+            <span class="text-[9.5px] font-mono text-emerald-400 bg-emerald-950/60 px-1.5 py-0.2 rounded border border-emerald-800/40">Preseleccionados</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-slate-300">
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-0.5">🍞 Carbohidratos (% VCT):</label>
+              <div class="flex items-center gap-1">
+                <input type="number" id="setting-carbs-min" value="45" min="20" max="80" oninput="updateSettingsIomGrams()" class="w-1/2 p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white font-mono text-center text-xs" />
+                <span class="text-slate-500 text-xs">-</span>
+                <input type="number" id="setting-carbs-max" value="65" min="25" max="85" oninput="updateSettingsIomGrams()" class="w-1/2 p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white font-mono text-center text-xs" />
+              </div>
+              <span id="setting-carbs-hint" class="text-[9.5px] font-mono text-cyan-400 block mt-0.5 font-semibold">281 - 406g</span>
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-0.5">🥑 Grasas Totales (% VCT):</label>
+              <div class="flex items-center gap-1">
+                <input type="number" id="setting-fats-min" value="20" min="10" max="60" oninput="updateSettingsIomGrams()" class="w-1/2 p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white font-mono text-center text-xs" />
+                <span class="text-slate-500 text-xs">-</span>
+                <input type="number" id="setting-fats-max" value="35" min="15" max="70" oninput="updateSettingsIomGrams()" class="w-1/2 p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white font-mono text-center text-xs" />
+              </div>
+              <span id="setting-fats-hint" class="text-[9.5px] font-mono text-cyan-400 block mt-0.5 font-semibold">56 - 97g</span>
+            </div>
+          </div>
+          <p class="text-[9.5px] text-slate-400 leading-tight">
+            * La adecuación se marca como <b>100% Óptima (Verde)</b> mientras los gramos se encuentren dentro del rango IOM.
+          </p>
+        </div>
+
+        <!-- URL Google Sheets -->
+        <div class="p-2.5 rounded-xl bg-appbg/80 border border-emerald-500/30 flex flex-col gap-1.5">
+          <label class="text-[11px] font-bold text-emerald-300 block">📊 URL de Google Sheets (Apps Script):</label>
+          <input type="text" id="setting-sheets-url" class="w-full p-2 rounded-xl bg-cardbg border border-white/[0.08] text-white text-[11px] font-mono focus:border-emerald-500" placeholder="https://script.google.com/macros/s/.../exec" />
+          <p class="text-[9.5px] text-slate-400">Pega aquí la URL de la Web App si usas una hoja de cálculo distinta a la predeterminada.</p>
+        </div>
+
+      </div>
+
+      <button onclick="saveSettings()" class="w-full py-2.5 mt-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs">
+        Guardar Cambios
+      </button>
+    </div>
+  </div>
+
+  <canvas id="export-canvas" class="hidden"></canvas>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT DEL ECOSISTEMA -->
+  <!-- ===================================================================== -->
+  <script>
+    // 1. Maestro de Nutrientes Completo
+    const MASTER_NUTRIENTS = {
+      "proteinas_g": { id: "proteinas_g", name: "Proteínas", cat: "Macros", unit: "g", isLimit: false },
+      "carbohidratos_g": { id: "carbohidratos_g", name: "Carbohidratos", cat: "Macros", unit: "g", isLimit: false, isIomRange: true },
+      "grasas_g": { id: "grasas_g", name: "Grasas Totales", cat: "Macros", unit: "g", isLimit: false, isIomRange: true },
+      "fibra_g": { id: "fibra_g", name: "Fibra Dietética", cat: "Macros", unit: "g", isLimit: false },
+
+      // VITAMINAS
+      "vitamina_a_ug": { id: "vitamina_a_ug", name: "Vitamina A", cat: "Vitaminas", unit: "µg", isLimit: false },
+      "vitamina_c_mg": { id: "vitamina_c_mg", name: "Vitamina C", cat: "Vitaminas", unit: "mg", isLimit: false },
+      "vitamina_d_iu": { id: "vitamina_d_iu", name: "Vitamina D", cat: "Vitaminas", unit: "IU", isLimit: false },
+      "vitamina_e_mg": { id: "vitamina_e_mg", name: "Vitamina E", cat: "Vitaminas", unit: "mg", isLimit: false },
+      "vitamina_k_ug": { id: "vitamina_k_ug", name: "Vitamina K", cat: "Vitaminas", unit: "µg", isLimit: false },
+      "b1_tiamina_mg": { id: "b1_tiamina_mg", name: "Vitamina B1 (Tiamina)", cat: "Vitaminas", unit: "mg", isLimit: false },
+      "b2_riboflavina_mg": { id: "b2_riboflavina_mg", name: "Vitamina B2 (Riboflavina)", cat: "Vitaminas", unit: "mg", isLimit: false },
+      "b3_niacina_mg": { id: "b3_niacina_mg", name: "Vitamina B3 (Niacina)", cat: "Vitaminas", unit: "mg", isLimit: false },
+      "b6_piridoxina_mg": { id: "b6_piridoxina_mg", name: "Vitamina B6 (Piridoxina)", cat: "Vitaminas", unit: "mg", isLimit: false },
+      "folatos_ug": { id: "folatos_ug", name: "Folatos (B9)", cat: "Vitaminas", unit: "µg", isLimit: false },
+      "b12_cobalamina_ug": { id: "b12_cobalamina_ug", name: "Vitamina B12", cat: "Vitaminas", unit: "µg", isLimit: false },
+      "colina_mg": { id: "colina_mg", name: "Colina", cat: "Vitaminas", unit: "mg", isLimit: false },
+
+      // MINERALES
+      "calcio_mg": { id: "calcio_mg", name: "Calcio", cat: "Minerales", unit: "mg", isLimit: false },
+      "hierro_mg": { id: "hierro_mg", name: "Hierro", cat: "Minerales", unit: "mg", isLimit: false },
+      "magnesio_mg": { id: "magnesio_mg", name: "Magnesio", cat: "Minerales", unit: "mg", isLimit: false },
+      "fosforo_mg": { id: "fosforo_mg", name: "Fósforo", cat: "Minerales", unit: "mg", isLimit: false },
+      "potasio_mg": { id: "potasio_mg", name: "Potasio", cat: "Minerales", unit: "mg", isLimit: false },
+      "zinc_mg": { id: "zinc_mg", name: "Zinc", cat: "Minerales", unit: "mg", isLimit: false },
+      "selenio_ug": { id: "selenio_ug", name: "Selenio", cat: "Minerales", unit: "µg", isLimit: false },
+      "manganeso_mg": { id: "manganeso_mg", name: "Manganeso", cat: "Minerales", unit: "mg", isLimit: false },
+      "cobre_mg": { id: "cobre_mg", name: "Cobre", cat: "Minerales", unit: "mg", isLimit: false },
+
+      // GRASAS
+      "omega_3_g": { id: "omega_3_g", name: "Omega-3 (ALA/EPA/DHA)", cat: "Grasas", unit: "g", isLimit: false },
+      "omega_6_g": { id: "omega_6_g", name: "Omega-6 (Linoleico)", cat: "Grasas", unit: "g", isLimit: false },
+      "grasas_monoinsaturadas_g": { id: "grasas_monoinsaturadas_g", name: "Grasas Monoinsaturadas", cat: "Grasas", unit: "g", isLimit: false },
+      "grasas_poliinsaturadas_g": { id: "grasas_poliinsaturadas_g", name: "Grasas Poliinsaturadas", cat: "Grasas", unit: "g", isLimit: false },
+      "grasas_saturadas_g": { id: "grasas_saturadas_g", name: "Grasas Saturadas", cat: "Grasas", unit: "g", isLimit: true },
+      "colesterol_mg": { id: "colesterol_mg", name: "Colesterol", cat: "Grasas", unit: "mg", isLimit: true },
+
+      // LÍMITES
+      "sodio_mg": { id: "sodio_mg", name: "Sodio", cat: "Límites", unit: "mg", isLimit: true }
+    };
+
+    const NUTRIENT_CARDS_LIST = [
+      MASTER_NUTRIENTS["vitamina_a_ug"],
+      MASTER_NUTRIENTS["vitamina_c_mg"],
+      MASTER_NUTRIENTS["vitamina_d_iu"],
+      MASTER_NUTRIENTS["vitamina_e_mg"],
+      MASTER_NUTRIENTS["vitamina_k_ug"],
+      MASTER_NUTRIENTS["b1_tiamina_mg"],
+      MASTER_NUTRIENTS["b2_riboflavina_mg"],
+      MASTER_NUTRIENTS["b3_niacina_mg"],
+      MASTER_NUTRIENTS["b6_piridoxina_mg"],
+      MASTER_NUTRIENTS["folatos_ug"],
+      MASTER_NUTRIENTS["b12_cobalamina_ug"],
+      MASTER_NUTRIENTS["colina_mg"],
+      MASTER_NUTRIENTS["calcio_mg"],
+      MASTER_NUTRIENTS["hierro_mg"],
+      MASTER_NUTRIENTS["magnesio_mg"],
+      MASTER_NUTRIENTS["fosforo_mg"],
+      MASTER_NUTRIENTS["potasio_mg"],
+      MASTER_NUTRIENTS["zinc_mg"],
+      MASTER_NUTRIENTS["selenio_ug"],
+      MASTER_NUTRIENTS["manganeso_mg"],
+      MASTER_NUTRIENTS["cobre_mg"],
+      MASTER_NUTRIENTS["omega_3_g"],
+      MASTER_NUTRIENTS["omega_6_g"],
+      MASTER_NUTRIENTS["grasas_monoinsaturadas_g"],
+      MASTER_NUTRIENTS["grasas_poliinsaturadas_g"],
+      MASTER_NUTRIENTS["grasas_saturadas_g"],
+      MASTER_NUTRIENTS["colesterol_mg"],
+      MASTER_NUTRIENTS["sodio_mg"]
+    ];
+
+    // 2. Estándares RDA Oficiales
+    const RDA_PROFILES = {
+      "Adolescente Masculino (14-18 años)": {
+        calorias_ref: 2500, prot_base_g_kg: 0.85, fibra_g: 38.0, grasas_saturadas_g: 24.0, colesterol_mg: 300.0,
+        omega_3_g: 1.6, omega_6_g: 16.0, calcio_mg: 1300.0, hierro_mg: 11.0, magnesio_mg: 410.0, fosforo_mg: 1250.0,
+        potasio_mg: 3000.0, sodio_mg: 2300.0, zinc_mg: 11.0, selenio_ug: 55.0, manganeso_mg: 2.2, cobre_mg: 0.89,
+        vitamina_a_ug: 900.0, vitamina_c_mg: 75.0, vitamina_d_iu: 600.0, vitamina_e_mg: 15.0, vitamina_k_ug: 75.0,
+        b1_tiamina_mg: 1.2, b2_riboflavina_mg: 1.3, b3_niacina_mg: 16.0, b6_piridoxina_mg: 1.3, folatos_ug: 400.0,
+        b12_cobalamina_ug: 2.4, colina_mg: 550.0
+      },
+      "Adolescente Femenino (14-18 años)": {
+        calorias_ref: 2200, prot_base_g_kg: 0.85, fibra_g: 26.0, grasas_saturadas_g: 20.0, colesterol_mg: 300.0,
+        omega_3_g: 1.1, omega_6_g: 12.0, calcio_mg: 1300.0, hierro_mg: 15.0, magnesio_mg: 360.0, fosforo_mg: 1250.0,
+        potasio_mg: 2300.0, sodio_mg: 2300.0, zinc_mg: 9.0, selenio_ug: 55.0, manganeso_mg: 1.6, cobre_mg: 0.89,
+        vitamina_a_ug: 700.0, vitamina_c_mg: 65.0, vitamina_d_iu: 600.0, vitamina_e_mg: 15.0, vitamina_k_ug: 75.0,
+        b1_tiamina_mg: 1.0, b2_riboflavina_mg: 1.0, b3_niacina_mg: 14.0, b6_piridoxina_mg: 1.2, folatos_ug: 400.0,
+        b12_cobalamina_ug: 2.4, colina_mg: 400.0
+      },
+      "Adulto Masculino (19-30 años)": {
+        calorias_ref: 2400, prot_base_g_kg: 0.80, fibra_g: 38.0, grasas_saturadas_g: 24.0, colesterol_mg: 300.0,
+        omega_3_g: 1.6, omega_6_g: 14.0, calcio_mg: 1000.0, hierro_mg: 8.0, magnesio_mg: 400.0, fosforo_mg: 700.0,
+        potasio_mg: 3400.0, sodio_mg: 2300.0, zinc_mg: 11.0, selenio_ug: 55.0, manganeso_mg: 2.3, cobre_mg: 0.90,
+        vitamina_a_ug: 900.0, vitamina_c_mg: 90.0, vitamina_d_iu: 600.0, vitamina_e_mg: 15.0, vitamina_k_ug: 120.0,
+        b1_tiamina_mg: 1.2, b2_riboflavina_mg: 1.3, b3_niacina_mg: 16.0, b6_piridoxina_mg: 1.3, folatos_ug: 400.0,
+        b12_cobalamina_ug: 2.4, colina_mg: 550.0
+      },
+      "Adulto Femenino (19-30 años)": {
+        calorias_ref: 2000, prot_base_g_kg: 0.80, fibra_g: 28.0, grasas_saturadas_g: 20.0, colesterol_mg: 300.0,
+        omega_3_g: 1.1, omega_6_g: 12.0, calcio_mg: 1000.0, hierro_mg: 18.0, magnesio_mg: 310.0, fosforo_mg: 700.0,
+        potasio_mg: 2600.0, sodio_mg: 2300.0, zinc_mg: 8.0, selenio_ug: 55.0, manganeso_mg: 1.8, cobre_mg: 0.90,
+        vitamina_a_ug: 700.0, vitamina_c_mg: 75.0, vitamina_d_iu: 600.0, vitamina_e_mg: 15.0, vitamina_k_ug: 90.0,
+        b1_tiamina_mg: 1.1, b2_riboflavina_mg: 1.1, b3_niacina_mg: 14.0, b6_piridoxina_mg: 1.3, folatos_ug: 400.0,
+        b12_cobalamina_ug: 2.4, colina_mg: 425.0
+      }
+    };
+
+    // 3. Diccionario de Equivalencias Rápidas para Fallback
+    const DICCIONARIO_EQUIVALENCIAS = {
+      "leche de almendra": { oficial: "Bebida vegetal de almendras", consejo: "En tablas oficiales se registra como 'Bebida vegetal de almendras'." },
+      "leche de almendras": { oficial: "Bebida vegetal de almendras", consejo: "En tablas oficiales se registra como 'Bebida vegetal de almendras'." },
+      "leche vegetal": { oficial: "Bebida vegetal de almendras", consejo: "Las leches vegetales se catalogan como 'Bebidas vegetales'." },
+      "leche de soja": { oficial: "Bebida de soja", consejo: "Búscala como 'Bebida de soja'." },
+      "palta": { oficial: "Aguacate / Palta", consejo: "En la base figura como 'Aguacate / Palta'." },
+      "aguacate": { oficial: "Aguacate / Palta", consejo: "En la base figura como 'Aguacate / Palta'." },
+      "frutilla": { oficial: "Fresa / Frutilla cruda", consejo: "Está registrada como 'Fresa / Frutilla cruda'." },
+      "bife": { oficial: "Carne vacuna magra cocida", consejo: "Registra 'Carne vacuna magra cocida' o el corte magro correspondiente." },
+      "carne picada": { oficial: "Carne vacuna picada especial", consejo: "Búscala como 'Carne vacuna picada especial'." },
+      "hamburguesa": { oficial: "Carne vacuna magra cocida", consejo: "Para una hamburguesa casera, usa 'Carne vacuna magra cocida'." },
+      "margarina": { oficial: "Aceite de girasol", consejo: "No hay margarina en la base; como materia grasa equivalente puedes usar Aceite de girasol o de oliva." },
+      "manteca": { oficial: "Aceite de oliva virgen extra", consejo: "Como materia grasa equivalente puedes usar Aceite de oliva virgen extra o de girasol." },
+      "licuado": { oficial: "Plátano / Banana cruda", consejo: "Los licuados son platos compuestos: desglosa banana, avena y bebida vegetal." }
+    };
+
+    // Configuración por defecto de Google Sheets para la hoja de cálculo de dietas
+    window.DEFAULT_SHEETS_URL = "https://script.google.com/macros/s/AKfycby57KTG5tavGgxBRZ87EXIHo-pjV-ky20xcWH2C_86rwoN1UbaHnaciPFVdZhC6HD1TnQ/exec";
+    if (localStorage.getItem("NUTRI_SHEETS_URL") === "https://script.google.com/macros/s/AKfycbxi3lgWj_MFPYhsl3UTjnaT0gVA8UJIbvfbUvL10B4QX0xhCXWKdONR9oiRvZSCW2h2XA/exec") {
+      localStorage.removeItem("NUTRI_SHEETS_URL");
+    }
+    window.GOOGLE_SHEETS_URL = localStorage.getItem("NUTRI_SHEETS_URL") || window.DEFAULT_SHEETS_URL;
+
+    // 4. Estado de la Aplicación
+    let appState = {
+      alimentosDB: [],
+      mapaAlimentos: {},
+      selectedFood: null,
+      dieta: [],
+      preparaciones: { Desayuno: "", Almuerzo: "", Merienda: "", Cena: "", Colación: "" },
+      alumnoNombre: "",
+      perfil: "Adolescente Masculino (14-18 años)",
+      peso: 70.0,
+      caloriasMeta: 2500,
+      factorProt: 0.85,
+      iomCarbsMinPct: 45,
+      iomCarbsMaxPct: 65,
+      iomFatsMinPct: 20,
+      iomFatsMaxPct: 35,
+      activeCategory: "all"
+    };
+
+    function showToast(message, type = "success") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      toast.className = `px-4 py-2.5 rounded-xl text-xs font-bold text-white shadow-2xl transition-all duration-300 transform -translate-y-2 opacity-0 flex items-center gap-2 ${
+        type === "success" ? "bg-emerald-600/95 border border-emerald-400/50" : "bg-rose-600/95 border border-rose-400/50"
+      }`;
+      toast.innerHTML = message;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove("-translate-y-2", "opacity-0");
+        toast.classList.add("translate-y-0", "opacity-100");
+      }, 10);
+      setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("-translate-y-2", "opacity-0");
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    // 5. Inicialización
+    async function init() {
+      try {
+        const res = await fetch("alimentos.json");
+        appState.alimentosDB = await res.json();
+        appState.alimentosDB.forEach(a => { appState.mapaAlimentos[a.nombre] = a; });
+      } catch (e) {
+        console.error("Error cargando alimentos.json:", e);
+      }
+
+      checkUrlParams();
+      
+      const savedSheetsUrl = localStorage.getItem("NUTRI_SHEETS_URL");
+      if (savedSheetsUrl) {
+        window.GOOGLE_SHEETS_URL = savedSheetsUrl;
+      }
+      if (appState.alumnoNombre) {
+        const inp = document.getElementById("sheets-student-name");
+        if (inp) inp.value = appState.alumnoNombre;
+      }
+
+      renderAll();
+
+      document.addEventListener("click", (e) => {
+        const box = document.getElementById("search-results-box");
+        const input = document.getElementById("food-search-input");
+        if (box && !box.contains(e.target) && e.target !== input) {
+          box.classList.add("hidden");
+        }
+      });
+    }
+
+    // =========================================================================
+    // BUSCADOR AUTOCOMPLETE LIMPIO Y RÁPIDO
+    // =========================================================================
+    function handleSearchFocus() {
+      handleSearchInput();
+    }
+
+    function handleSearchInput() {
+      const input = document.getElementById("food-search-input");
+      const clearBtn = document.getElementById("clear-search-btn");
+      const box = document.getElementById("search-results-box");
+      const q = input.value.toLowerCase().trim();
+
+      if (q.length > 0) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+
+      const matches = q.length === 0 
+        ? appState.alimentosDB.slice(0, 15) 
+        : appState.alimentosDB.filter(a => a.nombre.toLowerCase().includes(q)).slice(0, 30);
+
+      box.innerHTML = "";
+
+      if (matches.length === 0) {
+        box.innerHTML = `
+          <div class="p-3 text-center text-xs text-slate-400 flex flex-col items-center gap-2 font-mono">
+            <span>No se encontró "${q}" en la base</span>
+            <button onclick="openAiModal('${q}')" class="px-3 py-1.5 rounded-lg bg-cyan-600/40 hover:bg-cyan-600/60 text-cyan-200 border border-cyan-500/50 text-xs font-sans font-bold flex items-center gap-1.5 transition-all">
+              <span>🔍 Consultar si no aparece</span>
+            </button>
+          </div>
+        `;
+        box.classList.remove("hidden");
+        return;
+      }
+
+      matches.forEach(item => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "w-full text-left p-2.5 rounded-lg hover:bg-white/[0.08] active:bg-cyan-500/20 flex items-center justify-between transition-all group border border-transparent hover:border-white/[0.06]";
+        
+        const kc = Math.round(item.calorias || 0);
+        const pr = (item.proteinas_g || 0).toFixed(1);
+        const cb = Math.round(item.carbohidratos_g || 0);
+        const ft = (item.grasas_g || 0).toFixed(1);
+
+        btn.innerHTML = `
+          <div class="min-w-0 pr-2">
+            <span class="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 block truncate">${item.nombre}</span>
+            <span class="text-[10px] font-mono text-slate-400">P:${pr}g · C:${cb}g · G:${ft}g (100g)</span>
+          </div>
+          <span class="text-[10.5px] font-mono font-bold text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40 flex-shrink-0">
+            ${kc} kcal
+          </span>
+        `;
+
+        btn.onclick = () => selectFoodItem(item.nombre);
+        box.appendChild(btn);
+      });
+
+      box.classList.remove("hidden");
+    }
+
+    function clearSearchInput() {
+      const input = document.getElementById("food-search-input");
+      input.value = "";
+      input.focus();
+      document.getElementById("clear-search-btn").classList.add("hidden");
+      document.getElementById("search-results-box").classList.add("hidden");
+    }
+
+    function findClosestOfficialFood(query) {
+      if (!appState.alimentosDB || !query) return null;
+      if (appState.mapaAlimentos[query]) return appState.mapaAlimentos[query];
+
+      const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s]/g, " ").trim();
+      const qNorm = norm(query);
+      const stopwords = new Set(["de", "la", "el", "en", "al", "a", "y", "o", "del", "los", "las", "un", "una"]);
+      const qTokens = qNorm.split(/\s+/).filter(t => t.length > 1 && !stopwords.has(t));
+      if (qTokens.length === 0) return null;
+
+      let bestFood = null;
+      let bestScore = 0;
+
+      for (const food of appState.alimentosDB) {
+        const fName = food.nombre;
+        const fNorm = norm(fName);
+        if (fNorm === qNorm) return food;
+        if (fNorm.includes(qNorm)) {
+          const score = 3.0 + (qNorm.length / fNorm.length);
+          if (score > bestScore) { bestScore = score; bestFood = food; }
+          continue;
+        }
+        const fTokens = fNorm.split(/\s+/).filter(t => t.length > 1 && !stopwords.has(t));
+        const common = qTokens.filter(t => fTokens.includes(t));
+        if (common.length === 0) continue;
+
+        const jaccard = common.length / (qTokens.length + fTokens.length - common.length);
+        const coverage = common.length / qTokens.length;
+        let score = jaccard + (coverage * 1.5);
+
+        if (/(cocid|plancha|horno|asado)/.test(qNorm) && /(cocid|plancha|horno|asado)/.test(fNorm)) score += 0.5;
+        if (/(cocid|plancha|horno|asado)/.test(qNorm) && fNorm.includes("crud")) score -= 0.5;
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestFood = food;
+        }
+      }
+
+      return bestScore >= 0.4 ? bestFood : null;
+    }
+
+    const SEMANTIC_ALIASES = {
+      "leche vegetal": ["Bebida vegetal de almendras sin azúcar", "Bebida vegetal de avena sin azúcar", "Bebida vegetal de soja sin azúcar", "Bebida vegetal de coco sin azúcar"],
+      "leches vegetales": ["Bebida vegetal de almendras sin azúcar", "Bebida vegetal de avena sin azúcar", "Bebida vegetal de soja sin azúcar", "Bebida vegetal de coco sin azúcar"],
+      "leche de almendra": ["Bebida vegetal de almendras sin azúcar", "Bebida vegetal de avena sin azúcar", "Bebida vegetal de soja sin azúcar"],
+      "leche de almendras": ["Bebida vegetal de almendras sin azúcar", "Bebida vegetal de avena sin azúcar", "Bebida vegetal de soja sin azúcar"],
+      "leche de avena": ["Bebida vegetal de avena sin azúcar", "Bebida vegetal de almendras sin azúcar", "Bebida vegetal de soja sin azúcar"],
+      "leche de soja": ["Bebida vegetal de soja sin azúcar", "Bebida vegetal de almendras sin azúcar", "Bebida vegetal de avena sin azúcar"],
+      "leche de coco": ["Bebida vegetal de coco sin azúcar", "Bebida vegetal de almendras sin azúcar"],
+      "margarina": ["Aceite de girasol", "Aceite de oliva virgen extra", "Manteca / Mantequilla"],
+      "palta": ["Palta / Aguacate fresco", "Palta Hass / criolla"],
+      "aguacate": ["Palta / Aguacate fresco", "Palta Hass / criolla"],
+      "frutilla": ["Fresa / Frutilla cruda"],
+      "anana": ["Piña / Ananá crudo"],
+      "bife": ["Bife de chorizo vacuno a la plancha/parrilla", "Cuadril / Bife de cuadril a la plancha", "Bife angosto vacuno a la plancha"],
+      "suprema": ["Pechuga de pollo a la plancha / cocida", "Pechuga de pollo sin piel a la plancha"],
+      "casancrem": ["Queso crema untable descremado / light", "Queso untable blanco entero"],
+      "queso untable": ["Queso crema untable descremado / light", "Queso untable blanco entero"]
+    };
+
+    function getCandidateFoods(query, topK = 8) {
+      if (!appState.alimentosDB || !query) return [];
+      const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s]/g, " ").trim();
+      const qNorm = norm(query);
+      const cands = [];
+
+      // 1. Alias semánticos directos
+      for (const [alias, targets] of Object.entries(SEMANTIC_ALIASES)) {
+        if (alias.includes(qNorm) || qNorm.includes(alias)) {
+          for (const t of targets) {
+            if (!cands.includes(t)) cands.push(t);
+          }
+        }
+      }
+
+      const stopwords = new Set(["de", "la", "el", "en", "al", "a", "y", "o", "del", "los", "las", "un", "una"]);
+      const qTokens = qNorm.split(/\s+/).filter(t => t.length > 1 && !stopwords.has(t));
+      if (qTokens.length === 0 && cands.length === 0) return [];
+
+      const isPlantQuery = /(vegetal|soja|almendra|avena|coco|vegano)/.test(qNorm);
+      const priorityTerms = ['pechuga', 'pata y muslo', 'muslo', 'bife', 'magr', 'plancha', 'blanco', 'cocid', 'entero', 'descremad', 'aceite'];
+      const scored = [];
+      
+      for (const f of appState.alimentosDB) {
+        if (cands.includes(f.nombre)) continue;
+        const fNorm = norm(f.nombre);
+        const fTokens = fNorm.split(/\s+/).filter(t => t.length > 1 && !stopwords.has(t));
+        const common = qTokens.filter(t => fTokens.includes(t));
+        if (common.length === 0) continue;
+        const jaccard = common.length / (qTokens.length + fTokens.length - common.length);
+        const coverage = common.length / qTokens.length;
+        let score = jaccard + (coverage * 1.5);
+
+        // Conflicto vegetal vs animal
+        if (isPlantQuery) {
+          if (fNorm.includes("vegetal") || fNorm.includes("bebida vegetal")) score += 5.0;
+          if (fNorm.includes("leche") && !fNorm.includes("vegetal")) score -= 50.0;
+          if (/(alfajor|dulce de leche|queso|yogur|crema de leche)/.test(fNorm)) score -= 50.0;
+        }
+
+        if (qNorm in fNorm || fNorm.includes(qNorm)) score += 1.5;
+        for (const p of priorityTerms) {
+          if (fNorm.includes(p)) score += 0.35;
+        }
+        if (qTokens.length === 1 && /(menudo|puchero|guiso|empanada|tarta)/.test(fNorm)) {
+          score -= 0.6;
+        }
+        if (score > 0) {
+          scored.push({ name: f.nombre, score });
+        }
+      }
+      scored.sort((a, b) => b.score - a.score);
+      for (const item of scored) {
+        if (!cands.includes(item.name)) cands.push(item.name);
+        if (cands.length >= topK) break;
+      }
+      return cands.slice(0, topK);
+    }
+
+    function selectFoodItem(foodName) {
+      let item = appState.mapaAlimentos[foodName];
+      if (!item) {
+        item = appState.alimentosDB.find(a => a.nombre.toLowerCase().includes(foodName.toLowerCase()));
+      }
+      if (!item) {
+        item = findClosestOfficialFood(foodName);
+      }
+      if (!item) {
+        showToast(`⚠️ No se encontró "${foodName}" en la base oficial.`, "error");
+        return;
+      }
+
+      appState.selectedFood = item;
+      document.getElementById("search-results-box").classList.add("hidden");
+      document.getElementById("food-search-input").value = item.nombre;
+      document.getElementById("clear-search-btn").classList.remove("hidden");
+
+      const card = document.getElementById("selected-food-card");
+      document.getElementById("selected-food-name").innerText = item.nombre;
+      
+      const kc = Math.round(item.calorias || 0);
+      const pr = (item.proteinas_g || 0).toFixed(1);
+      const cb = Math.round(item.carbohidratos_g || 0);
+      const ft = (item.grasas_g || 0).toFixed(1);
+      document.getElementById("selected-food-meta").innerText = `${kc} kcal / 100g · P: ${pr}g · C: ${cb}g · G: ${ft}g`;
+      
+      card.classList.remove("hidden");
+      card.classList.add("flex");
+
+      updateLivePortionCalc();
+      showToast(`🎯 Seleccionado: <b>${item.nombre}</b>`);
+    }
+
+    function clearSelectedFood() {
+      appState.selectedFood = null;
+      document.getElementById("selected-food-card").classList.add("hidden");
+      document.getElementById("selected-food-card").classList.remove("flex");
+      document.getElementById("food-search-input").value = "";
+      document.getElementById("clear-search-btn").classList.add("hidden");
+      updateLivePortionCalc();
+    }
+
+    function setGrams(g) {
+      document.getElementById("food-grams-input").value = g;
+      updateLivePortionCalc();
+    }
+
+    function addGrams(amount) {
+      const inp = document.getElementById("food-grams-input");
+      inp.value = Math.min(2000, (parseFloat(inp.value) || 0) + amount);
+      updateLivePortionCalc();
+    }
+
+    function updateLivePortionCalc() {
+      const grams = parseFloat(document.getElementById("food-grams-input").value) || 100;
+      const label = document.getElementById("live-portion-calc");
+      if (appState.selectedFood) {
+        const factor = grams / 100.0;
+        const kc = Math.round((appState.selectedFood.calorias || 0) * factor);
+        label.innerText = `${kc} kcal en ${grams}g`;
+      } else {
+        label.innerText = `${grams}g`;
+      }
+    }
+
+    function handleAddFood() {
+      if (!appState.selectedFood) {
+        const q = document.getElementById("food-search-input").value.toLowerCase().trim();
+        if (q.length > 0) {
+          const exact = appState.alimentosDB.find(a => a.nombre.toLowerCase() === q);
+          if (exact) {
+            appState.selectedFood = exact;
+          } else {
+            const matches = appState.alimentosDB.filter(a => a.nombre.toLowerCase().includes(q));
+            if (matches.length === 1) {
+              appState.selectedFood = matches[0];
+            }
+          }
+        }
+      }
+
+      if (!appState.selectedFood) {
+        showToast("⚠️ Por favor busca y toca un alimento de la lista para seleccionarlo.", "error");
+        document.getElementById("food-search-input").focus();
+        return;
+      }
+
+      const meal = document.getElementById("meal-select").value;
+      const grams = parseFloat(document.getElementById("food-grams-input").value) || 100;
+
+      appState.dieta.push({
+        comida: meal,
+        nombre: appState.selectedFood.nombre,
+        gramos: grams,
+        data: appState.selectedFood
+      });
+
+      const addedName = appState.selectedFood.nombre;
+      showToast(`🎉 ¡Agregado! <b>${grams}g de ${addedName}</b> a ${meal}.`);
+      clearSelectedFood();
+      renderAll();
+    }
+
+    function removeFood(index) {
+      const item = appState.dieta[index];
+      appState.dieta.splice(index, 1);
+      showToast(`🗑️ Eliminado: ${item.nombre}`);
+      renderAll();
+    }
+
+    function clearDiet() {
+      if (confirm("¿Seguro que deseas vaciar todos los alimentos cargados?")) {
+        appState.dieta = [];
+        showToast("🗑️ Se vaciaron todos los alimentos de la pauta.");
+        renderAll();
+      }
+    }
+
+    // 6. Cálculos Nutricionales
+    function calculateTotals() {
+      const totals = {};
+      appState.dieta.forEach(item => {
+        const factor = item.gramos / 100.0;
+        const d = item.data;
+        for (const [k, v] of Object.entries(d)) {
+          if (typeof v === 'number') {
+            totals[k] = (totals[k] || 0) + (v * factor);
+          }
+        }
+      });
+      return totals;
+    }
+
+    function getTargets() {
+      const profile = RDA_PROFILES[appState.perfil] || RDA_PROFILES["Adolescente Masculino (14-18 años)"];
+      const targets = { ...profile };
+      targets.proteinas_g = Math.round(appState.peso * appState.factorProt * 10) / 10;
+      
+      const cal = appState.caloriasMeta || 2500;
+      targets.carbs_min_g = Math.round((cal * (appState.iomCarbsMinPct / 100)) / 4);
+      targets.carbs_max_g = Math.round((cal * (appState.iomCarbsMaxPct / 100)) / 4);
+      targets.fats_min_g = Math.round((cal * (appState.iomFatsMinPct / 100)) / 9);
+      targets.fats_max_g = Math.round((cal * (appState.iomFatsMaxPct / 100)) / 9);
+
+      targets.carbohidratos_g = targets.carbs_min_g;
+      targets.grasas_g = targets.fats_min_g;
+      targets.grasas_saturadas_g = Math.round((cal * 0.10) / 9);
+      targets.grasas_monoinsaturadas_g = Math.round((cal * 0.12) / 9);
+      targets.grasas_poliinsaturadas_g = Math.round((cal * 0.08) / 9);
+      return targets;
+    }
+
+    function getAdequacyColor(pct, isLimit = false) {
+      if (isLimit) {
+        if (pct > 100) return { bar: "bg-rose-500", text: "text-rose-400", badge: "bg-rose-950/50 text-rose-400 border border-rose-800/50" };
+        return { bar: "bg-emerald-500", text: "text-emerald-400", badge: "bg-emerald-950/50 text-emerald-400 border border-emerald-800/50" };
+      }
+      if (pct >= 100) {
+        return { bar: "bg-emerald-500", text: "text-emerald-400", badge: "bg-emerald-950/50 text-emerald-400 border border-emerald-800/50" };
+      } else if (pct >= 70) {
+        return { bar: "bg-amber-500", text: "text-amber-400", badge: "bg-amber-950/50 text-amber-400 border border-amber-800/50" };
+      } else {
+        return { bar: "bg-rose-500", text: "text-rose-400", badge: "bg-rose-950/50 text-rose-400 border border-rose-800/50" };
+      }
+    }
+
+    function getMacroRangeAdequacy(grams, minGrams, maxGrams) {
+      if (grams <= 0) {
+        return {
+          pct: 0,
+          barWidth: 0,
+          text: "text-rose-400",
+          bar: "bg-rose-500",
+          badge: "bg-rose-950/50 text-rose-400 border border-rose-800/50",
+          label: "0%"
+        };
+      }
+      
+      if (grams >= minGrams && grams <= maxGrams) {
+        const rangeSpan = maxGrams - minGrams;
+        const progressInRange = rangeSpan > 0 ? (grams - minGrams) / rangeSpan : 0.5;
+        const barWidth = Math.min(100, Math.round(88 + (progressInRange * 12)));
+        return {
+          pct: 100,
+          barWidth: barWidth,
+          text: "text-emerald-400",
+          bar: "bg-emerald-500",
+          badge: "bg-emerald-950/60 text-emerald-300 border border-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.35)]",
+          label: "100% Óptimo"
+        };
+      } else if (grams < minGrams) {
+        const pct = Math.round((grams / minGrams) * 100);
+        const barWidth = Math.min(80, Math.round((grams / minGrams) * 80));
+        if (pct >= 70) {
+          return {
+            pct: pct,
+            barWidth: barWidth,
+            text: "text-amber-400",
+            bar: "bg-amber-500",
+            badge: "bg-amber-950/50 text-amber-400 border border-amber-800/50",
+            label: `${pct}%`
+          };
+        } else {
+          return {
+            pct: pct,
+            barWidth: barWidth,
+            text: "text-rose-400",
+            bar: "bg-rose-500",
+            badge: "bg-rose-950/50 text-rose-400 border border-rose-800/50",
+            label: `${pct}%`
+          };
+        }
+      } else {
+        const excessPct = Math.round((grams / maxGrams) * 100);
+        if (grams <= maxGrams * 1.15) {
+          return {
+            pct: excessPct,
+            barWidth: 100,
+            text: "text-amber-400",
+            bar: "bg-amber-500",
+            badge: "bg-amber-950/50 text-amber-400 border border-amber-800/50",
+            label: `${excessPct}% Alto`
+          };
+        } else {
+          return {
+            pct: excessPct,
+            barWidth: 100,
+            text: "text-rose-400",
+            bar: "bg-rose-500",
+            badge: "bg-rose-950/50 text-rose-400 border border-rose-800/50",
+            label: `${excessPct}% Exceso`
+          };
+        }
+      }
+    }
+
+    // 7. Renderizado General
+    function renderAll() {
+      const totals = calculateTotals();
+      const targets = getTargets();
+
+      document.getElementById("header-profile-text").innerText = `${appState.perfil} (${appState.peso} kg)`;
+
+      const cal = totals.calorias || 0;
+      const prot = totals.proteinas_g || 0;
+      const carbs = totals.carbohidratos_g || 0;
+      const fats = totals.grasas_g || 0;
+      const fiber = totals.fibra_g || 0;
+
+      const pctCal = Math.round((cal / (appState.caloriasMeta || 1)) * 100);
+      const pctProt = Math.round((prot / (targets.proteinas_g || 1)) * 100);
+      const pctFiber = Math.round((fiber / (targets.fibra_g || 1)) * 100);
+
+      const carbsAdequacy = getMacroRangeAdequacy(carbs, targets.carbs_min_g, targets.carbs_max_g);
+      const fatsAdequacy = getMacroRangeAdequacy(fats, targets.fats_min_g, targets.fats_max_g);
+
+      const colorCal = getAdequacyColor(pctCal);
+      const colorProt = getAdequacyColor(pctProt);
+      const colorFiber = getAdequacyColor(pctFiber);
+
+      const carbsVct = cal > 0 ? Math.round(((carbs * 4) / cal) * 100) : 0;
+      const fatsVct = cal > 0 ? Math.round(((fats * 9) / cal) * 100) : 0;
+
+      // KPI Tab 1
+      document.getElementById("kpi-cal").innerText = Math.round(cal);
+      document.getElementById("kpi-meta-cal").innerText = appState.caloriasMeta;
+      document.getElementById("kpi-bar").style.width = `${Math.min(100, pctCal)}%`;
+      document.getElementById("kpi-p").innerText = `${prot.toFixed(1)}g`;
+      document.getElementById("kpi-c").innerText = `${Math.round(carbs)}g`;
+      document.getElementById("kpi-g").innerText = `${Math.round(fats)}g`;
+      document.getElementById("kpi-f").innerText = `${fiber.toFixed(1)}g`;
+
+      // Highlight Card Tab 2
+      document.getElementById("macro-cal-val").innerText = Math.round(cal);
+      document.getElementById("macro-cal-target").innerText = appState.caloriasMeta;
+      const calBadge = document.getElementById("macro-cal-badge");
+      calBadge.innerText = `${pctCal}%`;
+      calBadge.className = `text-xs font-mono font-bold px-2 py-0.5 rounded-lg ${colorCal.badge}`;
+
+      document.getElementById("macro-p-val").innerText = `${prot.toFixed(1)}g`;
+      document.getElementById("macro-p-target").innerText = `${targets.proteinas_g}g`;
+      document.getElementById("macro-p-gkg").innerText = (prot / (appState.peso || 1)).toFixed(2);
+      const pBadge = document.getElementById("macro-p-badge");
+      pBadge.innerText = `${pctProt}%`;
+      pBadge.className = `font-mono font-bold text-xs ${colorProt.text}`;
+      const pBar = document.getElementById("macro-p-bar");
+      pBar.style.width = `${Math.min(100, pctProt)}%`;
+      pBar.className = `h-full rounded-full transition-all duration-500 ${colorProt.bar}`;
+
+      document.getElementById("macro-c-val").innerText = `${carbs.toFixed(1)}g`;
+      document.getElementById("macro-c-vct").innerText = `${carbsVct}% VCT`;
+      document.getElementById("macro-c-target").innerText = `${targets.carbs_min_g}-${targets.carbs_max_g}g`;
+      const cBadge = document.getElementById("macro-c-badge");
+      cBadge.innerText = carbsAdequacy.label;
+      cBadge.className = `font-mono font-bold text-xs ${carbsAdequacy.badge}`;
+      const cBar = document.getElementById("macro-c-bar");
+      cBar.style.width = `${carbsAdequacy.barWidth}%`;
+      cBar.className = `h-full rounded-full transition-all duration-500 ${carbsAdequacy.bar}`;
+
+      document.getElementById("macro-g-val").innerText = `${fats.toFixed(1)}g`;
+      document.getElementById("macro-g-vct").innerText = `${fatsVct}% VCT`;
+      document.getElementById("macro-g-target").innerText = `${targets.fats_min_g}-${targets.fats_max_g}g`;
+      const gBadge = document.getElementById("macro-g-badge");
+      gBadge.innerText = fatsAdequacy.label;
+      gBadge.className = `font-mono font-bold text-xs ${fatsAdequacy.badge}`;
+      const gBar = document.getElementById("macro-g-bar");
+      gBar.style.width = `${fatsAdequacy.barWidth}%`;
+      gBar.className = `h-full rounded-full transition-all duration-500 ${fatsAdequacy.bar}`;
+
+      document.getElementById("macro-f-val").innerText = `${fiber.toFixed(1)}g`;
+      document.getElementById("macro-f-target").innerText = `${targets.fibra_g}g`;
+      const fBadge = document.getElementById("macro-f-badge");
+      fBadge.innerText = `${pctFiber}%`;
+      fBadge.className = `font-mono font-bold text-xs ${colorFiber.text}`;
+      const fBar = document.getElementById("macro-f-bar");
+      fBar.style.width = `${Math.min(100, pctFiber)}%`;
+      fBar.className = `h-full rounded-full transition-all duration-500 ${colorFiber.bar}`;
+
+      renderDietList();
+      renderNutrientCards(totals, targets);
+      renderPauta();
+      updateShareLink();
+    }
+
+    function renderDietList() {
+      const container = document.getElementById("diet-list");
+      document.getElementById("diet-count").innerText = appState.dieta.length;
+      if (appState.dieta.length === 0) {
+        container.innerHTML = '<p class="text-xs text-slate-500 py-3 text-center">Todavía no has agregado ningún alimento.</p>';
+        return;
+      }
+      container.innerHTML = "";
+      appState.dieta.forEach((it, idx) => {
+        const factor = it.gramos / 100.0;
+        const kc = Math.round((it.data.calorias || 0) * factor);
+        const pr = ((it.data.proteinas_g || 0) * factor).toFixed(1);
+        const cb = Math.round((it.data.carbohidratos_g || 0) * factor);
+        const ft = ((it.data.grasas_g || 0) * factor).toFixed(1);
+
+        const row = document.createElement("div");
+        row.className = "flex items-center justify-between py-2 gap-2";
+        row.innerHTML = `
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-semibold text-slate-200 truncate">${it.nombre}</div>
+            <div class="text-[10.5px] font-mono text-slate-400">
+              <span class="text-cyan-400 font-semibold">${it.comida}</span> · ${it.gramos}g · <span class="text-slate-300 font-bold">${kc} kcal</span> (P:${pr}g C:${cb}g G:${ft}g)
+            </div>
+          </div>
+          <button onclick="removeFood(${idx})" class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs">
+            🗑️
+          </button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // 8. Lista de Nutrientes Ultra-Compacta
+    function renderNutrientCards(totals, targets) {
+      const container = document.getElementById("nutrient-cards-container");
+      container.innerHTML = "";
+
+      const filtered = NUTRIENT_CARDS_LIST.filter(n => appState.activeCategory === "all" || n.cat === appState.activeCategory);
+
+      filtered.forEach(n => {
+        const val = totals[n.id] || 0.0;
+        const meta = targets[n.id] || 1.0;
+        const pct = Math.round((val / meta) * 100);
+        const cappedPct = Math.min(100, pct);
+
+        const adequacy = getAdequacyColor(pct, n.isLimit);
+
+        let dotColor = "bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.5)]";
+        if (n.isLimit) {
+          dotColor = val > meta ? "bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.5)]" : "bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.5)]";
+        } else {
+          if (pct >= 100) dotColor = "bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.5)]";
+          else if (pct >= 70) dotColor = "bg-amber-400 shadow-[0_0_6px_rgba(245,158,11,0.5)]";
+          else dotColor = "bg-rose-400 shadow-[0_0_6px_rgba(244,63,94,0.5)]";
+        }
+
+        const card = document.createElement("div");
+        card.className = "w-full text-left px-3 py-1.5 hover:bg-white/[0.04] active:bg-cyan-500/10 transition-colors flex flex-col justify-center gap-1 cursor-pointer group";
+        card.onclick = () => openNutrientModal(n.id);
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-1 leading-tight">
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="w-1.5 h-1.5 rounded-full ${dotColor} flex-shrink-0"></span>
+              <span class="text-xs font-semibold text-slate-200 group-hover:text-cyan-300 transition-colors truncate">
+                ${n.name}
+              </span>
+            </div>
+            <div class="flex items-center gap-1.5 flex-shrink-0">
+              <span class="text-[11px] font-mono tabular-nums text-slate-300">
+                <b class="text-white">${val.toFixed(1)}</b> <span class="text-[10px] text-slate-400">/ ${Math.round(meta)} ${n.unit}</span>
+              </span>
+              <span class="text-[10px] font-mono font-bold px-1.5 py-0.2 rounded border tabular-nums ${adequacy.badge}">
+                ${pct}%
+              </span>
+              <span class="text-slate-600 text-xs font-bold group-hover:text-slate-400 font-mono">›</span>
+            </div>
+          </div>
+          <div class="w-full relative">
+            <div class="w-full h-[3px] bg-black/50 rounded-full overflow-hidden border border-white/[0.02]">
+              <div style="width: ${cappedPct}%;" class="h-full rounded-full transition-all duration-300 ${adequacy.bar}"></div>
+            </div>
+            <div class="absolute top-[-2px] h-[7px] w-[2px] bg-white/70 rounded-full pointer-events-none" style="left: 100%; transform: translateX(-100%);" title="Meta 100%"></div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    // 9. MODAL INTERACTIVO: ALIMENTOS CONTRIBUYENTES
+    function openNutrientModal(nutrientId) {
+      const n = MASTER_NUTRIENTS[nutrientId];
+      if (!n) return;
+
+      const totals = calculateTotals();
+      const targets = getTargets();
+      const val = totals[n.id] || 0.0;
+
+      if (nutrientId === "carbohidratos_g") {
+        document.getElementById("modal-nutrient-subtitle").innerText = `Carbohidratos · Macros (Rango IOM 45-65%: ${targets.carbs_min_g}g - ${targets.carbs_max_g}g)`;
+        const adeq = getMacroRangeAdequacy(val, targets.carbs_min_g, targets.carbs_max_g);
+        const badge = document.getElementById("modal-nutrient-total-badge");
+        badge.innerText = `Total: ${val.toFixed(1)} g (${adeq.label})`;
+        badge.className = `text-[11px] font-mono font-semibold px-2.5 py-1 rounded-md border ${adeq.badge}`;
+      } else if (nutrientId === "grasas_g") {
+        document.getElementById("modal-nutrient-subtitle").innerText = `Grasas Totales · Macros (Rango IOM 20-35%: ${targets.fats_min_g}g - ${targets.fats_max_g}g)`;
+        const adeq = getMacroRangeAdequacy(val, targets.fats_min_g, targets.fats_max_g);
+        const badge = document.getElementById("modal-nutrient-total-badge");
+        badge.innerText = `Total: ${val.toFixed(1)} g (${adeq.label})`;
+        badge.className = `text-[11px] font-mono font-semibold px-2.5 py-1 rounded-md border ${adeq.badge}`;
+      } else {
+        const meta = targets[n.id] || 1.0;
+        const pct = Math.round((val / meta) * 100);
+        document.getElementById("modal-nutrient-subtitle").innerText = `${n.name} · ${n.cat}`;
+        const badge = document.getElementById("modal-nutrient-total-badge");
+        badge.innerText = `Total: ${val.toFixed(1)} ${n.unit} (${pct}%)`;
+        badge.className = "text-[11px] font-mono text-teal-300 font-semibold bg-teal-950/60 px-2.5 py-1 rounded-md border border-teal-800/50";
+      }
+
+      const ranking = [];
+      appState.dieta.forEach(it => {
+        const factor = it.gramos / 100.0;
+        const aporte = (it.data[n.id] || 0.0) * factor;
+        if (aporte > 0) {
+          ranking.push({
+            name: it.nombre,
+            comida: it.comida,
+            grams: it.gramos,
+            aporte: aporte
+          });
+        }
+      });
+      ranking.sort((a, b) => b.aporte - a.aporte);
+      const totalAportado = ranking.reduce((acc, r) => acc + r.aporte, 0) || 1.0;
+
+      const tbody = document.getElementById("modal-contributors-tbody");
+      tbody.innerHTML = "";
+
+      if (ranking.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="py-8 text-center text-xs text-slate-400 font-mono">
+              ℹ️ Ningún alimento del menú actual aporta ${n.name}.
+            </td>
+          </tr>
+        `;
+      } else {
+        ranking.forEach(r => {
+          const pctOfTotal = Math.round((r.aporte / totalAportado) * 100);
+          
+          let barColor = "bg-slate-500";
+          let badgeClass = "bg-slate-800/80 text-slate-400 border-slate-700/60";
+          if (pctOfTotal > 50) {
+            barColor = "bg-teal-400";
+            badgeClass = "bg-teal-950/70 text-teal-300 border-teal-700/60";
+          } else if (pctOfTotal > 20) {
+            barColor = "bg-cyan-500";
+            badgeClass = "bg-cyan-950/70 text-cyan-300 border-cyan-700/60";
+          }
+
+          const tr = document.createElement("tr");
+          tr.className = "hover:bg-slate-800/30 transition-colors";
+          tr.innerHTML = `
+            <td class="py-2 pr-2">
+              <div class="text-xs font-semibold text-slate-200">${r.name}</div>
+              <div class="text-[10px] font-mono text-slate-500">${r.comida}</div>
+            </td>
+            <td class="py-2 px-2 text-right font-mono text-xs text-slate-300 whitespace-nowrap">
+              ${r.grams} g
+            </td>
+            <td class="py-2 px-2 text-right font-mono text-xs font-bold text-slate-100 whitespace-nowrap">
+              ${r.aporte.toFixed(1)} <span class="text-[10px] font-normal text-slate-400">${n.unit}</span>
+            </td>
+            <td class="py-2 pl-2 text-right whitespace-nowrap">
+              <div class="flex items-center justify-end gap-1.5">
+                <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded border ${badgeClass}">
+                  ${pctOfTotal}%
+                </span>
+              </div>
+              <div class="w-full h-1 bg-slate-800 rounded-full overflow-hidden mt-1">
+                <div class="h-full rounded-full ${barColor}" style="width: ${pctOfTotal}%"></div>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      const modal = document.getElementById("nutrient-detail-modal");
+      modal.classList.remove("opacity-0", "pointer-events-none");
+      modal.querySelector(".modal-content").classList.remove("scale-95");
+      modal.querySelector(".modal-content").classList.add("scale-100");
+    }
+
+    function closeNutrientModal() {
+      const modal = document.getElementById("nutrient-detail-modal");
+      modal.classList.add("opacity-0", "pointer-events-none");
+      modal.querySelector(".modal-content").classList.remove("scale-100");
+      modal.querySelector(".modal-content").classList.add("scale-95");
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === "nutrient-detail-modal") {
+        closeNutrientModal();
+      }
+    }
+
+    // =========================================================================
+    // 10. ASISTENTE DE IA: CONSULTA DIRECTA Y LIMPIA
+    // =========================================================================
+    function getStoredAiKeys() {
+      let keys = { groq1: "", groq2: "", gemini: "" };
+      try {
+        const saved = localStorage.getItem("NUTRI_AI_KEYS");
+        if (saved) keys = JSON.parse(saved);
+      } catch (e) {}
+
+      if (!keys.groq1 && window.APP_AI_CONFIG?.GROQ_KEYS?.[0]) keys.groq1 = window.APP_AI_CONFIG.GROQ_KEYS[0];
+      if (!keys.groq2 && window.APP_AI_CONFIG?.GROQ_KEYS?.[1]) keys.groq2 = window.APP_AI_CONFIG.GROQ_KEYS[1];
+      if (!keys.gemini && window.APP_AI_CONFIG?.GEMINI_KEY) keys.gemini = window.APP_AI_CONFIG.GEMINI_KEY;
+
+      return keys;
+    }
+
+    function openAiModal(initialQuery = "") {
+      const modal = document.getElementById("ai-assistant-modal");
+      const input = document.getElementById("ai-query-input");
+      const box = document.getElementById("ai-response-box");
+      box.innerHTML = "";
+
+      modal.classList.remove("opacity-0", "pointer-events-none");
+      modal.querySelector(".modal-content").classList.remove("scale-95");
+      modal.querySelector(".modal-content").classList.add("scale-100");
+
+      if (initialQuery) {
+        input.value = initialQuery;
+        executeAiQuery();
+      } else {
+        input.value = "";
+        setTimeout(() => input.focus(), 100);
+      }
+    }
+
+    function closeAiModal() {
+      const modal = document.getElementById("ai-assistant-modal");
+      modal.classList.add("opacity-0", "pointer-events-none");
+      modal.querySelector(".modal-content").classList.remove("scale-100");
+      modal.querySelector(".modal-content").classList.add("scale-95");
+    }
+
+    function handleAiBackdropClick(e) {
+      if (e.target.id === "ai-assistant-modal") closeAiModal();
+    }
+
+    function handleAiFormSubmit(e) {
+      if (e) e.preventDefault();
+      executeAiQuery();
+    }
+
+    function isCheatingQuery(q) {
+      const patterns = [
+        /\b(me\s+falta|te\s+falta|falta(n)?|para\s+llegar\s+a)\s+(de\s+)?(b\d+|vitamina|hierro|calcio|prote[ií]na|grasa|carbo|calor[ií]a|fibra|zinc|magnesio|omega|sodio|potasio|macro|micro)/i,
+        /\b(con\s+(m[aá]s|mayor|m[aá]ximo|menos|menor)\s+(contenido|cantidad|nivel)?\s*(de\s+)?(hierro|calcio|b\d+|vitamina|prote[ií]na|grasa|carbo|calor[ií]a|fibra|zinc|magnesio|omega|sodio|potasio|nutriente))/i,
+        /\b(qu[eé]|cu[aá]l(es)?)\s+(alimentos?|comidas?|opciones?)?\s*(tienen?|poseen?|aportan?|tenga)\s+(m[aá]s|mayor|mucha|alto|menos|menor)?\s*(de\s+)?(hierro|calcio|b\d+|vitamina|prote[ií]na|grasa|carbo|calor[ií]a|fibra|zinc|magnesio|omega|sodio|potasio|calor[ií]as)/i,
+        /\b(alimentos?\s+(con|altos?\s+en|ricos?\s+en|que\s+contengan?)|fuentes?\s+de)\s+(hierro|calcio|b\d+|vitamina|prote[ií]na|fibra|zinc|magnesio|potasio|grasa|omega|sodio|nutrientes)/i,
+        /\b(qu[eé]\s+(me\s+)?sugieres?\s+(para|si|comer)|qu[eé]\s+puedo\s+comer\s+(para|si)|qu[eé]\s+como\s+(para|si|hoy|en\s+la))/i,
+        /\b(c[oó]mo\s+(completo|llego|cubro|alcanzo)\s+(a\s+)?(los?|las?|el)?\s*(requerimientos?|macros?|micros?|nutrientes?|prote[ií]nas?|calor[ií]as?|b\d+|hierro|calcio))/i,
+        /\b(recomi[eé]ndame|sugi[eé]reme)\s+(un\s+alimento|algo\s+para|para\s+el|para\s+la|para\s+cubrir|para\s+llegar)/i,
+        /\b(qu[eé]\s+puedo\s+cenar|qu[eé]\s+puedo\s+almorzar|qu[eé]\s+puedo\s+desayunar|qu[eé]\s+cenar|qu[eé]\s+desayunar)/i
+      ];
+      return patterns.some(p => p.test(q));
+    }
+
+    async function callGroqApi(apiKey, userPrompt) {
+      const candidates = getCandidateFoods(userPrompt, 6);
+      let enhancedPrompt = `Consulta del alumno: ${userPrompt}`;
+      if (candidates.length > 0) {
+        enhancedPrompt += `\n\nALIMENTOS OFICIALES DISPONIBLES EN LA BASE:\n` +
+          candidates.map(c => `- ${c}`).join("\n") +
+          `\n\nREGLA: Si recomiendas un alimento de la lista, debes usar su nombre EXACTO entre corchetes dobles [[ ]], sin cambiar palabras.`;
+      }
+
+      const systemMsg = "ERES EXCLUSIVAMENTE UN BUSCADOR DE NOMBRES Y EQUIVALENCIAS DE ALIMENTOS EN UNA BASE DE DATOS PARA ESTUDIANTES DE NUTRICIÓN.\n\n" +
+        "REGLA DE ORO PEDAGÓGICA (ANTI-TRAMPAS):\n" +
+        "Los alumnos tienen estrictamente prohibido usar esta herramienta para que les resuelvas el plan, les digas qué comer o les hagas recomendaciones nutricionales.\n" +
+        "Está TOTALMENTE PROHIBIDO:\n" +
+        "1. Sugerir alimentos según nutrientes faltantes (ej: 'me falta B9', 'qué como para llegar a las proteínas', 'cómo cubro calorías').\n" +
+        "2. Indicar qué alimento tiene más o menos de un nutriente o dar rankings/listas (ej: 'cuál tiene más hierro', 'alimentos ricos en calcio', 'fuentes de zinc').\n" +
+        "3. Recomendar qué comer o armar platos/menús (ej: 'qué puedo cenar', 'recomiéndame un desayuno').\n\n" +
+        "SI EL ALUMNO HACE CUALQUIERA DE ESTAS PREGUNTAS:\n" +
+        "Debes RECHAZAR la consulta de inmediato diciendo:\n" +
+        "'Mi función es únicamente ayudarte a ubicar en la base de datos un alimento concreto que no encuentres (ej: si buscas margarina, palta o leche de almendra). No resuelvo requerimientos nutricionales ni sugiero qué comer para armar el plan. ¿Qué alimento específico estás buscando registrar?'\n" +
+        "En estos casos de rechazo NUNCA uses corchetes dobles [[ ]].\n\n" +
+        "REGLA DE SUGERENCIAS Y EQUIVALENCIAS (Solo cuando el usuario busca un alimento que no encuentra):\n" +
+        "- Si el usuario busca un término genérico o con opciones (ej: pollo, carne, arroz, queso, huevo, leche): SUGIERE SIEMPRE 2 O 3 DE LAS OPCIONES OFICIALES MÁS HABITUALES de la lista provista, encerrando cada una entre corchetes dobles [[ ]].\n" +
+        "- Si el alimento no existe en la base (ej: margarina): sugiere 2 o 3 alternativas disponibles más cercanas (ej: [[Aceite de girasol]], [[Aceite de oliva virgen extra]] o [[Manteca / Mantequilla]]).\n" +
+        "- Si es un sinónimo o modismo único (ej: palta, bife, leche de almendras): indica su nombre oficial entre corchetes dobles, ej: [[Aguacate / Palta]], [[Carne vacuna magra cocida]], [[Bebida vegetal de almendras]].\n" +
+        "- Si es un plato compuesto (ej: licuado): indica los ingredientes entre corchetes dobles, ej: [[Plátano / Banana cruda]] y [[Bebida vegetal de almendras]].\n" +
+        "- Responde en MÁXIMO 2 líneas de forma breve y amable.";
+
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: window.APP_AI_CONFIG?.GROQ_MODEL || "qwen/qwen3.8-27b",
+          messages: [
+            { role: "system", content: systemMsg },
+            { role: "user", content: enhancedPrompt }
+          ],
+          max_tokens: 200,
+          temperature: 0.1
+        })
+      });
+
+      if (!res.ok) throw new Error(`Groq HTTP ${res.status}`);
+      const data = await res.json();
+      return data.choices?.[0]?.message?.content || "";
+    }
+
+    async function callGeminiApi(apiKey, userPrompt) {
+      const candidates = getCandidateFoods(userPrompt, 8);
+      let enhancedPrompt = `Consulta del alumno: ${userPrompt}`;
+      if (candidates.length > 0) {
+        enhancedPrompt += `\n\nALIMENTOS OFICIALES DISPONIBLES EN LA BASE:\n` +
+          candidates.map(c => `- ${c}`).join("\n") +
+          `\n\nREGLA: Sugiere 2 o 3 de las opciones oficiales más habituales de esta lista usando sus nombres EXACTOS entre corchetes dobles [[ ]].`;
+      }
+
+      const model = window.APP_AI_CONFIG?.GEMINI_MODEL || "gemini-flash-latest";
+      const systemInstruction = "ERES EXCLUSIVAMENTE UN BUSCADOR DE NOMBRES Y EQUIVALENCIAS DE ALIMENTOS EN UNA BASE DE DATOS. REGLA PEDAGÓGICA ESTRICTA: Si el alumno pide sugerencias para cubrir nutrientes (ej: me falta B9, qué como para el hierro, qué me recomiendas para cenar), REHÚSA diciendo que tu función es únicamente ubicar alimentos específicos y pregúntale qué alimento concreto está buscando registrar. Si busca un alimento habitual o con variantes (ej: pollo, carne, arroz), sugiere 2 o 3 opciones oficiales más comunes de la lista provista entre corchetes dobles [[ ]], respondiendo en MÁXIMO 2 líneas.";
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            { parts: [{ text: `${systemInstruction}\n\n${enhancedPrompt}` }] }
+          ]
+        })
+      });
+
+      if (!res.ok) throw new Error(`Gemini HTTP ${res.status}`);
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    }
+
+    async function executeAiQuery() {
+      const input = document.getElementById("ai-query-input");
+      const btn = document.getElementById("ai-query-btn");
+      const box = document.getElementById("ai-response-box");
+      const query = input.value.trim();
+      if (!query) return;
+
+      // Control Pedagógico Anti-Trampas Inmediato
+      if (isCheatingQuery(query)) {
+        box.innerHTML = `
+          <div class="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/40 shadow-lg flex flex-col gap-1.5">
+            <div class="flex items-center gap-2 text-amber-400 font-bold text-xs">
+              <span>⚠️</span>
+              <span>Control Académico</span>
+            </div>
+            <p class="text-xs text-amber-200/90 leading-relaxed">
+              Mi función es únicamente ayudarte a ubicar en la base de datos un alimento concreto que no encuentres (ej: si buscas <i>"margarina"</i>, <i>"palta"</i> o <i>"leche de almendra"</i>). No puedo resolver requerimientos de nutrientes ni sugerir qué comer para armar el plan. ¿Qué alimento específico estás buscando registrar?
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Consultando...";
+      box.innerHTML = `
+        <div class="p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs text-cyan-300 font-mono flex items-center gap-2">
+          <span>⚡</span>
+          <span>Buscando cómo registrar "${query}"...</span>
+        </div>
+      `;
+
+      let answerText = "";
+
+      // 1. Probar endpoint local /api/chat (Groq ultra rápido desde server.py con grounding de candidatos)
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: query })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          answerText = data.answer || "";
+        }
+      } catch (e) {}
+
+      // 2. Si /api/chat no está (ej: estático en GitHub Pages), probar Groq directo
+      if (!answerText) {
+        const keys = getStoredAiKeys();
+        const groqKey = keys.groq1 || keys.groq2;
+        if (groqKey) {
+          try {
+            answerText = await callGroqApi(groqKey, query);
+          } catch (e) {}
+        }
+        
+        // 3. Fallback a Gemini
+        if (!answerText && keys.gemini) {
+          try {
+            answerText = await callGeminiApi(keys.gemini, query);
+          } catch (e) {}
+        }
+      }
+
+      // 4. Fallback local determinístico
+      if (!answerText) {
+        const qLow = query.toLowerCase();
+        let matched = null;
+        for (const [k, v] of Object.entries(DICCIONARIO_EQUIVALENCIAS)) {
+          if (qLow.includes(k) || k.includes(qLow)) {
+            matched = v;
+            break;
+          }
+        }
+        if (matched) {
+          answerText = `${matched.consejo} Sugerencia: [[${matched.oficial}]].`;
+        } else {
+          const cands = getCandidateFoods(query, 3);
+          if (cands.length > 0) {
+            answerText = `Opciones oficiales sugeridas: ${cands.map(c => `[[${c}]]`).join(", ")}.`;
+          } else {
+            answerText = `No se encontró "${query}" en la base oficial. Te sugiero buscar alimentos básicos similares en la lista (ej: aceite de girasol, pollo, avena).`;
+          }
+        }
+      }
+
+      btn.disabled = false;
+      btn.innerText = "Preguntar";
+
+      // Extraer corchetes dobles y resolver con exactitud oficial
+      const foodMatches = [];
+      const regex = /\[\[(.*?)\]\]/g;
+      let m;
+      let cleanAnswer = answerText;
+      while ((m = regex.exec(answerText)) !== null) {
+        const raw = m[1].trim();
+        let targetName = raw;
+        if (!appState.mapaAlimentos[raw]) {
+          const closest = findClosestOfficialFood(raw);
+          if (closest) targetName = closest.nombre;
+        }
+        if (!foodMatches.includes(targetName)) {
+          foodMatches.push(targetName);
+        }
+        cleanAnswer = cleanAnswer.split(`[[${raw}]]`).join(`<b>${targetName}</b>`);
+      }
+      cleanAnswer = cleanAnswer.replace(/\[\[(.*?)\]\]/g, '<b>$1</b>');
+
+      let buttonsHtml = "";
+      if (foodMatches.length > 0) {
+        buttonsHtml = `
+          <div class="flex flex-col gap-1 pt-2 border-t border-white/[0.06]">
+            <span class="text-[10px] font-mono text-cyan-400 uppercase tracking-wider font-semibold">Toca para cargar al menú:</span>
+            <div class="flex flex-wrap gap-1.5">
+              ${foodMatches.map(f => `
+                <button type="button" onclick="selectFoodFromAi('${f}')" class="px-3 py-1.5 rounded-xl bg-teal-950/90 hover:bg-teal-900 border border-teal-500/60 text-teal-200 text-xs font-bold active:scale-95 transition-all flex items-center gap-1.5 shadow-md">
+                  <span>👉 Cargar</span> <span>"${f}"</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      box.innerHTML = `
+        <div class="p-3.5 rounded-xl bg-cardbg border border-cyan-500/30 shadow-lg flex flex-col gap-2">
+          <p class="text-xs text-slate-200 leading-relaxed">${cleanAnswer}</p>
+          ${buttonsHtml}
+        </div>
+      `;
+    }
+
+    function selectFoodFromAi(foodName) {
+      selectFoodItem(foodName);
+      closeAiModal();
+      document.getElementById("food-grams-input").focus();
+    }
+
+    function toggleAiKeysSettings() {
+      const body = document.getElementById("ai-keys-settings-body");
+      const icon = document.getElementById("ai-keys-toggle-icon");
+      if (body.classList.contains("hidden")) {
+        body.classList.remove("hidden");
+        icon.innerText = "▲";
+      } else {
+        body.classList.add("hidden");
+        icon.innerText = "▼";
+      }
+    }
+
+    // 11. Filtro de Categorías
+    function filterCategory(cat) {
+      appState.activeCategory = cat;
+      const cats = ['all', 'Vitaminas', 'Minerales', 'Grasas', 'Límites'];
+      cats.forEach(c => {
+        const btn = document.getElementById(`cat-btn-${c}`);
+        if (c === cat) {
+          btn.className = "px-3 py-1.5 rounded-xl text-xs font-semibold bg-sky-500/20 text-sky-300 border border-sky-500/40";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-xl text-xs font-semibold bg-cardbg text-slate-400 border border-cardborder hover:text-white";
+        }
+      });
+      renderNutrientCards(calculateTotals(), getTargets());
+    }
+
+    // 12. Pauta y Recetas
+    function renderPauta() {
+      const container = document.getElementById("pauta-container");
+      container.innerHTML = "";
+      const meals = ["Desayuno", "Almuerzo", "Merienda", "Cena", "Colación"];
+
+      meals.forEach(m => {
+        const alims = appState.dieta.filter(x => x.comida === m);
+        const card = document.createElement("div");
+        card.className = "p-3.5 rounded-2xl bg-cardbg border border-cardborder shadow-sm flex flex-col gap-2";
+
+        let alimsList = '<p class="text-xs text-slate-500 italic">No hay alimentos en esta comida.</p>';
+        if (alims.length > 0) {
+          alimsList = `
+            <div class="flex flex-wrap gap-1.5">
+              ${alims.map(a => `
+                <span class="text-[11px] font-mono px-2 py-0.5 rounded-lg bg-white/[0.04] text-slate-300 border border-white/[0.06]">
+                  ${a.nombre} <b class="text-cyan-400">(${a.gramos}g)</b>
+                </span>
+              `).join('')}
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-white uppercase tracking-wider">${m}</span>
+            <span class="text-[10px] font-mono text-slate-400">${alims.length} alimentos</span>
+          </div>
+          ${alimsList}
+          <div>
+            <label class="text-[10.5px] font-medium text-slate-400 block mb-1">Modo de Preparación / Receta:</label>
+            <textarea 
+              rows="2" 
+              placeholder="Ej: Licuar el plátano con la avena y leche de soja..." 
+              oninput="handlePautaInput('${m}', this.value)"
+              class="w-full p-2.5 rounded-xl bg-appbg border border-white/[0.08] text-xs text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors"
+            >${appState.preparaciones[m] || ""}</textarea>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function handlePautaInput(meal, text) {
+      appState.preparaciones[meal] = text;
+      updateShareLink();
+    }
+
+    // 13. Compartir por Enlace
+    function updateShareLink() {
+      const payload = {
+        d: appState.dieta.map(x => ({ n: x.nombre, g: x.gramos, c: x.comida })),
+        p: appState.preparaciones,
+        a: appState.alumnoNombre,
+        s: appState.perfil,
+        w: appState.peso,
+        k: appState.caloriasMeta,
+        fp: appState.factorProt,
+        icmin: appState.iomCarbsMinPct,
+        icmax: appState.iomCarbsMaxPct,
+        ifmin: appState.iomFatsMinPct,
+        ifmax: appState.iomFatsMaxPct
+      };
+      try {
+        const jsonStr = JSON.stringify(payload);
+        const b64 = btoa(unescape(encodeURIComponent(jsonStr)));
+        const url = `${window.location.origin}${window.location.pathname}?dieta=${b64}`;
+        const input = document.getElementById("share-link-input");
+        if (input) input.value = url;
+      } catch (e) {
+        console.error("Error generando enlace:", e);
+      }
+    }
+
+    function copyShareLink() {
+      const input = document.getElementById("share-link-input");
+      input.select();
+      navigator.clipboard.writeText(input.value);
+      const btn = document.getElementById("copy-btn");
+      btn.innerText = "¡Copiado!";
+      btn.className = "px-3.5 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold whitespace-nowrap active:scale-95 transition-all";
+      showToast("🔗 Enlace copiado al portapapeles.");
+      setTimeout(() => {
+        btn.innerText = "Copiar";
+        btn.className = "px-3.5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold whitespace-nowrap active:scale-95 transition-all";
+      }, 2000);
+    }
+
+    function checkUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const data = params.get("dieta");
+      if (data) {
+        try {
+          const jsonStr = decodeURIComponent(escape(atob(data)));
+          const payload = JSON.parse(jsonStr);
+          if (payload.d && Array.isArray(payload.d)) {
+            appState.dieta = payload.d.map(item => ({
+              comida: item.c,
+              nombre: item.n,
+              gramos: item.g,
+              data: appState.mapaAlimentos[item.n] || {}
+            })).filter(x => x.data.calorias !== undefined);
+          }
+          if (payload.p) appState.preparaciones = payload.p;
+          if (payload.a) appState.alumnoNombre = payload.a;
+          if (payload.s && RDA_PROFILES[payload.s]) appState.perfil = payload.s;
+          if (payload.w) appState.peso = payload.w;
+          if (payload.k) appState.caloriasMeta = payload.k;
+          if (payload.fp) appState.factorProt = payload.fp;
+          if (payload.icmin) appState.iomCarbsMinPct = payload.icmin;
+          if (payload.icmax) appState.iomCarbsMaxPct = payload.icmax;
+          if (payload.ifmin) appState.iomFatsMinPct = payload.ifmin;
+          if (payload.ifmax) appState.iomFatsMaxPct = payload.ifmax;
+          showToast("🎉 ¡Dieta restaurada exitosamente desde el enlace!");
+        } catch (e) {
+          console.error("Error al decodificar dieta desde URL:", e);
+        }
+      }
+    }
+
+    // 14. Generar Infografía PNG Vertical para Móvil
+    // 14. Generador del Reporte Gráfico Nutricional (% RDA Cubierto) en PDF y PNG
+    const REPORT_MINERALS = [
+      { label: "Calcio", key: "calcio_mg", defaultTarget: 1300.0, unit: "mg", isLimit: false },
+      { label: "Hierro", key: "hierro_mg", defaultTarget: 11.0, unit: "mg", isLimit: false },
+      { label: "Magnesio", key: "magnesio_mg", defaultTarget: 410.0, unit: "mg", isLimit: false },
+      { label: "Fósforo", key: "fosforo_mg", defaultTarget: 1250.0, unit: "mg", isLimit: false },
+      { label: "Potasio", key: "potasio_mg", defaultTarget: 3000.0, unit: "mg", isLimit: false },
+      { label: "Zinc", key: "zinc_mg", defaultTarget: 11.0, unit: "mg", isLimit: false },
+      { label: "Selenio", key: "selenio_ug", defaultTarget: 55.0, unit: "ug", isLimit: false },
+      { label: "Manganeso", key: "manganeso_mg", defaultTarget: 2.2, unit: "mg", isLimit: false },
+      { label: "Cobre", key: "cobre_mg", defaultTarget: 0.89, unit: "mg", isLimit: false },
+      { label: "Sodio (máx)", key: "sodio_mg", defaultTarget: 2300.0, unit: "mg", isLimit: true }
+    ];
+
+    const REPORT_VITAMINS = [
+      { label: "Vitamina A", key: "vitamina_a_ug", defaultTarget: 900.0, unit: "ug", isLimit: false },
+      { label: "Vitamina C", key: "vitamina_c_mg", defaultTarget: 75.0, unit: "mg", isLimit: false },
+      { label: "Vitamina D", key: "vitamina_d_iu", defaultTarget: 600.0, unit: "IU", isLimit: false },
+      { label: "Vitamina E", key: "vitamina_e_mg", defaultTarget: 15.0, unit: "mg", isLimit: false },
+      { label: "Vitamina K", key: "vitamina_k_ug", defaultTarget: 75.0, unit: "ug", isLimit: false },
+      { label: "Vitamina B1 (Tiamina)", key: "b1_tiamina_mg", defaultTarget: 1.2, unit: "mg", isLimit: false },
+      { label: "Vitamina B2 (Riboflavina)", key: "b2_riboflavina_mg", defaultTarget: 1.3, unit: "mg", isLimit: false },
+      { label: "Vitamina B3 (Niacina)", key: "b3_niacina_mg", defaultTarget: 16.0, unit: "mg", isLimit: false },
+      { label: "Vitamina B6 (Piridoxina)", key: "b6_piridoxina_mg", defaultTarget: 1.3, unit: "mg", isLimit: false },
+      { label: "Folatos (B9)", key: "folatos_ug", defaultTarget: 400.0, unit: "ug", isLimit: false },
+      { label: "Vitamina B12", key: "b12_cobalamina_ug", defaultTarget: 2.4, unit: "ug", isLimit: false },
+      { label: "Colina", key: "colina_mg", defaultTarget: 550.0, unit: "mg", isLimit: false }
+    ];
+
+    function renderReportOnCanvas(totals, targets) {
+      const canvas = document.getElementById("export-canvas") || document.createElement("canvas");
+      canvas.width = 1100;
+      canvas.height = 1320;
+      const ctx = canvas.getContext("2d");
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const renderSubplot = (title, items, topY, height) => {
+        const leftX = 230;
+        const rightX = 860;
+        const plotW = rightX - leftX;
+        const bottomY = topY + height;
+        const maxScale = 200;
+        const CAP_PCT = 200;
+
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#0e7490";
+        ctx.font = "bold 17px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        ctx.fillText(title, (leftX + rightX) / 2, topY - 22);
+
+        const itemData = items.map(it => {
+          const val = Number(totals[it.key] || 0.0);
+          const target = Number(targets[it.key] || it.defaultTarget || 1.0);
+          const p = target > 0 ? (val / target) * 100.0 : 0.0;
+          return { ...it, val, target, pct: p };
+        });
+
+        // Línea punteada de meta 100% RDA (en la mitad exacta de la escala)
+        const x100 = leftX + (100 / maxScale) * plotW;
+        ctx.save();
+        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = "#2a9d8f";
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(x100, topY);
+        ctx.lineTo(x100, bottomY);
+        ctx.stroke();
+        ctx.restore();
+
+        // Ejes izquierdo e inferior (terminan en 200%)
+        ctx.strokeStyle = "#64748b";
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(leftX, topY);
+        ctx.lineTo(leftX, bottomY);
+        ctx.lineTo(rightX, bottomY);
+        ctx.stroke();
+
+        // Ticks del eje X: 0, 50, 100, 150, 200
+        ctx.textAlign = "center";
+        ctx.font = "12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        ctx.fillStyle = "#334155";
+        for (let t = 0; t <= maxScale; t += 50) {
+          const tx = leftX + (t / maxScale) * plotW;
+          ctx.beginPath();
+          ctx.moveTo(tx, bottomY);
+          ctx.lineTo(tx, bottomY + 4);
+          ctx.stroke();
+          ctx.fillText(t.toString(), tx, bottomY + 18);
+        }
+
+        // Barras horizontales
+        const slotH = height / itemData.length;
+        const barH = Math.min(24, slotH * 0.58);
+
+        itemData.forEach((it, idx) => {
+          const clampedPct = Math.min(it.pct, CAP_PCT);
+          const barW = Math.max(0, (clampedPct / maxScale) * plotW);
+          const barY = topY + idx * slotH + (slotH - barH) / 2;
+
+          let color = "#13a072"; // Verde adecuado
+          if (it.isLimit) {
+            color = it.pct <= 100 ? "#13a072" : "#ef4444";
+          } else {
+            if (it.pct >= 100) color = "#13a072";
+            else if (it.pct >= 50) color = "#f59e0b";
+            else color = "#ef4444";
+          }
+
+          ctx.fillStyle = color;
+          if (barW > 0) {
+            ctx.fillRect(leftX, barY, barW, barH);
+          }
+
+          // Etiqueta del nutriente a la izquierda
+          ctx.textAlign = "right";
+          ctx.fillStyle = "#0f172a";
+          ctx.font = "bold 13px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+          ctx.fillText(it.label, leftX - 10, barY + barH - 6);
+
+          // Anotación numérica a la derecha de la barra (muestra el % real sin truncar)
+          ctx.textAlign = "left";
+          ctx.fillStyle = "#1e293b";
+          ctx.font = "bold 11.5px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+          const dispTarget = it.target.toFixed(1);
+          const txt = `${it.val.toFixed(1)} / ${dispTarget}${it.unit} (${Math.round(it.pct)}%)`;
+          ctx.fillText(txt, leftX + barW + 7, barY + barH - 6);
+        });
+
+        // Leyenda inferior derecha 100% RDA
+        const legW = 110;
+        const legH = 24;
+        const legX = rightX - legW;
+        const legY = bottomY - 32;
+
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.fillStyle = "#ffffff";
+        ctx.lineWidth = 1.0;
+        ctx.fillRect(legX, legY, legW, legH);
+        ctx.strokeRect(legX, legY, legW, legH);
+
+        ctx.save();
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = "#2a9d8f";
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(legX + 8, legY + legH / 2);
+        ctx.lineTo(legX + 28, legY + legH / 2);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#334155";
+        ctx.font = "11px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        ctx.fillText("100% RDA", legX + 34, legY + legH / 2 + 4);
+      };
+
+      renderSubplot("MINERALES Y ELECTROLITOS (% RDA CUBIERTO)", REPORT_MINERALS, 55, 480);
+      renderSubplot("VITAMINAS COMPLETAS (% RDA CUBIERTO)", REPORT_VITAMINS, 630, 580);
+
+      return canvas.toDataURL("image/png");
+    }
+
+    async function generateInfographicPNG(download = true) {
+      const totals = calculateTotals();
+      const targets = getTargets();
+
+      let dataUrl = "";
+      try {
+        const resp = await fetch("/api/reporte_nutricional.png", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ totales: totals, targets: targets, format: "png" })
+        });
+        if (resp.ok) {
+          const blob = await resp.blob();
+          dataUrl = URL.createObjectURL(blob);
+        }
+      } catch (e) {
+        console.log("Servidor local no disponible, renderizando en Canvas:", e);
+      }
+
+      if (!dataUrl) {
+        dataUrl = renderReportOnCanvas(totals, targets);
+      }
+
+      const previewImg = document.getElementById("infographic-preview-img");
+      if (previewImg) previewImg.src = dataUrl;
+      const inlineImg = document.getElementById("nutrient-chart-inline-img");
+      if (inlineImg) inlineImg.src = dataUrl;
+
+      const previewContainer = document.getElementById("infographic-preview-container");
+      if (previewContainer) previewContainer.classList.remove("hidden");
+
+      if (download) {
+        const link = document.createElement("a");
+        link.download = `reporte_nutricional_${appState.alumnoNombre || 'alumno'}.png`;
+        link.href = dataUrl;
+        link.click();
+        showToast("📥 ¡Reporte nutricional PNG descargado con éxito!");
+      }
+      return dataUrl;
+    }
+
+    async function downloadReportPDF() {
+      const totals = calculateTotals();
+      const targets = getTargets();
+
+      showToast("⏳ Generando reporte PDF...");
+
+      // 1. Intentar descargar PDF vectorial generado en el backend Python
+      try {
+        const resp = await fetch("/api/reporte_nutricional.pdf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ totales: totals, targets: targets, format: "pdf" })
+        });
+        if (resp.ok) {
+          const blob = await resp.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.download = `reporte_nutricional_${appState.alumnoNombre || 'alumno'}.pdf`;
+          link.href = blobUrl;
+          link.click();
+          showToast("📄 ¡Reporte PDF vectorial descargado con éxito!");
+          return;
+        }
+      } catch (err) {
+        console.log("Servidor local no disponible, generando PDF mediante jsPDF local:", err);
+      }
+
+      // 2. Fallback a jsPDF en el navegador (100% compatible con GitHub Pages y offline)
+      try {
+        const imgData = renderReportOnCanvas(totals, targets);
+        if (window.jspdf && window.jspdf.jsPDF) {
+          const doc = new window.jspdf.jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4"
+          });
+          const pageW = 210;
+          const pageH = 297;
+          const margin = 10;
+          const imgW = pageW - margin * 2;
+          const imgH = (1320 / 1100) * imgW;
+
+          doc.addImage(imgData, "PNG", margin, margin, imgW, Math.min(imgH, pageH - margin * 2));
+          doc.save(`reporte_nutricional_${appState.alumnoNombre || 'alumno'}.pdf`);
+          showToast("📄 ¡Reporte PDF descargado con éxito!");
+        } else {
+          // Fallback a impresión nativa del sistema
+          const w = window.open("");
+          w.document.write(`<img src="${imgData}" style="width:100%;" onload="window.print();window.close();" />`);
+        }
+      } catch (e) {
+        console.error("Error generando PDF local:", e);
+        showToast("⚠️ Descargando como imagen PNG de alta calidad...");
+        generateInfographicPNG(true);
+      }
+    }
+
+    async function updateChartPreview() {
+      await generateInfographicPNG(false);
+    }
+
+    function setNutrientViewMode(mode) {
+      appState.nutrientViewMode = mode;
+      const cardsBtn = document.getElementById("view-mode-cards-btn");
+      const chartBtn = document.getElementById("view-mode-chart-btn");
+      const filterBar = document.getElementById("category-filter-bar");
+      const hintText = document.getElementById("nutrient-tap-hint");
+      const cardsContainer = document.getElementById("nutrient-cards-container");
+      const chartContainer = document.getElementById("nutrient-graphic-report-container");
+
+      if (mode === "chart") {
+        if (cardsBtn) cardsBtn.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all";
+        if (chartBtn) chartBtn.className = "px-3 py-1 rounded-lg text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sm transition-all";
+        if (filterBar) filterBar.classList.add("hidden");
+        if (hintText) hintText.classList.add("hidden");
+        if (cardsContainer) cardsContainer.classList.add("hidden");
+        if (chartContainer) {
+          chartContainer.classList.remove("hidden");
+          chartContainer.classList.add("flex");
+        }
+        updateChartPreview();
+      } else {
+        if (chartBtn) chartBtn.className = "px-3 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all";
+        if (cardsBtn) cardsBtn.className = "px-3 py-1 rounded-lg text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-sm transition-all";
+        if (filterBar) filterBar.classList.remove("hidden");
+        if (hintText) hintText.classList.remove("hidden");
+        if (cardsContainer) cardsContainer.classList.remove("hidden");
+        if (chartContainer) {
+          chartContainer.classList.add("hidden");
+          chartContainer.classList.remove("flex");
+        }
+      }
+    }
+
+    // 15. Modales y Navegación
+    function switchTab(tabId) {
+      const tabs = ['cargar', 'nutrientes', 'pauta', 'compartir'];
+      tabs.forEach(t => {
+        const sec = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (t === tabId) {
+          sec.classList.remove("hidden");
+          sec.classList.add("flex");
+          btn.className = "py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/30 transition-all";
+        } else {
+          sec.classList.add("hidden");
+          sec.classList.remove("flex");
+          btn.className = "py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition-all";
+        }
+      });
+      if (tabId === 'compartir' || (tabId === 'nutrientes' && appState.nutrientViewMode === 'chart')) {
+        updateChartPreview();
+      }
+    }
+
+    function toggleSettingsModal() {
+      const modal = document.getElementById("settings-modal");
+      const isOpen = !modal.classList.contains("opacity-0");
+      if (isOpen) {
+        modal.classList.add("opacity-0", "pointer-events-none");
+        modal.querySelector(".modal-content").classList.remove("scale-100");
+        modal.querySelector(".modal-content").classList.add("scale-95");
+      } else {
+        document.getElementById("setting-name").value = appState.alumnoNombre;
+        document.getElementById("setting-profile").value = appState.perfil;
+        document.getElementById("setting-weight").value = appState.peso;
+        document.getElementById("setting-cal").value = appState.caloriasMeta;
+        document.getElementById("setting-prot-factor").value = appState.factorProt;
+        document.getElementById("setting-prot-label").innerText = appState.factorProt;
+
+        document.getElementById("setting-carbs-min").value = appState.iomCarbsMinPct || 45;
+        document.getElementById("setting-carbs-max").value = appState.iomCarbsMaxPct || 65;
+        document.getElementById("setting-fats-min").value = appState.iomFatsMinPct || 20;
+        document.getElementById("setting-fats-max").value = appState.iomFatsMaxPct || 35;
+        updateSettingsIomGrams();
+
+        const elGroq1 = document.getElementById("setting-groq-key1");
+        if (elGroq1) {
+          const keys = getStoredAiKeys();
+          elGroq1.value = keys.groq1 || "";
+          document.getElementById("setting-groq-key2").value = keys.groq2 || "";
+          document.getElementById("setting-gemini-key").value = keys.gemini || "";
+        }
+
+        const elSheets = document.getElementById("setting-sheets-url");
+        if (elSheets) {
+          elSheets.value = localStorage.getItem("NUTRI_SHEETS_URL") || window.GOOGLE_SHEETS_URL || "";
+        }
+        
+        modal.classList.remove("opacity-0", "pointer-events-none");
+        modal.querySelector(".modal-content").classList.remove("scale-95");
+        modal.querySelector(".modal-content").classList.add("scale-100");
+      }
+    }
+
+    function updateSettingsIomGrams() {
+      const cal = parseInt(document.getElementById("setting-cal").value) || 2500;
+      const cMin = parseFloat(document.getElementById("setting-carbs-min").value) || 45;
+      const cMax = parseFloat(document.getElementById("setting-carbs-max").value) || 65;
+      const fMin = parseFloat(document.getElementById("setting-fats-min").value) || 20;
+      const fMax = parseFloat(document.getElementById("setting-fats-max").value) || 35;
+
+      const cGMin = Math.round((cal * (cMin / 100)) / 4);
+      const cGMax = Math.round((cal * (cMax / 100)) / 4);
+      const fGMin = Math.round((cal * (fMin / 100)) / 9);
+      const fGMax = Math.round((cal * (fMax / 100)) / 9);
+
+      document.getElementById("setting-carbs-hint").innerText = `${cGMin} - ${cGMax}g (${cMin}-${cMax}%)`;
+      document.getElementById("setting-fats-hint").innerText = `${fGMin} - ${fGMax}g (${fMin}-${fMax}%)`;
+    }
+
+    function onProfileChange() {
+      const p = document.getElementById("setting-profile").value;
+      const r = RDA_PROFILES[p];
+      if (r) {
+        document.getElementById("setting-cal").value = r.calorias_ref;
+        document.getElementById("setting-prot-factor").value = r.prot_base_g_kg;
+        document.getElementById("setting-prot-label").innerText = r.prot_base_g_kg;
+        updateSettingsIomGrams();
+      }
+    }
+
+    function saveSettings() {
+      appState.alumnoNombre = document.getElementById("setting-name").value.trim();
+      const sheetsInput = document.getElementById("sheets-student-name");
+      if (sheetsInput) sheetsInput.value = appState.alumnoNombre;
+
+      appState.perfil = document.getElementById("setting-profile").value;
+      appState.peso = parseFloat(document.getElementById("setting-weight").value) || 70.0;
+      appState.caloriasMeta = parseInt(document.getElementById("setting-cal").value) || 2500;
+      appState.factorProt = parseFloat(document.getElementById("setting-prot-factor").value) || 0.85;
+
+      appState.iomCarbsMinPct = parseFloat(document.getElementById("setting-carbs-min").value) || 45;
+      appState.iomCarbsMaxPct = parseFloat(document.getElementById("setting-carbs-max").value) || 65;
+      appState.iomFatsMinPct = parseFloat(document.getElementById("setting-fats-min").value) || 20;
+      appState.iomFatsMaxPct = parseFloat(document.getElementById("setting-fats-max").value) || 35;
+
+      const elGroq1 = document.getElementById("setting-groq-key1");
+      if (elGroq1) {
+        const k1 = elGroq1.value.trim();
+        const k2 = document.getElementById("setting-groq-key2").value.trim();
+        const kg = document.getElementById("setting-gemini-key").value.trim();
+        localStorage.setItem("NUTRI_AI_KEYS", JSON.stringify({ groq1: k1, groq2: k2, gemini: kg }));
+      }
+
+      const elSheets = document.getElementById("setting-sheets-url");
+      if (elSheets && elSheets.value.trim()) {
+        const urlVal = elSheets.value.trim();
+        localStorage.setItem("NUTRI_SHEETS_URL", urlVal);
+        window.GOOGLE_SHEETS_URL = urlVal;
+      }
+
+      toggleSettingsModal();
+      showToast("⚙️ Metas, perfil y configuración actualizados.");
+      renderAll();
+    }
+
+    // =========================================================================
+    // ENVÍO DE DATOS A GOOGLE SHEETS
+    // =========================================================================
+    async function enviarDietaAGoogleSheets() {
+      if (!appState.dieta || appState.dieta.length === 0) {
+        showToast("⚠️ Primero agrega alimentos a tu menú antes de enviar.", "error");
+        switchTab("cargar");
+        return;
+      }
+
+      // Obtener o solicitar nombre del alumno
+      let alumno = (appState.alumnoNombre || "").trim();
+      const inputName = document.getElementById("sheets-student-name");
+      if (inputName && inputName.value.trim()) {
+        alumno = inputName.value.trim();
+        appState.alumnoNombre = alumno;
+      }
+      if (!alumno) {
+        const promptName = prompt("Por favor ingresa tu Apellido, Nombre y Legajo / DNI:");
+        if (!promptName || !promptName.trim()) {
+          showToast("⚠️ Se requiere tu nombre para registrar los datos en la hoja de cálculo.", "error");
+          return;
+        }
+        alumno = promptName.trim();
+        appState.alumnoNombre = alumno;
+        if (inputName) inputName.value = alumno;
+        const setInput = document.getElementById("setting-name");
+        if (setInput) setInput.value = alumno;
+      }
+
+      // Totales
+      const totals = calculateTotals();
+      const targets = getTargets();
+      const cal = Math.round(totals.calorias || 0);
+      const metaCal = appState.caloriasMeta || 2500;
+      const pctAdecuacion = Math.round((cal / metaCal) * 1000) / 10;
+
+      // Desglose de comidas
+      const comidasMap = { "Desayuno": [], "Almuerzo": [], "Merienda": [], "Cena": [], "Colación": [] };
+      appState.dieta.forEach(item => {
+        const m = comidasMap[item.comida] ? item.comida : "Colación";
+        const kc = Math.round((item.data.calorias || 0) * (item.gramos / 100.0));
+        comidasMap[m].push(`${item.nombre} (${item.gramos}g, ${kc} kcal)`);
+      });
+
+      // Macros y % VCT
+      const pG = Math.round((totals.proteinas_g || 0) * 10) / 10;
+      const cG = Math.round((totals.carbohidratos_g || 0) * 10) / 10;
+      const gG = Math.round((totals.grasas_g || 0) * 10) / 10;
+      const fG = Math.round((totals.fibra_g || 0) * 10) / 10;
+      const pPct = cal > 0 ? Math.round(((pG * 4) / cal) * 100) : 0;
+      const cPct = cal > 0 ? Math.round(((cG * 4) / cal) * 100) : 0;
+      const gPct = cal > 0 ? Math.round(((gG * 9) / cal) * 100) : 0;
+
+      // Micronutrientes completos y conteo
+      let optimos = 0;
+      let deficientes = 0;
+      const todosNutrientes = {};
+
+      NUTRIENT_CARDS_LIST.forEach(n => {
+        const val = totals[n.id] || 0;
+        const tgt = targets[n.id] || 1;
+        const pct = Math.round((val / tgt) * 100);
+        todosNutrientes[n.name] = `${val.toFixed(1)} ${n.unit} (${pct}% RDA)`;
+        if (!n.isLimit) {
+          if (pct >= 100) optimos++;
+          else if (pct < 70) deficientes++;
+        }
+      });
+
+      const payload = {
+        tipo: "dieta_2500",
+        fecha: new Date().toLocaleString("es-AR"),
+        alumno: alumno,
+        calorias_totales: cal,
+        meta_calorias: metaCal,
+        adecuacion_calorica_pct: pctAdecuacion,
+        proteinas_g: pG,
+        proteinas_pct_vct: pPct,
+        carbohidratos_g: cG,
+        carbohidratos_pct_vct: cPct,
+        grasas_g: gG,
+        grasas_pct_vct: gPct,
+        fibra_g: fG,
+        desayuno: comidasMap["Desayuno"].join(" | ") || "Sin alimentos",
+        almuerzo: comidasMap["Almuerzo"].join(" | ") || "Sin alimentos",
+        merienda: comidasMap["Merienda"].join(" | ") || "Sin alimentos",
+        cena: comidasMap["Cena"].join(" | ") || "Sin alimentos",
+        colacion: comidasMap["Colación"].join(" | ") || "Sin alimentos",
+        calcio_pct: Math.round(((totals.calcio_mg || 0) / (targets.calcio_mg || 1)) * 100),
+        hierro_pct: Math.round(((totals.hierro_mg || 0) / (targets.hierro_mg || 1)) * 100),
+        magnesio_pct: Math.round(((totals.magnesio_mg || 0) / (targets.magnesio_mg || 1)) * 100),
+        potasio_pct: Math.round(((totals.potasio_mg || 0) / (targets.potasio_mg || 1)) * 100),
+        sodio_mg: Math.round(totals.sodio_mg || 0),
+        zinc_pct: Math.round(((totals.zinc_mg || 0) / (targets.zinc_mg || 1)) * 100),
+        vitamina_a_pct: Math.round(((totals.vitamina_a_ug || 0) / (targets.vitamina_a_ug || 1)) * 100),
+        vitamina_c_pct: Math.round(((totals.vitamina_c_mg || 0) / (targets.vitamina_c_mg || 1)) * 100),
+        vitamina_d_pct: Math.round(((totals.vitamina_d_iu || 0) / (targets.vitamina_d_iu || 1)) * 100),
+        vitamina_b12_pct: Math.round(((totals.b12_cobalamina_ug || 0) / (targets.b12_cobalamina_ug || 1)) * 100),
+        folatos_pct: Math.round(((totals.folatos_ug || 0) / (targets.folatos_ug || 1)) * 100),
+        nutrientes_optimos: `${optimos} nutrientes (>=100% RDA)`,
+        nutrientes_deficientes: `${deficientes} nutrientes (<70% RDA)`,
+        todos_los_nutrientes: JSON.stringify(todosNutrientes)
+      };
+
+      const scriptUrl = localStorage.getItem("NUTRI_SHEETS_URL") || window.GOOGLE_SHEETS_URL;
+      if (!scriptUrl) {
+        showToast("⚠️ Falta configurar la URL de Google Sheets en ⚙️ Metas.", "error");
+        toggleSettingsModal();
+        return;
+      }
+
+      const btn = document.getElementById("btn-enviar-sheets");
+      const statusMsg = document.getElementById("sheets-status-msg");
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span>⏳</span> <span>Enviando datos a la planilla...</span>`;
+      }
+      if (statusMsg) {
+        statusMsg.classList.remove("hidden");
+        statusMsg.innerText = "⏳ Conectando con Google Sheets...";
+        statusMsg.className = "text-[11px] font-mono text-cyan-400 text-center";
+      }
+
+      try {
+        await fetch(scriptUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        showToast(`✅ ¡Dieta enviada con éxito para <b>${alumno}</b>!`);
+        if (statusMsg) {
+          statusMsg.innerText = `✅ Registro guardado con éxito (${new Date().toLocaleTimeString()})`;
+          statusMsg.className = "text-[11px] font-mono text-emerald-400 text-center font-bold";
+        }
+        showSubmissionSuccessModal(alumno, cal, metaCal, pctAdecuacion, pG, cG, gG, fG, optimos, deficientes);
+      } catch (err) {
+        console.error("Error al enviar a Google Sheets:", err);
+        showToast("❌ Error al enviar datos a Google Sheets.", "error");
+        if (statusMsg) {
+          statusMsg.innerText = "❌ Error de conexión al enviar.";
+          statusMsg.className = "text-[11px] font-mono text-rose-400 text-center";
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span>📤</span> <span>Mandar Todo a la Hoja de Cálculos</span>`;
+        }
+      }
+    }
+
+    function showSubmissionSuccessModal(alumno, cal, metaCal, pct, p, c, g, f, opt, def) {
+      let modal = document.getElementById("submission-success-modal");
+      if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "submission-success-modal";
+        modal.className = "fixed inset-0 z-50 flex items-center justify-center p-3 modal-backdrop transition-opacity duration-200";
+        document.body.appendChild(modal);
+      }
+
+      modal.innerHTML = `
+        <div class="modal-content w-full max-w-[440px] bg-[#0E1320] border border-emerald-500/50 rounded-2xl p-5 shadow-2xl flex flex-col gap-3.5 transform scale-100" onclick="event.stopPropagation()">
+          <div class="flex items-center gap-3 pb-3 border-b border-white/[0.08]">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-xl">
+              ✅
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">¡Dieta Enviada con Éxito!</h3>
+              <p class="text-[11px] font-mono text-emerald-400">Datos registrados en la Hoja de Cálculo</p>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-appbg border border-white/[0.06] flex flex-col gap-2 text-xs">
+            <div class="flex justify-between items-center text-slate-300">
+              <span class="text-slate-400">Alumno:</span>
+              <span class="font-bold text-white">${alumno}</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-300">
+              <span class="text-slate-400">Energía Total:</span>
+              <span class="font-mono font-bold text-cyan-300">${cal} / ${metaCal} kcal (${pct}%)</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-300 pt-1 border-t border-white/[0.04]">
+              <span class="text-slate-400">Macronutrientes:</span>
+              <span class="font-mono text-slate-200">P: ${p}g · C: ${c}g · G: ${g}g · F: ${f}g</span>
+            </div>
+            <div class="flex justify-between items-center text-slate-300 pt-1 border-t border-white/[0.04]">
+              <span class="text-slate-400">Micronutrientes RDA:</span>
+              <span class="font-mono text-emerald-400 font-semibold">${opt} al 100% · ${def} con déficit</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 pt-1">
+            <button onclick="downloadReportPDF()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs shadow-md shadow-blue-500/25 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+              <span>📄</span>
+              <span>Descargar Comprobante / Reporte PDF</span>
+            </button>
+            <button onclick="document.getElementById('submission-success-modal').classList.add('hidden')" class="w-full py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-slate-300 text-xs font-semibold active:scale-95 transition-all">
+              Aceptar y Cerrar
+            </button>
+          </div>
+        </div>
+      `;
+      modal.classList.remove("hidden");
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
