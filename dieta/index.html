@@ -752,10 +752,10 @@
     };
 
     // Configuración por defecto de Google Sheets para la hoja de cálculo de dietas
-    window.DEFAULT_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz0SsZ460AnXzl6m4ogK4FMC1v24ZJwhqFfvUJqLziG_KmP7cITRc3dCED9satdkBBtbw/exec";
+    window.DEFAULT_SHEETS_URL = "https://script.google.com/macros/s/AKfycbz060AYtiBOTUVXFX_09ff7KFz0ddciqHQtBrtaiAzNL14m82uDnLgDAe8QczBH4hErFQ/exec";
     // Limpiar URLs de versiones anteriores de prueba
     const currentStoredUrl = localStorage.getItem("NUTRI_SHEETS_URL");
-    if (currentStoredUrl && !currentStoredUrl.includes("AKfycbz0SsZ460AnXzl6m4ogK4FMC1v24ZJwhqFfvUJqLziG_KmP7cITRc3dCED9satdkBBtbw")) {
+    if (currentStoredUrl && !currentStoredUrl.includes("AKfycbz060AYtiBOTUVXFX_09ff7KFz0ddciqHQtBrtaiAzNL14m82uDnLgDAe8QczBH4hErFQ")) {
       localStorage.removeItem("NUTRI_SHEETS_URL");
     }
     window.GOOGLE_SHEETS_URL = localStorage.getItem("NUTRI_SHEETS_URL") || window.DEFAULT_SHEETS_URL;
