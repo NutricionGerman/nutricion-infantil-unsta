@@ -57,7 +57,7 @@ const questions = [
 ];
 
 // URL DEL SCRIPT ACTUALIZADO
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOxUYe6QJehfXRehv4Rr8xrlJ63SmfPE3rccACnmtYnlRXAWezUrDWa4aDpRsnkdsDPA/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxi3lgWj_MFPYhsl3UTjnaT0gVA8UJIbvfbUvL10B4QX0xhCXWKdONR9oiRvZSCW2h2XA/exec";
 
 // Función para aleatorizar arrays
 function shuffleArray(array) {

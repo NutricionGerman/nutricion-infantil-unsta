@@ -39,3 +39,7 @@ migrate_rest.mjs
 import_data.js
 test.mjs
 scratch/
+
+# Carpetas aisladas / no subir
+PROYECTO_AISLADO/
+**/PROYECTO_AISLADO/

@@ -97,6 +97,127 @@ function doPost(e) {
         sheet.appendRow(rowEvaluado);
       }
       
+    } else if (data.tipo === "duelo_alimentos" || data.top1) {
+      // =========================================================================
+      // CASO 3: DUELO DE ALIMENTOS SALUDABLES (REGISTRO TOP 5)
+      // =========================================================================
+      if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === "") {
+        var headersDuelo = [
+          "Fecha y Hora", 
+          "UP / Legajo", 
+          "Nombre del Alumno", 
+          "Tiempo", 
+          "Infracciones",
+          "1° Puesto (Campeón)", 
+          "2° Puesto", 
+          "3° Puesto", 
+          "4° Puesto", 
+          "5° Puesto",
+          "Pregunta: Paradigma Imperante",
+          "Pregunta: Cambio de Paradigma"
+        ];
+        sheet.getRange(1, 1, 1, headersDuelo.length).setValues([headersDuelo]);
+        sheet.getRange(1, 1, 1, headersDuelo.length).setFontWeight("bold");
+      }
+      
+      var p1Resp = (data.respuestas && data.respuestas[5]) ? data.respuestas[5].respuesta_alumno : "";
+      var p2Resp = (data.respuestas && data.respuestas[6]) ? data.respuestas[6].respuesta_alumno : "";
+
+      var rowDuelo = [
+        new Date(),
+        data.up || "",
+        data.nombre || "",
+        data.tiempo || "",
+        data.trampas !== undefined ? data.trampas : 0,
+        data.top1 || "",
+        data.top2 || "",
+        data.top3 || "",
+        data.top4 || "",
+        data.top5 || "",
+        p1Resp,
+        p2Resp
+      ];
+      sheet.appendRow(rowDuelo);
+      
+    } else if (data.tipo === "dieta_2500" || data.clase === "Dieta_2500") {
+      // =========================================================================
+      // CASO 4: TALLER MI DIETA PERFECTA (2500 KCAL & ANÁLISIS RDA)
+      // =========================================================================
+      if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === "") {
+        var headersDieta = [
+          "Fecha y Hora", 
+          "UP / Legajo", 
+          "Nombre del Alumno", 
+          "Calorías Totales (kcal)", 
+          "Meta Calórica (kcal)", 
+          "% Adecuación Calórica", 
+          "Proteínas (g)", 
+          "% Prot VCT", 
+          "Carbohidratos (g)", 
+          "% Carbs VCT", 
+          "Grasas (g)", 
+          "% Grasas VCT", 
+          "Fibra (g)", 
+          "Desayuno", 
+          "Almuerzo", 
+          "Merienda", 
+          "Cena", 
+          "Colación", 
+          "Calcio (% RDA)", 
+          "Hierro (% RDA)", 
+          "Magnesio (% RDA)", 
+          "Potasio (% RDA)", 
+          "Sodio (mg)", 
+          "Zinc (% RDA)", 
+          "Vitamina A (% RDA)", 
+          "Vitamina C (% RDA)", 
+          "Vitamina D (% RDA)", 
+          "Vitamina B12 (% RDA)", 
+          "Folatos (% RDA)", 
+          "Nutrientes Óptimos (>=100%)", 
+          "Nutrientes Deficientes (<70%)",
+          "Detalle Completo JSON"
+        ];
+        sheet.getRange(1, 1, 1, headersDieta.length).setValues([headersDieta]);
+        sheet.getRange(1, 1, 1, headersDieta.length).setFontWeight("bold");
+      }
+      
+      var rowDieta = [
+        new Date(),
+        data.up || "",
+        data.nombre || "",
+        data.calorias_totales || 0,
+        data.meta_calorias || 2500,
+        data.adecuacion_calorica_pct ? (data.adecuacion_calorica_pct + "%") : "",
+        data.proteinas_g || 0,
+        data.proteinas_pct_vct ? (data.proteinas_pct_vct + "%") : "",
+        data.carbohidratos_g || 0,
+        data.carbohidratos_pct_vct ? (data.carbohidratos_pct_vct + "%") : "",
+        data.grasas_g || 0,
+        data.grasas_pct_vct ? (data.grasas_pct_vct + "%") : "",
+        data.fibra_g || 0,
+        data.desayuno || "Sin alimentos",
+        data.almuerzo || "Sin alimentos",
+        data.merienda || "Sin alimentos",
+        data.cena || "Sin alimentos",
+        data.colacion || "Sin alimentos",
+        data.calcio_pct ? (data.calcio_pct + "%") : "",
+        data.hierro_pct ? (data.hierro_pct + "%") : "",
+        data.magnesio_pct ? (data.magnesio_pct + "%") : "",
+        data.potasio_pct ? (data.potasio_pct + "%") : "",
+        data.sodio_mg || 0,
+        data.zinc_pct ? (data.zinc_pct + "%") : "",
+        data.vitamina_a_pct ? (data.vitamina_a_pct + "%") : "",
+        data.vitamina_c_pct ? (data.vitamina_c_pct + "%") : "",
+        data.vitamina_d_pct ? (data.vitamina_d_pct + "%") : "",
+        data.vitamina_b12_pct ? (data.vitamina_b12_pct + "%") : "",
+        data.folatos_pct ? (data.folatos_pct + "%") : "",
+        data.nutrientes_optimos || "",
+        data.nutrientes_deficientes || "",
+        data.detalle_json || ""
+      ];
+      sheet.appendRow(rowDieta);
+      
     } else {
       // =========================================================================
       // CASO 2: CUESTIONARIO / ASISTENCIA TEÓRICA TRADICIONAL (1 FILA)
