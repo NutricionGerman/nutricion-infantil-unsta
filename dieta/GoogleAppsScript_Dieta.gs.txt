@@ -1,0 +1,150 @@
+// =============================================================================
+// GOOGLE APPS SCRIPT - REGISTRO DE DIETAS NUTRICIONALES (48 COLUMNAS CON TIPO DE DIETA)
+// =============================================================================
+// INSTRUCCIONES:
+// 1. En Google Sheets, ve a Extensiones > Apps Script.
+// 2. Selecciona TODO el código existente (Ctrl + A) y bórralo.
+// 3. Pega TODO este código nuevo.
+// 4. Haz clic en Guardar (icono de disquete).
+// 5. Haz clic en Implementar > Administrar implementaciones:
+//    - Haz clic en el LÁPIZ (Editar) de la implementación activa.
+//    - En el menú desplegable de "Versión", selecciona "Nueva versión".
+//    - Haz clic en "Implementar".
+// 6. ¡Listo! El script expandirá las columnas y registrará el tipo de dieta (Omnívora, Vegetariana, Vegana).
+// =============================================================================
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    
+    // Nombre de la pestaña para registrar las dietas
+    var sheetName = "Dietas_Registradas";
+    var sheet = spreadsheet.getSheetByName(sheetName);
+    if (!sheet) {
+      sheet = spreadsheet.insertSheet(sheetName);
+    }
+    
+    var headers = [
+      "Fecha y Hora", 
+      "Alumno / Identificación", 
+      "Tipo de Dieta",
+      "Calorías Totales (kcal)", 
+      "Meta Calórica (kcal)", 
+      "% Adecuación Calórica", 
+      "Proteínas (g)", 
+      "% Prot VCT", 
+      "Carbohidratos (g)", 
+      "% Carbs VCT", 
+      "Grasas Totales (g)", 
+      "% Grasas VCT", 
+      "Fibra Dietética (g)", 
+      "Grasas Saturadas (g)",
+      "Grasas Monoinsaturadas (g)",
+      "Grasas Poliinsaturadas (g)",
+      "Omega-3 (g)",
+      "Omega-6 (g)",
+      "Colesterol (mg)",
+      "Calcio (% RDA)", 
+      "Hierro (% RDA)", 
+      "Magnesio (% RDA)", 
+      "Fósforo (% RDA)", 
+      "Potasio (% RDA)", 
+      "Sodio (mg)", 
+      "Zinc (% RDA)", 
+      "Selenio (% RDA)", 
+      "Manganeso (% RDA)", 
+      "Cobre (% RDA)", 
+      "Vitamina A (% RDA)", 
+      "Vitamina C (% RDA)", 
+      "Vitamina D (% RDA)", 
+      "Vitamina E (% RDA)", 
+      "Vitamina K (% RDA)", 
+      "Vit B1 Tiamina (% RDA)", 
+      "Vit B2 Riboflavina (% RDA)", 
+      "Vit B3 Niacina (% RDA)", 
+      "Vit B6 Piridoxina (% RDA)", 
+      "Folatos B9 (% RDA)", 
+      "Vitamina B12 (% RDA)", 
+      "Colina (% RDA)", 
+      "Nutrientes Óptimos (>=100%)", 
+      "Nutrientes Deficientes (<70%)", 
+      "Desayuno", 
+      "Almuerzo", 
+      "Merienda", 
+      "Cena", 
+      "Colación"
+    ];
+
+    // Asegurar que la hoja tenga al menos 48 columnas (de la A a la AV)
+    if (sheet.getMaxColumns() < headers.length) {
+      sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
+    }
+    
+    // Auto-actualizar encabezados si la hoja está vacía o si todavía no tiene la columna "Tipo de Dieta"
+    if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === "" || sheet.getRange(1, 3).getValue() !== "Tipo de Dieta") {
+      sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+      sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold");
+      sheet.getRange(1, 1, 1, headers.length).setBackground("#d1fae5");
+    }
+    
+    var row = [
+      data.fecha || new Date(),
+      data.alumno || "",
+      data.tipo_dieta || "Omnívora",
+      data.calorias_totales || 0,
+      data.meta_calorias || 2500,
+      (data.adecuacion_calorica_pct !== undefined ? data.adecuacion_calorica_pct : 0) + "%",
+      data.proteinas_g || 0,
+      (data.proteinas_pct_vct !== undefined ? data.proteinas_pct_vct : 0) + "%",
+      data.carbohidratos_g || 0,
+      (data.carbohidratos_pct_vct !== undefined ? data.carbohidratos_pct_vct : 0) + "%",
+      data.grasas_g || 0,
+      (data.grasas_pct_vct !== undefined ? data.grasas_pct_vct : 0) + "%",
+      data.fibra_g || 0,
+      data.grasas_saturadas_g !== undefined ? data.grasas_saturadas_g : 0,
+      data.grasas_monoinsaturadas_g !== undefined ? data.grasas_monoinsaturadas_g : 0,
+      data.grasas_poliinsaturadas_g !== undefined ? data.grasas_poliinsaturadas_g : 0,
+      data.omega_3_g !== undefined ? data.omega_3_g : 0,
+      data.omega_6_g !== undefined ? data.omega_6_g : 0,
+      data.colesterol_mg !== undefined ? data.colesterol_mg : 0,
+      (data.calcio_pct !== undefined ? data.calcio_pct : 0) + "%",
+      (data.hierro_pct !== undefined ? data.hierro_pct : 0) + "%",
+      (data.magnesio_pct !== undefined ? data.magnesio_pct : 0) + "%",
+      (data.fosforo_pct !== undefined ? data.fosforo_pct : 0) + "%",
+      (data.potasio_pct !== undefined ? data.potasio_pct : 0) + "%",
+      data.sodio_mg !== undefined ? data.sodio_mg : 0,
+      (data.zinc_pct !== undefined ? data.zinc_pct : 0) + "%",
+      (data.selenio_pct !== undefined ? data.selenio_pct : 0) + "%",
+      (data.manganeso_pct !== undefined ? data.manganeso_pct : 0) + "%",
+      (data.cobre_pct !== undefined ? data.cobre_pct : 0) + "%",
+      (data.vitamina_a_pct !== undefined ? data.vitamina_a_pct : 0) + "%",
+      (data.vitamina_c_pct !== undefined ? data.vitamina_c_pct : 0) + "%",
+      (data.vitamina_d_pct !== undefined ? data.vitamina_d_pct : 0) + "%",
+      (data.vitamina_e_pct !== undefined ? data.vitamina_e_pct : 0) + "%",
+      (data.vitamina_k_pct !== undefined ? data.vitamina_k_pct : 0) + "%",
+      (data.b1_tiamina_pct !== undefined ? data.b1_tiamina_pct : 0) + "%",
+      (data.b2_riboflavina_pct !== undefined ? data.b2_riboflavina_pct : 0) + "%",
+      (data.b3_niacina_pct !== undefined ? data.b3_niacina_pct : 0) + "%",
+      (data.b6_piridoxina_pct !== undefined ? data.b6_piridoxina_pct : 0) + "%",
+      (data.folatos_pct !== undefined ? data.folatos_pct : 0) + "%",
+      (data.vitamina_b12_pct !== undefined ? data.vitamina_b12_pct : 0) + "%",
+      (data.colina_pct !== undefined ? data.colina_pct : 0) + "%",
+      data.nutrientes_optimos || "",
+      data.nutrientes_deficientes || "",
+      data.desayuno || "Sin alimentos",
+      data.almuerzo || "Sin alimentos",
+      data.merienda || "Sin alimentos",
+      data.cena || "Sin alimentos",
+      data.colacion || "Sin alimentos"
+    ];
+    
+    sheet.appendRow(row);
+    
+    return ContentService.createTextOutput(JSON.stringify({"result":"success"}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    return ContentService.createTextOutput(JSON.stringify({"error": error.message}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}

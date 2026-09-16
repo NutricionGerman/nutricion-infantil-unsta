@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="flex items-center gap-1.5">
-        <button onclick="enviarDietaAGoogleSheets()" class="px-2.5 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-300 active:scale-95 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-emerald-950/40" title="Enviar todos los datos a la Hoja de Cálculo">
+        <button onclick="irAEnviarSheets()" class="px-2.5 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-300 active:scale-95 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-emerald-950/40" title="Enviar todos los datos a la Hoja de Cálculo">
           <span>📤</span>
           <span>Enviar a Sheets</span>
         </button>
@@ -367,13 +367,39 @@
           Presiona el botón para registrar tu dieta completa (calorías totales, meta 2500 kcal, adecuación, macronutrientes, desglose de comidas y el 100% de los micronutrientes calculados) en la hoja de cálculo de Google Sheets.
         </p>
 
-        <div class="flex flex-col gap-2 pt-1 border-t border-white/[0.06]">
+        <div class="flex flex-col gap-3 pt-1 border-t border-white/[0.06]">
           <div>
             <label class="text-[11px] font-medium text-slate-400 block mb-1">Nombre / Identificación del Alumno:</label>
             <input type="text" id="sheets-student-name" placeholder="Ej: Mateo Pérez - Legajo / UP..." class="w-full p-2.5 rounded-xl bg-appbg border border-white/[0.1] text-xs text-white focus:outline-none focus:border-emerald-400" />
           </div>
 
-          <button onclick="enviarDietaAGoogleSheets()" id="btn-enviar-sheets" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+          <div>
+            <label class="text-[11px] font-medium text-slate-400 block mb-1.5">Tipo de Dieta Diseñada:</label>
+            <div class="grid grid-cols-3 gap-2">
+              <div id="diet-opt-omnivora" class="diet-type-option flex flex-col items-center justify-center p-2 rounded-xl bg-appbg border-2 border-emerald-500 bg-emerald-500/10 cursor-pointer transition-all hover:bg-emerald-500/20 text-center" onclick="selectDietType('Omnívora')">
+                <input type="radio" name="diet-type" value="Omnívora" checked class="hidden" />
+                <span class="text-base">🥩</span>
+                <span class="text-[11px] font-bold text-emerald-300 mt-0.5 diet-opt-title">Omnívora</span>
+                <span class="text-[9px] text-slate-400 leading-tight">Carnes, lácteos, huevos</span>
+              </div>
+
+              <div id="diet-opt-vegetariana" class="diet-type-option flex flex-col items-center justify-center p-2 rounded-xl bg-appbg border-2 border-white/[0.1] cursor-pointer transition-all hover:bg-amber-500/10 text-center" onclick="selectDietType('Vegetariana')">
+                <input type="radio" name="diet-type" value="Vegetariana" class="hidden" />
+                <span class="text-base">🥗</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-0.5 diet-opt-title">Vegetariana</span>
+                <span class="text-[9px] text-slate-400 leading-tight">Sin carnes (con láct/huevo)</span>
+              </div>
+
+              <div id="diet-opt-vegana" class="diet-type-option flex flex-col items-center justify-center p-2 rounded-xl bg-appbg border-2 border-white/[0.1] cursor-pointer transition-all hover:bg-teal-500/10 text-center" onclick="selectDietType('Vegana')">
+                <input type="radio" name="diet-type" value="Vegana" class="hidden" />
+                <span class="text-base">🌱</span>
+                <span class="text-[11px] font-bold text-slate-300 mt-0.5 diet-opt-title">Vegana</span>
+                <span class="text-[9px] text-slate-400 leading-tight">100% vegetal (sin derivados)</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="enviarDietaAGoogleSheets()" id="btn-enviar-sheets" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1">
             <span class="text-base">📤</span>
             <span>Mandar Todo a la Hoja de Cálculos</span>
           </button>
@@ -2383,6 +2409,48 @@
     }
 
     // =========================================================================
+    // NAVEGACIÓN Y TIPO DE DIETA PARA GOOGLE SHEETS
+    // =========================================================================
+    function irAEnviarSheets() {
+      switchTab("compartir");
+      setTimeout(() => {
+        const inp = document.getElementById("sheets-student-name");
+        if (inp) {
+          inp.scrollIntoView({ behavior: "smooth", block: "center" });
+          inp.focus();
+        }
+      }, 100);
+    }
+
+    function selectDietType(tipo) {
+      const opts = {
+        'Omnívora': { id: 'diet-opt-omnivora', border: 'border-emerald-500', bg: 'bg-emerald-500/10', text: 'text-emerald-300' },
+        'Vegetariana': { id: 'diet-opt-vegetariana', border: 'border-amber-500', bg: 'bg-amber-500/10', text: 'text-amber-300' },
+        'Vegana': { id: 'diet-opt-vegana', border: 'border-teal-500', bg: 'bg-teal-500/10', text: 'text-teal-300' }
+      };
+
+      Object.keys(opts).forEach(k => {
+        const el = document.getElementById(opts[k].id);
+        if (!el) return;
+        el.className = 'diet-type-option flex flex-col items-center justify-center p-2 rounded-xl bg-appbg border-2 border-white/[0.1] cursor-pointer transition-all text-center';
+        const title = el.querySelector('.diet-opt-title');
+        if (title) title.className = 'text-[11px] font-bold text-slate-300 mt-0.5 diet-opt-title';
+        const rad = el.querySelector('input[type="radio"]');
+        if (rad) rad.checked = false;
+      });
+
+      const activeConfig = opts[tipo] || opts['Omnívora'];
+      const activeEl = document.getElementById(activeConfig.id);
+      if (activeEl) {
+        activeEl.className = `diet-type-option flex flex-col items-center justify-center p-2 rounded-xl bg-appbg border-2 ${activeConfig.border} ${activeConfig.bg} cursor-pointer transition-all text-center`;
+        const title = activeEl.querySelector('.diet-opt-title');
+        if (title) title.className = `text-[11px] font-bold ${activeConfig.text} mt-0.5 diet-opt-title`;
+        const rad = activeEl.querySelector('input[type="radio"]');
+        if (rad) rad.checked = true;
+      }
+    }
+
+    // =========================================================================
     // ENVÍO DE DATOS A GOOGLE SHEETS
     // =========================================================================
     async function enviarDietaAGoogleSheets() {
@@ -2400,16 +2468,16 @@
         appState.alumnoNombre = alumno;
       }
       if (!alumno) {
-        const promptName = prompt("Por favor ingresa tu Apellido, Nombre y Legajo / DNI:");
-        if (!promptName || !promptName.trim()) {
-          showToast("⚠️ Se requiere tu nombre para registrar los datos en la hoja de cálculo.", "error");
-          return;
-        }
-        alumno = promptName.trim();
-        appState.alumnoNombre = alumno;
-        if (inputName) inputName.value = alumno;
-        const setInput = document.getElementById("setting-name");
-        if (setInput) setInput.value = alumno;
+        irAEnviarSheets();
+        showToast("✍️ Por favor ingresa tu Apellido y Nombre para registrar la dieta.", "error");
+        return;
+      }
+
+      // Tipo de dieta seleccionada
+      let tipoDieta = "Omnívora";
+      const radChecked = document.querySelector('input[name="diet-type"]:checked');
+      if (radChecked && radChecked.value) {
+        tipoDieta = radChecked.value;
       }
 
       // Totales
@@ -2456,6 +2524,7 @@
         tipo: "dieta_2500",
         fecha: new Date().toLocaleString("es-AR"),
         alumno: alumno,
+        tipo_dieta: tipoDieta,
         calorias_totales: cal,
         meta_calorias: metaCal,
         adecuacion_calorica_pct: pctAdecuacion,
