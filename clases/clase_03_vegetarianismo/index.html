@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Clase 03: Vegetarianismo y Cambio de Paradigma | UNSTA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="shortcut icon" href="../../iconos/favicon.ico">
+    <style>
+        :root {
+            --bg-dark: #0a0f1d;
+            --bg-card: rgba(16, 24, 40, 0.75);
+            --bg-card-hover: rgba(23, 34, 56, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-color-glow: rgba(16, 185, 129, 0.3);
+            --primary-emerald: #10b981;
+            --primary-emerald-glow: rgba(16, 185, 129, 0.2);
+            --accent-teal: #14b8a6;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-sub: #64748b;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* HEADER */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(10, 15, 29, 0.85);
+            border-bottom: 1px solid var(--border-color);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .header-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .header-brand-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.05rem;
+            line-height: 1.2;
+        }
+
+        .header-brand-sub {
+            font-size: 0.75rem;
+            color: var(--accent-teal);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-asistencia-header {
+            background: linear-gradient(135deg, var(--primary-emerald), #059669);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-asistencia-header:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HERO */
+        .hero {
+            padding: 44px 0 24px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 999px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 2.35rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #34d399, #10b981, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 760px;
+            margin: 0 auto 28px;
+            line-height: 1.6;
+        }
+
+        /* CARDS & SECTIONS */
+        .section {
+            margin-top: 36px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: border-color 0.25s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: #fff;
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* DEFINITION BOX */
+        .definition-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(20, 184, 166, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-left: 4px solid var(--primary-emerald);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            margin: 20px 0;
+        }
+
+        .definition-title {
+            font-weight: 700;
+            color: #34d399;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .definition-quote {
+            font-size: 1.12rem;
+            font-style: italic;
+            color: #f1f5f9;
+            line-height: 1.6;
+        }
+
+        /* GRID RESULTS */
+        .grid-results {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        @media (min-width: 800px) {
+            .grid-results {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .result-panel {
+            background: rgba(10, 15, 29, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-img-wrap {
+            position: relative;
+            background: #000;
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .result-img-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .result-img-wrap:hover img {
+            transform: scale(1.02);
+        }
+
+        .result-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .result-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .tag-amber {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .tag-emerald {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .result-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .btn-sheet {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-sheet:hover {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: #34d399;
+        }
+
+        /* VIDEO PLAYER */
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin: 18px 0;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+            max-height: 480px;
+        }
+
+        /* DOCS LIST */
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .doc-item {
+            background: rgba(10, 15, 29, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .doc-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .doc-icon {
+            width: 42px;
+            height: 42px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .doc-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .doc-title {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .doc-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* FINAL CTA */
+        .cta-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .cta-desc {
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 20px;
+            font-size: 0.95rem;
+        }
+
+        .btn-large-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary-emerald), #059669);
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .btn-large-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="header">
+        <a href="../../index.html" class="header-brand">
+            <img src="../../iconos/favicon.ico" onerror="this.src='https://ui-avatars.com/api/?name=NI&background=10b981&color=fff'" alt="Logo Cátedra">
+            <div>
+                <div class="header-brand-title">Nutrición Infantil</div>
+                <div class="header-brand-sub">UNSTA • 2° Cuatrimestre</div>
+            </div>
+        </a>
+        <div class="header-actions">
+            <a href="../../index.html" class="btn-header btn-back">
+                <i class="fas fa-home"></i> <span>Portal</span>
+            </a>
+            <a href="asistencia/index.html" class="btn-header btn-asistencia-header">
+                <i class="fas fa-gamepad"></i> <span>Duelo & Asistencia</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-badge">
+                <i class="fas fa-seedling"></i> Clase 03 • Módulo Epistemológico
+            </div>
+            <h1 class="hero-title">
+                Vegetarianismo y el <span>Cambio de Paradigma</span> en Nutrición
+            </h1>
+            <p class="hero-desc">
+                Deconstrucción de mitos sobre la alimentación basada en plantas a través del análisis de datos en vivo, el cuestionamiento del nutricionismo y la evidencia científica real en salud y longevidad.
+            </p>
+        </section>
+
+        <!-- EJE 1: EPISTEMOLOGÍA Y DEFINICIÓN DE SALUDABLE -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa;">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">1. El Problema del "Nutricionismo" y los Paradigmas de Kuhn</h2>
+                        <div class="card-subtitle">Epistemología aplicada a la toma de decisiones clínicas</div>
+                    </div>
+                </div>
+
+                <p style="margin-bottom: 14px; color: var(--text-muted);">
+                    El filósofo de la ciencia <strong>Thomas Kuhn</strong> demostró que las comunidades científicas operan bajo un <em>paradigma imperante</em>: un marco mental asumido como incuestionable. En nutrición, el paradigma dominante tradicional establece que la dieta más saludable es necesariamente la omnívora con abundante proteína de origen animal, y que prescindir de carnes conlleva riesgos nutricionales intrínsecos.
+                </p>
+                <p style="margin-bottom: 14px; color: var(--text-muted);">
+                    Durante la clase derribamos el reduccionismo conocido como <strong>"Nutricionismo"</strong>: la falsa creencia de que un alimento es saludable únicamente por la suma matemática de sus micronutrientes en una tabla. <em>¿Un cereal ultraprocesado se vuelve saludable por tener 100% de la RDA de vitaminas sintéticas añadidas?</em> Evidentemente no; su matriz alimentaria sigue siendo proinflamatoria y rica en azúcares refinados.
+                </p>
+
+                <div class="definition-box">
+                    <div class="definition-title">
+                        <i class="fas fa-award"></i> Definición de la Cátedra: ¿Qué es un Alimento / Dieta Saludable?
+                    </div>
+                    <div class="definition-quote">
+                        "Aquel alimento o patrón alimentario que produce desenlaces favorables demostrables: <strong>te hace vivir más tiempo</strong> (longevidad), <strong>te hace vivir mejor sin enfermedad crónica</strong> (calidad de vida) y se sostiene a un <strong>costo biológico y económico razonable</strong>."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJE 2: LA EVIDENCIA REAL EN NUESTRO AULA -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">2. Evidencia Empírica de Nuestro Curso</h2>
+                        <div class="card-subtitle">Análisis de las elecciones y cálculos realizados por los alumnos</div>
+                    </div>
+                </div>
+
+                <p style="margin-bottom: 20px; color: var(--text-muted);">
+                    Para transicionar hacia el cambio de paradigma, no apelamos a dogmas sino a la propia experiencia de los alumnos en dos momentos clave:
+                </p>
+
+                <div class="grid-results">
+                    <!-- PANEL 1: DUELO DE ALIMENTOS -->
+                    <div class="result-panel">
+                        <div class="result-img-wrap">
+                            <img src="img/podio_duelo_76_alumnos.png" alt="Podio del Duelo de Alimentos - N=76 Alumnos">
+                        </div>
+                        <div class="result-body">
+                            <div>
+                                <span class="result-tag tag-amber">Momento 1 • Paradigma Imperante</span>
+                                <h3 class="result-title">El Duelo de Alimentos (N = 76)</h3>
+                                <p class="result-text">
+                                    Al elegir bajo presión temporal de 10 segundos, el sesgo cognitivo salió a la luz: los alumnos consagraron un podio 100% animal: <strong>1° Huevo (54 votos)</strong>, <strong>2° Carne magra (41)</strong>, <strong>3° Pechuga de pollo (28)</strong> y <strong>4° Salmón (27)</strong>. La palta fue el único vegetal en entrar al Top 5.
+                                </p>
+                            </div>
+                            <a href="https://docs.google.com/spreadsheets/d/1JOhp3ftu_cCqZWiisvPa9uSgCHgJfnhLAIDntBM9zGY/edit?gid=1881713113#gid=1881713113" target="_blank" rel="noopener noreferrer" class="btn-sheet">
+                                <i class="fas fa-table"></i> Ver Planilla de Duelos en Google Sheets
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- PANEL 2: COMPARATIVA 73 DIETAS -->
+                    <div class="result-panel">
+                        <div class="result-img-wrap">
+                            <img src="img/comparativa_nutrientes_73_dietas.png" alt="Comparativa de Nutrientes de 73 Dietas">
+                        </div>
+                        <div class="result-body">
+                            <div>
+                                <span class="result-tag tag-emerald">Momento 2 • Quiebre de Preconceptos</span>
+                                <h3 class="result-title">Comparativa de 73 Dietas de 2500 kcal</h3>
+                                <p class="result-text">
+                                    Al calcular dietas a ciegas sin carnes, la evidencia matemática sorprendió al curso: el cumplimiento de micronutrientes fue de <strong>87% en Vegana</strong> y <strong>86% en Vegetariana</strong> vs. solo <strong>79% en Omnívora</strong>, con niveles ampliamente superiores de fibra, magnesio y calcio sin exceso de grasas saturadas.
+                                </p>
+                            </div>
+                            <a href="https://docs.google.com/spreadsheets/d/1KA2BLjO1i73KJrUqB19fdufDC8WYvBGQZ0U7hN_nTR4/edit?gid=1179089594#gid=1179089594" target="_blank" rel="noopener noreferrer" class="btn-sheet">
+                                <i class="fas fa-table"></i> Ver Matriz Comparativa en Google Sheets
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJE 3: VIDEO MAGISTRAL DE CÁTEDRA -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">3. Video de Cátedra: Análisis Crítico del Huevo</h2>
+                        <div class="card-subtitle">Explicación docente sobre el alimento #1 elegido en la encuesta</div>
+                    </div>
+                </div>
+
+                <p style="margin-bottom: 12px; color: var(--text-muted);">
+                    Habiendo sido el huevo el alimento más votado por la cohorte con 54 votos (26 veces en el 1° puesto absoluto), en este video analizamos su perfil lipídico, colina, colesterol dietario y la importancia de no aislar un ingrediente de su contexto biológico general:
+                </p>
+
+                <div class="video-container">
+                    <video controls preload="metadata" poster="../../iconos/favicon.ico">
+                        <source src="videos/Huevo.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video HTML5. Puedes encontrar el archivo en <code>clases/clase_03_vegetarianismo/videos/Huevo.mp4</code>.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <!-- EJE 4: TEORÍA Y DOCUMENTOS -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">4. Teoría, Guías y Bibliografía de la Clase</h2>
+                        <div class="card-subtitle">Documentos oficiales de cátedra y lecturas complementarias</div>
+                    </div>
+                </div>
+
+                <div class="docs-grid">
+                    <a href="GUIA_DOCENTE_Y_DINAMICA.md" target="_blank" class="doc-item">
+                        <div class="doc-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="doc-info">
+                            <div class="doc-title">Guía Pedagógica y Didáctica</div>
+                            <div class="doc-sub">Objetivos, 3 momentos y epistemología</div>
+                        </div>
+                        <i class="fas fa-external-link-alt" style="color: var(--text-sub); font-size: 0.8rem;"></i>
+                    </a>
+
+                    <div class="doc-item" style="opacity: 0.85; border-style: dashed;">
+                        <div class="doc-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;"><i class="fas fa-folder-plus"></i></div>
+                        <div class="doc-info">
+                            <div class="doc-title">Carpeta docs/ (Lecturas en PDF)</div>
+                            <div class="doc-sub">Papers y consensos sobre dietas vegetarianas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BANNER FINAL HACIA ASISTENCIA Y JUEGO -->
+        <div class="cta-banner">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">🥦 ⚔️</div>
+            <h2 class="cta-title">¿Aún no completaste el Duelo de Alimentos?</h2>
+            <p class="cta-desc">
+                Ingresa al interactivo gamificado con tu UP, participa en los 20 duelos bajo temporizador de 10 segundos, responde las preguntas de reflexión epistemológica y descarga tu certificado oficial de asistencia.
+            </p>
+            <a href="asistencia/index.html" class="btn-large-cta">
+                <i class="fas fa-play"></i> Iniciar Duelo de Alimentos & Registrar Asistencia
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
