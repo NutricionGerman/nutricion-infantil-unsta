@@ -396,78 +396,7 @@
             max-height: 480px;
         }
 
-        /* SCRIPT & DIALOGUE ACCORDION */
-        .script-box {
-            background: rgba(10, 15, 29, 0.65);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            margin-top: 18px;
-        }
 
-        .script-header-btn {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: none;
-            outline: none;
-            color: #fff;
-            padding: 16px 20px;
-            font-family: var(--font-display);
-            font-size: 1rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            transition: background 0.2s ease;
-        }
-
-        .script-header-btn:hover {
-            background: rgba(255, 255, 255, 0.07);
-        }
-
-        .script-body {
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            display: none;
-        }
-
-        .script-body.active {
-            display: block;
-        }
-
-        .dialogue-item {
-            margin-bottom: 14px;
-            padding-left: 12px;
-            border-left: 3px solid var(--border-color);
-            font-size: 0.92rem;
-            line-height: 1.55;
-        }
-
-        .dialogue-item.huevo {
-            border-left-color: #fbbf24;
-        }
-
-        .dialogue-item.avena {
-            border-left-color: #34d399;
-        }
-
-        .dialogue-item.bistec {
-            border-left-color: #f87171;
-        }
-
-        .char-tag {
-            font-weight: 700;
-            display: inline-block;
-            margin-bottom: 2px;
-            font-size: 0.85rem;
-            letter-spacing: 0.3px;
-        }
-
-        .char-huevo { color: #fbbf24; }
-        .char-avena { color: #34d399; }
-        .char-bistec { color: #f87171; }
-        .char-acotacion { color: #94a3b8; font-style: italic; }
 
         /* CAROUSEL */
         .carousel-wrapper {
@@ -753,50 +682,7 @@
             color: var(--text-muted);
         }
 
-        /* FINAL CTA */
-        .cta-banner {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.15));
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: var(--radius-lg);
-            padding: 32px 24px;
-            text-align: center;
-            margin-top: 40px;
-        }
 
-        .cta-title {
-            font-family: var(--font-display);
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .cta-desc {
-            color: var(--text-muted);
-            max-width: 580px;
-            margin: 0 auto 20px;
-            font-size: 0.95rem;
-        }
-
-        .btn-large-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: linear-gradient(135deg, var(--primary-emerald), #059669);
-            color: #fff;
-            font-size: 1.05rem;
-            font-weight: 700;
-            padding: 14px 28px;
-            border-radius: var(--radius-md);
-            text-decoration: none;
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
-            transition: all 0.2s ease;
-        }
-
-        .btn-large-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
-        }
     </style>
 </head>
 <body>
@@ -812,10 +698,7 @@
         </a>
         <div class="header-actions">
             <a href="../../index.html" class="btn-header btn-back">
-                <i class="fas fa-home"></i> <span>Portal</span>
-            </a>
-            <a href="asistencia/index.html" class="btn-header btn-asistencia-header">
-                <i class="fas fa-gamepad"></i> <span>Duelo & Asistencia</span>
+                <i class="fas fa-home"></i> <span>Volver al Portal</span>
             </a>
         </div>
     </header>
@@ -955,75 +838,7 @@
                     </video>
                 </div>
 
-                <!-- GUION Y TRANSCRIPCIÓN INTERACTIVA -->
-                <div class="script-box">
-                    <button class="script-header-btn" onclick="toggleScript()">
-                        <span><i class="fas fa-scroll" style="color: #fbbf24; margin-right: 8px;"></i> Ver Transcripción del Guión y Análisis de Escena</span>
-                        <i id="script-chevron" class="fas fa-chevron-down"></i>
-                    </button>
-                    
-                    <div id="script-content" class="script-body">
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo:</span>
-                            Lo logramos otra vez. Nosotros tres somos los reyes indiscutibles de la salud. Pura proteína animal. ¡Jajajajaja! Pero miren quiénes están ahí: son los perdedores Lenteja y Manzana.
-                        </div>
-                        <div class="dialogue-item bistec">
-                            <span class="char-tag char-bistec">🥩 Bistec:</span>
-                            ¡Enséñales quién manda, jefe Huevo!
-                        </div>
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo:</span>
-                            Nadie se mete con el Huevo.
-                        </div>
-                        <div class="dialogue-item">
-                            <span class="char-acotacion">🍏 Manzana y 🟤 Lenteja:</span> <em>(Gritan asustadas)</em>
-                        </div>
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo:</span>
-                            ¡Ni un paso más!... ¿Eh? ¡Es el detective Avena!
-                        </div>
-                        <div class="dialogue-item avena">
-                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
-                            ¡Huevo! Vienes a interrogatorios por engañar a los futuros nutricionistas. Se acabó la fiesta, señor proteína completa. Cuéntame, ¿cómo convenciste a todos los nutricionistas de que eres saludable?
-                        </div>
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo:</span>
-                            Por favor, tengo fotos hermosas con tostadas de palta, la gente me ama.
-                        </div>
-                        <div class="dialogue-item avena">
-                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
-                            Tus etiquetas mienten. Tienes 200 de colesterol, cero fibra, y compraste estudios a medida para ocultar lo que las normativas ya prohíben.
-                        </div>
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo:</span>
-                            Pero espera... Tengo proteína de alto valor biológico y el mejor aminograma del planeta. Nadie supera mi calidad proteica.
-                        </div>
-                        <div class="dialogue-item avena">
-                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
-                            ¡Olvida tus aminogramas! En JAMA demostraron que sustituir tu proteína por la mía reduce la mortalidad un 19%. La calidad no es un tubo de ensayo, son resultados de salud.
-                        </div>
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo:</span>
-                            Espera, espera... Tengo un montón de nutrientes, vitaminas y minerales indispensables. No puedes ignorar todo lo bueno que aporto al plato. <em>(Le arrebatan el cartel)</em> ¡Tengo nutrientes!
-                        </div>
-                        <div class="dialogue-item avena">
-                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
-                            De nada sirven tus nutrientes si traes colesterol y grasa saturada que tapan las arterias y elevan el riesgo de infarto. Oficiales Brócoli y Zanahoria, a la celda por fraude cardiovascular.
-                        </div>
-                        <div class="dialogue-item huevo">
-                            <span class="char-tag char-huevo">🥚 Huevo (llorando en la celda):</span>
-                            ¡Hacerlos y que es crecer! <em>(balbuceando entre sollozos)</em>
-                        </div>
-                        <div class="dialogue-item avena">
-                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
-                            Tranquilas. El paradigma actual arrastra viejos mitos, pero la evidencia científica traerá un cambio inevitable en los futuros nutricionistas.
-                        </div>
 
-                        <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-color); font-size: 0.85rem; color: var(--text-muted);">
-                            ⚖️ <strong>Resolución y Moraleja:</strong> La salud integral de la dieta debe evaluarse por la matriz alimentaria completa y los resultados globales de morbimortalidad, más allá de métricas aisladas de laboratorio como el valor biológico o el aminograma.
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -1137,17 +952,7 @@
             </div>
         </section>
 
-        <!-- BANNER FINAL HACIA ASISTENCIA Y JUEGO -->
-        <div class="cta-banner">
-            <div style="font-size: 2.2rem; margin-bottom: 8px;">🥦 ⚔️</div>
-            <h2 class="cta-title">¿Aún no completaste el Duelo de Alimentos?</h2>
-            <p class="cta-desc">
-                Ingresa al interactivo gamificado con tu UP, participa en los 20 duelos bajo temporizador de 10 segundos, responde las preguntas de reflexión epistemológica y descarga tu certificado oficial de asistencia.
-            </p>
-            <a href="asistencia/index.html" class="btn-large-cta">
-                <i class="fas fa-play"></i> Iniciar Duelo de Alimentos & Registrar Asistencia
-            </a>
-        </div>
+
 
     </div>
 
@@ -1245,19 +1050,7 @@
             updateSlideUI();
         }
 
-        // CONTROL DEL ACORDEÓN DE GUIÓN
-        function toggleScript() {
-            const content = document.getElementById('script-content');
-            const chevron = document.getElementById('script-chevron');
-            content.classList.toggle('active');
-            if (content.classList.contains('active')) {
-                chevron.classList.remove('fa-chevron-down');
-                chevron.classList.add('fa-chevron-up');
-            } else {
-                chevron.classList.remove('fa-chevron-up');
-                chevron.classList.add('fa-chevron-down');
-            }
-        }
+
 
         // LIGHTBOX
         function openLightbox() {
