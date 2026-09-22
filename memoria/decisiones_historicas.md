@@ -14,3 +14,7 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
 
 3. **Notificación de nueva versión**:
    - Al modificar el portal central (`index.html`), se actualiza la fecha en `version.json` para que los alumnos reciban el banner de actualización en sus teléfonos.
+
+4. **Estructura modular y autocontenida de clases (`clases/`)**:
+   - Cada clase reside en su propia subcarpeta dedicada (`clase_01_antropometria_19_08/`, `clase_02_antropometria_26_08/`, `clase_03_duelo_alimentos/`, etc.) con sus propios archivos, imágenes (`img/`), videos (`videos/`), herramientas y PDFs.
+   - En la raíz de `clases/` se conservan archivos HTML de redirección rápida y la carpeta `herramientas/` para mantener compatibilidad absoluta con tarjetas o marcadores previos sin que nada se rompa.
