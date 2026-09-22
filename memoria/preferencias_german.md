@@ -22,6 +22,12 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
    - Evitar sobre-explicar las estrategias didácticas o justificaciones teóricas al estudiante en la interfaz de la página (no "meta-enseñar" ni explicar por qué un recurso es cómico o interactivo).
    - Los fundamentos pedagógicos, epistemológicos y la planificación pertenecen a la guía del docente (`GUIA_DOCENTE_Y_DINAMICA.md`) o documentación interna, manteniendo la experiencia del alumno limpia, fluida y directa.
 
+5. **Rigor Metodológico en Ciencias de la Salud (Endpoints Clínicos)**:
+   - Mantener siempre la distinción científica estricta:
+     * **Desenlaces Clínicos Duros (*Hard Endpoints*)**: Eventos reales e indiscutibles que miden cómo un paciente vive, enferma o sobrevive (Mortalidad por todas las causas, mortalidad cardiovascular, IAM, ACV, incidencia de Enfermedades Crónicas No Transmisibles como Diabetes Tipo 2 o Cáncer). Son la métrica definitiva de salud en epidemiología clínica.
+     * **Endpoints Subrogados (*Surrogate Endpoints* / Biomarcadores)**: Mediciones intermedias en el paciente (LDL, Tensión Arterial, HbA1c, HOMA-IR) que se correlacionan con riesgo pero no son el desenlace final.
+     * **Métricas Bromatológicas del Alimento**: Aminograma, valor biológico, digestibilidad proteica. Describen la composición del alimento en laboratorio, jamás deben confundirse con endpoints clínicos de un paciente.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
