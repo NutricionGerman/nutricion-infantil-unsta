@@ -12,8 +12,8 @@
     <style>
         :root {
             --bg-dark: #0a0f1d;
-            --bg-card: rgba(16, 24, 40, 0.75);
-            --bg-card-hover: rgba(23, 34, 56, 0.85);
+            --bg-card: rgba(16, 24, 40, 0.78);
+            --bg-card-hover: rgba(23, 34, 56, 0.9);
             --border-color: rgba(255, 255, 255, 0.08);
             --border-color-glow: rgba(16, 185, 129, 0.3);
             --primary-emerald: #10b981;
@@ -22,6 +22,7 @@
             --accent-blue: #3b82f6;
             --accent-purple: #8b5cf6;
             --accent-amber: #f59e0b;
+            --accent-crimson: #ef4444;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --text-sub: #64748b;
@@ -58,7 +59,7 @@
             z-index: 100;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            background: rgba(10, 15, 29, 0.85);
+            background: rgba(10, 15, 29, 0.88);
             border-bottom: 1px solid var(--border-color);
             padding: 14px 24px;
             display: flex;
@@ -225,6 +226,7 @@
             justify-content: center;
             font-size: 1.25rem;
             color: #fff;
+            flex-shrink: 0;
         }
 
         .card-title {
@@ -377,7 +379,7 @@
             color: #34d399;
         }
 
-        /* VIDEO PLAYER */
+        /* VIDEO CONTAINER */
         .video-container {
             position: relative;
             background: #000;
@@ -392,6 +394,304 @@
             width: 100%;
             display: block;
             max-height: 480px;
+        }
+
+        /* SCRIPT & DIALOGUE ACCORDION */
+        .script-box {
+            background: rgba(10, 15, 29, 0.65);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-top: 18px;
+        }
+
+        .script-header-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            outline: none;
+            color: #fff;
+            padding: 16px 20px;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .script-header-btn:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .script-body {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .script-body.active {
+            display: block;
+        }
+
+        .dialogue-item {
+            margin-bottom: 14px;
+            padding-left: 12px;
+            border-left: 3px solid var(--border-color);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .dialogue-item.huevo {
+            border-left-color: #fbbf24;
+        }
+
+        .dialogue-item.avena {
+            border-left-color: #34d399;
+        }
+
+        .dialogue-item.bistec {
+            border-left-color: #f87171;
+        }
+
+        .char-tag {
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 2px;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+        .char-huevo { color: #fbbf24; }
+        .char-avena { color: #34d399; }
+        .char-bistec { color: #f87171; }
+        .char-acotacion { color: #94a3b8; font-style: italic; }
+
+        /* CAROUSEL */
+        .carousel-wrapper {
+            position: relative;
+            background: rgba(10, 15, 29, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+            margin-top: 20px;
+        }
+
+        .carousel-slide-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 24px;
+            align-items: center;
+        }
+
+        @media (min-width: 820px) {
+            .carousel-slide-content {
+                grid-template-columns: 360px 1fr;
+                padding: 32px;
+                gap: 32px;
+            }
+        }
+
+        .carousel-image-col {
+            position: relative;
+            text-align: center;
+        }
+
+        .carousel-img-card {
+            max-width: 320px;
+            margin: 0 auto;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .carousel-img-card:hover {
+            transform: scale(1.02);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .carousel-img-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(4px);
+        }
+
+        .carousel-text-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide-step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            margin-bottom: 14px;
+            width: fit-content;
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .slide-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 20px;
+        }
+
+        .slide-refs {
+            background: rgba(0, 0, 0, 0.35);
+            border-left: 3px solid var(--accent-blue);
+            padding: 12px 14px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        .slide-refs strong {
+            color: #60a5fa;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* CONTROLES DEL CARRUSEL */
+        .carousel-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            background: rgba(10, 15, 29, 0.95);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .carousel-nav-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .carousel-nav-btn:hover {
+            background: var(--primary-emerald);
+            color: #fff;
+            border-color: var(--primary-emerald);
+            transform: scale(1.06);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .dot.active {
+            width: 26px;
+            border-radius: 999px;
+            background: var(--primary-emerald);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+        }
+
+        /* LIGHTBOX MODAL */
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: var(--radius-md);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
         }
 
         /* DOCS LIST */
@@ -625,33 +925,185 @@
             </div>
         </section>
 
-        <!-- EJE 3: VIDEO MAGISTRAL DE CÁTEDRA -->
+        <!-- EJE 3: VIDEO MAGISTRAL DE CÁTEDRA (ANIMACIÓN CÓMICA & FILM NOIR) -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">
-                        <i class="fas fa-play-circle"></i>
+                        <i class="fas fa-user-secret"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">3. Video de Cátedra: Análisis Crítico del Huevo</h2>
-                        <div class="card-subtitle">Explicación docente sobre el alimento #1 elegido en la encuesta</div>
+                        <h2 class="card-title">3. Corto Animado: «El Interrogatorio al Huevo»</h2>
+                        <div class="card-subtitle">Comedia animada en estilo Film Noir sobre la proteína y la evidencia en salud</div>
                     </div>
                 </div>
 
-                <p style="margin-bottom: 12px; color: var(--text-muted);">
-                    Habiendo sido el huevo el alimento más votado por la cohorte con 54 votos (26 veces en el 1° puesto absoluto), en este video analizamos su perfil lipídico, colina, colesterol dietario y la importancia de no aislar un ingrediente de su contexto biológico general:
-                </p>
+                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
+                    <p style="font-size: 0.95rem; color: #fecaca; margin-bottom: 8px;">
+                        🎬 <strong>¿Por qué una animación cómica?</strong> Para facilitar el cambio de paradigma sin confrontaciones dogmáticas, recurrimos al humor negro policial: una pandilla de alimentos de origen animal (Huevo y Bistec) intimidando a los vegetales (Lenteja y Manzana), hasta que el <strong>Detective Avena</strong> y los <strong>Oficiales Brócoli y Zanahoria</strong> intervienen para realizar un interrogatorio legal en toda regla.
+                    </p>
+                    <p style="font-size: 0.88rem; color: var(--text-muted);">
+                        💡 <strong>La metáfora clínica:</strong> El Huevo personifica el enfoque reduccionista centrado en el valor biológico, aminograma y nutrientes de laboratorio. El Detective Avena encarna la epidemiología moderna basada en desenlaces clínicos reales (mortalidad en JAMA, riesgo de infarto y matrices alimentarias completas).
+                    </p>
+                </div>
 
+                <!-- VIDEO PLAYER -->
                 <div class="video-container">
-                    <video controls preload="metadata" poster="../../iconos/favicon.ico">
+                    <video controls preload="metadata" poster="img/1.jpeg">
                         <source src="videos/Huevo.mp4" type="video/mp4">
-                        Tu navegador no soporta la reproducción de video HTML5. Puedes encontrar el archivo en <code>clases/clase_03_vegetarianismo/videos/Huevo.mp4</code>.
+                        Tu navegador no soporta video HTML5. Archivo disponible en: <code>clases/clase_03_vegetarianismo/videos/Huevo.mp4</code>.
                     </video>
+                </div>
+
+                <!-- GUION Y TRANSCRIPCIÓN INTERACTIVA -->
+                <div class="script-box">
+                    <button class="script-header-btn" onclick="toggleScript()">
+                        <span><i class="fas fa-scroll" style="color: #fbbf24; margin-right: 8px;"></i> Ver Transcripción del Guión y Análisis de Escena</span>
+                        <i id="script-chevron" class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <div id="script-content" class="script-body">
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo:</span>
+                            Lo logramos otra vez. Nosotros tres somos los reyes indiscutibles de la salud. Pura proteína animal. ¡Jajajajaja! Pero miren quiénes están ahí: son los perdedores Lenteja y Manzana.
+                        </div>
+                        <div class="dialogue-item bistec">
+                            <span class="char-tag char-bistec">🥩 Bistec:</span>
+                            ¡Enséñales quién manda, jefe Huevo!
+                        </div>
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo:</span>
+                            Nadie se mete con el Huevo.
+                        </div>
+                        <div class="dialogue-item">
+                            <span class="char-acotacion">🍏 Manzana y 🟤 Lenteja:</span> <em>(Gritan asustadas)</em>
+                        </div>
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo:</span>
+                            ¡Ni un paso más!... ¿Eh? ¡Es el detective Avena!
+                        </div>
+                        <div class="dialogue-item avena">
+                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
+                            ¡Huevo! Vienes a interrogatorios por engañar a los futuros nutricionistas. Se acabó la fiesta, señor proteína completa. Cuéntame, ¿cómo convenciste a todos los nutricionistas de que eres saludable?
+                        </div>
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo:</span>
+                            Por favor, tengo fotos hermosas con tostadas de palta, la gente me ama.
+                        </div>
+                        <div class="dialogue-item avena">
+                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
+                            Tus etiquetas mienten. Tienes 200 de colesterol, cero fibra, y compraste estudios a medida para ocultar lo que las normativas ya prohíben.
+                        </div>
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo:</span>
+                            Pero espera... Tengo proteína de alto valor biológico y el mejor aminograma del planeta. Nadie supera mi calidad proteica.
+                        </div>
+                        <div class="dialogue-item avena">
+                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
+                            ¡Olvida tus aminogramas! En JAMA demostraron que sustituir tu proteína por la mía reduce la mortalidad un 19%. La calidad no es un tubo de ensayo, son resultados de salud.
+                        </div>
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo:</span>
+                            Espera, espera... Tengo un montón de nutrientes, vitaminas y minerales indispensables. No puedes ignorar todo lo bueno que aporto al plato. <em>(Le arrebatan el cartel)</em> ¡Tengo nutrientes!
+                        </div>
+                        <div class="dialogue-item avena">
+                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
+                            De nada sirven tus nutrientes si traes colesterol y grasa saturada que tapan las arterias y elevan el riesgo de infarto. Oficiales Brócoli y Zanahoria, a la celda por fraude cardiovascular.
+                        </div>
+                        <div class="dialogue-item huevo">
+                            <span class="char-tag char-huevo">🥚 Huevo (llorando en la celda):</span>
+                            ¡Hacerlos y que es crecer! <em>(balbuceando entre sollozos)</em>
+                        </div>
+                        <div class="dialogue-item avena">
+                            <span class="char-tag char-avena">🥣 Detective Avena:</span>
+                            Tranquilas. El paradigma actual arrastra viejos mitos, pero la evidencia científica traerá un cambio inevitable en los futuros nutricionistas.
+                        </div>
+
+                        <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-color); font-size: 0.85rem; color: var(--text-muted);">
+                            ⚖️ <strong>Resolución y Moraleja:</strong> La salud integral de la dieta debe evaluarse por la matriz alimentaria completa y los resultados globales de morbimortalidad, más allá de métricas aisladas de laboratorio como el valor biológico o el aminograma.
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- EJE 4: TEORÍA Y DOCUMENTOS -->
+        <!-- EJE 4: CARRUSEL DE INFOGRAFÍAS (LOS ENGAÑOS DE LA INDUSTRIA DEL HUEVO) -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">4. Expediente Regulatorio: ¿Estándar de Oro o Ilusión de Marketing?</h2>
+                        <div class="card-subtitle">Desliza las infografías para analizar los litigios legales y el marco normativo (FDA, FTC, USDA y JAMA)</div>
+                    </div>
+                </div>
+
+                <p style="margin-bottom: 12px; color: var(--text-muted);">
+                    En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad:
+                </p>
+
+                <!-- COMPONENTE CARRUSEL INTERACTIVO -->
+                <div class="carousel-wrapper" id="infografias-carrusel">
+                    
+                    <div class="carousel-slide-content">
+                        <!-- COLUMNA IMAGEN VERTICAL -->
+                        <div class="carousel-image-col">
+                            <div class="carousel-img-card" onclick="openLightbox()">
+                                <img id="slide-img" src="img/1.jpeg" alt="Infografía Regulatoria">
+                                <div class="zoom-hint">
+                                    <i class="fas fa-search-plus"></i> Clic para pantalla completa
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COLUMNA TEXTO / EXPLICACIÓN JURÍDICA Y CLÍNICA -->
+                        <div class="carousel-text-col">
+                            <div id="slide-badge" class="slide-step-badge">
+                                <i class="fas fa-folder-open"></i> Expediente Caso 21-CFR-101
+                            </div>
+                            <h3 id="slide-title" class="slide-title">
+                                ¿Estándar de oro nutricional o una exitosa construcción publicitaria? 🔍🥚
+                            </h3>
+                            <p id="slide-desc" class="slide-desc">
+                                En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad.
+                            </p>
+                            <div id="slide-refs" class="slide-refs" style="display: none;">
+                                <strong>Fuentes y Citas Normativas:</strong>
+                                <span id="slide-refs-content"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BARRA DE CONTROLES DEL CARRUSEL -->
+                    <div class="carousel-controls">
+                        <button class="carousel-nav-btn" onclick="prevSlide()" title="Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <div class="carousel-dots" id="carousel-dots">
+                            <div class="dot active" onclick="goToSlide(0)"></div>
+                            <div class="dot" onclick="goToSlide(1)"></div>
+                            <div class="dot" onclick="goToSlide(2)"></div>
+                            <div class="dot" onclick="goToSlide(3)"></div>
+                            <div class="dot" onclick="goToSlide(4)"></div>
+                        </div>
+
+                        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
+                            <span id="slide-number">1</span> de 5
+                        </div>
+
+                        <button class="carousel-nav-btn" onclick="nextSlide()" title="Siguiente">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EJE 5: TEORÍA Y DOCUMENTOS -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
@@ -659,7 +1111,7 @@
                         <i class="fas fa-book-open"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">4. Teoría, Guías y Bibliografía de la Clase</h2>
+                        <h2 class="card-title">5. Teoría, Guías y Bibliografía de la Clase</h2>
                         <div class="card-subtitle">Documentos oficiales de cátedra y lecturas complementarias</div>
                     </div>
                 </div>
@@ -698,6 +1150,149 @@
         </div>
 
     </div>
+
+    <!-- LIGHTBOX MODAL PARA VER LAS INFOGRAFÍAS EN PANTALLA COMPLETA -->
+    <div id="lightbox-modal" class="lightbox-modal" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+            <img id="lightbox-img" src="" alt="Infografía Ampliada">
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT DEL CARRUSEL Y MODAL -->
+    <script>
+        // DATOS DE LAS 5 DIAPOSITIVAS DEL CARRUSEL
+        const slidesData = [
+            {
+                img: "img/1.jpeg",
+                badge: "📁 Expediente Regulatorio",
+                title: "¿Estándar de oro nutricional o una exitosa construcción publicitaria? 🔍🥚",
+                desc: "En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad.<br><br>👉 <em>Usa los botones o desliza para analizar el marco normativo y la evidencia clínica.</em>",
+                refs: ""
+            },
+            {
+                img: "img/2.jpeg",
+                badge: "⚖️ Fallo Regulatorio FDA",
+                title: "1️⃣ Incompatibilidad con el descriptor «Saludable» (FDA 21 CFR § 101.65)",
+                desc: "La FDA establece un límite máximo estricto de <strong>60 mg de colesterol por porción de referencia</strong> para optar al reclamo oficial de «Healthy» (Saludable). Con <strong>~186 mg de colesterol concentrados en una sola yema</strong>, el huevo queda legalmente excluido de esta categorización en campañas institucionales y empaquetado formal.",
+                refs: "• Electronic Code of Federal Regulations: 21 CFR § 101.65 / § 101.62."
+            },
+            {
+                img: "img/3.jpeg",
+                badge: "🏛️ Precedente Judicial FTC",
+                title: "2️⃣ Precedente legal de inocuidad cardiovascular (FTC vs. NCEN, 1977)",
+                desc: "La Comisión Federal de Comercio (ratificada por el 7.º Circuito de la Corte de Apelaciones de EE. UU.) sancionó legalmente a la industria avícola (National Commission on Egg Nutrition) por <strong>publicidad engañosa</strong> al aseverar falsamente que el consumo de huevo no incidía en el riesgo cardiovascular ni en los lípidos plasmáticos.",
+                refs: "• US Court of Appeals, Seventh Circuit: National Commission on Egg Nutrition v. FTC (570 F.2d 157)."
+            },
+            {
+                img: "img/4.jpeg",
+                badge: "📑 Archivos Desclasificados USDA",
+                title: "3️⃣ Supervisión institucional y términos censurados (FOIA / USDA)",
+                desc: "Registros desclasificados bajo la Ley de Libertad de Información (FOIA) evidencian que los asesores legales del Departamento de Agricultura de EE. UU. (USDA) <strong>frenaron y censuraron el uso de términos como «safe» (seguro), «healthful» (saludable) o «nutritious» (nutritivo)</strong> en campañas financiadas con fondos federales, ante la imposibilidad científica de garantizar seguridad por su alta carga lipídica.",
+                refs: "• USDA / FOIA Regulatory Documents on Egg Advertising Guidelines."
+            },
+            {
+                img: "img/5.jpeg",
+                badge: "🔬 Evidencia de Salud Pública",
+                title: "4️⃣ Metodología de laboratorio vs. Desenlaces en salud pública",
+                desc: "El valor biológico o el aminograma aislado en un tubo de ensayo no determinan el impacto de la matriz en el organismo vivo. La evidencia epidemiológica en cohortes masivas (Harvard / JAMA Internal Medicine) señala que la <strong>sustitución isocalórica de proteína de huevo por fuentes vegetales integrales se asocia a una reducción de hasta el 19% en la mortalidad general</strong>.",
+                refs: "• Song M, et al. Association of Animal and Plant Protein Intake With All-Cause and Cause-Specific Mortality. JAMA Intern Med. 2016;176(10):1453–1463.<br>• Harvard T.H. Chan School of Public Health: Protein and Cardiovascular Outcomes."
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlideUI() {
+            const slide = slidesData[currentSlide];
+            document.getElementById('slide-img').src = slide.img;
+            document.getElementById('slide-badge').innerHTML = slide.badge;
+            document.getElementById('slide-title').innerHTML = slide.title;
+            document.getElementById('slide-desc').innerHTML = slide.desc;
+            document.getElementById('slide-number').innerText = (currentSlide + 1);
+
+            const refsBox = document.getElementById('slide-refs');
+            const refsContent = document.getElementById('slide-refs-content');
+            if (slide.refs) {
+                refsContent.innerHTML = slide.refs;
+                refsBox.style.display = 'block';
+            } else {
+                refsBox.style.display = 'none';
+            }
+
+            // Actualizar dots
+            const dots = document.querySelectorAll('.carousel-dots .dot');
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slidesData.length;
+            updateSlideUI();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slidesData.length) % slidesData.length;
+            updateSlideUI();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlideUI();
+        }
+
+        // CONTROL DEL ACORDEÓN DE GUIÓN
+        function toggleScript() {
+            const content = document.getElementById('script-content');
+            const chevron = document.getElementById('script-chevron');
+            content.classList.toggle('active');
+            if (content.classList.contains('active')) {
+                chevron.classList.remove('fa-chevron-down');
+                chevron.classList.add('fa-chevron-up');
+            } else {
+                chevron.classList.remove('fa-chevron-up');
+                chevron.classList.add('fa-chevron-down');
+            }
+        }
+
+        // LIGHTBOX
+        function openLightbox() {
+            const modal = document.getElementById('lightbox-modal');
+            const modalImg = document.getElementById('lightbox-img');
+            modalImg.src = slidesData[currentSlide].img;
+            modal.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox-modal').classList.remove('active');
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Soporte Swipe táctil en móviles
+        let touchstartX = 0;
+        let touchendX = 0;
+        const carruselEl = document.getElementById('infografias-carrusel');
+
+        carruselEl.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carruselEl.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            if (touchendX < touchstartX - 50) nextSlide();
+            if (touchendX > touchstartX + 50) prevSlide();
+        }, { passive: true });
+    </script>
 
 </body>
 </html>

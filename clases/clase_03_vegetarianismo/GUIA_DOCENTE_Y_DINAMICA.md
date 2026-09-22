@@ -84,27 +84,68 @@ Al finalizar la clase, el estudiante será capaz de:
 
 ---
 
-## 🎥 4. Video de Cátedra: Análisis Crítico del Huevo
-* **Archivo**: `videos/Huevo.mp4` (disponible directamente en la clase).
-* **Fundamento**: Dado que el huevo resultó ser el **alimento #1 indiscutido** en el podio de los alumnos (54 votos), se elaboró un video docente específico que desglosa su perfil nutricional, el contenido de colina, colesterol dietario, la biodisponibilidad de sus proteínas y su lugar real dentro del contexto de una matriz alimentaria global.
+## 🎥 4. Corto Animado: «El Detective Avena y el Interrogatorio al Huevo»
+* **Archivo**: `videos/Huevo.mp4` (incrustado directamente en `index.html`).
+* **Estructura Narrativa y Género**: Utiliza un estilo clásico de caricatura policiaca y cine negro (*film noir*) adaptado a un tono educativo y cómico. La historia comienza con una dinámica de pandilla callejera (la proteína animal acorralando a los alimentos vegetales) y da un giro cuando interviene la ley (el **Detective Avena**) para llevar a cabo un interrogatorio policial en toda regla.
+* **Metáfora Nutricional**:
+  - **El Huevo**: Personifica el enfoque tradicional reduccionista, centrado de forma aislada en el valor biológico, el aminograma y el contenido vitamínico de tubo de ensayo.
+  - **El Detective Avena**: Encarna la visión epidemiológica moderna basada en desenlaces clínicos de salud (mortalidad general, riesgo cardiovascular, impacto aterogénico de grasas saturadas/colesterol versus fibra y sustitución por fuentes vegetales integrales).
+* **Transcripción del Guión**:
+  > **Huevo:** Lo logramos otra vez. Nosotros tres somos los reyes indiscutibles de la salud. Pura proteína animal. ¡Jajajajaja! Pero miren quiénes están ahí: son los perdedores Lenteja y Manzana.  
+  > **Bistec:** ¡Enséñales quién manda, jefe Huevo!  
+  > **Huevo:** Nadie se mete con el Huevo.  
+  > *(Manzana y Lenteja gritan asustadas)*  
+  > **Huevo:** ¡Ni un paso más!... ¿Eh? ¡Es el detective Avena!  
+  > **Detective Avena:** ¡Huevo! Vienes a interrogatorios por engañar a los futuros nutricionistas. Se acabó la fiesta, señor proteína completa. Cuéntame, ¿cómo convenciste a todos los nutricionistas de que eres saludable?  
+  > **Huevo:** Por favor, tengo fotos hermosas con tostadas de palta, la gente me ama.  
+  > **Detective Avena:** Tus etiquetas mienten. Tienes 200 de colesterol, cero fibra, y compraste estudios a medida para ocultar lo que las normativas ya prohíben.  
+  > **Huevo:** Pero espera... Tengo proteína de alto valor biológico y el mejor aminograma del planeta. Nadie supera mi calidad proteica.  
+  > **Detective Avena:** ¡Olvida tus aminogramas! En JAMA demostraron que sustituir tu proteína por la mía reduce la mortalidad un 19%. La calidad no es un tubo de ensayo, son resultados de salud.  
+  > **Huevo:** Espera, espera... Tengo un montón de nutrientes, vitaminas y minerales indispensables. No puedes ignorar todo lo bueno que aporto al plato. *(Le arrebatan el cartel)* ¡Tengo nutrientes!  
+  > **Detective Avena:** De nada sirven tus nutrientes si traes colesterol y grasa saturada que tapan las arterias y elevan el riesgo de infarto. Oficiales Brócoli y Zanahoria, a la celda por fraude cardiovascular.  
+  > **Huevo (llorando en la celda):** ¡Hacerlos y que es crecer! *(balbuceando entre sollozos)*  
+  > **Detective Avena:** Tranquilas. El paradigma actual arrastra viejos mitos, pero la evidencia científica traerá un cambio inevitable en los futuros nutricionistas.
+* **Resolución del Conflicto**: El arresto final a manos de los oficiales vegetales y el consuelo a Manzana y Lenteja cierran la moraleja: la salud integral de la dieta debe evaluarse por la matriz alimentaria completa y los resultados globales de morbimortalidad, más allá de métricas aisladas de laboratorio como el aminograma.
 
 ---
 
-## 📂 5. Organización de Archivos de esta Clase
+## ⚖️ 5. Expediente Regulatorio: Los Engaños de la Industria del Huevo (Carrusel de 5 Infografías)
+
+Para respaldar legal y científicamente el cortometraje animado, la clase incorpora un **carrusel interactivo de 5 infografías verticales** (`img/1.jpeg` a `img/5.jpeg`):
+
+1. **¿Estándar de oro nutricional o una exitosa construcción publicitaria? 🔍🥚 (`img/1.jpeg`)**:
+   - En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad.
+2. **Incompatibilidad con el descriptor «Saludable» (`img/2.jpeg`)**:
+   - *Fundamento legal (FDA 21 CFR § 101.65)*: La FDA establece un límite máximo de **60 mg de colesterol por porción de referencia** para optar al reclamo oficial de "Healthy". Con **~186 mg concentrados en su yema**, el huevo queda legalmente excluido de esta categorización en campañas institucionales.
+3. **Precedente legal de inocuidad cardiovascular (`img/3.jpeg`)**:
+   - *Fallo Judicial (FTC vs. NCEN, 1977)*: La Comisión Federal de Comercio (ratificada por el 7.º Circuito de la Corte de Apelaciones) sancionó a la industria avícola (*National Commission on Egg Nutrition*) por **publicidad engañosa** al aseverar que el consumo de huevo no incidía en el riesgo cardiovascular ni en los lípidos plasmáticos.
+4. **Supervisión institucional y términos censurados (`img/4.jpeg`)**:
+   - *Archivos desclasificados (FOIA / USDA)*: Registros desclasificados evidencian que asesores legales del Departamento de Agricultura (USDA) frenaron el uso de términos como *"safe"* (seguro), *"healthful"* (saludable) o *"nutritious"* (nutritivo) en campañas financiadas con fondos federales, ante la imposibilidad de garantizar seguridad por su carga lipídica.
+5. **Metodología de laboratorio vs. Desenlaces en salud pública (`img/5.jpeg`)**:
+   - El valor biológico o el aminograma aislado no determinan el impacto de la matriz en el organismo. La evidencia epidemiológica (*Harvard / JAMA Intern Med*) señala que la sustitución isocalórica de proteína de huevo por fuentes vegetales integrales se asocia a una **reducción de hasta el 19% en la mortalidad general**.
+   - *Referencias normativas y bibliográficas*:
+     - Electronic Code of Federal Regulations: 21 CFR § 101.65 / § 101.62.
+     - US Court of Appeals, Seventh Circuit: National Commission on Egg Nutrition v. FTC (570 F.2d 157).
+     - Song M, et al. Association of Animal and Plant Protein Intake With All-Cause and Cause-Specific Mortality. *JAMA Intern Med.* 2016;176(10):1453–1463.
+
+---
+
+## 📂 6. Organización de Archivos de esta Clase
 
 ```text
 clases/clase_03_vegetarianismo/
 ├── GUIA_DOCENTE_Y_DINAMICA.md       ← Este documento pedagógico maestro
-├── index.html                       ← Interfaz interactiva de la clase (teoría y video)
+├── index.html                       ← Interfaz interactiva de la clase (carrusel, video y teoría)
 │
 ├── videos/
-│   └── Huevo.mp4                    ← Video explicativo de cátedra sobre el alimento #1
+│   └── Huevo.mp4                    ← Video animado policiaco (Detective Avena e Interrogatorio)
 │
 ├── img/
+│   ├── 1.jpeg a 5.jpeg              ← Las 5 infografías verticales del expediente regulatorio
 │   ├── podio_duelo_76_alumnos.png   ← Captura del panel del Paradigma Imperante (N=76)
 │   └── comparativa_nutrientes_73_dietas.png ← Captura del Panel de Nutrientes (N=73)
 │
-├── docs/                            ← 📄 Repositorio de lecturas y consensos (PDFs)
+├── docs/                            ← 📄 Repositorio para subir lecturas teóricas y consensos (PDFs)
 │
 └── asistencia/                      ← 📲 Actividad interactiva del Duelo y toma de lista
     ├── index.html                   ← Interfaz del juego Duelo de Alimentos
@@ -112,6 +153,7 @@ clases/clase_03_vegetarianismo/
     ├── app.js                       ← Algoritmo de duelos y preguntas epistemológicas
     └── assets/                      ← Estilos y listas de alumnos
 ```
+
 
 ---
 
