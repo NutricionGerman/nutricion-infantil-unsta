@@ -957,6 +957,169 @@
             background: rgba(59, 130, 246, 0.25);
             color: #93c5fd;
         }
+
+        /* SELECTOR PRINCIPAL: TEORÍA VS TALLER PRÁCTICO */
+        .main-mode-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin: 28px 0 24px 0;
+            flex-wrap: wrap;
+        }
+
+        .mode-tab-btn {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-md);
+            padding: 14px 24px;
+            color: #94a3b8;
+            font-family: var(--font-display);
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-tab-btn:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .mode-tab-btn.active {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 95, 70, 0.3));
+            border-color: var(--primary-emerald);
+            color: #34d399;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+        }
+
+        .mode-tab-btn.active.mode-practica {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(180, 83, 9, 0.3));
+            border-color: #f59e0b;
+            color: #fbbf24;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+        }
+
+        .mode-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+        }
+
+        .mode-tab-btn.active .mode-badge {
+            background: rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+
+        .mode-tab-btn.active.mode-practica .mode-badge {
+            background: rgba(245, 158, 11, 0.3);
+            color: #fef3c7;
+        }
+
+        /* TABLA CLÍNICA DE B12 Y PLANIFICACIÓN */
+        .b12-table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            background: rgba(10, 15, 29, 0.7);
+        }
+
+        .b12-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        .b12-table th {
+            background: rgba(15, 23, 42, 0.9);
+            padding: 14px 16px;
+            font-weight: 700;
+            color: #e2e8f0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            font-family: var(--font-display);
+        }
+
+        .b12-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
+            vertical-align: middle;
+        }
+
+        .b12-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .b12-dose-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, 0.18);
+            color: #34d399;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 0.88rem;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .b12-dose-high {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .infographic-trigger-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed rgba(59, 130, 246, 0.4);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .infographic-trigger-card:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #60a5fa;
+            transform: translateY(-2px);
+        }
+
+        .food-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 14px 0;
+        }
+
+        .food-matrix-card {
+            background: rgba(10, 15, 29, 0.65);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .food-matrix-card.card-integral {
+            border-top: 3px solid #10b981;
+        }
+
+        .food-matrix-card.card-refinado {
+            border-top: 3px solid #ef4444;
+        }
+
     </style>
 </head>
 <body>
@@ -992,6 +1155,25 @@
             </p>
         </section>
 
+
+        <!-- SELECTOR PRINCIPAL: MÓDULOS TEÓRICOS VS TALLER PRÁCTICO -->
+        <div class="main-mode-switcher">
+            <button id="btn-mode-teoria" class="mode-tab-btn active" onclick="switchClassMode('teoria')">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Módulos Teóricos y Clínicos</span>
+                <span class="mode-badge">4 Ejes</span>
+            </button>
+            <button id="btn-mode-practica" class="mode-tab-btn" onclick="switchClassMode('practica')">
+                <i class="fas fa-flask"></i>
+                <span>Taller Práctico y Caso Forense</span>
+                <span class="mode-badge">Duelo, 73 Dietas y Huevo</span>
+            </button>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- CONTENEDOR 1: MÓDULOS TEÓRICOS Y CLÍNICOS                -->
+        <!-- ======================================================== -->
+        <div id="view-teoria">
         <!-- EJE 1: EPISTEMOLOGÍA Y DEFINICIÓN DE SALUDABLE -->
         <section class="section">
             <div class="card">
@@ -1179,65 +1361,194 @@
             </div>
         </section>
 
-        <!-- EJE 2: LA EVIDENCIA REAL EN NUESTRO AULA -->
+
+        <!-- EJE 2 (TEORÍA): PLANIFICACIÓN CLÍNICA DE LA ALIMENTACIÓN BASADA EN PLANTAS -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
                     <div class="card-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
-                        <i class="fas fa-chart-pie"></i>
+                        <i class="fas fa-apple-alt"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">2. Evidencia Empírica de Nuestro Curso</h2>
-                        <div class="card-subtitle">Análisis de las elecciones y cálculos realizados por los alumnos</div>
+                        <h2 class="card-title">2. Planificación Clínica de la Alimentación Basada en Plantas (WFPB)</h2>
+                        <div class="card-subtitle">Suficiencia nutricional, integridad de la matriz, biodiversidad y protocolo de vitamina B12 en el ciclo vital</div>
                     </div>
                 </div>
 
-                <p style="margin-bottom: 20px; color: var(--text-muted);">
-                    Para transicionar hacia el cambio de paradigma, no apelamos a dogmas sino a la propia experiencia de los alumnos en dos momentos clave:
-                </p>
+                <!-- SUBSECCIÓN: SUFICIENCIA NUTRICIONAL -->
+                <div style="margin-bottom: 24px;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
+                        🌱 Suficiencia Nutricional y Evidencia Biomarcadora: Superando el Sesgo de la Deficiencia
+                    </h3>
+                    <p style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 14px;">
+                        Históricamente, la percepción social y médica sobre las dietas basadas en plantas estuvo condicionada por una construcción publicitaria de mediados del siglo XX que asociaba la salud exclusivamente a productos de origen animal, infundiendo temores en torno a presuntas deficiencias intrínsecas (<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3854817/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline;">McDougall, 2013</a>).
+                    </p>
+                    <p style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 14px;">
+                        La evidencia epidemiológica y clínica contemporánea desmiente categóricamente este mito:
+                    </p>
+                    <ul style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.6; padding-left: 20px; margin-bottom: 18px;">
+                        <li style="margin-bottom: 8px;">
+                            <strong>Calidad Nutricional Global Superior</strong>: Al evaluar la ingesta mediante índices de alimentación saludable (HEI), los patrones veganos y vegetarianos alcanzan las puntuaciones más elevadas en densidad de micronutrientes, fibra y menor carga de grasas saturadas frente a patrones omnívoros (<a href="https://pubmed.ncbi.nlm.nih.gov/24667136/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline;">Clarys et al., 2014</a>).
+                        </li>
+                        <li style="margin-bottom: 8px;">
+                            <strong>Validación por Biomarcadores Objetivos</strong>: En el <em>Adventist Health Study-2</em>, los biomarcadores en plasma, orina y tejido adiposo confirman niveles significativamente más favorables de ácidos grasos cardioprotectores, antioxidantes y metabolitos antiinflamatorios en individuos que adoptan dietas vegetales por salud (<a href="https://pubmed.ncbi.nlm.nih.gov/30770530/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline;">Miles et al., 2019</a>).
+                        </li>
+                        <li>
+                            <strong>Principio Clínico de Monitoreo</strong>: En personas que consumen dietas vegetales integrales y variadas cubriendo su requerimiento calórico, <strong>ni el hierro, ni el calcio, ni las proteínas, ni los omega-3 demandan monitoreos invasivos excepcionales</strong> respecto a la población general; la atención clínica se focaliza en la educación nutricional y la suplementación sistemática con vitamina B12.
+                        </li>
+                    </ul>
+                </div>
 
-                <div class="grid-results">
-                    <!-- PANEL 1: DUELO DE ALIMENTOS -->
-                    <div class="result-panel">
-                        <div class="result-img-wrap">
-                            <img src="img/podio_duelo_76_alumnos.png" alt="Podio del Duelo de Alimentos - N=76 Alumnos">
-                        </div>
-                        <div class="result-body">
-                            <div>
-                                <span class="result-tag tag-amber">Momento 1 • Paradigma Imperante</span>
-                                <h3 class="result-title">El Duelo de Alimentos (N = 76)</h3>
-                                <p class="result-text">
-                                    Al elegir bajo presión temporal de 10 segundos, el sesgo cognitivo salió a la luz: los alumnos consagraron un podio 100% animal: <strong>1° Huevo (54 votos)</strong>, <strong>2° Carne magra (41)</strong>, <strong>3° Pechuga de pollo (28)</strong> y <strong>4° Salmón (27)</strong>. La palta fue el único vegetal en entrar al Top 5.
+                <!-- LOS TRES PILARES DE LA PLANIFICACIÓN -->
+                <div style="border-top: 1px dashed var(--border-color); padding-top: 24px; margin-top: 20px;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #34d399; margin-bottom: 8px;">
+                        🧭 Los Tres Pilares de la Planificación Dietética Saludable
+                    </h3>
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+                        Para garantizar desenlaces favorables y prevenir el consumo de ultraprocesados vegetales («vegetarianismo chatarra»), la cátedra establece tres directrices innegociables:
+                    </p>
+
+                    <!-- PILAR 1 -->
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 16px;">
+                        <h4 style="font-size: 1rem; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            <span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Pilar I</span>
+                            Prioridad de la Matriz Alimentaria Íntegra (Whole Foods)
+                        </h4>
+                        <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 12px;">
+                            Cuanto mayor es la proporción de alimentos vegetales enteros sin refinar, más contundente es la reducción de mortalidad y enfermedades crónicas (<a href="https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.119.041014" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline;">Circulation AHA, 2019</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/21983060/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline;">Tuso et al., 2013</a>). Los alimentos integrales conservan su estructura celular, fibra intrínseca y fitoquímicos protectores.
+                        </p>
+                        
+                        <div class="food-matrix-grid">
+                            <div class="food-matrix-card card-integral">
+                                <strong style="color: #34d399; font-size: 0.88rem; display: block; margin-bottom: 6px;">
+                                    <i class="fas fa-check-circle"></i> Alimentos con Matriz Intacta
+                                </strong>
+                                <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.45;">
+                                    Manzana con piel, legumbres enteras cocidas con hollejo, arroz integral, avena arrollada, frutos secos al natural, semillas enteras o molidas en el momento, verduras y hortalizas frescas o al vapor.
                                 </p>
                             </div>
-                            <a href="https://docs.google.com/spreadsheets/d/1JOhp3ftu_cCqZWiisvPa9uSgCHgJfnhLAIDntBM9zGY/edit?gid=1881713113#gid=1881713113" target="_blank" rel="noopener noreferrer" class="btn-sheet">
-                                <i class="fas fa-table"></i> Ver Planilla de Duelos en Google Sheets
-                            </a>
+                            <div class="food-matrix-card card-refinado">
+                                <strong style="color: #f87171; font-size: 0.88rem; display: block; margin-bottom: 6px;">
+                                    <i class="fas fa-times-circle"></i> Alimentos con Matriz Rota o Refinada
+                                </strong>
+                                <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.45;">
+                                    Pan blanco, arroz blanco, puré o harina de legumbres sin hollejo, snacks de maíz frito en aceite, aceites vegetales refinados añadidos libremente, azúcar y ultraprocesados veganos comerciales.
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- PANEL 2: COMPARATIVA 73 DIETAS -->
-                    <div class="result-panel">
-                        <div class="result-img-wrap">
-                            <img src="img/comparativa_nutrientes_73_dietas.png" alt="Comparativa de Nutrientes de 73 Dietas">
+                    <!-- PILAR 2 -->
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px; margin-bottom: 16px;">
+                        <h4 style="font-size: 1rem; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            <span style="background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Pilar II</span>
+                            Biodiversidad Dietética y Sinergia Intracategorial
+                        </h4>
+                        <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 10px;">
+                            Cada familia vegetal aporta un perfil biológico irreemplazable. Una alimentación diaria debe rotar entre los <strong>6 grupos elementales</strong>: legumbres, cereales de grano entero, verduras (incluyendo setas y hongos), frutas de estación, frutos secos y semillas.
+                        </p>
+                        <div style="background: rgba(0, 0, 0, 0.25); border-left: 3px solid #60a5fa; padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 0.84rem; color: #cbd5e1;">
+                            <strong>💡 Ejemplo de especificidad funcional dentro del mismo grupo:</strong><br>
+                            Dentro de los frutos secos y semillas, las <strong>almendras y el sésamo integral (tahini)</strong> son fuentes excepcionales de calcio vegetal de alta biodisponibilidad, mientras que las <strong>nueces y semillas de lino o chía molidas</strong> aportan el ácido alfa-linolénico (&omega;-3 ALA) indispensable. La rotación variada asegura el equilibrio sin necesidad de cálculos matemáticos extenuantes.
                         </div>
-                        <div class="result-body">
-                            <div>
-                                <span class="result-tag tag-emerald">Momento 2 • Quiebre de Preconceptos</span>
-                                <h3 class="result-title">Comparativa de 73 Dietas de 2500 kcal</h3>
-                                <p class="result-text">
-                                    Al calcular dietas a ciegas sin carnes, la evidencia matemática sorprendió al curso: el cumplimiento de micronutrientes fue de <strong>87% en Vegana</strong> y <strong>86% en Vegetariana</strong> vs. solo <strong>79% en Omnívora</strong>, con niveles ampliamente superiores de fibra, magnesio y calcio sin exceso de grasas saturadas.
-                                </p>
+                    </div>
+
+                    <!-- PILAR 3 -->
+                    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 18px;">
+                        <h4 style="font-size: 1rem; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                            <span style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;">Pilar III</span>
+                            Vitamina B12: Farmacocinética y Dosificación en el Ciclo Vital
+                        </h4>
+                        <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.55; margin-bottom: 12px;">
+                            La vitamina B12 (cobalamina) es de síntesis exclusivamente bacteriana, no animal ni vegetal. En personas que siguen patrones basados en plantas, su suplementación regular no es un signo de déficit de la dieta, sino una <strong>medida elemental de seguridad sanitaria y farmacológica</strong>.
+                        </p>
+
+                        <!-- MECANISMO FARMACOCINÉTICO -->
+                        <div style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 16px;">
+                            <strong style="color: #fbbf24; font-size: 0.88rem; display: block; margin-bottom: 6px;">
+                                🔬 Farmacocinética Clínica: ¿Por qué 50 µg diarios vs. 2000 µg semanales?
+                            </strong>
+                            <p style="font-size: 0.84rem; color: #cbd5e1; line-height: 1.55; margin: 0;">
+                                El sistema de transporte activo mediado por el <strong>Factor Intrínseco gástrico</strong> y receptores ileales de cubilina tiene una capacidad finita: se satura con apenas <strong>1.5 a 2 µg</strong> por ingesta. Por ello, si se utiliza una toma diaria baja (50 µg), se absorbe por vía activa. En cambio, en megadosis semanales (2000 µg), la vía activa se satura de inmediato y el organismo recurre a la <strong>difusión pasiva mucosal</strong>, que absorbe aproximadamente el <strong>1%</strong> de la dosis (2000 µg &times; 1% = 20 µg netos absorbidos), cubriendo con margen holgado la necesidad biológica de toda la semana.
+                            </p>
+                        </div>
+
+                        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 14px;">
+                            <strong style="color: #fff;">Suplementación directa vs. Alimentos fortificados:</strong> Los estudios de seguimiento demuestran que quienes presentan concentraciones séricas óptimas y estables de B12 son aquellos que toman suplemento directo de cianocobalamina (<a href="https://pubmed.ncbi.nlm.nih.gov/10648266/" target="_blank" rel="noopener noreferrer" style="color: #60a5fa; text-decoration: underline;">Tucker et al., 2000</a>), evitando la variabilidad y el procesamiento de los productos industriales fortificados.
+                        </p>
+
+                        <!-- TABLA OFICIAL DE DOSIFICACIÓN POR ETAPAS -->
+                        <div class="b12-table-wrapper">
+                            <table class="b12-table">
+                                <thead>
+                                    <tr>
+                                        <th>Etapa Biológica / Grupo Clínico</th>
+                                        <th>Dosis Óptima</th>
+                                        <th>Pauta de Administración y Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Lactantes Destetados</strong><br><span style="font-size: 0.78rem; color: var(--text-muted);">Alimentación complementaria</span></td>
+                                        <td><span class="b12-dose-badge">5 µg / día</span></td>
+                                        <td>Gotas pediátricas orales. Iniciar según pauta de destete acordada con pediatra.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Niños de 4 a 10 años</strong></td>
+                                        <td><span class="b12-dose-badge">25 µg / día</span></td>
+                                        <td>Vía oral diaria masticable. Desde los 11 años pueden adoptar la pauta de adulto.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Adultos</strong></td>
+                                        <td>
+                                            <span class="b12-dose-badge">50 µg / día</span><br>
+                                            <span style="font-size: 0.76rem; color: var(--text-muted);">o bien</span><br>
+                                            <span class="b12-dose-badge">2000 µg / semana</span>
+                                        </td>
+                                        <td>La dosis semanal única aprovecha la vía de difusión pasiva (~1%). Elección según comodidad del paciente.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Embarazo y Lactancia</strong></td>
+                                        <td>
+                                            <span class="b12-dose-badge">50 µg / día</span><br>
+                                            <span style="font-size: 0.76rem; color: var(--text-muted);">o bien</span><br>
+                                            <span class="b12-dose-badge">2000 µg / semana</span>
+                                        </td>
+                                        <td><strong>Crítico</strong>: El feto y lactante dependen del paso transplacentario reciente; monitorear valores de B12 y homocisteína.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Adultos Mayores (> 65 años)</strong></td>
+                                        <td><span class="b12-dose-badge b12-dose-high">1000 µg / día</span></td>
+                                        <td>Pauta recomendada independientemente de la dieta por prevalencia de gastritis atrófica e hipoclorhidria.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Individuos con Déficit de B12</strong></td>
+                                        <td><span class="b12-dose-badge b12-dose-high">1000 µg / día</span></td>
+                                        <td>Tratamiento de ataque diario durante <strong>al menos 1 mes</strong> (o intramuscular si hay compromiso neurológico) antes de pasar a mantenimiento.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- TRIGGER DE INFOGRAFÍA COMPLETA -->
+                        <div class="infographic-trigger-card" onclick="openLightbox('img/dosificacion_b12_ciclo_vital.png')">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-tablets" style="font-size: 1.5rem; color: #34d399;"></i>
+                                <div>
+                                    <div style="font-size: 0.9rem; font-weight: 600; color: #fff;">Ver Infografía Clínica de Dosificación en Pantalla Completa</div>
+                                    <div style="font-size: 0.78rem; color: var(--text-muted);">Esquema de dosificación en diferentes etapas de la vida (NutritionFacts / Dr. Greger)</div>
+                                </div>
                             </div>
-                            <a href="https://docs.google.com/spreadsheets/d/1KA2BLjO1i73KJrUqB19fdufDC8WYvBGQZ0U7hN_nTR4/edit?gid=1179089594#gid=1179089594" target="_blank" rel="noopener noreferrer" class="btn-sheet">
-                                <i class="fas fa-table"></i> Ver Matriz Comparativa en Google Sheets
-                            </a>
+                            <span class="btn-doi" style="margin: 0;">
+                                <i class="fas fa-search-plus"></i> Ampliar
+                            </span>
                         </div>
+
                     </div>
                 </div>
+
             </div>
         </section>
-
         <!-- EJE 3: TRIANGULACIÓN DE LA EVIDENCIA Y SUSTITUCIÓN PROTEICA -->
         <section class="section">
             <div class="card">
@@ -1373,107 +1684,7 @@
             </div>
         </section>
 
-        <!-- EJE 4: CASO DE ESTUDIO CLÍNICO: «EL EXPEDIENTE DEL HUEVO» -->
-        <section class="section">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
-                        <i class="fas fa-egg"></i>
-                    </div>
-                    <div>
-                        <h2 class="card-title">4. Caso de Estudio Clínico: «El Expediente del Huevo»</h2>
-                        <div class="card-subtitle">Deconstrucción forense del alimento #1 elegido en el aula: corto animado e infografías regulatorias</div>
-                    </div>
-                </div>
-
-                <p style="font-size: 0.95rem; color: #cbd5e1; margin-bottom: 24px; line-height: 1.6;">
-                    ¿Por qué analizamos el huevo como caso testigo? Porque en el <strong>Duelo de Alimentos</strong> realizado al inicio de la cursada, los propios alumnos consagraron al huevo en el <strong>1° puesto absoluto (54 votos)</strong> como el estándar incuestionable de salud. A continuación, contrastamos esa percepción cultural con la animación pedagógica de cátedra y los litigios regulatorios reales ante la FDA, FTC y USDA:
-                </p>
-
-                <!-- CORTO ANIMADO -->
-                <div style="margin-bottom: 32px;">
-                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
-                        🎬 Corto Animado: «El Interrogatorio al Huevo» (Film Noir)
-                    </h3>
-                    <div class="video-container">
-                        <video controls preload="metadata" poster="img/1.jpeg">
-                            <source src="videos/Huevo.mp4" type="video/mp4">
-                            Tu navegador no soporta video HTML5. Archivo disponible en: <code>clases/clase_03_vegetarianismo/videos/Huevo.mp4</code>.
-                        </video>
-                    </div>
-                </div>
-
-                <!-- CARRUSEL 1: INFOGRAFÍAS REGULATORIAS -->
-                <div>
-                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
-                        🔍 Expediente Regulatorio: ¿Estándar de Oro o Ilusión Publicitaria?
-                    </h3>
-                    <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.88rem;">
-                        Desliza las infografías para analizar los litigios legales y el marco normativo (FDA 21 CFR § 101.65, FTC, FOIA/USDA y JAMA):
-                    </p>
-
-                    <!-- COMPONENTE CARRUSEL INTERACTIVO -->
-                    <div class="carousel-wrapper" id="infografias-carrusel">
-                        
-                        <div class="carousel-slide-content">
-                            <!-- COLUMNA IMAGEN VERTICAL -->
-                            <div class="carousel-image-col">
-                                <div class="carousel-img-card" onclick="openLightbox(slidesData1[currentSlide1].img)">
-                                    <img id="slide-img-1" src="img/1.jpeg" alt="Infografía Regulatoria">
-                                    <div class="zoom-hint">
-                                        <i class="fas fa-search-plus"></i> Clic para pantalla completa
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- COLUMNA TEXTO / EXPLICACIÓN JURÍDICA Y CLÍNICA -->
-                            <div class="carousel-text-col">
-                                <div id="slide-badge-1" class="slide-step-badge">
-                                    <i class="fas fa-folder-open"></i> Expediente Caso 21-CFR-101
-                                </div>
-                                <h3 id="slide-title-1" class="slide-title">
-                                    ¿Estándar de oro nutricional o una exitosa construcción publicitaria? 🔍🥚
-                                </h3>
-                                <p id="slide-desc-1" class="slide-desc">
-                                    En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad.
-                                </p>
-                                <div id="slide-refs-1" class="slide-refs" style="display: none;">
-                                    <strong>Fuentes y Citas Normativas:</strong>
-                                    <span id="slide-refs-content-1"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- BARRA DE CONTROLES DEL CARRUSEL 1 -->
-                        <div class="carousel-controls">
-                            <button class="carousel-nav-btn" onclick="prevSlide1()" title="Anterior">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-
-                            <div class="carousel-dots" id="carousel-dots-1">
-                                <div class="dot active" onclick="goToSlide1(0)"></div>
-                                <div class="dot" onclick="goToSlide1(1)"></div>
-                                <div class="dot" onclick="goToSlide1(2)"></div>
-                                <div class="dot" onclick="goToSlide1(3)"></div>
-                                <div class="dot" onclick="goToSlide1(4)"></div>
-                            </div>
-
-                            <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
-                                <span id="slide-number-1">1</span> de 5
-                            </div>
-
-                            <button class="carousel-nav-btn" onclick="nextSlide1()" title="Siguiente">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- EJE 5: GUÍAS DE CÁTEDRA Y BIBLIOTECA CIENTÍFICA -->
+        <!-- MÓDULO 4 (TEORÍA): GUÍAS DE CÁTEDRA Y BIBLIOTECA CIENTÍFICA -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
@@ -1481,7 +1692,7 @@
                         <i class="fas fa-book-open"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">5. Guías de Cátedra y Biblioteca Científica</h2>
+                        <h2 class="card-title">4. Guías de Cátedra y Biblioteca Científica</h2>
                         <div class="card-subtitle">Documentos oficiales de cátedra para descarga directa y publicaciones indexadas con acceso DOI</div>
                     </div>
                 </div>
@@ -1598,6 +1809,208 @@
 
             </div>
         </section>
+            <!-- BOTÓN PUENTE A TALLER PRÁCTICO -->
+            <div style="text-align: center; margin: 36px 0 10px 0;">
+                <button class="mode-tab-btn mode-practica" onclick="switchClassMode('practica')" style="display: inline-flex; margin: 0 auto; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                    <i class="fas fa-flask"></i> Explorar el Taller Práctico y Caso Forense del Huevo <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+        </div> <!-- CIERRE #view-teoria -->
+
+        <!-- ======================================================== -->
+        <!-- CONTENEDOR 2: TALLER PRÁCTICO Y CASO FORENSE             -->
+        <!-- ======================================================== -->
+        <div id="view-practica" style="display: none;">
+            
+            <!-- BANNER DEL LABORATORIO PRÁCTICO -->
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(15, 23, 42, 0.85)); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-md); padding: 24px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+                    <div style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div>
+                        <h2 style="font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: #fff; margin: 0;">
+                            Taller Práctico de Cátedra & Laboratorio Forense
+                        </h2>
+                        <div style="font-size: 0.86rem; color: var(--text-muted);">
+                            La experiencia empírica de los alumnos: el diagnóstico del paradigma imperante, el quiebre de las 73 dietas y el expediente forense del huevo
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 0.9rem; color: #cbd5e1; margin: 0; line-height: 1.6;">
+                    En este espacio se compilan las experiencias empíricas del aula: el test en vivo de los sesgos cognitivos bajo presión de tiempo (Duelo N=76), la contrastación matemática de 73 dietas de 2500 kcal y el juicio regulatorio a la industria del huevo como caso testigo de marketing vs. desenlaces duros.
+                </p>
+            </div>
+
+            <!-- PRÁCTICA 1: LA EVIDENCIA REAL EN NUESTRO AULA -->
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">1. Diagnóstico Empírico de Nuestro Curso: Duelos y 73 Dietas</h2>
+                            <div class="card-subtitle">Análisis de las elecciones cognitivas y de los cálculos dietéticos realizados por los alumnos</div>
+                        </div>
+                    </div>
+
+                    <p style="margin-bottom: 20px; color: var(--text-muted);">
+                        Para transicionar hacia el cambio de paradigma, no apelamos a dogmas sino a la propia experiencia de los alumnos en dos momentos clave:
+                    </p>
+
+                    <div class="grid-results">
+                        <!-- PANEL 1: DUELO DE ALIMENTOS -->
+                        <div class="result-panel">
+                            <div class="result-img-wrap" onclick="openLightbox('img/podio_duelo_76_alumnos.png')" style="cursor: pointer;" title="Clic para ampliar podio">
+                                <img src="img/podio_duelo_76_alumnos.png" alt="Podio del Duelo de Alimentos - N=76 Alumnos">
+                            </div>
+                            <div class="result-body">
+                                <div>
+                                    <span class="result-tag tag-amber">Momento 1 • Paradigma Imperante</span>
+                                    <h3 class="result-title">El Duelo de Alimentos (N = 76)</h3>
+                                    <p class="result-text">
+                                        Al elegir bajo presión temporal de 10 segundos, el sesgo cognitivo salió a la luz: los alumnos consagraron un podio 100% animal: <strong>1° Huevo (54 votos)</strong>, <strong>2° Carne magra (41)</strong>, <strong>3° Pechuga de pollo (28)</strong> y <strong>4° Salmón (27)</strong>. La palta fue el único vegetal en entrar al Top 5.
+                                    </p>
+                                </div>
+                                <a href="https://docs.google.com/spreadsheets/d/1JOhp3ftu_cCqZWiisvPa9uSgCHgJfnhLAIDntBM9zGY/edit?gid=1881713113#gid=1881713113" target="_blank" rel="noopener noreferrer" class="btn-sheet">
+                                    <i class="fas fa-table"></i> Ver Planilla de Duelos en Google Sheets
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- PANEL 2: COMPARATIVA 73 DIETAS -->
+                        <div class="result-panel">
+                            <div class="result-img-wrap" onclick="openLightbox('img/comparativa_nutrientes_73_dietas.png')" style="cursor: pointer;" title="Clic para ampliar comparativa">
+                                <img src="img/comparativa_nutrientes_73_dietas.png" alt="Comparativa de Nutrientes de 73 Dietas">
+                            </div>
+                            <div class="result-body">
+                                <div>
+                                    <span class="result-tag tag-emerald">Momento 2 • Quiebre de Preconceptos</span>
+                                    <h3 class="result-title">Comparativa de 73 Dietas de 2500 kcal</h3>
+                                    <p class="result-text">
+                                        Al calcular dietas a ciegas sin carnes, la evidencia matemática sorprendió al curso: el cumplimiento de micronutrientes fue de <strong>87% en Vegana</strong> y <strong>86% en Vegetariana</strong> vs. solo <strong>79% en Omnívora</strong>, con niveles ampliamente superiores de fibra, magnesio y calcio sin exceso de grasas saturadas.
+                                    </p>
+                                </div>
+                                <a href="https://docs.google.com/spreadsheets/d/1KA2BLjO1i73KJrUqB19fdufDC8WYvBGQZ0U7hN_nTR4/edit?gid=1179089594#gid=1179089594" target="_blank" rel="noopener noreferrer" class="btn-sheet">
+                                    <i class="fas fa-table"></i> Ver Matriz Comparativa en Google Sheets
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRÁCTICA 2: CASO DE ESTUDIO CLÍNICO Y FORENSE: «EL EXPEDIENTE DEL HUEVO» -->
+            <section class="section">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
+                            <i class="fas fa-egg"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">2. Caso de Estudio Clínico y Forense: «El Expediente del Huevo»</h2>
+                            <div class="card-subtitle">Deconstrucción forense del alimento #1 votado en el aula: corto animado e infografías regulatorias</div>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.95rem; color: #cbd5e1; margin-bottom: 24px; line-height: 1.6;">
+                        ¿Por qué analizamos el huevo como caso testigo en el taller práctico? Porque en el <strong>Duelo de Alimentos</strong> realizado al inicio de la cursada, los propios alumnos consagraron al huevo en el <strong>1° puesto absoluto (54 votos)</strong> como el estándar supremo de salud. A continuación, contrastamos esa percepción cultural con la animación pedagógica de cátedra y los litigios regulatorios reales ante la FDA, FTC y USDA:
+                    </p>
+
+                    <!-- CORTO ANIMADO -->
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
+                            🎬 Corto Animado: «El Interrogatorio al Huevo» (Film Noir)
+                        </h3>
+                        <div class="video-container">
+                            <video controls preload="metadata" poster="img/1.jpeg">
+                                <source src="videos/Huevo.mp4" type="video/mp4">
+                                Tu navegador no soporta video HTML5. Archivo disponible en: <code>clases/clase_03_vegetarianismo/videos/Huevo.mp4</code>.
+                            </video>
+                        </div>
+                    </div>
+
+                    <!-- CARRUSEL 1: INFOGRAFÍAS REGULATORIAS -->
+                    <div>
+                        <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
+                            🔍 Expediente Regulatorio: ¿Estándar de Oro o Ilusión Publicitaria?
+                        </h3>
+                        <p style="margin-bottom: 16px; color: var(--text-muted); font-size: 0.88rem;">
+                            Desliza las infografías para analizar los litigios legales y el marco normativo (FDA 21 CFR § 101.65, FTC, FOIA/USDA y JAMA):
+                        </p>
+
+                        <!-- COMPONENTE CARRUSEL INTERACTIVO -->
+                        <div class="carousel-wrapper" id="infografias-carrusel">
+                            
+                            <div class="carousel-slide-content">
+                                <!-- COLUMNA IMAGEN VERTICAL -->
+                                <div class="carousel-image-col">
+                                    <div class="carousel-img-card" onclick="openLightbox(slidesData1[currentSlide1].img)">
+                                        <img id="slide-img-1" src="img/1.jpeg" alt="Infografía Regulatoria">
+                                        <div class="zoom-hint">
+                                            <i class="fas fa-search-plus"></i> Clic para pantalla completa
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- COLUMNA TEXTO / EXPLICACIÓN JURÍDICA Y CLÍNICA -->
+                                <div class="carousel-text-col">
+                                    <div id="slide-badge-1" class="slide-step-badge">
+                                        <i class="fas fa-folder-open"></i> Expediente Caso 21-CFR-101
+                                    </div>
+                                    <h3 id="slide-title-1" class="slide-title">
+                                        ¿Estándar de oro nutricional o una exitosa construcción publicitaria? 🔍🥚
+                                    </h3>
+                                    <p id="slide-desc-1" class="slide-desc">
+                                        En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad.
+                                    </p>
+                                    <div id="slide-refs-1" class="slide-refs" style="display: none;">
+                                        <strong>Fuentes y Citas Normativas:</strong>
+                                        <span id="slide-refs-content-1"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BARRA DE CONTROLES DEL CARRUSEL 1 -->
+                            <div class="carousel-controls">
+                                <button class="carousel-nav-btn" onclick="prevSlide1()" title="Anterior">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+
+                                <div class="carousel-dots" id="carousel-dots-1">
+                                    <div class="dot active" onclick="goToSlide1(0)"></div>
+                                    <div class="dot" onclick="goToSlide1(1)"></div>
+                                    <div class="dot" onclick="goToSlide1(2)"></div>
+                                    <div class="dot" onclick="goToSlide1(3)"></div>
+                                    <div class="dot" onclick="goToSlide1(4)"></div>
+                                </div>
+
+                                <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
+                                    <span id="slide-number-1">1</span> de 5
+                                </div>
+
+                                <button class="carousel-nav-btn" onclick="nextSlide1()" title="Siguiente">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- BOTÓN PUENTE A TEORÍA -->
+            <div style="text-align: center; margin: 36px 0 10px 0;">
+                <button class="mode-tab-btn" onclick="switchClassMode('teoria')" style="display: inline-flex; margin: 0 auto;">
+                    <i class="fas fa-arrow-left"></i> Volver a los Módulos Teóricos y Clínicos
+                </button>
+            </div>
+
+        </div> <!-- CIERRE #view-practica -->
+
 
 
 
@@ -1848,6 +2261,50 @@
                 }
             }
         }
+
+
+        // Selector de vista: Teoría vs Taller Práctico
+        function switchClassMode(mode) {
+            const viewTeoria = document.getElementById('view-teoria');
+            const viewPractica = document.getElementById('view-practica');
+            const btnTeoria = document.getElementById('btn-mode-teoria');
+            const btnPractica = document.getElementById('btn-mode-practica');
+
+            if (!viewTeoria || !viewPractica) return;
+
+            if (mode === 'practica') {
+                viewTeoria.style.display = 'none';
+                viewPractica.style.display = 'block';
+                btnTeoria.classList.remove('active');
+                btnPractica.classList.add('active', 'mode-practica');
+                history.replaceState(null, null, '#practica');
+            } else {
+                viewTeoria.style.display = 'block';
+                viewPractica.style.display = 'none';
+                btnTeoria.classList.add('active');
+                btnPractica.classList.remove('active', 'mode-practica');
+                history.replaceState(null, null, '#teoria');
+            }
+
+            // Refrescar carruseles para asegurar render correcto
+            if (typeof updateSlideUI1 === 'function') updateSlideUI1();
+            if (typeof updateSlideUI2 === 'function') updateSlideUI2();
+            
+            // Scroll suave hacia el selector
+            const switcher = document.querySelector('.main-mode-switcher');
+            if (switcher) {
+                switcher.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Inicializar según hash al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#practica') {
+                switchClassMode('practica');
+            } else {
+                switchClassMode('teoria');
+            }
+        });
 
         // Inicializar UI de ambos carruseles al cargar
         updateSlideUI1();
