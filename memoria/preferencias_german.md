@@ -28,6 +28,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
      * **Endpoints Subrogados (*Surrogate Endpoints* / Biomarcadores)**: Mediciones intermedias en el paciente (LDL, Tensión Arterial, HbA1c, HOMA-IR) que se correlacionan con riesgo pero no son el desenlace final.
      * **Métricas Bromatológicas del Alimento**: Aminograma, valor biológico, digestibilidad proteica. Describen la composición del alimento en laboratorio, jamás deben confundirse con endpoints clínicos de un paciente.
 
+6. **Axioma Epistemológico: «La matriz alimentaria y los desenlaces mandan»**:
+   - *«Un alimento no se valida como saludable únicamente por contener un nutriente aislado en el papel (como proteína o luteína), ni se juzga exclusivamente por una sola molécula en abstracto. Lo que determina su impacto real es la cadena causal completa: cómo su matriz interactúa con los biomarcadores intermedios (ej. elevación de ApoB/LDL por colesterol y grasas saturadas) y si esa alteración se traduce efectivamente en un aumento de desenlaces clínicos duros (infartos, ACV y mortalidad).»*
+   - Debe ser la brújula conceptual de la cátedra: no caer en el elogio reduccionista de nutrientes aislados ni en la condena molecular abstracta; el estándar determinante es la cadena causal completa y los desenlaces duros.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
