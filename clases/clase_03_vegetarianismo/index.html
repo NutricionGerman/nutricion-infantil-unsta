@@ -1194,8 +1194,8 @@
                     <div class="carousel-slide-content">
                         <!-- COLUMNA IMAGEN VERTICAL -->
                         <div class="carousel-image-col">
-                            <div class="carousel-img-card" onclick="openLightbox()">
-                                <img id="slide-img" src="img/1.jpeg" alt="Infografía Regulatoria">
+                            <div class="carousel-img-card" onclick="openLightbox(slidesData1[currentSlide1].img)">
+                                <img id="slide-img-1" src="img/1.jpeg" alt="Infografía Regulatoria">
                                 <div class="zoom-hint">
                                     <i class="fas fa-search-plus"></i> Clic para pantalla completa
                                 </div>
@@ -1204,41 +1204,41 @@
 
                         <!-- COLUMNA TEXTO / EXPLICACIÓN JURÍDICA Y CLÍNICA -->
                         <div class="carousel-text-col">
-                            <div id="slide-badge" class="slide-step-badge">
+                            <div id="slide-badge-1" class="slide-step-badge">
                                 <i class="fas fa-folder-open"></i> Expediente Caso 21-CFR-101
                             </div>
-                            <h3 id="slide-title" class="slide-title">
+                            <h3 id="slide-title-1" class="slide-title">
                                 ¿Estándar de oro nutricional o una exitosa construcción publicitaria? 🔍🥚
                             </h3>
-                            <p id="slide-desc" class="slide-desc">
+                            <p id="slide-desc-1" class="slide-desc">
                                 En el imaginario colectivo y la práctica clínica habitual, el huevo entero suele posicionarse como el estándar proteico incuestionable. Sin embargo, detrás de las campañas de marketing existe un historial de restricciones legales, advertencias regulatorias y litigios judiciales que delimitan estrictamente lo que la industria puede afirmar sobre su inocuidad.
                             </p>
-                            <div id="slide-refs" class="slide-refs" style="display: none;">
+                            <div id="slide-refs-1" class="slide-refs" style="display: none;">
                                 <strong>Fuentes y Citas Normativas:</strong>
-                                <span id="slide-refs-content"></span>
+                                <span id="slide-refs-content-1"></span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- BARRA DE CONTROLES DEL CARRUSEL -->
+                    <!-- BARRA DE CONTROLES DEL CARRUSEL 1 -->
                     <div class="carousel-controls">
-                        <button class="carousel-nav-btn" onclick="prevSlide()" title="Anterior">
+                        <button class="carousel-nav-btn" onclick="prevSlide1()" title="Anterior">
                             <i class="fas fa-chevron-left"></i>
                         </button>
 
-                        <div class="carousel-dots" id="carousel-dots">
-                            <div class="dot active" onclick="goToSlide(0)"></div>
-                            <div class="dot" onclick="goToSlide(1)"></div>
-                            <div class="dot" onclick="goToSlide(2)"></div>
-                            <div class="dot" onclick="goToSlide(3)"></div>
-                            <div class="dot" onclick="goToSlide(4)"></div>
+                        <div class="carousel-dots" id="carousel-dots-1">
+                            <div class="dot active" onclick="goToSlide1(0)"></div>
+                            <div class="dot" onclick="goToSlide1(1)"></div>
+                            <div class="dot" onclick="goToSlide1(2)"></div>
+                            <div class="dot" onclick="goToSlide1(3)"></div>
+                            <div class="dot" onclick="goToSlide1(4)"></div>
                         </div>
 
                         <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
-                            <span id="slide-number">1</span> de 5
+                            <span id="slide-number-1">1</span> de 5
                         </div>
 
-                        <button class="carousel-nav-btn" onclick="nextSlide()" title="Siguiente">
+                        <button class="carousel-nav-btn" onclick="nextSlide1()" title="Siguiente">
                             <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
@@ -1397,6 +1397,66 @@
                     <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
                         💡 <strong>Conexión con nuestra práctica de aula:</strong> Dado que la ingesta calórica diaria está fisiológicamente restringida, cualquier aumento de un alimento implica desplazar otro. Al mantener las calorías fijas mediante modelos multivariables (<em>leave-one-out</em>), la ciencia aísla la <strong>calidad intrínseca de la matriz alimentaria</strong> del efecto confusor de la ganancia o pérdida de peso. <em>Es exactamente el principio metodológico que aplicaron en el Eje 2 al formular una dieta omnívora y compararla con una basada en plantas a ~2100 kcal.</em>
                     </p>
+                </div>
+
+                <!-- CARRUSEL 2 INTERACTIVO: DETECTIVE AVENA Y LA SUSTITUCIÓN ISOCALÓRICA -->
+                <div class="carousel-wrapper" id="sustitucion-carrusel" style="margin-bottom: 28px;">
+                    
+                    <div class="carousel-slide-content">
+                        <!-- COLUMNA IMAGEN VERTICAL -->
+                        <div class="carousel-image-col">
+                            <div class="carousel-img-card" onclick="openLightbox(slidesData2[currentSlide2].img)">
+                                <img id="slide-img-2" src="img/sustitucion isocalorica/1.jpeg" alt="Diapositiva Sustitución Isocalórica">
+                                <div class="zoom-hint">
+                                    <i class="fas fa-search-plus"></i> Clic para pantalla completa
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- COLUMNA TEXTO / EXPLICACIÓN EPIDEMIOLÓGICA -->
+                        <div class="carousel-text-col">
+                            <div id="slide-badge-2" class="slide-step-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">
+                                <i class="fas fa-search"></i> Caso 1 • Epistemología Médica
+                            </div>
+                            <h3 id="slide-title-2" class="slide-title">
+                                1️⃣ ¿Cómo se Mide la Salud? Desenlaces Reales vs. Nutricionismo
+                            </h3>
+                            <p id="slide-desc-2" class="slide-desc">
+                                El Detective Avena investiga el expediente clínico del paciente frente a un tubo de ensayo etiquetado como «Nutricionismo». Para la ciencia médica y la epidemiología clínica moderna, la salud no se define por la sumatoria de nutrientes aislados en una probeta de laboratorio, sino por desenlaces observables en personas vivas: longevidad, calidad de vida y prevención de enfermedades crónicas.
+                            </p>
+                            <div id="slide-refs-2" class="slide-refs">
+                                <strong>Fuentes y Citas Científicas:</strong>
+                                <span id="slide-refs-content-2">
+                                    • Thomas Kuhn: The Structure of Scientific Revolutions.<br>
+                                    • Scrimshaw NS. Nutritional reductionism and health outcomes.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BARRA DE CONTROLES DEL CARRUSEL 2 -->
+                    <div class="carousel-controls">
+                        <button class="carousel-nav-btn" onclick="prevSlide2()" title="Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+
+                        <div class="carousel-dots" id="carousel-dots-2">
+                            <div class="dot active" onclick="goToSlide2(0)"></div>
+                            <div class="dot" onclick="goToSlide2(1)"></div>
+                            <div class="dot" onclick="goToSlide2(2)"></div>
+                            <div class="dot" onclick="goToSlide2(3)"></div>
+                            <div class="dot" onclick="goToSlide2(4)"></div>
+                        </div>
+
+                        <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">
+                            <span id="slide-number-2">1</span> de 5
+                        </div>
+
+                        <button class="carousel-nav-btn" onclick="nextSlide2()" title="Siguiente">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+
                 </div>
 
                 <!-- DASHBOARD DE MÉTRICAS CLÍNICAS (HUEVO -> VEGETALES) -->
@@ -1633,8 +1693,10 @@
 
     <!-- JAVASCRIPT DEL CARRUSEL Y MODAL -->
     <script>
-        // DATOS DE LAS 5 DIAPOSITIVAS DEL CARRUSEL
-        const slidesData = [
+        // ==========================================
+        // CARRUSEL 1: EXPEDIENTE REGULATORIO DEL HUEVO
+        // ==========================================
+        const slidesData1 = [
             {
                 img: "img/1.jpeg",
                 badge: "📁 Expediente Regulatorio",
@@ -1672,18 +1734,18 @@
             }
         ];
 
-        let currentSlide = 0;
+        let currentSlide1 = 0;
 
-        function updateSlideUI() {
-            const slide = slidesData[currentSlide];
-            document.getElementById('slide-img').src = slide.img;
-            document.getElementById('slide-badge').innerHTML = slide.badge;
-            document.getElementById('slide-title').innerHTML = slide.title;
-            document.getElementById('slide-desc').innerHTML = slide.desc;
-            document.getElementById('slide-number').innerText = (currentSlide + 1);
+        function updateSlideUI1() {
+            const slide = slidesData1[currentSlide1];
+            document.getElementById('slide-img-1').src = slide.img;
+            document.getElementById('slide-badge-1').innerHTML = slide.badge;
+            document.getElementById('slide-title-1').innerHTML = slide.title;
+            document.getElementById('slide-desc-1').innerHTML = slide.desc;
+            document.getElementById('slide-number-1').innerText = (currentSlide1 + 1);
 
-            const refsBox = document.getElementById('slide-refs');
-            const refsContent = document.getElementById('slide-refs-content');
+            const refsBox = document.getElementById('slide-refs-1');
+            const refsContent = document.getElementById('slide-refs-content-1');
             if (slide.refs) {
                 refsContent.innerHTML = slide.refs;
                 refsBox.style.display = 'block';
@@ -1691,10 +1753,9 @@
                 refsBox.style.display = 'none';
             }
 
-            // Actualizar dots
-            const dots = document.querySelectorAll('.carousel-dots .dot');
+            const dots = document.querySelectorAll('#carousel-dots-1 .dot');
             dots.forEach((dot, index) => {
-                if (index === currentSlide) {
+                if (index === currentSlide1) {
                     dot.classList.add('active');
                 } else {
                     dot.classList.remove('active');
@@ -1702,28 +1763,115 @@
             });
         }
 
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slidesData.length;
-            updateSlideUI();
+        function nextSlide1() {
+            currentSlide1 = (currentSlide1 + 1) % slidesData1.length;
+            updateSlideUI1();
         }
 
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slidesData.length) % slidesData.length;
-            updateSlideUI();
+        function prevSlide1() {
+            currentSlide1 = (currentSlide1 - 1 + slidesData1.length) % slidesData1.length;
+            updateSlideUI1();
         }
 
-        function goToSlide(index) {
-            currentSlide = index;
-            updateSlideUI();
+        function goToSlide1(index) {
+            currentSlide1 = index;
+            updateSlideUI1();
         }
 
 
+        // ==========================================
+        // CARRUSEL 2: SUSTITUCIÓN ISOCALÓRICA Y EL CASO CLÍNICO
+        // ==========================================
+        const slidesData2 = [
+            {
+                img: "img/sustitucion isocalorica/1.jpeg",
+                badge: "🔍 Caso 1 • Epistemología Médica",
+                title: "1️⃣ ¿Cómo se Mide la Salud? Desenlaces Reales vs. Nutricionismo",
+                desc: "El Detective Avena investiga el expediente clínico del paciente frente a un tubo de ensayo etiquetado como «Nutricionismo». Para la ciencia médica y la epidemiología clínica moderna, la salud no se define por la sumatoria de nutrientes aislados en una probeta de laboratorio, sino por desenlaces observables en personas vivas: longevidad, calidad de vida y prevención de enfermedades crónicas.",
+                refs: "• Thomas Kuhn: The Structure of Scientific Revolutions.<br>• Scrimshaw NS. Nutritional reductionism and health outcomes."
+            },
+            {
+                img: "img/sustitucion isocalorica/2.jpeg",
+                badge: "🔗 Caso 2 • La Cadena Causal",
+                title: "2️⃣ De la Dieta a la Supervivencia: Tres Niveles Indispensables",
+                desc: "El tablero de investigación policial conecta los tres eslabones de la nutrición clínica:<br>1️⃣ <strong>Input Dietario:</strong> Lo que entra por la boca (alimentos y nutrientes).<br>2️⃣ <strong>Biomarcadores (Endpoints Subrogados):</strong> La respuesta intermedia en sangre y vasos (ApoB, colesterol LDL, tensión arterial, glucemia).<br>3️⃣ <strong>Desenlaces Duros:</strong> Lo que realmente le ocurre al paciente (infarto agudo de miocardio, ACV, diabetes tipo 2 y mortalidad por todas las causas).",
+                refs: "• Biomarkers Definitions Working Group (NIH/FDA). Biomarkers and surrogate endpoints. Clin Pharmacol Ther. 2001.<br>• Song M, Giovannucci E. Substitution analysis in nutritional epidemiology. Am J Clin Nutr. 2018."
+            },
+            {
+                img: "img/sustitucion isocalorica/3.jpeg",
+                badge: "⚖️ Caso 3 • Balanza Analítica",
+                title: "3️⃣ Sustitución Isocalórica: La Balanza de las 2100 kcal",
+                desc: "Bajo la lámpara de interrogatorio, el Detective Avena calibra con precisión milimétrica una balanza que marca <strong>«2100 kcal = ISO-CALÓRICO»</strong>. En un plato suda el Huevo de alta densidad lipídica; en el otro, un cuenco generoso de avena, lentejas y frutos secos. Como la ingesta calórica diaria está limitada, evaluar un reemplazo a iguales calorías (modelos <em>leave-one-out</em>) permite aislar la <strong>calidad intrínseca de la matriz vegetal</strong> sin el factor de ganar o perder peso.",
+                refs: "• Zheng JL, et al. The Isocaloric Substitution of Plant-Based and Animal-Based Protein. Nutrients. 2022.<br>• Holthuijsen et al. Modeling isocaloric macronutrient substitutions. Am J Clin Nutr. 2025."
+            },
+            {
+                img: "img/sustitucion isocalorica/4.jpeg",
+                badge: "🏛️ Caso 4 • El Tribunal Clínico",
+                title: "4️⃣ Desenlaces Clínicos Duros: El Veredicto de la Evidencia",
+                desc: "En la sala de audiencias, con el sello oficial de «PRUEBA», el Detective Avena presenta los datos de metaanálisis prospectivos ante el Huevo en el banquillo:<br>📉 <strong>-17% en Enfermedad Cardiovascular</strong> (al reemplazar 1 huevo/día por 25-28 g de frutos secos).<br>📉 <strong>-15% en Mortalidad Total</strong> (al reemplazar por frutos secos) y <strong>-10%</strong> (por 25-50 g de legumbres).<br>📉 <strong>-21% en Incidencia de Diabetes Tipo 2</strong> (al reemplazar por granos enteros y nueces).",
+                refs: "• Neuenschwander M, et al. Substitution of animal-based with plant-based foods on cardiometabolic health and all-cause mortality. BMC Med. 2023;21:309.<br>• Zhong VW, et al. Protein foods from animal sources, incident CVD and all-cause mortality. Int J Epidemiol. 2021.<br>• Barrantes-Espinola G, et al. Clin Nutr. 2026."
+            },
+            {
+                img: "img/sustitucion isocalorica/5.jpeg",
+                badge: "✅ Caso 5 • Consenso Aprobado",
+                title: "5️⃣ Regla de Oro: La Calidad del Reemplazo es Decisiva",
+                desc: "El Detective Avena estampa el sello de «CONSENSO CLÍNICO APROBADO». La evidencia zanja la paradoja de la sustitución:<br>❌ <strong>Reemplazo perjudicial:</strong> Cambiar huevo por carbohidratos refinados (pan blanco, azúcares) eleva los triglicéridos y acelera la placa aterosclerótica.<br>✔️ <strong>Reemplazo protector:</strong> Sustituirlo por matrices vegetales enteras (avena, lentejas, nueces ricas en fibra y ácidos grasos insaturados) mantiene las arterias despejadas y prolonga la longevidad.",
+                refs: "• Anjana R, et al. Dietary profiles and metabolic risk factors. Nature Medicine. 2025.<br>• Wallerer et al. Association between substituting macronutrients and cardiometabolic mortality. Eur J Nutr. 2024.<br>• Blanco-Rojo R, et al. Consumption of ultraprocessed foods and mortality. Am J Clin Nutr. 2019."
+            }
+        ];
 
-        // LIGHTBOX
-        function openLightbox() {
+        let currentSlide2 = 0;
+
+        function updateSlideUI2() {
+            const slide = slidesData2[currentSlide2];
+            document.getElementById('slide-img-2').src = slide.img;
+            document.getElementById('slide-badge-2').innerHTML = slide.badge;
+            document.getElementById('slide-title-2').innerHTML = slide.title;
+            document.getElementById('slide-desc-2').innerHTML = slide.desc;
+            document.getElementById('slide-number-2').innerText = (currentSlide2 + 1);
+
+            const refsBox = document.getElementById('slide-refs-2');
+            const refsContent = document.getElementById('slide-refs-content-2');
+            if (slide.refs) {
+                refsContent.innerHTML = slide.refs;
+                refsBox.style.display = 'block';
+            } else {
+                refsBox.style.display = 'none';
+            }
+
+            const dots = document.querySelectorAll('#carousel-dots-2 .dot');
+            dots.forEach((dot, index) => {
+                if (index === currentSlide2) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        function nextSlide2() {
+            currentSlide2 = (currentSlide2 + 1) % slidesData2.length;
+            updateSlideUI2();
+        }
+
+        function prevSlide2() {
+            currentSlide2 = (currentSlide2 - 1 + slidesData2.length) % slidesData2.length;
+            updateSlideUI2();
+        }
+
+        function goToSlide2(index) {
+            currentSlide2 = index;
+            updateSlideUI2();
+        }
+
+
+        // ==========================================
+        // LIGHTBOX UNIVERSAL
+        // ==========================================
+        function openLightbox(imgSrc) {
             const modal = document.getElementById('lightbox-modal');
             const modalImg = document.getElementById('lightbox-img');
-            modalImg.src = slidesData[currentSlide].img;
+            modalImg.src = imgSrc || slidesData1[currentSlide1].img;
             modal.classList.add('active');
         }
 
@@ -1733,25 +1881,33 @@
 
         // Navegación con teclado
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
             if (e.key === 'Escape') closeLightbox();
         });
 
-        // Soporte Swipe táctil en móviles
-        let touchstartX = 0;
-        let touchendX = 0;
-        const carruselEl = document.getElementById('infografias-carrusel');
+        // Soporte Swipe táctil en ambos carruseles
+        function setupSwipe(elementId, onNext, onPrev) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            let touchstartX = 0;
+            let touchendX = 0;
 
-        carruselEl.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+            el.addEventListener('touchstart', e => {
+                touchstartX = e.changedTouches[0].screenX;
+            }, { passive: true });
 
-        carruselEl.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            if (touchendX < touchstartX - 50) nextSlide();
-            if (touchendX > touchstartX + 50) prevSlide();
-        }, { passive: true });
+            el.addEventListener('touchend', e => {
+                touchendX = e.changedTouches[0].screenX;
+                if (touchendX < touchstartX - 50) onNext();
+                if (touchendX > touchstartX + 50) onPrev();
+            }, { passive: true });
+        }
+
+        setupSwipe('infografias-carrusel', nextSlide1, prevSlide1);
+        setupSwipe('sustitucion-carrusel', nextSlide2, prevSlide2);
+
+        // Inicializar UI de ambos carruseles al cargar
+        updateSlideUI1();
+        updateSlideUI2();
     </script>
 
 </body>
