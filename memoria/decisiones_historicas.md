@@ -17,4 +17,5 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
 
 4. **Estructura modular y autocontenida de clases (`clases/`)**:
    - Cada clase reside en su propia subcarpeta dedicada (`clase_01_antropometria_19_08/`, `clase_02_antropometria_26_08/`, `clase_03_duelo_alimentos/`, etc.) con sus propios archivos, imágenes (`img/`), videos (`videos/`), herramientas y PDFs.
-   - En la raíz de `clases/` se conservan archivos HTML de redirección rápida y la carpeta `herramientas/` para mantener compatibilidad absoluta con tarjetas o marcadores previos sin que nada se rompa.
+   - Cada clase incluye una subcarpeta `asistencia/` donde vive el formulario interactivo de toma de lista / registro de ese día, manteniendo separados y claros el material didáctico de la toma de asistencia.
+   - En la raíz de cada clase y en la raíz de `clases/` se conservan archivos HTML de redirección rápida para mantener compatibilidad absoluta con tarjetas o marcadores previos sin que nada se rompa.

@@ -10,11 +10,14 @@ Cada nueva clase puede contener material bibliográfico, diapositivas o una acti
 ```text
 clases/
 ├── clase_XX_nombre_DD_MM/       ← Carpeta autocontenida por clase
-│   ├── index.html               ← Interfaz interactiva o visor de la clase
+│   ├── index.html               ← Interfaz didáctica o visor de la clase
 │   ├── img/                     ← Imágenes y esquemas de la clase
 │   ├── videos/                  ← Videos demostrativos (mp4)
 │   ├── docs/                    ← Manuales o PDFs de lectura
-│   └── herramientas/            ← Calculadoras o herramientas interactivas
+│   ├── herramientas/            ← Calculadoras o herramientas interactivas
+│   └── asistencia/              ← 📲 Formulario de asistencia y registro en vivo
+│       ├── index.html           ← Formulario de toma de lista / registro
+│       └── app.js               ← Lógica de validación y conexión
 ```
 
 ---
