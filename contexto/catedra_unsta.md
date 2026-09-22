@@ -70,6 +70,6 @@ Cada rango tiene su insignia gráfica correspondiente en la carpeta `iconos/` (e
 
 ## 📋 Régimen de Asistencia y Regularidad
 
-- Las asistencias oficiales se toman clase a clase y se guardan como archivos de texto en la carpeta `asistencias/` (ej: `asistencia 19-08 Evaluacion Antropometrica.txt`, `asistencia 10-09.txt`).
+- Las asistencias oficiales se toman clase a clase y se guardan como archivos de texto en la carpeta `catedra/asistencias/` (ej: `asistencia 19-08 Evaluacion Antropometrica.txt`, `asistencia 10-09.txt`).
 - Estos archivos son la **fuente de verdad indiscutible** para sincronizar con Firestore.
 - El panel de control calcula el porcentaje de asistencia de cada alumno respecto al total de clases dictadas para determinar la condición de regularidad.

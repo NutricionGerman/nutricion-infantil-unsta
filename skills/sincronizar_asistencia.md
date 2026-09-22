@@ -11,7 +11,7 @@
 
 ## 📂 Fuentes de Datos
 
-* **Ubicación de archivos de texto**: Carpeta `asistencias/` en la raíz del proyecto.
+* **Ubicación de archivos de texto**: Carpeta `catedra/asistencias/`.
   * Ejemplos: `asistencia 19-08 Evaluacion Antropometrica.txt`, `asistencia 10-09.txt`, etc.
 * **Colección de destino en Firestore**:
   * Colección `students`: Actualizar `xp` (+2 XP) y el mapa/array `attendance` del alumno.

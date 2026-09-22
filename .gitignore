@@ -13,6 +13,8 @@ node_modules/
 *.pdf
 !clases/docs/*.pdf
 !bibliografia/*.pdf
+!catedra/bibliografia/*.pdf
+!catedra/bibliografia/**/*.pdf
 
 # Archivos de entorno y logs
 .env
