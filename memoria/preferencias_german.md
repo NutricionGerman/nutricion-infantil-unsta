@@ -32,6 +32,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
    - *«Un alimento no se valida como saludable únicamente por contener un nutriente aislado en el papel (como proteína o luteína), ni se juzga exclusivamente por una sola molécula en abstracto. Lo que determina su impacto real es la cadena causal completa: cómo su matriz interactúa con los biomarcadores intermedios (ej. elevación de ApoB/LDL por colesterol y grasas saturadas) y si esa alteración se traduce efectivamente en un aumento de desenlaces clínicos duros (infartos, ACV y mortalidad).»*
    - Debe ser la brújula conceptual de la cátedra: no caer en el elogio reduccionista de nutrientes aislados ni en la condena molecular abstracta; el estándar determinante es la cadena causal completa y los desenlaces duros.
 
+7. **Definición Oficial de la Cátedra: «Alimento / Dieta Saludable»**:
+   - *«Aquel alimento o patrón dietario que demuestra mejorar los desenlaces clínicos duros —reduciendo la mortalidad y las enfermedades crónicas— a un costo económico y medioambiental sostenible.»*
+   - Define el horizonte clínico y pedagógico de la cátedra: combina *hard endpoints* (supervivencia y morbilidad) con sustentabilidad económica y medioambiental, superando cualquier reduccionismo bromatológico.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*

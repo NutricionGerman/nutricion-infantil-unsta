@@ -25,7 +25,7 @@ Al finalizar la clase, el estudiante será capaz de:
 * **Comprender los conceptos epistemológicos de Thomas Kuhn**: qué es un *Paradigma*, cuándo surgen *Anomalías* y cómo se consolida un *Cambio de Paradigma* (*Paradigm Shift*) en las ciencias de la salud.
 * **Comparar la adecuación nutricional** (macronutrientes, 22 micronutrientes y perfil de ácidos grasos) entre dietas omnívoras, vegetarianas y veganas de igual valor calórico.
 * **Superar el sesgo del Nutricionismo**, distinguiendo entre alimentos fortificados artificialmente y patrones dietarios integrales que generan beneficios clínicos comprobables.
-* **Aplicar la definición de "Saludable" de la cátedra**: todo alimento o patrón que promueva vivir más tiempo (longevidad), vivir mejor sin enfermedad crónica (calidad de vida) y a un costo biológico y económico razonable.
+* **Aplicar la definición de "Saludable" de la cátedra**: aquel alimento o patrón dietario que demuestra mejorar los **desenlaces clínicos duros** —reduciendo la **mortalidad** y las **enfermedades crónicas**— a un **costo económico y medioambiental sostenible**.
 
 ---
 
@@ -78,7 +78,7 @@ Al finalizar la clase, el estudiante será capaz de:
   - Se debatió en clase que una dieta **no es más saludable simplemente por contener números más altos en una tabla de laboratorio**.
   - **El Contraejemplo Didáctico**: Una caja de cereales ultraprocesados de desayuno puede estar químicamente fortificada para cubrir el **100% de la RDA** de 20 vitaminas y minerales. Sin embargo, su matriz contiene azúcares refinados, harinas desprovistas de fibra celular y aditivos proinflamatorios. ¿La convierte esa lista de nutrientes en un alimento saludable? La respuesta es un rotundo **NO**.
 * **La Definición Operativa de la Cátedra**:
-  > *"Un alimento o patrón alimentario es **saludable** cuando produce desenlaces clínicos favorables demostrables: **te hace vivir más tiempo (longevidad)**, **te hace vivir mejor sin enfermedad crónica (calidad de vida)**, y se sostiene a un **costo biológico y económico razonable**."*
+  > *"Aquel alimento o patrón dietario que demuestra mejorar los **desenlaces clínicos duros** —reduciendo la **mortalidad** y las **enfermedades crónicas**— a un **costo económico y medioambiental sostenible**."*
 * **El Cambio de Paradigma**:
   - Los estudios epidemiológicos de cohortes (Adventistas, EPIC-Oxford, Nurses' Health Study) y los ensayos clínicos aleatorizados demuestran que las poblaciones con patrones predominantemente basados en plantas presentan menor incidencia de cardiopatía isquémica, diabetes tipo 2, hipertensión arterial, ciertos cánceres digestivos y menor mortalidad por todas las causas.
 
