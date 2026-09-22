@@ -10,8 +10,10 @@ node_modules/
 *.mp4
 !tienda/hero-simple/hero.mp4
 !clases/videos/*.mp4
+!clases/**/*.mp4
 *.pdf
 !clases/docs/*.pdf
+!clases/**/*.pdf
 !bibliografia/*.pdf
 !catedra/bibliografia/*.pdf
 !catedra/bibliografia/**/*.pdf

@@ -9,10 +9,12 @@
 Cada nueva clase puede contener material bibliográfico, diapositivas o una actividad interactiva:
 ```text
 clases/
-├── clase_DD_MM/               ← Carpeta nombrada con día y mes (ej. clase_26_08)
-│   ├── index.html             ← Interfaz interactiva o visor de la clase
-│   ├── imagenes/              ← Recursos gráficos
-│   └── docs/                  ← Presentaciones (PDF) o lecturas obligatorias
+├── clase_XX_nombre_DD_MM/       ← Carpeta autocontenida por clase
+│   ├── index.html               ← Interfaz interactiva o visor de la clase
+│   ├── img/                     ← Imágenes y esquemas de la clase
+│   ├── videos/                  ← Videos demostrativos (mp4)
+│   ├── docs/                    ← Manuales o PDFs de lectura
+│   └── herramientas/            ← Calculadoras o herramientas interactivas
 ```
 
 ---
