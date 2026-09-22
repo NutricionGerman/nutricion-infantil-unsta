@@ -130,12 +130,49 @@ Para respaldar legal y científicamente el cortometraje animado, la clase incorp
 
 ---
 
-## 📂 6. Organización de Archivos de esta Clase
+## 🔬 6. Fundamentación Epidemiológica: Cadena Causal, Endpoints y Sustitución Isocalórica
+
+Para dotar al docente de un **banco de respuestas clínicas de alta jerarquía metodológica** ante las objeciones habituales de los estudiantes (*"¿pero qué tiene de malo comer 2 huevos al día si tienen alto valor biológico?"*), la cátedra incorpora la epistemología de la **medicina basada en la evidencia**:
+
+### 🔗 La Cadena Causal de la Nutrición Clínica (En 3 Pasos)
+1. **Paso 1: Input / Exposición Dietaria (Alimentos y Nutrientes)**:
+   - Es lo que entra por la boca (huevo, legumbres, carnes, gramos de proteína o fibra).
+   - *Regla de oro metodológica*: **Los nutrientes son la exposición, jamás un desenlace de salud.** Decir que un alimento es bueno porque tiene proteína o malo porque tiene colesterol es reduccionismo si no se analiza el impacto en el organismo vivo.
+2. **Paso 2: Respuesta Fisiológica Intermedia (Endpoints Subrogados / Biomarcadores)**:
+   - Variables biológicas medidas en el paciente: Colesterol LDL, ApoB, Presión Arterial, $\text{HbA}_{1\text{c}}$, HOMA-IR.
+   - Son indicadores de riesgo, pero un cambio aislado en un biomarcador no garantiza por sí solo sobrevida si otros mecanismos fisiopatológicos siguen activos.
+3. **Paso 3: Desenlace Clínico Final (Endpoints Duros / Hard Endpoints)**:
+   - Eventos clínicos reales, objetivos e indiscutibles: **Mortalidad por todas las causas**, Infarto agudo de miocardio (IAM), ACV, incidencia de Enfermedades Crónicas No Transmisibles (Diabetes Tipo 2, Cáncer).
+   - **Es el estándar de oro en salud pública**: ¿la intervención salva vidas y previene discapacidad?
+
+---
+
+### 📊 Evidencia de Sustitución Isocalórica (Huevo ➔ Fuentes Vegetales)
+En epidemiología nutricional, la **sustitución isocalórica** (modelos *leave-one-out*) intercambia nutrientes o alimentos **manteniendo constantes las calorías totales diarias**. Esto aísla la calidad intrínseca de la matriz del efecto de ganar o perder peso:
+
+* **Riesgo Cardiovascular e Incidencia de ECV**:
+  - Reemplazar 1 huevo diario por **25 a 28 g de frutos secos** reduce un **17% la incidencia de enfermedad cardiovascular** (SHR 0.83, IC 95%: 0.78–0.89) y un **16% la mortalidad cardiovascular** (SHR 0.84, IC 95%: 0.79–0.90) (*Neuenschwander et al., BMC Medicine 2023; Zhong et al., Int J Epidemiol 2021*).
+* **Mortalidad por Todas las Causas**:
+  - Reemplazar 1 huevo al día por frutos secos reduce la **mortalidad total un 15%** (SHR 0.85).
+  - Reemplazar 1 huevo diario por **25 a 50 g de legumbres reduce la mortalidad total un 10%** (SHR 0.90, IC 95%: 0.89–0.91) (*Neuenschwander et al. 2023*).
+  - La sustitución general de proteína animal por vegetal (3%–5% VCT) disminuye la mortalidad un **9%** (HR 0.91, IC 95%: 0.87–0.94) (*Barrantes-Espinola et al., Clinical Nutrition 2026*).
+* **Salud Metabólica y Diabetes Tipo 2**:
+  - Reemplazar huevo por frutos secos o cereales integrales atenúa la incidencia de **Diabetes Tipo 2 entre un 18% y un 21%** (*Nature Medicine 2025; BMC Med 2023*).
+
+---
+
+### ⚖️ La Paradoja de la Sustitución Resuelta
+- Reducir huevo o grasas saturadas reemplazándolos por **azúcar o harinas refinadas** no aporta beneficios (empeora triglicéridos e inflamación).
+- Reemplazarlos por **matrices vegetales enteras ricas en fibra y ácidos grasos insaturados** genera reducciones drásticas en eventos clínicos mayores. **La calidad del reemplazo es decisiva.**
+
+---
+
+## 📂 7. Organización de Archivos de esta Clase
 
 ```text
 clases/clase_03_vegetarianismo/
 ├── GUIA_DOCENTE_Y_DINAMICA.md       ← Este documento pedagógico maestro
-├── index.html                       ← Interfaz interactiva de la clase (carrusel, video y teoría)
+├── index.html                       ← Interfaz interactiva de la clase (carrusel, video, sustitución y teoría)
 │
 ├── videos/
 │   └── Huevo.mp4                    ← Video animado policiaco (Detective Avena e Interrogatorio)
@@ -154,11 +191,16 @@ clases/clase_03_vegetarianismo/
     └── assets/                      ← Estilos y listas de alumnos
 ```
 
-
 ---
 
-## 🔗 6. Enlaces Oficiales de la Intervención
+## 🔗 8. Enlaces Oficiales y Biblioteca Científica con DOIs
 1. **Resultados del Paradigma Imperante (Duelo)**:  
-   [https://docs.google.com/spreadsheets/d/1JOhp3ftu_cCqZWiisvPa9uSgCHgJfnhLAIDntBM9zGY/...](https://docs.google.com/spreadsheets/d/1JOhp3ftu_cCqZWiisvPa9uSgCHgJfnhLAIDntBM9zGY/edit?gid=1881713113#gid=1881713113)
+   [Planilla en Vivo en Google Sheets](https://docs.google.com/spreadsheets/d/1JOhp3ftu_cCqZWiisvPa9uSgCHgJfnhLAIDntBM9zGY/edit?gid=1881713113#gid=1881713113)
 2. **Comparativa de Nutrientes entre Dietas (Omnívora vs. Vegetariana vs. Vegana)**:  
-   [https://docs.google.com/spreadsheets/d/1KA2BLjO1i73KJrUqB19fdufDC8WYvBGQZ0U7hN_nTR4/...](https://docs.google.com/spreadsheets/d/1KA2BLjO1i73KJrUqB19fdufDC8WYvBGQZ0U7hN_nTR4/edit?gid=1179089594#gid=1179089594)
+   [Planilla Comparativa en Google Sheets](https://docs.google.com/spreadsheets/d/1KA2BLjO1i73KJrUqB19fdufDC8WYvBGQZ0U7hN_nTR4/edit?gid=1179089594#gid=1179089594)
+3. **Anjana et al. (Nature Medicine 2025)**: [https://doi.org/10.1038/s41591-025-03949-4](https://doi.org/10.1038/s41591-025-03949-4)
+4. **Barrantes-Espinola et al. (Clinical Nutrition 2026)**: [https://doi.org/10.1016/j.clnu.2026.106654](https://doi.org/10.1016/j.clnu.2026.106654)
+5. **Neuenschwander et al. (BMC Medicine 2023)**: [https://doi.org/10.1186/s12916-023-03093-1](https://doi.org/10.1186/s12916-023-03093-1)
+6. **Zhong et al. (International Journal of Epidemiology 2021)**: [https://doi.org/10.1093/ije/dyaa205](https://doi.org/10.1093/ije/dyaa205)
+7. **Lee et al. (The Journal of Nutrition 2023)**: [https://doi.org/10.1016/j.tjnut.2023.03.024](https://doi.org/10.1016/j.tjnut.2023.03.024)
+8. **Zheng et al. (Nutrients 2022)**: [https://doi.org/10.3390/nu14020272](https://doi.org/10.3390/nu14020272)

@@ -683,6 +683,343 @@
         }
 
 
+        /* CAUSAL CHAIN 3 STEPS */
+        .chain-flow {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin: 24px 0;
+            position: relative;
+        }
+
+        @media (min-width: 860px) {
+            .chain-flow {
+                grid-template-columns: 1fr auto 1fr auto 1fr;
+                align-items: stretch;
+            }
+        }
+
+        .chain-step {
+            background: rgba(10, 15, 29, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .chain-step:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .chain-step.step-input {
+            border-top: 3px solid #60a5fa;
+        }
+
+        .chain-step.step-intermediate {
+            border-top: 3px solid #f59e0b;
+        }
+
+        .chain-step.step-hard {
+            border-top: 3px solid #10b981;
+        }
+
+        .chain-step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            width: fit-content;
+            margin-bottom: 12px;
+        }
+
+        .badge-blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .badge-amber { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .chain-step-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .chain-step-desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 14px;
+        }
+
+        .chain-step-list {
+            list-style: none;
+            font-size: 0.84rem;
+            color: #cbd5e1;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+
+        .chain-step-list li {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .chain-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-sub);
+            font-size: 1.3rem;
+            padding: 8px;
+        }
+
+        @media (max-width: 859px) {
+            .chain-arrow {
+                transform: rotate(90deg);
+                margin: -8px 0;
+            }
+        }
+
+        /* ENDPOINTS CONTRAST GRID */
+        .endpoints-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .endpoints-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .endpoint-card {
+            background: rgba(10, 15, 29, 0.65);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+        }
+
+        .endpoint-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .endpoint-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        /* METRIC CARDS DASHBOARD */
+        .metric-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin: 24px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg, rgba(16, 24, 40, 0.9), rgba(10, 15, 29, 0.8));
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        .metric-number {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #34d399, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .metric-desc {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+
+        .metric-ref {
+            font-size: 0.76rem;
+            color: #94a3b8;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 8px;
+        }
+
+        /* SUBSTITUTION TABLE */
+        .table-responsive-box {
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin: 20px 0;
+            background: rgba(10, 15, 29, 0.6);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        .custom-table th {
+            background: rgba(16, 24, 40, 0.9);
+            color: #fff;
+            padding: 14px 16px;
+            font-family: var(--font-display);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .custom-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* CALLOUT BOX */
+        .callout-box {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .callout-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #34d399;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* PAPERS GRID */
+        .papers-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        @media (min-width: 768px) {
+            .papers-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .paper-card {
+            background: rgba(10, 15, 29, 0.65);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .paper-card:hover {
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .paper-journal {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-teal);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .paper-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        .paper-authors {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .btn-doi {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #60a5fa;
+            text-decoration: none;
+            padding: 5px 10px;
+            background: rgba(59, 130, 246, 0.12);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 6px;
+            width: fit-content;
+            transition: all 0.2s ease;
+        }
+
+        .btn-doi:hover {
+            background: rgba(59, 130, 246, 0.25);
+            color: #93c5fd;
+        }
     </style>
 </head>
 <body>
@@ -910,7 +1247,263 @@
             </div>
         </section>
 
-        <!-- EJE 5: TEORÍA Y DOCUMENTOS -->
+        <!-- EJE 5: EPISTEMOLOGÍA Y METODOLOGÍA MÉDICA -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(239, 68, 68, 0.2); color: #f87171;">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">5. Epistemología Médica: ¿Cómo se Mide la Salud en la Ciencia?</h2>
+                        <div class="card-subtitle">Más allá del nutricionismo reduccionista: la cadena causal y los desenlaces clínicos reales</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.95rem; color: #cbd5e1; margin-bottom: 16px; line-height: 1.6;">
+                    Para evaluar si un alimento o patrón alimentario es verdaderamente «saludable», la epidemiología moderna y la medicina basada en la evidencia no juzgan moléculas aisladas en un tubo de ensayo. La salud se mide evaluando la <strong>respuesta fisiológica intermedia</strong> y, de forma definitiva, los <strong>desenlaces clínicos duros</strong> en personas reales.
+                </p>
+
+                <!-- REGLA METODOLÓGICA CONTRA EL DOBLE ESTÁNDAR -->
+                <div class="callout-box" style="background: rgba(59, 130, 246, 0.08); border-color: rgba(59, 130, 246, 0.25);">
+                    <div class="callout-title" style="color: #60a5fa;">
+                        <i class="fas fa-balance-scale"></i> La Regla Metodológica: Juzgar por el Desenlace, no por la Etiqueta
+                    </div>
+                    <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                        Un alimento <strong>no es saludable simplemente porque aporte un nutriente químico en el papel</strong> (ej. proteína o luteína en el huevo), pero <strong>tampoco se juzga como dañino solo por contener colesterol a priori</strong>. Lo que determina su impacto clínico real es la <strong>cadena causal</strong>: qué respuesta biológica intermedia provoca en el organismo y cómo esa respuesta modula los desenlaces finales de supervivencia y enfermedad.
+                    </p>
+                </div>
+
+                <!-- LA CADENA CAUSAL EN 3 PASOS -->
+                <div style="margin-top: 24px;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 14px;">
+                        🔗 La Cadena Causal de la Nutrición Clínica (En 3 Pasos)
+                    </h3>
+
+                    <div class="chain-flow">
+                        <!-- PASO 1 -->
+                        <div class="chain-step step-input">
+                            <span class="chain-step-badge badge-blue">Paso 1 • Input Dietario</span>
+                            <h4 class="chain-step-title">1. Ingesta y Nutrientes</h4>
+                            <p class="chain-step-desc">
+                                Lo que ingresa por la boca: alimentos enteros, matrices alimentarias y macronutrientes.
+                            </p>
+                            <ul class="chain-step-list">
+                                <li><i class="fas fa-utensils" style="color: #60a5fa;"></i> Huevo, legumbres, nueces, carnes, granos.</li>
+                                <li><i class="fas fa-dna" style="color: #60a5fa;"></i> Gramos de proteína, fibra, colesterol, grasas saturadas.</li>
+                                <li><i class="fas fa-info-circle" style="color: #93c5fd;"></i> <em>Los nutrientes son la exposición (el input), NO un desenlace de salud.</em></li>
+                            </ul>
+                        </div>
+
+                        <!-- FLECHA 1 -->
+                        <div class="chain-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+
+                        <!-- PASO 2 -->
+                        <div class="chain-step step-intermediate">
+                            <span class="chain-step-badge badge-amber">Paso 2 • Biomarcadores</span>
+                            <h4 class="chain-step-title">2. Endpoints Subrogados</h4>
+                            <p class="chain-step-desc">
+                                Respuesta biológica intermedia medida en el paciente para monitorear factores de riesgo.
+                            </p>
+                            <ul class="chain-step-list">
+                                <li><i class="fas fa-tint" style="color: #fbbf24;"></i> Colesterol LDL y partículas aterogénicas ApoB.</li>
+                                <li><i class="fas fa-heart" style="color: #fbbf24;"></i> Presión arterial sistólica y diastólica.</li>
+                                <li><i class="fas fa-chart-line" style="color: #fbbf24;"></i> Glucemia en ayunas, HbA1c y resistencia insulínica (HOMA-IR).</li>
+                            </ul>
+                        </div>
+
+                        <!-- FLECHA 2 -->
+                        <div class="chain-arrow">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+
+                        <!-- PASO 3 -->
+                        <div class="chain-step step-hard">
+                            <span class="chain-step-badge badge-emerald">Paso 3 • Clínica Real</span>
+                            <h4 class="chain-step-title">3. Endpoints Duros</h4>
+                            <p class="chain-step-desc">
+                                Desenlaces clínicos definitivos que miden la supervivencia, la enfermedad y la vida real.
+                            </p>
+                            <ul class="chain-step-list">
+                                <li><i class="fas fa-heart-crack" style="color: #34d399;"></i> Infarto agudo de miocardio (IAM) y ACV.</li>
+                                <li><i class="fas fa-stethoscope" style="color: #34d399;"></i> Incidencia de Diabetes Tipo 2 y Cáncer.</li>
+                                <li><i class="fas fa-hourglass-end" style="color: #34d399;"></i> <strong>Mortalidad por todas las causas</strong> (All-cause mortality).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTRASTE EN GRID: SUBROGADOS VS DUROS -->
+                <div class="endpoints-grid">
+                    <div class="endpoint-card">
+                        <div class="endpoint-card-header">
+                            <div class="endpoint-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">
+                                <i class="fas fa-vial"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-family: var(--font-display); font-size: 1.05rem; color: #fff; font-weight: 700;">Endpoints Subrogados (Biomarcadores)</h4>
+                                <span style="font-size: 0.78rem; color: #fbbf24; font-weight: 600;">Medición Intermedia • Factor de Riesgo</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">
+                            Son variables biológicas cuantificadas en el paciente (ej. perfil lipídico, tensión arterial o glucemia) que se utilizan como sustitutos porque se correlacionan con la enfermedad.
+                        </p>
+                        <div style="font-size: 0.84rem; color: #cbd5e1; background: rgba(0,0,0,0.25); padding: 10px 12px; border-radius: var(--radius-sm); border-left: 3px solid #fbbf24;">
+                            ⚠️ <strong>Límite metodológico:</strong> Un cambio aislado en un biomarcador no garantiza por sí solo una mayor sobrevida si el contexto dietario global es nocivo o si otros mecanismos fisiopatológicos continúan activos.
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-card-header">
+                            <div class="endpoint-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                                <i class="fas fa-heart-pulse"></i>
+                            </div>
+                            <div>
+                                <h4 style="font-family: var(--font-display); font-size: 1.05rem; color: #fff; font-weight: 700;">Desenlaces Clínicos Duros (Hard Endpoints)</h4>
+                                <span style="font-size: 0.78rem; color: #34d399; font-weight: 600;">Morbimortalidad • Eventos Incontestables</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px;">
+                            Son los desenlaces objetivos y tangibles que definen la salud pública: si el paciente sufre un infarto, si desarrolla una enfermedad crónica no transmisible (ECNT) o cuántos años vive.
+                        </p>
+                        <div style="font-size: 0.84rem; color: #cbd5e1; background: rgba(0,0,0,0.25); padding: 10px 12px; border-radius: var(--radius-sm); border-left: 3px solid #10b981;">
+                            🎯 <strong>Por qué nos fijamos aquí:</strong> Es el estándar de oro de la medicina basada en la evidencia. Las guías dietéticas internacionales se fundamentan en desenlaces duros porque responden a la pregunta clínica esencial: <em>¿la intervención salva vidas?</em>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EJE 6: LA CIENCIA DE LA SUSTITUCIÓN ISOCALÓRICA -->
+        <section class="section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">6. La Ciencia de la Sustitución Isocalórica y Evidencia Clínica</h2>
+                        <div class="card-subtitle">¿Qué ocurre en el organismo cuando reemplazamos el huevo por fuentes vegetales a iguales calorías?</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <p style="font-size: 0.95rem; color: #cbd5e1; margin-bottom: 12px; line-height: 1.6;">
+                        En epidemiología nutricional y ensayos clínicos, la <strong>sustitución isocalórica</strong> es la técnica analítica y metodológica estándar que evalúa el impacto biológico de reemplazar un alimento por otro <strong>conservando constante la energía calórica total diaria</strong> (Song & Giovannucci, 2018; Zheng et al., 2022).
+                    </p>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                        💡 <strong>Conexión con nuestra práctica de aula:</strong> Dado que la ingesta calórica diaria está fisiológicamente restringida, cualquier aumento de un alimento implica desplazar otro. Al mantener las calorías fijas mediante modelos multivariables (<em>leave-one-out</em>), la ciencia aísla la <strong>calidad intrínseca de la matriz alimentaria</strong> del efecto confusor de la ganancia o pérdida de peso. <em>Es exactamente el principio metodológico que aplicaron en el Eje 2 al formular una dieta omnívora y compararla con una basada en plantas a ~2100 kcal.</em>
+                    </p>
+                </div>
+
+                <!-- DASHBOARD DE MÉTRICAS CLÍNICAS (HUEVO -> VEGETALES) -->
+                <div class="metric-cards-grid">
+                    <!-- CARD 1 -->
+                    <div class="metric-card">
+                        <div class="metric-number">-17%</div>
+                        <div class="metric-title">🫀 Enfermedad Cardiovascular</div>
+                        <p class="metric-desc">
+                            Reemplazar 1 huevo diario por <strong>25 a 28 g de frutos secos</strong> reduce la incidencia de enfermedad cardiovascular en un 17% (SHR 0.83, IC 95%: 0.78–0.89) y un <strong>16% menos mortalidad cardiovascular</strong> (SHR 0.84).
+                        </p>
+                        <div class="metric-ref">
+                            📚 Neuenschwander et al., <em>BMC Medicine</em> (2023); Zhong et al., <em>Int J Epidemiol</em> (2021).
+                        </div>
+                    </div>
+
+                    <!-- CARD 2 -->
+                    <div class="metric-card">
+                        <div class="metric-number">-10% a -15%</div>
+                        <div class="metric-title">⏳ Mortalidad por Todas las Causas</div>
+                        <p class="metric-desc">
+                            Reemplazar 1 huevo al día por frutos secos reduce la <strong>mortalidad total un 15%</strong> (SHR 0.85). Cambiarlo por <strong>25 a 50 g de legumbres reduce la mortalidad total un 10%</strong> (SHR 0.90) sin heterogeneidad estadística.
+                        </p>
+                        <div class="metric-ref">
+                            📚 Neuenschwander et al. (2023); Barrantes-Espinola et al., <em>Clinical Nutrition</em> (2026).
+                        </div>
+                    </div>
+
+                    <!-- CARD 3 -->
+                    <div class="metric-card">
+                        <div class="metric-number">-18% a -21%</div>
+                        <div class="metric-title">🩸 Incidencia de Diabetes Tipo 2</div>
+                        <p class="metric-desc">
+                            Reemplazar huevo por frutos secos o cereales integrales atenúa la <strong>incidencia de Diabetes Tipo 2 entre un 18% y 21%</strong>, mejorando la resistencia insulínica, el perfil lipídico y la adiposidad central.
+                        </p>
+                        <div class="metric-ref">
+                            📚 Anjana et al., <em>Nature Medicine</em> (2025); Lee et al., <em>The Journal of Nutrition</em> (2023).
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TABLA DE NIVELES DE SUSTITUCIÓN -->
+                <div style="margin-top: 26px;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
+                        📊 Niveles de Modelado y Desenlaces en Investigaciones de Sustitución Isocalórica
+                    </h3>
+
+                    <div class="table-responsive-box">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Nivel de Análisis</th>
+                                    <th>Ejemplos de Sustitución Evaluada</th>
+                                    <th>Desenlaces Clínicos Reportados</th>
+                                    <th>Referencia Clave</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Macronutrientes globales</strong></td>
+                                    <td>Carbohidratos refinados por grasas mono/poliinsaturadas (3%–5% energía)</td>
+                                    <td>Reducción de presión arterial sistólica, glucosa e insulina en ayunas</td>
+                                    <td>Imamura et al.; Villaverde et al.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Subtipos de nutrientes</strong></td>
+                                    <td>Ácidos grasos saturados por poliinsaturados o proteínas vegetales</td>
+                                    <td>Menor mortalidad por todas las causas y menor acumulación hepática de lípidos</td>
+                                    <td>Wallerer et al. (2024); Ye et al. (2025)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fuentes proteicas</strong></td>
+                                    <td>Proteína animal por proteína de origen vegetal (3%–5% del VCT)</td>
+                                    <td><strong>Descenso de mortalidad cardiovascular y general (HR 0.91, IC 95%: 0.87–0.94)</strong></td>
+                                    <td>Barrantes-Espinola et al., <em>Clin Nutr</em> (2026); Lee et al. (2023)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alimentos integrales</strong></td>
+                                    <td>1 Huevo al día por legumbres (25–50g), frutos secos (25–28g) o granos enteros</td>
+                                    <td><strong>-17% ECV, -15% mortalidad total y -21% Diabetes Tipo 2</strong></td>
+                                    <td>Neuenschwander et al., <em>BMC Med</em> (2023); Zhong et al. (2021)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Grado de procesamiento</strong></td>
+                                    <td>Alimentos ultraprocesados por alimentos mínimamente procesados</td>
+                                    <td>Pérdida de grasa corporal troncal, menor resistencia insulínica y menor mortalidad</td>
+                                    <td>Blanco-Rojo et al. (2019); Yao et al. (2024)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- LA PARADOJA RESUELTA -->
+                <div class="callout-box">
+                    <div class="callout-title">
+                        <i class="fas fa-key"></i> La Regla de Oro Clínica: «La Calidad del Reemplazo es Decisiva»
+                    </div>
+                    <p style="font-size: 0.9rem; color: #cbd5e1; line-height: 1.6;">
+                        La sustitución isocalórica aclara las clásicas paradojas de la nutrición: <em>reducir un alimento con colesterol o grasas saturadas no genera beneficios si se reemplaza por opciones de igual o menor calidad nutricional</em> (por ejemplo, cambiar huevo por azúcares libres o almidones refinados empeora los triglicéridos y no reduce el riesgo cardiovascular). Por el contrario, cuando el recambio se orienta hacia <strong>matrices vegetales enteras ricas en fibra, ácidos grasos insaturados y fitoquímicos (legumbres, frutos secos, semillas y granos integrales)</strong>, los eventos clínicos adversos y la mortalidad se reducen de forma significativa y reproducible.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EJE 7: GUÍAS DE CÁTEDRA Y BIBLIOTECA CIENTÍFICA -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
@@ -918,8 +1511,8 @@
                         <i class="fas fa-book-open"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">5. Teoría, Guías y Bibliografía de la Clase</h2>
-                        <div class="card-subtitle">Documentos oficiales de cátedra y lecturas complementarias</div>
+                        <h2 class="card-title">7. Guías de Cátedra y Biblioteca Científica</h2>
+                        <div class="card-subtitle">Documentos oficiales de cátedra y publicaciones indexadas con acceso DOI</div>
                     </div>
                 </div>
 
@@ -928,7 +1521,7 @@
                         <div class="doc-icon"><i class="fas fa-file-alt"></i></div>
                         <div class="doc-info">
                             <div class="doc-title">Guía Pedagógica y Didáctica</div>
-                            <div class="doc-sub">Objetivos, 3 momentos y epistemología</div>
+                            <div class="doc-sub">Objetivos, 3 momentos y fundamentación epistemológica</div>
                         </div>
                         <i class="fas fa-external-link-alt" style="color: var(--text-sub); font-size: 0.8rem;"></i>
                     </a>
@@ -941,6 +1534,88 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- GRID DE PAPERS CIENTÍFICOS CON DOIS -->
+                <div style="margin-top: 26px;">
+                    <h3 style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 12px;">
+                        🔬 Publicaciones y Metaanálisis Citados (Acceso Directo DOI)
+                    </h3>
+
+                    <div class="papers-grid">
+                        <!-- PAPER 1 -->
+                        <div class="paper-card">
+                            <div>
+                                <div class="paper-journal">Nature Medicine (2025)</div>
+                                <div class="paper-title">Dietary profiles and associated metabolic risk factors in India from the ICMR–INDIAB survey-21</div>
+                                <div class="paper-authors">Anjana, R., Sudha, V., Abirami, K., Mohan, V., et al.</div>
+                            </div>
+                            <a href="https://doi.org/10.1038/s41591-025-03949-4" target="_blank" rel="noopener noreferrer" class="btn-doi">
+                                <i class="fas fa-external-link-alt"></i> DOI: 10.1038/s41591-025-03949-4
+                            </a>
+                        </div>
+
+                        <!-- PAPER 2 -->
+                        <div class="paper-card">
+                            <div>
+                                <div class="paper-journal">Clinical Nutrition (2026)</div>
+                                <div class="paper-title">Isocaloric substitution of animal protein with plant protein and its impact on all-cause, cardiovascular, and cancer mortality: A systematic review and meta-analysis</div>
+                                <div class="paper-authors">Barrantes-Espinola, G., Alberti, P., Rodríguez, A., & López-Moreno, M.</div>
+                            </div>
+                            <a href="https://doi.org/10.1016/j.clnu.2026.106654" target="_blank" rel="noopener noreferrer" class="btn-doi">
+                                <i class="fas fa-external-link-alt"></i> DOI: 10.1016/j.clnu.2026.106654
+                            </a>
+                        </div>
+
+                        <!-- PAPER 3 -->
+                        <div class="paper-card">
+                            <div>
+                                <div class="paper-journal">BMC Medicine (2023)</div>
+                                <div class="paper-title">Substitution of animal-based with plant-based foods on cardiometabolic health and all-cause mortality: a systematic review and meta-analysis of prospective studies</div>
+                                <div class="paper-authors">Neuenschwander, M., Stadelmaier, J., Eble, J., Schwingshackl, L., et al.</div>
+                            </div>
+                            <a href="https://doi.org/10.1186/s12916-023-03093-1" target="_blank" rel="noopener noreferrer" class="btn-doi">
+                                <i class="fas fa-external-link-alt"></i> DOI: 10.1186/s12916-023-03093-1
+                            </a>
+                        </div>
+
+                        <!-- PAPER 4 -->
+                        <div class="paper-card">
+                            <div>
+                                <div class="paper-journal">International Journal of Epidemiology (2021)</div>
+                                <div class="paper-title">Protein foods from animal sources, incident cardiovascular disease and all-cause mortality: a substitution analysis</div>
+                                <div class="paper-authors">Zhong, V. W., Allen, N., Greenland, P., Van Horn, L. V., et al.</div>
+                            </div>
+                            <a href="https://doi.org/10.1093/ije/dyaa205" target="_blank" rel="noopener noreferrer" class="btn-doi">
+                                <i class="fas fa-external-link-alt"></i> DOI: 10.1093/ije/dyaa205
+                            </a>
+                        </div>
+
+                        <!-- PAPER 5 -->
+                        <div class="paper-card">
+                            <div>
+                                <div class="paper-journal">The Journal of Nutrition (2023)</div>
+                                <div class="paper-title">Isocaloric substitution of plant-based protein for animal-based protein and cardiometabolic risk factors in a multi-ethnic Asian Population</div>
+                                <div class="paper-authors">Lee, Y.-Q., Chia, A., Whitton, C., Chong, M., et al.</div>
+                            </div>
+                            <a href="https://doi.org/10.1016/j.tjnut.2023.03.024" target="_blank" rel="noopener noreferrer" class="btn-doi">
+                                <i class="fas fa-external-link-alt"></i> DOI: 10.1016/j.tjnut.2023.03.024
+                            </a>
+                        </div>
+
+                        <!-- PAPER 6 -->
+                        <div class="paper-card">
+                            <div>
+                                <div class="paper-journal">Nutrients (2022)</div>
+                                <div class="paper-title">The Isocaloric Substitution of Plant-Based and Animal-Based Protein in Relation to Aging-Related Health Outcomes: A Systematic Review</div>
+                                <div class="paper-authors">Zheng, J.-L., Zhu, T.-R., Yang, G.-H., Wang, H., et al.</div>
+                            </div>
+                            <a href="https://doi.org/10.3390/nu14020272" target="_blank" rel="noopener noreferrer" class="btn-doi">
+                                <i class="fas fa-external-link-alt"></i> DOI: 10.3390/nu14020272
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -992,8 +1667,8 @@
                 img: "img/5.jpeg",
                 badge: "🔬 Evidencia de Salud Pública",
                 title: "4️⃣ Metodología de laboratorio vs. Desenlaces en salud pública",
-                desc: "El valor biológico o el aminograma aislado en un tubo de ensayo no determinan el impacto de la matriz en el organismo vivo. La evidencia epidemiológica en cohortes masivas (Harvard / JAMA Internal Medicine) señala que la <strong>sustitución isocalórica de proteína de huevo por fuentes vegetales integrales se asocia a una reducción de hasta el 19% en la mortalidad general</strong>.",
-                refs: "• Song M, et al. Association of Animal and Plant Protein Intake With All-Cause and Cause-Specific Mortality. JAMA Intern Med. 2016;176(10):1453–1463.<br>• Harvard T.H. Chan School of Public Health: Protein and Cardiovascular Outcomes."
+                desc: "El valor biológico o el aminograma aislado en un tubo de ensayo no determinan el impacto de la matriz en el organismo vivo. La evidencia epidemiológica en cohortes masivas (Harvard / JAMA Internal Medicine; BMC Medicine) señala que la <strong>sustitución isocalórica de un huevo diario por legumbres o frutos secos reduce la mortalidad total entre un 10% y un 15% y los eventos cardiovasculares un 17%</strong>.",
+                refs: "• Neuenschwander M, et al. Substitution of animal-based with plant-based foods on cardiometabolic health and all-cause mortality: a systematic review and meta-analysis of prospective studies. BMC Med. 2023;21:309.<br>• Zhong VW, et al. Protein foods from animal sources, incident cardiovascular disease and all-cause mortality: a substitution analysis. Int J Epidemiol. 2021.<br>• Song M, et al. Association of Animal and Plant Protein Intake With All-Cause and Cause-Specific Mortality. JAMA Intern Med. 2016;176(10):1453–1463."
             }
         ];
 
