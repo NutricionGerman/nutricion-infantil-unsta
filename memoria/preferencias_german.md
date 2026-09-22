@@ -18,6 +18,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
    - El portal central de la cátedra (`index.html`) es utilizado por los alumnos reales de la UNSTA.
    - Nunca debe modificarse ni vincularse a experimentos, juegos o talleres satélites sin la confirmación explícita de Germán.
 
+4. **Contenido de cara al alumno (UI) vs. Trastienda docente**:
+   - Evitar sobre-explicar las estrategias didácticas o justificaciones teóricas al estudiante en la interfaz de la página (no "meta-enseñar" ni explicar por qué un recurso es cómico o interactivo).
+   - Los fundamentos pedagógicos, epistemológicos y la planificación pertenecen a la guía del docente (`GUIA_DOCENTE_Y_DINAMICA.md`) o documentación interna, manteniendo la experiencia del alumno limpia, fluida y directa.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
