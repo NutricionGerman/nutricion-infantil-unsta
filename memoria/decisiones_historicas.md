@@ -19,3 +19,7 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
    - Cada clase reside en su propia subcarpeta dedicada (`clase_01_antropometria_19_08/`, `clase_02_antropometria_26_08/`, `clase_03_vegetarianismo/`, etc.) con sus propios archivos, imágenes (`img/`), videos (`videos/`), herramientas y PDFs.
    - Cada clase incluye una subcarpeta `asistencia/` donde vive el formulario interactivo de toma de lista / registro de ese día, manteniendo separados y claros el material didáctico de la toma de asistencia.
    - En la raíz de cada clase y en la raíz de `clases/` se conservan archivos HTML de redirección rápida para mantener compatibilidad absoluta con tarjetas o marcadores previos sin que nada se rompa.
+
+5. **Estructura Pedagógica de la Clase 3 (Vegetarianismo y Sustitución Proteica)**:
+   - El eje temático central de la clase es el **Vegetarianismo en Pediatría y Población General** y la **Triangulación de la Evidencia** (reemplazo isocalórico de proteína animal por vegetal, combinando RCTs, Aleatorización Mendeliana y Cohortes Prospectivas).
+   - El análisis del huevo se encapsula como un **Caso de Estudio Clínico y Forense Regulatorio** (*«El Expediente del Huevo»* en el Eje 4) para evitar que monopolice la clase y asegurar que los consensos oficiales pediátricos (SAP, AAP, AEP) y globales (OMS, AND, MinSal, SAN) ocupen el primer plano institucional.
