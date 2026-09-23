@@ -22,4 +22,6 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
 
 5. **Estructura Pedagógica de la Clase 3 (Vegetarianismo y Sustitución Proteica)**:
    - El eje temático central de la clase es el **Vegetarianismo en Pediatría y Población General** y la **Triangulación de la Evidencia** (reemplazo isocalórico de proteína animal por vegetal, combinando RCTs, Aleatorización Mendeliana y Cohortes Prospectivas).
-   - El análisis del huevo se encapsula como un **Caso de Estudio Clínico y Forense Regulatorio** (*«El Expediente del Huevo»* en el Eje 4) para evitar que monopolice la clase y asegurar que los consensos oficiales pediátricos (SAP, AAP, AEP) y globales (OMS, AND, MinSal, SAN) ocupen el primer plano institucional.
+   - El análisis del huevo se encapsula en la sección práctica como un **Caso de Estudio Clínico y Forense Regulatorio** (*«El Expediente del Huevo»*).
+   - **Formato de la Teoría**: Se organiza en un **visor interactivo de diapositivas (slide deck)** de 16 slides en lugar de un scroll vertical continuo largo. Cada slide aborda una unidad conceptual específica, con navegación por píldoras de módulo, teclado (flechas), swipe y botones anterior/siguiente, manteniendo las imágenes y gráficos integrados a la par del texto correspondiente.
+
