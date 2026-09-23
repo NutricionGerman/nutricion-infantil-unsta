@@ -16,10 +16,10 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
 
 | Caso Clínico | Familia y Pacientes | Grupos Asignados | Ejes Clínicos Principales |
 | :--- | :--- | :--- | :--- |
-| **CASO 1** | **Familia Gómez**<br>Camila (madre) y Tomás (hijo) | **Grupos: 1, 5, 9, 13, 17** | Gestación normopeso con pirosis/constipación y ferritina baja; fórmulas hiperconcentradas en lactante; patrón vegetariano escolar y $B_{12}$. |
-| **CASO 2** | **Familia Morales**<br>Lucía (madre) y Benjamín (hijo) | **Grupos: 2, 6, 10, 14, 18** | Gestación con sobrepeso y diabetes gestacional (POG alterada); miedo a sólidos, caldos aguados y riesgo de botulismo por miel; obesidad escolar y HOMA-IR. |
-| **CASO 3** | **Familia Herrera**<br>Florencia (madre) y Mateo (hijo) | **Grupos: 3, 7, 11, 15, 19** | Gestación con bajo peso materno y anemia ferropénica; lactante con leche de vaca fluida no adaptada antes del año; escolar deportista con deshidratación y mitos de suplementos. |
-| **CASO 4** | **Familia Benítez**<br>Mariana (madre) y Sofía (hija) | **Grupos: 4, 8, 12, 16, 20** | Gestante vegetariana de larga data sin suplemento de $B_{12}$ con riesgo neurológico fetal; BLW hipocalórico sin fuentes de hierro; escolar celíaca recién diagnosticada y ultraprocesados sin TACC. |
+| **CASO 1** | **Familia Gómez**<br>Camila (madre) y Tomás (hijo) | **Grupos: 1, 5, 9, 13, 17** | Gestación con pirosis intensa, constipación y baja ingesta hídrica; fórmulas hiperconcentradas en lactante (+2 medidas); patrón vegetariano escolar y desorden en colaciones. |
+| **CASO 2** | **Familia Morales**<br>Lucía (madre) y Benjamín (hijo) | **Grupos: 2, 6, 10, 14, 18** | Gestación con ganancia acelerada de peso, polidipsia/poliuria y edemas; miedo materno a sólidos, caldos diluidos y riesgo de botulismo por miel en lactante; sedentarismo, acantosis nigricans y solicitud materna de dieta restrictiva en escolar. |
+| **CASO 3** | **Familia Herrera**<br>Florencia (madre) y Mateo (hijo) | **Grupos: 3, 7, 11, 15, 19** | Gestación en contexto de vulnerabilidad socioeconómica y palidez marcada; lactante con leche de vaca fluida diluida con agua, azúcar y harina de maíz, diarreas y distensión; escolar deportista con calambres, bebidas isotónicas y deshidratación. |
+| **CASO 4** | **Familia Benítez**<br>Mariana (madre) y Sofía (hija) | **Grupos: 4, 8, 12, 16, 20** | Gestación vegetariana estricta de larga data sin suplementación vitamínico-mineral y parestesias; lactante con BLW hipocalórico sin fuentes de hierro ni densidad energética; escolar celíaca con malestar digestivo por ultraprocesados sin TACC y aislamiento social. |
 
 ---
 
@@ -34,29 +34,54 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
 
 #### Consulta 1: Control Prenatal (Semana 1)
 * **Paciente**: Camila, 28 años. Primigesta. Edad Gestacional: 24 semanas por FUR confiable (2° Trimestre).
-* **Motivo de consulta y síntomas**: Derivada por obstetricia para control nutricional. Refiere astenia, cansancio vespertino y cefaleas ocasionales. Presenta **pirosis intensa** en la tarde y noche que "le sube hasta la garganta al acostarse", y **constipación** con deposiciones secas cada 3 a 4 días con esfuerzo. Manifiesta aversión al olor de carnes rojas y náuseas ante lácteos enteros.
-* **Antropometría y Signos**: Talla $1.62\text{ m}$, Peso habitual pregestacional $54.0\text{ kg}$ ($IMC = 20.6\text{ kg/m}^2$, normopeso). Peso actual en balanza $58.5\text{ kg}$ ($+4.5\text{ kg}$ ganancia acumulada). TA $110/70\text{ mmHg}$.
-* **R24H Habitual**: 
-  * 07:30 Desayuno: 2 mates amargos con 2 galletitas de agua y mermelada común.
-  * 10:30 Media mañana: Café con leche de máquina o nada.
-  * 13:30 Almuerzo: 2 empanadas de verdura compradas al paso, o sándwich de jamón y queso con 1 vaso de gaseosa común.
-  * 18:00 Merienda: Té solo con 3 galletitas dulces o tostadas de pan blanco con queso crema.
-  * 21:30 Cena: Fideos o arroz blanco con manteca y queso rallado.
-  * Líquidos: Consume agua solo si tiene mucha sed ($<1\text{ L/día}$). No consume legumbres ni semillas.
-* **Bioquímica (Semana 23)**: Glucemia en ayunas $81\text{ mg/dL}$, Hemoglobina $11.1\text{ g/dL}$, Ferritina sérica $16\ \mu\text{g/L}$, Sedimento de orina normal.
+* **Motivo de consulta y síntomas**: Derivada por obstetricia para control nutricional habitual de rutina. Refiere cansancio fácil en las tardes, astenia y cefaleas ocasionales. Presenta **pirosis intensa** en la tarde y noche que "le sube como fuego hasta la garganta al acostarse", y **constipación** con deposiciones duras, secas y dolorosas cada 3 a 4 días con esfuerzo. Manifiesta aversión al olor de carnes rojas y náuseas ante lácteos enteros.
+* **Antropometría y Signos**: 
+  * Talla: $1.62\text{ m}$
+  * Peso habitual pregestacional: $54.0\text{ kg}$
+  * Peso actual en balanza: $58.5\text{ kg}$
+  * Tensión Arterial: $110/70\text{ mmHg}$
+* **R24H Habitual Detallado**: 
+  * *07:30 Desayuno*: 2 tazas de mate cebado amargo con 3 galletitas de agua untadas con 1 cucharada sopera de mermelada común de durazno.
+  * *10:30 Media mañana*: 1 taza de café con leche entera de máquina de oficina con 1 sobre de azúcar blanco.
+  * *13:30 Almuerzo*: 2 empanadas de verdura (masa hojaldrada con acelga y salsa blanca) compradas en rotisería al paso, acompañadas de 1 vaso grande ($250\text{ ml}$) de gaseosa cola regular.
+  * *17:30 Merienda*: 1 taza de té negro con 1 cucharadita de azúcar y 4 tostadas de pan blanco de molde con 2 cucharadas soperas de queso crema común.
+  * *21:30 Cena*: 1 plato hondo colmado de fideos guiseros de trigo con 1 cucharada sopera de manteca y 2 cucharadas de queso rallado.
+  * *Líquidos*: 2 vasos de agua pura en todo el día (aprox. $400\text{ a }500\text{ ml}$). Sin consumo de legumbres, semillas ni frutas frescas.
 
 #### Consulta 2: Control del Lactante (Semana 2)
-* **Paciente**: Tomás, 7 meses de vida cumplidos. Nacido a término (39 semanas), parto vaginal. Peso al nacer $3.300\text{ kg}$, Longitud al nacer $50.0\text{ cm}$.
-* **Alimentación y Relato Materno**: Recibió LME hasta los 4 meses, luego fórmula infantil de inicio en biberón por reintegro laboral materno.
-  * *Relato textual*: *"Durante el día Tomás queda al cuidado de su abuela. Ella le prepara 4 mamaderas al día de 180 ml cada una. Para que quede más satisfecho y duerma corrido de noche, la abuela le agrega dos medidas adicionales de polvo de fórmula a cada biberón. Además, como ya cumplió 7 meses, la abuela le da a media tarde un vaso de jugo de naranja exprimido con una cucharada de azúcar y postrecitos lácteos comerciales comprados. Tomás está molesto, llora tras las tomas, tiene distensión y sus deposiciones son secas, espaciadas y en bolitas duras."*
-* **Antropometría actual (7 meses)**: Peso $8.350\text{ kg}$, Longitud $68.0\text{ cm}$, Perímetro Cefálico $43.8\text{ cm}$.
+* **Paciente**: Tomás, 7 meses de vida cumplidos. Sexo masculino. Nacido a término (39 semanas), parto vaginal espontáneo.
+* **Antecedentes perinatales crudos**: Peso al nacer $3.300\text{ kg}$, Longitud al nacer $50.0\text{ cm}$, Perímetro Cefálico al nacer $34.5\text{ cm}$.
+* **Antropometría actual en consulta (7 meses exactos)**:
+  * Peso actual: $8.350\text{ kg}$
+  * Longitud corporal: $68.0\text{ cm}$
+  * Perímetro Cefálico: $43.8\text{ cm}$
+* **Alimentación y Relato Materno**: 
+  * Tomás recibió lactancia materna exclusiva hasta los 4 meses; luego inició fórmula infantil de inicio en biberón por reintegro laboral materno.
+  * *Relato textual*: *"Durante el día Tomás queda al cuidado de su abuela. Ella le prepara 4 mamaderas al día de 180 ml cada una. Para que quede más lleno, satisfecho y duerma corrido de noche, la abuela le agrega dos medidas adicionales de polvo de fórmula a cada biberón. Además, como ya cumplió 7 meses, la abuela le da a la tarde un vaso de jugo de naranja exprimido con una cucharada de azúcar y postrecitos lácteos comerciales comprados. Tomás está muy molesto, llora tras las tomas, tiene la panza hinchada y sus deposiciones son secas, espaciadas y en bolitas duras."*
+* **R24H Habitual del Lactante**:
+  * *07:00 Toma 1*: Mamadera de $180\text{ ml}$ de agua con **8 medidas al ras de fórmula de inicio en polvo** (preparada con 2 medidas extra).
+  * *10:30 Toma 2*: Mamadera de $180\text{ ml}$ de agua con **8 medidas al ras de fórmula de inicio en polvo**.
+  * *12:30 Almuerzo*: 3 cucharadas soperas colmadas de papilla espesa de zapallo criollo con papa hervida, sin agregado de aceite ni carne. Agua hervida ofrecida en mamadera: toma solo 2 o 3 sorbos pequeños.
+  * *15:30 Media tarde*: 1 vaso chico ($150\text{ ml}$) de jugo de naranja exprimido natural con 1 cucharadita de azúcar agregada + 1 pote chico ($90\text{ g}$) de postrecito lácteo industrial de vainilla.
+  * *19:00 Toma 3*: Mamadera de $180\text{ ml}$ de agua con **8 medidas al ras de fórmula de inicio en polvo**.
+  * *23:00 Toma 4 (nocturna)*: Mamadera de $180\text{ ml}$ de agua con **8 medidas al ras de fórmula de inicio en polvo**.
 
 #### Consulta 3: Control en Edad Escolar (Semana 3)
-* **Paciente**: Tomás, 9 años y 3 meses. Asiste a escuela primaria turno tarde; educación física 2 veces por semana ($45\text{ min}$).
-* **Motivo y Relato Materno**: Tomás decidió adoptar una **alimentación vegetariana estricta** (sin carne vacuna, pollo ni pescado). Camila está preocupada:
+* **Paciente**: Tomás, 9 años y 3 meses. Sexo masculino. Alumno de escuela primaria turno tarde; 2 clases semanales de educación física ($45\text{ min}$).
+* **Antropometría actual**:
+  * Talla actual: $134.2\text{ cm}$
+  * Peso actual: $30.4\text{ kg}$
+* **Motivo de consulta y síntomas**: Tomás decidió adoptar una **alimentación vegetariana estricta** (sin carnes rojas, pollo ni pescado) desde hace 6 meses. La madre nota que en la escuela y en educación física se cansa con mayor facilidad, se muestra apático en ocasiones, presenta palidez en rostro y uñas quebradizas. Camila acude preocupada:
   * *Relato textual*: *"En la escuela y en la familia me insisten con que un chico no puede crecer sin carne, que le van a faltar proteínas y desarrollo mental. Yo intento prepararle lo que le gusta, pero como no sé bien qué cocinarle, casi siempre come fideos, arroz blanco, papas fritas o tartas de verdura con queso. En el colegio a veces no quiere comer lo que lleva y termina comprando galletitas, alfajores o snacks en el kiosco porque le da hambre en los recreos."*
-* **Antropometría**: Talla $134.2\text{ cm}$, Peso $30.4\text{ kg}$.
-* **Laboratorio Pediátrico**: Hemoglobina $12.3\text{ g/dL}$, Ferritina sérica $20\ \mu\text{g/L}$, **Vitamina B12 sérica $170\text{ pg/mL}$**, Glucemia en ayunas $84\text{ mg/dL}$, Colesterol Total $148\text{ mg/dL}$, Triglicéridos $82\text{ mg/dL}$.
+* **R24H Habitual del Escolar**:
+  * *07:30 Desayuno*: 1 taza de leche descremada con infusión de malta y 2 cucharaditas de azúcar + 4 galletitas dulces tipo vainillas.
+  * *10:00 Colación matutina*: No consume nada.
+  * *12:30 Almuerzo en casa*: 1 plato hondo colmado de arroz blanco con choclo de lata, sal y 1 huevo duro pisado. 1 vaso grande de agua de la canilla.
+  * *14:00 a 18:00 Escuela (Turno Tarde)*:
+    * *1° Recreo (15:15)*: 1 alfajor simple relleno de dulce de leche bañado en repostería (comprado en kiosco escolar con dinero que le da la madre).
+    * *2° Recreo (16:45)*: 1 paquete chico ($40\text{ g}$) de papas fritas saladas de paquete + 1 vaso plástico de jugo artificial de sobre.
+  * *18:30 Merienda al regresar*: 1 taza de té con leche con 2 tostadas de pan francés con manteca y mermelada.
+  * *21:30 Cena familiar*: 2 porciones de tarta de acelga y queso con masa hojaldrada comercial. 1 vaso de gaseosa común. Postre: 1 manzana chica o nada.
 
 ---
 
@@ -64,29 +89,51 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
 **Asignado a: Grupos 2, 6, 10, 14 y 18**
 
 #### Consulta 1: Control Prenatal (Semana 1)
-* **Paciente**: Lucía, 32 años. Secundigesta (hijo previo macrosómico de 4.100 kg). Edad Gestacional: 28 semanas (3° Trimestre).
-* **Motivo de consulta y síntomas**: Derivada para plan nutricional tras control obstétrico. Refiere apetito desmedido y "ansiedad por comer cosas dulces y panificados", somnolencia posprandial intensa y edemas maleolares vespertinos en ambos tobillos (sin proteinuria).
-* **Antropometría y Signos**: Talla $1.58\text{ m}$, Peso habitual pregestacional $68.0\text{ kg}$ ($IMC = 27.2\text{ kg/m}^2$, sobrepeso pregestacional). Peso actual en balanza $79.5\text{ kg}$ (Ganancia acumulada excesiva: $+11.5\text{ kg}$ a la semana 28). TA $125/80\text{ mmHg}$.
-* **R24H Habitual**:
-  * 08:00 Desayuno: Café con leche entera con 2 cucharadas de azúcar y 4 medialunas o chipacas.
-  * 13:00 Almuerzo: Plato abundante de guiso de fideos con papa y carne picada vacuna; 2 vasos de jugo concentrado comercial azucarado; 2 bochas de helado de postre.
-  * 17:30 Merienda: Mate dulce con bizcochitos de grasa o tortitas raspadas.
-  * 21:30 Cena: 3 porciones de pizza de muzzarella o 3 empanadas fritas de carne.
-  * Líquidos: Escaso consumo de agua pura ($<500\text{ ml}$), preferencia por infusiones dulces o bebidas gaseosas.
-* **Bioquímica (Semana 28)**: **POG (Prueba de Sobrecarga con 75g glucosa a las 2 horas): $148\text{ mg/dL}$** (criterio diagnóstico de Diabetes Gestacional $\ge 140\text{ mg/dL}$). Glucemia en ayunas $96\text{ mg/dL}$. Hemoglobina $11.6\text{ g/dL}$, Ferritina $32\ \mu\text{g/L}$, Triglicéridos $210\text{ mg/dL}$.
+* **Paciente**: Lucía, 32 años. Secundigesta. Antecedente obstétrico: hijo previo nacido con peso de $4.100\text{ kg}$. Edad Gestacional: 28 semanas (3° Trimestre).
+* **Motivo de consulta y síntomas**: Derivada para plan nutricional tras control obstétrico por ganancia acelerada de peso y antecedentes obstétricos. Refiere polidipsia marcada (mucha sed continua durante el día y noche, "toma botellas de líquido sin saciarse") y poliuria (se levanta a orinar 3 a 4 veces cada noche). Presenta somnolencia y pesadez intensa posterior a las comidas, y edemas visibles con fóvea en ambos tobillos hacia el final del día. Manifiesta "ansiedad constante por comer cosas dulces y harinas".
+* **Antropometría y Signos**:
+  * Talla: $1.58\text{ m}$
+  * Peso habitual pregestacional: $68.0\text{ kg}$
+  * Peso actual en balanza: $79.5\text{ kg}$
+  * Tensión Arterial: $125/80\text{ mmHg}$
+* **R24H Habitual Detallado**:
+  * *08:00 Desayuno*: 1 taza grande ($250\text{ ml}$) de café con leche entera con 2 cucharadas soperas colmadas de azúcar + 3 medialunas de manteca o chipacas de panadería.
+  * *11:00 Media mañana*: 1 alfajor de maicena grande con abundante dulce de leche.
+  * *13:30 Almuerzo*: 1 plato playo abundante colmado de guiso de fideos secos con carne picada común, salsa de tomate frita y papa en cubos + 2 vasos grandes ($500\text{ ml}$) de jugo comercial concentrado dulce + 2 bochas de helado de dulce de leche.
+  * *17:30 Merienda*: Mate cebado dulce (con azúcar en la yerba) acompañado de 6 a 8 bizcochitos de grasa o tortitas raspadas.
+  * *21:30 Cena*: 3 porciones de pizza casera de muzzarella con masa gruesa y salame, o 3 empanadas de carne fritas en grasa vacuna + 2 vasos de gaseosa lima-limón regular.
+  * *Líquidos*: Menos de $400\text{ ml}$ de agua pura al día; ingesta mayor a $1.5\text{ L}$ diarios de bebidas azucaradas (jugos, gaseosas, infusiones dulces).
 
 #### Consulta 2: Control del Lactante (Semana 2)
-* **Paciente**: Benjamín, 6 meses y medio de vida. Nacido por cesárea a las 38.5 semanas con $3.850\text{ kg}$ y $51\text{ cm}$. Recibe lactancia mixta (pecho materno y fórmula infantil de inicio).
+* **Paciente**: Benjamín, 6 meses y medio de vida. Sexo masculino. Nacido por cesárea a las 38.5 semanas de gestación. Recibe lactancia mixta (pecho materno y fórmula infantil de inicio).
+* **Antecedentes perinatales crudos**: Peso al nacer $3.850\text{ kg}$, Longitud al nacer $51.0\text{ cm}$, Perímetro Cefálico al nacer $35.0\text{ cm}$.
+* **Antropometría actual en consulta (6 meses y 15 días)**:
+  * Peso actual: $7.550\text{ kg}$
+  * Longitud corporal: $67.5\text{ cm}$
+  * Perímetro Cefálico: $43.2\text{ cm}$
 * **Alimentación y Relato Materno**: 
   * *Relato textual*: *"Tengo pánico de que Benjamín se atragante; vi videos en redes sociales de bebés ahogándose y me da terror darle papillas con cuchara o trozos. Por eso decidí prepararle en la mamadera un caldo de verduras muy colado con zapallo hervido y sémola bien líquida para que pase por la tetina. Además, como tiene muchos cólicos y llora, la abuela le prepara varias veces al día un biberón de té de manzanilla endulzado con una cucharada de miel de campo pura para endulzarlo y deshincharlo."*
-* **Antropometría actual (6 meses y medio)**: Peso actual $7.550\text{ kg}$, Longitud $67.5\text{ cm}$, Perímetro Cefálico $43.2\text{ cm}$. Se observa una marcada desaceleración de la curva ponderal en las tablas de la OMS.
+* **R24H Habitual del Lactante**:
+  * *06:30 Toma 1*: Pecho materno (5 a 8 minutos) + Mamadera de $120\text{ ml}$ de agua con 4 medidas de fórmula de inicio en polvo.
+  * *10:00 Colación / Hidratación*: Mamadera de $150\text{ ml}$ de infusión de té de manzanilla tibio endulzado con **1 cucharada sopera de miel pura de campo** (preparado por la abuela).
+  * *12:30 Almuerzo*: Mamadera de $180\text{ ml}$ conteniendo caldo colado ultra-aguado de calabaza hervida con zapallito verde y 1 cucharadita de sémola muy fina, licuado para pasar por la tetina.
+  * *16:00 Toma 2*: Pecho materno (10 minutos) + Mamadera de $150\text{ ml}$ de infusión de té de manzanilla con **1 cucharada de miel pura de campo**.
+  * *19:30 Cena*: Mamadera de $180\text{ ml}$ de caldo de zapallo con fideos cabellos de ángel ultra-colados y diluidos.
+  * *23:00 Toma 3*: Mamadera de $150\text{ ml}$ de fórmula de inicio (5 medidas en $150\text{ ml}$ de agua). Se despierta 2 veces en la madrugada pidiendo pecho materno.
 
 #### Consulta 3: Control en Edad Escolar (Semana 3)
-* **Paciente**: Benjamín, 10 años y 1 mes. Vida sedentaria, permanece entre 4 y 5 horas al día frente a videojuegos y pantallas.
-* **Motivo y Relato Materno**: Lucía concurre muy angustiada solicitando *"una dieta estricta sin harinas para que Benjamín baje de peso urgente porque en la escuela los compañeros le ponen apodos y le hacen burlas"*.
-* **Antropometría**: Talla $139.0\text{ cm}$, Peso $47.5\text{ kg}$ ($IMC = 24.6\text{ kg/m}^2$, percentilo $>97$, obesidad infantil).
-* **R24H Habitual**: Desayuna chocolatada con leche entera y 6 galletitas rellenas comerciales. Almuerza milanesas fritas con puré de papas con manteca. Lleva dinero al colegio y compra gaseosa común, alfajores triples y papas fritas de paquete. En la cena repite habitualmente dos platos. Consumo casi inexistente de frutas frescas y vegetales crudos.
-* **Laboratorio Pediátrico**: Colesterol Total $208\text{ mg/dL}$, Triglicéridos $185\text{ mg/dL}$, HDL $36\text{ mg/dL}$, Glucemia en ayunas $98\text{ mg/dL}$, **Insulina basal $19\ \mu\text{UI/mL}$** (HOMA-IR elevado, resistencia a la insulina), Transaminasa GPT $38\text{ U/L}$. Tensión arterial: percentilo 85.
+* **Paciente**: Benjamín, 10 años y 1 mes. Sexo masculino. Vida sedentaria, permanece entre 4 y 5 horas diarias frente a videojuegos y pantallas.
+* **Antropometría actual**:
+  * Talla actual: $139.0\text{ cm}$
+  * Peso actual: $47.5\text{ kg}$
+* **Motivo de consulta y examen físico**: Lucía acude muy angustiada solicitando *"una dieta estricta sin harinas para que Benjamín baje 10 kilos rápido porque en la escuela los compañeros le ponen apodos y le hacen burlas"*. Al examen físico se observa agitación al subir un tramo corto de escaleras, sudoración profusa ante mínimos esfuerzos y presencia de **coloración oscura y engrosada visible en los pliegues posteriores del cuello y axilas (acantosis nigricans)**.
+* **R24H Habitual del Escolar**:
+  * *07:30 Desayuno*: 1 taza grande ($300\text{ ml}$) de leche chocolatada comercial azucarada con 6 galletitas dulces rellenas de chocolate.
+  * *10:15 Recreo escolar*: Compra en el kiosco 1 paquete mediano de papas fritas saladas de paquete + 1 botellita de gaseosa cola común ($250\text{ ml}$).
+  * *13:00 Almuerzo en casa*: 2 milanesas de carne vacuna fritas acompañadas de una porción abundante de puré de papas con manteca y leche entera. 1 vaso de gaseosa común ($300\text{ ml}$). Postre: 1 flan industrial con dulce de leche.
+  * *17:30 Merienda*: 1 taza de leche chocolatada con medio paquete de galletitas dulces surtidas mientras juega a la computadora.
+  * *21:30 Cena*: Repite habitualmente 2 platos colmados de fideos secos con salsa bolognesa o 4 salchichas de paquete con puré instantáneo y aderezos (mayonesa y kétchup).
+  * *Líquidos y vegetales*: Casi nulo consumo de agua pura de red. Cero consumo de ensaladas o verduras crudas; come fruta fresca menos de una vez cada 15 días.
 
 ---
 
@@ -94,29 +141,53 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
 **Asignado a: Grupos 3, 7, 11, 15 y 19**
 
 #### Consulta 1: Control Prenatal (Semana 1)
-* **Paciente**: Florencia, 21 años. Primigesta, contexto de vulnerabilidad socioeconómica en barrio periurbano. Edad Gestacional: 19 semanas (2° Trimestre).
-* **Motivo de consulta y síntomas**: Derivada desde el centro de salud comunitario. Refiere mareos frecuentes, frialdad en extremidades, astenia intensa que le dificulta sus tareas diarias y palpitaciones al subir escaleras o caminar rápido. Náuseas matinales que aún persisten.
-* **Antropometría y Signos**: Talla $1.60\text{ m}$, Peso habitual pregestacional $45.5\text{ kg}$ ($IMC = 17.8\text{ kg/m}^2$, bajo peso pregestacional). Peso actual en consulta $46.8\text{ kg}$ (Ganancia acumulada muy escasa: apenas $+1.3\text{ kg}$ a la semana 19). TA $100/60\text{ mmHg}$.
-* **R24H Habitual**:
-  * 08:30 Desayuno: Mate cocido con 2 pedazos de pan francés con grasa.
-  * 13:00 Almuerzo: Guiso de arroz o fideos con alitas de pollo o tortas fritas.
-  * 17:00 Merienda: Mate cebado amargo con pan francés.
-  * 21:00 Cena: Té con pan o las sobras del guiso del mediodía.
-  * Hábitos: Ingesta de lácteos prácticamente nula por razones económicas; consumo nulo de frutas frescas y verduras variadas.
-* **Bioquímica (Semana 19)**: **Hemoglobina $10.1\text{ g/dL}$** (anemia gestacional en 2°T), **Ferritina sérica $8\ \mu\text{g/L}$** (depósitos de hierro severamente agotados), Albúmina sérica $3.0\text{ g/dL}$ (hipoalbuminemia leve), Calcemia $8.3\text{ mg/dL}$, Glucemia en ayunas $74\text{ mg/dL}$.
+* **Paciente**: Florencia, 21 años. Primigesta. Contexto de vulnerabilidad socioeconómica en barrio periurbano. Edad Gestacional: 19 semanas (2° Trimestre).
+* **Motivo de consulta y síntomas**: Derivada desde el centro de salud comunitario para valoración nutricional. Refiere mareos frecuentes al ponerse de pie, sensación permanente de frialdad en manos y pies, astenia intensa que le dificulta sus tareas diarias y falta de aire al subir escaleras o caminar rápido. Náuseas matinales que aún persisten. A la inspección clínica se observa **palidez marcada en labios, piel y mucosas conjuntivales**.
+* **Antropometría y Signos**:
+  * Talla: $1.60\text{ m}$
+  * Peso habitual pregestacional: $45.5\text{ kg}$
+  * Peso actual en consulta: $46.8\text{ kg}$
+  * Tensión Arterial: $100/60\text{ mmHg}$
+* **R24H Habitual Detallado**:
+  * *08:30 Desayuno*: 1 taza de mate cocido en saquito endulzado con 2 cucharaditas de azúcar común + 2 trozos de pan francés untados con grasa vacuna.
+  * *12:30 Almuerzo*: 1 plato hondo de guiso económico de polenta o arroz partido con salsa de tomate de cajita, alitas de pollo desmenuzadas y cebolla. 1 vaso de agua de pozo/red.
+  * *17:00 Merienda*: Mate cebado amargo con 2 tortas fritas caseras (harina de trigo común, grasa vacuna y sal).
+  * *21:00 Cena*: 1 taza de té negro caliente con 1 tira de pan francés, o las sobras del guiso del mediodía si quedaron.
+  * *Hábitos y líquidos*: Ingesta de lácteos nula por razones de costo económico. Consumo de carnes rojas menos de una vez cada 20 días. Cero consumo de frutas frescas cítricas ni vegetales verdes crudos. Toma té o mate caliente inmediatamente después de las comidas.
 
 #### Consulta 2: Control del Lactante (Semana 2)
-* **Paciente**: Mateo, 8 meses de vida. Nacido de término a las 38 semanas con Restricción del Crecimiento Intrauterino leve (RCIU: Peso al nacer $2.420\text{ kg}$, Longitud $47.0\text{ cm}$).
-* **Alimentación y Relato Materno**: Recibió lactancia materna exclusiva solo 2 meses; la madre no logró sostenerla por estrés, reintegro a changas laborales y mala nutrición propia.
+* **Paciente**: Mateo, 8 meses de vida. Sexo masculino. Nacido de término a las 38 semanas de gestación. Parto vaginal institucional.
+* **Antecedentes perinatales crudos**: Peso al nacer $2.420\text{ kg}$, Longitud al nacer $47.0\text{ cm}$, Perímetro Cefálico al nacer $32.5\text{ cm}$.
+* **Antropometría actual en consulta (8 meses exactos)**:
+  * Peso actual: $6.850\text{ kg}$
+  * Longitud corporal: $65.2\text{ cm}$
+  * Perímetro Cefálico: $42.0\text{ cm}$
+* **Alimentación y Relato Materno**: 
+  * Recibió lactancia materna exclusiva solo 2 meses; la madre no logró sostenerla por estrés, reintegro a changas laborales y mala nutrición propia.
   * *Relato textual*: *"Como los tarros de fórmula de farmacia son carísimos y no los podemos pagar, en casa le preparamos mamaderas con leche de vaca común de sachet entero de la que compramos para todos, rebajada mitad con agua hervida, y le agregamos dos cucharadas de azúcar y harina de maíz para que tome cuerpo. No le estamos dando gotitas de hierro ni vitaminas porque se terminaron en la salita. Mateo tiene diarreas a cada rato, la panza muy hinchada y lo noto muy pálido y decaído."*
-* **Antropometría actual (8 meses)**: Peso $6.850\text{ kg}$, Longitud $65.2\text{ cm}$, Perímetro Cefálico $42.0\text{ cm}$. Curvas de peso y longitud aplanadas, cayendo por debajo del percentilo 3 de la OMS.
+* **R24H Habitual del Lactante**:
+  * *06:30 Mamadera 1*: $180\text{ ml}$ preparada con **$90\text{ ml}$ de leche entera de vaca fluida de sachet común, $90\text{ ml}$ de agua de canilla hervida, 2 cucharaditas de té de azúcar blanco y 1 cucharada sopera de harina de maíz precocida**.
+  * *10:30 Mamadera 2*: Misma preparación ($90\text{ ml}$ leche entera de vaca + $90\text{ ml}$ agua + 2 cucharaditas azúcar + harina de maíz).
+  * *13:00 Almuerzo*: 4 cucharadas soperas de caldo de cocción de polenta o fideos hervidos con grasa y zapallo criollo pisado. No recibe carne vacuna, pollo desmenuzado ni aceite vegetal crudo.
+  * *16:30 Mamadera 3*: Misma preparación de leche de vaca diluida con agua, azúcar y harina de maíz ($180\text{ ml}$).
+  * *20:30 Mamadera 4*: Misma preparación de leche de vaca diluida con agua, azúcar y harina de maíz ($180\text{ ml}$).
+  * *01:30 Madrugada*: Si llora, le ofrecen otra mamadera de $120\text{ ml}$ de leche de vaca diluida al medio.
+  * *Suplementación*: No recibe gotas de sulfato ferroso ni suplementos vitamínicos (suspendidos hace más de 2 meses).
 
 #### Consulta 3: Control en Edad Escolar (Semana 3)
-* **Paciente**: Mateo, 8 años y 8 meses. Alumno de escuela primaria turno mañana; practica fútbol 3 veces por semana en una escuelita deportiva barrial ($1.5\text{ hs}$ por entrenamiento).
-* **Motivo y Relato Materno**: La madre acude porque el director técnico del club le advirtió que Mateo *"se queda sin energía en los segundos tiempos de los partidos, se acalambra y que si quiere llegar a jugar en primera necesita tomar botellas de bebidas isotónicas comerciales tipo Gatorade y consumir batidos proteicos con creatina"*. La familia gasta recursos en comprar estas botellas comerciales.
-* **Antropometría**: Talla $127.5\text{ cm}$, Peso $24.8\text{ kg}$ ($IMC = 15.2\text{ kg/m}^2$, percentilo normal-bajo).
-* **R24H Habitual**: Desayuna té con azúcar y galletitas de agua. Almuerzo en comedor escolar (fideos o polenta con salsa económica). Antes de entrenar toma medio litro de bebida isotónica azucarada comercial. Al terminar de jugar consume jugo artificial o gaseosa. Escasa ingesta de agua segura.
-* **Laboratorio Pediátrico**: Hemoglobina $11.7\text{ g/dL}$ (límite inferior), Ferritina $17\ \mu\text{g/L}$, Glucemia $79\text{ mg/dL}$, **Densidad urinaria $1.029$** (orina concentrada, deshidratación crónica).
+* **Paciente**: Mateo, 8 años y 8 meses. Sexo masculino. Alumno de escuela primaria turno mañana; practica fútbol 3 veces por semana en una escuelita barrial ($1.5\text{ hs}$ por entrenamiento).
+* **Antropometría actual**:
+  * Talla actual: $127.5\text{ cm}$
+  * Peso actual: $24.8\text{ kg}$
+* **Motivo de consulta y síntomas**: La madre acude porque el entrenador del club le advirtió que Mateo *"se queda sin energía en los segundos tiempos de los partidos, se acalambra y que si quiere llegar a jugar en primera necesita tomar botellas de bebidas isotónicas comerciales tipo Gatorade y consumir batidos proteicos con creatina"*. La familia gasta escasos recursos en comprar estas botellas comerciales. La madre nota que el niño suele sufrir calambres dolorosos en las pantorrillas al terminar de jugar, cefaleas vespertinas y refiere que orina muy poco y de color amarillo ámbar muy oscuro.
+* **R24H Habitual del Escolar**:
+  * *07:00 Desayuno*: 1 taza de té en saquito con 2 cucharaditas de azúcar + 3 galletitas de agua con dulce de membrillo económico.
+  * *09:30 Recreo escolar*: Compra en el kiosco escolar 1 turrón de maní o 1 bolsita de tutucas con 1 vaso de agua del bebedero escolar.
+  * *12:30 Almuerzo (Comedor escolar)*: 1 plato de fideos con salsa fileto o polenta con picadillo de carne vacuna y salsa. 1 porción de pan francés. 1 fruta de estación (naranja o mandarina).
+  * *16:30 Antes de entrenar fútbol*: La madre le compra 1 botella comercial de bebida isotónica deportiva ($500\text{ ml}$) sabor citrus o manzana porque el DT le indicó que "le da fuerza muscular".
+  * *18:30 Fin del entrenamiento*: Toma 1 vaso grande ($300\text{ ml}$) de jugo artificial de sobre en polvo + 1 tortita de pan.
+  * *21:30 Cena*: Guiso de arroz con alitas de pollo o 2 huevos fritos con pan francés y mate cocido dulce.
+  * *Líquidos*: Escasa ingesta de agua segura ($<500\text{ ml/día}$). Hidratación deportiva basada casi exclusivamente en bebidas isotónicas comerciales azucaradas.
 
 ---
 
@@ -125,23 +196,54 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
 
 #### Consulta 1: Control Prenatal (Semana 1)
 * **Paciente**: Mariana, 34 años. Primigesta. Lleva un patrón alimentario **100% basado en plantas (vegetariano estricto)** desde hace 8 años. Edad Gestacional: 29 semanas (3° Trimestre).
-* **Motivo de consulta y síntomas**: Derivada para evaluación nutricional del 3° trimestre. Refiere fatiga cotidiana, mareos ocasionales y sensación de parestesias leves (hormigueo) en dedos de manos y pies.
-* **Antropometría y Signos**: Talla $1.66\text{ m}$, Peso habitual pregestacional $60.5\text{ kg}$ ($IMC = 22.0\text{ kg/m}^2$, normopeso). Peso actual en balanza $69.8\text{ kg}$ (Ganancia acumulada adecuada: $+9.3\text{ kg}$ a la semana 29). TA $110/68\text{ mmHg}$.
-* **R24H y Hábitos**: Consume abundantes ensaladas con salvado de trigo crudo espolvoreado, legumbres cocidas sin remojo previo, té verde inmediatamente después de almuerzos y cenas, y bebidas de almendras comerciales no fortificadas. **No se encuentra tomando suplemento de Vitamina B12 ni hierro**, refiriendo que *"un médico naturista le aseguró que consumiendo espirulina y semillas de chía activadas no le iba a faltar nada y que sus análisis daban bien hace dos años"*.
-* **Bioquímica (Semana 28)**: Hemoglobina $10.5\text{ g/dL}$ (anemia en 3°T), Ferritina $13\ \mu\text{g/L}$, **Vitamina B12 sérica: $155\text{ pg/mL}$ (Déficit severo en gestación)**, **Homocisteína plasmática elevada: $14.2\ \mu\text{mol/L}$**, Calcemia iónica $4.3\text{ mg/dL}$ (límite bajo).
+* **Motivo de consulta y síntomas**: Derivada para evaluación nutricional del 3° trimestre. Refiere astenia constante, mareos ocasionales al agacharse o levantarse y sensación recurrente de **parestesias (hormigueo) y adormecimiento en la punta de los dedos de ambas manos y pies**.
+* **Antropometría y Signos**:
+  * Talla: $1.66\text{ m}$
+  * Peso habitual pregestacional: $60.5\text{ kg}$
+  * Peso actual en balanza: $69.8\text{ kg}$
+  * Tensión Arterial: $110/68\text{ mmHg}$
+* **R24H Habitual Detallado**:
+  * *08:00 Desayuno*: 1 vaso grande ($250\text{ ml}$) de bebida vegetal comercial de almendras (no fortificada) con 3 cucharadas soperas de copos de avena crudos, 1 cucharada sopera de semillas de chía sin moler y 1 cucharada de semillas de lino enteras.
+  * *10:30 Media mañana*: 1 taza de té verde caliente con 1 manzana verde cortada en gajos.
+  * *13:00 Almuerzo*: Ensalada abundante en bowl grande: hojas de espinaca cruda, rúcula, tomate perita, 4 cucharadas soperas de porotos negros cocidos (hervidos directamente sin remojo previo), todo espolvoreado con 2 cucharadas soperas de salvado de trigo crudo. Aderezo: jugo de 1 limón exprimido y 1 cucharada de aceite de oliva. Inmediatamente al terminar: 1 taza de infusión de té verde caliente o café soluble.
+  * *17:30 Merienda*: 2 tostadas de pan integral de masa madre untadas con pasta de palta pisada + 1 cucharadita de alga espirulina en polvo disuelta en un vaso de agua fría.
+  * *21:30 Cena*: Salteado de vegetales (calabacín, brócoli, zanahoria y champiñones) con fideos integrales de trigo candeal y 1 cucharada de semillas de sésamo blanco. 1 taza de infusión de boldo o té negro.
+  * *Suplementos*: **No toma ningún suplemento de Vitamina B12, hierro ni ácido fólico**. Manifiesta que *"un médico naturista le aseguró que consumiendo espirulina y semillas de chía activadas no le iba a faltar ningún nutriente y que no necesitaba medicamentos sintéticos"*.
 
 #### Consulta 2: Control del Lactante (Semana 2)
-* **Paciente**: Sofía, 9 meses de vida. Nacida a término (39 semanas), parto vaginal espontáneo. Peso al nacer $3.200\text{ kg}$, Longitud al nacer $49.5\text{ cm}$. Recibe lactancia materna a libre demanda.
-* **Alimentación y Relato Materno**: Mariana inició alimentación complementaria a los 6 meses mediante método BLW (*Baby-Led Weaning*).
+* **Paciente**: Sofía, 9 meses de vida. Sexo femenino. Nacida a término (39 semanas), parto vaginal espontáneo sin complicaciones.
+* **Antecedentes perinatales crudos**: Peso al nacer $3.200\text{ kg}$, Longitud al nacer $49.5\text{ cm}$, Perímetro Cefálico al nacer $34.0\text{ cm}$.
+* **Antropometría actual en consulta (9 meses exactos)**:
+  * Peso actual: $7.350\text{ kg}$
+  * Longitud corporal: $68.5\text{ cm}$
+  * Perímetro Cefálico: $43.2\text{ cm}$
+* **Alimentación y Relato Materno**: 
+  * Mariana inició alimentación complementaria a los 6 meses mediante método BLW (*Baby-Led Weaning*), sosteniendo lactancia materna a demanda.
   * *Relato textual*: *"Por miedo a que le caigan pesados los alimentos o le den alergias, solo le ofrezco trozos de vegetales hervidos al vapor: bastones de calabaza, palta, arbolitos de brócoli y rodajitas de banana o manzana. No le he incorporado carnes, legumbres, tofu ni huevo, y no le agrego ningún tipo de aceite a las comidas porque me parece que la grasa es mala. Sofía agarra los trozos, juega y muerde un poco, pero come muy poquita cantidad neta. De noche se despierta llorando cada una hora y media pidiendo teta desesperada."*
-* **Antropometría actual (9 meses)**: Peso actual $7.350\text{ kg}$, Longitud $68.5\text{ cm}$, Perímetro Cefálico $43.2\text{ cm}$. En las gráficas de la OMS se observa una caída pronunciada del canal de crecimiento (descenso de percentil 50 a percentil 10).
+* **R24H Habitual del Lactante**:
+  * *06:30 Toma 1*: Pecho materno a demanda (succión durante 10 a 12 minutos).
+  * *09:30 Media mañana*: 3 rodajitas de banana madura ofrecidas en trozos sobre la trona; agarra con la mano, muerde media rodaja y el resto cae al suelo.
+  * *12:30 Almuerzo*: 2 bastones de calabaza hervida al vapor sin sal ni aceite añadido + 2 ramitos de brócoli hervido al vapor. Muerde las puntas de los bastones, aplasta la verdura con los dedos y consume una cantidad neta estimada menor a 1 cucharada sopera. Cero carnes, legumbres, huevo o aceites.
+  * *14:30 Toma 2*: Pecho materno tras despertar de la siesta (succión de 8 minutos).
+  * *17:30 Merienda*: 2 bastoncitos de manzana cocida o 2 trozos de palta pisada con los dedos. Ingesta neta insignificante.
+  * *20:00 Cena*: 2 bastoncitos de zapallito verde cocido al vapor sin aderezos.
+  * *Noche*: Sofía se despierta 5 a 6 veces durante la noche llorando; la madre la pone al pecho de forma continuada para calmarla.
+  * *Líquidos*: Pequeños sorbos ocasionales de agua en vasito abierto.
 
 #### Consulta 3: Control en Edad Escolar (Semana 3)
-* **Paciente**: Sofía, 9 años y 6 meses. Escuela primaria turno mañana.
-* **Motivo y Relato Materno**: Hace 3 meses Sofía fue diagnosticada con **Enfermedad Celíaca** tras confirmación serológica (Anticuerpos IgA antitransglutaminasa $>100\text{ U/mL}$) y biopsia duodenal (Marsh 3b).
+* **Paciente**: Sofía, 9 años y 6 meses. Sexo femenino. Escuela primaria turno mañana.
+* **Antropometría actual**:
+  * Talla actual: $131.0\text{ cm}$
+  * Peso actual: $27.0\text{ kg}$
+* **Motivo de consulta y síntomas**: Hace 3 meses Sofía fue diagnosticada formalmente por gastroenterología infantil con **Enfermedad Celíaca**. Refiere dolores cólicos abdominales recurrentes, distensión posprandial, flatulencias y sensación de fatiga muscular. La madre acude sumamente angustiada por el manejo dietario y social:
   * *Relato textual*: *"Estamos viviendo una pesadilla. Sofía llora desconsolada porque en los cumpleaños y en los recreos no puede comer lo mismo que sus amigas y se siente un bicho raro. Yo me paso el día gastando una fortuna en el supermercado comprando galletitas, panes y alfajores con el logo 'Sin TACC', pero casi todo lo que compro son masas secas llenas de fécula de maíz, almidón, azúcar y grasa que le inflaman la panza. En el colegio a veces tiene vergüenza de sacar sus tápers y prefiere no comer nada hasta llegar a casa."*
-* **Antropometría**: Talla $131.0\text{ cm}$, Peso $27.0\text{ kg}$ ($IMC = 15.7\text{ kg/m}^2$, percentilo 15). Refiere fatiga posprandial y flatulencias frecuentes.
-* **Laboratorio Pediátrico**: Hemoglobina $11.4\text{ g/dL}$, Ferritina $15\ \mu\text{g/L}$, **Vitamina D sérica $17\text{ ng/mL}$** (insuficiencia), Calcemia $8.8\text{ mg/dL}$, Glucemia $82\text{ mg/dL}$.
+* **R24H Habitual del Escolar**:
+  * *07:30 Desayuno*: 1 taza de leche descremada sin lactosa con infusión de malta con logo "Sin TACC" + 3 galletitas comerciales dulces "Sin TACC" de harina de arroz y fécula de maíz.
+  * *10:15 Recreo escolar*: La madre le manda 1 alfajor comercial de fécula de maíz relleno de dulce de leche con logo "Sin TACC", pero Sofía muchas veces no lo saca de la mochila por vergüenza ante sus compañeras y pasa toda la mañana en ayunas.
+  * *13:00 Almuerzo en casa*: 1 plato hondo de fideos secos comerciales libres de gluten (elaborados con harina de maíz y almidón de arroz) con salsa de tomate casera suave y queso untable descremado "Sin TACC". 1 vaso de agua potable.
+  * *17:30 Merienda*: 2 tostadas de pan comercial de molde libre de gluten (masa seca y densa con almidón modificado de mandioca y aceite vegetal hidrogenado) con mermelada comercial "Sin TACC" y 1 taza de leche con cacao en polvo certificado.
+  * *21:30 Cena familiar*: 1 milanesa de pechuga de pollo rebozada con harina de arroz y almidón de maíz, cocida al horno, con puré de calabaza sin manteca. Postre: 1 durazno o pera madura.
+  * *Signos referidos*: Refiere sensación de pesadez e inflamación persistente tras consumir panificados y masas comerciales libres de gluten ricos en almidón.
 
 ---
 
@@ -156,8 +258,8 @@ Para cada una de las 3 etapas (Semana 1, Semana 2 y Semana 3), el equipo deberá
 ```
 
 ### 1. Valoración Antropométrica y Diagnóstico Nutricional
-* **Curvas y tablas**: Graficar e interpretar los índices antropométricos oficiales correspondientes a cada etapa biológica (curvas gestacionales en Semana 1; tablas OMS/SAP en Semanas 2 y 3).
-* **Análisis clínico**: Identificar las señales de alarma clínicas y dietarias presentes en la anamnesis, R24H y analítica sanguínea.
+* **Curvas y tablas**: Graficar e interpretar los índices antropométricos oficiales correspondientes a cada etapa biológica (curvas gestacionales en Semana 1; tablas OMS/SAP en Semanas 2 y 3) a partir de los datos crudos suministrados.
+* **Análisis clínico**: Identificar las señales de alarma clínicas y nutricionales presentes en la anamnesis alimentaria, el Registro de 24 Horas (R24H) habitual y los signos/síntomas referidos por la familia o el paciente.
 * **Diagnóstico PES**: Formular el diagnóstico nutricional bajo la estructura estandarizada:
   $$\text{Problema (P)} \quad \text{relacionado con} \quad \text{Etiología (E)} \quad \text{evidenciado por} \quad \text{Signos/Síntomas (S)}$$
 
