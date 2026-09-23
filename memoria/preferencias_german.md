@@ -48,10 +48,13 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
 10. **Evaluación de Competencias Clínicas (Reflexión Crítica vs. Videos)**:
    - Preferir instancias de **reflexión personal, juicio crítico y autocrítica individual** en lugar de grabaciones o simulaciones teatrales en video. Esto elimina la fricción técnica y actoral, permitiendo valorar de manera genuina cómo piensa cada estudiante, cómo evolucionó su criterio clínico y cómo se posiciona éticamente ante el paciente y su familia.
 
-11. **Diseño de Casos Clínicos (Datos Crudos, Sin Laboratorio y R24H Detallado Obligatorio)**:
-    - **Datos antropométricos 100% crudos**: NUNCA incluir diagnósticos, percentiles, desvíos estándar (z-score) ni advertencias clínicas (ej. prohibido poner "Pc >97", "caída de canal percentilar 50 a 10" o "RCIU"). El alumno debe plotear los datos en las gráficas oficiales de la OMS/SAP y realizar el diagnóstico por sí mismo a partir de peso, talla/longitud, edad exacta y antecedentes perinatales crudos.
-    - **Cero datos de laboratorio**: En la cátedra NO se enseña interpretación bioquímica de laboratorio. No incluir paneles de laboratorio (eliminar HOMA-IR, insulinemia, ferritina, B12 sérica, anticuerpos celíacos, biopsias, hemogramas complejos, etc.). El análisis debe basarse en la clínica observable, antecedentes y anamnesis.
-    - **Registro de 24 Horas (R24H) completo y detallado**: Cada caso y cada etapa (embarazo, lactante y escolar) debe contener de manera obligatoria un R24H exhaustivo con horarios, preparaciones, ingredientes, cantidades en medidas caseras y bebidas, así como la preparación exacta de mamaderas/fórmulas en el lactante y el consumo escolar/kiosco en el niño.
+11. **Diseño de Casos Clínicos (Antropometría Completa Cruda, Sin Laboratorios y R24H Tabular con Gramos)**:
+    - **Antropometría Cruda Exhaustiva**: NUNCA incluir diagnósticos, percentiles, z-scores ni spoilers interpretativos en las consignas. Proporcionar el set antropométrico completo que se enseña en la cátedra:
+      * *Gestantes*: Peso pregestacional, peso actual, talla, tensión arterial, **Altura Uterina (AU en cm)**, **Perímetro Braquial (PB en cm)** y **Pliegue Cutáneo Tricipital (PCT en mm)**.
+      * *Lactantes*: Datos perinatales (peso, longitud y perímetro cefálico al nacer), control evolutivo intermedio (ej. a los 3 meses) y datos de la consulta actual: peso, longitud, **Perímetro Cefálico (PC en cm)**, **Perímetro Braquial (PB en cm)** y **Pliegue Cutáneo Tricipital (PCT en mm)**.
+      * *Escolares*: Edad exacta (años y meses), peso, talla, **Circunferencia de Cintura (CC en cm)**, **Perímetro Braquial (PB en cm)**, **Pliegue Cutáneo Tricipital (PCT en mm)** y **Pliegue Subescapular (PSE en mm)**, para que calculen el Área Muscular del Brazo (AMB con la fórmula de Frisancho) y el riesgo metabólico visceral por cintura.
+    - **Cero datos de laboratorio**: En la cátedra NO se enseña interpretación bioquímica de laboratorio.
+    - **Registro de 24 Horas (R24H) Tabular con Gramos Obligatorio**: Cada caso y cada semana debe presentar una **tabla detallada** con: Momento/Horario, Alimento o preparación específica, Medida casera y **Cantidad neta consumida en gramos ($g$) o mililitros ($ml$)**. Esto permite a los estudiantes realizar el costeo y balance de macro/micronutrientes con rigor y a Germán evaluar los cálculos de manera 100% objetiva.
 
 ---
 
