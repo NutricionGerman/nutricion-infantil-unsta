@@ -4345,6 +4345,24 @@
                                 <!-- Los gráficos de asistencia se insertarán aquí -->
                             </div>
                         </div>
+
+                        <!-- VISTA PARA CLASES DE LA CÁTEDRA -->
+                        <div id="clases-dashboard-content" class="dashboard-content-panel">
+                            <!-- Hero Section Clases -->
+                            <div class="gallery-hero-responsive">
+                                <img src="tienda/hero-simple/galeria%20hero%20simple.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.75; z-index: 1;" alt="Clases de la Cátedra">
+                                <div style="position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, transparent 0%, rgba(13,17,23,0.4) 50%, #0d1117 100%); pointer-events: none;"></div>
+                                <button class="btn-back-v2" style="position: absolute; top: 20px; left: clamp(20px, 5vw, 40px); z-index: 5; background: rgba(0,0,0,0.5); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1);" onclick="document.querySelector('.nav-button[data-tab-target=\'#panel-honor\']').click()"><i class="fas fa-arrow-left" style="color: white;"></i></button>
+                                <div class="hero-inner-content">
+                                    <h1 class="gallery-hero-title" style="color: white; font-size: 26px; font-weight: 800; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.9); font-style: italic;">CLASES DE LA CÁTEDRA</h1>
+                                    <p class="gallery-hero-desc" style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.9);">Cronograma académico, presentaciones interactivas, talleres clínicos y material de estudio.</p>
+                                </div>
+                            </div>
+
+                            <div id="clases-dashboard-list-container" class="ranking-list-container" style="background: transparent; border: none; padding: 0; max-width: none !important; margin: 0 auto;">
+                                <!-- Se renderizan todas las clases ordenadas dinámicamente -->
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -6183,123 +6201,258 @@
                 }
             }
 
-            async function generateAndDisplayClasses() {
-                const container = document.getElementById('clases-content-container');
-                if (!container) return;
+            // ==========================================
+            // CATÁLOGO OFICIAL Y CRONOGRAMA DE CLASES 2026
+            // ==========================================
+            window.catedraClassesList = [
+                {
+                    number: 3,
+                    numStr: '03',
+                    title: 'Vegetarianismo y el Cambio de Paradigma en Nutrición',
+                    subtitle: 'Deconstrucción del dogma proteico, triangulación de evidencia (N=76, 73 dietas), controversia del huevo y planificación clínica pediátrica.',
+                    dateStr: '16 de Septiembre, 2026',
+                    date: new Date('2026-09-16T12:00:00Z'),
+                    isLatest: true,
+                    accentColor: '#8b5cf6',
+                    borderColor: 'rgba(139, 92, 246, 0.45)',
+                    icon: 'fas fa-seedling',
+                    tags: ['Nutrición Basada en Plantas', 'Duelo N=76', '17 Diapositivas', 'Consenso Pediátrico', 'Controversia Huevo'],
+                    resources: [
+                        {
+                            label: 'Presentación Teórica (17 Slides)',
+                            url: 'clases/clase_03_vegetarianismo/index.html#teoria',
+                            icon: 'fas fa-desktop',
+                            isPrimary: true
+                        },
+                        {
+                            label: 'Taller Forense & Duelo N=76',
+                            url: 'clases/clase_03_vegetarianismo/index.html#practica',
+                            icon: 'fas fa-flask',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Consignas TP (Word)',
+                            url: 'clases/clase_03_vegetarianismo/docs/Triangulacion%20de%20la%20Evidencia%20-%20Sustitucion%20Proteica%20Animal%20por%20Vegetal.docx',
+                            icon: 'fas fa-file-word',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Biblioteca Científica (PDFs)',
+                            url: 'clases/clase_03_vegetarianismo/index.html#bibliografia',
+                            icon: 'fas fa-book-medical',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Asistencia y QR',
+                            url: 'clases/clase_03_vegetarianismo/asistencia/index.html',
+                            icon: 'fas fa-user-check',
+                            isPrimary: false
+                        }
+                    ]
+                },
+                {
+                    number: 2,
+                    numStr: '02',
+                    title: 'Evaluación Antropométrica II & Práctica Clínica',
+                    subtitle: 'Consolidación de técnicas antropométricas, mediciones intergrupales, registro de evaluadores y estandarización práctica en campo.',
+                    dateStr: '26 de Agosto, 2026',
+                    date: new Date('2026-08-26T12:00:00Z'),
+                    isLatest: false,
+                    accentColor: '#10b981',
+                    borderColor: 'rgba(16, 185, 129, 0.4)',
+                    icon: 'fas fa-ruler-combined',
+                    tags: ['Antropometría Práctica', 'Medición Intergrupal', 'Estandarización'],
+                    resources: [
+                        {
+                            label: 'Planilla de Evaluadores (PDF)',
+                            url: 'clases/clase_02_antropometria_26_08/planilla de evaluadores.pdf',
+                            icon: 'fas fa-file-pdf',
+                            isPrimary: true
+                        },
+                        {
+                            label: 'Asistencia y QR',
+                            url: 'clases/clase_02_antropometria_26_08/asistencia/index.html',
+                            icon: 'fas fa-user-check',
+                            isPrimary: false
+                        }
+                    ]
+                },
+                {
+                    number: 1,
+                    numStr: '01',
+                    title: 'Evaluación Antropométrica (5 a 19 Años)',
+                    subtitle: 'Protocolos de medición estandarizados OMS/SAP, Área Muscular Braquial (cAMB), Dinamometría y Calidad Muscular (MQI).',
+                    dateStr: '19 de Agosto, 2026',
+                    date: new Date('2026-08-19T12:00:00Z'),
+                    isLatest: false,
+                    accentColor: '#00f2fe',
+                    borderColor: 'rgba(0, 242, 254, 0.4)',
+                    icon: 'fas fa-child',
+                    tags: ['Evaluación Nutricional', 'cAMB', 'Dinamometría MQI', 'TP 3 Clínico', 'OMS / SAP'],
+                    resources: [
+                        {
+                            label: 'Clase Teórica Interactiva',
+                            url: 'clases/clase_01_antropometria_19_08/Clase-19-08.html',
+                            icon: 'fas fa-book-open',
+                            isPrimary: true
+                        },
+                        {
+                            label: 'Taller Antropometría (TP 3)',
+                            url: 'clases/clase_01_antropometria_19_08/taller-antropometria.html',
+                            icon: 'fas fa-stethoscope',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Calculadora Antropométrica',
+                            url: 'clases/clase_01_antropometria_19_08/herramientas/IMC 5 a 19 años.html',
+                            icon: 'fas fa-calculator',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Manual Dinamómetro (PDF)',
+                            url: 'clases/clase_01_antropometria_19_08/docs/manual-dinamometro-camry-eh101.pdf',
+                            icon: 'fas fa-file-pdf',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Planilla Evaluadores (PDF)',
+                            url: 'clases/clase_01_antropometria_19_08/planilla de evaluadores.pdf',
+                            icon: 'fas fa-file-pdf',
+                            isPrimary: false
+                        },
+                        {
+                            label: 'Asistencia y QR',
+                            url: 'clases/clase_01_antropometria_19_08/asistencia/index.html',
+                            icon: 'fas fa-user-check',
+                            isPrimary: false
+                        }
+                    ]
+                }
+            ];
 
-                // Registro estructurado de clases 2026
-                const knownClasses2026 = [
-                    {
-                        date: new Date('2026-09-02T12:00:00Z'),
-                        fileName: 'index.html',
-                        filePath: 'clases/clase_03_vegetarianismo/index.html',
-                        title: 'Vegetarianismo & Paradigmas en Salud',
-                        subtitle: 'Alimentación basada en plantas, deconstrucción del nutricionismo y análisis de 73 dietas',
-                        tags: ['Clase 03', 'Duelo de Alimentos', 'Video Cátedra: Huevo', 'Cambio de Paradigma'],
-                        isFeatured: true
-                    },
-                    {
-                        date: new Date('2026-08-19T12:00:00Z'),
-                        fileName: 'Clase-19-08.html',
-                        filePath: 'clases/clase_01_antropometria_19_08/Clase-19-08.html',
-                        title: 'Antropometría 5-19 Años: Introducción',
-                        subtitle: 'Protocolos de medición, cAMB, Dinamometría y Calidad Muscular (MQI)',
-                        tags: ['Clase 01', 'Calculadora MQI', 'Video Protocolos'],
-                        isFeatured: false
-                    }
-                ];
+            window.catedraClassesSortOrder = window.catedraClassesSortOrder || 'desc';
 
-                const checkFile = async (url) => {
-                    try {
-                        const response = await fetch(url, { method: 'HEAD' });
-                        return response.ok;
-                    } catch (error) {
-                        return false;
-                    }
-                };
+            function renderCatedraClassesHTML(order) {
+                const currentOrder = order || window.catedraClassesSortOrder || 'desc';
+                window.catedraClassesSortOrder = currentOrder;
 
-                // Verificar clases disponibles
-                const existingClasses = [];
-                for (const cls of knownClasses2026) {
-                    const exists = await checkFile(cls.filePath);
-                    if (exists) {
-                        existingClasses.push(cls);
-                    }
+                const classesCopy = [...window.catedraClassesList];
+                if (currentOrder === 'asc') {
+                    classesCopy.sort((a, b) => a.number - b.number);
+                } else {
+                    classesCopy.sort((a, b) => b.number - a.number);
                 }
 
-                // Fallback si fetch da error en modo local
-                if (existingClasses.length === 0) {
-                    existingClasses.push(knownClasses2026[0]);
-                }
-
-                existingClasses.sort((a, b) => b.date - a.date);
-
-                let html = '';
-                const latestClass = existingClasses[0];
-                const olderClasses = existingClasses.slice(1);
-
-                const latestDate = new Date(latestClass.date);
-                const formattedDate = latestDate.toLocaleDateString('es-AR', { day: '2-digit', month: 'long', year: 'numeric' });
-
-                const tagsHtml = (latestClass.tags || []).map(tag => 
-                    `<span style="display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:20px; background:rgba(76,154,155,0.2); color:#2dd4bf; border:1px solid rgba(76,154,155,0.4); margin-right:6px; margin-top:6px;">${tag}</span>`
-                ).join('');
-
-                // Tarjeta destacada de la última clase
-                html += `
-                    <div style="background: linear-gradient(135deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.98)); border: 1px solid rgba(232, 122, 61, 0.5); border-radius: 16px; padding: 28px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden;">
-                        <div style="position: absolute; top: 0; right: 0; width: 200px; height: 200px; background: radial-gradient(circle, rgba(232,122,61,0.15) 0%, transparent 70%); pointer-events: none;"></div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
-                            <span style="background: var(--accent-orange); color: #fff; font-size: 0.8rem; font-weight: 700; padding: 4px 14px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px;">
-                                <i class="fas fa-star" style="margin-right: 4px;"></i> Clase Más Reciente
+                let html = `
+                    <style>
+                        .class-card-hover {
+                            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+                        }
+                        .class-card-hover:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 12px 28px rgba(0,0,0,0.5) !important;
+                        }
+                        .class-action-btn {
+                            transition: all 0.2s ease;
+                        }
+                        .class-action-btn:hover {
+                            transform: translateY(-2px);
+                            filter: brightness(1.15);
+                        }
+                    </style>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; padding: 0 4px; flex-wrap: wrap; gap: 12px;">
+                        <div style="color: var(--text-muted-light); font-size: 0.92rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                            <span style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: rgba(139, 92, 246, 0.15); color: #8b5cf6; border: 1px solid rgba(139, 92, 246, 0.3);">
+                                <i class="fas fa-layer-group" style="font-size: 0.85rem;"></i>
                             </span>
-                            <span style="color: var(--text-muted-light); font-size: 0.9rem; font-weight: 500;">
-                                <i class="far fa-calendar-alt" style="color: var(--accent-teal); margin-right: 6px;"></i>${formattedDate}
-                            </span>
+                            <span>Cronograma: <strong>${classesCopy.length} Clases Oficiales</strong></span>
                         </div>
-
-                        <h3 style="color: #fff; font-size: 1.6rem; font-weight: 800; margin: 10px 0 6px 0;">
-                            ${latestClass.title || `Clase del ${formattedDate}`}
-                        </h3>
-                        <p style="color: var(--text-muted-light); font-size: 0.95rem; line-height: 1.5; margin-bottom: 16px;">
-                            ${latestClass.subtitle || 'Accede al material teórico, protocolos y herramientas interactivas de la clase.'}
-                        </p>
-
-                        <div style="margin-bottom: 20px;">
-                            ${tagsHtml}
-                        </div>
-
-                        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <a href="${latestClass.filePath}" target="_blank" class="nav-button" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--accent-orange), #d4622a); color: #fff; font-weight: 700; padding: 12px 24px; border-radius: 10px; text-decoration: none; border: none; box-shadow: 0 4px 15px rgba(232,122,61,0.4); cursor: pointer;">
-                                <i class="fas fa-door-open"></i> Abrir Clase <i class="fas fa-arrow-right" style="font-size: 0.85rem;"></i>
-                            </a>
+                        <div style="display: flex; gap: 8px; align-items: center; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 12px; border: 1px solid var(--glass-border);">
+                            <button onclick="toggleCatedraClassesSort('desc')" class="nav-button ${currentOrder === 'desc' ? 'active' : ''}" style="padding: 7px 14px; font-size: 0.8rem; border-radius: 8px; cursor: pointer; border: none; font-weight: 600;">
+                                <i class="fas fa-sort-amount-down"></i> Más Recientes
+                            </button>
+                            <button onclick="toggleCatedraClassesSort('asc')" class="nav-button ${currentOrder === 'asc' ? 'active' : ''}" style="padding: 7px 14px; font-size: 0.8rem; border-radius: 8px; cursor: pointer; border: none; font-weight: 600;">
+                                <i class="fas fa-sort-amount-up"></i> Clase 1 a 3
+                            </button>
                         </div>
                     </div>
                 `;
 
-                // Cuadrícula para clases anteriores si las hay
-                if (olderClasses.length > 0) {
-                    html += '<h3 class="subsection-title" style="color: #fff; margin-bottom: 15px;"><i class="fas fa-history" style="color: var(--accent-teal); margin-right: 8px;"></i>Clases Anteriores</h3>';
-                    html += '<div class="content-grid">';
-                    olderClasses.forEach(classFile => {
-                        const day = String(classFile.date.getUTCDate()).padStart(2, '0');
-                        const month = String(classFile.date.getUTCMonth() + 1).padStart(2, '0');
-                        html += `
-                            <a href="${classFile.filePath}" class="content-grid-item" target="_blank" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: rgba(22,27,34,0.8); border: 1px solid var(--glass-border); border-radius: 12px; text-decoration: none; color: #fff; transition: all 0.25s;">
-                                <div>
-                                    <div style="font-weight: 700; font-size: 1rem; color: #fff;">${classFile.title || `Clase ${day}/${month}`}</div>
-                                    <div style="font-size: 0.8rem; color: var(--text-muted);">${day}/${month}/2026</div>
-                                </div>
-                                <i class="fas fa-chevron-right" style="color: var(--accent-teal);"></i>
-                            </a>
-                        `;
-                    });
-                    html += '</div>';
-                }
+                classesCopy.forEach(cls => {
+                    const tagsHtml = cls.tags.map(t => 
+                        `<span style="font-size: 0.74rem; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.08);">${t}</span>`
+                    ).join('');
 
-                container.innerHTML = html;
+                    const actionsHtml = cls.resources.map(res => `
+                        <a href="${res.url}" target="_blank" class="class-action-btn" style="display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; padding: 10px 16px; border-radius: 10px; text-decoration: none; cursor: pointer; ${res.isPrimary ? `background: linear-gradient(135deg, ${cls.accentColor}, #4f46e5); color: #fff; border: 1px solid ${cls.accentColor}; box-shadow: 0 4px 14px ${cls.accentColor}40;` : 'background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #fff;'}">
+                            <i class="${res.icon}" style="${res.isPrimary ? 'color:#fff;' : `color:${cls.accentColor};`}"></i> ${res.label}
+                        </a>
+                    `).join('');
+
+                    html += `
+                        <div class="class-card-hover" style="background: linear-gradient(135deg, rgba(22, 27, 34, 0.95), rgba(13, 17, 23, 0.98)); border: 1px solid ${cls.borderColor}; border-radius: 16px; padding: 26px; margin-bottom: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, ${cls.accentColor}20 0%, transparent 70%); pointer-events: none;"></div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <span style="background: ${cls.accentColor}; color: #fff; font-size: 0.78rem; font-weight: 800; padding: 5px 14px; border-radius: 20px; letter-spacing: 0.8px; text-transform: uppercase; box-shadow: 0 2px 8px ${cls.accentColor}50;">
+                                        <i class="${cls.icon}" style="margin-right: 5px;"></i>CLASE ${cls.numStr}
+                                    </span>
+                                    ${cls.isLatest ? `<span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 4px;"><i class="fas fa-sparkles"></i> ✨ Más Reciente</span>` : ''}
+                                </div>
+                                <span style="color: var(--text-muted-light); font-size: 0.88rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
+                                    <i class="far fa-calendar-alt" style="color: ${cls.accentColor};"></i>${cls.dateStr}
+                                </span>
+                            </div>
+
+                            <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 10px 0 8px 0; line-height: 1.3;">
+                                ${cls.title}
+                            </h3>
+                            <p style="color: var(--text-muted-light); font-size: 0.93rem; line-height: 1.55; margin-bottom: 16px;">
+                                ${cls.subtitle}
+                            </p>
+
+                            <div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 6px;">
+                                ${tagsHtml}
+                            </div>
+
+                            <div style="height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 18px;"></div>
+
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                ${actionsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                return html;
             }
+
+            window.toggleCatedraClassesSort = function(newOrder) {
+                window.catedraClassesSortOrder = newOrder;
+                displayClasesDashboardView();
+                generateAndDisplayClasses();
+            };
+
+            function displayClasesDashboardView() {
+                const dashContainer = document.getElementById('clases-dashboard-list-container');
+                if (dashContainer) {
+                    dashContainer.innerHTML = renderCatedraClassesHTML();
+                }
+            }
+            window.displayClasesDashboardView = displayClasesDashboardView;
+
+            function generateAndDisplayClasses() {
+                const container = document.getElementById('clases-content-container');
+                if (container) {
+                    container.innerHTML = renderCatedraClassesHTML();
+                }
+                const dashContainer = document.getElementById('clases-dashboard-list-container');
+                if (dashContainer && !dashContainer.innerHTML.trim()) {
+                    dashContainer.innerHTML = renderCatedraClassesHTML();
+                }
+            }
+            window.generateAndDisplayClasses = generateAndDisplayClasses;
 
             function showHonorPanelView(viewId) {
                 const mainView = document.getElementById('xp-ranking-section');
@@ -6380,6 +6533,8 @@
                     displayLastSessionAnalytics();
                 } else if (tabName === 'regularidad') {
                     displayRegularityAnalytics();
+                } else if (tabName === 'clases') {
+                    displayClasesDashboardView();
                 }
             }
 
@@ -6451,7 +6606,7 @@
                 }
 
                 let extraGridStyles = '';
-                ['hitos', 'alumnos', 'grupos', 'regularidad'].forEach(tab => {
+                ['hitos', 'clases', 'alumnos', 'grupos', 'regularidad'].forEach(tab => {
                     if (cardBgs[tab]) {
                         extraGridStyles += `
                             .dash-interactive-row[data-dashboard-tab="${tab}"]::after {
@@ -6710,6 +6865,19 @@
                             <p class="di-subtitle">Explora los TPs de todos los grupos</p>
                         </div>
                         <div class="di-stat-box">
+                            <i class="fas fa-chevron-right di-chevron"></i>
+                        </div>
+                    </div>
+
+                    <!-- Clases de la Cátedra (Púrpura / Violeta Neón) -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="clases" style="--card-rgb: 139, 92, 246;">
+                        <div class="di-icon-box"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="di-content">
+                            <h3 class="di-title">Clases de la Cátedra</h3>
+                            <p class="di-subtitle">Material teórico, talleres y asistencias</p>
+                        </div>
+                        <div class="di-stat-box">
+                            <span class="di-stat">3 Clases</span>
                             <i class="fas fa-chevron-right di-chevron"></i>
                         </div>
                     </div>
