@@ -36,6 +36,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
    - *«Aquel alimento o patrón dietario que demuestra mejorar los desenlaces clínicos duros —reduciendo la mortalidad y las enfermedades crónicas— a un costo económico y medioambiental sostenible.»*
    - Define el horizonte clínico y pedagógico de la cátedra: combina *hard endpoints* (supervivencia y morbilidad) con sustentabilidad económica y medioambiental, superando cualquier reduccionismo bromatológico.
 
+8. **Contenido de Clases y Bibliografía**:
+   - Para la Clase 02 del 1° Cuatrimestre (*Evaluación, Diagnóstico & Intervención en Embarazo*), los documentos oficiales para los alumnos son exclusivamente las 3 guías clínicas formativas (`.docx`): Antropometría en Embarazo, Diagnóstico PES e Intervención Nutricional.
+   - El archivo `Manual para la atención alimentaria y nutricional a embarazadas en hogares maternos.pdf` **NO** debe incluirse como recurso de clase.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
