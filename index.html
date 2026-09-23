@@ -6661,6 +6661,33 @@
                 `;
             }
 
+            window.selectTpCase = function(caseNum) {
+                for (let i = 1; i <= 4; i++) {
+                    const btn = document.getElementById('tp-case-tab-btn-' + i);
+                    const panel = document.getElementById('tp-case-panel-' + i);
+                    if (btn) {
+                        if (i === caseNum) {
+                            btn.classList.add('active');
+                            const icon = btn.querySelector('i');
+                            if (icon) {
+                                icon.classList.remove('fa-folder');
+                                icon.classList.add('fa-folder-open');
+                            }
+                        } else {
+                            btn.classList.remove('active');
+                            const icon = btn.querySelector('i');
+                            if (icon) {
+                                icon.classList.remove('fa-folder-open');
+                                icon.classList.add('fa-folder');
+                            }
+                        }
+                    }
+                    if (panel) {
+                        panel.style.display = (i === caseNum) ? 'block' : 'none';
+                    }
+                }
+            };
+
             function renderTpIntegradorCaseHTML() {
                 return `
                     <style>
@@ -6758,24 +6785,47 @@
                             color: #fff;
                             transform: translateY(-2px);
                         }
+                        .tp-case-tab-btn {
+                            background: rgba(255, 255, 255, 0.03);
+                            border: 1px solid rgba(255, 255, 255, 0.08);
+                            border-radius: 14px;
+                            padding: 12px 16px;
+                            cursor: pointer;
+                            transition: all 0.25s ease;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start;
+                            width: 100%;
+                            box-sizing: border-box;
+                        }
+                        .tp-case-tab-btn:hover {
+                            background: rgba(255, 255, 255, 0.08);
+                            border-color: rgba(255, 255, 255, 0.2);
+                            transform: translateY(-2px);
+                        }
+                        .tp-case-tab-btn.active {
+                            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1));
+                            border-color: #f59e0b;
+                            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+                        }
                         @media print {
                             body * { visibility: hidden !important; }
                             #tp-integrador-dashboard-content, #tp-integrador-dashboard-content * { visibility: visible !important; }
                             #tp-integrador-dashboard-content { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; }
                             .tp-section-card, .tp-sub-box { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
-                            .btn-back-v2, .tp-toolbar-actions, .tp-nav-pills-row { display: none !important; }
+                            .btn-back-v2, .tp-toolbar-actions, .tp-nav-pills-row, .tp-case-tabs-container { display: none !important; }
                         }
                     </style>
 
                     <div style="max-width: 1060px; margin: 0 auto; padding: 0 10px 40px 10px;">
                         
                         <!-- BARRA SUPERIOR DE ESTADO Y ACCIONES -->
-                        <div class="tp-toolbar-actions" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; padding: 12px 18px; background: rgba(22, 27, 34, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px;">
+                        <div class="tp-toolbar-actions" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; padding: 12px 18px; background: rgba(22, 27, 34, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
                                     <i class="fas fa-lock-open"></i> Expediente Desbloqueado
                                 </span>
-                                <span style="color: rgba(255, 255, 255, 0.5); font-size: 0.85rem;">Cátedra Nutrición Infantil — UNSTA</span>
+                                <span style="color: rgba(255, 255, 255, 0.5); font-size: 0.85rem;">20 Grupos de Cátedra — 4 Casos Clínicos</span>
                             </div>
 
                             <div style="display: flex; gap: 8px;">
@@ -6788,165 +6838,565 @@
                             </div>
                         </div>
 
+                        <!-- SELECTOR INTERACTIVO DE CASOS CLÍNICOS (DISTRIBUCIÓN 20 GRUPOS) -->
+                        <div style="margin-bottom: 24px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+                                <span style="font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px;">
+                                    <i class="fas fa-layer-group" style="color: #f59e0b; margin-right: 6px;"></i> Selecciona el caso asignado a tu grupo:
+                                </span>
+                            </div>
+                            <div class="tp-case-tabs-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px;">
+                                <button type="button" onclick="window.selectTpCase(1)" id="tp-case-tab-btn-1" class="tp-case-tab-btn active">
+                                    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.2); display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 16px;">
+                                            <i class="fas fa-folder-open"></i>
+                                        </div>
+                                        <div style="text-align: left; flex-grow: 1;">
+                                            <div style="font-weight: 800; font-size: 0.88rem; color: #fff;">Caso 1: Camila y Tomás</div>
+                                            <div style="font-size: 0.72rem; color: #f59e0b; font-weight: 700;">Grupos: 1, 5, 9, 13, 17</div>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="window.selectTpCase(2)" id="tp-case-tab-btn-2" class="tp-case-tab-btn">
+                                    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(20, 184, 166, 0.2); display: flex; align-items: center; justify-content: center; color: #14b8a6; font-size: 16px;">
+                                            <i class="fas fa-folder"></i>
+                                        </div>
+                                        <div style="text-align: left; flex-grow: 1;">
+                                            <div style="font-weight: 800; font-size: 0.88rem; color: #fff;">Caso 2: Lucía y Benjamín</div>
+                                            <div style="font-size: 0.72rem; color: #14b8a6; font-weight: 700;">Grupos: 2, 6, 10, 14, 18</div>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="window.selectTpCase(3)" id="tp-case-tab-btn-3" class="tp-case-tab-btn">
+                                    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(59, 130, 246, 0.2); display: flex; align-items: center; justify-content: center; color: #60a5fa; font-size: 16px;">
+                                            <i class="fas fa-folder"></i>
+                                        </div>
+                                        <div style="text-align: left; flex-grow: 1;">
+                                            <div style="font-weight: 800; font-size: 0.88rem; color: #fff;">Caso 3: Florencia y Mateo</div>
+                                            <div style="font-size: 0.72rem; color: #60a5fa; font-weight: 700;">Grupos: 3, 7, 11, 15, 19</div>
+                                        </div>
+                                    </div>
+                                </button>
+
+                                <button type="button" onclick="window.selectTpCase(4)" id="tp-case-tab-btn-4" class="tp-case-tab-btn">
+                                    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(236, 72, 153, 0.2); display: flex; align-items: center; justify-content: center; color: #f472b6; font-size: 16px;">
+                                            <i class="fas fa-folder"></i>
+                                        </div>
+                                        <div style="text-align: left; flex-grow: 1;">
+                                            <div style="font-weight: 800; font-size: 0.88rem; color: #fff;">Caso 4: Mariana y Sofía</div>
+                                            <div style="font-size: 0.72rem; color: #f472b6; font-weight: 700;">Grupos: 4, 8, 12, 16, 20</div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- BOTONES DE NAVEGACIÓN RÁPIDA -->
-                        <div class="tp-nav-pills-row" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px;">
+                        <div class="tp-nav-pills-row" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px;">
                             <a href="#tp-semana-1" class="tp-nav-pill"><i class="fas fa-female" style="color: #f59e0b;"></i> Semana 1: Gestación</a>
-                            <a href="#tp-semana-2" class="tp-nav-pill"><i class="fas fa-baby" style="color: #14b8a6;"></i> Semana 2: Lactante 7m</a>
-                            <a href="#tp-semana-3" class="tp-nav-pill"><i class="fas fa-child" style="color: #a78bfa;"></i> Semana 3: Escolar 9a</a>
+                            <a href="#tp-semana-2" class="tp-nav-pill"><i class="fas fa-baby" style="color: #14b8a6;"></i> Semana 2: Lactante</a>
+                            <a href="#tp-semana-3" class="tp-nav-pill"><i class="fas fa-child" style="color: #a78bfa;"></i> Semana 3: Escolar</a>
                             <a href="#tp-consignas" class="tp-nav-pill"><i class="fas fa-clipboard-list" style="color: #3b82f6;"></i> Consignas PAN</a>
                             <a href="#tp-reflexion" class="tp-nav-pill"><i class="fas fa-pen-fancy" style="color: #ec4899;"></i> Reflexión Personal</a>
                             <a href="#tp-rubrica" class="tp-nav-pill"><i class="fas fa-table" style="color: #10b981;"></i> Rúbrica 10/10</a>
                         </div>
 
                         <!-- ============================================== -->
-                        <!-- ETAPA 1: GESTACIÓN -->
+                        <!-- PANEL CASO 1: FAMILIA GÓMEZ (CAMILA Y TOMÁS) -->
                         <!-- ============================================== -->
-                        <div id="tp-semana-1" class="tp-section-card" style="border-left: 4px solid #f59e0b;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
-                                <div>
-                                    <span class="tp-badge-gold"><i class="fas fa-calendar-alt"></i> Semana 1</span>
-                                    <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 2px 0;">Consulta Prenatal: Camila (28 años)</h3>
-                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0;">24 semanas de gestación por FUR confiable (2° Trimestre) — Primigesta</p>
+                        <div id="tp-case-panel-1" class="tp-case-panel" style="display: block;">
+                            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <div style="color: #fde68a; font-weight: 700; font-size: 0.95rem;">
+                                    <i class="fas fa-folder-open" style="color: #f59e0b; margin-right: 6px;"></i> Expediente Caso 1: Familia Gómez (Camila y Tomás)
                                 </div>
+                                <span style="background: #f59e0b; color: #000; font-weight: 800; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem;">
+                                    Asignado a: Grupos 1, 5, 9, 13 y 17
+                                </span>
                             </div>
 
-                            <div class="tp-sub-box">
-                                <h4 style="color: #f59e0b; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-user-md" style="margin-right: 6px;"></i> Motivo de Consulta y Situación Clínica</h4>
-                                <p style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; margin: 0;">
-                                    Derivada por obstetricia para evaluación y plan nutricional prenatal. Refiere astenia marcada, cansancio vespertino y cefaleas ocasionales. Presenta <strong>pirosis intensa</strong> en la tarde y noche que "le sube hasta la garganta al acostarse", y <strong>constipación</strong> con evacuaciones secas cada 3 a 4 días con esfuerzo. Manifiesta aversión al olor de carnes rojas y náuseas ante lácteos enteros.
-                                </p>
-                            </div>
+                            <!-- Semana 1 Caso 1 -->
+                            <div id="tp-semana-1" class="tp-section-card" style="border-left: 4px solid #f59e0b;">
+                                <span class="tp-badge-gold"><i class="fas fa-calendar-alt"></i> Semana 1 — Gestación</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Consulta Prenatal: Camila (28 años)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">24 semanas de gestación por FUR confiable (2° Trimestre) — Primigesta</p>
 
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
-                                <div class="tp-sub-box" style="margin-bottom: 0;">
-                                    <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-weight" style="margin-right: 6px;"></i> Antropometría y Signos</h4>
-                                    <table class="tp-data-table">
-                                        <tr><td>Talla</td><td><strong>1.62 m</strong></td></tr>
-                                        <tr><td>Peso habitual pregestacional</td><td><strong>54.0 kg</strong></td></tr>
-                                        <tr><td>Peso actual en balanza</td><td><strong>58.5 kg</strong></td></tr>
-                                        <tr><td>Tensión Arterial</td><td><strong>110 / 70 mmHg</strong></td></tr>
-                                    </table>
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #f59e0b; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-user-md" style="margin-right: 6px;"></i> Motivo de Consulta y Síntomas</h4>
+                                    <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0;">
+                                        Derivada por obstetricia para control nutricional. Refiere astenia, cansancio vespertino y cefaleas ocasionales. Presenta <strong>pirosis intensa</strong> en la tarde y noche que "le sube hasta la garganta al acostarse", y <strong>constipación</strong> con deposiciones secas cada 3 a 4 días con esfuerzo. Manifiesta aversión al olor de carnes rojas y náuseas ante lácteos enteros.
+                                    </p>
                                 </div>
 
-                                <div class="tp-sub-box" style="margin-bottom: 0;">
-                                    <h4 style="color: #ec4899; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-vial" style="margin-right: 6px;"></i> Bioquímica (Semana 23)</h4>
-                                    <table class="tp-data-table">
-                                        <tr><td>Glucemia en ayunas</td><td><strong>81 mg/dL</strong></td></tr>
-                                        <tr><td>Hemoglobina</td><td><strong>11.1 g/dL</strong></td></tr>
-                                        <tr><td>Ferritina sérica</td><td><strong>16 µg/L</strong></td></tr>
-                                        <tr><td>Sedimento de orina</td><td>Normal</td></tr>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="tp-sub-box" style="margin-bottom: 0;">
-                                <h4 style="color: #a78bfa; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> Recordatorio de 24 Horas Habitual (R24H)</h4>
-                                <ul style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0; padding-left: 20px;">
-                                    <li><strong>07:30 Desayuno</strong>: 2 mates amargos con 2 galletitas de agua y mermelada común.</li>
-                                    <li><strong>10:30 Media mañana</strong>: Café con leche de máquina de oficina o nada.</li>
-                                    <li><strong>13:30 Almuerzo</strong>: 2 empanadas de verdura compradas al paso, o 1 sándwich de jamón y queso con 1 vaso de gaseosa común.</li>
-                                    <li><strong>18:00 Merienda</strong>: Té solo con 3 galletitas dulces o tostadas de pan blanco con queso crema.</li>
-                                    <li><strong>21:30 Cena</strong>: Fideos o arroz blanco con manteca y queso rallado.</li>
-                                    <li><strong>Líquidos y hábitos</strong>: Consume agua solo si tiene sed intensa (&lt;1 L/día). No consume legumbres ni semillas.</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- ============================================== -->
-                        <!-- ETAPA 2: LACTANTE -->
-                        <!-- ============================================== -->
-                        <div id="tp-semana-2" class="tp-section-card" style="border-left: 4px solid #14b8a6;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
-                                <div>
-                                    <span class="tp-badge-teal"><i class="fas fa-calendar-alt"></i> Semana 2</span>
-                                    <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 2px 0;">Control del Lactante: Tomás (7 meses)</h3>
-                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0;">Nacido de término (39 semanas) — Parto vaginal sin complicaciones</p>
-                                </div>
-                            </div>
-
-                            <div class="tp-sub-box">
-                                <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-history" style="margin-right: 6px;"></i> Antecedentes y Relato Materno de la Alimentación Actual</h4>
-                                <p style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; margin: 0 0 10px 0;">
-                                    Tomás nació con <strong>3.300 kg</strong> y <strong>50 cm</strong>. Recibió lactancia materna exclusiva hasta los 4 meses, momento en que Camila regresó al trabajo e introdujo fórmula infantil de inicio en biberón.
-                                </p>
-                                <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; padding: 12px 14px; border-radius: 8px; font-style: italic; color: #fde68a; font-size: 0.88rem; line-height: 1.6;">
-                                    "Durante el día Tomás queda al cuidado de su abuela. Ella le prepara 4 mamaderas al día de 180 ml cada una. Para que quede más satisfecho y duerma corrido de noche, la abuela le agrega dos medidas adicionales de polvo de fórmula a cada biberón. Además, como ya cumplió 7 meses, la abuela le da a media tarde un vaso de jugo de naranja exprimido con una cucharada de azúcar y postrecitos lácteos comerciales comprados. Tomás está molesto, llora tras las tomas, tiene distensión y sus deposiciones son secas, espaciadas y en bolitas duras."
-                                </div>
-                            </div>
-
-                            <div class="tp-sub-box" style="margin-bottom: 0;">
-                                <h4 style="color: #10b981; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-baby" style="margin-right: 6px;"></i> Antropometría Actual en Consulta (7 meses exactos)</h4>
-                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-                                    <div style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px;">
-                                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.5);">Peso actual</span>
-                                        <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">8.350 kg</div>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-weight" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla</td><td><strong>1.62 m</strong></td></tr>
+                                            <tr><td>Peso habitual pregestacional</td><td><strong>54.0 kg</strong> (IMC 20.6 normopeso)</td></tr>
+                                            <tr><td>Peso actual en balanza</td><td><strong>58.5 kg</strong> (+4.5 kg ganancia)</td></tr>
+                                            <tr><td>Tensión Arterial</td><td><strong>110 / 70 mmHg</strong></td></tr>
+                                        </table>
                                     </div>
-                                    <div style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px;">
-                                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.5);">Longitud corporal</span>
-                                        <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">68.0 cm</div>
-                                    </div>
-                                    <div style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px;">
-                                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.5);">Perímetro Cefálico</span>
-                                        <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">43.8 cm</div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-vial" style="margin-right: 6px;"></i> Bioquímica (Semana 23)</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Glucemia en ayunas</td><td><strong>81 mg/dL</strong></td></tr>
+                                            <tr><td>Hemoglobina</td><td><strong>11.1 g/dL</strong></td></tr>
+                                            <tr><td>Ferritina sérica</td><td><strong>16 µg/L</strong> (depósitos bajos)</td></tr>
+                                            <tr><td>Sedimento de orina</td><td>Normal</td></tr>
+                                        </table>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <!-- ============================================== -->
-                        <!-- ETAPA 3: ESCOLAR -->
-                        <!-- ============================================== -->
-                        <div id="tp-semana-3" class="tp-section-card" style="border-left: 4px solid #a78bfa;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
-                                <div>
-                                    <span class="tp-badge-purple"><i class="fas fa-calendar-alt"></i> Semana 3</span>
-                                    <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 2px 0;">Control en Edad Escolar: Tomás (9 años y 3 meses)</h3>
-                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0;">Escuela primaria turno tarde — 2 clases semanales de educación física (45 min)</p>
-                                </div>
-                            </div>
-
-                            <div class="tp-sub-box">
-                                <h4 style="color: #a78bfa; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-comments" style="margin-right: 6px;"></i> Motivo de Consulta y Relato Materno</h4>
-                                <p style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; margin: 0 0 10px 0;">
-                                    Tomás decidió adoptar una <strong>alimentación vegetariana estricta</strong> (no consume carne vacuna, pollo ni pescado). Camila se encuentra muy preocupada:
-                                </p>
-                                <div style="background: rgba(139, 92, 246, 0.08); border-left: 3px solid #a78bfa; padding: 12px 14px; border-radius: 8px; font-style: italic; color: #ddd6fe; font-size: 0.88rem; line-height: 1.6;">
-                                    "En la escuela y en la familia me insisten con que un chico no puede crecer sin carne, que le van a faltar proteínas y desarrollo mental. Yo intento prepararle lo que le gusta, pero como no sé bien qué cocinarle, casi siempre come fideos, arroz blanco, papas fritas o tartas de verdura con queso. En el colegio a veces no quiere comer lo que lleva y termina comprando galletitas, alfajores o snacks en el kiosco porque le da hambre en los recreos."
-                                </div>
-                            </div>
-
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
                                 <div class="tp-sub-box" style="margin-bottom: 0;">
-                                    <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-ruler-vertical" style="margin-right: 6px;"></i> Antropometría Actual</h4>
-                                    <table class="tp-data-table">
-                                        <tr><td>Talla actual</td><td><strong>134.2 cm</strong></td></tr>
-                                        <tr><td>Peso actual</td><td><strong>30.4 kg</strong></td></tr>
-                                        <tr><td>Actividad física</td><td>Moderada (Ed. Física escolar)</td></tr>
-                                    </table>
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> R24H Habitual</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.6; margin: 0; padding-left: 20px;">
+                                        <li><strong>Desayuno</strong>: 2 mates amargos con 2 galletitas de agua y mermelada común.</li>
+                                        <li><strong>Media mañana</strong>: Café con leche de máquina de oficina o nada.</li>
+                                        <li><strong>Almuerzo</strong>: 2 empanadas de verdura compradas al paso, o sándwich de jamón y queso con 1 vaso de gaseosa común.</li>
+                                        <li><strong>Merienda</strong>: Té solo con 3 galletitas dulces o tostadas de pan blanco con queso crema.</li>
+                                        <li><strong>Cena</strong>: Fideos o arroz blanco con manteca y queso rallado.</li>
+                                        <li><strong>Líquidos</strong>: Consume agua solo si tiene sed (&lt;1 L/día). No consume legumbres ni semillas.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Semana 2 Caso 1 -->
+                            <div id="tp-semana-2" class="tp-section-card" style="border-left: 4px solid #14b8a6;">
+                                <span class="tp-badge-teal"><i class="fas fa-calendar-alt"></i> Semana 2 — Lactante</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control del Lactante: Tomás (7 meses)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Nacido de término (39 semanas), parto vaginal. Peso al nacer 3.300 kg, Longitud 50.0 cm.</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-baby" style="margin-right: 6px;"></i> Alimentación y Relato de la Madre</h4>
+                                    <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0 0 8px 0;">
+                                        Recibió LME hasta los 4 meses; luego fórmula infantil de inicio en biberón por reincorporación laboral materna.
+                                    </p>
+                                    <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #fde68a; font-size: 0.86rem; line-height: 1.6;">
+                                        "Durante el día Tomás queda al cuidado de su abuela. Ella le prepara 4 mamaderas al día de 180 ml cada una. Para que quede más satisfecho y duerma corrido de noche, la abuela le agrega dos medidas adicionales de polvo de fórmula a cada biberón. Además, como ya cumplió 7 meses, la abuela le da a media tarde un vaso de jugo de naranja exprimido con una cucharada de azúcar y postrecitos lácteos comerciales comprados. Tomás está molesto, llora tras las tomas, tiene distensión y sus deposiciones son secas, espaciadas y en bolitas duras."
+                                    </div>
                                 </div>
 
                                 <div class="tp-sub-box" style="margin-bottom: 0;">
-                                    <h4 style="color: #ec4899; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-microscope" style="margin-right: 6px;"></i> Laboratorio Clínico Pediátrico</h4>
+                                    <h4 style="color: #10b981; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler" style="margin-right: 6px;"></i> Antropometría Actual en Consulta (7 meses exactos)</h4>
                                     <table class="tp-data-table">
-                                        <tr><td>Hemoglobina</td><td><strong>12.3 g/dL</strong></td></tr>
-                                        <tr><td>Ferritina sérica</td><td><strong>20 µg/L</strong></td></tr>
-                                        <tr><td>Vitamina B12 sérica</td><td><strong>170 pg/mL</strong></td></tr>
-                                        <tr><td>Glucemia en ayunas</td><td><strong>84 mg/dL</strong></td></tr>
-                                        <tr><td>Colesterol Total / Triglicéridos</td><td><strong>148 / 82 mg/dL</strong></td></tr>
+                                        <tr><td>Peso actual</td><td><strong>8.350 kg</strong></td></tr>
+                                        <tr><td>Longitud corporal</td><td><strong>68.0 cm</strong></td></tr>
+                                        <tr><td>Perímetro Cefálico</td><td><strong>43.8 cm</strong></td></tr>
                                     </table>
+                                </div>
+                            </div>
+
+                            <!-- Semana 3 Caso 1 -->
+                            <div id="tp-semana-3" class="tp-section-card" style="border-left: 4px solid #a78bfa;">
+                                <span class="tp-badge-purple"><i class="fas fa-calendar-alt"></i> Semana 3 — Escolar</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control en Edad Escolar: Tomás (9 años y 3 meses)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Escuela primaria turno tarde — 2 clases semanales de educación física (45 min)</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-comments" style="margin-right: 6px;"></i> Motivo y Relato Materno</h4>
+                                    <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0 0 8px 0;">
+                                        Tomás decidió adoptar una <strong>alimentación vegetariana estricta</strong> (sin carne vacuna, pollo ni pescado). Camila acude preocupada:
+                                    </p>
+                                    <div style="background: rgba(139, 92, 246, 0.08); border-left: 3px solid #a78bfa; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #ddd6fe; font-size: 0.86rem; line-height: 1.6;">
+                                        "En la escuela y en la familia me insisten con que un chico no puede crecer sin carne, que le van a faltar proteínas y desarrollo mental. Yo intento prepararle lo que le gusta, pero como no sé bien qué cocinarle, casi siempre come fideos, arroz blanco, papas fritas o tartas de verdura con queso. En el colegio a veces no quiere comer lo que lleva y termina comprando galletitas, alfajores o snacks en el kiosco porque le da hambre en los recreos."
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler-vertical" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla actual</td><td><strong>134.2 cm</strong></td></tr>
+                                            <tr><td>Peso actual</td><td><strong>30.4 kg</strong></td></tr>
+                                            <tr><td>Actividad física</td><td>Moderada escolar</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-microscope" style="margin-right: 6px;"></i> Laboratorio Pediátrico</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Hemoglobina</td><td><strong>12.3 g/dL</strong></td></tr>
+                                            <tr><td>Ferritina sérica</td><td><strong>20 µg/L</strong></td></tr>
+                                            <tr><td>Vitamina B12 sérica</td><td><strong>170 pg/mL</strong> (alerta &lt;200)</td></tr>
+                                            <tr><td>Glucemia en ayunas</td><td><strong>84 mg/dL</strong></td></tr>
+                                            <tr><td>Colesterol Total / Triglicéridos</td><td><strong>148 / 82 mg/dL</strong></td></tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- ============================================== -->
-                        <!-- CONSIGNAS PAN -->
+                        <!-- PANEL CASO 2: FAMILIA MORALES (LUCÍA Y BENJAMÍN) -->
+                        <!-- ============================================== -->
+                        <div id="tp-case-panel-2" class="tp-case-panel" style="display: none;">
+                            <div style="background: rgba(20, 184, 166, 0.1); border: 1px solid rgba(20, 184, 166, 0.3); border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <div style="color: #99f6e4; font-weight: 700; font-size: 0.95rem;">
+                                    <i class="fas fa-folder-open" style="color: #14b8a6; margin-right: 6px;"></i> Expediente Caso 2: Familia Morales (Lucía y Benjamín)
+                                </div>
+                                <span style="background: #14b8a6; color: #000; font-weight: 800; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem;">
+                                    Asignado a: Grupos 2, 6, 10, 14 y 18
+                                </span>
+                            </div>
+
+                            <!-- Semana 1 Caso 2 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #f59e0b;">
+                                <span class="tp-badge-gold"><i class="fas fa-calendar-alt"></i> Semana 1 — Gestación</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Consulta Prenatal: Lucía (32 años)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">28 semanas de gestación (3° Trimestre) — Secundigesta (hijo previo de 4.100 kg macrosómico)</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #f59e0b; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-user-md" style="margin-right: 6px;"></i> Motivo de Consulta y Síntomas</h4>
+                                    <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0;">
+                                        Derivada para plan nutricional tras control obstétrico. Refiere apetito desmedido y "ansiedad por comer cosas dulces y harinas", somnolencia posprandial intensa y edemas maleolares vespertinos en ambos tobillos (sin proteinuria).
+                                    </p>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-weight" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla</td><td><strong>1.58 m</strong></td></tr>
+                                            <tr><td>Peso habitual pregestacional</td><td><strong>68.0 kg</strong> (IMC 27.2 sobrepeso)</td></tr>
+                                            <tr><td>Peso actual en balanza</td><td><strong>79.5 kg</strong> (+11.5 kg ganancia)</td></tr>
+                                            <tr><td>Tensión Arterial</td><td><strong>125 / 80 mmHg</strong></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-vial" style="margin-right: 6px;"></i> Bioquímica (Semana 28)</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>POG 75g (glucosa 2 hs)</td><td><strong>148 mg/dL</strong> (≥140 DG)</td></tr>
+                                            <tr><td>Glucemia en ayunas</td><td><strong>96 mg/dL</strong></td></tr>
+                                            <tr><td>Hemoglobina / Ferritina</td><td><strong>11.6 g/dL / 32 µg/L</strong></td></tr>
+                                            <tr><td>Triglicéridos</td><td><strong>210 mg/dL</strong></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> R24H Habitual</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.6; margin: 0; padding-left: 20px;">
+                                        <li><strong>08:00 Desayuno</strong>: Café con leche entera con 2 cucharadas de azúcar y 4 medialunas.</li>
+                                        <li><strong>13:00 Almuerzo</strong>: Plato abundante de guiso de fideos con papa y carne picada; 2 vasos de jugo concentrado azucarado; 2 bochas de helado.</li>
+                                        <li><strong>17:30 Merienda</strong>: Mate dulce con bizcochitos de grasa o tortitas raspadas.</li>
+                                        <li><strong>21:30 Cena</strong>: 3 porciones de pizza de muzzarella o 3 empanadas fritas de carne.</li>
+                                        <li><strong>Líquidos</strong>: Escaso consumo de agua pura (&lt;500 ml), preferencia por bebidas azucaradas.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Semana 2 Caso 2 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #14b8a6;">
+                                <span class="tp-badge-teal"><i class="fas fa-calendar-alt"></i> Semana 2 — Lactante</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control del Lactante: Benjamín (6 meses y medio)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Nacido por cesárea a las 38.5 semanas con 3.850 kg y 51 cm. Lactancia mixta (pecho + fórmula).</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-baby" style="margin-right: 6px;"></i> Alimentación y Relato Materno</h4>
+                                    <div style="background: rgba(20, 184, 166, 0.08); border-left: 3px solid #14b8a6; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #99f6e4; font-size: 0.86rem; line-height: 1.6;">
+                                        "Tengo pánico de que Benjamín se atragante; vi videos en redes de bebés ahogándose y me da terror darle papillas con cuchara o trozos. Por eso decidí prepararle en la mamadera un caldo de verduras muy colado con zapallo hervido y sémola bien líquida para que pase por la tetina. Además, como tiene muchos cólicos y llora, la abuela le prepara varias veces al día un biberón de té de manzanilla endulzado con una cucharada de miel de campo pura para deshincharlo."
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #10b981; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler" style="margin-right: 6px;"></i> Antropometría Actual en Consulta (6 meses y medio)</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Peso actual</td><td><strong>7.550 kg</strong> (marcada desaceleración ponderal)</td></tr>
+                                        <tr><td>Longitud corporal</td><td><strong>67.5 cm</strong></td></tr>
+                                        <tr><td>Perímetro Cefálico</td><td><strong>43.2 cm</strong></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Semana 3 Caso 2 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #a78bfa;">
+                                <span class="tp-badge-purple"><i class="fas fa-calendar-alt"></i> Semana 3 — Escolar</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control en Edad Escolar: Benjamín (10 años y 1 mes)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Vida sedentaria, 4 a 5 horas al día frente a videojuegos y pantallas.</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-comments" style="margin-right: 6px;"></i> Motivo y Relato Materno</h4>
+                                    <div style="background: rgba(139, 92, 246, 0.08); border-left: 3px solid #a78bfa; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #ddd6fe; font-size: 0.86rem; line-height: 1.6;">
+                                        "Vengo desesperada porque quiero que le des una dieta estricta sin harinas para que Benjamín baje 10 kilos rápido. En el colegio los compañeros le ponen apodos y le hacen burlas por su peso y él se encierra a jugar a la computadora todo el día."
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler-vertical" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla actual</td><td><strong>139.0 cm</strong></td></tr>
+                                            <tr><td>Peso actual</td><td><strong>47.5 kg</strong> (IMC 24.6, &gt;Pc 97 Obesidad)</td></tr>
+                                            <tr><td>Presión arterial</td><td>Percentilo 85</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-microscope" style="margin-right: 6px;"></i> Laboratorio Pediátrico</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Glucemia en ayunas</td><td><strong>98 mg/dL</strong></td></tr>
+                                            <tr><td>Insulina basal</td><td><strong>19 µUI/mL</strong> (HOMA-IR elevado)</td></tr>
+                                            <tr><td>Colesterol Total / TG</td><td><strong>208 / 185 mg/dL</strong></td></tr>
+                                            <tr><td>HDL-Colesterol / GPT</td><td><strong>36 mg/dL / 38 U/L</strong></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #60a5fa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> R24H Habitual</h4>
+                                    <p style="color: #e6edf3; font-size: 0.86rem; line-height: 1.6; margin: 0;">
+                                        Desayuna chocolatada con leche entera y 6 galletitas rellenas. Almuerza milanesas fritas con puré de papas con manteca. Lleva dinero diario a la escuela y compra gaseosa común, alfajores triples y papas fritas de paquete. En la cena repite habitualmente dos platos abundantes. Consumo casi nulo de frutas frescas y vegetales crudos.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- PANEL CASO 3: FAMILIA HERRERA (FLORENCIA Y MATEO) -->
+                        <!-- ============================================== -->
+                        <div id="tp-case-panel-3" class="tp-case-panel" style="display: none;">
+                            <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <div style="color: #bfdbfe; font-weight: 700; font-size: 0.95rem;">
+                                    <i class="fas fa-folder-open" style="color: #60a5fa; margin-right: 6px;"></i> Expediente Caso 3: Familia Herrera (Florencia y Mateo)
+                                </div>
+                                <span style="background: #3b82f6; color: #fff; font-weight: 800; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem;">
+                                    Asignado a: Grupos 3, 7, 11, 15 y 19
+                                </span>
+                            </div>
+
+                            <!-- Semana 1 Caso 3 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #f59e0b;">
+                                <span class="tp-badge-gold"><i class="fas fa-calendar-alt"></i> Semana 1 — Gestación</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Consulta Prenatal: Florencia (21 años)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">19 semanas de gestación (2° Trimestre) — Primigesta en contexto de vulnerabilidad socioeconómica</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #f59e0b; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-user-md" style="margin-right: 6px;"></i> Motivo de Consulta y Síntomas</h4>
+                                    <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0;">
+                                        Derivada desde el centro de salud comunitario. Refiere mareos frecuentes, frialdad en manos y pies, astenia profunda que le dificulta sus tareas diarias y palpitaciones al esfuerzo físico. Náuseas matinales que aún persisten.
+                                    </p>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-weight" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla</td><td><strong>1.60 m</strong></td></tr>
+                                            <tr><td>Peso habitual pregestacional</td><td><strong>45.5 kg</strong> (IMC 17.8 bajo peso)</td></tr>
+                                            <tr><td>Peso actual en balanza</td><td><strong>46.8 kg</strong> (+1.3 kg ganancia muy baja)</td></tr>
+                                            <tr><td>Tensión Arterial</td><td><strong>100 / 60 mmHg</strong></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-vial" style="margin-right: 6px;"></i> Bioquímica (Semana 19)</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Hemoglobina</td><td><strong>10.1 g/dL</strong> (anemia gestacional)</td></tr>
+                                            <tr><td>Ferritina sérica</td><td><strong>8 µg/L</strong> (depósitos severamente agotados)</td></tr>
+                                            <tr><td>Albúmina sérica</td><td><strong>3.0 g/dL</strong> (hipoalbuminemia leve)</td></tr>
+                                            <tr><td>Calcemia / Glucemia</td><td><strong>8.3 mg/dL / 74 mg/dL</strong></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> R24H Habitual</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.6; margin: 0; padding-left: 20px;">
+                                        <li><strong>08:30 Desayuno</strong>: Mate cocido con 2 pedazos de pan francés con grasa.</li>
+                                        <li><strong>13:00 Almuerzo</strong>: Guiso de arroz o fideos con alitas de pollo o tortas fritas.</li>
+                                        <li><strong>17:00 Merienda</strong>: Mate cebado amargo con pan francés.</li>
+                                        <li><strong>21:00 Cena</strong>: Té con pan o sobras del almuerzo.</li>
+                                        <li><strong>Hábitos</strong>: Lácteos casi nulos por costo económico; nulo consumo de frutas y verduras frescas.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Semana 2 Caso 3 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #14b8a6;">
+                                <span class="tp-badge-teal"><i class="fas fa-calendar-alt"></i> Semana 2 — Lactante</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control del Lactante: Mateo (8 meses)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Nacido de término a las 38 sem con RCIU leve (Peso al nacer 2.420 kg, Longitud 47.0 cm). LME solo 2 meses.</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-baby" style="margin-right: 6px;"></i> Alimentación y Relato Materno</h4>
+                                    <div style="background: rgba(59, 130, 246, 0.08); border-left: 3px solid #60a5fa; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #bfdbfe; font-size: 0.86rem; line-height: 1.6;">
+                                        "Como los tarros de fórmula de farmacia son carísimos y no los podemos pagar, en casa le preparamos mamaderas con leche de vaca común de sachet entero de la que compramos para todos, rebajada mitad con agua hervida, y le agregamos dos cucharadas de azúcar y harina de maíz para que tome cuerpo. No le estamos dando gotitas de hierro ni vitaminas porque se terminaron en la salita. Mateo tiene diarreas a cada rato, la panza muy hinchada y lo noto muy pálido y decaído."
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #10b981; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler" style="margin-right: 6px;"></i> Antropometría Actual en Consulta (8 meses)</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Peso actual</td><td><strong>6.850 kg</strong> (curva por debajo de percentilo 3 OMS)</td></tr>
+                                        <tr><td>Longitud corporal</td><td><strong>65.2 cm</strong></td></tr>
+                                        <tr><td>Perímetro Cefálico</td><td><strong>42.0 cm</strong></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Semana 3 Caso 3 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #a78bfa;">
+                                <span class="tp-badge-purple"><i class="fas fa-calendar-alt"></i> Semana 3 — Escolar</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control en Edad Escolar: Mateo (8 años y 8 meses)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Escuela primaria turno mañana — Fútbol en escuelita barrial 3 veces por semana (1.5 hs/sesión)</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-comments" style="margin-right: 6px;"></i> Motivo y Relato Materno</h4>
+                                    <div style="background: rgba(139, 92, 246, 0.08); border-left: 3px solid #a78bfa; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #ddd6fe; font-size: 0.86rem; line-height: 1.6;">
+                                        "El entrenador del club me dijo que Mateo se queda sin aire y sin piernas en el segundo tiempo, se acalambra y que si quiere llegar a jugar en primera necesita tomar botellas de bebidas isotónicas comerciales tipo Gatorade y consumir batidos proteicos con creatina. La familia gasta recursos en comprar estas botellas comerciales."
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler-vertical" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla actual</td><td><strong>127.5 cm</strong></td></tr>
+                                            <tr><td>Peso actual</td><td><strong>24.8 kg</strong> (IMC 15.2, percentil normal-bajo)</td></tr>
+                                            <tr><td>Entrenamiento</td><td>Fútbol 4.5 horas/semana</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-microscope" style="margin-right: 6px;"></i> Laboratorio Pediátrico</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Hemoglobina</td><td><strong>11.7 g/dL</strong> (límite inferior)</td></tr>
+                                            <tr><td>Ferritina sérica</td><td><strong>17 µg/L</strong></td></tr>
+                                            <tr><td>Densidad urinaria</td><td><strong>1.029</strong> (orina concentrada, deshidratación)</td></tr>
+                                            <tr><td>Glucemia en ayunas</td><td><strong>79 mg/dL</strong></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #60a5fa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> R24H Habitual</h4>
+                                    <p style="color: #e6edf3; font-size: 0.86rem; line-height: 1.6; margin: 0;">
+                                        Desayuna té con azúcar y galletitas de agua. Almuerzo en comedor escolar (fideos o polenta con salsa económica). Antes de entrenar toma medio litro de bebida isotónica azucarada comercial. Al terminar de jugar consume jugo artificial o gaseosa. Escasísima ingesta de agua segura.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- PANEL CASO 4: FAMILIA BENÍTEZ (MARIANA Y SOFÍA) -->
+                        <!-- ============================================== -->
+                        <div id="tp-case-panel-4" class="tp-case-panel" style="display: none;">
+                            <div style="background: rgba(236, 72, 153, 0.1); border: 1px solid rgba(236, 72, 153, 0.3); border-radius: 12px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                <div style="color: #fbcfe8; font-weight: 700; font-size: 0.95rem;">
+                                    <i class="fas fa-folder-open" style="color: #f472b6; margin-right: 6px;"></i> Expediente Caso 4: Familia Benítez (Mariana y Sofía)
+                                </div>
+                                <span style="background: #ec4899; color: #fff; font-weight: 800; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem;">
+                                    Asignado a: Grupos 4, 8, 12, 16 y 20
+                                </span>
+                            </div>
+
+                            <!-- Semana 1 Caso 4 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #f59e0b;">
+                                <span class="tp-badge-gold"><i class="fas fa-calendar-alt"></i> Semana 1 — Gestación</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Consulta Prenatal: Mariana (34 años)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">29 semanas de gestación (3° Trimestre) — Primigesta con alimentación vegetariana estricta (100% plant-based) hace 8 años</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #f59e0b; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-user-md" style="margin-right: 6px;"></i> Motivo de Consulta y Hábitos</h4>
+                                    <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0 0 8px 0;">
+                                        Derivada para evaluación del 3° trimestre. Refiere fatiga cotidiana, mareos ocasionales y sensación de parestesias (hormigueo) en dedos de manos y pies.
+                                    </p>
+                                    <div style="background: rgba(236, 72, 153, 0.08); border-left: 3px solid #ec4899; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #fbcfe8; font-size: 0.86rem; line-height: 1.6;">
+                                        Consume abundantes ensaladas con salvado de trigo crudo espolvoreado, legumbres cocidas sin remojo previo, té verde inmediatamente después de almuerzos y cenas, y bebidas de almendras comerciales no fortificadas. No toma ningún suplemento de Vitamina B12 ni hierro porque "un médico naturista le aseguró que con espirulina y chía activadas cubría todo y sus análisis daban bien hace dos años".
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-weight" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla</td><td><strong>1.66 m</strong></td></tr>
+                                            <tr><td>Peso habitual pregestacional</td><td><strong>60.5 kg</strong> (IMC 22.0 normopeso)</td></tr>
+                                            <tr><td>Peso actual en balanza</td><td><strong>69.8 kg</strong> (+9.3 kg ganancia)</td></tr>
+                                            <tr><td>Tensión Arterial</td><td><strong>110 / 68 mmHg</strong></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-vial" style="margin-right: 6px;"></i> Bioquímica (Semana 28)</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Vitamina B12 sérica</td><td><strong>155 pg/mL</strong> (déficit severo gestacional)</td></tr>
+                                            <tr><td>Homocisteína plasmática</td><td><strong>14.2 µmol/L</strong> (elevada)</td></tr>
+                                            <tr><td>Hemoglobina / Ferritina</td><td><strong>10.5 g/dL / 13 µg/L</strong></td></tr>
+                                            <tr><td>Calcemia iónica</td><td><strong>4.3 mg/dL</strong> (límite bajo)</td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Semana 2 Caso 4 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #14b8a6;">
+                                <span class="tp-badge-teal"><i class="fas fa-calendar-alt"></i> Semana 2 — Lactante</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control del Lactante: Sofía (9 meses)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Nacida a término (39 semanas), parto vaginal. Peso al nacer 3.200 kg, Longitud 49.5 cm. Pecho materno a libre demanda.</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-baby" style="margin-right: 6px;"></i> Alimentación y Relato Materno</h4>
+                                    <div style="background: rgba(236, 72, 153, 0.08); border-left: 3px solid #ec4899; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #fbcfe8; font-size: 0.86rem; line-height: 1.6;">
+                                        "Inicié alimentación complementaria a los 6 meses mediante BLW. Por miedo a que le caigan pesados o le den alergias, solo le ofrezco bastones cocidos al vapor de calabaza, palta, brócoli y rodajitas de banana o manzana. No le he incorporado legumbres, huevo, tofu ni carnes, y no le agrego ningún aceite a las comidas porque me parece que la grasa es mala. Sofía juega y muerde un poco, pero come cantidades netas mínimas. De noche se despierta llorando cada hora y media pidiendo teta desesperada."
+                                    </div>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #10b981; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler" style="margin-right: 6px;"></i> Antropometría Actual en Consulta (9 meses)</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Peso actual</td><td><strong>7.350 kg</strong> (caída de canal percentilar OMS 50 a 10)</td></tr>
+                                        <tr><td>Longitud corporal</td><td><strong>68.5 cm</strong></td></tr>
+                                        <tr><td>Perímetro Cefálico</td><td><strong>43.2 cm</strong></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Semana 3 Caso 4 -->
+                            <div class="tp-section-card" style="border-left: 4px solid #a78bfa;">
+                                <span class="tp-badge-purple"><i class="fas fa-calendar-alt"></i> Semana 3 — Escolar</span>
+                                <h3 style="color: #fff; font-size: 1.3rem; font-weight: 800; margin: 8px 0 2px 0;">Control en Edad Escolar: Sofía (9 años y 6 meses)</h3>
+                                <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0 0 14px 0;">Diagnóstico de Enfermedad Celíaca hace 3 meses (IgA antitransglutaminasa &gt;100 U/mL, biopsia Marsh 3b)</p>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #a78bfa; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-comments" style="margin-right: 6px;"></i> Motivo y Relato Materno</h4>
+                                    <div style="background: rgba(139, 92, 246, 0.08); border-left: 3px solid #a78bfa; padding: 10px 14px; border-radius: 8px; font-style: italic; color: #ddd6fe; font-size: 0.86rem; line-height: 1.6;">
+                                        "Sofía llora desconsolada porque en los cumpleaños y recreos no puede comer lo mismo que sus amigas y se siente un bicho raro. Me paso el día gastando una fortuna comprando galletitas, panes y alfajores con el logo 'Sin TACC', pero casi todo lo que compro son masas secas llenas de fécula de maíz, almidón, azúcar y grasa que le inflaman la panza. En el colegio tiene vergüenza de sacar sus tápers y a veces no come nada hasta llegar a casa."
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #14b8a6; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-ruler-vertical" style="margin-right: 6px;"></i> Antropometría</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Talla actual</td><td><strong>131.0 cm</strong></td></tr>
+                                            <tr><td>Peso actual</td><td><strong>27.0 kg</strong> (IMC 15.7, percentilo 15)</td></tr>
+                                            <tr><td>Síntomas</td><td>Flatulencias y distensión posprandial</td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="tp-sub-box" style="margin-bottom: 0;">
+                                        <h4 style="color: #ec4899; font-size: 0.92rem; font-weight: 700; margin: 0 0 6px 0;"><i class="fas fa-microscope" style="margin-right: 6px;"></i> Laboratorio Pediátrico</h4>
+                                        <table class="tp-data-table">
+                                            <tr><td>Hemoglobina</td><td><strong>11.4 g/dL</strong></td></tr>
+                                            <tr><td>Ferritina sérica</td><td><strong>15 µg/L</strong></td></tr>
+                                            <tr><td>Vitamina D sérica</td><td><strong>17 ng/mL</strong> (insuficiencia)</td></tr>
+                                            <tr><td>Calcemia / Glucemia</td><td><strong>8.8 mg/dL / 82 mg/dL</strong></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- CONSIGNAS PAN (COMUNES A TODOS LOS CASOS) -->
                         <!-- ============================================== -->
                         <div id="tp-consignas" class="tp-section-card" style="border-left: 4px solid #3b82f6;">
                             <span class="tp-badge-gold" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.35);"><i class="fas fa-tasks"></i> Metodología Oficial</span>
                             <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 16px 0;">Consignas de Resolución (Para cada una de las 3 etapas)</h3>
 
                             <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6; margin-bottom: 18px;">
-                                Para cada consulta (Semana 1, Semana 2 y Semana 3), el equipo deberá elaborar y documentar en el dossier clínico los siguientes cuatro apartados del <strong>Proceso de Atención Nutricional (PAN)</strong>:
+                                Para cada consulta de su caso asignado (Semana 1, Semana 2 y Semana 3), el equipo deberá elaborar y documentar en el dossier clínico los siguientes cuatro apartados del <strong>Proceso de Atención Nutricional (PAN)</strong>:
                             </p>
 
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
@@ -6964,7 +7414,7 @@
                                     <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.5; margin: 0; padding-left: 18px;">
                                         <li>Cálculo justificado del Valor Calórico Total (VCT) según la etapa y requerimientos.</li>
                                         <li>Definición de Fórmula Sintética (% y gramos de macronutrientes) y Fórmula Desarrollada de micronutrientes críticos.</li>
-                                        <li>Menú cuantitativo con tiempos de comida, ingredientes, <strong>gramajes netos</strong> y <strong>medidas caseras</strong> (Semana 1: 1 día; Semana 2: cronograma con semisólidos; Semana 3: menú semanal con 2 viandas escolares).</li>
+                                        <li>Menú cuantitativo con tiempos de comida, ingredientes, <strong>gramajes netos</strong> y <strong>medidas caseras</strong> (Semana 1: 1 día; Semana 2: cronograma con semisólidos; Semana 3: menú semanal con 2 viandas escolares adaptadas al caso).</li>
                                     </ul>
                                 </div>
 
@@ -7002,14 +7452,14 @@
                                 <div class="tp-sub-box" style="margin-bottom: 0;">
                                     <h4 style="color: #f472b6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-brain" style="margin-right: 6px;"></i> 1. Evolución del Criterio Propio</h4>
                                     <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                                        ¿Cómo desafió este caso tus ideas previas sobre la nutrición en las distintas etapas (manejo de síntomas gestacionales, dilución de fórmulas lácteas, patrones vegetarianos)? ¿Qué mitos o preconceptos tuviste que revisar a la luz de los cálculos y la evidencia?
+                                        ¿Cómo desafió este caso tus ideas previas sobre la nutrición en las distintas etapas (manejo de síntomas gestacionales, dilución de fórmulas lácteas, patrones dietarios específicos)? ¿Qué mitos o preconceptos tuviste que revisar a la luz de los cálculos y la evidencia?
                                     </p>
                                 </div>
 
                                 <div class="tp-sub-box" style="margin-bottom: 0;">
                                     <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-heart" style="margin-right: 6px;"></i> 2. Empatía y Comunicación Clínica</h4>
                                     <p style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0;">
-                                        Frente a las angustias de Camila, las presiones del entorno familiar (consejos de la abuela) y los prejuicios escolares: ¿Cómo se equilibra el rigor técnico del nutricionista con la empatía y la realidad cotidiana del paciente, sin juzgar ni imponer?
+                                        Frente a las angustias de la madre, las presiones del entorno familiar (consejos de la abuela) y los prejuicios escolares: ¿Cómo se equilibra el rigor técnico del nutricionista con la empatía y la realidad cotidiana del paciente, sin juzgar ni imponer?
                                     </p>
                                 </div>
 
@@ -7083,6 +7533,16 @@
 
                 if (window.isTpIntegradorUnlocked()) {
                     container.innerHTML = renderTpIntegradorCaseHTML();
+                    setTimeout(() => {
+                        let stGroup = (window.currentUserData && window.currentUserData.group) || sessionStorage.getItem('aw_authenticated_group') || window.loggedInStudentGroup;
+                        const grpNum = parseInt(stGroup);
+                        if (!isNaN(grpNum) && grpNum >= 1 && grpNum <= 20) {
+                            const caseTarget = ((grpNum - 1) % 4) + 1;
+                            window.selectTpCase(caseTarget);
+                        } else {
+                            window.selectTpCase(1);
+                        }
+                    }, 50);
                 } else {
                     container.innerHTML = renderTpIntegradorLockHTML();
                     setTimeout(() => {
