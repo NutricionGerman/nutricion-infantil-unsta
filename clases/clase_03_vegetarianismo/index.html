@@ -1120,6 +1120,223 @@
             border-top: 3px solid #ef4444;
         }
 
+
+        /* ═══════════════════════════════════════════════════════════
+           LAYOUT SPLIT — imagen a la par del texto (diseño editorial)
+        ═══════════════════════════════════════════════════════════ */
+        .split-row {
+            display: grid;
+            grid-template-columns: 45% 1fr;
+            gap: 28px;
+            align-items: start;
+            margin: 22px 0;
+        }
+        .split-row.img-right {
+            grid-template-columns: 1fr 45%;
+        }
+        .split-row.img-right .split-img { order: 2; }
+        .split-row.img-right .split-txt { order: 1; }
+
+        @media (max-width: 780px) {
+            .split-row,
+            .split-row.img-right {
+                grid-template-columns: 1fr;
+            }
+            .split-row.img-right .split-img { order: 0; }
+            .split-row.img-right .split-txt { order: 0; }
+        }
+
+        /* Tarjeta de imagen clicable */
+        .img-card {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .img-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 48px rgba(0,0,0,0.65);
+            border-color: rgba(16,185,129,0.45);
+        }
+        .img-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .img-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            padding: 28px 14px 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .img-caption-label {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+        .img-caption-expand {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.55);
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Columna de texto */
+        .split-txt > h3 {
+            font-family: var(--font-display);
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+        }
+        .split-txt > p {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.65;
+            margin: 0 0 14px 0;
+        }
+
+        /* Divisor interno entre subsecciones */
+        .section-divider {
+            border: none;
+            border-top: 1px dashed rgba(255,255,255,0.07);
+            margin: 26px 0;
+        }
+
+        /* Badge numérico de sub-sección */
+        .sub-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 10px;
+        }
+
+        /* Flecha de transición entre módulos */
+        .module-transition {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(16,185,129,0.055);
+            border: 1px solid rgba(16,185,129,0.18);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            margin-top: 24px;
+        }
+        .module-transition i {
+            font-size: 1rem;
+            color: #34d399;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .module-transition p {
+            font-size: 0.86rem;
+            color: #a7f3d0;
+            line-height: 1.55;
+            margin: 0;
+            font-style: italic;
+        }
+
+        /* Tarjeta de pilar mejorada con número */
+        .pilar-block {
+            background: rgba(10,15,29,0.55);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .pilar-block-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .pilar-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .pilar-block-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+        .pilar-block-body {
+            padding: 16px 20px;
+        }
+        .pilar-block-body p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin: 0 0 12px 0;
+        }
+        .pilar-block-body p:last-child { margin-bottom: 0; }
+
+        /* Stat cards de resultados */
+        .stat-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .stat-card {
+            background: rgba(10,15,29,0.65);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .stat-num {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #34d399;
+            min-width: 60px;
+            text-align: center;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #e2e8f0;
+            line-height: 1.4;
+        }
+        .stat-label span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
     </style>
 </head>
 <body>
@@ -1174,234 +1391,252 @@
         <!-- CONTENEDOR 1: MÓDULOS TEÓRICOS Y CLÍNICOS                -->
         <!-- ======================================================== -->
    
+   
         <div id="view-teoria">
 
-        <!-- ══════════════════════════════════════════════════════ -->
-        <!-- 🎬 MÓDULO 1: El Dogma, el Espejismo y el Nutricionismo-->
-        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- ══════════ MÓDULO 1 ══════════ -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon" style="background: rgba(139, 92, 246, 0.2); color: #a78bfa;">
+                    <div class="card-icon" style="background:rgba(139,92,246,0.2);color:#a78bfa;">
                         <i class="fas fa-film"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">🎬 MÓDULO 1: El Dogma, el Espejismo y el «Nutricionismo»</h2>
-                        <div class="card-subtitle">Todo buen análisis científico comienza cuestionando lo que la sociedad asume como una verdad absoluta.</div>
+                        <h2 class="card-title">🎬 Módulo 1 — El Dogma, el Espejismo y el «Nutricionismo»</h2>
+                        <div class="card-subtitle">Todo buen análisis científico comienza cuestionando lo que la sociedad asume como verdad absoluta.</div>
                     </div>
                 </div>
 
                 <!-- 1.1 EL DOGMA -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    1. El Dogma de la Proteína
-                </h3>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:14px;">
-                    Pensemos un momento: ¿Cuántas veces les han dicho que coman más proteínas y menos carbohidratos para mantenerse sanos? Hoy en día, esto no es solo una moda alimentaria, sino un <strong>dogma imperante en nuestra sociedad</strong>. Médicos, dietistas y redes sociales nos bombardean con las supuestas ventajas de una dieta alta en proteínas (DAP): perder peso, disminuir el apetito y tratar la diabetes.
-                </p>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:20px;">
-                    Esta creencia ha calado tan profundo que sentimos presión social. Nos sentimos obligados a comer solo la carne del sándwich y dejar el pan cuando comemos frente a otros, por miedo a perder credibilidad. Hoy, si alguien se atreve a recomendar una «dieta baja en proteínas» o a insinuar que «el exceso de proteína animal puede ser perjudicial», es tratado como un hereje de la salud. Pero, <em>¿es esto biología o condicionamiento cultural?</em>
-                </p>
-
-                <!-- 1.2 KUHN -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    2. Los Paradigmas de Kuhn y el Hito de 1977
-                </h3>
+                <span class="sub-badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 1.1 · El Dogma de la Proteína
+                </span>
                 <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:10px;">
-                    El filósofo <strong>Thomas Kuhn</strong> demostró que la ciencia suele operar bajo «paradigmas»: marcos mentales incuestionables. Este dogma proteico es el paradigma actual.
+                    ¿Cuántas veces les han dicho que coman más proteínas y menos carbohidratos para mantenerse sanos? Hoy en día, esto no es solo una moda alimentaria, sino un <strong>dogma imperante en nuestra sociedad</strong>. Médicos, dietistas y redes sociales nos bombardean con las supuestas ventajas de una dieta alta en proteínas: perder peso, disminuir el apetito y tratar la diabetes.
                 </p>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:20px;">
-                    ¿De dónde viene? La historia nos da la respuesta. En <strong>1977</strong>, el Comité McGovern en EE.UU. redactó las primeras metas dietéticas basadas en ciencia, recomendando reducir drásticamente la carne y lácteos para frenar enfermedades crónicas. Sin embargo, el lobby corporativo obligó a reescribir el informe para decir «elija carnes magras». Desde entonces, las políticas de salud pública han estado influenciadas por los <em>Determinantes Comerciales de la Salud</em>.
-                </p>
-
-                <!-- 1.3 NUTRICIONISMO -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    3. La Trampa del «Nutricionismo»
-                </h3>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:20px;">
-                    Para sostener este dogma, la industria inventó el <strong>«Nutricionismo»</strong>: juzgar un alimento solo por sus nutrientes aislados en un tubo de ensayo (ej. Proteína = Bueno; Carbohidrato = Malo), ignorando la <em>matriz real del alimento</em> y al paciente en su totalidad. Bajo esta falsa premisa, la gente teme a una manzana por sus carbohidratos, pero aplaude un batido ultraprocesado por sus gramos de proteína aislada.
+                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:0;">
+                    Esta creencia ha calado tan profundo que nos sentimos obligados a comer solo la carne del sándwich y dejar el pan cuando comemos frente a otros, por miedo a perder credibilidad. <em>¿Es esto biología o condicionamiento cultural?</em>
                 </p>
 
-                <!-- IMAGEN 1: EPISTEMOLOGÍA MÉDICA -->
-                <div style="margin-bottom:20px;cursor:pointer;border-radius:var(--radius-md);overflow:hidden;border:2px solid rgba(139,92,246,0.45);box-shadow:0 4px 24px rgba(139,92,246,0.2);" onclick="openLightbox('img/sustitucion isocalorica/1.jpeg')" title="Clic para ver en pantalla completa">
-                    <img src="img/sustitucion isocalorica/1.jpeg" alt="Diap. 1 — Epistemología Médica: ¿Cómo se mide la salud?" style="width:100%;height:auto;display:block;">
-                    <div style="background:rgba(0,0,0,0.6);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                        <span style="font-size:0.8rem;color:#e2e8f0;">📸 Diap. 1 — Epistemología Médica: ¿Cómo se mide la salud?</span>
-                        <span style="font-size:0.75rem;color:rgba(139,92,246,1);white-space:nowrap;flex-shrink:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
+                <hr class="section-divider">
+
+                <!-- 1.2 KUHN + IMAGEN 1 -->
+                <span class="sub-badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 1.2 · Los Paradigmas de Kuhn y el Hito de 1977
+                </span>
+
+                <div class="split-row img-right">
+                    <div class="split-txt">
+                        <p>El filósofo <strong>Thomas Kuhn</strong> demostró que la ciencia opera bajo «paradigmas»: marcos mentales incuestionables que la comunidad da por sentado. El dogma proteico <em>es</em> el paradigma de hoy.</p>
+                        <p>¿De dónde viene? En <strong>1977</strong>, el Comité McGovern en EE.UU. redactó las primeras metas dietéticas basadas en ciencia, recomendando reducir drásticamente la carne y los lácteos para frenar las enfermedades crónicas. Sin embargo, el lobby corporativo forzó reescribir el informe para decir simplemente «elija carnes magras». Desde entonces, las políticas de salud pública han estado capturadas por los <em>Determinantes Comerciales de la Salud</em>.</p>
+                        <p style="margin-bottom:0;">Entender este mecanismo es el primer paso clínico indispensable antes de evaluar cualquier alimento con rigor científico.</p>
+                    </div>
+                    <div class="split-img">
+                        <div class="img-card" onclick="openLightbox('img/sustitucion isocalorica/1.jpeg')" title="Clic para ampliar">
+                    <img src="img/sustitucion isocalorica/1.jpeg" alt="Epistemología Médica — ¿Cómo se mide realmente la salud?" loading="lazy">
+                    <div class="img-caption">
+                        <span class="img-caption-label">Epistemología Médica — ¿Cómo se mide realmente la salud?</span>
+                        <span class="img-caption-expand"><i class="fas fa-expand-alt"></i> ampliar</span>
+                    </div>
+                </div>
                     </div>
                 </div>
 
-                <!-- DEFINICIÓN DE LA CÁTEDRA -->
+                <hr class="section-divider">
+
+                <!-- 1.3 NUTRICIONISMO + DEFINICIÓN -->
+                <span class="sub-badge" style="background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 1.3 · La Trampa del «Nutricionismo»
+                </span>
+                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:18px;">
+                    Para sostener el dogma proteico, la industria instaló el concepto de <strong>«Nutricionismo»</strong>: juzgar un alimento exclusivamente por nutrientes aislados en tubo de ensayo (Proteína = Bueno; Carbohidrato = Malo), ignorando la <em>matriz real del alimento</em> y al paciente en su totalidad. Bajo esta lógica, la gente teme a una manzana por sus carbohidratos pero aplaude un batido ultraprocesado por sus gramos de proteína.
+                </p>
+
                 <div class="definition-box">
                     <div class="definition-title">
-                        <i class="fas fa-award"></i> Definición de la Cátedra: ¿Qué es realmente un Alimento / Dieta Saludable?
+                        <i class="fas fa-award"></i> Definición Oficial de la Cátedra
                     </div>
                     <div class="definition-quote">
                         «Aquel alimento o patrón dietario que demuestra mejorar los <strong>desenlaces clínicos duros</strong> —reduciendo la <strong>mortalidad</strong> y las <strong>enfermedades crónicas</strong>— a un <strong>costo económico y medioambiental sostenible</strong>.»
                     </div>
                 </div>
 
-                <!-- TRANSICIÓN -->
-                <div style="background:rgba(16,185,129,0.07);border-left:3px solid var(--primary-emerald);padding:12px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-top:16px;">
-                    <p style="font-size:0.88rem;color:#a7f3d0;margin:0;font-style:italic;">
-                        <strong>→ Transición:</strong> Si la sociedad nos ha engañado reduciendo la comida a un tubo de ensayo, ¿cómo hace la verdadera ciencia epidemiológica para descubrir qué nos sana? Pasemos a la escena del crimen con nuestro investigador principal.
-                    </p>
+                <div class="module-transition">
+                    <i class="fas fa-arrow-right"></i>
+                    <p>Si la sociedad nos redujo la comida a un tubo de ensayo, ¿cómo hace la verdadera epidemiología para descubrir qué nos sana? Pasemos a la escena del crimen.</p>
                 </div>
-
             </div>
         </section>
 
-        <!-- ══════════════════════════════════════════════════════ -->
-        <!-- 🔍 MÓDULO 2: Epidemiología Investigativa               -->
-        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- ══════════ MÓDULO 2 ══════════ -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon" style="background: rgba(59, 130, 246, 0.2); color: #60a5fa;">
+                    <div class="card-icon" style="background:rgba(59,130,246,0.2);color:#60a5fa;">
                         <i class="fas fa-search"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">🔍 MÓDULO 2: Epidemiología Investigativa y Sustitución Isocalórica</h2>
-                        <div class="card-subtitle">Desmintiendo el mito con el rigor de los datos. El Detective Avena analiza la escena del crimen.</div>
+                        <h2 class="card-title">🔍 Módulo 2 — Epidemiología Investigativa y Sustitución Isocalórica</h2>
+                        <div class="card-subtitle">El Detective Avena reconstruye la escena del crimen. De la boca a la supervivencia.</div>
                     </div>
                 </div>
 
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:22px;">
-                    Como investigadores, no podemos encerrar a mil personas en un laboratorio por 40 años. Usamos la <strong>Triangulación de la Evidencia</strong>, y para entenderla, nuestro «Detective Avena» nos enseña a mirar el tablero completo de la investigación.
+                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:6px;">
+                    Como investigadores, no podemos encerrar a miles de personas en un laboratorio por décadas. Usamos la <strong>Triangulación de la Evidencia</strong>. Para entenderla, el Detective Avena nos enseña a leer el tablero completo de la investigación clínica.
                 </p>
+
+                <hr class="section-divider">
 
                 <!-- 2.1 CADENA CAUSAL -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    1. La Cadena Causal: De la boca a la supervivencia
-                </h3>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:14px;">
-                    En medicina, no podemos saltar a conclusiones. Debemos conectar las pistas con hilo rojo a través de tres niveles indispensables:
-                </p>
+                <span class="sub-badge" style="background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 2.1 · La Cadena Causal
+                </span>
 
-                <!-- IMAGEN 2: CADENA CAUSAL -->
-                <div style="margin-bottom:20px;cursor:pointer;border-radius:var(--radius-md);overflow:hidden;border:2px solid rgba(59,130,246,0.45);box-shadow:0 4px 24px rgba(59,130,246,0.15);" onclick="openLightbox('img/sustitucion isocalorica/2.jpeg')" title="Clic para ver en pantalla completa">
-                    <img src="img/sustitucion isocalorica/2.jpeg" alt="Diap. 2 — Cadena Causal: Input → Biomarcadores → Desenlaces Duros" style="width:100%;height:auto;display:block;">
-                    <div style="background:rgba(0,0,0,0.6);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                        <span style="font-size:0.8rem;color:#e2e8f0;">📸 Diap. 2 — Cadena Causal: Input → Biomarcadores → Desenlaces Duros</span>
-                        <span style="font-size:0.75rem;color:rgba(59,130,246,1);white-space:nowrap;flex-shrink:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
+                <div class="split-row">
+                    <div class="split-img">
+                        <div class="img-card" onclick="openLightbox('img/sustitucion isocalorica/2.jpeg')" title="Clic para ampliar">
+                    <img src="img/sustitucion isocalorica/2.jpeg" alt="Cadena Causal — El tablero de corcho con hilos rojos" loading="lazy">
+                    <div class="img-caption">
+                        <span class="img-caption-label">Cadena Causal — El tablero de corcho con hilos rojos</span>
+                        <span class="img-caption-expand"><i class="fas fa-expand-alt"></i> ampliar</span>
+                    </div>
+                </div>
+                    </div>
+                    <div class="split-txt">
+                        <h3>De la boca a la supervivencia: tres niveles inseparables</h3>
+                        <p>En medicina, no podemos saltar de lo que come el paciente directamente a una conclusión de salud. Debemos trazar la cadena completa con tres eslabones indispensables:</p>
+                        <div style="display:flex;flex-direction:column;gap:10px;">
+                            <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius-sm);padding:12px 14px;">
+                                <div style="font-size:0.75rem;font-weight:800;color:#fbbf24;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px;">① Input Dietario — La Exposición</div>
+                                <p style="font-size:0.84rem;color:#cbd5e1;margin:0;line-height:1.5;">Lo que entra por la boca. Es la variable independiente, <em>no</em> un desenlace de salud per se.</p>
+                            </div>
+                            <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:var(--radius-sm);padding:12px 14px;">
+                                <div style="font-size:0.75rem;font-weight:800;color:#60a5fa;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px;">② Biomarcadores — Las Pistas Intermedias</div>
+                                <p style="font-size:0.84rem;color:#cbd5e1;margin:0;line-height:1.5;">ApoB, LDL, tensión, glucemia. Son señales de alarma, <em>no</em> el final de la historia.</p>
+                            </div>
+                            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);padding:12px 14px;">
+                                <div style="font-size:0.75rem;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:4px;">③ Desenlaces Duros — El Veredicto</div>
+                                <p style="font-size:0.84rem;color:#cbd5e1;margin:0;line-height:1.5;">IAM, ACV, Diabetes Tipo 2 y mortalidad. Aquí se define la salud real.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:24px;">
-                    <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius-sm);padding:14px;">
-                        <div style="font-size:0.8rem;font-weight:700;color:#fbbf24;margin-bottom:6px;text-transform:uppercase;">① Input Dietario — La Exposición</div>
-                        <p style="font-size:0.84rem;color:#cbd5e1;margin:0;line-height:1.5;">Lo que entra por la boca. ¿Es un huevo o son frutos secos? Es la variable de exposición, <em>no</em> un desenlace de salud per se.</p>
-                    </div>
-                    <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:var(--radius-sm);padding:14px;">
-                        <div style="font-size:0.8rem;font-weight:700;color:#60a5fa;margin-bottom:6px;text-transform:uppercase;">② Biomarcadores — Las Pistas</div>
-                        <p style="font-size:0.84rem;color:#cbd5e1;margin:0;line-height:1.5;">¿Cómo reacciona la sangre? ApoB, colesterol LDL, tensión arterial, glucemia. Son pistas intermedias, <em>no</em> el final de la historia.</p>
-                    </div>
-                    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);padding:14px;">
-                        <div style="font-size:0.8rem;font-weight:700;color:#34d399;margin-bottom:6px;text-transform:uppercase;">③ Desenlaces Duros — El Veredicto</div>
-                        <p style="font-size:0.84rem;color:#cbd5e1;margin:0;line-height:1.5;">IAM, ACV, Diabetes Tipo 2 y mortalidad por todas las causas. Aquí es donde se define la verdadera salud.</p>
-                    </div>
-                </div>
+                <hr class="section-divider">
 
                 <!-- 2.2 BALANZA ISOCALÓRICA -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    2. La Escena del Crimen: La Balanza (2100 kcal)
-                </h3>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:14px;">
-                    Para investigar qué alimento es mejor, usamos modelos de <strong>Sustitución Isocalórica</strong> (<em>leave-one-out</em>). Como la ingesta diaria de un paciente está acotada (ej. 2100 kcal), la regla termodinámica es simple: si quitamos un alimento, debemos reemplazar sus calorías por otro.
-                </p>
+                <span class="sub-badge" style="background:rgba(245,158,11,0.15);color:#fde68a;border:1px solid rgba(245,158,11,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 2.2 · La Balanza — Modelo Isocalórico (2100 kcal)
+                </span>
 
-                <!-- IMAGEN 3: BALANZA -->
-                <div style="margin-bottom:20px;cursor:pointer;border-radius:var(--radius-md);overflow:hidden;border:2px solid rgba(245,158,11,0.45);box-shadow:0 4px 24px rgba(245,158,11,0.15);" onclick="openLightbox('img/sustitucion isocalorica/3.jpeg')" title="Clic para ver en pantalla completa">
-                    <img src="img/sustitucion isocalorica/3.jpeg" alt="Diap. 3 — Sustitución Isocalórica: La Balanza de las 2100 kcal" style="width:100%;height:auto;display:block;">
-                    <div style="background:rgba(0,0,0,0.6);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                        <span style="font-size:0.8rem;color:#e2e8f0;">📸 Diap. 3 — Sustitución Isocalórica: La Balanza de las 2100 kcal</span>
-                        <span style="font-size:0.75rem;color:rgba(245,158,11,1);white-space:nowrap;flex-shrink:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
+                <div class="split-row img-right">
+                    <div class="split-txt">
+                        <h3>¿Por qué comparar bajo el mismo aporte energético?</h3>
+                        <p>Como la ingesta calórica diaria está fisiológicamente acotada, retirar un alimento <em>obliga</em> a reemplazar sus calorías. Los modelos multivariables <strong>leave-one-out</strong> mantienen fija la energía total, aislando la calidad intrínseca de la matriz sin interferencia del cambio de peso.</p>
+                        <p>La pregunta correcta deja de ser <em>«¿es saludable el huevo?»</em> y pasa a ser <em>«¿frente a qué alternativa compite isocalóricamente?»</em> La balanza, calibrada en 2100 kcal, lo pone en evidencia.</p>
+                    </div>
+                    <div class="split-img">
+                        <div class="img-card" onclick="openLightbox('img/sustitucion isocalorica/3.jpeg')" title="Clic para ampliar">
+                    <img src="img/sustitucion isocalorica/3.jpeg" alt="Balanza Isocalórica — Huevo vs. avena, legumbres y nueces" loading="lazy">
+                    <div class="img-caption">
+                        <span class="img-caption-label">Balanza Isocalórica — Huevo vs. avena, legumbres y nueces</span>
+                        <span class="img-caption-expand"><i class="fas fa-expand-alt"></i> ampliar</span>
                     </div>
                 </div>
+                    </div>
+                </div>
+
+                <hr class="section-divider">
 
                 <!-- 2.3 VEREDICTO -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    3. El Veredicto en el Tribunal Clínico
-                </h3>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:14px;">
-                    Cuando llevamos al Huevo al banquillo de los acusados y analizamos las <strong>Cohortes Prospectivas</strong> (cientos de miles de pacientes seguidos por décadas), la evidencia dicta sentencia. ¿Qué pasa cuando reemplazamos isocalóricamente ese huevo por matrices vegetales integrales (avena, frutos secos, legumbres)?
-                </p>
+                <span class="sub-badge" style="background:rgba(16,185,129,0.15);color:#a7f3d0;border:1px solid rgba(16,185,129,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 2.3 · El Veredicto: Los Datos
+                </span>
 
-                <!-- IMAGEN 4: DESENLACES -->
-                <div style="margin-bottom:20px;cursor:pointer;border-radius:var(--radius-md);overflow:hidden;border:2px solid rgba(16,185,129,0.45);box-shadow:0 4px 24px rgba(16,185,129,0.15);" onclick="openLightbox('img/sustitucion isocalorica/4.jpeg')" title="Clic para ver en pantalla completa">
-                    <img src="img/sustitucion isocalorica/4.jpeg" alt="Diap. 4 — El Veredicto: −17% ECV · −15% Mortalidad · −21% Diabetes T2" style="width:100%;height:auto;display:block;">
-                    <div style="background:rgba(0,0,0,0.6);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                        <span style="font-size:0.8rem;color:#e2e8f0;">📸 Diap. 4 — El Veredicto: −17% ECV · −15% Mortalidad · −21% Diabetes T2</span>
-                        <span style="font-size:0.75rem;color:rgba(16,185,129,1);white-space:nowrap;flex-shrink:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
+                <div class="split-row">
+                    <div class="split-img">
+                        <div class="img-card" onclick="openLightbox('img/sustitucion isocalorica/4.jpeg')" title="Clic para ampliar">
+                    <img src="img/sustitucion isocalorica/4.jpeg" alt="El Veredicto — Gráfico de barras descendentes en el tribunal" loading="lazy">
+                    <div class="img-caption">
+                        <span class="img-caption-label">El Veredicto — Gráfico de barras descendentes en el tribunal</span>
+                        <span class="img-caption-expand"><i class="fas fa-expand-alt"></i> ampliar</span>
+                    </div>
+                </div>
+                    </div>
+                    <div class="split-txt">
+                        <h3>¿Qué pasa cuando reemplazamos con matrices vegetales integrales?</h3>
+                        <p>Los metaanálisis de cohortes prospectivos dictaminan, al sustituir fuentes animales por vegetales enteras (avena, frutos secos, legumbres):</p>
+                        <div class="stat-cards">
+                            <div class="stat-card">
+                                <div class="stat-num">−17%</div>
+                                <div class="stat-label">Enfermedad Cardiovascular<span>Reducción de eventos (SHR 0.83)</span></div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-num">−15%</div>
+                                <div class="stat-label">Mortalidad Total<span>Frutos secos como reemplazo (SHR 0.85)</span></div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-num">−21%</div>
+                                <div class="stat-label">Incidencia de Diabetes Tipo 2<span>Al sustituir por granos enteros y legumbres</span></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="background:rgba(10,15,29,0.7);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:18px;margin-bottom:24px;">
-                    <p style="font-size:0.9rem;color:#e2e8f0;font-weight:600;margin-bottom:12px;">Los datos prospectivos demuestran una caída rotunda del riesgo al reemplazar con matrices vegetales integrales:</p>
-                    <div style="display:flex;flex-direction:column;gap:10px;">
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <span style="font-size:1.2rem;">📉</span>
-                            <span style="font-size:0.9rem;color:#cbd5e1;"><strong style="color:#34d399;">−17%</strong> en Enfermedad Cardiovascular</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <span style="font-size:1.2rem;">📉</span>
-                            <span style="font-size:0.9rem;color:#cbd5e1;"><strong style="color:#34d399;">−15%</strong> en Mortalidad Total</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            <span style="font-size:1.2rem;">📉</span>
-                            <span style="font-size:0.9rem;color:#cbd5e1;"><strong style="color:#34d399;">−21%</strong> en Incidencia de Diabetes Tipo 2</span>
-                        </div>
-                    </div>
-                </div>
+                <hr class="section-divider">
 
                 <!-- 2.4 REGLA DE ORO -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:10px;">
-                    4. La Regla de Oro Clínica
-                </h3>
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:14px;">
-                    Pero cuidado, el veredicto tiene una condición. La pregunta clínica correcta nunca es <em>«¿el alimento X es bueno o malo en abstracto?»</em>, sino: <em>«¿por qué lo vas a reemplazar?»</em>.
-                </p>
+                <span class="sub-badge" style="background:rgba(16,185,129,0.15);color:#a7f3d0;border:1px solid rgba(16,185,129,0.3);">
+                    <i class="fas fa-circle" style="font-size:0.5rem;"></i> 2.4 · La Regla de Oro Clínica
+                </span>
 
-                <!-- IMAGEN 5: REGLA DE ORO -->
-                <div style="margin-bottom:20px;cursor:pointer;border-radius:var(--radius-md);overflow:hidden;border:2px solid rgba(16,185,129,0.45);box-shadow:0 4px 24px rgba(16,185,129,0.15);" onclick="openLightbox('img/sustitucion isocalorica/5.jpeg')" title="Clic para ver en pantalla completa">
-                    <img src="img/sustitucion isocalorica/5.jpeg" alt="Diap. 5 — Regla de Oro: La calidad del reemplazo es decisiva" style="width:100%;height:auto;display:block;">
-                    <div style="background:rgba(0,0,0,0.6);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
-                        <span style="font-size:0.8rem;color:#e2e8f0;">📸 Diap. 5 — Regla de Oro: La calidad del reemplazo es decisiva</span>
-                        <span style="font-size:0.75rem;color:rgba(16,185,129,1);white-space:nowrap;flex-shrink:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
+                <div class="split-row img-right">
+                    <div class="split-txt">
+                        <h3>La calidad del reemplazo es decisiva</h3>
+                        <p>El veredicto tiene una condición crucial: el beneficio aparece <em>solo</em> cuando el reemplazo es de calidad. La pregunta clínica correcta no es «¿el alimento X es bueno o malo?» sino «¿por qué lo vas a reemplazar?».</p>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+                            <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius-sm);padding:13px;">
+                                <div style="font-size:0.8rem;font-weight:700;color:#f87171;margin-bottom:6px;">❌ Reemplazo Perjudicial</div>
+                                <p style="font-size:0.82rem;color:#cbd5e1;margin:0;line-height:1.45;">Por <strong>harinas refinadas, azúcar o ultraprocesados veganos</strong> → triglicéridos suben, placa avanza.</p>
+                            </div>
+                            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);padding:13px;">
+                                <div style="font-size:0.8rem;font-weight:700;color:#34d399;margin-bottom:6px;">✅ Reemplazo Protector</div>
+                                <p style="font-size:0.82rem;color:#cbd5e1;margin:0;line-height:1.45;">Por <strong>vegetales enteros: avena, nueces, lentejas</strong> → arterias limpias, longevidad aumentada.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="split-img">
+                        <div class="img-card" onclick="openLightbox('img/sustitucion isocalorica/5.jpeg')" title="Clic para ampliar">
+                    <img src="img/sustitucion isocalorica/5.jpeg" alt="Regla de Oro — Cruz Roja vs. Check Verde. Consenso Aprobado." loading="lazy">
+                    <div class="img-caption">
+                        <span class="img-caption-label">Regla de Oro — Cruz Roja vs. Check Verde. Consenso Aprobado.</span>
+                        <span class="img-caption-expand"><i class="fas fa-expand-alt"></i> ampliar</span>
+                    </div>
+                </div>
                     </div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-                    <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:var(--radius-sm);padding:14px;">
-                        <div style="font-size:0.85rem;font-weight:700;color:#f87171;margin-bottom:8px;">❌ Reemplazo Perjudicial</div>
-                        <p style="font-size:0.83rem;color:#cbd5e1;margin:0;line-height:1.5;">Quitas el huevo (o la carne) para comer <strong>harinas refinadas, azúcar o ultraprocesados veganos</strong> → triglicéridos suben, placa arterial avanza.</p>
-                    </div>
-                    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-sm);padding:14px;">
-                        <div style="font-size:0.85rem;font-weight:700;color:#34d399;margin-bottom:8px;">✅ Reemplazo Protector</div>
-                        <p style="font-size:0.83rem;color:#cbd5e1;margin:0;line-height:1.5;">Lo sustituís por <strong>vegetales enteros (avena, nueces, lentejas)</strong> ricos en fibra y grasas insaturadas → arterias despejadas, longevidad prolongada. ¡Consenso Clínico Aprobado!</p>
-                    </div>
-                </div>
-
-                <!-- CARRUSEL COMPLETO -->
-                <div style="margin-top:10px;">
-                    <h4 style="font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:var(--text-muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;">
-                        🔬 Ver citas científicas completas de cada diapositiva:
+                <!-- CARRUSEL REFERENCIA CIENTÍFICA -->
+                <div style="margin-top:28px;background:rgba(10,15,29,0.5);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-md);padding:20px;">
+                    <h4 style="font-family:var(--font-display);font-size:0.82rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;margin:0 0 14px 0;">
+                        🔬 Expediente completo con citas científicas por diapositiva:
                     </h4>
                     <div class="carousel-wrapper" id="sustitucion-carrusel">
                         <div class="carousel-slide-content">
                             <div class="carousel-image-col">
                                 <div class="carousel-img-card" onclick="openLightbox(slidesData2[currentSlide2].img)">
-                                    <img id="slide-img-2" src="img/sustitucion isocalorica/1.jpeg" alt="Diapositiva Sustitución Isocalórica">
-                                    <div class="zoom-hint"><i class="fas fa-search-plus"></i> Clic para pantalla completa</div>
+                                    <img id="slide-img-2" src="img/sustitucion isocalorica/1.jpeg" alt="Sustitución Isocalórica">
+                                    <div class="zoom-hint"><i class="fas fa-search-plus"></i> Ampliar</div>
                                 </div>
                             </div>
                             <div class="carousel-text-col">
                                 <div id="slide-badge-2" class="slide-step-badge" style="background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.3);">
-                                    <i class="fas fa-search"></i> Caso 1 • Epistemología Médica
+                                    <i class="fas fa-search"></i> Caso 1
                                 </div>
-                                <h3 id="slide-title-2" class="slide-title">1️⃣ Epistemología Médica: La Matriz y los Desenlaces Mandan</h3>
+                                <h3 id="slide-title-2" class="slide-title"></h3>
                                 <p id="slide-desc-2" class="slide-desc"></p>
                                 <div id="slide-refs-2" class="slide-refs" style="display:none;">
-                                    <strong>Fuentes y Citas Científicas:</strong>
+                                    <strong>Fuentes:</strong>
                                     <span id="slide-refs-content-2"></span>
                                 </div>
                             </div>
@@ -1423,242 +1658,222 @@
                     </div>
                 </div>
 
-                <!-- TRANSICIÓN -->
-                <div style="background:rgba(16,185,129,0.07);border-left:3px solid var(--primary-emerald);padding:12px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-top:24px;">
-                    <p style="font-size:0.88rem;color:#a7f3d0;margin:0;font-style:italic;">
-                        <strong>→ Transición:</strong> La evidencia es clara: desplazar inteligentemente la proteína animal por vegetal salva vidas. Pero, ¿cómo planificamos esto en el consultorio para que sea 100% seguro?
-                    </p>
+                <div class="module-transition">
+                    <i class="fas fa-arrow-right"></i>
+                    <p>La evidencia es contundente. Ahora la pregunta es práctica: ¿cómo planificamos esto clínicamente para que sea 100% seguro desde la lactancia?</p>
                 </div>
-
             </div>
         </section>
 
-        <!-- ══════════════════════════════════════════════════════ -->
-        <!-- 🛠️ MÓDULO 3: Planificación Clínica                   -->
-        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- ══════════ MÓDULO 3 ══════════ -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
+                    <div class="card-icon" style="background:rgba(16,185,129,0.2);color:#34d399;">
                         <i class="fas fa-tools"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">🛠️ MÓDULO 3: Planificación Clínica de la Dieta Basada en Plantas</h2>
-                        <div class="card-subtitle">Suficiencia nutricional, matriz intacta y el protocolo de B12. Para que sea 100% seguro en el consultorio.</div>
+                        <h2 class="card-title">🛠️ Módulo 3 — Planificación Clínica de la Dieta Basada en Plantas</h2>
+                        <div class="card-subtitle">Los tres pilares innegociables para prevenir el «vegetarianismo chatarra» y garantizar resultados clínicos.</div>
                     </div>
                 </div>
 
-                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:20px;">
-                    Como futuros profesionales, deben saber que la planificación exige <strong>tres directrices innegociables</strong> para evitar el consumo de ultraprocesados («vegetarianismo chatarra»):
+                <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:24px;">
+                    La suficiencia nutricional está documentada: patrones veganos y vegetarianos alcanzan las puntuaciones más altas en índices de alimentación saludable (<a href="https://pubmed.ncbi.nlm.nih.gov/24667136/" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;">Clarys et al., 2014</a>). Pero el profesional debe conocer tres principios operativos clave.
                 </p>
 
                 <!-- PILAR I -->
-                <div style="background:rgba(15,23,42,0.6);border:1px solid var(--border-color);border-top:3px solid #10b981;border-radius:var(--radius-md);padding:20px;margin-bottom:16px;">
-                    <h4 style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
-                        <span style="background:rgba(16,185,129,0.2);color:#34d399;padding:3px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">Pilar I</span>
-                        Prioridad de la Matriz Alimentaria Íntegra (Whole Foods)
-                    </h4>
-                    <p style="font-size:0.88rem;color:#cbd5e1;line-height:1.55;margin-bottom:14px;">
-                        Cuanto mayor es la proporción de vegetales sin refinar, mayor es la reducción de mortalidad (<a href="https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.119.041014" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;text-decoration:underline;">AHA Circulation, 2019</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/21983060/" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;text-decoration:underline;">Tuso et al., 2013</a>).
-                    </p>
-                    <div class="food-matrix-grid">
-                        <div class="food-matrix-card card-integral">
-                            <strong style="color:#34d399;font-size:0.88rem;display:block;margin-bottom:6px;"><i class="fas fa-check-circle"></i> Matriz Intacta — Saludable</strong>
-                            <p style="font-size:0.82rem;color:#cbd5e1;margin:0;line-height:1.45;">Legumbres enteras con hollejo, avena arrollada, frutos secos al natural, frutas con piel, verduras al vapor. Conservan fibra y fitoquímicos.</p>
+                <div class="pilar-block">
+                    <div class="pilar-block-header" style="border-bottom:1px solid rgba(16,185,129,0.2);">
+                        <div class="pilar-num" style="background:rgba(16,185,129,0.2);color:#34d399;">I</div>
+                        <div>
+                            <h4 class="pilar-block-title">Prioridad de la Matriz Alimentaria Íntegra (Whole Foods)</h4>
+                            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">El primer axioma de la prescripción vegetal</div>
                         </div>
-                        <div class="food-matrix-card card-refinado">
-                            <strong style="color:#f87171;font-size:0.88rem;display:block;margin-bottom:6px;"><i class="fas fa-times-circle"></i> Matriz Rota/Refinada — Proinflamatoria</strong>
-                            <p style="font-size:0.82rem;color:#cbd5e1;margin:0;line-height:1.45;">Harinas refinadas, aceites vegetales aislados, azúcar, falsas carnes y snacks ultraprocesados (Clasificación NOVA 4).</p>
+                    </div>
+                    <div class="pilar-block-body">
+                        <p>Cuanto mayor es la proporción de alimentos vegetales enteros sin refinar, mayor es la reducción de mortalidad y enfermedades crónicas (<a href="https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.119.041014" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;">AHA Circulation, 2019</a>).</p>
+                        <div class="food-matrix-grid">
+                            <div class="food-matrix-card card-integral">
+                                <strong style="color:#34d399;font-size:0.88rem;display:block;margin-bottom:6px;"><i class="fas fa-check-circle"></i> Matriz Íntegra</strong>
+                                <p style="font-size:0.82rem;color:#cbd5e1;margin:0;line-height:1.45;">Legumbres con hollejo, avena arrollada, frutos secos al natural, frutas con piel, arroz integral, verduras. Conservan fibra, fitoquímicos y estructura celular.</p>
+                            </div>
+                            <div class="food-matrix-card card-refinado">
+                                <strong style="color:#f87171;font-size:0.88rem;display:block;margin-bottom:6px;"><i class="fas fa-times-circle"></i> Matriz Rota/Refinada</strong>
+                                <p style="font-size:0.82rem;color:#cbd5e1;margin:0;line-height:1.45;">Harinas blancas, aceites vegetales aislados, azúcar, snacks veganos y «falsas carnes» (NOVA 4). Pierden estructura protectora.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- PILAR II -->
-                <div style="background:rgba(15,23,42,0.6);border:1px solid var(--border-color);border-top:3px solid #60a5fa;border-radius:var(--radius-md);padding:20px;margin-bottom:16px;">
-                    <h4 style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
-                        <span style="background:rgba(59,130,246,0.2);color:#60a5fa;padding:3px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">Pilar II</span>
-                        Biodiversidad Dietética
-                    </h4>
-                    <p style="font-size:0.88rem;color:#cbd5e1;line-height:1.55;margin-bottom:12px;">
-                        La dieta debe rotar diariamente entre <strong>6 grupos elementales</strong>: Legumbres, cereales de grano entero, verduras (incluidos hongos), frutas de estación, frutos secos y semillas.
-                    </p>
-                    <div style="background:rgba(0,0,0,0.25);border-left:3px solid #60a5fa;padding:10px 14px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.84rem;color:#cbd5e1;">
-                        <strong>💡 Ejemplo clínico:</strong> No necesitamos lácteos si usamos <strong>almendras y sésamo integral (tahini)</strong> para un calcio altamente biodisponible. No necesitamos pescado si usamos <strong>semillas de lino o chía molidas</strong> para obtener ácido alfa-linolénico (Omega-3), evitando así los metales pesados oceánicos.
+                <div class="pilar-block">
+                    <div class="pilar-block-header" style="border-bottom:1px solid rgba(59,130,246,0.2);">
+                        <div class="pilar-num" style="background:rgba(59,130,246,0.2);color:#60a5fa;">II</div>
+                        <div>
+                            <h4 class="pilar-block-title">Biodiversidad Dietética y Sinergia Intracategorial</h4>
+                            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Los 6 grupos vegetales como protocolo de rotación diaria</div>
+                        </div>
+                    </div>
+                    <div class="pilar-block-body">
+                        <p>La dieta debe rotar entre los <strong>6 grupos elementales</strong>: legumbres, cereales de grano entero, verduras (incluidos hongos), frutas, frutos secos y semillas.</p>
+                        <div style="background:rgba(0,0,0,0.25);border-left:3px solid #60a5fa;padding:11px 14px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:0.84rem;color:#cbd5e1;">
+                            <strong style="color:#93c5fd;">💡 Especificidad clínica:</strong> Las <strong>almendras y el sésamo integral (tahini)</strong> aportan calcio de alta biodisponibilidad (sin necesidad de lácteos). Las <strong>semillas de lino y chía molidas</strong> cubren el Omega-3 ALA sin metales pesados oceánicos.
+                        </div>
                     </div>
                 </div>
 
                 <!-- PILAR III: B12 -->
-                <div style="background:rgba(15,23,42,0.6);border:1px solid var(--border-color);border-top:3px solid #f59e0b;border-radius:var(--radius-md);padding:20px;">
-                    <h4 style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:10px;">
-                        <span style="background:rgba(245,158,11,0.2);color:#fbbf24;padding:3px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">Pilar III</span>
-                        El Protocolo Innegociable de la Vitamina B12
-                    </h4>
-                    <p style="font-size:0.88rem;color:#cbd5e1;line-height:1.55;margin-bottom:14px;">
-                        La B12 es de síntesis exclusivamente bacteriana. Su suplementación en dietas vegetales no es un signo de déficit del patrón, sino una <strong>medida elemental de seguridad sanitaria</strong>.
-                    </p>
-
-                    <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;">
-                        <strong style="color:#fbbf24;font-size:0.88rem;display:block;margin-bottom:6px;">🔬 Farmacocinética: ¿Por qué 50 µg diarios vs. 2000 µg semanales?</strong>
-                        <p style="font-size:0.84rem;color:#cbd5e1;line-height:1.55;margin:0;">
-                            El cuerpo tiene un sistema de absorción activa mediado por el <strong>Factor Intrínseco gástrico</strong> que se satura con solo <strong>2 µg por ingesta</strong>. Por eso, si damos una dosis pequeña, debe ser diaria. Si damos una megadosis (2000 µg), se satura la vía activa, pero el intestino absorbe el <strong>1% por difusión pasiva</strong> (≈20 µg netos), cubriendo la necesidad de toda la semana. (<a href="https://pubmed.ncbi.nlm.nih.gov/10648266/" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;text-decoration:underline;">Tucker et al., 2000</a>).
-                        </p>
-                    </div>
-
-                    <!-- TABLA B12 -->
-                    <div class="b12-table-wrapper">
-                        <table class="b12-table">
-                            <thead>
-                                <tr>
-                                    <th>Etapa Biológica / Grupo</th>
-                                    <th>Dosis Óptima</th>
-                                    <th>Pauta de Administración y Observaciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Lactantes Destetados</strong></td>
-                                    <td><span class="b12-dose-badge">5 µg / día</span></td>
-                                    <td>Gotas pediátricas orales. Iniciar según pauta de destete acordada con pediatra.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Niños de 4 a 10 años</strong></td>
-                                    <td><span class="b12-dose-badge">25 µg / día</span></td>
-                                    <td>Vía oral diaria masticable. Desde los 11 años pueden adoptar la pauta de adulto.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Adultos</strong></td>
-                                    <td>
-                                        <span class="b12-dose-badge">50 µg / día</span><br>
-                                        <span style="font-size:0.76rem;color:var(--text-muted);">o bien</span><br>
-                                        <span class="b12-dose-badge">2000 µg / sem.</span>
-                                    </td>
-                                    <td>La dosis semanal única aprovecha la vía de difusión pasiva (~1%). Elección según comodidad del paciente.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Embarazo y Lactancia</strong></td>
-                                    <td>
-                                        <span class="b12-dose-badge">50 µg / día</span><br>
-                                        <span style="font-size:0.76rem;color:var(--text-muted);">o bien</span><br>
-                                        <span class="b12-dose-badge">2000 µg / sem.</span>
-                                    </td>
-                                    <td><strong>Crítico:</strong> El feto/lactante dependen del paso transplacentario reciente. Monitorear B12 y homocisteína.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Adultos Mayores (&gt; 65 años)</strong></td>
-                                    <td><span class="b12-dose-badge b12-dose-high">1000 µg / día</span></td>
-                                    <td>Recomendada independientemente de la dieta por alta prevalencia de gastritis atrófica e hipoclorhidria.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Individuos con Déficit</strong></td>
-                                    <td><span class="b12-dose-badge b12-dose-high">1000 µg / día</span></td>
-                                    <td>Tratamiento de ataque diario por 1 mes (o intramuscular si hay daño neurológico) antes de mantenimiento.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- TRIGGER INFOGRAFÍA B12 -->
-                    <div class="infographic-trigger-card" onclick="openLightbox('img/dosificacion_b12_ciclo_vital.png')" style="margin-top:14px;">
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <i class="fas fa-tablets" style="font-size:1.5rem;color:#34d399;"></i>
-                            <div>
-                                <div style="font-size:0.9rem;font-weight:600;color:#fff;">Ver Infografía Clínica de Dosificación en Pantalla Completa</div>
-                                <div style="font-size:0.78rem;color:var(--text-muted);">Esquema de dosificación por etapas de la vida (NutritionFacts / Dr. Greger)</div>
-                            </div>
+                <div class="pilar-block">
+                    <div class="pilar-block-header" style="border-bottom:1px solid rgba(245,158,11,0.2);">
+                        <div class="pilar-num" style="background:rgba(245,158,11,0.2);color:#fbbf24;">III</div>
+                        <div>
+                            <h4 class="pilar-block-title">Protocolo Innegociable de Vitamina B12</h4>
+                            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Farmacocinética y dosificación en el ciclo vital completo</div>
                         </div>
-                        <span class="btn-doi" style="margin:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
                     </div>
-
+                    <div class="pilar-block-body">
+                        <p>La B12 es de síntesis exclusivamente bacteriana. Su suplementación en dietas vegetales no es señal de déficit del patrón, sino una <strong>medida elemental de seguridad sanitaria</strong>.</p>
+                        <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-sm);padding:14px;margin-bottom:16px;">
+                            <strong style="color:#fbbf24;font-size:0.86rem;display:block;margin-bottom:6px;">🔬 ¿Por qué 50 µg/día o 2000 µg/semana?</strong>
+                            <p style="font-size:0.84rem;color:#cbd5e1;line-height:1.55;margin:0;">
+                                El <strong>Factor Intrínseco gástrico</strong> satura su capacidad de absorción activa con apenas <strong>2 µg por ingesta</strong>. En la dosis diaria baja (50 µg), la absorción es activa y eficiente. En la megadosis semanal (2000 µg), el FI se satura y el intestino recurre a la <strong>difusión pasiva mucosal (~1%)</strong>, absorbiendo ≈20 µg netos, cubriendo con holgura toda la semana. (<a href="https://pubmed.ncbi.nlm.nih.gov/10648266/" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;">Tucker et al., 2000</a>).
+                            </p>
+                        </div>
+                        <div class="b12-table-wrapper">
+                            <table class="b12-table">
+                                <thead>
+                                    <tr>
+                                        <th>Etapa / Grupo Clínico</th>
+                                        <th>Dosis Óptima</th>
+                                        <th>Observaciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Lactantes Destetados</strong></td>
+                                        <td><span class="b12-dose-badge">5 µg / día</span></td>
+                                        <td>Gotas pediátricas. Iniciar según pauta de destete.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Niños 4–10 años</strong></td>
+                                        <td><span class="b12-dose-badge">25 µg / día</span></td>
+                                        <td>Vía oral masticable. Desde los 11 años → pauta adulto.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Adultos</strong></td>
+                                        <td><span class="b12-dose-badge">50 µg / día</span> <em style="font-size:0.74rem;color:var(--text-muted);">ó</em> <span class="b12-dose-badge">2000 µg / sem.</span></td>
+                                        <td>Pauta según comodidad. La semanal aprovecha la difusión pasiva.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Embarazo y Lactancia</strong></td>
+                                        <td><span class="b12-dose-badge">50 µg / día</span> <em style="font-size:0.74rem;color:var(--text-muted);">ó</em> <span class="b12-dose-badge">2000 µg / sem.</span></td>
+                                        <td><strong>Crítico:</strong> paso transplacentario activo. Monitorear B12 y homocisteína.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Adultos &gt; 65 años</strong></td>
+                                        <td><span class="b12-dose-badge b12-dose-high">1000 µg / día</span></td>
+                                        <td>Prevalencia de gastritis atrófica e hipoclorhidria. Independiente de la dieta.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Déficit activo</strong></td>
+                                        <td><span class="b12-dose-badge b12-dose-high">1000 µg / día</span></td>
+                                        <td>Ataque por ≥1 mes (o IM si hay compromiso neurológico), luego mantenimiento.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="infographic-trigger-card" onclick="openLightbox('img/dosificacion_b12_ciclo_vital.png')">
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <i class="fas fa-tablets" style="font-size:1.4rem;color:#34d399;"></i>
+                                <div>
+                                    <div style="font-size:0.88rem;font-weight:600;color:#fff;">Ver Infografía Clínica de Dosificación B12</div>
+                                    <div style="font-size:0.76rem;color:var(--text-muted);">Esquema de etapas del ciclo vital (NutritionFacts / Dr. Greger)</div>
+                                </div>
+                            </div>
+                            <span class="btn-doi" style="margin:0;"><i class="fas fa-search-plus"></i> Ampliar</span>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- TRANSICIÓN -->
-                <div style="background:rgba(16,185,129,0.07);border-left:3px solid var(--primary-emerald);padding:12px 16px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin-top:20px;">
-                    <p style="font-size:0.88rem;color:#a7f3d0;margin:0;font-style:italic;">
-                        <strong>→ Transición:</strong> Ya tenemos la bioquímica y la planificación clínica. ¿Pero qué dicen las autoridades sanitarias formales sobre aplicar esto, incluso en bebés?
-                    </p>
+                <div class="module-transition">
+                    <i class="fas fa-arrow-right"></i>
+                    <p>Tenemos la bioquímica y la clínica. ¿Qué dicen las autoridades sanitarias formales sobre aplicar todo esto, incluso desde el nacimiento?</p>
                 </div>
-
             </div>
         </section>
 
-        <!-- ══════════════════════════════════════════════════════ -->
-        <!-- 🏛️ MÓDULO 4: Consenso Científico y Salud Planetaria  -->
-        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- ══════════ MÓDULO 4 ══════════ -->
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-icon" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">
+                    <div class="card-icon" style="background:rgba(245,158,11,0.2);color:#fbbf24;">
                         <i class="fas fa-globe-americas"></i>
                     </div>
                     <div>
-                        <h2 class="card-title">🏛️ MÓDULO 4: Consenso Científico y Salud Planetaria</h2>
-                        <div class="card-subtitle">Destruyendo los mitos institucionales y asumiendo la responsabilidad global del profesional de salud.</div>
+                        <h2 class="card-title">🏛️ Módulo 4 — Consenso Científico y Salud Planetaria</h2>
+                        <div class="card-subtitle">El estigma institucional ha sido desmontado. La responsabilidad del profesional va más allá del consultorio.</div>
                     </div>
                 </div>
 
                 <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:22px;">
-                    Históricamente, el estigma sugirió que las dietas veganas/vegetarianas eran peligrosas para los niños. Hoy, el consenso institucional y la evidencia biomarcadora —que muestra perfiles antioxidantes y cardioprotectores superiores en vegetarianos— han obligado a las autoridades globales a fijar posturas contundentes.
+                    Históricamente se sugirió que las dietas basadas en plantas eran peligrosas para los niños. Hoy, con biomarcadores objetivos superiores en vegetarianos y el peso de las instituciones más importantes del mundo, ese estigma ha caído.
                 </p>
 
-                <!-- CONSENSOS PEDIÁTRICOS -->
-                <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#34d399;margin-bottom:16px;">
-                    🏛️ Consenso Científico Pediátrico Oficial
-                </h3>
-
-                <!-- SELECTOR TABS -->
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
-                    <div style="font-size:0.85rem;color:var(--text-muted);">Evidencia institucional compilada en el documento oficial de cátedra sobre alimentación basada en plantas</div>
+                <!-- TABS CONSENSOS -->
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;">
+                    <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:#fff;margin:0;">
+                        Posturas Científicas Oficiales
+                    </h3>
                     <div class="stance-tabs">
                         <button class="stance-tab active" onclick="switchStanceTab('pediatria')">
-                            <i class="fas fa-baby"></i> Sociedades de Pediatría
+                            <i class="fas fa-baby"></i> Pediatría
                         </button>
                         <button class="stance-tab" onclick="switchStanceTab('globales')">
-                            <i class="fas fa-globe-americas"></i> Autoridades Sanitarias Globales
+                            <i class="fas fa-globe-americas"></i> Globales
                         </button>
                     </div>
                 </div>
 
-                <!-- PESTAÑA PEDIATRÍA -->
                 <div id="stances-pediatria" class="stances-grid">
                     <div class="stance-card border-pediatria">
                         <div class="stance-header">
-                            <span class="stance-badge badge-pediatria">🇦🇷 Argentina • Referente Nacional</span>
+                            <span class="stance-badge badge-pediatria">🇦🇷 Argentina · Referente Nacional</span>
                             <h4 class="stance-org">Sociedad Argentina de Pediatría (SAP)</h4>
                         </div>
                         <blockquote class="stance-quote">«La alimentación vegetariana y vegana es posible en la infancia y adolescencia, destacando que debe ser adecuadamente planificada y suplementada con vitamina B12.»</blockquote>
-                        <div class="stance-footer"><i class="fas fa-check-circle" style="color:#34d399;"></i> Aval en crecimiento infantil y adolescencia</div>
+                        <div class="stance-footer"><i class="fas fa-check-circle" style="color:#34d399;"></i> Avalada para el crecimiento infantil y adolescencia</div>
                     </div>
                     <div class="stance-card border-pediatria">
                         <div class="stance-header">
-                            <span class="stance-badge badge-pediatria">🇺🇸 EE.UU. • Referente Mundial</span>
+                            <span class="stance-badge badge-pediatria">🇺🇸 EE.UU. · Referente Mundial</span>
                             <h4 class="stance-org">American Academy of Pediatrics (AAP)</h4>
                         </div>
                         <blockquote class="stance-quote">«Los niños pueden llevar una dieta vegetariana o vegana bien equilibrada que promueva un crecimiento y desarrollo saludables.»</blockquote>
-                        <div class="stance-footer"><i class="fas fa-check-circle" style="color:#34d399;"></i> Crecimiento y desarrollo saludables</div>
+                        <div class="stance-footer"><i class="fas fa-check-circle" style="color:#34d399;"></i> Reconocimiento del desarrollo saludable</div>
                     </div>
                     <div class="stance-card border-pediatria">
                         <div class="stance-header">
-                            <span class="stance-badge badge-pediatria">🇪🇸 España • Comité de Nutrición</span>
+                            <span class="stance-badge badge-pediatria">🇪🇸 España · Comité de Nutrición</span>
                             <h4 class="stance-org">Asociación Española de Pediatría (AEP)</h4>
                         </div>
                         <blockquote class="stance-quote">«Las dietas vegetarianas o veganas bien planificadas y suplementadas son adecuadas y seguras para lactantes, niños y adolescentes.»</blockquote>
-                        <div class="stance-footer"><i class="fas fa-check-circle" style="color:#34d399;"></i> Adecuadas y seguras desde la lactancia</div>
+                        <div class="stance-footer"><i class="fas fa-check-circle" style="color:#34d399;"></i> Seguras desde la lactancia</div>
                     </div>
                 </div>
 
-                <!-- PESTAÑA GLOBALES -->
                 <div id="stances-globales" class="stances-grid" style="display:none;">
                     <div class="stance-card border-global">
                         <div class="stance-header">
-                            <span class="stance-badge badge-global">Naciones Unidas • Máxima Autoridad</span>
-                            <h4 class="stance-org">OMS (Organización Mundial de la Salud)</h4>
+                            <span class="stance-badge badge-global">Naciones Unidas</span>
+                            <h4 class="stance-org">OMS — Organización Mundial de la Salud</h4>
                         </div>
                         <blockquote class="stance-quote">«Las dietas basadas en plantas son saludables y nutricionalmente adecuadas, y ofrecen beneficios para la salud en la prevención y el tratamiento de ciertas enfermedades.»</blockquote>
                         <div class="stance-footer"><i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Directrices sanitarias internacionales</div>
                     </div>
                     <div class="stance-card border-global">
                         <div class="stance-header">
-                            <span class="stance-badge badge-global">Argentina • Guías Nacionales</span>
+                            <span class="stance-badge badge-global">Argentina</span>
                             <h4 class="stance-org">Ministerio de Salud de la Nación</h4>
                         </div>
                         <blockquote class="stance-quote">«La alimentación basada en plantas adecuadamente planificada es saludable, nutricionalmente adecuada... es una opción viable para todas las etapas del ciclo vital.»</blockquote>
@@ -1666,31 +1881,15 @@
                     </div>
                     <div class="stance-card border-global">
                         <div class="stance-header">
-                            <span class="stance-badge badge-global">Argentina • Consenso Profesional</span>
-                            <h4 class="stance-org">Sociedad Argentina de Nutrición (SAN)</h4>
-                        </div>
-                        <blockquote class="stance-quote">«Las dietas vegetarianas y veganas adecuadamente planificadas son saludables, nutricionalmente adecuadas y pueden proporcionar beneficios para la salud.»</blockquote>
-                        <div class="stance-footer"><i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Referente nacional en nutrición</div>
-                    </div>
-                    <div class="stance-card border-global">
-                        <div class="stance-header">
-                            <span class="stance-badge badge-global">EE.UU. • Mayor Asociación Dietética</span>
+                            <span class="stance-badge badge-global">EE.UU. · 100.000+ Profesionales</span>
                             <h4 class="stance-org">Academy of Nutrition and Dietetics (AND)</h4>
                         </div>
-                        <blockquote class="stance-quote">«Las dietas vegetarianas adecuadamente planificadas, incluidas las veganas, son saludables, nutricionalmente adecuadas y proporcionan beneficios en la prevención y tratamiento de enfermedades en todas las etapas.»</blockquote>
-                        <div class="stance-footer"><i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Más de 100.000 profesionales</div>
+                        <blockquote class="stance-quote">«Las dietas vegetarianas, incluidas las veganas, son saludables, nutricionalmente adecuadas y ofrecen beneficios en la prevención de enfermedades en todas las etapas de la vida.»</blockquote>
+                        <div class="stance-footer"><i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Mayor asociación dietética del mundo</div>
                     </div>
                     <div class="stance-card border-global">
                         <div class="stance-header">
-                            <span class="stance-badge badge-global">Reino Unido</span>
-                            <h4 class="stance-org">NHS (Servicio Nacional de Salud) &amp; BDA</h4>
-                        </div>
-                        <blockquote class="stance-quote">«Con una buena planificación y entendimiento de lo que compone una dieta saludable y balanceada, puedes obtener todos los nutrientes que tu cuerpo necesita en cada edad.»</blockquote>
-                        <div class="stance-footer"><i class="fas fa-shield-alt" style="color:#60a5fa;"></i> Rigor y transparencia clínica</div>
-                    </div>
-                    <div class="stance-card border-global">
-                        <div class="stance-header">
-                            <span class="stance-badge badge-global">Países Nórdicos • Consenso 2023</span>
+                            <span class="stance-badge badge-global">Países Nórdicos · Consenso 2023</span>
                             <h4 class="stance-org">Nordic Nutrition Recommendations (NNR)</h4>
                         </div>
                         <blockquote class="stance-quote">«Una dieta basada en plantas bien planificada, complementada con vitamina B12, satisface los requerimientos nutricionales en todas las etapas de la vida.»</blockquote>
@@ -1699,31 +1898,29 @@
                 </div>
 
                 <!-- SALUD PLANETARIA -->
-                <div style="margin-top:28px;padding-top:24px;border-top:1px dashed var(--border-color);">
-                    <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:#fbbf24;margin-bottom:12px;">
-                        🌍 Más Allá del Consultorio: La Salud Planetaria
+                <div style="margin-top:30px;padding-top:24px;border-top:1px dashed rgba(255,255,255,0.08);">
+                    <h3 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:#fbbf24;margin-bottom:12px;">
+                        🌍 Más Allá del Consultorio: Salud Planetaria
                     </h3>
-                    <p style="font-size:0.93rem;color:#cbd5e1;line-height:1.65;margin-bottom:14px;">
-                        Como futuros profesionales de la salud, su responsabilidad no termina en el paciente. La ciencia actual, liderada por comisiones como <strong>EAT-Lancet</strong>, exige una Guía Alimentaria Universal. Las dietas occidentales centradas en carne no solo saturan nuestros hospitales con Enfermedades Crónicas No Transmisibles (ECNT), sino que son el motor principal de las <strong>emisiones de gases de efecto invernadero</strong>, la <strong>deforestación</strong> y la <strong>resistencia a los antibióticos</strong> (por su uso masivo en granjas industriales).
+                    <p style="font-size:0.92rem;color:#cbd5e1;line-height:1.65;margin-bottom:0;">
+                        La comisión <strong>EAT-Lancet</strong> demostró que las dietas occidentales centradas en carne no solo saturan los hospitales con ECNT, sino que son el motor principal de las <strong>emisiones de gases de efecto invernadero</strong>, la <strong>deforestación</strong> y la <strong>resistencia a los antibióticos</strong> por su uso masivo en granjas industriales. Recetar y promover una alimentación basada en plantas integrales es, hoy, <em>el acto terapéutico y ético más poderoso que tendrán en sus manos</em>.
                     </p>
                 </div>
 
                 <!-- REFLEXIÓN FINAL -->
-                <div style="margin-top:16px;background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(59,130,246,0.08));border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius-md);padding:22px;">
-                    <h4 style="font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:#34d399;margin-bottom:10px;">
-                        💬 Reflexión Final
+                <div style="margin-top:20px;background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(59,130,246,0.07));border:1px solid rgba(16,185,129,0.25);border-radius:var(--radius-md);padding:22px;">
+                    <h4 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:#34d399;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+                        <i class="fas fa-quote-left"></i> Reflexión Final
                     </h4>
                     <p style="font-size:0.93rem;color:#e2e8f0;line-height:1.65;margin:0;">
-                        Recetar y promover una alimentación basada en plantas integrales ya no es una «alternativa alternativa» ni un tabú clínico. Frente al dogma de las proteínas que nos enferma y destruye el medio ambiente, <strong>la medicina basada en plantas es, hoy por hoy, la herramienta terapéutica y ética más poderosa que tendrán en sus manos</strong>.
+                        Recetar una alimentación basada en plantas integrales ya no es una «alternativa alternativa» ni un tabú clínico. Frente al dogma proteico que nos enferma y destruye el planeta, <strong>la medicina basada en plantas es, hoy, la herramienta terapéutica y ética más poderosa que tendrán en sus manos</strong>.
                     </p>
                 </div>
 
             </div>
         </section>
 
-        <!-- ══════════════════════════════════════════════════════ -->
-        <!-- 📚 BIBLIOGRAFÍA DESPLEGABLE                           -->
-        <!-- ══════════════════════════════════════════════════════ -->
+        <!-- ══════════ BIBLIOGRAFÍA ══════════ -->
         <section class="section">
             <div class="card">
                 <div class="card-header" style="cursor:pointer;user-select:none;" onclick="toggleBiblio()">
@@ -1732,16 +1929,14 @@
                     </div>
                     <div style="flex:1;">
                         <h2 class="card-title">📚 Bibliografía y Referencias Científicas</h2>
-                        <div class="card-subtitle">Todas las publicaciones citadas con acceso directo DOI. Hacer clic para expandir.</div>
+                        <div class="card-subtitle">Todas las publicaciones citadas con acceso directo DOI — clic para expandir.</div>
                     </div>
-                    <i id="biblio-chevron" class="fas fa-chevron-down" style="color:var(--text-muted);font-size:1.1rem;transition:transform 0.3s ease;"></i>
+                    <i id="biblio-chevron" class="fas fa-chevron-down" style="color:var(--text-muted);font-size:1rem;transition:transform 0.3s ease;"></i>
                 </div>
 
                 <div id="biblio-content" style="display:none;">
-
-                    <!-- DESCARGABLES -->
-                    <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:12px;">
-                        📥 Documentos Oficiales de Cátedra para Descarga Directa
+                    <h3 style="font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">
+                        📥 Documentos Oficiales de Cátedra
                     </h3>
                     <div class="docs-grid" style="margin-bottom:28px;">
                         <a href="docs/alimentacion%20basada%20en%20plantas%20posturas.docx" download class="doc-item">
@@ -1756,137 +1951,71 @@
                             <div class="doc-icon" style="background:rgba(59,130,246,0.15);color:#60a5fa;"><i class="fas fa-file-word"></i></div>
                             <div class="doc-info">
                                 <div class="doc-title">Triangulación de la Evidencia (DOCX)</div>
-                                <div class="doc-sub">Monografía de causalidad: Cohortes, ECA y Mendeliana</div>
+                                <div class="doc-sub">Monografía: Cohortes, ECA y Aleatorización Mendeliana</div>
                             </div>
                             <i class="fas fa-download" style="color:#60a5fa;font-size:0.9rem;"></i>
                         </a>
-                        <a href="GUIA_DOCENTE_Y_DINAMICA.md" target="_blank" class="doc-item">
-                            <div class="doc-icon"><i class="fas fa-chalkboard-teacher"></i></div>
-                            <div class="doc-info">
-                                <div class="doc-title">Guía Pedagógica Docente</div>
-                                <div class="doc-sub">Objetivos, 3 momentos y fundamentación</div>
-                            </div>
-                            <i class="fas fa-external-link-alt" style="color:var(--text-sub);font-size:0.8rem;"></i>
-                        </a>
                     </div>
 
-                    <!-- PAPERS -->
-                    <h3 style="font-family:var(--font-display);font-size:1rem;font-weight:700;color:#fff;margin-bottom:12px;">
-                        🔬 Publicaciones Indexadas con Acceso Directo DOI
+                    <h3 style="font-family:var(--font-display);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">
+                        🔬 Publicaciones Indexadas
                     </h3>
                     <div class="papers-grid">
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">Nature Medicine (2025)</div>
-                                <div class="paper-title">Dietary profiles and associated metabolic risk factors in India from the ICMR–INDIAB survey-21</div>
-                                <div class="paper-authors">Anjana R., Sudha V., Abirami K., Mohan V., et al.</div>
-                            </div>
-                            <a href="https://doi.org/10.1038/s41591-025-03949-4" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.1038/s41591-025-03949-4</a>
+                            <div><div class="paper-journal">Nature Medicine (2025)</div><div class="paper-title">Dietary profiles and associated metabolic risk factors in India</div><div class="paper-authors">Anjana R., Sudha V., Mohan V., et al.</div></div>
+                            <a href="https://doi.org/10.1038/s41591-025-03949-4" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI 10.1038/s41591-025-03949-4</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">Clinical Nutrition (2026)</div>
-                                <div class="paper-title">Isocaloric substitution of animal protein with plant protein and its impact on all-cause, cardiovascular, and cancer mortality: A systematic review and meta-analysis</div>
-                                <div class="paper-authors">Barrantes-Espinola G., Alberti P., Rodríguez A., &amp; López-Moreno M.</div>
-                            </div>
-                            <a href="https://doi.org/10.1016/j.clnu.2026.106654" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.1016/j.clnu.2026.106654</a>
+                            <div><div class="paper-journal">Clinical Nutrition (2026)</div><div class="paper-title">Isocaloric substitution of animal protein with plant protein and mortality</div><div class="paper-authors">Barrantes-Espinola G., et al.</div></div>
+                            <a href="https://doi.org/10.1016/j.clnu.2026.106654" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI 10.1016/j.clnu.2026.106654</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">BMC Medicine (2023)</div>
-                                <div class="paper-title">Substitution of animal-based with plant-based foods on cardiometabolic health and all-cause mortality: a systematic review and meta-analysis of prospective studies</div>
-                                <div class="paper-authors">Neuenschwander M., Stadelmaier J., Eble J., Schwingshackl L., et al.</div>
-                            </div>
-                            <a href="https://doi.org/10.1186/s12916-023-03093-1" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.1186/s12916-023-03093-1</a>
+                            <div><div class="paper-journal">BMC Medicine (2023)</div><div class="paper-title">Substitution of animal-based with plant-based foods on cardiometabolic health and all-cause mortality</div><div class="paper-authors">Neuenschwander M., et al.</div></div>
+                            <a href="https://doi.org/10.1186/s12916-023-03093-1" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI 10.1186/s12916-023-03093-1</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">Int. J. Epidemiology (2021)</div>
-                                <div class="paper-title">Protein foods from animal sources, incident cardiovascular disease and all-cause mortality: a substitution analysis</div>
-                                <div class="paper-authors">Zhong V.W., Allen N., Greenland P., Van Horn L.V., et al.</div>
-                            </div>
-                            <a href="https://doi.org/10.1093/ije/dyaa205" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.1093/ije/dyaa205</a>
+                            <div><div class="paper-journal">Int. J. Epidemiology (2021)</div><div class="paper-title">Protein foods from animal sources, cardiovascular disease and all-cause mortality: substitution analysis</div><div class="paper-authors">Zhong V.W., Allen N., Van Horn L.V., et al.</div></div>
+                            <a href="https://doi.org/10.1093/ije/dyaa205" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI 10.1093/ije/dyaa205</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">The Journal of Nutrition (2023)</div>
-                                <div class="paper-title">Isocaloric substitution of plant-based protein for animal-based protein and cardiometabolic risk factors in a multi-ethnic Asian Population</div>
-                                <div class="paper-authors">Lee Y.-Q., Chia A., Whitton C., Chong M., et al.</div>
-                            </div>
-                            <a href="https://doi.org/10.1016/j.tjnut.2023.03.024" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.1016/j.tjnut.2023.03.024</a>
+                            <div><div class="paper-journal">The Journal of Nutrition (2023)</div><div class="paper-title">Isocaloric substitution of plant-based protein for animal-based protein and cardiometabolic risk</div><div class="paper-authors">Lee Y.-Q., Chia A., Whitton C., et al.</div></div>
+                            <a href="https://doi.org/10.1016/j.tjnut.2023.03.024" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI 10.1016/j.tjnut.2023.03.024</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">Nutrients (2022)</div>
-                                <div class="paper-title">The Isocaloric Substitution of Plant-Based and Animal-Based Protein in Relation to Aging-Related Health Outcomes: A Systematic Review</div>
-                                <div class="paper-authors">Zheng J.-L., Zhu T.-R., Yang G.-H., Wang H., et al.</div>
-                            </div>
-                            <a href="https://doi.org/10.3390/nu14020272" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.3390/nu14020272</a>
+                            <div><div class="paper-journal">JAMA Internal Medicine (2016)</div><div class="paper-title">Association of Animal and Plant Protein Intake With All-Cause and Cause-Specific Mortality</div><div class="paper-authors">Song M., Fung T.T., Hu F.B., et al.</div></div>
+                            <a href="https://doi.org/10.1001/jamainternmed.2016.4182" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI 10.1001/jamainternmed.2016.4182</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">JAMA Internal Medicine (2016)</div>
-                                <div class="paper-title">Association of Animal and Plant Protein Intake With All-Cause and Cause-Specific Mortality</div>
-                                <div class="paper-authors">Song M., Fung T.T., Hu F.B., Willett W.C., et al.</div>
-                            </div>
-                            <a href="https://doi.org/10.1001/jamainternmed.2016.4182" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> DOI: 10.1001/jamainternmed.2016.4182</a>
-                        </div>
-                        <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">PubMed / PMC (2013)</div>
-                                <div class="paper-title">Plant-Based Diets Are Not Nutritionally Deficient</div>
-                                <div class="paper-authors">McDougall J., et al.</div>
-                            </div>
+                            <div><div class="paper-journal">PMC / Nutrients (2013)</div><div class="paper-title">Plant-Based Diets Are Not Nutritionally Deficient</div><div class="paper-authors">McDougall J., et al.</div></div>
                             <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3854817/" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> PMC3854817</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">Nutrients (2014)</div>
-                                <div class="paper-title">Comparison of nutritional quality of the vegan, vegetarian, semi-vegetarian, pesco-vegetarian and omnivorous diet</div>
-                                <div class="paper-authors">Clarys P., Deliens T., Huybrechts I., et al.</div>
-                            </div>
-                            <a href="https://pubmed.ncbi.nlm.nih.gov/24667136/" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> PMID: 24667136</a>
+                            <div><div class="paper-journal">Nutrients (2014)</div><div class="paper-title">Comparison of nutritional quality of vegan, vegetarian, and omnivorous diets</div><div class="paper-authors">Clarys P., Deliens T., et al.</div></div>
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/24667136/" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> PMID 24667136</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">J. Nutrition (2019)</div>
-                                <div class="paper-title">Plasma, Urine, and Adipose Tissue Biomarkers of Dietary Intake Differ Between Vegetarian and Non-Vegetarian Diet Groups in the Adventist Health Study-2</div>
-                                <div class="paper-authors">Miles F.L., Lloren J.I.C., et al.</div>
-                            </div>
-                            <a href="https://pubmed.ncbi.nlm.nih.gov/30770530/" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> PMID: 30770530</a>
-                        </div>
-                        <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">AHA Circulation (2019)</div>
-                                <div class="paper-title">Plant-Based Diets Are Associated With a Lower Risk of Incident Cardiovascular Disease, Cardiovascular Disease Mortality, and All-Cause Mortality</div>
-                                <div class="paper-authors">Satija A., Bhupathiraju S.N., et al.</div>
-                            </div>
+                            <div><div class="paper-journal">AHA Circulation (2019)</div><div class="paper-title">Plant-Based Diets and Risk of CVD, CVD Mortality and All-Cause Mortality</div><div class="paper-authors">Satija A., Bhupathiraju S.N., et al.</div></div>
                             <a href="https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.119.041014" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> CIRCULATIONAHA.119.041014</a>
                         </div>
                         <div class="paper-card">
-                            <div>
-                                <div class="paper-journal">Am. J. Clin. Nutr. (2000)</div>
-                                <div class="paper-title">Plasma Vitamin B-12 Concentrations Relate to Intake Source in the Framingham Offspring Study</div>
-                                <div class="paper-authors">Tucker K.L., Rich S., Rosenberg I., et al.</div>
-                            </div>
-                            <a href="https://pubmed.ncbi.nlm.nih.gov/10648266/" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> PMID: 10648266</a>
+                            <div><div class="paper-journal">Am. J. Clin. Nutr. (2000)</div><div class="paper-title">Plasma Vitamin B-12 Concentrations Relate to Intake Source — Framingham Offspring Study</div><div class="paper-authors">Tucker K.L., Rich S., Rosenberg I., et al.</div></div>
+                            <a href="https://pubmed.ncbi.nlm.nih.gov/10648266/" target="_blank" rel="noopener noreferrer" class="btn-doi"><i class="fas fa-external-link-alt"></i> PMID 10648266</a>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
-        <!-- BOTÓN PUENTE A TALLER PRÁCTICO -->
+        <!-- BOTÓN PUENTE -->
         <div style="text-align:center;margin:36px 0 10px 0;">
-            <button id="btn-mode-practica" class="mode-tab-btn" onclick="switchClassMode('practica')">
+            <button class="mode-tab-btn" onclick="switchClassMode('practica')">
                 <i class="fas fa-flask"></i>
                 <span>Taller Práctico y Caso Forense</span>
-                <span class="mode-badge">Duelo, 73 Dietas y Huevo</span>
+                <span class="mode-badge">Duelo · 73 Dietas · Huevo</span>
             </button>
         </div>
 
-        </div> <!-- CIERRE #view-teoria -->
+        </div><!-- CIERRE #view-teoria -->
 
 
              <div id="view-practica" style="display: none;">
