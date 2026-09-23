@@ -41,6 +41,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
    - El archivo `Manual para la atención alimentaria y nutricional a embarazadas en hogares maternos.pdf` **NO** debe incluirse como recurso de clase.
    - En las tarjetas del cronograma de Clases de la Cátedra, **NO** incluir botones de "Asistencia"; los contenedores deben centrarse exclusivamente en material de estudio teórico, presentaciones interactivas, talleres clínicos y documentos.
 
+9. **Pedagogía en Evaluaciones y Casos Clínicos (Consignas Abiertas y Autonomía Intelectual)**:
+   - **No dar las respuestas en la consigna**: No "soplarle" el diagnóstico ni la intervención al alumno (ej. no decirle "identifique el error de hiperconcentración de fórmula" o "calcule la adición calórica de +340 kcal"). Presentar los datos clínicos, antropométricos y dietarios crudos para que el alumno diagnostique por sí mismo.
+   - **Libertad de paradigma y pensamiento crítico**: No forzar ni obligar a los alumnos a "cuestionar el dogma proteico" o a adoptar una postura predefinida. La cátedra expone la evidencia científica, pero cada alumno o grupo debe llegar a sus propias conclusiones de forma genuina y orgánica. La evaluación premia el rigor metodológico, la justificación científica y la adecuación nutricional, sin imponer líneas ideológicas ni sugestionarlos en el enunciado.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*

@@ -4363,6 +4363,24 @@
                                 <!-- Se renderizan todas las clases ordenadas dinámicamente -->
                             </div>
                         </div>
+
+                        <!-- VISTA PARA TP INTEGRADOR (PROTEGIDO POR CONTRASEÑA) -->
+                        <div id="tp-integrador-dashboard-content" class="dashboard-content-panel">
+                            <!-- Hero Section TP Integrador -->
+                            <div class="gallery-hero-responsive">
+                                <img src="tienda/hero-simple/galeria%20hero%20simple.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.75; z-index: 1;" alt="TP Integrador">
+                                <div style="position: absolute; inset: 0; z-index: 2; background: linear-gradient(to bottom, transparent 0%, rgba(13,17,23,0.4) 50%, #0d1117 100%); pointer-events: none;"></div>
+                                <button class="btn-back-v2" style="position: absolute; top: 20px; left: clamp(20px, 5vw, 40px); z-index: 5; background: rgba(0,0,0,0.5); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1);" onclick="document.querySelector('.nav-button[data-tab-target=\'#panel-honor\']').click()"><i class="fas fa-arrow-left" style="color: white;"></i></button>
+                                <div class="hero-inner-content">
+                                    <h1 class="gallery-hero-title" style="color: white; font-size: 26px; font-weight: 800; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 5px rgba(0,0,0,0.9); font-style: italic;">TRABAJO PRÁCTICO INTEGRADOR</h1>
+                                    <p class="gallery-hero-desc" style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin: 0; text-shadow: 0 2px 5px rgba(0,0,0,0.9);">Expediente clínico longitudinal, proceso de atención nutricional (PAN) y rúbrica final.</p>
+                                </div>
+                            </div>
+
+                            <div id="tp-integrador-container" class="ranking-list-container" style="background: transparent; border: none; padding: 0; max-width: none !important; margin: 0 auto;">
+                                <!-- Se renderiza el muro de contraseña o el caso clínico completo -->
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -6533,6 +6551,557 @@
             }
             window.generateAndDisplayClasses = generateAndDisplayClasses;
 
+            // =======================================================
+            // TP INTEGRADOR - PROTECCIÓN POR CONTRASEÑA Y EXPEDIENTE
+            // =======================================================
+            window.isTpIntegradorUnlocked = function() {
+                return sessionStorage.getItem('tp_integrador_unlocked') === 'true';
+            };
+
+            window.verifyTpIntegradorPassword = function(event) {
+                if (event) event.preventDefault();
+                const inputEl = document.getElementById('tp-password-input');
+                const errorEl = document.getElementById('tp-password-error');
+                const btnEl = document.getElementById('tp-unlock-btn');
+                if (!inputEl) return;
+
+                const typedPassword = (inputEl.value || '').trim().toLowerCase();
+                const correctPassword = 'trabajo final';
+
+                if (typedPassword === correctPassword) {
+                    sessionStorage.setItem('tp_integrador_unlocked', 'true');
+                    if (errorEl) {
+                        errorEl.style.display = 'block';
+                        errorEl.style.color = '#10b981';
+                        errorEl.innerHTML = '<i class="fas fa-check-circle"></i> ¡Contraseña correcta! Accediendo al expediente...';
+                    }
+                    if (btnEl) {
+                        btnEl.disabled = true;
+                        btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Desbloqueando...';
+                    }
+                    setTimeout(() => {
+                        displayTpIntegradorDashboardView();
+                    }, 350);
+                } else {
+                    if (errorEl) {
+                        errorEl.style.display = 'block';
+                        errorEl.style.color = '#ef4444';
+                        errorEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Contraseña incorrecta. Verifique la clave oficial con el docente.';
+                    }
+                    inputEl.style.borderColor = '#ef4444';
+                    inputEl.classList.add('shake-input');
+                    setTimeout(() => inputEl.classList.remove('shake-input'), 600);
+                }
+            };
+
+            window.lockTpIntegrador = function() {
+                sessionStorage.removeItem('tp_integrador_unlocked');
+                displayTpIntegradorDashboardView();
+            };
+
+            window.toggleTpPasswordVisibility = function() {
+                const inputEl = document.getElementById('tp-password-input');
+                const eyeEl = document.getElementById('tp-password-eye-icon');
+                if (inputEl && eyeEl) {
+                    if (inputEl.type === 'password') {
+                        inputEl.type = 'text';
+                        eyeEl.className = 'fas fa-eye-slash';
+                    } else {
+                        inputEl.type = 'password';
+                        eyeEl.className = 'fas fa-eye';
+                    }
+                }
+            };
+
+            function renderTpIntegradorLockHTML() {
+                return `
+                    <style>
+                        @keyframes shakeAnim {
+                            0%, 100% { transform: translateX(0); }
+                            20%, 60% { transform: translateX(-8px); }
+                            40%, 80% { transform: translateX(8px); }
+                        }
+                        .shake-input { animation: shakeAnim 0.4s ease-in-out; }
+                    </style>
+                    <div style="max-width: 520px; margin: 40px auto; padding: 0 16px;">
+                        <div style="background: rgba(22, 27, 34, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 20px; padding: 36px 28px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 30px rgba(245, 158, 11, 0.1);">
+                            <div style="width: 76px; height: 76px; margin: 0 auto 20px auto; border-radius: 20px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(217, 119, 6, 0.1)); border: 1px solid rgba(245, 158, 11, 0.5); display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 32px; box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);">
+                                <i class="fas fa-lock"></i>
+                            </div>
+
+                            <span style="display: inline-block; background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px;">
+                                Cátedra de Nutrición Infantil — UNSTA
+                            </span>
+
+                            <h2 style="color: #fff; font-size: 1.45rem; font-weight: 800; margin: 0 0 8px 0;">Acceso al TP Integrador</h2>
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.5; margin: 0 0 24px 0;">
+                                Este módulo contiene el expediente clínico longitudinal, las consignas oficiales del PAN y la rúbrica de evaluación. Ingresa la contraseña oficial para desbloquear:
+                            </p>
+
+                            <form onsubmit="window.verifyTpIntegradorPassword(event)" style="margin-bottom: 16px;">
+                                <div style="position: relative; margin-bottom: 14px;">
+                                    <input type="password" id="tp-password-input" placeholder="Ingresar contraseña de acceso..." autocomplete="off" style="width: 100%; box-sizing: border-box; background: rgba(13, 17, 23, 0.9); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 46px 14px 16px; color: #fff; font-size: 0.95rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s;">
+                                    <button type="button" onclick="window.toggleTpPasswordVisibility()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; padding: 6px; font-size: 1rem;" title="Mostrar / ocultar clave">
+                                        <i id="tp-password-eye-icon" class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+
+                                <div id="tp-password-error" style="display: none; font-size: 0.85rem; font-weight: 600; margin-bottom: 14px; text-align: left;"></div>
+
+                                <button type="submit" id="tp-unlock-btn" style="width: 100%; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; border: none; border-radius: 12px; padding: 14px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 18px rgba(245, 158, 11, 0.35); transition: transform 0.15s, box-shadow 0.15s;">
+                                    <i class="fas fa-key"></i> Desbloquear Caso Clínico
+                                </button>
+                            </form>
+
+                            <div style="font-size: 0.78rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <i class="fas fa-shield-alt"></i> Sesión activa en este navegador
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderTpIntegradorCaseHTML() {
+                return `
+                    <style>
+                        .tp-section-card {
+                            background: rgba(22, 27, 34, 0.75);
+                            border: 1px solid rgba(255, 255, 255, 0.08);
+                            border-radius: 16px;
+                            padding: 24px;
+                            margin-bottom: 24px;
+                            backdrop-filter: blur(10px);
+                            transition: border-color 0.3s;
+                        }
+                        .tp-section-card:hover {
+                            border-color: rgba(245, 158, 11, 0.3);
+                        }
+                        .tp-sub-box {
+                            background: rgba(13, 17, 23, 0.7);
+                            border: 1px solid rgba(255, 255, 255, 0.05);
+                            border-radius: 12px;
+                            padding: 16px 18px;
+                            margin-bottom: 14px;
+                        }
+                        .tp-badge-gold {
+                            background: rgba(245, 158, 11, 0.15);
+                            color: #f59e0b;
+                            border: 1px solid rgba(245, 158, 11, 0.35);
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 0.78rem;
+                            font-weight: 700;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                        }
+                        .tp-badge-teal {
+                            background: rgba(20, 184, 166, 0.15);
+                            color: #14b8a6;
+                            border: 1px solid rgba(20, 184, 166, 0.35);
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 0.78rem;
+                            font-weight: 700;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                        }
+                        .tp-badge-purple {
+                            background: rgba(139, 92, 246, 0.15);
+                            color: #a78bfa;
+                            border: 1px solid rgba(139, 92, 246, 0.35);
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 0.78rem;
+                            font-weight: 700;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                        }
+                        .tp-data-table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 10px 0;
+                            font-size: 0.88rem;
+                        }
+                        .tp-data-table th {
+                            background: rgba(255, 255, 255, 0.04);
+                            color: rgba(255, 255, 255, 0.7);
+                            padding: 8px 12px;
+                            text-align: left;
+                            font-weight: 600;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                        }
+                        .tp-data-table td {
+                            padding: 8px 12px;
+                            color: #e6edf3;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+                        }
+                        .tp-nav-pill {
+                            background: rgba(255, 255, 255, 0.05);
+                            color: rgba(255, 255, 255, 0.8);
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            padding: 8px 16px;
+                            border-radius: 20px;
+                            font-size: 0.82rem;
+                            font-weight: 600;
+                            text-decoration: none;
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                            transition: all 0.2s;
+                        }
+                        .tp-nav-pill:hover {
+                            background: rgba(245, 158, 11, 0.2);
+                            border-color: #f59e0b;
+                            color: #fff;
+                            transform: translateY(-2px);
+                        }
+                        @media print {
+                            body * { visibility: hidden !important; }
+                            #tp-integrador-dashboard-content, #tp-integrador-dashboard-content * { visibility: visible !important; }
+                            #tp-integrador-dashboard-content { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; }
+                            .tp-section-card, .tp-sub-box { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; }
+                            .btn-back-v2, .tp-toolbar-actions, .tp-nav-pills-row { display: none !important; }
+                        }
+                    </style>
+
+                    <div style="max-width: 1060px; margin: 0 auto; padding: 0 10px 40px 10px;">
+                        
+                        <!-- BARRA SUPERIOR DE ESTADO Y ACCIONES -->
+                        <div class="tp-toolbar-actions" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; padding: 12px 18px; background: rgba(22, 27, 34, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-lock-open"></i> Expediente Desbloqueado
+                                </span>
+                                <span style="color: rgba(255, 255, 255, 0.5); font-size: 0.85rem;">Cátedra Nutrición Infantil — UNSTA</span>
+                            </div>
+
+                            <div style="display: flex; gap: 8px;">
+                                <button onclick="window.print()" style="background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 7px 14px; border-radius: 10px; cursor: pointer; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                                    <i class="fas fa-print"></i> Imprimir / PDF
+                                </button>
+                                <button onclick="window.lockTpIntegrador()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; padding: 7px 14px; border-radius: 10px; cursor: pointer; font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(239,68,68,0.25)'" onmouseout="this.style.background='rgba(239,68,68,0.15)'">
+                                    <i class="fas fa-lock"></i> Bloquear Acceso
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PANEL RESUMEN Y METAS DEL TRABAJO -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 22px;">
+                            <div style="background: rgba(22, 27, 34, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px 16px;">
+                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); font-weight: 600; text-transform: uppercase;">Duración</div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: #f59e0b; margin-top: 4px;"><i class="far fa-clock"></i> 3 Semanas</div>
+                            </div>
+                            <div style="background: rgba(22, 27, 34, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px 16px;">
+                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); font-weight: 600; text-transform: uppercase;">Modalidad</div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: #14b8a6; margin-top: 4px;"><i class="fas fa-users"></i> 3 a 4 Alumnos</div>
+                            </div>
+                            <div style="background: rgba(22, 27, 34, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px 16px;">
+                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); font-weight: 600; text-transform: uppercase;">Entregable 1</div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: #3b82f6; margin-top: 4px;"><i class="fas fa-file-pdf"></i> Dossier Clínico</div>
+                            </div>
+                            <div style="background: rgba(22, 27, 34, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px 16px;">
+                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); font-weight: 600; text-transform: uppercase;">Entregable 2</div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: #ec4899; margin-top: 4px;"><i class="fas fa-video"></i> Video 5 min</div>
+                            </div>
+                            <div style="background: rgba(22, 27, 34, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px 16px;">
+                                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); font-weight: 600; text-transform: uppercase;">Calificación</div>
+                                <div style="font-size: 1.15rem; font-weight: 800; color: #10b981; margin-top: 4px;"><i class="fas fa-star"></i> Escala 10 / 10</div>
+                            </div>
+                        </div>
+
+                        <!-- BOTONES DE NAVEGACIÓN RÁPIDA -->
+                        <div class="tp-nav-pills-row" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px;">
+                            <a href="#tp-semana-1" class="tp-nav-pill"><i class="fas fa-female" style="color: #f59e0b;"></i> Semana 1: Gestación</a>
+                            <a href="#tp-semana-2" class="tp-nav-pill"><i class="fas fa-baby" style="color: #14b8a6;"></i> Semana 2: Lactante 7m</a>
+                            <a href="#tp-semana-3" class="tp-nav-pill"><i class="fas fa-child" style="color: #a78bfa;"></i> Semana 3: Escolar 9a</a>
+                            <a href="#tp-consignas" class="tp-nav-pill"><i class="fas fa-clipboard-list" style="color: #3b82f6;"></i> Consignas PAN</a>
+                            <a href="#tp-video" class="tp-nav-pill"><i class="fas fa-play-circle" style="color: #ec4899;"></i> Simulación Video</a>
+                            <a href="#tp-rubrica" class="tp-nav-pill"><i class="fas fa-table" style="color: #10b981;"></i> Rúbrica 10/10</a>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- ETAPA 1: GESTACIÓN -->
+                        <!-- ============================================== -->
+                        <div id="tp-semana-1" class="tp-section-card" style="border-left: 4px solid #f59e0b;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+                                <div>
+                                    <span class="tp-badge-gold"><i class="fas fa-calendar-alt"></i> Semana 1</span>
+                                    <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 2px 0;">Consulta Prenatal: Camila (28 años)</h3>
+                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0;">24 semanas de gestación por FUR confiable (2° Trimestre) — Primigesta</p>
+                                </div>
+                            </div>
+
+                            <div class="tp-sub-box">
+                                <h4 style="color: #f59e0b; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-user-md" style="margin-right: 6px;"></i> Motivo de Consulta y Situación Clínica</h4>
+                                <p style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; margin: 0;">
+                                    Derivada por obstetricia para evaluación y plan nutricional prenatal. Refiere astenia marcada, cansancio vespertino y cefaleas ocasionales. Presenta <strong>pirosis intensa</strong> en la tarde y noche que "le sube hasta la garganta al acostarse", y <strong>constipación</strong> con evacuaciones secas cada 3 a 4 días con esfuerzo. Manifiesta aversión al olor de carnes rojas y náuseas ante lácteos enteros.
+                                </p>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 14px;">
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-weight" style="margin-right: 6px;"></i> Antropometría y Signos</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Talla</td><td><strong>1.62 m</strong></td></tr>
+                                        <tr><td>Peso habitual pregestacional</td><td><strong>54.0 kg</strong></td></tr>
+                                        <tr><td>Peso actual en balanza</td><td><strong>58.5 kg</strong></td></tr>
+                                        <tr><td>Tensión Arterial</td><td><strong>110 / 70 mmHg</strong></td></tr>
+                                    </table>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #ec4899; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-vial" style="margin-right: 6px;"></i> Bioquímica (Semana 23)</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Glucemia en ayunas</td><td><strong>81 mg/dL</strong></td></tr>
+                                        <tr><td>Hemoglobina</td><td><strong>11.1 g/dL</strong></td></tr>
+                                        <tr><td>Ferritina sérica</td><td><strong>16 µg/L</strong></td></tr>
+                                        <tr><td>Sedimento de orina</td><td>Normal</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="tp-sub-box" style="margin-bottom: 0;">
+                                <h4 style="color: #a78bfa; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-utensils" style="margin-right: 6px;"></i> Recordatorio de 24 Horas Habitual (R24H)</h4>
+                                <ul style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0; padding-left: 20px;">
+                                    <li><strong>07:30 Desayuno</strong>: 2 mates amargos con 2 galletitas de agua y mermelada común.</li>
+                                    <li><strong>10:30 Media mañana</strong>: Café con leche de máquina de oficina o nada.</li>
+                                    <li><strong>13:30 Almuerzo</strong>: 2 empanadas de verdura compradas al paso, o 1 sándwich de jamón y queso con 1 vaso de gaseosa común.</li>
+                                    <li><strong>18:00 Merienda</strong>: Té solo con 3 galletitas dulces o tostadas de pan blanco con queso crema.</li>
+                                    <li><strong>21:30 Cena</strong>: Fideos o arroz blanco con manteca y queso rallado.</li>
+                                    <li><strong>Líquidos y hábitos</strong>: Consume agua solo si tiene sed intensa (&lt;1 L/día). No consume legumbres ni semillas.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- ETAPA 2: LACTANTE -->
+                        <!-- ============================================== -->
+                        <div id="tp-semana-2" class="tp-section-card" style="border-left: 4px solid #14b8a6;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+                                <div>
+                                    <span class="tp-badge-teal"><i class="fas fa-calendar-alt"></i> Semana 2</span>
+                                    <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 2px 0;">Control del Lactante: Tomás (7 meses)</h3>
+                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0;">Nacido de término (39 semanas) — Parto vaginal sin complicaciones</p>
+                                </div>
+                            </div>
+
+                            <div class="tp-sub-box">
+                                <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-history" style="margin-right: 6px;"></i> Antecedentes y Relato Materno de la Alimentación Actual</h4>
+                                <p style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; margin: 0 0 10px 0;">
+                                    Tomás nació con <strong>3.300 kg</strong> y <strong>50 cm</strong>. Recibió lactancia materna exclusiva hasta los 4 meses, momento en que Camila regresó al trabajo e introdujo fórmula infantil de inicio en biberón.
+                                </p>
+                                <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; padding: 12px 14px; border-radius: 8px; font-style: italic; color: #fde68a; font-size: 0.88rem; line-height: 1.6;">
+                                    "Durante el día Tomás queda al cuidado de su abuela. Ella le prepara 4 mamaderas al día de 180 ml cada una. Para que quede más satisfecho y duerma corrido de noche, la abuela le agrega dos medidas adicionales de polvo de fórmula a cada biberón. Además, como ya cumplió 7 meses, la abuela le da a media tarde un vaso de jugo de naranja exprimido con una cucharada de azúcar y postrecitos lácteos comerciales comprados. Tomás está molesto, llora tras las tomas, tiene distensión y sus deposiciones son secas, espaciadas y en bolitas duras."
+                                </div>
+                            </div>
+
+                            <div class="tp-sub-box" style="margin-bottom: 0;">
+                                <h4 style="color: #10b981; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-baby" style="margin-right: 6px;"></i> Antropometría Actual en Consulta (7 meses exactos)</h4>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+                                    <div style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px;">
+                                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.5);">Peso actual</span>
+                                        <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">8.350 kg</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px;">
+                                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.5);">Longitud corporal</span>
+                                        <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">68.0 cm</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px;">
+                                        <span style="font-size: 0.78rem; color: rgba(255,255,255,0.5);">Perímetro Cefálico</span>
+                                        <div style="font-size: 1.15rem; font-weight: 700; color: #fff;">43.8 cm</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- ETAPA 3: ESCOLAR -->
+                        <!-- ============================================== -->
+                        <div id="tp-semana-3" class="tp-section-card" style="border-left: 4px solid #a78bfa;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+                                <div>
+                                    <span class="tp-badge-purple"><i class="fas fa-calendar-alt"></i> Semana 3</span>
+                                    <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 2px 0;">Control en Edad Escolar: Tomás (9 años y 3 meses)</h3>
+                                    <p style="color: rgba(255,255,255,0.6); font-size: 0.88rem; margin: 0;">Escuela primaria turno tarde — 2 clases semanales de educación física (45 min)</p>
+                                </div>
+                            </div>
+
+                            <div class="tp-sub-box">
+                                <h4 style="color: #a78bfa; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-comments" style="margin-right: 6px;"></i> Motivo de Consulta y Relato Materno</h4>
+                                <p style="color: #e6edf3; font-size: 0.9rem; line-height: 1.6; margin: 0 0 10px 0;">
+                                    Tomás decidió adoptar una <strong>alimentación vegetariana estricta</strong> (no consume carne vacuna, pollo ni pescado). Camila se encuentra muy preocupada:
+                                </p>
+                                <div style="background: rgba(139, 92, 246, 0.08); border-left: 3px solid #a78bfa; padding: 12px 14px; border-radius: 8px; font-style: italic; color: #ddd6fe; font-size: 0.88rem; line-height: 1.6;">
+                                    "En la escuela y en la familia me insisten con que un chico no puede crecer sin carne, que le van a faltar proteínas y desarrollo mental. Yo intento prepararle lo que le gusta, pero como no sé bien qué cocinarle, casi siempre come fideos, arroz blanco, papas fritas o tartas de verdura con queso. En el colegio a veces no quiere comer lo que lleva y termina comprando galletitas, alfajores o snacks en el kiosco porque le da hambre en los recreos."
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #14b8a6; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-ruler-vertical" style="margin-right: 6px;"></i> Antropometría Actual</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Talla actual</td><td><strong>134.2 cm</strong></td></tr>
+                                        <tr><td>Peso actual</td><td><strong>30.4 kg</strong></td></tr>
+                                        <tr><td>Actividad física</td><td>Moderada (Ed. Física escolar)</td></tr>
+                                    </table>
+                                </div>
+
+                                <div class="tp-sub-box" style="margin-bottom: 0;">
+                                    <h4 style="color: #ec4899; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;"><i class="fas fa-microscope" style="margin-right: 6px;"></i> Laboratorio Clínico Pediátrico</h4>
+                                    <table class="tp-data-table">
+                                        <tr><td>Hemoglobina</td><td><strong>12.3 g/dL</strong></td></tr>
+                                        <tr><td>Ferritina sérica</td><td><strong>20 µg/L</strong></td></tr>
+                                        <tr><td>Vitamina B12 sérica</td><td><strong>170 pg/mL</strong></td></tr>
+                                        <tr><td>Glucemia en ayunas</td><td><strong>84 mg/dL</strong></td></tr>
+                                        <tr><td>Colesterol Total / Triglicéridos</td><td><strong>148 / 82 mg/dL</strong></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- CONSIGNAS PAN -->
+                        <!-- ============================================== -->
+                        <div id="tp-consignas" class="tp-section-card" style="border-left: 4px solid #3b82f6;">
+                            <span class="tp-badge-gold" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-color: rgba(59, 130, 246, 0.35);"><i class="fas fa-tasks"></i> Metodología Oficial</span>
+                            <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 16px 0;">Consignas de Resolución (Para cada una de las 3 etapas)</h3>
+
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6; margin-bottom: 18px;">
+                                Para cada consulta (Semana 1, Semana 2 y Semana 3), el equipo deberá elaborar y documentar en el dossier clínico los siguientes cuatro apartados del <strong>Proceso de Atención Nutricional (PAN)</strong>:
+                            </p>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #60a5fa; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;">1. Valoración y Diagnóstico Nutricional</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.5; margin: 0; padding-left: 18px;">
+                                        <li>Graficar índices antropométricos en curvas oficiales (curvas de gestación en Semana 1; tablas OMS/SAP en Semanas 2 y 3).</li>
+                                        <li>Interpretar clínicamente la anamnesis alimentaria, hábitos y laboratorios.</li>
+                                        <li>Redactar el diagnóstico formal en estructura <strong>PES</strong> (Problema, Etiología y Signos/Síntomas).</li>
+                                    </ul>
+                                </div>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #f59e0b; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;">2. Plan Alimentario Cuantitativo</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.5; margin: 0; padding-left: 18px;">
+                                        <li>Cálculo justificado del Valor Calórico Total (VCT) según la etapa y requerimientos.</li>
+                                        <li>Definición de Fórmula Sintética (% y gramos de macronutrientes) y Fórmula Desarrollada de micronutrientes críticos.</li>
+                                        <li>Menú cuantitativo con tiempos de comida, ingredientes, <strong>gramajes netos</strong> y <strong>medidas caseras</strong> (Semana 1: 1 día; Semana 2: cronograma con semisólidos; Semana 3: menú semanal con 2 viandas escolares).</li>
+                                    </ul>
+                                </div>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #10b981; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;">3. Recomendaciones y Consejería</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.5; margin: 0; padding-left: 18px;">
+                                        <li>Guía o folleto práctico dirigido a la familia, con lenguaje claro, empático y sin tecnicismos innecesarios.</li>
+                                        <li>Pautas higiénico-dietéticas y técnicas culinarias de preparación/biodisponibilidad.</li>
+                                        <li>Esquemas de suplementación farmacológica o profiláctica fundamentados según corresponda a la etapa biológica.</li>
+                                    </ul>
+                                </div>
+
+                                <div class="tp-sub-box">
+                                    <h4 style="color: #ec4899; font-size: 0.95rem; font-weight: 700; margin: 0 0 8px 0;">4. Monitoreo y Seguimiento</h4>
+                                    <ul style="color: #e6edf3; font-size: 0.86rem; line-height: 1.5; margin: 0; padding-left: 18px;">
+                                        <li>Definir los indicadores clínicos, antropométricos o dietéticos que se evaluarán en el próximo control para verificar eficacia y adherencia.</li>
+                                        <li>Criterios de alarma y pautas de consulta anticipada para la madre.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- SIMULACIÓN EN VIDEO -->
+                        <!-- ============================================== -->
+                        <div id="tp-video" class="tp-section-card" style="border-left: 4px solid #ec4899;">
+                            <span class="tp-badge-gold" style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border-color: rgba(236, 72, 153, 0.35);"><i class="fas fa-video"></i> Simulación Clínica</span>
+                            <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 16px 0;">Video de Consulta Simulada (5 Minutos)</h3>
+
+                            <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.6; margin-bottom: 14px;">
+                                Cada equipo grabará una simulación de consulta clínica real de <strong>5 minutos de duración</strong>:
+                            </p>
+
+                            <div style="background: rgba(13, 17, 23, 0.7); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px;">
+                                <ul style="color: #e6edf3; font-size: 0.88rem; line-height: 1.6; margin: 0; padding-left: 20px;">
+                                    <li><strong>Roles</strong>: Un alumno/a actúa como profesional Licenciado/a en Nutrición; otro/a compañero/a interpreta a Camila (con Tomás en brazos o presente).</li>
+                                    <li><strong>Escenario a elección</strong>: El grupo puede elegir representar la consulta de la <strong>Semana 1</strong> (prenatal), de la <strong>Semana 2</strong> (lactante y mamaderas) o de la <strong>Semana 3</strong> (escolar y viandas).</li>
+                                    <li><strong>Foco de evaluación</strong>: Empatía en el trato, escucha activa, capacidad de transmitir tranquilidad a la madre, erradicación de jerga fría incomprensible y seguridad en las indicaciones prácticas.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- ============================================== -->
+                        <!-- RÚBRICA DE EVALUACIÓN 10/10 -->
+                        <!-- ============================================== -->
+                        <div id="tp-rubrica" class="tp-section-card" style="border-left: 4px solid #10b981;">
+                            <span class="tp-badge-gold" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.35);"><i class="fas fa-graduation-cap"></i> Criterios de Evaluación</span>
+                            <h3 style="color: #fff; font-size: 1.35rem; font-weight: 800; margin: 8px 0 16px 0;">Rúbrica de Calificación (Escala 10 / 10 Puntos)</h3>
+
+                            <div style="overflow-x: auto;">
+                                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; color: #e6edf3;">
+                                    <thead>
+                                        <tr style="background: rgba(255, 255, 255, 0.05); border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);">
+                                            <th style="padding: 12px 14px; text-align: left; font-weight: 700; color: #fff;">Dimensión Evaluada</th>
+                                            <th style="padding: 12px 14px; text-align: left; font-weight: 700; color: #fff;">Criterio de Excelencia (Sobresaliente)</th>
+                                            <th style="padding: 12px 14px; text-align: center; font-weight: 700; color: #f59e0b; width: 110px;">Puntaje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                                            <td style="padding: 12px 14px; font-weight: 600; color: #60a5fa;">1. Valoración Antropométrica y Diagnóstico Clínico</td>
+                                            <td style="padding: 12px 14px; line-height: 1.5; color: rgba(255,255,255,0.85);">Trazado e interpretación impecable de curvas de crecimiento. Identificación de banderas de alarma clínicas a partir de los datos crudos. Formulación correcta del diagnóstico en estructura PES.</td>
+                                            <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #f59e0b;">2.0 pts</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                                            <td style="padding: 12px 14px; font-weight: 600; color: #f59e0b;">2. Rigor en el Cálculo y Adecuación Dietoterápica</td>
+                                            <td style="padding: 12px 14px; line-height: 1.5; color: rgba(255,255,255,0.85);">Cálculos matemáticos de VCT y fórmulas sintética/desarrollada rigurosos y fundamentados según normativas. Cobertura armónica de requerimientos específicos de cada etapa.</td>
+                                            <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #f59e0b;">2.0 pts</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                                            <td style="padding: 12px 14px; font-weight: 600; color: #14b8a6;">3. Viabilidad Culinaria y Menús Cuantitativos</td>
+                                            <td style="padding: 12px 14px; line-height: 1.5; color: rgba(255,255,255,0.85);">Menús realistas, variados y accesibles. Adecuada correspondencia entre gramajes netos y medidas caseras prácticas. Viandas escolares transportables y nutritivas.</td>
+                                            <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #f59e0b;">2.0 pts</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                                            <td style="padding: 12px 14px; font-weight: 600; color: #a78bfa;">4. Calidad de Recomendaciones y Consejería</td>
+                                            <td style="padding: 12px 14px; line-height: 1.5; color: rgba(255,255,255,0.85);">Pautas higiénico-dietéticas pertinentes. Fundamentación científica rigurosa y actualizada en la toma de decisiones clínicas. Prescripción correcta de suplementos si correspondieran.</td>
+                                            <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #f59e0b;">2.0 pts</td>
+                                        </tr>
+                                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                                            <td style="padding: 12px 14px; font-weight: 600; color: #ec4899;">5. Comunicación Profesional y Simulación en Video</td>
+                                            <td style="padding: 12px 14px; line-height: 1.5; color: rgba(255,255,255,0.85);">Empatía en el trato, comunicación asertiva hacia la paciente y claridad pedagógica en la consulta simulada. Prolijidad y presentación visual del Dossier PDF.</td>
+                                            <td style="padding: 12px 14px; text-align: center; font-weight: 800; color: #f59e0b;">2.0 pts</td>
+                                        </tr>
+                                        <tr style="background: rgba(245, 158, 11, 0.08); font-weight: 800;">
+                                            <td colspan="2" style="padding: 14px; color: #fff; font-size: 0.95rem;">CALIFICACIÓN FINAL MÁXIMA</td>
+                                            <td style="padding: 14px; text-align: center; font-size: 1.15rem; color: #f59e0b;">10.0 pts</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                `;
+            }
+
+            function displayTpIntegradorDashboardView() {
+                const container = document.getElementById('tp-integrador-container');
+                if (!container) return;
+
+                if (window.isTpIntegradorUnlocked()) {
+                    container.innerHTML = renderTpIntegradorCaseHTML();
+                } else {
+                    container.innerHTML = renderTpIntegradorLockHTML();
+                    setTimeout(() => {
+                        const inputEl = document.getElementById('tp-password-input');
+                        if (inputEl) inputEl.focus();
+                    }, 80);
+                }
+            }
+            window.displayTpIntegradorDashboardView = displayTpIntegradorDashboardView;
+
             function showHonorPanelView(viewId) {
                 const mainView = document.getElementById('xp-ranking-section');
                 const studentView = document.getElementById('student-portal-result-container');
@@ -6614,6 +7183,8 @@
                     displayRegularityAnalytics();
                 } else if (tabName === 'clases') {
                     displayClasesDashboardView();
+                } else if (tabName === 'tp-integrador') {
+                    displayTpIntegradorDashboardView();
                 }
             }
 
@@ -6685,7 +7256,7 @@
                 }
 
                 let extraGridStyles = '';
-                ['hitos', 'clases', 'alumnos', 'grupos', 'regularidad'].forEach(tab => {
+                ['hitos', 'clases', 'tp-integrador', 'alumnos', 'grupos', 'regularidad'].forEach(tab => {
                     if (cardBgs[tab]) {
                         extraGridStyles += `
                             .dash-interactive-row[data-dashboard-tab="${tab}"]::after {
@@ -6957,6 +7528,21 @@
                         </div>
                         <div class="di-stat-box">
                             <span class="di-stat">5 Clases</span>
+                            <i class="fas fa-chevron-right di-chevron"></i>
+                        </div>
+                    </div>
+
+                    <!-- TP Integrador (Dorado / Ámbar Neón) -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="tp-integrador" style="--card-rgb: 245, 158, 11;">
+                        <div class="di-icon-box"><i class="fas fa-file-medical-alt"></i></div>
+                        <div class="di-content">
+                            <h3 class="di-title">TP Integrador</h3>
+                            <p class="di-subtitle">Caso clínico longitudinal, consignas PAN y rúbrica</p>
+                        </div>
+                        <div class="di-stat-box">
+                            <span class="di-stat" style="display: flex; align-items: center; gap: 5px;">
+                                <i class="fas ${window.isTpIntegradorUnlocked && window.isTpIntegradorUnlocked() ? 'fa-lock-open' : 'fa-lock'}" style="font-size: 10px;"></i> Final
+                            </span>
                             <i class="fas fa-chevron-right di-chevron"></i>
                         </div>
                     </div>
