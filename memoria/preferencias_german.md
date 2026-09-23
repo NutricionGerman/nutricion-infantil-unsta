@@ -56,6 +56,9 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Cero datos de laboratorio**: En la cátedra NO se enseña interpretación bioquímica de laboratorio.
     - **Registro de 24 Horas (R24H) Tabular con Gramos Obligatorio**: Cada caso y cada semana debe presentar una **tabla detallada** con: Momento/Horario, Alimento o preparación específica, Medida casera y **Cantidad neta consumida en gramos ($g$) o mililitros ($ml$)**. Esto permite a los estudiantes realizar el costeo y balance de macro/micronutrientes con rigor y a Germán evaluar los cálculos de manera 100% objetiva.
 
+12. **Integración Oficial del Taller de Dietas & Cálculo RDA en Herramientas**:
+    - Se habilita e integra formalmente la tarjeta de acceso al **Taller de Dietas & Cálculo RDA (560 Alimentos / 48 Columnas)** dentro de la sección "Herramientas" (`index.html`), enlazando a `dieta/` para que los estudiantes puedan usar el planificador dietoterápico integral, buscar alimentos, costear R24H y evaluar fórmulas infantiles en sus trabajos prácticos.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
