@@ -40,7 +40,6 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
   * Peso habitual pregestacional: $54.0\text{ kg}$
   * Peso actual en balanza: $58.5\text{ kg}$
   * Tensión Arterial: $110/70\text{ mmHg}$
-  * Altura Uterina (AU): $22.0\text{ cm}$
   * Perímetro Braquial (PB): $24.5\text{ cm}$
   * Pliegue Tricipital (PCT): $14.0\text{ mm}$
 * **Registro de 24 Horas (R24H) Habitual Cuantitativo**: 
@@ -143,7 +142,6 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
   * Peso habitual pregestacional: $68.0\text{ kg}$
   * Peso actual en balanza: $79.5\text{ kg}$
   * Tensión Arterial: $125/80\text{ mmHg}$
-  * Altura Uterina (AU): $30.0\text{ cm}$
   * Perímetro Braquial (PB): $30.2\text{ cm}$
   * Pliegue Tricipital (PCT): $24.0\text{ mm}$
 * **Registro de 24 Horas (R24H) Habitual Cuantitativo**:
@@ -242,7 +240,6 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
   * Peso habitual pregestacional: $45.5\text{ kg}$
   * Peso actual en consulta: $46.8\text{ kg}$
   * Tensión Arterial: $100/60\text{ mmHg}$
-  * Altura Uterina (AU): $16.5\text{ cm}$
   * Perímetro Braquial (PB): $20.5\text{ cm}$
   * Pliegue Tricipital (PCT): $8.0\text{ mm}$
 * **Registro de 24 Horas (R24H) Habitual Cuantitativo**:
@@ -346,7 +343,6 @@ Para garantizar el trabajo original de cada equipo y abordar la riqueza del prog
   * Peso habitual pregestacional: $60.5\text{ kg}$
   * Peso actual en balanza: $69.8\text{ kg}$
   * Tensión Arterial: $110/68\text{ mmHg}$
-  * Altura Uterina (AU): $27.0\text{ cm}$
   * Perímetro Braquial (PB): $26.0\text{ cm}$
   * Pliegue Tricipital (PCT): $16.5\text{ mm}$
 * **Registro de 24 Horas (R24H) Habitual Cuantitativo**:
