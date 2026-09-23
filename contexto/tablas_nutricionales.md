@@ -14,11 +14,11 @@ Para evitar confusiones, el proyecto tiene dos universos nutricionales clarament
    - **Juego "Duelo Nutricional"**: Utiliza una lista didáctica reducida de **25 alimentos clave** (`alimentos.js`) para comparar densidad de nutrientes en el proyector del aula.
 
 2. **Módulo "Taller de Dietas y Cálculo RDA" (`/dieta/` y `PROYECTO_AISLADO/`)**:
-   - Aplicación independiente orientada al cálculo dietético exhaustivo en base al catálogo completo de 555 alimentos.
+   - Aplicación independiente orientada al cálculo dietético exhaustivo en base al catálogo completo de 560 alimentos (incluyendo fórmulas infantiles estándar e hiperconcentradas).
 
 ---
 
-## 🍎 El Catálogo de 555 Alimentos (`alimentos.json`)
+## 🍎 El Catálogo de 560 Alimentos (`alimentos.json`)
 
 * **Ubicación**: `dieta/alimentos.json` y `PROYECTO_AISLADO/alimentos.json`.
 * **Fuente**: Base de datos verificada de **USDA FoodData Central (SR Legacy) / NCCDB Verified** (generada el 4 de septiembre de 2026).

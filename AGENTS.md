@@ -56,7 +56,7 @@ pagina nutricion infantil/
 ├── contexto/                  ← Información base y estática de la cátedra
 │   ├── catedra_unsta.md       ← 18 grupos, régimen de regularidad, sistema de XP (+2)
 │   ├── arquitectura_firebase.md ← Colecciones de Firestore (students, app_state, grupos)
-│   └── tablas_nutricionales.md← Catálogo de 555 alimentos, valores RDA y factores clínicos
+│   └── tablas_nutricionales.md← Catálogo de 560 alimentos, valores RDA y factores clínicos
 │
 ├── skills/                    ← Procedimientos paso a paso (recetas operativas)
 │   ├── sincronizar_asistencia.md ← Protocolo exacto para procesar .txt y subir a Firestore

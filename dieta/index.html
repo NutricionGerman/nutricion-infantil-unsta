@@ -125,7 +125,7 @@
 
         <!-- Buscador Autocomplete Limpio con Botón de Asistente IA -->
         <div class="relative flex flex-col gap-1.5">
-          <label class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (555 disponibles):</label>
+          <label id="food-search-label" class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (560 disponibles):</label>
           <div class="flex gap-1.5">
             <div class="relative flex-1">
               <input type="text" id="food-search-input" 
@@ -804,6 +804,10 @@
         const res = await fetch("alimentos.json");
         appState.alimentosDB = await res.json();
         appState.alimentosDB.forEach(a => { appState.mapaAlimentos[a.nombre] = a; });
+        const labelEl = document.getElementById("food-search-label");
+        if (labelEl && appState.alimentosDB) {
+          labelEl.textContent = `Buscar Alimento (${appState.alimentosDB.length} disponibles):`;
+        }
       } catch (e) {
         console.error("Error cargando alimentos.json:", e);
       }
