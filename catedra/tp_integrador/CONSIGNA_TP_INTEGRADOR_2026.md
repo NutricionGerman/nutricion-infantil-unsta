@@ -5,9 +5,8 @@
 * **Modalidad**: Grupal (3 a 4 estudiantes)
 * **Tiempo de resolución**: 3 semanas
 * **Contraseña de acceso al expediente**: `trabajo final`
-* **Entregables**:
-  1. **Expediente / Dossier Clínico (PDF)**: Valoración, diagnósticos, cálculos de intervención, menús cuantitativos y material de consejería para la familia.
-  2. **Simulación de Consulta en Video (5 minutos)**: Rol play de una de las tres consultas clínicas a elección del grupo.
+* **Entregable Único**:
+  * **Expediente / Dossier Clínico (PDF)**: Valoración, diagnósticos PES, cálculos dietoterápicos, menús cuantitativos, material de consejería familiar y **apartado de reflexión personal y juicio crítico individual** de cada integrante del equipo.
 
 ---
 
@@ -137,11 +136,13 @@ Para cada una de las consultas (Semana 1, Semana 2 y Semana 3), el equipo deber�
 
 ---
 
-## 🎬 SIMULACIÓN CLÍNICA EN VIDEO (5 Minutos)
+## ✍️ REFLEXIÓN PERSONAL Y JUICIO CRÍTICO (Individual)
 
-El grupo elegirá **uno de los tres momentos clínicos** y grabará una simulación de consulta:
-* **Roles**: Alumno/a como Nutricionista, compañero/a interpretando a Camila (con Tomás).
-* **Enfoque**: Se evaluará la capacidad de comunicación, la escucha activa, la contención de las preocupaciones de la madre y la claridad pedagógica para explicar las indicaciones sin abrumar con tecnicismos.
+Al finalizar el dossier clínico, **cada integrante del equipo** redactará un apartado breve de reflexión personal individual (1 carilla / 300 a 500 palabras, firmada con nombre y apellido), abordando con honestidad y espíritu autocrítico los siguientes tres ejes:
+
+1. **Evolución del Criterio Propio**: ¿Cómo desafió este caso tus ideas previas sobre la nutrición infantil en las diferentes etapas biológicas (gestación, preparación de fórmulas infantiles, patrones vegetarianos)? ¿Qué mitos o preconceptos tuviste que revisar a la luz de los cálculos y la evidencia científica?
+2. **Empatía y Acompañamiento Familiar**: Frente a la angustia de Camila, los consejos familiares (la abuela y las mamaderas) y los prejuicios del entorno escolar: ¿Cómo se equilibra el rigor técnico del nutricionista con la empatía y la realidad cotidiana del paciente, sin juzgar ni imponer?
+3. **Desafío Metodológico y Aprendizaje**: ¿Qué decisión clínica o cálculo dietoterápico te resultó más complejo de resolver y qué aprendizaje concreto te llevas para tu futuro ejercicio profesional?
 
 ---
 
@@ -157,5 +158,5 @@ La calificación final del trabajo se evaluará sobre 10 puntos, con base en 5 d
 | **2. Rigor en el Cálculo y Adecuación Dietoterápica** | Cálculos de VCT y fórmulas sintética/desarrollada matemáticamente correctos y fundamentados según normativas. Cobertura lógica de los requerimientos nutricionales específicos de cada etapa. | **2.0 pts** |
 | **3. Viabilidad Culinaria y Menús Cuantitativos** | Menús realistas, accesibles y coherentes con la situación familiar descripta. Adecuada correspondencia entre gramajes netos y medidas caseras prácticas. Viandas escolares transportables y nutritivas. | **2.0 pts** |
 | **4. Calidad de las Recomendaciones y Consejería** | Pautas higiénico-dietéticas y de preparación técnicamente correctas. Fundamentación científica rigurosa y actualizada en la toma de decisiones clínicas (sin recurrir a mitos o preconceptos no validados). Prescripción adecuada de suplementos si correspondieran. | **2.0 pts** |
-| **5. Comunicación Profesional y Simulación (Video)** | Empatía, claridad de lenguaje hacia el paciente y seguridad en la consulta simulada. Presentación visual, redacción y prolijidad del Dossier Clínico en PDF. | **2.0 pts** |
+| **5. Reflexión Personal y Juicio Crítico Individual** | Madurez reflexiva de cada integrante, capacidad de autocrítica frente a las dificultades del caso, fundamentación ética en el trato con la familia y articulación de la evidencia científica con la práctica profesional. Prolijidad y presentación visual del Dossier PDF. | **2.0 pts** |
 | **TOTAL** | **Calificación Final Máxima** | **10.0 pts** |
