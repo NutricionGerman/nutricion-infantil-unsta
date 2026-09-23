@@ -39,6 +39,7 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
 8. **Contenido de Clases y Bibliografía**:
    - Para la Clase 02 del 1° Cuatrimestre (*Evaluación, Diagnóstico & Intervención en Embarazo*), los documentos oficiales para los alumnos son exclusivamente las 3 guías clínicas formativas (`.docx`): Antropometría en Embarazo, Diagnóstico PES e Intervención Nutricional.
    - El archivo `Manual para la atención alimentaria y nutricional a embarazadas en hogares maternos.pdf` **NO** debe incluirse como recurso de clase.
+   - En las tarjetas del cronograma de Clases de la Cátedra, **NO** incluir botones de "Asistencia"; los contenedores deben centrarse exclusivamente en material de estudio teórico, presentaciones interactivas, talleres clínicos y documentos.
 
 ---
 
