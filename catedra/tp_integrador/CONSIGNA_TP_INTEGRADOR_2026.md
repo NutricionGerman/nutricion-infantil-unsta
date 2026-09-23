@@ -4,7 +4,7 @@
 * **Docente a cargo**: Lic. Germán
 * **Modalidad**: Grupal (20 grupos en total)
 * **Tiempo de resolución**: 3 semanas
-* **Contraseña de acceso en la plataforma**: `trabajo final`
+* **Contraseña de acceso en la plataforma**: `trabajofinal`
 * **Entregable Único**:
   * **Expediente / Dossier Clínico (PDF)**: Valoración, diagnósticos PES, cálculos dietoterápicos cuantitativos, menús detallados con medidas caseras, material de consejería familiar y **apartado de reflexión personal y juicio crítico individual** firmado por cada integrante del equipo.
 

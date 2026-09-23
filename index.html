@@ -6552,10 +6552,12 @@
             window.generateAndDisplayClasses = generateAndDisplayClasses;
 
             // =======================================================
+            // =======================================================
             // TP INTEGRADOR - PROTECCIÓN POR CONTRASEÑA Y EXPEDIENTE
             // =======================================================
             window.isTpIntegradorUnlocked = function() {
-                return sessionStorage.getItem('tp_integrador_unlocked') === 'true';
+                return localStorage.getItem('tp_integrador_unlocked') === 'true' ||
+                       sessionStorage.getItem('tp_integrador_unlocked') === 'true';
             };
 
             window.verifyTpIntegradorPassword = function(event) {
@@ -6565,15 +6567,16 @@
                 const btnEl = document.getElementById('tp-unlock-btn');
                 if (!inputEl) return;
 
-                const typedPassword = (inputEl.value || '').trim().toLowerCase();
-                const correctPassword = 'trabajo final';
+                const typedPassword = (inputEl.value || '').trim().toLowerCase().replace(/\s+/g, '');
+                const correctPassword = 'trabajofinal';
 
                 if (typedPassword === correctPassword) {
+                    localStorage.setItem('tp_integrador_unlocked', 'true');
                     sessionStorage.setItem('tp_integrador_unlocked', 'true');
                     if (errorEl) {
                         errorEl.style.display = 'block';
                         errorEl.style.color = '#10b981';
-                        errorEl.innerHTML = '<i class="fas fa-check-circle"></i> ¡Contraseña correcta! Accediendo al expediente...';
+                        errorEl.innerHTML = '<i class="fas fa-check-circle"></i> ¡Contraseña correcta! Accediendo al expediente en este equipo...';
                     }
                     if (btnEl) {
                         btnEl.disabled = true;
@@ -6595,6 +6598,7 @@
             };
 
             window.lockTpIntegrador = function() {
+                localStorage.removeItem('tp_integrador_unlocked');
                 sessionStorage.removeItem('tp_integrador_unlocked');
                 displayTpIntegradorDashboardView();
             };
@@ -6654,7 +6658,7 @@
                             </form>
 
                             <div style="font-size: 0.78rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; gap: 6px;">
-                                <i class="fas fa-shield-alt"></i> Sesión activa en este navegador
+                                <i class="fas fa-shield-alt"></i> Acceso individual por equipo (requiere clave en cada dispositivo)
                             </div>
                         </div>
                     </div>
