@@ -59,6 +59,13 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
 12. **Integración Oficial del Taller de Dietas & Cálculo RDA en Herramientas**:
     - Se habilita e integra formalmente la tarjeta de acceso al **Taller de Dietas & Cálculo RDA (560 Alimentos / 48 Columnas)** dentro de la sección "Herramientas" (`index.html`), enlazando a `dieta/` para que los estudiantes puedan usar el planificador dietoterápico integral, buscar alimentos, costear R24H y evaluar fórmulas infantiles en sus trabajos prácticos.
 
+13. **Documentos Teóricos para el Campus Virtual de la Facultad**:
+    - Los contenidos teóricos de apoyo para el campus virtual de la UNSTA se generan en formato Word (`.docx`) profesional para facilitar su edición y actualización docente, acompañados de su versión en Markdown (`.md`) en la carpeta `catedra/documentos_teoricos/`.
+
+14. **Criterios Específicos para Resúmenes de Antropometría y Vegetarianismo**:
+    - **Antropometría**: Incluir todos los contenidos enseñados en la cátedra (marcaciones anatómicas, PB, pliegues tricipital y subescapular, circunferencia de cintura, dinamometría/fuerza de prensión, IMC/curvas OMS, cAMB de Frisancho e IMC pregestacional) **EXCLUYENDO taxativamente el Índice de Calidad Muscular (MQI)**.
+    - **Vegetarianismo en Pediatría**: Enfoque **estrictamente práctico y clínico** (clasificación, 6 grupos elementales, complementación proteica de aminoácidos limitantes, micronutrientes críticos como hierro/zinc/calcio/omega-3, protocolo dosificado de Vitamina B12 y consensos institucionales SAP/AND/AAP), **sin incluir el debate epistemológico del nutricionismo ni el juicio al huevo**.
+
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
