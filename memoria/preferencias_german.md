@@ -28,9 +28,14 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
      * **Endpoints Subrogados (*Surrogate Endpoints* / Biomarcadores)**: Mediciones intermedias en el paciente (LDL, Tensión Arterial, HbA1c, HOMA-IR) que se correlacionan con riesgo pero no son el desenlace final.
      * **Métricas Bromatológicas del Alimento**: Aminograma, valor biológico, digestibilidad proteica. Describen la composición del alimento en laboratorio, jamás deben confundirse con endpoints clínicos de un paciente.
 
-6. **Axioma Epistemológico: «La matriz alimentaria y los desenlaces mandan»**:
-   - *«Un alimento no se valida como saludable únicamente por contener un nutriente aislado en el papel (como proteína o luteína), ni se juzga exclusivamente por una sola molécula en abstracto. Lo que determina su impacto real es la cadena causal completa: cómo su matriz interactúa con los biomarcadores intermedios (ej. elevación de ApoB/LDL por colesterol y grasas saturadas) y si esa alteración se traduce efectivamente en un aumento de desenlaces clínicos duros (infartos, ACV y mortalidad).»*
-   - Debe ser la brújula conceptual de la cátedra: no caer en el elogio reduccionista de nutrientes aislados ni en la condena molecular abstracta; el estándar determinante es la cadena causal completa y los desenlaces duros.
+6. **Axioma Epistemológico: «La matriz alimentaria y los desenlaces mandan» (Modelo Oficial de 4 Niveles)**:
+   - *«Un alimento no se valida como saludable únicamente por contener un nutriente aislado en el papel (como proteína o luteína), ni se juzga exclusivamente por una sola molécula en abstracto. Lo que determina su impacto real es la cadena causal completa: cómo su matriz interactúa con los biomarcadores intermedios, cómo estos conducen a diagnósticos clínicos y si finalmente se traducen en desenlaces duros de morbimortalidad.»*
+   - **Estructura Oficial de los 4 Niveles de Causalidad Clínica**:
+     * **Nivel 1: Input Dietario / Exposición**: Alimentos consumidos, matriz, fibra, grasas saturadas, colesterol, sodio (lo que entra por la boca; variable de exposición, no desenlace en sí).
+     * **Nivel 2: Marcadores Intermedios / Biomarcadores**: Antropométricos (IMC, cintura, ICT, cuello, AMB), hemodinámicos (presión arterial), funcionales (fuerza de agarre) y bioquímicos (HbA1c, glucemia, perfil lipídico, ApoB). Monitorean riesgo biológico o reserva somática.
+     * **Nivel 3: Enfermedades Clínicas Intermedias / Diagnósticos**: Obesidad, Diabetes Tipo 2, Hipertensión Arterial, Síndrome Metabólico. Actúan como bisagra: son diagnósticos clínicos en prevención primaria, pero siguen siendo factores etiopatogénicos intermedios hacia el daño orgánico terminal.
+     * **Nivel 4: Desenlaces Finales Duros (Hard Endpoints)**: Eventos clínicos mayores irreversibles que definen supervivencia y daño severo: Infarto Agudo de Miocardio (IAM), ACV, Insuficiencia Renal en diálisis, ceguera por retinopatía, amputación y mortalidad por cualquier causa.
+   - Debe ser la brújula conceptual de la cátedra para estructurar clases, debates y evaluaciones clínicas.
 
 7. **Definición Oficial de la Cátedra: «Alimento / Dieta Saludable»**:
    - *«Aquel alimento o patrón dietario que demuestra mejorar los desenlaces clínicos duros —reduciendo la mortalidad y las enfermedades crónicas— a un costo económico y medioambiental sostenible.»*
