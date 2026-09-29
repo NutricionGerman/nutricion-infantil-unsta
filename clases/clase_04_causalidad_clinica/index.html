@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Causalidad Clínica, Biomarcadores y Desenlaces Duros — Cátedra Nutrición Infantil UNSTA</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            },
+            p1: '#10b981', // Verde esmeralda (Exposición / Input)
+            p2: '#3b82f6', // Azul zafiro (Marcador Intermedio / Biomarcador)
+            p3: '#f59e0b', // Ámbar / Naranja (Enfermedad Intermedia)
+            p4: '#ef4444', // Rojo rubí (Desenlace Duro)
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* Estilos de modo proyector */
+    body.projector-mode {
+      font-size: 1.15rem;
+    }
+    body.projector-mode .projector-scale {
+      font-size: 1.25em;
+    }
+    body.projector-mode .node-card {
+      padding: 1.25rem;
+      border-width: 2px;
+    }
+    
+    /* Conectores SVG */
+    .connector-line {
+      stroke-dasharray: 6;
+      animation: dash 30s linear infinite;
+    }
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -1000;
+      }
+    }
+    
+    /* Pulso suave */
+    @keyframes subtle-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    .pulse-hover:hover {
+      animation: subtle-pulse 1.5s infinite;
+    }
+
+    /* Scrollbars elegantes */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-brand-500 selection:text-white transition-colors duration-300">
+
+  <!-- ========================================== -->
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR Y CONTROLES -->
+  <!-- ========================================== -->
+  <header class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Logotipo e Identidad de Cátedra -->
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-brand-500/20">
+          <i class="fa-solid fa-dna text-white text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30">
+              UNSTA · Nutrición Infantil
+            </span>
+            <span class="text-xs text-slate-400 font-mono">Clase 04</span>
+          </div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            Causalidad Clínica & Biomarcadores
+          </h1>
+        </div>
+      </div>
+
+      <!-- Navegación de Pestañas -->
+      <nav class="hidden md:flex items-center gap-1 bg-slate-800/60 p-1.5 rounded-xl border border-slate-700/60 text-sm font-medium">
+        <button onclick="switchTab('mapa')" id="nav-mapa" class="tab-btn active px-4 py-2 rounded-lg text-white bg-brand-600 shadow-md transition-all flex items-center gap-2">
+          <i class="fa-solid fa-diagram-project"></i>
+          <span>Mapa Mental Causal</span>
+        </button>
+        <button onclick="switchTab('weintraub')" id="nav-weintraub" class="tab-btn px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+          <span>7 Trampas de Weintraub</span>
+        </button>
+        <button onclick="switchTab('quiz')" id="nav-quiz" class="tab-btn px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-gamepad text-emerald-400"></i>
+          <span>Clasificador en Vivo</span>
+        </button>
+        <button onclick="switchTab('teoria')" id="nav-teoria" class="tab-btn px-4 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-700/50 transition-all flex items-center gap-2">
+          <i class="fa-solid fa-book-bookmark text-indigo-400"></i>
+          <span>Axioma & Evidencia</span>
+        </button>
+      </nav>
+
+      <!-- Selector de Modos y Controles -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleProjectorMode()" id="btn-projector" class="px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-700 hover:border-amber-500/50 bg-slate-800/80 hover:bg-amber-500/10 text-slate-300 hover:text-amber-300 transition-all flex items-center gap-2 shadow-sm" title="Alternar modo proyector para el aula con letras grandes y alto contraste">
+          <i class="fa-solid fa-chalkboard-user text-amber-400"></i>
+          <span id="txt-projector">Modo Proyector</span>
+        </button>
+        <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 flex items-center justify-center text-slate-300 hover:text-white transition-all" title="Tema">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Menú Móvil -->
+    <div class="md:hidden flex overflow-x-auto px-4 py-2 border-t border-slate-800 gap-2 text-xs font-medium bg-slate-900">
+      <button onclick="switchTab('mapa')" class="tab-btn-m active px-3 py-1.5 rounded-lg bg-brand-600 text-white whitespace-nowrap">Mapa Mental</button>
+      <button onclick="switchTab('weintraub')" class="tab-btn-m px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">7 Trampas Weintraub</button>
+      <button onclick="switchTab('quiz')" class="tab-btn-m px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">Clasificador Juego</button>
+      <button onclick="switchTab('teoria')" class="tab-btn-m px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 whitespace-nowrap">Axiomas</button>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- CONTENEDOR PRINCIPAL DE PESTAÑAS -->
+  <!-- ========================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- ================================================================ -->
+    <!-- PESTAÑA 1: MAPA MENTAL INTERACTIVO (PIPELINE DE CAUSALIDAD L-TO-R) -->
+    <!-- ================================================================ -->
+    <section id="tab-mapa" class="tab-content block space-y-6">
+      
+      <!-- Banner Pedagógico y Filtro de Vías -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-400 border border-brand-500/20 text-xs font-semibold mb-2">
+              <i class="fa-solid fa-route"></i> Flujo Causal Continuo
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Los 4 Peldaños de la Causalidad Clínica
+            </h2>
+            <p class="text-sm text-slate-300 max-w-2xl mt-1">
+              La regla de oro: <strong class="text-emerald-400">El Peldaño 1 entra desde el ambiente</strong>, el <strong class="text-blue-400">Peldaño 2 es la respuesta interna del cuerpo</strong>, el <strong class="text-amber-400">Peldaño 3 es el diagnóstico sindrómico</strong> y el <strong class="text-rose-400">Peldaño 4 es la supervivencia y el daño irreversible</strong>.
+            </p>
+          </div>
+          
+          <!-- Filtro de Vías Causales -->
+          <div class="bg-slate-950/70 p-2 rounded-xl border border-slate-800 flex flex-wrap items-center gap-1.5 self-start md:self-auto">
+            <span class="text-xs font-semibold text-slate-400 px-2">Ver Vía:</span>
+            <button onclick="highlightPathway('all')" class="path-filter active px-2.5 py-1 rounded-lg text-xs font-medium bg-slate-800 text-white hover:bg-slate-700 transition-all">Todos</button>
+            <button onclick="highlightPathway('nutricion')" class="path-filter px-2.5 py-1 rounded-lg text-xs font-medium text-emerald-400 hover:bg-emerald-950/40 transition-all border border-emerald-500/30">🥗 Dieta</button>
+            <button onclick="highlightPathway('ejercicio')" class="path-filter px-2.5 py-1 rounded-lg text-xs font-medium text-blue-400 hover:bg-blue-950/40 transition-all border border-blue-500/30">🏃 Ejercicio</button>
+            <button onclick="highlightPathway('tabaco')" class="path-filter px-2.5 py-1 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-950/40 transition-all border border-rose-500/30">🚬 Tabaco</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pipeline de 4 Columnas Horizontales -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start relative">
+        
+        <!-- ======================= -->
+        <!-- COLUMNA 1: PELDAÑO 1    -->
+        <!-- ======================= -->
+        <div class="bg-slate-900/80 border-2 border-emerald-500/40 rounded-2xl p-4 space-y-4 shadow-lg shadow-emerald-950/20 relative group">
+          <div class="flex items-center justify-between pb-3 border-b border-emerald-500/20">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                1
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-extrabold text-emerald-400">Exposición Exógena</span>
+                <h3 class="text-base font-bold text-white">Inputs & Estilo de Vida</h3>
+              </div>
+            </div>
+            <i class="fa-solid fa-arrow-right-to-bracket text-emerald-400/60 text-sm"></i>
+          </div>
+
+          <p class="text-xs text-slate-300">
+            Todo lo que ingresa desde el exterior o es una conducta voluntaria del sujeto.
+          </p>
+
+          <!-- Nodos Peldaño 1 -->
+          <div class="space-y-2.5">
+            <!-- Nodo: Calorías y Dieta -->
+            <div onclick="openNodeDetail('calorias')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🔥</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Calorías Totales (VCT)</h4>
+                    <p class="text-[11px] text-slate-400">Volumen de energía química exógena</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20">Dietario</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Ultraprocesados y Matriz -->
+            <div onclick="openNodeDetail('ultraprocesados')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🥫</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Ultraprocesados vs Alimentos</h4>
+                    <p class="text-[11px] text-slate-400">Matriz alimentaria y aditivos cosméticos</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20">Dietario</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Nutrientes aislados -->
+            <div onclick="openNodeDetail('nutrientes')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🌾</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Fibra, Sodio, AGS, Grasas Trans</h4>
+                    <p class="text-[11px] text-slate-400">Nutrientes químicos ingresados por boca</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20">Dietario</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Actividad Física -->
+            <div onclick="openNodeDetail('actividad_fisica')" data-path="ejercicio" class="node-card cursor-pointer bg-slate-950/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🏃</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Actividad Física & Pasos</h4>
+                    <p class="text-[11px] text-slate-400">Conducta motora: min/sem o pasos/día</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20">Conducta</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Tabaquismo -->
+            <div onclick="openNodeDetail('tabaquismo')" data-path="tabaco" class="node-card cursor-pointer bg-slate-950/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🚬</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Tabaquismo (Cigarrillos/día)</h4>
+                    <p class="text-[11px] text-slate-400">Input tóxico exógeno inhalado</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded border border-rose-500/30">¡Es Peldaño 1!</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Sueño y Estrés -->
+            <div onclick="openNodeDetail('sueno_estres')" data-path="all" class="node-card cursor-pointer bg-slate-950/80 hover:bg-emerald-950/30 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🌙</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Sueño Circadiano & Estrés</h4>
+                    <p class="text-[11px] text-slate-400">Horas de descanso y carga alostática</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20">Ambiente</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======================= -->
+        <!-- COLUMNA 2: PELDAÑO 2    -->
+        <!-- ======================= -->
+        <div class="bg-slate-900/80 border-2 border-blue-500/40 rounded-2xl p-4 space-y-4 shadow-lg shadow-blue-950/20 relative group">
+          <div class="flex items-center justify-between pb-3 border-b border-blue-500/20">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-sm">
+                2
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-extrabold text-blue-400">Respuesta Biológica</span>
+                <h3 class="text-base font-bold text-white">Biomarcadores & Subrogados</h3>
+              </div>
+            </div>
+            <i class="fa-solid fa-microscope text-blue-400/60 text-sm"></i>
+          </div>
+
+          <p class="text-xs text-slate-300">
+            Lo que el organismo <strong class="text-blue-300">manifiesta internamente</strong> ante las exposiciones del Peldaño 1.
+          </p>
+
+          <!-- Nodos Peldaño 2 -->
+          <div class="space-y-2.5">
+            <!-- Nodo: Presión Arterial -->
+            <div onclick="openNodeDetail('presion_arterial')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🩺</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Presión Arterial (mmHg)</h4>
+                    <p class="text-[11px] text-slate-400">Subrogado verdadero (Weintraub ++++)</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20">Verdadero</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Colesterol LDL -->
+            <div onclick="openNodeDetail('colesterol_ldl')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🧪</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Colesterol LDL & ApoB</h4>
+                    <p class="text-[11px] text-slate-400">Causal aterogénico (Weintraub ++++)</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20">Verdadero</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Colesterol HDL (Falso Subrogado) -->
+            <div onclick="openNodeDetail('colesterol_hdl')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-rose-950/30 border border-rose-500/40 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">⚠️</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-rose-300">Colesterol HDL</h4>
+                    <p class="text-[11px] text-slate-400">Epifenómeno / Falso subrogado (Weintraub −)</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/20 text-rose-300 px-1.5 py-0.5 rounded border border-rose-500/30">Falso Subrogado</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Perímetro de Cintura / Grasa Visceral -->
+            <div onclick="openNodeDetail('perimetro_cintura')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">📏</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Cintura & Índice Cintura-Estatura</h4>
+                    <p class="text-[11px] text-slate-400">Adiposidad visceral y riesgo metabólico</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20">Antropométrico</span>
+              </div>
+            </div>
+
+            <!-- Nodo: VO2 máx y Dinamometría -->
+            <div onclick="openNodeDetail('aptitud_fisica')" data-path="ejercicio" class="node-card cursor-pointer bg-slate-950/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">💪</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">VO2 máx & Fuerza de Agarre</h4>
+                    <p class="text-[11px] text-slate-400">Reserva somática y salud mitocondrial</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20">Funcional</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Disfunción Endotelial y Cotinina -->
+            <div onclick="openNodeDetail('disfuncion_endotelial')" data-path="tabaco" class="node-card cursor-pointer bg-slate-950/80 hover:bg-blue-950/30 border border-slate-800 hover:border-blue-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🫀</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Disfunción Endotelial & Cotinina</h4>
+                    <p class="text-[11px] text-slate-400">Daño vascular subclínico por tabaco</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/20">Vascular</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======================= -->
+        <!-- COLUMNA 3: PELDAÑO 3    -->
+        <!-- ======================= -->
+        <div class="bg-slate-900/80 border-2 border-amber-500/40 rounded-2xl p-4 space-y-4 shadow-lg shadow-amber-950/20 relative group">
+          <div class="flex items-center justify-between pb-3 border-b border-amber-500/20">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm">
+                3
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-400">Entidades Nosológicas</span>
+                <h3 class="text-base font-bold text-white">Diagnósticos Clínicos</h3>
+              </div>
+            </div>
+            <i class="fa-solid fa-file-medical text-amber-400/60 text-sm"></i>
+          </div>
+
+          <p class="text-xs text-slate-300">
+            La <strong class="text-amber-300">bisagra médica</strong>: diagnósticos sindrómicos que actúan como puente hacia el daño orgánico.
+          </p>
+
+          <!-- Nodos Peldaño 3 -->
+          <div class="space-y-2.5">
+            <!-- Nodo: Obesidad -->
+            <div onclick="openNodeDetail('obesidad')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-amber-950/30 border border-slate-800 hover:border-amber-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">⚖️</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Obesidad Clínica</h4>
+                    <p class="text-[11px] text-slate-400">Exceso patológico de tejido adiposo</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/20">Enfermedad</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Diabetes Tipo 2 -->
+            <div onclick="openNodeDetail('diabetes_tipo2')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-amber-950/30 border border-slate-800 hover:border-amber-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🩸</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Diabetes Mellitus Tipo 2</h4>
+                    <p class="text-[11px] text-slate-400">Falla de célula beta y glucotoxicidad</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/20">Enfermedad</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Hipertensión Arterial -->
+            <div onclick="openNodeDetail('hipertension')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-amber-950/30 border border-slate-800 hover:border-amber-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🩺</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Hipertensión Arterial Esencial</h4>
+                    <p class="text-[11px] text-slate-400">Enfermedad vascular crónica sostenida</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/20">Enfermedad</span>
+              </div>
+            </div>
+
+            <!-- Nodo: EPOC -->
+            <div onclick="openNodeDetail('epoc')" data-path="tabaco" class="node-card cursor-pointer bg-slate-950/80 hover:bg-amber-950/30 border border-slate-800 hover:border-amber-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🫁</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">EPOC & Bronquitis Crónica</h4>
+                    <p class="text-[11px] text-slate-400">Diagnóstico pulmonar obstructivo por tabaco</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/20">Enfermedad</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Síndrome Metabólico -->
+            <div onclick="openNodeDetail('sindrome_metabolico')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-amber-950/30 border border-slate-800 hover:border-amber-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🔄</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Síndrome Metabólico</h4>
+                    <p class="text-[11px] text-slate-400">Constelación de 3 o más factores de riesgo</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/20">Síndrome</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======================= -->
+        <!-- COLUMNA 4: PELDAÑO 4    -->
+        <!-- ======================= -->
+        <div class="bg-slate-900/80 border-2 border-rose-500/40 rounded-2xl p-4 space-y-4 shadow-lg shadow-rose-950/20 relative group">
+          <div class="flex items-center justify-between pb-3 border-b border-rose-500/20">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-sm">
+                4
+              </div>
+              <div>
+                <span class="text-[10px] uppercase tracking-wider font-extrabold text-rose-400">Eventos Duros</span>
+                <h3 class="text-base font-bold text-white">Hard Endpoints</h3>
+              </div>
+            </div>
+            <i class="fa-solid fa-heart-pulse text-rose-400/60 text-sm"></i>
+          </div>
+
+          <p class="text-xs text-slate-300">
+            Los <strong class="text-rose-400">únicos desenlaces definitivos</strong>: daño orgánico mayor, discapacidad y supervivencia.
+          </p>
+
+          <!-- Nodos Peldaño 4 -->
+          <div class="space-y-2.5">
+            <!-- Nodo: IAM -->
+            <div onclick="openNodeDetail('iam')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">💔</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Infarto de Miocardio (IAM)</h4>
+                    <p class="text-[11px] text-slate-400">Oclusión coronaria y necrosis miocárdica</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/20">Desenlace Duro</span>
+              </div>
+            </div>
+
+            <!-- Nodo: ACV -->
+            <div onclick="openNodeDetail('acv')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🧠</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Accidente Cerebrovascular</h4>
+                    <p class="text-[11px] text-slate-400">ACV isquémico / hemorrágico invalidante</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/20">Desenlace Duro</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Cáncer -->
+            <div onclick="openNodeDetail('cancer')" data-path="tabaco" class="node-card cursor-pointer bg-slate-950/80 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🦀</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Cáncer (Pulmón / Colon)</h4>
+                    <p class="text-[11px] text-slate-400">Neoplasia invasiva vinculada a tabaco o dieta</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/20">Desenlace Duro</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Diálisis y Amputación -->
+            <div onclick="openNodeDetail('dialisis_amputacion')" data-path="nutricion" class="node-card cursor-pointer bg-slate-950/80 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">🩹</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Diálisis Renal & Amputación</h4>
+                    <p class="text-[11px] text-slate-400">Microangiopatía diabética terminal</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/20">Desenlace Duro</span>
+              </div>
+            </div>
+
+            <!-- Nodo: Muerte por todas las causas -->
+            <div onclick="openNodeDetail('mortalidad')" data-path="all" class="node-card cursor-pointer bg-slate-950/80 hover:bg-rose-950/30 border border-slate-800 hover:border-rose-500/60 p-3 rounded-xl transition-all duration-200">
+              <div class="flex items-start justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">⚰️</span>
+                  <div>
+                    <h4 class="text-sm font-semibold text-white">Mortalidad Total / Prematura</h4>
+                    <p class="text-[11px] text-slate-400">El estándar oro de supervivencia humana</p>
+                  </div>
+                </div>
+                <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded border border-rose-500/20">El Rey</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- PESTAÑA 2: SIMULADOR DE LAS 7 TRAMPAS DE WEINTRAUB (PANELES A-G) -->
+    <!-- ================================================================ -->
+    <section id="tab-weintraub" class="tab-content hidden space-y-6">
+      
+      <!-- Introducción Weintraub -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-semibold mb-2">
+              <i class="fa-solid fa-triangle-exclamation"></i> The Perils of Surrogate Endpoints (Weintraub et al., Eur Heart J 2015)
+            </div>
+            <h2 class="text-2xl font-bold text-white">
+              Las 7 Configuraciones Causales de un Biomarcador
+            </h2>
+            <p class="text-sm text-slate-300 max-w-3xl mt-1">
+              De los 7 escenarios biológicos posibles entre una intervención, un biomarcador y un desenlace, <strong class="text-emerald-400">¡SOLO EL PANEL (A) ES UN SUBROGADO VERDADERO Y SEGURO!</strong> En los otros 6, fiarse únicamente del marcador conduce a graves errores o catástrofes clínicas.
+            </p>
+          </div>
+          <div class="text-xs font-mono text-slate-400 bg-slate-950 p-3 rounded-xl border border-slate-800">
+            Fuente: Fleming & DeMets / Lancet 2010;376:1673
+          </div>
+        </div>
+
+        <!-- Selector de Paneles (A al G) -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 mt-6">
+          <button onclick="selectWeintraubPanel('A')" id="btn-panel-A" class="weintraub-btn active p-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/10 text-emerald-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1 shadow-md">
+            <span class="text-xs uppercase text-emerald-400">Panel A</span>
+            <span>El Verdadero</span>
+            <span class="text-[10px] text-emerald-400/80">✅ Confiable</span>
+          </button>
+          <button onclick="selectWeintraubPanel('B')" id="btn-panel-B" class="weintraub-btn p-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1">
+            <span class="text-xs uppercase text-slate-400">Panel B</span>
+            <span>Aguas Abajo</span>
+            <span class="text-[10px] text-slate-400">Aspirina</span>
+          </button>
+          <button onclick="selectWeintraubPanel('C')" id="btn-panel-C" class="weintraub-btn p-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1">
+            <span class="text-xs uppercase text-slate-400">Panel C</span>
+            <span>El Espejismo</span>
+            <span class="text-[10px] text-rose-400">⚠️ Ensayo CAST</span>
+          </button>
+          <button onclick="selectWeintraubPanel('D')" id="btn-panel-D" class="weintraub-btn p-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1">
+            <span class="text-xs uppercase text-slate-400">Panel D</span>
+            <span>Mero Testigo</span>
+            <span class="text-[10px] text-slate-400">Epifenómeno</span>
+          </button>
+          <button onclick="selectWeintraubPanel('E')" id="btn-panel-E" class="weintraub-btn p-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1">
+            <span class="text-xs uppercase text-slate-400">Panel E</span>
+            <span>Fracaso Total</span>
+            <span class="text-[10px] text-rose-400">💥 Torcetrapib</span>
+          </button>
+          <button onclick="selectWeintraubPanel('F')" id="btn-panel-F" class="weintraub-btn p-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1">
+            <span class="text-xs uppercase text-slate-400">Panel F</span>
+            <span>Efecto Ciego</span>
+            <span class="text-[10px] text-slate-400">Mecanismo oculto</span>
+          </button>
+          <button onclick="selectWeintraubPanel('G')" id="btn-panel-G" class="weintraub-btn p-3 rounded-xl border border-slate-700 bg-slate-800/80 hover:bg-slate-700 text-slate-300 font-bold text-sm text-center transition-all flex flex-col items-center gap-1">
+            <span class="text-xs uppercase text-slate-400">Panel G</span>
+            <span>Vías Múltiples</span>
+            <span class="text-[10px] text-amber-400">Riesgo residual</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Visor Dinámico del Panel Seleccionado -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Esquema Gráfico Recreado (SVG Interactivo) -->
+        <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-center relative min-h-[380px]">
+          <div class="absolute top-4 left-4 flex items-center gap-2">
+            <span id="diagram-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              Panel A: El Único Subrogado Verdadero
+            </span>
+          </div>
+          
+          <!-- Contenedor del Diagrama SVG SVG reactivo -->
+          <div id="svg-diagram-container" class="w-full max-w-md my-auto pt-6">
+            <!-- Inyectado dinámicamente por JavaScript -->
+          </div>
+        </div>
+
+        <!-- Ficha de Análisis Clínico y Pedagógico -->
+        <div class="lg:col-span-6 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <h3 id="panel-title" class="text-xl font-bold text-white">Panel A — El Subrogado Verdadero</h3>
+              <span id="panel-status-icon" class="text-2xl">✅</span>
+            </div>
+
+            <div class="mt-4 space-y-3">
+              <div>
+                <h4 class="text-xs uppercase tracking-wider font-extrabold text-brand-400">Mecanismo Biológico</h4>
+                <p id="panel-mechanism" class="text-sm text-slate-300 mt-1 leading-relaxed">
+                  La intervención actúa antes de la bifurcación causal. Al frenar la raíz etiopatogénica, mejora el biomarcador y, de forma matemáticamente consistente, previene el desenlace clínico duro.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <h4 class="text-xs uppercase tracking-wider font-extrabold text-amber-400 flex items-center gap-2">
+                  <i class="fa-solid fa-hospital-user"></i> Caso Clínico Real
+                </h4>
+                <p id="panel-case" class="text-xs text-slate-300 mt-1 leading-relaxed">
+                  <strong>Presión Arterial y ACV</strong>: Reducir la presión arterial con dieta DASH, restricción de sodio o fármacos antihipertensivos disminuye directamente la incidencia de accidentes cerebrovasculares e infartos en proporción directa a los mmHg reducidos.
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                <h4 class="text-xs uppercase tracking-wider font-extrabold text-indigo-400 flex items-center gap-2">
+                  <i class="fa-solid fa-graduation-cap"></i> Lección para los Alumnos de la Cátedra
+                </h4>
+                <p id="panel-lesson" class="text-xs text-slate-300 mt-1 leading-relaxed">
+                  Solo cuando un marcador cumple esta regla (cambiar el marcador predice de forma innegable cambiar el infarto o la muerte) podemos considerarlo un objetivo terapéutico de salud.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <span>¿Es un biomarcador válido?</span>
+            <span id="panel-verdict" class="font-bold text-emerald-400">SÍ (El único 100% válido)</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- PESTAÑA 3: MINIJUEGO CLASIFICADOR EN VIVO (DESAFÍO DE AULA)      -->
+    <!-- ================================================================ -->
+    <section id="tab-quiz" class="tab-content hidden space-y-6">
+      
+      <!-- Cabecera del Juego -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 border border-slate-800 rounded-2xl p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold mb-2">
+              <i class="fa-solid fa-gamepad"></i> Dinámica Interactiva de Aula
+            </div>
+            <h2 class="text-2xl font-bold text-white">
+              El Clasificador Clínico en Vivo
+            </h2>
+            <p class="text-sm text-slate-300 mt-1 max-w-2xl">
+              Proyecta esta pantalla en clase. Pide a los alumnos que voten a qué peldaño pertenece cada variable y presiona el botón para descubrir la justificación científica.
+            </p>
+          </div>
+
+          <!-- Marcador de Aciertos y Racha -->
+          <div class="flex items-center gap-3 bg-slate-950 p-3 rounded-2xl border border-slate-800 self-start sm:self-auto">
+            <div class="text-center px-3 border-r border-slate-800">
+              <span class="text-xs text-slate-400 block font-mono">PUNTAJE</span>
+              <span id="quiz-score" class="text-xl font-extrabold text-emerald-400">0</span>
+            </div>
+            <div class="text-center px-3 border-r border-slate-800">
+              <span class="text-xs text-slate-400 block font-mono">RACHA</span>
+              <span id="quiz-streak" class="text-xl font-extrabold text-amber-400">🔥 0</span>
+            </div>
+            <div class="text-center px-3">
+              <span class="text-xs text-slate-400 block font-mono">PROGRESO</span>
+              <span id="quiz-progress" class="text-sm font-bold text-slate-300">1 / 24</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta del Desafío Activo -->
+      <div class="max-w-3xl mx-auto space-y-6">
+        
+        <div class="bg-slate-900 border-2 border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+          
+          <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <span id="q-category" class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+              Categoría
+            </span>
+            <span class="text-xs font-mono text-slate-500">¿A qué peldaño pertenece?</span>
+          </div>
+
+          <!-- Variable y Pregunta -->
+          <div class="py-8 text-center space-y-3">
+            <div id="q-icon" class="text-5xl sm:text-6xl animate-bounce">
+              🚬
+            </div>
+            <h3 id="q-name" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Tabaquismo (Cigarrillos / día)
+            </h3>
+            <p id="q-hint" class="text-sm text-slate-400 max-w-lg mx-auto">
+              Inhalación crónica de humo de tabaco cuantificada en cigarrillos diarios o paquetes-año.
+            </p>
+          </div>
+
+          <!-- Los 4 Botones de Peldaño para Votar -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <button onclick="submitQuizAnswer(1)" class="quiz-choice-btn group p-4 rounded-2xl border-2 border-emerald-500/40 hover:border-emerald-400 bg-slate-950 hover:bg-emerald-950/30 text-left transition-all flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                1
+              </div>
+              <div>
+                <span class="text-xs uppercase font-extrabold text-emerald-400 block">Peldaño 1</span>
+                <span class="text-sm font-bold text-white">Input / Exposición Externa</span>
+              </div>
+            </button>
+
+            <button onclick="submitQuizAnswer(2)" class="quiz-choice-btn group p-4 rounded-2xl border-2 border-blue-500/40 hover:border-blue-400 bg-slate-950 hover:bg-blue-950/30 text-left transition-all flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                2
+              </div>
+              <div>
+                <span class="text-xs uppercase font-extrabold text-blue-400 block">Peldaño 2</span>
+                <span class="text-sm font-bold text-white">Marcador Intermedio / Biomarcador</span>
+              </div>
+            </button>
+
+            <button onclick="submitQuizAnswer(3)" class="quiz-choice-btn group p-4 rounded-2xl border-2 border-amber-500/40 hover:border-amber-400 bg-slate-950 hover:bg-amber-950/30 text-left transition-all flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                3
+              </div>
+              <div>
+                <span class="text-xs uppercase font-extrabold text-amber-400 block">Peldaño 3</span>
+                <span class="text-sm font-bold text-white">Enfermedad Intermedia (Diagnóstico)</span>
+              </div>
+            </button>
+
+            <button onclick="submitQuizAnswer(4)" class="quiz-choice-btn group p-4 rounded-2xl border-2 border-rose-500/40 hover:border-rose-400 bg-slate-950 hover:bg-rose-950/30 text-left transition-all flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold text-lg group-hover:scale-110 transition-transform">
+                4
+              </div>
+              <div>
+                <span class="text-xs uppercase font-extrabold text-rose-400 block">Peldaño 4</span>
+                <span class="text-sm font-bold text-white">Desenlace Duro (Hard Endpoint)</span>
+              </div>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Feedback Card (Aparece tras responder) -->
+        <div id="quiz-feedback" class="hidden bg-slate-900 border rounded-3xl p-6 transition-all duration-300">
+          <div class="flex items-start gap-4">
+            <div id="fb-icon-box" class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
+              <!-- Icono dinámico -->
+            </div>
+            <div class="flex-1 space-y-2">
+              <div class="flex items-center justify-between">
+                <h4 id="fb-title" class="text-lg font-bold text-white">¡Correcto!</h4>
+                <button onclick="nextQuizCard()" class="px-4 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs transition-all flex items-center gap-2">
+                  <span>Siguiente Caso</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+              <p id="fb-explanation" class="text-sm text-slate-300 leading-relaxed">
+                <!-- Explicación pedagógica -->
+              </p>
+              <div id="fb-caution" class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-amber-300 flex items-center gap-2">
+                <i class="fa-solid fa-lightbulb text-amber-400"></i>
+                <span id="fb-caution-text">Trampa común para recordar.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- PESTAÑA 4: AXIOMAS, TEORÍA Y BIBLIOTECA CLÍNICA                   -->
+    <!-- ================================================================ -->
+    <section id="tab-teoria" class="tab-content hidden space-y-8">
+      
+      <!-- El Gran Axioma de la Cátedra -->
+      <div class="bg-gradient-to-r from-slate-900 via-brand-950/40 to-slate-900 border-2 border-brand-500/40 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-8 -top-8 w-48 h-48 bg-brand-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="max-w-3xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 border border-brand-500/30 text-xs font-semibold">
+            ⚖️ Axioma Epistemológico Fundamental
+          </div>
+          <blockquote class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+            «La matriz alimentaria y los desenlaces mandan.»
+          </blockquote>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Un alimento no se valida como saludable por contener un nutriente aislado en el papel (como proteína o luteína), ni se juzga exclusivamente por una sola molécula en abstracto. Lo que determina su impacto real es la cadena causal completa: cómo su matriz interactúa con los biomarcadores intermedios, cómo estos conducen a diagnósticos clínicos y si finalmente se traducen en desenlaces duros de morbimortalidad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Las 3 Analogías Pedagógicas Maestras -->
+      <div>
+        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-lightbulb text-amber-400"></i>
+          Las 3 Analogías Inolvidables para el Aula
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          <!-- Analogía 1 -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl">
+              🌡️
+            </div>
+            <h4 class="text-base font-bold text-white">1. El Termómetro vs La Infección</h4>
+            <span class="text-[11px] font-mono text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Para entender el HDL</span>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Si un niño tiene neumonía, el termómetro marca 39 °C. Si metes el termómetro en agua con hielo para que marque 36 °C, <strong>no curaste la infección, solo engañaste al instrumento</strong>. Subir el HDL con fármacos fue como meter el termómetro en hielo.
+            </p>
+          </div>
+
+          <!-- Analogía 2 -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl">
+              ✊
+            </div>
+            <h4 class="text-base font-bold text-white">2. Apretar la Pelotita vs Entrenar</h4>
+            <span class="text-[11px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">Para entender la Fuerza de Agarre</span>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              La fuerza de agarre predice supervivencia. Pero si le das a un anciano una pelotita antiestrés para que apriete la mano todo el día, <strong>no evitarás su infarto</strong>. La fuerza solo es subrogado cuando refleja masa muscular activa y mioquinas sistémicas.
+            </p>
+          </div>
+
+          <!-- Analogía 3 -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl">
+              🩻
+            </div>
+            <h4 class="text-base font-bold text-white">3. La Liposucción de 10 kg</h4>
+            <span class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Para entender la Cintura y Grasa Visceral</span>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              En el ensayo de Klein (NEJM 2004), aspirar 10 kg de grasa subcutánea mejoró la silueta estética pero <strong>dejó intacta la glucemia y la presión</strong>. Porque la grasa visceral que rodea al hígado y al páncreas seguía allí.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Biblioteca de Evidencia Científica -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+        <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-book text-brand-400"></i>
+          Bibliografía Seminal de la Cátedra
+        </h3>
+
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h5 class="text-sm font-bold text-white">The Perils of Surrogate Endpoints</h5>
+              <p class="text-xs text-slate-400">Weintraub WS, Lüscher TF, Pocock S. · <strong>European Heart Journal</strong> (2015) 36:2212–2218</p>
+            </div>
+            <span class="text-xs text-emerald-400 font-mono bg-emerald-500/10 px-2.5 py-1 rounded border border-emerald-500/20">Paper Matriz</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h5 class="text-sm font-bold text-white">Surrogate End Points in Clinical Trials: Are We Being Misled?</h5>
+              <p class="text-xs text-slate-400">Fleming TR, DeMets DL. · <strong>The Lancet</strong> (2010) 376:1673 & Ann Intern Med (1996)</p>
+            </div>
+            <span class="text-xs text-blue-400 font-mono bg-blue-500/10 px-2.5 py-1 rounded border border-blue-500/20">Origen de los 7 Paneles</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h5 class="text-sm font-bold text-white">Plasma HDL Cholesterol and Risk of MI: A Mendelian Randomisation Study</h5>
+              <p class="text-xs text-slate-400">Voight BF, et al. · <strong>The Lancet</strong> (2012) 380:572–580</p>
+            </div>
+            <span class="text-xs text-rose-400 font-mono bg-rose-500/10 px-2.5 py-1 rounded border border-rose-500/20">Demolición del HDL</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h5 class="text-sm font-bold text-white">Prognostic Value of Grip Strength (The PURE Study)</h5>
+              <p class="text-xs text-slate-400">Leong DP, et al. · <strong>The Lancet</strong> (2015) 386:266–273</p>
+            </div>
+            <span class="text-xs text-amber-400 font-mono bg-amber-500/10 px-2.5 py-1 rounded border border-amber-500/20">Dinamometría y Muerte</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h5 class="text-sm font-bold text-white">Absence of an Effect of Liposuction on Insulin Action and Risk Factors</h5>
+              <p class="text-xs text-slate-400">Klein S, et al. · <strong>New England Journal of Medicine</strong> (2004) 350:2549–2557</p>
+            </div>
+            <span class="text-xs text-purple-400 font-mono bg-purple-500/10 px-2.5 py-1 rounded border border-purple-500/20">Grasa Visceral vs Subcutánea</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ================================================================ -->
+  <!-- MODAL DE DETALLE DE NODO DEL MAPA MENTAL                         -->
+  <!-- ================================================================ -->
+  <div id="node-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 max-w-xl w-full rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl relative">
+      <button onclick="closeNodeModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <span id="modal-icon" class="text-3xl">🔥</span>
+        <div>
+          <span id="modal-peldaño" class="text-xs uppercase font-extrabold text-emerald-400">Peldaño 1: Input</span>
+          <h3 id="modal-title" class="text-xl font-bold text-white">Título del Nodo</h3>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <h4 class="text-xs font-mono uppercase text-slate-400">¿Qué representa biológicamente?</h4>
+          <p id="modal-bio" class="text-sm text-slate-300 mt-1 leading-relaxed">Explicación</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+          <h4 class="text-xs font-mono uppercase text-amber-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-triangle-exclamation"></i> Trampa frecuente de interpretación
+          </h4>
+          <p id="modal-trap" class="text-xs text-slate-300 mt-1 leading-relaxed">Trampa</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800">
+          <h4 class="text-xs font-mono uppercase text-brand-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-stethoscope"></i> Aplicación Pedagógica & Pediátrica
+          </h4>
+          <p id="modal-pediatrics" class="text-xs text-slate-300 mt-1 leading-relaxed">Aplicación</p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-end">
+        <button onclick="closeNodeModal()" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold transition-all">
+          Entendido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- PIE DE PÁGINA                              -->
+  <!-- ========================================== -->
+  <footer class="border-t border-slate-800 bg-slate-900/60 py-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="font-medium text-slate-400">Cátedra de Nutrición Infantil — Universidad del Norte Santo Tomás de Aquino (UNSTA)</p>
+      <p class="mt-1 font-mono text-[11px] text-slate-500">Prof. Germán · Modelo de 4 Niveles de Causalidad & Framework Weintraub</p>
+    </div>
+  </footer>
+
+  <!-- ================================================================ -->
+  <!-- SCRIPTS JS: LÓGICA DE NAVEGACIÓN, SIMULADOR Y JUEGO EN VIVO       -->
+  <!-- ================================================================ -->
+  <script>
+    // --- ESTADO GLOBAL ---
+    let currentTab = 'mapa';
+    let isProjectorMode = false;
+
+    // --- BASE DE DATOS DE NODOS DEL MAPA MENTAL ---
+    const nodeDetails = {
+      calorias: {
+        icon: '🔥',
+        peldaño: 'Peldaño 1: Input Dietario / Exposición',
+        peldañoColor: 'text-emerald-400',
+        title: 'Calorías Totales (VCT)',
+        bio: 'Representa el volumen cuantitativo de energía química exógena incorporado al organismo. Es una variable estrictamente de entrada (input), no un biomarcador ni un desenlace en sí mismo.',
+        trap: 'Creer que "una caloría es una caloría" independientemente de la matriz alimentaria. La misma cantidad de calorías en ultraprocesados genera un impacto metabólico y hormonal radicalmente distinto a alimentos enteros.',
+        pediatrics: 'En niños en crecimiento, el balance calórico positivo fisiológico es necesario para el anabolismo somático; confundir calorías totales con calidad nutricional conduce a malnutrición por exceso o por déficit oculto.'
+      },
+      ultraprocesados: {
+        icon: '🥫',
+        peldaño: 'Peldaño 1: Input Dietario / Exposición',
+        peldañoColor: 'text-emerald-400',
+        title: 'Ultraprocesados vs Matriz Real',
+        bio: 'Comestibles industriales hiperpalatables con aditivos cosméticos, emulsificantes y disrupción de la estructura celular del alimento. Constituyen una exposición ambiental y conductual.',
+        trap: 'Juzgar al ultraprocesado únicamente por su tabla de macronutrientes aislados en el dorso del paquete, ignorando el daño endotelial, la velocidad de absorción y la alteración de la microbiota.',
+        pediatrics: 'El 80% de los alimentos publicitados para niños pertenecen a este grupo; desplazan la lactancia y los alimentos naturales creando adicción al sabor dulce temprano.'
+      },
+      nutrientes: {
+        icon: '🌾',
+        peldaño: 'Peldaño 1: Input Dietario / Exposición',
+        peldañoColor: 'text-emerald-400',
+        title: 'Fibra, Sodio, Grasas Saturadas, Azúcares',
+        bio: 'Fracciones químicas aisladas consumidas en la dieta. Son variables de exposición que interactúan con la fisiología del huésped.',
+        trap: 'Aislar el nutriente de su matriz. Agregar fibra sintética o vitaminas a un snack chatarra no lo vuelve cardiosaludable (Falacia del Nutricionismo).',
+        pediatrics: 'La ingesta excesiva de sodio en papillas y snacks infantiles programa la sensibilidad a la sal y la hipertensión arterial temprana en la adolescencia.'
+      },
+      actividad_fisica: {
+        icon: '🏃',
+        peldaño: 'Peldaño 1: Estilo de Vida / Conducta',
+        peldañoColor: 'text-emerald-400',
+        title: 'Actividad Física & Sedentarismo',
+        bio: 'Conducta motora externa voluntaria (minutos de caminata, pasos diarios, METs, tiempo sentado). Es un hábito y un estímulo mecánico aplicado sobre el cuerpo.',
+        trap: 'Confundir la "actividad física" (Peldaño 1: lo que haces afuera) con la "aptitud cardiorrespiratoria o VO2 máx" (Peldaño 2: lo que tu cuerpo desarrolla adentro).',
+        pediatrics: 'El juego libre activo y la reducción del sedentarismo de pantallas (menos de 1 h/día según la OMS) son exposiciones protectoras vitales en la infancia.'
+      },
+      tabaquismo: {
+        icon: '🚬',
+        peldaño: 'Peldaño 1: Hábito Tóxico / Exposición Exógena',
+        peldañoColor: 'text-rose-400',
+        title: 'Tabaquismo (Cigarrillos / día)',
+        bio: 'Inhalación crónica de más de 4.000 xenobióticos y oxidantes exógenos. Entra por la vía aérea exactamente igual que los ultraprocesados entran por la digestiva.',
+        trap: '¡Trampa clásica de examen! Muchos creen que es Peldaño 2. No lo es: fumar es un input exógeno. Lo que está en Peldaño 2 es la carboxihemoglobina y la disfunción endotelial.',
+        pediatrics: 'El tabaquismo pasivo infantil (humo de segunda y tercera mano en el hogar) triplica el riesgo de infecciones respiratorias agudas, otitis media recurrente y crisis de asma.'
+      },
+      sueno_estres: {
+        icon: '🌙',
+        peldaño: 'Peldaño 1: Entorno & Cronobiología',
+        peldañoColor: 'text-emerald-400',
+        title: 'Sueño Circadiano & Estrés Crónico',
+        bio: 'Interacción del huésped con su ciclo de luz-oscuridad y la carga ambiental psicosocial.',
+        trap: 'Ignorar el sueño al calcular planes dietéticos. La privación de sueño eleva la grelina y el cortisol matutino, saboteando cualquier intervención calórica.',
+        pediatrics: 'El descanso regular es indispensable para la secreción fisiológica pulsátil de la Hormona de Crecimiento (GH) durante la fase de sueño profundo NREM.'
+      },
+      presion_arterial: {
+        icon: '🩺',
+        peldaño: 'Peldaño 2: Biomarcador Hemodinámico',
+        peldañoColor: 'text-blue-400',
+        title: 'Presión Arterial (mmHg)',
+        bio: 'Tensión ejercida por la sangre sobre el endotelio arterial. Subrogado de alta correlación causal predictiva (Weintraub ++++).',
+        trap: 'Creer que una sola toma aislada en consultorio define el diagnóstico; en niños requiere estandarización estricta por percentiles de sexo, edad y talla.',
+        pediatrics: 'La hipertensión infantil suele ser asintomática y secundaria a sobrepeso visceral o coartación aórtica si no se mide sistemáticamente con manguito adecuado.'
+      },
+      colesterol_ldl: {
+        icon: '🧪',
+        peldaño: 'Peldaño 2: Biomarcador Lipídico',
+        peldañoColor: 'text-blue-400',
+        title: 'Colesterol LDL & Partículas ApoB',
+        bio: 'Partículas lipoproteicas aterogénicas capaces de atravesar la íntima arterial y oxidarse, iniciando la estría grasa.',
+        trap: 'Mirar solo el colesterol total. El conteo de partículas aterogénicas (ApoB) y el LDL son el subrogado verdadero causal del daño aterosclerótico.',
+        pediatrics: 'En niños con antecedentes familiares de infarto precoz, el screening temprano de hipercolesterolemia familiar previene la muerte en la adultez joven.'
+      },
+      colesterol_hdl: {
+        icon: '⚠️',
+        peldaño: 'Peldaño 2: Falso Subrogado / Epifenómeno',
+        peldañoColor: 'text-rose-400',
+        title: 'Colesterol HDL (El Gran Espejismo)',
+        bio: 'Lipoproteína de alta densidad involucrada en el transporte reverso. Marcador epidemiológico pero NO objetivo causal.',
+        trap: 'Creer que "subir el HDL con pastillas o suplementos" salvará al paciente. Los ensayos clínicos demostraron que subir el HDL artificialmente no reduce infartos e incrementó muertes.',
+        pediatrics: 'Enseñar a los estudiantes a no prometer prevención de infartos basándose en "tener el HDL alto", sino en mantener hábitos saludables reales.'
+      },
+      perimetro_cintura: {
+        icon: '📏',
+        peldaño: 'Peldaño 2: Biomarcador Antropométrico',
+        peldañoColor: 'text-blue-400',
+        title: 'Perímetro de Cintura & Índice Cintura-Estatura',
+        bio: 'Estimador directo de la grasa intraabdominal y visceral secretora de citoquinas proinflamatorias y ácidos grasos libres a la vena porta.',
+        trap: 'Confundir pérdida de grasa subcutánea cosmética (como en la liposucción de Klein et al.) con reducción de grasa visceral metabólicamente activa.',
+        pediatrics: 'La relación Cintura/Estatura >= 0.50 en escolares es el detector más precoz de esteatosis hepática y resistencia a la insulina, superior al IMC aislado.'
+      },
+      aptitud_fisica: {
+        icon: '💪',
+        peldaño: 'Peldaño 2: Biomarcador Funcional',
+        peldañoColor: 'text-blue-400',
+        title: 'VO2 máx & Fuerza de Agarre (Dinamometría)',
+        bio: 'Capacidad de transporte de oxígeno mitocondrial y reserva muscular esquelética del organismo.',
+        trap: 'La trampa de "apretar la pelotita": entrenar solo el antebrazo sube la dinamometría pero no evita un infarto; debe ser el reflejo de fuerza corporal total.',
+        pediatrics: 'Niños con baja masa muscular y debilidad motora presentan menor densidad mineral ósea y mayor riesgo de fracturas en la adolescencia.'
+      },
+      disfuncion_endotelial: {
+        icon: '🫀',
+        peldaño: 'Peldaño 2: Biomarcador Vascular / Celular',
+        peldañoColor: 'text-blue-400',
+        title: 'Disfunción Endotelial & Carboxihemoglobina',
+        bio: 'Pérdida de la capacidad de vasodilatación dependiente de óxido nítrico e inflamación vascular subclínica provocada por xenobióticos del tabaco.',
+        trap: 'Creer que el daño del cigarrillo solo aparece cuando hay cáncer; la pérdida de elasticidad vascular ocurre desde las primeras exposiciones.',
+        pediatrics: 'Los hijos de padres fumadores presentan vasodilatación mediada por flujo reducida en arteria braquial desde la niñez temprana.'
+      },
+      obesidad: {
+        icon: '⚖️',
+        peldaño: 'Peldaño 3: Diagnóstico Clínico / Enfermedad Intermedia',
+        peldañoColor: 'text-amber-400',
+        title: 'Obesidad Clínica',
+        bio: 'Enfermedad sistémica neuroendocrina inflamatoria crónica caracterizada por disfunción del tejido adiposo.',
+        trap: 'Reducirla a "falta de voluntad". Es una enfermedad nosológica compleja que funciona como bisagra hacia el daño vascular.',
+        pediatrics: 'El sobrepeso en el niño no es "salud o gordura tierna"; el 80% de los niños con obesidad en la pubertad permanecen obesos en la adultez.'
+      },
+      diabetes_tipo2: {
+        icon: '🩸',
+        peldaño: 'Peldaño 3: Diagnóstico Clínico / Enfermedad Intermedia',
+        peldañoColor: 'text-amber-400',
+        title: 'Diabetes Mellitus Tipo 2',
+        bio: 'Trastorno metabólico caracterizado por resistencia a la insulina progresiva y agotamiento de la célula beta pancreática.',
+        trap: 'Confundir el diagnóstico de Diabetes (Peldaño 3) con tener la glucemia ligeramente alta (Peldaño 2) o con el infarto y la ceguera (Peldaño 4).',
+        pediatrics: 'Cada vez diagnosticada a menor edad en pediatría vinculada al consumo diario masivo de bebidas azucaradas y sedentarismo extremo.'
+      },
+      hipertension: {
+        icon: '🩺',
+        peldaño: 'Peldaño 3: Diagnóstico Clínico / Enfermedad Intermedia',
+        peldañoColor: 'text-amber-400',
+        title: 'Hipertensión Arterial Esencial',
+        bio: 'Diagnóstico clínico nosológico de presión persistentemente elevada por encima de los límites fisiológicos.',
+        trap: 'Tratar el número con pastillas sin corregir el sedentarismo, la ingesta de ultraprocesados y el sodio dietario de base.',
+        pediatrics: 'Requiere confirmación en tres consultas separadas con tablas de percentiles oficiales SAP/OMS según edad y talla.'
+      },
+      epoc: {
+        icon: '🫁',
+        peldaño: 'Peldaño 3: Diagnóstico Clínico / Enfermedad Intermedia',
+        peldañoColor: 'text-amber-400',
+        title: 'EPOC & Bronquitis Crónica',
+        bio: 'Obstrucción progresiva e irreversible del flujo aéreo secundaria a la inflamación de las vías aéreas por humo.',
+        trap: 'Pensar que el tabaco solo causa cáncer; el EPOC discapacita severamente al paciente décadas antes de la muerte.',
+        pediatrics: 'La exposición pediátrica al humo ambiental de tabaco reduce permanentemente el volumen espiratorio forzado (VEF1) máximo alcanzado en la vida.'
+      },
+      sindrome_metabolico: {
+        icon: '🔄',
+        peldaño: 'Peldaño 3: Diagnóstico Clínico / Síndrome',
+        peldañoColor: 'text-amber-400',
+        title: 'Síndrome Metabólico',
+        bio: 'Constelación sindrómica de al menos 3 factores: perímetro de cintura aumentado, triglicéridos altos, HDL bajo, PA elevada o glucemia alterada.',
+        trap: 'Tratar cada componente por separado con 5 pastillas diferentes en vez de tratar la resistencia a la insulina visceral de raíz.',
+        pediatrics: 'El criterio pediátrico de la IDF (International Diabetes Federation) permite identificar niños en alto riesgo cardiovascular antes de los 16 años.'
+      },
+      iam: {
+        icon: '💔',
+        peldaño: 'Peldaño 4: Desenlace Duro (Hard Endpoint)',
+        peldañoColor: 'text-rose-400',
+        title: 'Infarto Agudo de Miocardio (IAM)',
+        bio: 'Muerte irreversible de miocitos cardíacos por trombosis sobre una placa aterosclerótica rota. Evento clínico mayor.',
+        trap: 'Creer que un tratamiento es "bueno" porque bajó un marcador si en los ensayos clínicos no logró reducir los infartos reales.',
+        pediatrics: 'Las estrías grasas ateroscleróticas en arterias coronarias comienzan en la infancia a partir de los 10 años en niños con mala nutrición.'
+      },
+      acv: {
+        icon: '🧠',
+        peldaño: 'Peldaño 4: Desenlace Duro (Hard Endpoint)',
+        peldañoColor: 'text-rose-400',
+        title: 'Accidente Cerebrovascular (ACV)',
+        bio: 'Déficit neurológico focal agudo provocado por isquemia o hemorragia cerebral. Principal causa de discapacidad en adultos.',
+        trap: 'Olvidar que bajar la presión arterial es la intervención más costo-efectiva para prevenir el ACV en salud pública.',
+        pediatrics: 'Promover hábitos protectores en la niñez previene la aterosclerosis carotídea subclínica del adulto.'
+      },
+      cancer: {
+        icon: '🦀',
+        peldaño: 'Peldaño 4: Desenlace Duro (Hard Endpoint)',
+        peldañoColor: 'text-rose-400',
+        title: 'Cáncer (Pulmón / Colon)',
+        bio: 'Proliferación clonal descontrolada y metástasis. Desenlace oncológico mayor irreversible.',
+        trap: 'Creer que consumir "antioxidantes en pastillas" previene el cáncer; en el estudio CARET los betacarotenos sintéticos aumentaron el cáncer de pulmón en fumadores.',
+        pediatrics: 'La lactancia materna exclusiva y el consumo abundante de vegetales protegen contra neoplasias en la vida adulta.'
+      },
+      dialisis_amputacion: {
+        icon: '🩹',
+        peldaño: 'Peldaño 4: Desenlace Duro (Hard Endpoint)',
+        peldañoColor: 'text-rose-400',
+        title: 'Diálisis Renal & Amputación de Miembros',
+        bio: 'Falla multiorgánica terminal secundaria a microangiopatía diabética e hipertensiva sostenida por décadas.',
+        trap: 'Quedarse conforme con que el paciente "no siente nada" en etapas previas; el daño renal progresa en silencio.',
+        pediatrics: 'Controlar el ácido úrico, la microalbuminuria y el peso en adolescentes previene la insuficiencia renal crónica del adulto.'
+      },
+      mortalidad: {
+        icon: '⚰️',
+        peldaño: 'Peldaño 4: Desenlace Duro Definitivo',
+        peldañoColor: 'text-rose-400',
+        title: 'Mortalidad por Todas las Causas',
+        bio: 'El estándar de oro supremo de la investigación médica y epidemiológica: ¿logró la intervención que la persona viva más años?',
+        trap: 'Aceptar que un producto es saludable sin evidencia de impacto en supervivencia.',
+        pediatrics: 'El objetivo de la nutrición pediátrica es sentar las bases para 80 años de vida libre de discapacidad prevenible.'
+      }
+    };
+
+    // --- BASE DE DATOS DE LAS 7 TRAMPAS DE WEINTRAUB ---
+    const weintraubPanels = {
+      A: {
+        title: 'Panel A — El Único Subrogado Verdadero',
+        status: '✅',
+        verdict: 'SÍ (El único 100% confiable)',
+        badgeClass: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+        badgeText: 'Panel A: El Único Subrogado Verdadero',
+        mechanism: 'La intervención ocurre al inicio del camino causal. Al modificar la causa, mejora el biomarcador subrogado Y consecuentemente se previene el desenlace clínico duro.',
+        case: 'Presión Arterial y ACV: La reducción de la presión arterial (Peldaño 2) mediante dieta o fármacos previene de forma proporcional y predecible el Accidente Cerebrovascular (Peldaño 4).',
+        lesson: 'Para que un biomarcador sea un subrogado verdadero, el cambio en el marcador debe explicar de forma matemática el cambio en los infartos o muertes.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Línea causal principal -->
+            <line x1="40" y1="170" x2="360" y2="170" stroke="#475569" stroke-width="4" />
+            <polygon points="360,165 375,170 360,175" fill="#ef4444" />
+            <text x="240" y="200" fill="#ef4444" font-size="13" font-weight="bold">Desenlace Clínico Duro (IAM/Muerte)</text>
+
+            <!-- Intervención al inicio -->
+            <line x1="80" y1="40" x2="80" y2="155" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="75,155 80,165 85,155" fill="#10b981" />
+            <text x="40" y="30" fill="#10b981" font-size="13" font-weight="bold">Intervención (Peldaño 1)</text>
+
+            <!-- Rama hacia el subrogado -->
+            <line x1="140" y1="170" x2="250" y2="80" stroke="#3b82f6" stroke-width="4" />
+            <polygon points="245,75 258,75 252,87" fill="#3b82f6" />
+            <circle cx="260" cy="75" r="8" fill="#3b82f6" />
+            <text x="275" y="80" fill="#60a5fa" font-size="13" font-weight="bold">Subrogado (Peldaño 2)</text>
+          </svg>
+        `
+      },
+      B: {
+        title: 'Panel B — Intervención "Aguas Abajo"',
+        status: '🔍',
+        verdict: 'Funciona, pero el biomarcador no cambia',
+        badgeClass: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+        badgeText: 'Panel B: Intervención Aguas Abajo',
+        mechanism: 'El biomarcador se desvía antes en la cascada patológica, pero la intervención actúa más adelante, directamente sobre el desenlace, sin alterar el marcador.',
+        case: 'Aspirina en Cardiopatía: La aspirina previene el infarto inhibiendo la agregación plaquetaria aguas abajo, pero no reduce la placa de ateroma ni el grosor íntima-media carotídeo. Si evaluaras la aspirina solo por si achica la placa, creerías erróneamente que no sirve.',
+        lesson: 'Un tratamiento puede salvar vidas aunque el biomarcador de cabecera no se mueva un milímetro.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Línea causal principal -->
+            <line x1="40" y1="170" x2="360" y2="170" stroke="#475569" stroke-width="4" />
+            <polygon points="360,165 375,170 360,175" fill="#ef4444" />
+            <text x="240" y="200" fill="#ef4444" font-size="13" font-weight="bold">Desenlace Clínico Duro</text>
+
+            <!-- Rama hacia el subrogado antes -->
+            <line x1="80" y1="170" x2="190" y2="80" stroke="#3b82f6" stroke-width="4" />
+            <circle cx="195" cy="75" r="8" fill="#3b82f6" />
+            <text x="210" y="80" fill="#60a5fa" font-size="13" font-weight="bold">Subrogado (Placa Ateroma)</text>
+
+            <!-- Intervención aguas abajo -->
+            <line x1="280" y1="40" x2="280" y2="155" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="275,155 280,165 285,155" fill="#10b981" />
+            <text x="240" y="30" fill="#10b981" font-size="13" font-weight="bold">Intervención (Aspirina)</text>
+          </svg>
+        `
+      },
+      C: {
+        title: 'Panel C — El Espejismo / La Ilusión Mortal',
+        status: '💀',
+        verdict: 'PELIGRO: El marcador mejora pero el paciente muere',
+        badgeClass: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+        badgeText: 'Panel C: El Espejismo Mortal',
+        mechanism: 'La intervención actúa directamente sobre la rama del marcador y lo "corrige" o apaga en el análisis, pero la vía patológica letal sigue su curso intacta hacia la muerte.',
+        case: 'Ensayo CAST (Antiarrítmicos): Las drogas eliminaban las extrasístoles ventriculares en el ECG (el marcador salía impecable), pero duplicaron los paros cardíacos y muertes frente a placebo.',
+        lesson: 'La trampa de "apretar la pelotita" o "maquillar el análisis". Normalizar un número no significa curar al paciente.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Línea causal principal -->
+            <line x1="40" y1="170" x2="360" y2="170" stroke="#ef4444" stroke-width="4" />
+            <polygon points="360,165 375,170 360,175" fill="#ef4444" />
+            <text x="240" y="200" fill="#ef4444" font-size="13" font-weight="bold">Muerte / Paro Cardíaco</text>
+
+            <!-- Rama hacia el subrogado -->
+            <line x1="120" y1="170" x2="270" y2="80" stroke="#3b82f6" stroke-width="4" />
+            <circle cx="275" cy="75" r="8" fill="#3b82f6" />
+            <text x="285" y="80" fill="#60a5fa" font-size="13" font-weight="bold">Subrogado (ECG sin arritmias)</text>
+
+            <!-- Intervención solo sobre la rama del subrogado -->
+            <line x1="200" y1="40" x2="200" y2="115" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="195,115 200,125 205,115" fill="#10b981" />
+            <text x="140" y="30" fill="#10b981" font-size="13" font-weight="bold">Intervención (Fármaco CAST)</text>
+          </svg>
+        `
+      },
+      D: {
+        title: 'Panel D — El Mero Testigo (Epifenómeno)',
+        status: '👁️',
+        verdict: 'NO causal: Coincidencia inestable',
+        badgeClass: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        badgeText: 'Panel D: Epifenómeno sin Causalidad',
+        mechanism: 'La intervención afecta a la vez al marcador y al desenlace, pero por vías totalmente paralelas: el marcador no es el motor causal, es un espectador.',
+        case: 'Tratamientos que bajan marcadores inflamatorios no específicos pero no previenen eventos si la causa subyacente no se resuelve.',
+        lesson: 'Correlación jamás equivale a causalidad biológica.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Vía del desenlace -->
+            <line x1="40" y1="170" x2="360" y2="170" stroke="#475569" stroke-width="4" />
+            <polygon points="360,165 375,170 360,175" fill="#ef4444" />
+            <text x="240" y="200" fill="#ef4444" font-size="13" font-weight="bold">Desenlace Duro</text>
+
+            <!-- Vía separada del marcador -->
+            <line x1="160" y1="130" x2="280" y2="60" stroke="#3b82f6" stroke-width="4" />
+            <circle cx="285" cy="55" r="8" fill="#3b82f6" />
+            <text x="295" y="60" fill="#60a5fa" font-size="13" font-weight="bold">Marcador (Espectador)</text>
+
+            <!-- Intervención que cruza ambas vías accidentalmente -->
+            <line x1="220" y1="20" x2="220" y2="155" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="215,155 220,165 225,155" fill="#10b981" />
+            <text x="160" y="15" fill="#10b981" font-size="13" font-weight="bold">Intervención de efecto dual</text>
+          </svg>
+        `
+      },
+      E: {
+        title: 'Panel E — El Fracaso del Torcetrapib y Niacina',
+        status: '💥',
+        verdict: 'FRACASO TOTAL: Marcador sube pero no salva vidas',
+        badgeClass: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+        badgeText: 'Panel E: Fracaso de la Causalidad',
+        mechanism: 'El marcador se encuentra en una vía totalmente desvinculada de la enfermedad real. La intervención modifica espectacularmente el marcador, pero tiene CERO impacto en salvar la vida del paciente.',
+        case: 'Inhibidores de CETP (Torcetrapib): Subieron el colesterol HDL en un 60%, pero aumentaron la mortalidad cardiovascular en un 58%. El estudio fue cancelado de urgencia por el comité de bioética.',
+        lesson: 'La analogía del termómetro en hielo: enfriar el vidrio no cura la neumonía.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Vía real de la enfermedad sin tocar -->
+            <line x1="40" y1="170" x2="360" y2="170" stroke="#ef4444" stroke-width="4" />
+            <polygon points="360,165 375,170 360,175" fill="#ef4444" />
+            <text x="240" y="200" fill="#ef4444" font-size="13" font-weight="bold">Infarto / Muerte (Intacta)</text>
+
+            <!-- Vía desvinculada del falso subrogado -->
+            <line x1="120" y1="100" x2="260" y2="50" stroke="#3b82f6" stroke-width="4" />
+            <circle cx="265" cy="45" r="8" fill="#3b82f6" />
+            <text x="275" y="50" fill="#60a5fa" font-size="13" font-weight="bold">HDL Colesterol (+60%)</text>
+
+            <!-- Intervención solo sobre la vía del HDL -->
+            <line x1="180" y1="20" x2="180" y2="70" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="175,70 180,80 185,70" fill="#10b981" />
+            <text x="130" y="15" fill="#10b981" font-size="13" font-weight="bold">Torcetrapib / Niacina</text>
+          </svg>
+        `
+      },
+      F: {
+        title: 'Panel F — Beneficio Ciego / Mecanismo Oculto',
+        status: '🛡️',
+        verdict: 'Salva vidas pero no por ese marcador',
+        badgeClass: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
+        badgeText: 'Panel F: Beneficio Ciego',
+        mechanism: 'La intervención protege contra el desenlace duro a través de mecanismos biológicos reales, pero el biomarcador monitoreado en sangre no se entera porque está en una vía desconectada.',
+        case: 'Inhibidores SGLT2 o agonistas GLP-1 que reducen mortalidad cardiovascular en diabéticos mucho más de lo que explicaría su discreta reducción de HbA1c (efecto pleiotrópico hemodinámico y renal).',
+        lesson: 'No juzgues una intervención médica o dietaria únicamente por el biomarcador que sabes medir en laboratorio.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Vía real donde la intervención sí salva vidas -->
+            <line x1="40" y1="170" x2="360" y2="170" stroke="#10b981" stroke-width="4" />
+            <polygon points="360,165 375,170 360,175" fill="#10b981" />
+            <text x="240" y="200" fill="#10b981" font-size="13" font-weight="bold">Supervivencia Protegida</text>
+
+            <!-- Intervención directa sobre la enfermedad -->
+            <line x1="220" y1="40" x2="220" y2="155" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="215,155 220,165 225,155" fill="#10b981" />
+            <text x="170" y="30" fill="#10b981" font-size="13" font-weight="bold">Intervención Protectora</text>
+
+            <!-- Marcador desconectado que no se mueve -->
+            <line x1="160" y1="120" x2="280" y2="60" stroke="#475569" stroke-width="3" stroke-dasharray="4" />
+            <circle cx="285" cy="55" r="7" fill="#475569" />
+            <text x="295" y="60" fill="#94a3b8" font-size="12">Marcador ciego</text>
+          </svg>
+        `
+      },
+      G: {
+        title: 'Panel G — Múltiples Vías Causales de la Enfermedad',
+        status: '🌐',
+        verdict: 'Parcial: Cierra una puerta pero quedan otras abiertas',
+        badgeClass: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+        badgeText: 'Panel G: Vías Múltiples y Riesgo Residual',
+        mechanism: 'Hacia el infarto o la muerte confluyen múltiples autopistas biológicas. La intervención y el subrogado cierran una de las vías, pero si las otras siguen activas, el desenlace ocurre de todos modos.',
+        case: 'Estatinas vs Tabaquismo y Estrés: Bajar el LDL con estatinas reduce una parte del riesgo; pero si el paciente sigue fumando 20 cigarrillos al día y sedentario, las otras vías causales lo llevarán al infarto.',
+        lesson: 'La salud requiere un abordaje integral de todos los factores del Peldaño 1; no basta con arreglar un solo marcador.',
+        svg: `
+          <svg viewBox="0 0 400 220" class="w-full h-auto">
+            <!-- Vía 1 (Aterogénica / LDL) -->
+            <line x1="40" y1="140" x2="360" y2="140" stroke="#3b82f6" stroke-width="3" />
+            <polygon points="360,135 375,140 360,145" fill="#ef4444" />
+            
+            <!-- Vía 2 (Tabaco / Inflamación) -->
+            <line x1="40" y1="190" x2="360" y2="190" stroke="#ef4444" stroke-width="3" />
+            <polygon points="360,185 375,190 360,195" fill="#ef4444" />
+            <text x="250" y="210" fill="#ef4444" font-size="12" font-weight="bold">Desenlace Duro (Vía 2)</text>
+
+            <!-- Intervención solo en Vía 1 -->
+            <line x1="100" y1="30" x2="100" y2="125" stroke="#10b981" stroke-width="3" stroke-dasharray="6" class="connector-line" />
+            <polygon points="95,125 100,135 105,125" fill="#10b981" />
+            <text x="60" y="20" fill="#10b981" font-size="12" font-weight="bold">Intervención (Estatina)</text>
+
+            <!-- Subrogado en Vía 1 -->
+            <line x1="160" y1="140" x2="260" y2="60" stroke="#3b82f6" stroke-width="3" />
+            <circle cx="265" cy="55" r="7" fill="#3b82f6" />
+            <text x="275" y="60" fill="#60a5fa" font-size="12" font-weight="bold">Subrogado (LDL)</text>
+          </svg>
+        `
+      }
+    };
+
+    // --- BASE DE DATOS DEL JUEGO CLASIFICADOR (24 ÍTEMS) ---
+    const quizItems = [
+      {
+        name: 'Tabaquismo (Cigarrillos / día)',
+        icon: '🚬',
+        category: 'Estilo de Vida & Toxicología',
+        correctLevel: 1,
+        hint: 'Inhalación crónica voluntaria de xenobióticos exógenos medida en paquetes-año.',
+        explanation: '¡Es Peldaño 1! Fumar es un input tóxico exógeno que entra por las vías respiratorias. Lo que pertenece al Peldaño 2 es la carboxihemoglobina o la disfunción endotelial que causa.',
+        caution: 'La trampa más común: muchos alumnos creen que es Peldaño 2 porque "daña el cuerpo". No, es la causa exógena.'
+      },
+      {
+        name: 'Presión Arterial Sistólica (mmHg)',
+        icon: '🩺',
+        category: 'Hemodinamia & Fisiología',
+        correctLevel: 2,
+        hint: 'Fuerza que ejerce la sangre contra las paredes arteriales registrada en consultorio.',
+        explanation: '¡Correcto! Es Peldaño 2 (Marcador Intermedio). Es una variable biológica interna continua y uno de los subrogados verdaderos más fieles de la medicina (Weintraub ++++).',
+        caution: 'No confundir con la enfermedad clínica diagnosticada (Hipertensión Arterial, que es Peldaño 3).'
+      },
+      {
+        name: 'Colesterol HDL ("El Colesterol Bueno")',
+        icon: '⚠️',
+        category: 'Bioquímica & Lipoproteínas',
+        correctLevel: 2,
+        hint: 'Fracción lipoproteica asociada tradicionalmente a transporte reverso en estudios observacionales.',
+        explanation: '¡Correcto, es Peldaño 2! Pero ojo: es un FALSO SUBROGADO (epifenómeno). Subirlo con pastillas no previene infartos.',
+        caution: 'Recuerda el caso Torcetrapib y la analogía del termómetro en hielo.'
+      },
+      {
+        name: 'Infarto Agudo de Miocardio (IAM)',
+        icon: '💔',
+        category: 'Cardiología Clínica',
+        correctLevel: 4,
+        hint: 'Necrosis celular miocárdica por oclusión coronaria aguda irreversible.',
+        explanation: '¡Correcto! Es Peldaño 4 (Hard Endpoint). Es un desenlace clínico duro mayor que define supervivencia y daño anatómico definitivo.',
+        caution: 'Nunca debe considerarse un marcador intermedio; es el evento final que todas las terapias buscan evitar.'
+      },
+      {
+        name: 'Consumo de Fibra Dietaria (g/día)',
+        icon: '🌾',
+        category: 'Nutrición Dietética',
+        correctLevel: 1,
+        hint: 'Polisacáridos no digeribles ingeridos por vía oral en legumbres, cereales enteros y vegetales.',
+        explanation: '¡Es Peldaño 1! Es un componente químico de los alimentos consumidos (variable de exposición nutricional).',
+        caution: 'El nutriente entra por la boca (Peldaño 1); la producción colónica de butirato o la saciedad es Peldaño 2.'
+      },
+      {
+        name: 'Diabetes Mellitus Tipo 2',
+        icon: '🩸',
+        category: 'Endocrinología Clínica',
+        correctLevel: 3,
+        hint: 'Entidad nosológica diagnosticada por criterios ADA (corte de glucemia, HbA1c o PTOG).',
+        explanation: '¡Exacto! Es Peldaño 3 (Diagnóstico Clínico / Enfermedad Intermedia). Es la bisagra médica entre los biomarcadores alterados y las amputaciones o diálisis.',
+        caution: 'Diferenciar entre "tener glucemia 128 mg/dL" (Peldaño 2) y el diagnóstico de Diabetes Tipo 2 (Peldaño 3).'
+      },
+      {
+        name: 'Fuerza Muscular de Agarre (Dinamometría)',
+        icon: '✊',
+        category: 'Antropometría & Función Somática',
+        correctLevel: 2,
+        hint: 'Kilogramos de presión isométrica máxima registrados con dinamómetro Jamar.',
+        explanation: '¡Correcto! Es Peldaño 2 (Biomarcador Funcional / Reserva Somática). Refleja la calidad y cantidad de masa muscular sistémica.',
+        caution: 'Recuerda: apretar una pelotita de goma para subir la marca en la mano no salva vidas si no hay masa muscular en todo el cuerpo.'
+      },
+      {
+        name: 'Obesidad (Diagnóstico Clínico)',
+        icon: '⚖️',
+        category: 'Enfermedad Crónica',
+        correctLevel: 3,
+        hint: 'Enfermedad crónica caracterizada por disfunción del tejido adiposo visceral.',
+        explanation: '¡Correcto! Es Peldaño 3 (Diagnóstico Clínico). No es solo "pesar más", es una patología neuroendocrina reconocida por la OMS.',
+        caution: 'El IMC o el perímetro de cintura en centímetros están en Peldaño 2; el diagnóstico nosológico de Obesidad está en Peldaño 3.'
+      },
+      {
+        name: 'Accidente Cerebrovascular (ACV)',
+        icon: '🧠',
+        category: 'Neurología & Vascular',
+        correctLevel: 4,
+        hint: 'Evento isquémico o hemorrágico que provoca secuela neurológica o muerte.',
+        explanation: '¡Correcto! Es Peldaño 4 (Desenlace Clínico Duro). Es una de las principales causas de pérdida de años de vida ajustados por discapacidad.',
+        caution: 'Reducir la presión arterial (Peldaño 2) previene directamente el ACV (Panel A de Weintraub).'
+      },
+      {
+        name: 'Actividad Física Semanal (Minutos o Pasos)',
+        icon: '🏃',
+        category: 'Estilo de Vida',
+        correctLevel: 1,
+        hint: 'Volumen de movimiento corporal voluntario registrado con podómetro o reloj.',
+        explanation: '¡Es Peldaño 1! Es una conducta externa. La adaptación biológica interna que genera (VO2 máx, mitocondrias) es Peldaño 2.',
+        caution: 'El paciente realiza actividad física (Peldaño 1) y su cuerpo desarrolla aptitud y fuerza (Peldaño 2).'
+      },
+      {
+        name: 'Perímetro de Cintura (cm)',
+        icon: '📏',
+        category: 'Antropometría Nutricional',
+        correctLevel: 2,
+        hint: 'Medición con cinta métrica inextensible en el punto medio entre cresta ilíaca y última costilla.',
+        explanation: '¡Correcto! Es Peldaño 2 (Biomarcador Antropométrico). Estima la masa de tejido adiposo visceral intraabdominal.',
+        caution: 'La liposucción cosmética quita grasa subcutánea pero no grasa visceral; por eso no cura el metabolismo (Klein et al., NEJM 2004).'
+      },
+      {
+        name: 'Insuficiencia Renal Terminal en Hemodiálisis',
+        icon: '🩹',
+        category: 'Nefrología Clínica',
+        correctLevel: 4,
+        hint: 'Pérdida irreversible del filtrado glomerular que exige terapia de sustitución renal.',
+        explanation: '¡Correcto! Es Peldaño 4 (Hard Endpoint). Es el desenlace de la microangiopatía diabética o hipertensiva avanzada.',
+        caution: 'La microalbuminuria es Peldaño 2; la diálisis es Peldaño 4.'
+      },
+      {
+        name: 'Hemoglobina Glicosilada (HbA1c %)',
+        icon: '🧪',
+        category: 'Bioquímica Clínica',
+        correctLevel: 2,
+        hint: 'Porcentaje de hemoglobina unida irreversiblemente a glucosa en los últimos 90-120 días.',
+        explanation: '¡Correcto! Es Peldaño 2 (Biomarcador Glucémico). Modula el riesgo de complicaciones microvasculares.',
+        caution: 'Bajar agresivamente la HbA1c con múltiples fármacos no redujo la mortalidad en el ensayo ACCORD.'
+      },
+      {
+        name: 'EPOC (Enfermedad Pulmonar Obstructiva Crónica)',
+        icon: '🫁',
+        category: 'Neumonología Clínica',
+        correctLevel: 3,
+        hint: 'Enfermedad respiratoria crónica progresiva secundaria a tabaquismo confirmada por espirometría.',
+        explanation: '¡Exacto! Es Peldaño 3 (Diagnóstico Intermedio). Conecta el tabaquismo (Peldaño 1) con la insuficiencia respiratoria o muerte (Peldaño 4).',
+        caution: 'Fumar = Peldaño 1. EPOC = Peldaño 3. Cáncer de pulmón o Muerte = Peldaño 4.'
+      },
+      {
+        name: 'Consumo Diario de Calorías (VCT)',
+        icon: '🔥',
+        category: 'Nutrición Dietética',
+        correctLevel: 1,
+        hint: 'Aporte de kilocalorías totales registradas en un R24H o registro alimentario.',
+        explanation: '¡Es Peldaño 1! Es la variable cuantitativa de entrada (input energético).',
+        caution: 'El gasto o balance calórico no es un desenlace de salud; es una variable de balance de masa.'
+      },
+      {
+        name: 'Mortalidad por Cualquier Causa',
+        icon: '⚰️',
+        category: 'Epidemiología Suprema',
+        correctLevel: 4,
+        hint: 'El evento final indiscutible: si el paciente sigue vivo o falleció.',
+        explanation: '¡Correcto! Es el rey del Peldaño 4 (El Hard Endpoint Supremo). Nada tiene valor en medicina si acorta la vida.',
+        caution: 'El fin último de la nutrición clínica y la pediatría es garantizar longevidad saludable y libre de discapacidad.'
+      },
+      {
+        name: 'Horas y Calidad de Sueño Nocturno',
+        icon: '🌙',
+        category: 'Estilo de Vida & Cronobiología',
+        correctLevel: 1,
+        hint: 'Tiempo de descanso circadiano y ausencia de disrupción por pantallas o turnos rotativos.',
+        explanation: '¡Es Peldaño 1! Es un determinante ambiental y conductual externo del exposoma.',
+        caution: 'La resistencia matutina a la insulina que genera la falta de sueño es Peldaño 2.'
+      },
+      {
+        name: 'Colesterol LDL (mg/dL)',
+        icon: '🧪',
+        category: 'Lipoproteínas Aterogénicas',
+        correctLevel: 2,
+        hint: 'Concentración de partículas que penetran la pared arterial e inician la aterosclerosis.',
+        explanation: '¡Correcto! Es Peldaño 2 (Subrogado Verdadero ++++). Reducir el LDL reduce proporcionalmente los infartos coronarios.',
+        caution: 'A diferencia del HDL, el LDL es un agente causal directo en la formación de placa.'
+      },
+      {
+        name: 'Síndrome Metabólico (Diagnóstico)',
+        icon: '🔄',
+        category: 'Clínica Metabólica',
+        correctLevel: 3,
+        hint: 'Presencia simultánea de al menos 3 criterios clínicos de adiposidad e insulino-resistencia.',
+        explanation: '¡Correcto! Es Peldaño 3 (Diagnóstico Sindrómico).',
+        caution: 'Los componentes individuales son Peldaño 2; el síndrome agrupado es Peldaño 3.'
+      },
+      {
+        name: 'Consumo de Alimentos Ultraprocesados',
+        icon: '🥫',
+        category: 'Nutrición Dietética',
+        correctLevel: 1,
+        hint: 'Ingesta de productos del Grupo 4 de NOVA (cereales azucarados, gaseosas, snacks empaquetados).',
+        explanation: '¡Es Peldaño 1! Es una exposición dietaria masiva en la infancia moderna.',
+        caution: 'La matriz cosmética del ultraprocesado burla los centros hipotalámicos de saciedad.'
+      },
+      {
+        name: 'Consumo Máximo de Oxígeno (VO2 máx)',
+        icon: '🫁',
+        category: 'Fisiología del Ejercicio',
+        correctLevel: 2,
+        hint: 'Mililitros de oxígeno consumidos por kilo por minuto durante esfuerzo ergométrico máximo.',
+        explanation: '¡Correcto! Es Peldaño 2 (Biomarcador Funcional). Es uno de los mejores predictores de supervivencia a largo plazo.',
+        caution: 'Requiere entrenamiento físico real para mejorar; no hay fármacos que aumenten el VO2 máx de forma segura.'
+      },
+      {
+        name: 'Área Muscular del Brazo (AMB en cm²)',
+        icon: '💪',
+        category: 'Antropometría Pediátrica',
+        correctLevel: 2,
+        hint: 'Cálculo a partir del Perímetro Braquial y Pliegue Tricipital según la fórmula de Frisancho.',
+        explanation: '¡Correcto! Es Peldaño 2 (Biomarcador Antropométrico de Masa Magra). Monitorea la reserva proteica somática en pediatría.',
+        caution: 'No es un diagnóstico; es un indicador cuantitativo del compartimento muscular.'
+      },
+      {
+        name: 'Cáncer Colorrectal',
+        icon: '🦀',
+        category: 'Oncología Digestiva',
+        correctLevel: 4,
+        hint: 'Neoplasia maligna de colon vinculada a consumo excesivo de carnes procesadas y baja fibra.',
+        explanation: '¡Correcto! Es Peldaño 4 (Desenlace Clínico Duro). Evento oncológico mayor que requiere cirugía y quimioterapia.',
+        caution: 'La presencia de pólipos adenomatosos previos es Peldaño 2/3; el cáncer invasivo es Peldaño 4.'
+      },
+      {
+        name: 'Estrés Psicosocial Crónico',
+        icon: '⚡',
+        category: 'Entorno Ambiental & Psicosocial',
+        correctLevel: 1,
+        hint: 'Tensión laboral sostenida, precariedad socioeconómica o entorno familiar hostil.',
+        explanation: '¡Es Peldaño 1! Es una exposición ambiental del entorno vital del paciente.',
+        caution: 'El cortisol elevado crónico o la activación del sistema simpático resultante es Peldaño 2.'
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+    let quizStreak = 0;
+
+    // --- FUNCIONES DE NAVEGACIÓN Y TABS ---
+    function switchTab(tabId) {
+      currentTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+      // Actualizar botones desktop
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-brand-600', 'text-white', 'shadow-md');
+        btn.classList.add('text-slate-300');
+      });
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('active', 'bg-brand-600', 'text-white', 'shadow-md');
+        activeBtn.classList.remove('text-slate-300');
+      }
+
+      // Actualizar botones móviles
+      document.querySelectorAll('.tab-btn-m').forEach(btn => {
+        btn.classList.remove('active', 'bg-brand-600', 'text-white');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+
+      // Si entra a Weintraub, renderizar panel inicial
+      if (tabId === 'weintraub') {
+        selectWeintraubPanel('A');
+      } else if (tabId === 'quiz') {
+        loadQuizCard();
+      }
+    }
+
+    // --- MODO PROYECTOR ---
+    function toggleProjectorMode() {
+      isProjectorMode = !isProjectorMode;
+      const body = document.body;
+      const btn = document.getElementById('btn-projector');
+      const txt = document.getElementById('txt-projector');
+
+      if (isProjectorMode) {
+        body.classList.add('projector-mode');
+        btn.classList.add('bg-amber-500/20', 'border-amber-400', 'text-amber-300');
+        txt.textContent = 'Modo Proyector: ACTIVO';
+      } else {
+        body.classList.remove('projector-mode');
+        btn.classList.remove('bg-amber-500/20', 'border-amber-400', 'text-amber-300');
+        txt.textContent = 'Modo Proyector';
+      }
+    }
+
+    function toggleTheme() {
+      // Toggle simple de acento o contraste
+      document.documentElement.classList.toggle('dark');
+      const icon = document.getElementById('theme-icon');
+      if (icon.classList.contains('fa-moon')) {
+        icon.classList.replace('fa-moon', 'fa-sun');
+      } else {
+        icon.classList.replace('fa-sun', 'fa-moon');
+      }
+    }
+
+    // --- FILTRADO DE VÍAS EN EL MAPA MENTAL ---
+    function highlightPathway(pathway) {
+      document.querySelectorAll('.path-filter').forEach(btn => {
+        btn.classList.remove('active', 'bg-slate-800', 'text-white');
+      });
+      event.target.classList.add('active', 'bg-slate-800', 'text-white');
+
+      const allNodes = document.querySelectorAll('.node-card');
+      allNodes.forEach(node => {
+        const nodePath = node.getAttribute('data-path');
+        if (pathway === 'all' || nodePath === pathway || nodePath === 'all') {
+          node.classList.remove('opacity-25', 'grayscale');
+          node.classList.add('opacity-100');
+        } else {
+          node.classList.add('opacity-25', 'grayscale');
+          node.classList.remove('opacity-100');
+        }
+      });
+    }
+
+    // --- MODAL DE DETALLE DE NODO ---
+    function openNodeDetail(nodeKey) {
+      const data = nodeDetails[nodeKey];
+      if (!data) return;
+
+      document.getElementById('modal-icon').textContent = data.icon;
+      const peldañoEl = document.getElementById('modal-peldaño');
+      peldañoEl.textContent = data.peldaño;
+      peldañoEl.className = 'text-xs uppercase font-extrabold ' + data.peldañoColor;
+      
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-bio').textContent = data.bio;
+      document.getElementById('modal-trap').textContent = data.trap;
+      document.getElementById('modal-pediatrics').textContent = data.pediatrics;
+
+      const modal = document.getElementById('node-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeNodeModal() {
+      const modal = document.getElementById('node-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // --- SIMULADOR WEINTRAUB (PANELES A AL G) ---
+    function selectWeintraubPanel(panelKey) {
+      const panel = weintraubPanels[panelKey];
+      if (!panel) return;
+
+      // Actualizar botones
+      document.querySelectorAll('.weintraub-btn').forEach(btn => {
+        btn.classList.remove('active', 'border-2', 'border-emerald-500', 'bg-emerald-500/10', 'text-emerald-300', 'border-rose-500', 'bg-rose-500/10', 'text-rose-300');
+        btn.classList.add('border-slate-700', 'text-slate-300');
+      });
+
+      const activeBtn = document.getElementById('btn-panel-' + panelKey);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-700', 'text-slate-300');
+        if (panelKey === 'A') {
+          activeBtn.classList.add('active', 'border-2', 'border-emerald-500', 'bg-emerald-500/10', 'text-emerald-300');
+        } else if (panelKey === 'C' || panelKey === 'E') {
+          activeBtn.classList.add('active', 'border-2', 'border-rose-500', 'bg-rose-500/10', 'text-rose-300');
+        } else {
+          activeBtn.classList.add('active', 'border-2', 'border-blue-500', 'bg-blue-500/10', 'text-blue-300');
+        }
+      }
+
+      // Actualizar textos
+      document.getElementById('panel-title').textContent = panel.title;
+      document.getElementById('panel-status-icon').textContent = panel.status;
+      document.getElementById('panel-mechanism').textContent = panel.mechanism;
+      document.getElementById('panel-case').innerHTML = panel.case;
+      document.getElementById('panel-lesson').textContent = panel.lesson;
+      document.getElementById('panel-verdict').textContent = panel.verdict;
+      
+      const badge = document.getElementById('diagram-badge');
+      badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold border ' + panel.badgeClass;
+      badge.textContent = panel.badgeText;
+
+      // Actualizar SVG
+      document.getElementById('svg-diagram-container').innerHTML = panel.svg;
+    }
+
+    // --- LÓGICA DEL MINIJUEGO CLASIFICADOR ---
+    function loadQuizCard() {
+      const item = quizItems[currentQuizIndex];
+      document.getElementById('q-icon').textContent = item.icon;
+      document.getElementById('q-name').textContent = item.name;
+      document.getElementById('q-category').textContent = item.category;
+      document.getElementById('q-hint').textContent = item.hint;
+      document.getElementById('quiz-progress').textContent = `${currentQuizIndex + 1} / ${quizItems.length}`;
+
+      // Resetear feedback
+      document.getElementById('quiz-feedback').classList.add('hidden');
+      document.querySelectorAll('.quiz-choice-btn').forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove('opacity-50', 'border-emerald-500', 'border-rose-500');
+      });
+    }
+
+    function submitQuizAnswer(selectedLevel) {
+      const item = quizItems[currentQuizIndex];
+      const isCorrect = (selectedLevel === item.correctLevel);
+      const feedback = document.getElementById('quiz-feedback');
+      const iconBox = document.getElementById('fb-icon-box');
+      const title = document.getElementById('fb-title');
+      const explanation = document.getElementById('fb-explanation');
+      const cautionText = document.getElementById('fb-caution-text');
+
+      // Deshabilitar botones para evitar spam
+      document.querySelectorAll('.quiz-choice-btn').forEach(btn => btn.disabled = true);
+
+      if (isCorrect) {
+        quizScore += 10;
+        quizStreak += 1;
+        feedback.className = 'bg-emerald-950/40 border-2 border-emerald-500 rounded-3xl p-6 transition-all duration-300';
+        iconBox.className = 'w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl flex-shrink-0';
+        iconBox.innerHTML = '<i class="fa-solid fa-check"></i>';
+        title.textContent = `¡Excelente! Pertenece al Peldaño ${item.correctLevel}`;
+        title.className = 'text-lg font-bold text-emerald-300';
+      } else {
+        quizStreak = 0;
+        feedback.className = 'bg-rose-950/40 border-2 border-rose-500 rounded-3xl p-6 transition-all duration-300';
+        iconBox.className = 'w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-2xl flex-shrink-0';
+        iconBox.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        title.textContent = `Incorrecto. Pertenece al Peldaño ${item.correctLevel}`;
+        title.className = 'text-lg font-bold text-rose-300';
+      }
+
+      explanation.textContent = item.explanation;
+      cautionText.textContent = item.caution;
+
+      document.getElementById('quiz-score').textContent = quizScore;
+      document.getElementById('quiz-streak').textContent = `🔥 ${quizStreak}`;
+
+      feedback.classList.remove('hidden');
+    }
+
+    function nextQuizCard() {
+      currentQuizIndex = (currentQuizIndex + 1) % quizItems.length;
+      loadQuizCard();
+    }
+
+    // Inicialización al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      selectWeintraubPanel('A');
+      loadQuizCard();
+    });
+  </script>
+</body>
+</html>
