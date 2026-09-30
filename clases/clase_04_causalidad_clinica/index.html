@@ -166,13 +166,16 @@
           </h2>
         </div>
 
-        <!-- Presets Rápidos -->
-        <div class="flex items-center gap-2 self-start md:self-auto">
+        <!-- Presets Rápidos & Modal Causal -->
+        <div class="flex items-center gap-2 self-start md:self-auto flex-wrap">
           <button onclick="setPreset('base')" class="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-xs font-bold transition-all">
             Solo Colesterol
           </button>
           <button onclick="setPreset('all')" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white text-xs font-extrabold transition-all shadow-md shadow-cyan-900/40">
             Ver Red Completa
+          </button>
+          <button onclick="openCascadeModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white text-xs font-extrabold transition-all shadow-md shadow-purple-900/40 flex items-center gap-1.5 border border-purple-400/40">
+            <i class="fa-solid fa-diagram-project"></i> Esquemas (Modal 4 Peldaños)
           </button>
         </div>
       </div>
@@ -547,12 +550,15 @@
           </div>
         </div>
 
-        <!-- Botones de Navegación de Ficha -->
-        <div class="flex items-center gap-2 self-start md:self-auto">
-          <button onclick="prevStep()" class="px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-300 text-xs font-bold border border-slate-700 flex items-center gap-1.5 transition-all">
+        <!-- Botones de Navegación de Ficha & Modal Causal -->
+        <div class="flex items-center gap-2 self-start md:self-auto flex-wrap">
+          <button onclick="openCascadeModal(currentCascadeMarkerKey)" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white text-xs font-extrabold shadow-lg shadow-indigo-950/50 flex items-center gap-2 transition-all hover:scale-105 active:scale-95 border border-indigo-400/40" title="Ver esquema vertical integrado de los 4 peldaños">
+            <i class="fa-solid fa-diagram-project"></i> <span>Ver Cascada de 4 Peldaños</span>
+          </button>
+          <button onclick="prevStep()" class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 text-slate-300 text-xs font-bold border border-slate-700 flex items-center gap-1.5 transition-all">
             <i class="fa-solid fa-chevron-left"></i> Anterior
           </button>
-          <button onclick="nextStep()" class="px-3.5 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 text-cyan-300 text-xs font-bold border border-cyan-500/40 flex items-center gap-1.5 transition-all">
+          <button onclick="nextStep()" class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-800 text-cyan-300 text-xs font-bold border border-cyan-500/40 flex items-center gap-1.5 transition-all">
             Siguiente <i class="fa-solid fa-chevron-right"></i>
           </button>
         </div>
@@ -593,9 +599,207 @@
 
       </div>
 
+      <!-- Mini-Esquema Causal de 4 Peldaños Inline en la Ficha -->
+      <div id="inline-cascade-container" class="mt-6 pt-5 border-t border-slate-800/80">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-mono uppercase font-extrabold text-cyan-400 flex items-center gap-2">
+              <i class="fa-solid fa-diagram-project"></i> Cadena Causal Integrada de 4 Peldaños para este Marcador
+            </span>
+            <span class="text-[10px] text-slate-500 font-mono hidden sm:inline">(Resumen Etiopatogénico)</span>
+          </div>
+          <button onclick="openCascadeModal(currentCascadeMarkerKey)" class="self-start sm:self-auto text-xs font-extrabold text-cyan-300 hover:text-white bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-500/40 px-3.5 py-1.5 rounded-xl flex items-center gap-2 transition-all shadow-md">
+            <i class="fa-solid fa-expand"></i> Ampliar en Modal Completo
+          </button>
+        </div>
+        <div id="inline-cascade-grid" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+          <!-- Se llena dinámicamente con resumen de P1, P2, P3 y P4 -->
+        </div>
+      </div>
+
     </div>
 
   </main>
+
+  <!-- ============================================================ -->
+  <!-- MODAL INTERACTIVO: CASCADA CAUSAL COMPLETA DE 4 PELDAÑOS    -->
+  <!-- ============================================================ -->
+  <div id="cascade-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 hidden transition-all duration-300">
+    <div class="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-slate-900 border-2 border-indigo-500/50 rounded-3xl shadow-2xl shadow-indigo-950/70 overflow-hidden">
+      
+      <!-- Cabecera del Modal -->
+      <div class="p-5 sm:p-6 border-b border-slate-800 bg-slate-950/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div id="modal-marker-icon" class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-2xl border border-indigo-500/30 flex-shrink-0 shadow-lg">
+            🩸
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-mono uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/30">
+                Esquema Causal Integrado · 4 Peldaños
+              </span>
+              <span class="text-xs text-slate-400 font-mono">Modelo Fisiopatológico</span>
+            </div>
+            <h3 id="modal-marker-title" class="text-lg sm:text-xl font-bold text-white mt-0.5">
+              Triglicéridos Plasmáticos (&gt; 150 mg/dL)
+            </h3>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 self-end sm:self-auto">
+          <button onclick="closeCascadeModal()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all border border-slate-700 text-base shadow-sm" title="Cerrar modal (Esc)">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Selector Rápido de Marcadores (Pills) -->
+      <div class="px-5 py-3 bg-slate-950/70 border-b border-slate-800 overflow-x-auto flex items-center gap-2">
+        <span class="text-[11px] font-mono uppercase text-slate-400 font-bold whitespace-nowrap mr-1 flex items-center gap-1.5">
+          <i class="fa-solid fa-filter text-indigo-400"></i> Marcador:
+        </span>
+        <button onclick="switchCascadeMarker('tg')" id="chip-tg" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>🩸</span> Triglicéridos
+        </button>
+        <button onclick="switchCascadeMarker('ldl')" id="chip-ldl" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>🧪</span> Colesterol LDL & ApoB
+        </button>
+        <button onclick="switchCascadeMarker('pa')" id="chip-pa" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>🩺</span> Presión Arterial
+        </button>
+        <button onclick="switchCascadeMarker('cintura')" id="chip-cintura" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>📏</span> Grasa Visceral / Cintura
+        </button>
+        <button onclick="switchCascadeMarker('glucemia')" id="chip-glucemia" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>🍬</span> Glucemia & HbA1c
+        </button>
+        <button onclick="switchCascadeMarker('granos_integrales')" id="chip-granos_integrales" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>🌾</span> Granos Integrales (GBD #1)
+        </button>
+        <button onclick="switchCascadeMarker('sodio')" id="chip-sodio" class="cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5">
+          <span>🧂</span> Sodio / Sal
+        </button>
+      </div>
+
+      <!-- Contenido de los 4 Peldaños Verticales Conectados (Scrollable) -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-4 max-h-[calc(92vh-160px)]">
+        
+        <!-- PELDAÑO 1 CARD -->
+        <div id="modal-card-p1" class="p-4 sm:p-5 rounded-2xl bg-emerald-950/20 border-2 border-emerald-500/60 shadow-lg glow-p1 transition-all">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-emerald-500/20">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-emerald-500 text-slate-950 flex items-center justify-center font-mono font-extrabold text-xs">1</span>
+              <h4 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider font-mono">Peldaño 1: Inputs Dietarios & Estilo de Vida</h4>
+            </div>
+            <span id="modal-badge-p1" class="text-[10px] font-mono uppercase font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              Exposoma / Entrada Oral
+            </span>
+          </div>
+          <div id="modal-items-p1" class="text-xs sm:text-sm text-slate-200 space-y-2 leading-relaxed pl-1">
+            <!-- Items de P1 -->
+          </div>
+          <div id="modal-note-p1" class="mt-3 p-2.5 rounded-xl bg-slate-950/80 border border-emerald-500/30 text-xs text-emerald-300">
+            <!-- Nota de P1 -->
+          </div>
+        </div>
+
+        <!-- CONECTOR VERTICAL 1 ➔ 2 -->
+        <div class="flex flex-col items-center justify-center -my-2 relative z-10">
+          <div class="w-0.5 h-5 bg-gradient-to-b from-emerald-500 to-cyan-500"></div>
+          <div class="w-7 h-7 rounded-full bg-slate-950 border-2 border-cyan-400 text-cyan-400 flex items-center justify-center shadow-lg text-[10px] animate-bounce">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+          <div class="w-0.5 h-5 bg-gradient-to-b from-cyan-500 to-cyan-400"></div>
+        </div>
+
+        <!-- PELDAÑO 2 CARD -->
+        <div id="modal-card-p2" class="p-4 sm:p-5 rounded-2xl bg-cyan-950/20 border-2 border-cyan-500/60 shadow-lg glow-p2 transition-all">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-cyan-500/20">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-cyan-500 text-slate-950 flex items-center justify-center font-mono font-extrabold text-xs">2</span>
+              <h4 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider font-mono">Peldaño 2: Marcador Intermedio / Biomarcador</h4>
+            </div>
+            <span id="modal-badge-p2" class="text-[10px] font-mono uppercase font-extrabold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              Subrogado Cuantitativo
+            </span>
+          </div>
+          <div id="modal-items-p2" class="text-xs sm:text-sm text-slate-200 space-y-2 leading-relaxed pl-1">
+            <!-- Items de P2 -->
+          </div>
+          <div id="modal-note-p2" class="mt-3 p-2.5 rounded-xl bg-slate-950/80 border border-cyan-500/30 text-xs text-cyan-300">
+            <!-- Nota de P2 -->
+          </div>
+        </div>
+
+        <!-- CONECTOR VERTICAL 2 ➔ 3 -->
+        <div class="flex flex-col items-center justify-center -my-2 relative z-10">
+          <div class="w-0.5 h-5 bg-gradient-to-b from-cyan-500 to-amber-500"></div>
+          <div class="w-7 h-7 rounded-full bg-slate-950 border-2 border-amber-400 text-amber-400 flex items-center justify-center shadow-lg text-[10px] animate-bounce">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+          <div class="w-0.5 h-5 bg-gradient-to-b from-amber-500 to-amber-400"></div>
+        </div>
+
+        <!-- PELDAÑO 3 CARD -->
+        <div id="modal-card-p3" class="p-4 sm:p-5 rounded-2xl bg-amber-950/20 border-2 border-amber-500/60 shadow-lg glow-p3 transition-all">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-amber-500/20">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-mono font-extrabold text-xs">3</span>
+              <h4 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider font-mono">Peldaño 3: Diagnóstico Clínico / Enfermedad Intermedia</h4>
+            </div>
+            <span id="modal-badge-p3" class="text-[10px] font-mono uppercase font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+              Entidad Nosológica CIE-10
+            </span>
+          </div>
+          <div id="modal-items-p3" class="text-xs sm:text-sm text-slate-200 space-y-2 leading-relaxed pl-1">
+            <!-- Items de P3 -->
+          </div>
+          <div id="modal-note-p3" class="mt-3 p-2.5 rounded-xl bg-slate-950/80 border border-amber-500/30 text-xs text-amber-300">
+            <!-- Nota de P3 -->
+          </div>
+        </div>
+
+        <!-- CONECTOR VERTICAL 3 ➔ 4 -->
+        <div class="flex flex-col items-center justify-center -my-2 relative z-10">
+          <div class="w-0.5 h-5 bg-gradient-to-b from-amber-500 to-rose-500"></div>
+          <div class="w-7 h-7 rounded-full bg-slate-950 border-2 border-rose-500 text-rose-400 flex items-center justify-center shadow-lg text-[10px] animate-bounce">
+            <i class="fa-solid fa-arrow-down"></i>
+          </div>
+          <div class="w-0.5 h-5 bg-gradient-to-b from-rose-500 to-rose-500"></div>
+        </div>
+
+        <!-- PELDAÑO 4 CARD -->
+        <div id="modal-card-p4" class="p-4 sm:p-5 rounded-2xl bg-rose-950/20 border-2 border-rose-500/70 shadow-lg glow-p4 transition-all">
+          <div class="flex items-center justify-between pb-2 mb-3 border-b border-rose-500/20">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-rose-500 text-white flex items-center justify-center font-mono font-extrabold text-xs">4</span>
+              <h4 class="text-xs sm:text-sm font-bold text-white uppercase tracking-wider font-mono">Peldaño 4: Desenlace Duro Final (Hard Endpoint)</h4>
+            </div>
+            <span id="modal-badge-p4" class="text-[10px] font-mono uppercase font-extrabold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">
+              Daño Orgánico / Muerte
+            </span>
+          </div>
+          <div id="modal-items-p4" class="text-xs sm:text-sm text-slate-200 space-y-2 leading-relaxed pl-1">
+            <!-- Items de P4 -->
+          </div>
+          <div id="modal-note-p4" class="mt-3 p-2.5 rounded-xl bg-slate-950/80 border border-rose-500/30 text-xs text-rose-300">
+            <!-- Nota de P4 -->
+          </div>
+        </div>
+
+        <!-- Clave Pedagógica Final -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 text-xs text-slate-400 flex items-start gap-3 mt-4 shadow-inner">
+          <span class="text-xl text-cyan-400">💡</span>
+          <div>
+            <span class="font-bold text-white block mb-0.5">Lección Pedagógica para el Nutricionista:</span>
+            El paciente no vive en el laboratorio ni muere por tener un número alto en el Peldaño 2; el paciente muere o queda discapacitado en el <strong>Peldaño 4</strong>. El nutricionista es el único profesional con la llave maestra para intervenir sobre el <strong>Peldaño 1 (Inputs)</strong> para evitar que se desencadene toda la cascada río abajo.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 
   <!-- ========================================== -->
   <!-- PIE DE PÁGINA                              -->
@@ -873,6 +1077,541 @@
       }
     };
 
+    // --- BASE DE DATOS DE CASCADAS CAUSALES COMPLETAS (LOS 4 PELDAÑOS POR MARCADOR) ---
+    const markerCascades = {
+      'tg': {
+        id: 'tg',
+        name: 'Triglicéridos Plasmáticos (> 150 mg/dL)',
+        icon: '🩸',
+        p1: {
+          title: 'Fructosa libre + Alcohol + Harinas refinadas + Sedentarismo',
+          badge: 'Exposoma / Entrada Oral & Hábitos',
+          summary: 'Bebidas azucaradas, alcohol, harinas blancas y baja actividad de la enzima LPL muscular.',
+          items: [
+            '<strong>Fructosa libre & JMAF</strong>: Bebidas azucaradas, gaseosas y ultraprocesados que entran al hígado sin freno enzimático (fructoquinasa sin inhibición por ATP).',
+            '<strong>Consumo de Alcohol</strong>: Frena drásticamente la beta-oxidación de ácidos grasos y estimula la síntesis hepática de triglicéridos.',
+            '<strong>Harinas ultra-refinadas</strong>: Disparan la hiperinsulinemia postprandial y la lipogénesis de novo hepática.',
+            '<strong>Sedentarismo</strong>: La inactividad de las masas musculares reduce la actividad de la lipoproteinlipasa (LPL) endotelial.',
+            '<strong>Grasas saturadas en exceso</strong>: Aportan sustrato exógeno directo a la sobrecarga hepática.'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Eliminar bebidas azucaradas/alcohol, reemplazar harinas blancas por cereales integrales y sumar entrenamiento de fuerza activa la LPL.'
+        },
+        p2: {
+          title: 'Triglicéridos Plasmáticos > 150 mg/dL + ApoB + Remanentes TRL',
+          badge: 'Biomarcador Plasmático Intermedio (Subrogado)',
+          summary: 'Triglicéridos en sangre > 150 mg/dL, elevación de partículas VLDL y remanentes ricos en ApoB.',
+          items: [
+            '<strong>Triglicéridos Plasmáticos en ayunas &gt; 150 mg/dL</strong> (rango óptimo deseable &lt; 100 mg/dL).',
+            '<strong>Colesterol Remanente elevado</strong>: Partículas TRL (quilomicrones y VLDL remanentes) que penetran el endotelio arterial.',
+            '<strong>Activación patológica de CETP</strong>: Enriquecimiento de partículas LDL con triglicéridos ➔ Generación de <strong>LDL pequeñas y densas (sdLDL)</strong> y caída del c-HDL.'
+          ],
+          note: '🧪 <strong>Naturaleza Subrogada</strong>: El paciente no "siente" tener 220 mg/dL de triglicéridos en 3 segundos; es un tablero de control que delata la lipogénesis de novo.'
+        },
+        p3: {
+          title: 'Hígado Graso Metabólico (MASLD) / Síndrome Metabólico / Pancreatitis',
+          badge: 'Diagnóstico Clínico / Enfermedad Intermedia',
+          summary: 'Esteatosis hepática (> 5% de grasa en hepatocitos), Síndrome Metabólico o Pancreatitis Aguda.',
+          items: [
+            '<strong>Hígado Graso Metabólico (MASLD / Esteatosis Hepática)</strong>: Acumulación ectópica de vacuolas lipídicas en el parénquima hepático.',
+            '<strong>Síndrome Metabólico</strong>: Coexistencia de dislipidemia aterogénica con perímetro de cintura aumentado e insulino-resistencia.',
+            '<strong>Pancreatitis Aguda inducida por hipertrigliceridemia</strong> (cuando los triglicéridos superan 500-1000 mg/dL por toxicidad lipásica capilar).'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: Las células están sufriendo esteatosis e inflamación crónica, pero el órgano aún no colapsó de forma irreversible.'
+        },
+        p4: {
+          title: 'Infarto de Miocardio / ACV / Cirrosis Hepática / Pancreatitis Necrotizante',
+          badge: 'Desenlace Duro Final (Hard Endpoint)',
+          summary: 'Infarto agudo por sdLDL, ictus isquémico, cirrosis con falla hepática terminal o muerte.',
+          items: [
+            '<strong>Infarto Agudo de Miocardio (IAM)</strong>: Las partículas remanentes y sdLDL penetran y rompen la placa coronaria.',
+            '<strong>Accidente Cerebrovascular (ACV)</strong>: Isquemia cerebral por aterotrombosis arterial.',
+            '<strong>Cirrosis Hepática Terminal / Falla Hepática</strong>: Fibrosis hepática avanzada por esteatohepatitis crónica (MASH).',
+            '<strong>Pancreatitis Necrotizante Fulminante</strong> con shock séptico/distributivo.',
+            '<strong>Mortalidad Cardiovascular y General Prematura</strong>.'
+          ],
+          note: '💔 <strong>Desenlace Duro Real</strong>: Aquí se pierden vidas o se produce daño irreversible en órganos vitales.'
+        }
+      },
+
+      'ldl': {
+        id: 'ldl',
+        name: 'Colesterol c-LDL (> 70 mg/dL) & ApoB',
+        icon: '🧪',
+        p1: {
+          title: 'Grasas Saturadas/Trans + Colesterol Dietario + Déficit de Fibra (GBD) + Genética',
+          badge: 'Inputs Dietarios & Genoma',
+          summary: 'Ácido palmítico, grasas trans industriales, colesterol de origen animal y bajo consumo de fibra soluble.',
+          items: [
+            '<strong>Grasas Saturadas (palmítico, mirístico, láurico)</strong>: Suprimen la transcripción y el reciclaje del receptor LDLR hepático.',
+            '<strong>Ácidos Grasos Trans industriales</strong>: El lípido más aterogénico y proinflamatorio.',
+            '<strong>Colesterol Dietario exógeno</strong>: Absorción enterocitaria vía NPC1L1 que satura el pool hepático en sinergia con saturadas.',
+            '<strong>Baja ingesta de Fibra Soluble & Granos Integrales (Riesgo #1 GBD)</strong>: Reabsorción masiva del 95% de sales biliares en íleon.',
+            '<strong>Mutaciones Genéticas</strong>: Hipercolesterolemia Familiar (mutaciones en LDLR, APOB o ganancia en PCSK9).'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Sustitución por grasas poliinsaturadas (omega-3 y 6) e incremento masivo de fibra viscosa y granos enteros intactos.'
+        },
+        p2: {
+          title: 'Colesterol c-LDL Plasmático > 70 mg/dL + ApoB Total Elevada',
+          badge: 'Biomarcador Plasmático Intermedio (Subrogado)',
+          summary: 'c-LDL por encima del umbral biológico humano (50-70 mg/dL), ApoB elevada y retención subendotelial.',
+          items: [
+            '<strong>Colesterol LDL plasmático &gt; 70 mg/dL</strong>: El rango biológico fisiológico humano es de <strong>50 a 70 mg/dL</strong> (O\'Keefe et al., JACC 2004).',
+            '<strong>Concentración total de partículas ApoB elevadas</strong> en sangre.',
+            '<strong>Penetración endotelial y retención subintimal</strong> de lipoproteínas con posterior oxidación (oxLDL).',
+            '<strong>Carga acumulada de por vida</strong>: Determinante biológico por mg-años de LDL expuesto (EAS Consensus, Ference 2017).'
+          ],
+          note: '🧪 <strong>Naturaleza Subrogada</strong>: El paciente no siente dolor por tener 160 mg/dL de LDL; es una causa necesaria silenciosa acumulada.'
+        },
+        p3: {
+          title: 'Aterosclerosis Coronaria Subclínica / Enfermedad Coronaria Estable (I25)',
+          badge: 'Diagnóstico Clínico / Enfermedad Intermedia',
+          summary: 'Placa de ateroma estenótica en arterias coronarias o carotídeas y angina de esfuerzo.',
+          items: [
+            '<strong>Aterosclerosis Coronaria Subclínica Avanzada</strong> (calcificación coronaria Agatston > 100-400).',
+            '<strong>Enfermedad Arterial Coronaria Estable (EAC) / Angina de Pecho (CIE-10: I25)</strong>.',
+            '<strong>Estenosis Carotídea</strong> o Enfermedad Arterial Periférica claudicante.',
+            'Placa ateromatosa con gran núcleo necrótico lipídico y capa fibrosa debilitada.'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: El árbol arterial está estructuralmente enfermo, pero el miocardio aún está perfundido y vivo.'
+        },
+        p4: {
+          title: 'Ruptura de Placa + Trombo Oclusivo 100% ➔ Infarto de Miocardio / Muerte',
+          badge: 'Desenlace Duro Final (Hard Endpoint)',
+          summary: 'Infarto transmural masivo (IAM), necrosis de miocitos cardíacos, paro cardíaco o muerte.',
+          items: [
+            '<strong>Ruptura o Erosión de la Capa Fibrosa de la Placa</strong> ➔ Exposición del núcleo trombogénico al flujo arterial.',
+            '<strong>Formación de Trombo Oclusivo 100%</strong> de la luz coronaria.',
+            '<strong>Infarto Agudo de Miocardio (IAM)</strong> con necrosis irreversible de tejido miocárdico.',
+            '<strong>Muerte Súbita Cardíaca</strong> por fibrilación ventricular isquémica.',
+            '<strong>Mortalidad Cardiovascular Global</strong>.'
+          ],
+          note: '💔 <strong>Desenlace Duro Real</strong>: Aquí se miden las vidas perdidas y los corazones que dejan de latir.'
+        }
+      },
+
+      'pa': {
+        id: 'pa',
+        name: 'Presión Arterial (mmHg)',
+        icon: '🩺',
+        p1: {
+          title: 'Sodio Excesivo / Sal Añadida + Déficit de Potasio + Sedentarismo + Alcohol',
+          badge: 'Inputs Dietarios & Estilo de Vida',
+          summary: 'Sodio > 2g/día (> 5g sal), falta de vegetales ricos en potasio, alcohol y estrés mantenido.',
+          items: [
+            '<strong>Sodio Excesivo / Sal añadida (&gt; 2g Na / 5g sal)</strong> provisto en un 75% por alimentos ultraprocesados.',
+            '<strong>Déficit de Potasio</strong> por baja ingesta de frutas frescas, verduras y legumbres.',
+            '<strong>Consumo habitual de Alcohol</strong>: Inducción adrenérgica y vasoconstricción periférica.',
+            '<strong>Sedentarismo</strong> y pérdida de elasticidad vascular de reposo.',
+            '<strong>Estrés psicosocial sostenido</strong>: Tono simpático alto y activación del eje Renina-Angiotensina-Aldosterona.'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Implementar patrón DASH, eliminar ultraprocesados salados y maximizar alimentos ricos en potasio y magnesio.'
+        },
+        p2: {
+          title: 'Cifras de Presión Arterial en mmHg (Sistólica ≥ 130-140 mmHg) + Rigidez Arterial',
+          badge: 'Biomarcador Hemodinámico Intermedio (Subrogado)',
+          summary: 'Medición en tensiómetro en mmHg, tensión de cizallamiento y elevación de la velocidad de onda de pulso.',
+          items: [
+            '<strong>Cifras elevadas de Presión Arterial en mmHg</strong>: Sistólica &ge; 130-140 mmHg y/o Diastólica &ge; 80-90 mmHg.',
+            '<strong>Aumento de la Tensión de Cizallamiento biomecánico</strong> contra el endotelio capilar y cerebral.',
+            '<strong>Aumento de la Velocidad de Onda de Pulso (VOP)</strong> por rigidez de la aorta y grandes arterias.'
+          ],
+          note: '🧪 <strong>Naturaleza Subrogada</strong>: El número en el tensiómetro es un parámetro biofísico lábil (el subrogado rey de Weintraub ++++).'
+        },
+        p3: {
+          title: 'Hipertensión Arterial Esencial (CIE: I10) / Hipertrofia Ventricular Izquierda',
+          badge: 'Diagnóstico Clínico / Enfermedad Intermedia',
+          summary: 'Enfermedad hipertensiva crónica diagnosticada con remodelado concéntrico del ventrículo izquierdo.',
+          items: [
+            '<strong>Hipertensión Arterial Sistémica Esencial Crónica (CIE-10: I10)</strong>.',
+            '<strong>Hipertrofia Ventricular Izquierda (HVI)</strong> concéntrica en ecocardiograma.',
+            '<strong>Retinopatía Hipertensiva Grados I-II</strong> y microalbuminuria renal incipiente.'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: El miocardio se engruesa para superar la resistencia vascular periférica; el corazón aún compensa.'
+        },
+        p4: {
+          title: 'Accidente Cerebrovascular (ACV) / Ruptura de Placa en IAM / Falla Renal',
+          badge: 'Desenlace Duro Final (Hard Endpoint)',
+          summary: 'ACV hemorrágico o isquémico, ruptura mecánica de placas coronarias en IAM o diálisis crónica.',
+          items: [
+            '<strong>Accidente Cerebrovascular (ACV) Hemorrágico</strong> por ruptura de microaneurismas encefálicos o <strong>ACV Isquémico</strong> por trombosis.',
+            '<strong>Fuerza de Cizallamiento que desencadena la Ruptura de Placa en IAM</strong>.',
+            '<strong>Insuficiencia Cardíaca Congestiva con Fracción de Eyección Reducida</strong>.',
+            '<strong>Enfermedad Renal Terminal en Hemodiálisis Crónica</strong>.',
+            '<strong>Muerte Prematura de origen cerebrovascular</strong>.'
+          ],
+          note: '💔 <strong>Desenlace Duro Real</strong>: El ACV fulminante o discapacitante es el desenlace número uno prevenible controlando el sodio.'
+        }
+      },
+
+      'cintura': {
+        id: 'cintura',
+        name: 'Perímetro Abdominal / Grasa Visceral',
+        icon: '📏',
+        p1: {
+          title: 'Sedentarismo + Superávit Calórico + Azúcares Líquidos + Cero Ejercicio de Fuerza',
+          badge: 'Inputs Dietarios & Conducta',
+          summary: 'Horas sentado, exceso de calorías procesadas, gaseosas y pérdida de masa muscular metabólica.',
+          items: [
+            '<strong>Sedentarismo prolongado</strong> (&gt; 8-10 horas/día sentado sin contracción de grandes grupos musculares).',
+            '<strong>Superávit Calórico Crónico</strong> mediado por ultraprocesados densos e hiperpalatables.',
+            '<strong>Bebidas Azucaradas & Fructosa Líquida</strong>: Estimulan selectivamente el depósito graso intraabdominal.',
+            '<strong>Ausencia de Entrenamiento de Fuerza</strong>: Deterioro de la masa muscular metabólicamente activa (sarco-obesidad).'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Déficit moderado basado en alimentos enteros y estímulo mecánico muscular para redirigir la partición de nutrientes.'
+        },
+        p2: {
+          title: 'Perímetro Abdominal Aumentado + Vuelco de Ácidos Grasos Libres Portales',
+          badge: 'Biomarcador Antropométrico Tisular (Subrogado)',
+          summary: 'Cintura > 88 cm (mujeres) / > 102 cm (hombres), secreción de adipocinas y sobrecarga portal al hígado.',
+          items: [
+            '<strong>Perímetro Abdominal aumentado</strong> (&gt; 88 cm en mujeres / &gt; 102 cm en hombres / Relación Cintura-Estatura &gt; 0.5).',
+            '<strong>Masa Grasa Visceral aumentada</strong> por bioimpedancia o DEXA.',
+            '<strong>Flujo masivo de Ácidos Grasos Libres (AGL) por la vena porta</strong> directamente hacia el hígado.',
+            '<strong>Secreción de Adipocitoquinas proinflamatorias</strong> (TNF-alfa, IL-6 y descenso de adiponectina).'
+          ],
+          note: '🧪 <strong>Naturaleza Subrogada</strong>: Los centímetros de la cinta métrica son un biomarcador somático intermedio, no la muerte del paciente.'
+        },
+        p3: {
+          title: 'Síndrome Metabólico / Resistencia a la Insulina / Hígado Graso (MASLD)',
+          badge: 'Diagnóstico Clínico Sindrómico',
+          summary: 'Constelación de disfunción metabólica, esteatosis hepática y resistencia periférica a la insulina.',
+          items: [
+            '<strong>Síndrome Metabólico</strong> (criterios clínicos ATP-III / IDF).',
+            '<strong>Obesidad Central / Disfunción Adiposa Clínica (CIE-10: E66)</strong>.',
+            '<strong>Resistencia a la Insulina Sistémica / Prediabetes</strong>.',
+            '<strong>Esteatosis Hepática Metabólica (MASLD)</strong> por lipotoxicidad crónica.'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: Es el motor fisiopatológico central que acelera tanto la enfermedad cardiovascular como la diabetes.'
+        },
+        p4: {
+          title: 'Mortalidad Cardiovascular / Infarto Agudo de Miocardio / Complicaciones Diabéticas',
+          badge: 'Desenlace Duro Final (Hard Endpoint)',
+          summary: 'Mortalidad global triplicada, infarto de miocardio acelerado por sdLDL y amputaciones.',
+          items: [
+            '<strong>Mortalidad Cardiovascular Global Prematura</strong> (multiplicada por 3 en presencia de obesidad visceral).',
+            '<strong>Infarto Agudo de Miocardio</strong> por dislipidemia aterogénica acelerada.',
+            '<strong>Diabetes Mellitus descompensada con fallo multiorgánico o amputación</strong>.',
+            '<strong>Muerte por Cualquier Causa</strong>.'
+          ],
+          note: '💔 <strong>Desenlace Duro Real</strong>: La grasa visceral silenciosa de hoy es el infarto o la muerte evitable de mañana.'
+        }
+      },
+
+      'glucemia': {
+        id: 'glucemia',
+        name: 'Glucemia en Ayunas & HbA1c',
+        icon: '🍬',
+        p1: {
+          title: 'Harinas Ultra-refinadas + Bebidas con Azúcar/JMAF + Cero Masa Muscular',
+          badge: 'Inputs Dietarios & Estilo de Vida',
+          summary: 'Carbohidratos desprovistos de fibra, bebidas azucaradas y falta de receptores GLUT4 musculares.',
+          items: [
+            '<strong>Harinas refinadas & almidones ultra-procesados</strong>: Carga glucémica extrema de absorción intestinal ultrarrápida.',
+            '<strong>Bebidas azucaradas con Jarabe de Maíz de Alta Fructosa (JMAF)</strong>.',
+            '<strong>Inactividad muscular</strong>: Cero translocación de GLUT4 independiente de insulina.',
+            '<strong>Grasa visceral ectópica</strong>: Lipotoxicidad sobre los islotes pancreáticos beta.'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Alimentos con matriz botánica intacta (legumbres, avena integral, vegetales) y masa muscular activa.'
+        },
+        p2: {
+          title: 'Glucemia en Ayunas > 100-126 mg/dL + HbA1c > 5.7%-6.5% + HOMA-IR Alto',
+          badge: 'Biomarcador Bioquímico Plasmático (Subrogado)',
+          summary: 'Niveles de glucosa en ayunas, hemoglobina glicosilada, hiperinsulinemia y glucotoxicidad vascular.',
+          items: [
+            '<strong>Glucemia en ayunas &gt; 100-126 mg/dL</strong>.',
+            '<strong>Hemoglobina Glicosilada (HbA1c &gt; 5.7% - 6.5%)</strong>.',
+            '<strong>Índice HOMA-IR elevado</strong> e hiperinsulinemia postprandial prolongada.',
+            '<strong>Formación de Productos Finales de Glicación Avanzada (AGEs)</strong> que dañan el colágeno microvascular.'
+          ],
+          note: '🧪 <strong>La Trampa del Subrogado (Ensayo ACCORD)</strong>: Bajar la HbA1c a la fuerza con fármacos intensivos no salvó vidas; aumentó la mortalidad cardiovascular general. El número bajó, pero el paciente murió.'
+        },
+        p3: {
+          title: 'Diabetes Mellitus Tipo 2 (CIE: E11) / Neuropatía & Microalbuminuria',
+          badge: 'Diagnóstico Clínico / Enfermedad Intermedia',
+          summary: 'Enfermedad endocrino-metabólica formalmente diagnosticada con daño microangiopático incipiente.',
+          items: [
+            '<strong>Diabetes Mellitus Tipo 2 (CIE-10: E11)</strong>.',
+            '<strong>Microangiopatía Diabética Subclínica</strong> (microalbuminuria en orina, enlentecimiento de la conducción nerviosa periférica).',
+            '<strong>Acantosis Nigricans & Acrocordones</strong> como signos dérmicos de hiperinsulinismo severo.'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: Es el diagnóstico nosológico de cabecera; el paciente puede permanecer años sin perder su función orgánica si frena la cascada.'
+        },
+        p4: {
+          title: 'Ceguera Irreversible / Amputación de Miembro / Diálisis Renal / IAM Silente',
+          badge: 'Desenlace Duro Final (Hard Endpoint)',
+          summary: 'Pérdida de la visión, necrosis de extremidades inferiores, fallo renal terminal o muerte cardíaca.',
+          items: [
+            '<strong>Ceguera Irreversible (Amaurosis)</strong> por retinopatía diabética proliferativa o hemorragia vítrea.',
+            '<strong>Amputación de Miembro Inferior</strong> (pie diabético isquémico/neuropático infectado).',
+            '<strong>Insuficiencia Renal Terminal en Diálisis de por vida o Trasplante</strong>.',
+            '<strong>Infarto Agudo de Miocardio Silente</strong> (por neuropatía autonómica que apaga el dolor de pecho).',
+            '<strong>Mortalidad Prematura por Cualquier Causa</strong>.'
+          ],
+          note: '💔 <strong>Desenlace Duro Real</strong>: Amputar una pierna o quedar ciego es la tragedia real e invalidante que el paciente sí experimenta.'
+        }
+      },
+
+      'granos_integrales': {
+        id: 'granos_integrales',
+        name: 'Bajo Consumo de Cereales Integrales & Fibra (Factor GBD #1)',
+        icon: '🌾',
+        p1: {
+          title: 'Consumo de Granos Integrales < 125 g/d + Fibra < 25 g/d (GBD Risk #1 The Lancet 2019)',
+          badge: 'Déficit de Input Protector (Exposoma)',
+          summary: 'Falta de granos enteros intactos, predominio de harinas refinadas y déficit de fibra fermentable.',
+          items: [
+            '<strong>Consumo de cereales integrales &lt; 125 g/día</strong> (umbral óptimo del Global Burden of Disease).',
+            '<strong>Ingesta de fibra dietaria total &lt; 25-30 g/día</strong>.',
+            '<strong>Dieta basada en harinas blancas desprovistas de salvado y germen</strong>.',
+            '<strong>Ausencia de almidón resistente y lignanos protectores</strong> propios de la matriz del grano intacto.'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Incorporar avena, centeno, cebada, arroz integral y legumbres como cimiento dietario diario.'
+        },
+        p2: {
+          title: '↑ Reabsorción de Bilis (↑ c-LDL) + ↓ Butirato Colónico + ↑ Variabilidad Glucémica',
+          badge: 'Biomarcador Plasmático e Intestinal (Subrogado)',
+          summary: 'Elevación de partículas ApoB, reducción de ácidos grasos de cadena corta y aumento de PCR-us.',
+          items: [
+            '<strong>↑ Colesterol LDL y partículas ApoB</strong>: El 95% de las sales biliares se reabsorben en íleon por falta de quelación viscosa.',
+            '<strong>↓ Producción de Ácidos Grasos de Cadena Corta (AGCC / Butirato colónico)</strong>: Disbiosis colónica proinflamatoria.',
+            '<strong>↑ Picos glucémicos e insulínicos postprandiales</strong>.',
+            '<strong>↑ Proteína C Reactiva ultrasensible (PCR-us)</strong> por inflamación endotelial sistémica.',
+            '<strong>↑ Tiempo de tránsito intestinal</strong>: Contacto prolongado de ácidos biliares secundarios y mutágenos con los colonocitos.'
+          ],
+          note: '🧪 <strong>Naturaleza Subrogada</strong>: El paciente no nota la falta de butirato en el ciego ni la reabsorción ileal de sales biliares en su día a día.'
+        },
+        p3: {
+          title: 'Aterosclerosis Coronaria Acelerada + Pólipos Colónicos + Diabetes Tipo 2',
+          badge: 'Diagnósticos Clínicos Intermedios',
+          summary: 'Enfermedad coronaria prematura, adenomas colónicos displásicos y síndrome metabólico.',
+          items: [
+            '<strong>Aterosclerosis Coronaria Subclínica Acelerada</strong>.',
+            '<strong>Pólipos y Adenomas Tubulares Colónicos</strong> (lesiones premalignas epiteliales).',
+            '<strong>Diabetes Mellitus Tipo 2 & Síndrome Metabólico</strong>.',
+            '<strong>Enfermedad Diverticular Sintomática y Estreñimiento Crónico</strong>.'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: Patologías intermedias que preceden a los grandes colapsos oncológicos y vasculares.'
+        },
+        p4: {
+          title: 'Cáncer Colorrectal Invasivo / Infarto de Miocardio / > 3 Millones de Muertes Anuales',
+          badge: 'Desenlace Duro Final (GBD Mortality & DALYs)',
+          summary: 'Muerte por neoplasia colónica invasiva, IAM, ACV y más de 3 millones de muertes en el mundo.',
+          items: [
+            '<strong>Cáncer Colorrectal Invasivo con Metástasis Hepática o Ganglionar</strong>.',
+            '<strong>Infarto Agudo de Miocardio (IAM)</strong>.',
+            '<strong>Accidente Cerebrovascular (ACV)</strong>.',
+            '<strong>Más de 3 millones de muertes prematuras anuales en el mundo atribuibles según el GBD (The Lancet 2019)</strong>.'
+          ],
+          note: '💔 <strong>Estándar de Oro del GBD</strong>: El estudio mundial demostró que la ausencia de cereales integrales y frutas mató a más personas en el mundo que el exceso de comida chatarra.'
+        }
+      },
+
+      'sodio': {
+        id: 'sodio',
+        name: 'Sodio Dietario Excesivo / Sal Añadida',
+        icon: '🧂',
+        p1: {
+          title: 'Sodio > 2g/d (> 5g Sal) + Ultraprocesados Salados + Relación Na/K Invertida',
+          badge: 'Input Dietario / Exposición',
+          summary: 'Embutidos, quesos, panes industriales, caldos y sal de mesa con baja ingesta de potasio.',
+          items: [
+            '<strong>Consumo de sodio &gt; 2 g/día (&gt; 5 g de sal/día)</strong>: Más del 70% proviene de ultraprocesados industriales.',
+            '<strong>Adición excesiva de sal de mesa en la cocción o en el plato</strong>.',
+            '<strong>Relación Sodio/Potasio marcadamente invertida (&gt; 2:1 a favor del sodio)</strong>.'
+          ],
+          note: '🎯 <strong>Acción Nutricional (Peldaño 1)</strong>: Reducir alimentos envasados salados, condimentar con especias naturales y triplicar el consumo de potasio vegetal.'
+        },
+        p2: {
+          title: 'Presión Arterial Elevada en mmHg + Retención Hidrosalina + Disfunción Endotelial',
+          badge: 'Biomarcador Hemodinámico (Subrogado)',
+          summary: 'Aumento de tensión arterial sistólica/diastólica, sobrecarga de volumen intravascular y baja síntesis de óxido nítrico.',
+          items: [
+            '<strong>Aumento de la Presión Arterial Sistólica y Diastólica (mmHg)</strong>.',
+            '<strong>Retención hídrica intravascular con aumento del volumen plasmático circulante</strong>.',
+            '<strong>Estrés oxidativo endotelial</strong> que degrada el Óxido Nítrico (NO) y bloquea la vasodilatación normal.'
+          ],
+          note: '🧪 <strong>Naturaleza Subrogada</strong>: Una presión de 145/95 mmHg no causa dolor directo inmediato, pero somete a tensión continua la microvasculatura.'
+        },
+        p3: {
+          title: 'Hipertensión Arterial Sistémica Esencial (CIE: I10) / Nefroangioesclerosis',
+          badge: 'Diagnóstico Clínico / Enfermedad Intermedia',
+          summary: 'Enfermedad hipertensiva arterial establecida, daño glomerular incipiente e hipertrofia cardíaca.',
+          items: [
+            '<strong>Hipertensión Arterial Sistémica Esencial (CIE-10: I10)</strong>.',
+            '<strong>Nefroangioesclerosis incipiente</strong>.',
+            '<strong>Hipertrofia Ventricular Izquierda (HVI)</strong>.'
+          ],
+          note: '🩺 <strong>La Bisagra Médica</strong>: El sistema vascular pierde distensibilidad y se engruesa para soportar la presión hidrostática continua.'
+        },
+        p4: {
+          title: 'Accidente Cerebrovascular Hemorrágico / Infarto de Miocardio / Falla Renal',
+          badge: 'Desenlace Duro Final (Hard Endpoint)',
+          summary: 'ACV hemorrágico masivo, insuficiencia cardíaca descompensada, diálisis renal o muerte.',
+          items: [
+            '<strong>Accidente Cerebrovascular (ACV) Hemorrágico fulminante o Isquémico masivo</strong>.',
+            '<strong>Insuficiencia Cardíaca Congestiva descompensada</strong>.',
+            '<strong>Enfermedad Renal Terminal en Diálisis</strong>.',
+            '<strong>Ruptura de placa aterosclerótica con Infarto Agudo de Miocardio (IAM)</strong>.'
+          ],
+          note: '💔 <strong>Desenlace Duro Real</strong>: El ACV y la hemorragia intracraneal representan el mayor riesgo letal del sodio descontrolado.'
+        }
+      }
+    };
+
+    const nodeToCascadeKey = {
+      'col-diet': 'ldl',
+      'sat-fat': 'ldl',
+      'low-fiber': 'granos_integrales',
+      'sodio': 'sodio',
+      'sedentarismo': 'cintura',
+      'azucar': 'tg',
+      'ldl': 'ldl',
+      'pa': 'pa',
+      'cintura': 'cintura',
+      'tg': 'tg',
+      'aterosclerosis': 'ldl',
+      'hta': 'pa',
+      'sm': 'tg',
+      'infarto': 'ldl',
+      'acv': 'pa',
+      'mortalidad': 'ldl'
+    };
+
+    let currentCascadeMarkerKey = 'tg';
+
+    // --- ACTUALIZAR LA CADENA CAUSAL INLINE (RESUMEN EN LA FICHA) ---
+    function updateInlineCascade() {
+      const casc = markerCascades[currentCascadeMarkerKey] || markerCascades['tg'];
+      const container = document.getElementById('inline-cascade-grid');
+      if (!container) return;
+
+      container.innerHTML = `
+        <!-- P1 Mini Card -->
+        <div onclick="openCascadeModal('${casc.id}')" class="cursor-pointer p-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 hover:border-emerald-400 hover:bg-emerald-950/50 transition-all flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase">Peldaño 1 · Inputs</span>
+              <span class="text-xs">📥</span>
+            </div>
+            <h5 class="text-xs font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">${casc.p1.title}</h5>
+            <p class="text-[11px] text-slate-300 leading-snug">${casc.p1.summary}</p>
+          </div>
+          <div class="mt-2 text-[10px] font-mono text-emerald-300/90 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-bullseye"></i> Punto de acción dietario
+          </div>
+        </div>
+
+        <!-- P2 Mini Card -->
+        <div onclick="openCascadeModal('${casc.id}')" class="cursor-pointer p-3 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 hover:border-cyan-400 hover:bg-cyan-950/50 transition-all flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-mono font-bold text-cyan-400 uppercase">Peldaño 2 · Biomarcador</span>
+              <span class="text-xs">🧪</span>
+            </div>
+            <h5 class="text-xs font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors">${casc.p2.title}</h5>
+            <p class="text-[11px] text-slate-300 leading-snug">${casc.p2.summary}</p>
+          </div>
+          <div class="mt-2 text-[10px] font-mono text-cyan-300/90 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-microscope"></i> Subrogado cuantitativo
+          </div>
+        </div>
+
+        <!-- P3 Mini Card -->
+        <div onclick="openCascadeModal('${casc.id}')" class="cursor-pointer p-3 rounded-2xl bg-amber-950/30 border border-amber-500/40 hover:border-amber-400 hover:bg-amber-950/50 transition-all flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-mono font-bold text-amber-400 uppercase">Peldaño 3 · Diagnóstico</span>
+              <span class="text-xs">🩺</span>
+            </div>
+            <h5 class="text-xs font-bold text-white mb-1 group-hover:text-amber-300 transition-colors">${casc.p3.title}</h5>
+            <p class="text-[11px] text-slate-300 leading-snug">${casc.p3.summary}</p>
+          </div>
+          <div class="mt-2 text-[10px] font-mono text-amber-300/90 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-stethoscope"></i> Entidad nosológica CIE-10
+          </div>
+        </div>
+
+        <!-- P4 Mini Card -->
+        <div onclick="openCascadeModal('${casc.id}')" class="cursor-pointer p-3 rounded-2xl bg-rose-950/30 border border-rose-500/50 hover:border-rose-400 hover:bg-rose-950/50 transition-all flex flex-col justify-between group shadow-sm">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-mono font-bold text-rose-400 uppercase">Peldaño 4 · Desenlace Duro</span>
+              <span class="text-xs">💔</span>
+            </div>
+            <h5 class="text-xs font-bold text-white mb-1 group-hover:text-rose-300 transition-colors">${casc.p4.title}</h5>
+            <p class="text-[11px] text-slate-300 leading-snug">${casc.p4.summary}</p>
+          </div>
+          <div class="mt-2 text-[10px] font-mono text-rose-300/90 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-heart-crack"></i> Hard Endpoint supremo
+          </div>
+        </div>
+      `;
+    }
+
+    // --- RENDERIZAR MODAL DE CASCADA CAUSAL ---
+    function renderModalCascade(markerKey) {
+      const casc = markerCascades[markerKey] || markerCascades['tg'];
+      currentCascadeMarkerKey = casc.id;
+
+      // 1. Cabecera del Modal
+      document.getElementById('modal-marker-icon').textContent = casc.icon;
+      document.getElementById('modal-marker-title').textContent = casc.name;
+
+      // 2. Resaltar chips selectores
+      document.querySelectorAll('.cascade-chip').forEach(btn => {
+        btn.className = 'cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5 border-slate-800 bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800';
+      });
+      const activeChip = document.getElementById('chip-' + casc.id);
+      if (activeChip) {
+        activeChip.className = 'cascade-chip px-3 py-1.5 rounded-xl text-xs font-bold transition-all border whitespace-nowrap flex items-center gap-1.5 border-indigo-400 bg-indigo-600/30 text-white shadow-md shadow-indigo-900/40 glow-p2';
+      }
+
+      // 3. Llenar Peldaño 1
+      document.getElementById('modal-badge-p1').textContent = casc.p1.badge;
+      document.getElementById('modal-items-p1').innerHTML = casc.p1.items.map(it => `<div class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span><div>${it}</div></div>`).join('');
+      document.getElementById('modal-note-p1').innerHTML = casc.p1.note;
+
+      // 4. Llenar Peldaño 2
+      document.getElementById('modal-badge-p2').textContent = casc.p2.badge;
+      document.getElementById('modal-items-p2').innerHTML = casc.p2.items.map(it => `<div class="flex items-start gap-2"><span class="text-cyan-400 mt-0.5">•</span><div>${it}</div></div>`).join('');
+      document.getElementById('modal-note-p2').innerHTML = casc.p2.note;
+
+      // 5. Llenar Peldaño 3
+      document.getElementById('modal-badge-p3').textContent = casc.p3.badge;
+      document.getElementById('modal-items-p3').innerHTML = casc.p3.items.map(it => `<div class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span><div>${it}</div></div>`).join('');
+      document.getElementById('modal-note-p3').innerHTML = casc.p3.note;
+
+      // 6. Llenar Peldaño 4
+      document.getElementById('modal-badge-p4').textContent = casc.p4.badge;
+      document.getElementById('modal-items-p4').innerHTML = casc.p4.items.map(it => `<div class="flex items-start gap-2"><span class="text-rose-400 mt-0.5">•</span><div>${it}</div></div>`).join('');
+      document.getElementById('modal-note-p4').innerHTML = casc.p4.note;
+    }
+
+    // --- ABRIR Y CERRAR MODAL ---
+    function openCascadeModal(markerKey) {
+      if (markerKey && markerCascades[markerKey]) {
+        currentCascadeMarkerKey = markerKey;
+      }
+      renderModalCascade(currentCascadeMarkerKey);
+      const modal = document.getElementById('cascade-modal');
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCascadeModal() {
+      const modal = document.getElementById('cascade-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function switchCascadeMarker(key) {
+      if (markerCascades[key]) {
+        currentCascadeMarkerKey = key;
+        renderModalCascade(key);
+        updateInlineCascade();
+      }
+    }
+
     // --- MOSTRAR LA DEFINICIÓN CONCEPTUAL MAESTRA DEL PELDAÑO ---
     function showPeldañoDefinition(stageNum) {
       currentStage = stageNum;
@@ -920,7 +1659,10 @@
       // 5. Scroll suave hacia la ficha si está en pantalla chica
       card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-      // 6. Redibujar sinapsis
+      // 6. Actualizar cascada causal inline
+      updateInlineCascade();
+
+      // 7. Redibujar sinapsis
       drawSynapses();
     }
 
@@ -1018,6 +1760,9 @@
     function selectNode(nodeId, stage) {
       currentNodeId = nodeId;
       currentStage = stage;
+      if (nodeToCascadeKey[nodeId]) {
+        currentCascadeMarkerKey = nodeToCascadeKey[nodeId];
+      }
       updateUI();
     }
 
@@ -1088,7 +1833,10 @@
       const card = document.getElementById('detail-card');
       card.className = `bg-slate-900/95 border-2 ${data.cardBorderClass} rounded-3xl p-6 sm:p-8 backdrop-blur-md transition-all duration-300 shadow-2xl`;
 
-      // 5. Redibujar sinapsis
+      // 5. Actualizar la cadena causal inline
+      updateInlineCascade();
+
+      // 6. Redibujar sinapsis
       drawSynapses();
     }
 
@@ -1242,12 +1990,24 @@
       });
     }
 
+    // Atajos de teclado y listeners para el Modal
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCascadeModal();
+    });
+    const modalBackdrop = document.getElementById('cascade-modal');
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', (e) => {
+        if (e.target.id === 'cascade-modal') closeCascadeModal();
+      });
+    }
+
     // Inicializar
     window.addEventListener('DOMContentLoaded', () => {
       initNeuralBackground();
       setTimeout(() => {
         applyPathwaysVisibility();
         showPeldañoDefinition(1); // Arranca mostrando la definición del Peldaño 1
+        updateInlineCascade();
       }, 100);
     });
     window.addEventListener('resize', drawSynapses);
