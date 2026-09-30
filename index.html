@@ -4471,6 +4471,38 @@
                         }
                         </style>
 
+                        <!-- GRUPO EXCLUSIVO DOCENTE: CAUSALIDAD CLÍNICA & EPIDEMIOLOGÍA (VISIBLE SOLO PARA DOCENTE) -->
+                        <div id="seccion-docente-herramientas" style="display: none; margin-top: 15px; margin-bottom: 25px;">
+                            <div class="section-header" style="margin-top: 15px; border-left: 4px solid #f59e0b; padding-left: 14px;">
+                                <i class="fas fa-user-shield header-icon" style="color: #f59e0b;"></i>
+                                <h2 style="color: #f59e0b; display: flex; align-items: center; gap: 8px;">
+                                    Espacio Exclusivo Docente
+                                    <span class="ptc-badge-pill" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); font-size: 0.75rem;">
+                                        <i class="fas fa-lock"></i> Solo Cátedra
+                                    </span>
+                                </h2>
+                                <p style="font-size: 0.85rem; color: var(--text-muted-light);">Herramientas pedagógicas avanzadas y simuladores de causalidad clínica para uso docente y cátedra.</p>
+                            </div>
+
+                            <div class="premium-tool-grid">
+                                <a href="clases/clase_04_causalidad_clinica/" class="premium-tool-card featured-tool" target="_blank" rel="noopener noreferrer" style="border: 2px solid rgba(245, 158, 11, 0.6) !important; background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), #1c212a 75%) !important; box-shadow: 0 4px 25px rgba(245, 158, 11, 0.25);">
+                                    <div class="ptc-header">
+                                        <div class="ptc-icon-wrap" style="color: #f59e0b; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4);"><i class="fas fa-project-diagram"></i></div>
+                                        <div class="ptc-title" style="color: #fff;">
+                                            Modelo de Causalidad Clínica & Red de 4 Peldaños
+                                            <span class="ptc-badge-pill" style="background: linear-gradient(45deg, #06b6d4, #10b981); color: #000; font-weight: 800; border: none;">
+                                                ⚡ Red Neuronal
+                                            </span>
+                                        </div>
+                                        <div class="ptc-action" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.4);"><i class="fas fa-external-link-alt"></i> Abrir Simulador</div>
+                                    </div>
+                                    <p class="ptc-description">
+                                        Simulador interactivo del <strong>Modelo de los 4 Peldaños</strong> (Inputs ➔ Biomarcadores ➔ Diagnósticos ➔ Desenlaces Duros). Incluye la red sináptica bioluminiscente, el modal de cascadas etiopatogénicas por marcador y la regla de oro de los 3 segundos.
+                                    </p>
+                                </a>
+                            </div>
+                        </div>
+
                         <!-- GRUPO 1: PLANIFICACIÓN Y CÁLCULO DIETOTERÁPICO -->
                         <div class="section-header" style="margin-top: 20px;">
                             <i class="fas fa-calculator header-icon" style="color: #38bdf8;"></i>
@@ -4631,8 +4663,8 @@
                             <div class="pd-arrow"><i class="fas fa-chevron-right"></i></div>
                         </a>
                         
-                        <!-- UNSTA bottom label -->
-                        <div style="text-align: center; margin-top: 50px; margin-bottom: 30px; opacity: 0.3;">
+                        <!-- UNSTA bottom label (con desbloqueo discreto para el docente) -->
+                        <div ondblclick="window.unlockDocentePrompt()" title="UNSTA (Doble clic para acceso docente)" style="text-align: center; margin-top: 50px; margin-bottom: 30px; opacity: 0.3; cursor: pointer; user-select: none;">
                             <i class="fas fa-university" style="font-size: 1.5rem; margin-bottom: 5px;"></i>
                             <div style="font-weight: 800; letter-spacing: 2px;">UNSTA</div>
                         </div>
@@ -13872,9 +13904,38 @@
             const tabGlobalConfigSection = document.getElementById('tab-global-config-section');
             const tabAuthStatus = document.getElementById('tab-master-key-status');
 
+            // Control de visibilidad de herramientas exclusivas para el docente
+            window.updateTeacherToolsVisibility = (isAuth) => {
+                const sec = document.getElementById('seccion-docente-herramientas');
+                if (sec) sec.style.display = isAuth ? 'block' : 'none';
+            };
+
+            // Función de desbloqueo discreto para el docente
+            window.unlockDocentePrompt = () => {
+                const pass = prompt('Acceso Docente - Ingrese la clave de cátedra:');
+                if (pass === 'nutri2026' || pass === 'unsta' || pass === 'docente' || pass === 'cristian') {
+                    sessionStorage.setItem('is_teacher', 'true');
+                    window.updateTeacherToolsVisibility(true);
+                    alert('✓ Acceso concedido: Herramientas docentes desbloqueadas en esta sesión.');
+                } else if (pass !== null) {
+                    alert('Clave incorrecta.');
+                }
+            };
+
             // Listener para detectar si ya hay una sesión iniciada
             firebase.auth().onAuthStateChanged((user) => {
-                if (user && user.email === 'cristian.auad@unsta.edu.ar') {
+                const isAuthTeacher = user && (user.email === 'cristian.auad@unsta.edu.ar' || (user.email && user.email.includes('unsta.edu.ar')));
+                const hasSessionTeacher = sessionStorage.getItem('is_teacher') === 'true';
+
+                if (isAuthTeacher || hasSessionTeacher) {
+                    window.currentTeacherData = user || { email: 'docente' };
+                    sessionStorage.setItem('is_teacher', 'true');
+                    window.updateTeacherToolsVisibility(true);
+                } else {
+                    window.updateTeacherToolsVisibility(false);
+                }
+
+                if (isAuthTeacher) {
                     tabMasterKeySection.style.display = 'none';
                     tabGlobalConfigSection.style.display = 'block';
                     loadGlobalTPs();
@@ -13897,6 +13958,8 @@
 
                     try {
                         await firebase.auth().signInWithEmailAndPassword(email, pass);
+                        sessionStorage.setItem('is_teacher', 'true');
+                        window.updateTeacherToolsVisibility(true);
                         // El listener onAuthStateChanged se encargará de mostrar el panel
                     } catch (e) {
                         tabAuthStatus.innerText = 'Credenciales no autorizadas';
@@ -15553,6 +15616,13 @@
                     dismissWall();
                     return;
                 }
+                if (sessionStorage.getItem('is_teacher') === 'true') {
+                    dismissWall();
+                    setTimeout(() => {
+                        if (window.updateTeacherToolsVisibility) window.updateTeacherToolsVisibility(true);
+                    }, 200);
+                    return;
+                }
 
                 // Si no, mostrar el muro
                 let awCurrentUP = null;
@@ -15601,8 +15671,12 @@
                     awTeacherBtn.textContent = 'Autenticando...';
                     try {
                         await firebase.auth().signInWithEmailAndPassword(email, pass);
+                        sessionStorage.setItem('is_teacher', 'true');
                         // Firebase onAuthStateChanged lo confirma; descartamos el muro
                         dismissWall();
+                        setTimeout(() => {
+                            if (window.updateTeacherToolsVisibility) window.updateTeacherToolsVisibility(true);
+                        }, 200);
                     } catch(e) {
                         awTeacherError.textContent = 'Credenciales incorrectas.';
                     } finally {
