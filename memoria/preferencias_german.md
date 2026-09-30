@@ -83,3 +83,12 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Valores Fisiológicos Reales de Colesterol LDL**:
       * El rango fisiológicamente normal y óptimo en humanos es de **50 a 70 mg/dL** (O'Keefe et al., JACC 2004; Ference et al., Eur Heart J 2017). Es el nivel de neonatos sanos, cazadores-recolectores y primates libres donde la aterosclerosis no progresa.
       * Todo valor por encima de **70 mg/dL** genera penetración y desarrollo acumulativo de placa aterosclerótica a lo largo del tiempo (efecto causal dependiente de la magnitud y duración acumulada de la exposición a partículas ApoB).
+
+16. **Esquema Causal Integrado por Marcador (Cascada Vertical de 4 Peldaños & Modal Interactivo)**:
+    - En herramientas interactivas de causalidad, cada biomarcador intermedio debe disponer de su cadena causal vertical completa y explícita:
+      * **Peldaño 1**: Inputs dietarios específicos y estilo de vida / factores de exposición (el punto de acción exclusivo del nutricionista).
+      * **Peldaño 2**: Biomarcador cuantitativo / medición continua en tubo o cinta (el tablero de control o subrogado).
+      * **Peldaño 3**: Diagnósticos clínicos nosológicos o enfermedades intermedias (CIE-10, donde el órgano aún vive y funciona).
+      * **Peldaño 4**: Desenlaces duros (*hard endpoints*, daño irreversible, pérdida de órgano o mortalidad).
+    - La interfaz debe permitir consultar esta cascada vertical mediante un modal interactivo con selector dinámico de marcadores (Triglicéridos, c-LDL/ApoB, Presión Arterial, Cintura/Grasa Visceral, Glucemia/HbA1c, Granos Integrales/Fibra GBD, Sodio) y un resumen compacto inline sincronizado con el nodo activo.
+
