@@ -111,24 +111,24 @@
         </div>
       </div>
 
-      <!-- Stepper / Navegador de Peldaños -->
+      <!-- Stepper / Navegador de Peldaños (Con Definiciones al Clic) -->
       <div class="hidden md:flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-2xl">
-        <button onclick="goToPeldaño(1)" id="step-btn-1" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/30">
+        <button onclick="showPeldañoDefinition(1)" id="step-btn-1" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/30" title="Ver definición del Peldaño 1">
           <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-[10px]">1</span>
-          <span>Inputs</span>
+          <span>Inputs (Definición)</span>
         </button>
         <i class="fa-solid fa-angle-right text-slate-600 text-xs"></i>
-        <button onclick="goToPeldaño(2)" id="step-btn-2" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-cyan-300">
+        <button onclick="showPeldañoDefinition(2)" id="step-btn-2" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-cyan-300" title="Ver definición del Peldaño 2">
           <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">2</span>
           <span>Biomarcadores</span>
         </button>
         <i class="fa-solid fa-angle-right text-slate-600 text-xs"></i>
-        <button onclick="goToPeldaño(3)" id="step-btn-3" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-amber-300">
+        <button onclick="showPeldañoDefinition(3)" id="step-btn-3" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-amber-300" title="Ver definición del Peldaño 3">
           <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">3</span>
           <span>Diagnósticos</span>
         </button>
         <i class="fa-solid fa-angle-right text-slate-600 text-xs"></i>
-        <button onclick="goToPeldaño(4)" id="step-btn-4" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-rose-300">
+        <button onclick="showPeldañoDefinition(4)" id="step-btn-4" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-rose-300" title="Ver definición del Peldaño 4">
           <span class="w-5 h-5 rounded-full bg-slate-800 flex items-center justify-center text-[10px]">4</span>
           <span>Desenlace Duro</span>
         </button>
@@ -298,17 +298,23 @@
         <path id="syn-cintura-ldl" d="" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4 6" fill="none" class="synapse-active" filter="url(#glow)" />
       </svg>
 
-      <!-- Las 4 Columnas Neuronales (Peldaños) -->
+      <!-- Las 4 Columnas Neuronales (Peldaños) con Cabeceras Interactivas -->
       <div class="relative z-10 w-full grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 items-start">
         
         <!-- ============================================== -->
         <!-- CAPA 1: PELDAÑO 1 (INPUTS & EXPOSICIONES)      -->
         <!-- ============================================== -->
         <div class="space-y-3 flex flex-col items-center md:items-start w-full">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs uppercase font-extrabold tracking-widest text-emerald-400 font-mono">Peldaño 1: Input</span>
-          </div>
+          <!-- CABECERA CLICKEABLE PELDAÑO 1 -->
+          <button onclick="showPeldañoDefinition(1)" class="w-full text-left p-2.5 rounded-2xl bg-slate-900 border-2 border-emerald-500/50 hover:border-emerald-400 hover:bg-emerald-950/30 flex items-center justify-between group transition-all shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-xs uppercase font-extrabold tracking-widest text-emerald-400 font-mono">Peldaño 1: Input</span>
+            </div>
+            <span class="text-[10px] text-emerald-300 font-mono bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1">
+              <i class="fa-solid fa-circle-info"></i> Definición
+            </span>
+          </button>
 
           <!-- Nodos Eje Lípidos (Siempre presentes) -->
           <div id="node-col-diet" onclick="selectNode('col-diet', 1)" class="neuron cursor-pointer w-full bg-slate-900/90 border-2 border-emerald-500/70 p-3 rounded-2xl hover:scale-105 glow-p1">
@@ -378,10 +384,16 @@
         <!-- CAPA 2: PELDAÑO 2 (BIOMARCADORES INTERMEDIOS)  -->
         <!-- ============================================== -->
         <div class="space-y-3 flex flex-col items-center justify-center w-full">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span class="text-xs uppercase font-extrabold tracking-widest text-cyan-400 font-mono">Peldaño 2: Biomarcadores</span>
-          </div>
+          <!-- CABECERA CLICKEABLE PELDAÑO 2 -->
+          <button onclick="showPeldañoDefinition(2)" class="w-full text-left p-2.5 rounded-2xl bg-slate-900 border-2 border-cyan-500/50 hover:border-cyan-400 hover:bg-cyan-950/30 flex items-center justify-between group transition-all shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
+              <span class="text-xs uppercase font-extrabold tracking-widest text-cyan-400 font-mono">Peldaño 2: Biomarcador</span>
+            </div>
+            <span class="text-[10px] text-cyan-300 font-mono bg-cyan-500/20 px-1.5 py-0.5 rounded border border-cyan-500/30 flex items-center gap-1">
+              <i class="fa-solid fa-circle-info"></i> Definición
+            </span>
+          </button>
 
           <!-- Nodo Colesterol LDL (Base) -->
           <div id="node-ldl" onclick="selectNode('ldl', 2)" class="neuron cursor-pointer w-full bg-slate-900/90 border-2 border-cyan-500/60 p-3.5 rounded-2xl hover:scale-105 text-center">
@@ -427,10 +439,16 @@
         <!-- CAPA 3: PELDAÑO 3 (DIAGNÓSTICOS CLÍNICOS)      -->
         <!-- ============================================== -->
         <div class="space-y-3 flex flex-col items-center justify-center w-full">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
-            <span class="text-xs uppercase font-extrabold tracking-widest text-amber-400 font-mono">Peldaño 3: Diagnósticos</span>
-          </div>
+          <!-- CABECERA CLICKEABLE PELDAÑO 3 -->
+          <button onclick="showPeldañoDefinition(3)" class="w-full text-left p-2.5 rounded-2xl bg-slate-900 border-2 border-amber-500/50 hover:border-amber-400 hover:bg-amber-950/30 flex items-center justify-between group transition-all shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></span>
+              <span class="text-xs uppercase font-extrabold tracking-widest text-amber-400 font-mono">Peldaño 3: Diagnóstico</span>
+            </div>
+            <span class="text-[10px] text-amber-300 font-mono bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-500/30 flex items-center gap-1">
+              <i class="fa-solid fa-circle-info"></i> Definición
+            </span>
+          </button>
 
           <!-- Nodo Aterosclerosis Coronaria (Base) -->
           <div id="node-aterosclerosis" onclick="selectNode('aterosclerosis', 3)" class="neuron cursor-pointer w-full bg-slate-900/90 border-2 border-amber-500/60 p-3.5 rounded-2xl hover:scale-105 text-center">
@@ -464,10 +482,16 @@
         <!-- CAPA 4: PELDAÑO 4 (DESENLACES DUROS)           -->
         <!-- ============================================== -->
         <div class="space-y-3 flex flex-col items-center justify-center w-full">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
-            <span class="text-xs uppercase font-extrabold tracking-widest text-rose-400 font-mono">Peldaño 4: Hard Endpoints</span>
-          </div>
+          <!-- CABECERA CLICKEABLE PELDAÑO 4 -->
+          <button onclick="showPeldañoDefinition(4)" class="w-full text-left p-2.5 rounded-2xl bg-slate-900 border-2 border-rose-500/50 hover:border-rose-400 hover:bg-rose-950/30 flex items-center justify-between group transition-all shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500 animate-ping"></span>
+              <span class="text-xs uppercase font-extrabold tracking-widest text-rose-400 font-mono">Peldaño 4: Hard Endpoint</span>
+            </div>
+            <span class="text-[10px] text-rose-300 font-mono bg-rose-500/20 px-1.5 py-0.5 rounded border border-rose-500/30 flex items-center gap-1">
+              <i class="fa-solid fa-circle-info"></i> Definición
+            </span>
+          </button>
 
           <!-- Nodo Infarto Agudo de Miocardio (Base) -->
           <div id="node-infarto" onclick="selectNode('infarto', 4)" class="neuron cursor-pointer w-full bg-slate-900/90 border-2 border-rose-500/70 p-3.5 rounded-2xl hover:scale-105 text-center glow-p4">
@@ -537,9 +561,9 @@
       <!-- Contenido Explicativo Dividido en 3 Columnas -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
         
-        <!-- Columna 1: Mecanismo Fisiopatológico -->
+        <!-- Columna 1: Mecanismo / Concepto -->
         <div class="space-y-2">
-          <h4 class="text-xs font-mono uppercase font-extrabold text-cyan-400 flex items-center gap-2">
+          <h4 id="col-title-1" class="text-xs font-mono uppercase font-extrabold text-cyan-400 flex items-center gap-2">
             <i class="fa-solid fa-microscope"></i> Fisiopatología en este Eslabón
           </h4>
           <p id="detail-mechanism" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -549,7 +573,7 @@
 
         <!-- Columna 2: Por qué está en este Peldaño -->
         <div class="space-y-2 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-          <h4 class="text-xs font-mono uppercase font-extrabold text-amber-400 flex items-center gap-2">
+          <h4 id="col-title-2" class="text-xs font-mono uppercase font-extrabold text-amber-400 flex items-center gap-2">
             <i class="fa-solid fa-layer-group"></i> ¿Por qué en este Peldaño?
           </h4>
           <p id="detail-why-stage" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -557,9 +581,9 @@
           </p>
         </div>
 
-        <!-- Columna 3: Evidencia Científica & Consenso Clínico -->
+        <!-- Columna 3: Evidencia Científica / Regla de Oro -->
         <div class="space-y-2 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-          <h4 class="text-xs font-mono uppercase font-extrabold text-emerald-400 flex items-center gap-2">
+          <h4 id="col-title-3" class="text-xs font-mono uppercase font-extrabold text-emerald-400 flex items-center gap-2">
             <i class="fa-solid fa-book-medical"></i> Evidencia & Consenso Clínico
           </h4>
           <p id="detail-clinical" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
@@ -594,7 +618,59 @@
     let currentStage = 1;
     let currentNodeId = 'col-diet';
 
-    // --- BASE DE DATOS DE TODOS LOS NODOS DE LA RED ---
+    // --- DEFINICIONES MAESTRAS DE CADA PELDAÑO (SE ACTIVAN AL TOCAR EL PELDAÑO) ---
+    const stageMasterDefinitions = {
+      1: {
+        stage: 1,
+        title: 'Peldaño 1: Inputs / Exposiciones & Estilo de Vida',
+        badge: 'Definición Conceptual Maestra · Peldaño 1',
+        badgeClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 glow-p1',
+        icon: '📥',
+        iconBoxClass: 'bg-emerald-500/20 text-emerald-400 shadow-emerald-500/20',
+        cardBorderClass: 'border-emerald-500/60 glow-p1',
+        mechanism: '<strong>¿Qué es?</strong> Es el conjunto de todas las variables exógenas que ingresan al organismo desde el ambiente exterior o son conductas voluntarias del individuo (el <em>Exposoma humano</em>).<br><br>Es el <strong>único peldaño donde el paciente y el profesional de la nutrición tienen control de acción directo</strong> para modificar la causa de raíz.',
+        whyStage: '<strong>¿Qué incluye en la clínica?</strong><br>• <em>Nutrición</em>: Calorías, alimentos reales vs. ultraprocesados, sodio, fibra, grasas saturadas, azúcares libres, alcohol.<br>• <em>Estilo de vida</em>: Minutos de actividad física, horas de sedentarismo sentado, tabaquismo (input tóxico exógeno), horas y calidad de sueño.<br>• <em>Ambiente</em>: Estrés psicosocial crónico, contaminantes y radiación solar.',
+        clinical: '<strong>Regla de los 3 segundos para el aula:</strong><br>«¿Entra desde el exterior por la boca, por los pulmones o es una conducta que el sujeto realiza en el ambiente?» ➔ <strong>PELDAÑO 1</strong>.<br><br>Aquí es donde el nutricionista diseña la intervención real para proteger los desenlaces del paciente a 30 o 40 años.'
+      },
+      2: {
+        stage: 2,
+        title: 'Peldaño 2: Marcadores Intermedios / Biomarcadores / Subrogados',
+        badge: 'Definición Conceptual Maestra · Peldaño 2',
+        badgeClass: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 glow-p2',
+        icon: '🧪',
+        iconBoxClass: 'bg-cyan-500/20 text-cyan-300 shadow-cyan-500/20',
+        cardBorderClass: 'border-cyan-500/60 glow-p2',
+        mechanism: '<strong>¿Qué es?</strong> Son mediciones biológicas cuantitativas y continuas (fisiológicas, bioquímicas o antropométricas) que registran <strong>cómo responde internamente el organismo</strong> ante las exposiciones del Peldaño 1.<br><br>No son el evento final ni la enfermedad en sí misma; son <em>sustitutos temporales (surrogates)</em> que intentan predecir el riesgo futuro.',
+        whyStage: '<strong>¿Qué incluye en la clínica?</strong><br>• <em>Bioquímica plasmática</em>: Colesterol LDL (> 70 mg/dL), Triglicéridos (> 150 mg/dL), Glucemia en ayunas, HbA1c, Hemoglobina, HDL.<br>• <em>Hemodinamia</em>: Cifras de Presión Arterial en mmHg (134/86 mmHg).<br>• <em>Antropometría</em>: Perímetro de cintura (cm), Relación Cintura-Estatura, IMC (kg/m²), Masa Muscular.<br>• <em>Funcionales</em>: VO2 máx, Dinamometría de agarre (kg).',
+        clinical: '<strong>Regla de los 3 segundos para el aula:</strong><br>«¿Tiene unidades de medición continuas en un informe de laboratorio, tensiómetro o cinta métrica?» ➔ <strong>PELDAÑO 2</strong>.<br><br>Son el <em>tablero de control del automóvil (las pistas)</em>: te indican si la intervención va bien, pero nunca son el desenlace que mata o salva al paciente.'
+      },
+      3: {
+        stage: 3,
+        title: 'Peldaño 3: Diagnósticos Clínicos / Enfermedades Intermedias',
+        badge: 'Definición Conceptual Maestra · Peldaño 3',
+        badgeClass: 'bg-amber-500/20 text-amber-300 border-amber-500/40 glow-p3',
+        icon: '🩺',
+        iconBoxClass: 'bg-amber-500/20 text-amber-300 shadow-amber-500/20',
+        cardBorderClass: 'border-amber-500/60 glow-p3',
+        mechanism: '<strong>¿Qué es?</strong> Son entidades nosológicas sindrómicas o estructurales formalmente diagnosticadas por la medicina con criterios y códigos internacionales (CIE-10).<br><br>Actúan como la <strong>gran bisagra médica</strong>: en prevención primaria representan el diagnóstico a tratar, pero fisiopatológicamente siguen siendo factores intermediarios hacia el colapso del órgano terminal.',
+        whyStage: '<strong>¿Qué incluye en la clínica?</strong><br>• <em>Cardiovascular</em>: Aterosclerosis Coronaria (CIE: I25), Angina de pecho estable.<br>• <em>Vascular</em>: Hipertensión Arterial Esencial diagnosticada (CIE: I10).<br>• <em>Endócrino-Metabólico</em>: Diabetes Mellitus Tipo 2 (CIE: E11), Obesidad Clínica (CIE: E66), Síndrome Metabólico, Hígado Graso Metabólico (MASLD).<br>• <em>Otros</em>: EPOC, Anemia Ferropénica clínica, Enfermedad Renal Crónica estadios 1 a 4.',
+        clinical: '<strong>Regla de los 3 segundos para el aula:</strong><br>«¿Es el nombre médico formal de una enfermedad crónica que se escribe en una historia clínica o receta?» ➔ <strong>PELDAÑO 3</strong>.<br><br>El paciente ya tiene un diagnóstico nosológico, pero su órgano aún está vivo y funciona (su corazón bombea, sus riñones filtran, su cerebro está intacto).'
+      },
+      4: {
+        stage: 4,
+        title: 'Peldaño 4: Desenlaces Finales Duros (Hard Endpoints)',
+        badge: 'Definición Conceptual Maestra · Peldaño 4',
+        badgeClass: 'bg-rose-500/20 text-rose-300 border-rose-500/40 glow-p4',
+        icon: '💔',
+        iconBoxClass: 'bg-rose-500/20 text-rose-400 shadow-rose-500/30',
+        cardBorderClass: 'border-rose-500/80 glow-p4',
+        mechanism: '<strong>¿Qué es?</strong> Son los eventos clínicos mayores irreversibles que definen la supervivencia humana, la pérdida catastrófica de un órgano vital o la discapacidad permanente.<br><br>Es el <strong>estándar de oro supremo e indiscutible</strong>: todo fármaco, dieta o política de salud pública se valida exclusivamente si logra reducir los desenlaces del Peldaño 4.',
+        whyStage: '<strong>¿Qué incluye en la clínica?</strong><br>• <em>Necrosis & Isquemia mayor</em>: Infarto Agudo de Miocardio (IAM), Accidente Cerebrovascular (ACV isquémico/hemorrágico).<br>• <em>Falla orgánica terminal</em>: Insuficiencia Renal Terminal en Diálisis crónica de por vida o Trasplante.<br>• <em>Pérdida irreversible</em>: Amputación de extremidad, Ceguera por retinopatía.<br>• <em>El Rey Supremo</em>: <strong>Mortalidad por Cualquier Causa</strong> y Mortalidad Cardiovascular prematura.',
+        clinical: '<strong>Regla de los 3 segundos para el aula:</strong><br>«¿Representa la muerte funcional total de un órgano vital, la pérdida de una extremidad o el cese de la vida?» ➔ <strong>PELDAÑO 4</strong>.<br><br>Nadie va al hospital por tener glucemia 120 o cintura 95; la tragedia clínica ocurre cuando se llega al Peldaño 4.'
+      }
+    };
+
+    // --- BASE DE DATOS DE TODOS LOS NODOS INDIVIDUALES DE LA RED ---
     const pathwayData = {
       // PELDAÑO 1
       'col-diet': {
@@ -797,10 +873,60 @@
       }
     };
 
+    // --- MOSTRAR LA DEFINICIÓN CONCEPTUAL MAESTRA DEL PELDAÑO ---
+    function showPeldañoDefinition(stageNum) {
+      currentStage = stageNum;
+      const def = stageMasterDefinitions[stageNum];
+      if (!def) return;
+
+      // 1. Resaltar Stepper Superior
+      for (let i = 1; i <= 4; i++) {
+        const btn = document.getElementById('step-btn-' + i);
+        if (i === stageNum) {
+          if (i === 1) btn.className = 'step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/40 glow-p1';
+          if (i === 2) btn.className = 'step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-cyan-400 bg-cyan-500/10 border border-cyan-500/40 glow-p2';
+          if (i === 3) btn.className = 'step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-amber-400 bg-amber-500/10 border border-amber-500/40 glow-p3';
+          if (i === 4) btn.className = 'step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-rose-400 bg-rose-500/10 border border-rose-500/40 glow-p4';
+        } else {
+          btn.className = 'step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-500 hover:text-slate-300';
+        }
+      }
+
+      // 2. Apagar nodos específicos para destacar la definición general del Peldaño
+      document.querySelectorAll('.neuron').forEach(el => {
+        el.classList.remove('glow-p1', 'glow-p2', 'glow-p3', 'glow-p4', 'node-active', 'border-emerald-400', 'border-cyan-400', 'border-amber-400', 'border-rose-400');
+        el.classList.add('opacity-70');
+      });
+
+      // 3. Modificar Títulos de las Columnas de la Ficha
+      document.getElementById('col-title-1').innerHTML = '<i class="fa-solid fa-book-open"></i> Definición Conceptual & Biológica';
+      document.getElementById('col-title-2').innerHTML = '<i class="fa-solid fa-list-check"></i> ¿Qué Variables Engloba en la Clínica?';
+      document.getElementById('col-title-3').innerHTML = '<i class="fa-solid fa-stopwatch-20"></i> Regla de Oro de los 3 Segundos';
+
+      // 4. Inyectar datos en la Ficha de Detalle
+      document.getElementById('detail-icon-box').textContent = def.icon;
+      document.getElementById('detail-icon-box').className = `w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg ${def.iconBoxClass}`;
+      document.getElementById('detail-badge').textContent = def.badge;
+      document.getElementById('detail-badge').className = `text-xs font-mono uppercase font-extrabold px-2.5 py-0.5 rounded-full border ${def.badgeClass}`;
+      document.getElementById('detail-stage-num').textContent = `Definición Maestra del Peldaño ${stageNum}`;
+      document.getElementById('detail-title').textContent = def.title;
+      document.getElementById('detail-mechanism').innerHTML = def.mechanism;
+      document.getElementById('detail-why-stage').innerHTML = def.whyStage;
+      document.getElementById('detail-clinical').innerHTML = def.clinical;
+
+      const card = document.getElementById('detail-card');
+      card.className = `bg-slate-900/95 border-2 ${def.cardBorderClass} rounded-3xl p-6 sm:p-8 backdrop-blur-md transition-all duration-300 shadow-2xl`;
+
+      // 5. Scroll suave hacia la ficha si está en pantalla chica
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // 6. Redibujar sinapsis
+      drawSynapses();
+    }
+
     // --- ACTIVAR / DESACTIVAR VÍAS COMPLETAMENTE (SE ESCONDEN) ---
     function togglePathway(pathwayKey) {
       if (pathwayKey === 'lipid') {
-        // La vía lipídica se mantiene siempre como cimiento base
         selectNode('col-diet', 1);
         return;
       }
@@ -829,7 +955,6 @@
       document.getElementById('node-hta').classList.toggle('hidden', !isPres);
       document.getElementById('node-acv').classList.toggle('hidden', !isPres);
 
-      // Actualizar botón Presión
       const btnPres = document.getElementById('btn-path-pressure');
       const badgePres = document.getElementById('badge-pressure');
       const tagPres = document.getElementById('tag-pressure');
@@ -862,7 +987,6 @@
       document.getElementById('node-tg').classList.toggle('hidden', !isMet);
       document.getElementById('node-sm').classList.toggle('hidden', !isMet);
 
-      // Actualizar botón Metabólico
       const btnMet = document.getElementById('btn-path-metabolic');
       const badgeMet = document.getElementById('badge-metabolic');
       const tagMet = document.getElementById('tag-metabolic');
@@ -887,54 +1011,31 @@
         }
       }
 
-      // Redibujar sinapsis
       setTimeout(drawSynapses, 50);
     }
 
-    // --- SELECCIONAR NODO ---
+    // --- SELECCIONAR NODO ESPECÍFICO ---
     function selectNode(nodeId, stage) {
       currentNodeId = nodeId;
       currentStage = stage;
       updateUI();
     }
 
-    // --- IR A PELDAÑO (1, 2, 3, 4) ---
     function goToPeldaño(stageNum) {
-      currentStage = stageNum;
-      // Seleccionar un nodo visible relevante en ese peldaño
-      if (stageNum === 1) {
-        if (pathways.pressure && currentNodeId === 'sodio') currentNodeId = 'sodio';
-        else if (pathways.metabolic && currentNodeId === 'cintura') currentNodeId = 'sedentarismo';
-        else currentNodeId = 'col-diet';
-      }
-      if (stageNum === 2) {
-        if (pathways.pressure && currentNodeId === 'sodio') currentNodeId = 'pa';
-        else if (pathways.metabolic && currentNodeId === 'cintura') currentNodeId = 'cintura';
-        else currentNodeId = 'ldl';
-      }
-      if (stageNum === 3) {
-        if (pathways.pressure && currentNodeId === 'pa') currentNodeId = 'hta';
-        else if (pathways.metabolic && currentNodeId === 'cintura') currentNodeId = 'sm';
-        else currentNodeId = 'aterosclerosis';
-      }
-      if (stageNum === 4) {
-        if (pathways.pressure && currentNodeId === 'hta') currentNodeId = 'acv';
-        else currentNodeId = 'infarto';
-      }
-      updateUI();
+      showPeldañoDefinition(stageNum);
     }
 
     function nextStep() {
-      if (currentStage < 4) goToPeldaño(currentStage + 1);
-      else goToPeldaño(1);
+      if (currentStage < 4) showPeldañoDefinition(currentStage + 1);
+      else showPeldañoDefinition(1);
     }
 
     function prevStep() {
-      if (currentStage > 1) goToPeldaño(currentStage - 1);
-      else goToPeldaño(4);
+      if (currentStage > 1) showPeldañoDefinition(currentStage - 1);
+      else showPeldañoDefinition(4);
     }
 
-    // --- ACTUALIZAR TODA LA INTERFAZ ---
+    // --- ACTUALIZAR TODA LA INTERFAZ CUANDO SE TOCA UN NODO INDIVIDUAL ---
     function updateUI() {
       const data = pathwayData[currentNodeId];
       if (!data) return;
@@ -968,12 +1069,17 @@
         if (currentStage === 4) activeElement.classList.add('glow-p4', 'border-rose-400');
       }
 
-      // 3. Actualizar la Ficha de Detalle
+      // 3. Restaurar Títulos de las Columnas de la Ficha para Nodo Individual
+      document.getElementById('col-title-1').innerHTML = '<i class="fa-solid fa-microscope"></i> Fisiopatología en este Eslabón';
+      document.getElementById('col-title-2').innerHTML = '<i class="fa-solid fa-layer-group"></i> ¿Por qué en este Peldaño?';
+      document.getElementById('col-title-3').innerHTML = '<i class="fa-solid fa-book-medical"></i> Evidencia & Consenso Clínico';
+
+      // 4. Actualizar la Ficha de Detalle
       document.getElementById('detail-icon-box').textContent = data.icon;
       document.getElementById('detail-icon-box').className = `w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg ${data.iconBoxClass}`;
       document.getElementById('detail-badge').textContent = data.badge;
       document.getElementById('detail-badge').className = `text-xs font-mono uppercase font-extrabold px-2.5 py-0.5 rounded-full border ${data.badgeClass}`;
-      document.getElementById('detail-stage-num').textContent = `Peldaño ${data.stage} de 4`;
+      document.getElementById('detail-stage-num').textContent = `Nodo Específico · Peldaño ${data.stage} de 4`;
       document.getElementById('detail-title').textContent = data.title;
       document.getElementById('detail-mechanism').innerHTML = data.mechanism;
       document.getElementById('detail-why-stage').innerHTML = data.whyStage;
@@ -982,7 +1088,7 @@
       const card = document.getElementById('detail-card');
       card.className = `bg-slate-900/95 border-2 ${data.cardBorderClass} rounded-3xl p-6 sm:p-8 backdrop-blur-md transition-all duration-300 shadow-2xl`;
 
-      // 4. Redibujar sinapsis
+      // 5. Redibujar sinapsis
       drawSynapses();
     }
 
@@ -1043,7 +1149,6 @@
       document.getElementById('syn-sodio-pa').setAttribute('d', bezier(p1_sod, p2_pa));
       document.getElementById('syn-pa-hta').setAttribute('d', bezier(p2_pa, p3_hta));
       document.getElementById('syn-hta-acv').setAttribute('d', bezier(p3_hta, p4_acv));
-      // Conexión Cruzada: HTA impacta en el Infarto acelerando ruptura de placa
       document.getElementById('syn-hta-iam').setAttribute('d', bezier(p3_hta, p4_inf));
 
       // Sinapsis Eje Metabólico
@@ -1051,7 +1156,6 @@
       document.getElementById('syn-azucar-tg').setAttribute('d', bezier(p1_azu, p2_tg));
       document.getElementById('syn-cintura-sm').setAttribute('d', bezier(p2_cin, p3_sm));
       document.getElementById('syn-tg-sm').setAttribute('d', bezier(p2_tg, p3_sm));
-      // Conexión Cruzada: Grasa Visceral alimenta producción hepática de partículas LDL
       if (p2_cin && p2_ldl) {
         const curveD = `M ${p2_cin.left} ${p2_cin.y} C ${p2_cin.left - 30} ${p2_cin.y - 30}, ${p2_ldl.left - 30} ${p2_ldl.y + 30}, ${p2_ldl.left} ${p2_ldl.y}`;
         document.getElementById('syn-cintura-ldl').setAttribute('d', curveD);
@@ -1074,7 +1178,7 @@
         btn.classList.add('border-cyan-400', 'bg-cyan-500/20');
         tourTimer = setInterval(() => {
           nextStep();
-        }, 3500);
+        }, 4000);
       }
     }
 
@@ -1143,7 +1247,7 @@
       initNeuralBackground();
       setTimeout(() => {
         applyPathwaysVisibility();
-        updateUI();
+        showPeldañoDefinition(1); // Arranca mostrando la definición del Peldaño 1
       }, 100);
     });
     window.addEventListener('resize', drawSynapses);
