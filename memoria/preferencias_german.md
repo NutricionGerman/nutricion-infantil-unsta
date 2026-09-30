@@ -77,3 +77,9 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
 ---
 
 *(El agente añadirá nuevas notas aquí únicamente cuando Germán exprese una preferencia o corrección durante futuras sesiones).*
+
+15. **Enfoque Universal en Herramientas de Causalidad y Niveles Fisiológicos de LDL**:
+    - **Tono y Alcance**: En las herramientas interactivas, modelos de causalidad clínica y mapas conceptuales, **NO** incluir encuadres exclusivamente pediátricos ni membretes institucionales ('Cátedra de Nutrición Infantil', 'UNSTA', 'Enseñanza en Pediatría'). Mantener un enfoque médico, clínico y epidemiológico universal aplicable a toda la fisiopatología humana.
+    - **Valores Fisiológicos Reales de Colesterol LDL**:
+      * El rango fisiológicamente normal y óptimo en humanos es de **50 a 70 mg/dL** (O'Keefe et al., JACC 2004; Ference et al., Eur Heart J 2017). Es el nivel de neonatos sanos, cazadores-recolectores y primates libres donde la aterosclerosis no progresa.
+      * Todo valor por encima de **70 mg/dL** genera penetración y desarrollo acumulativo de placa aterosclerótica a lo largo del tiempo (efecto causal dependiente de la magnitud y duración acumulada de la exposición a partículas ApoB).

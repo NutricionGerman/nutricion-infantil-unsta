@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Red Neuronal Causal: Vía del Colesterol LDL — Nutrición Infantil UNSTA</title>
+  <title>Red Neuronal Causal: Eje Fisiopatológico del Colesterol LDL</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -86,19 +86,19 @@
   <header class="relative z-10 border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
       
-      <!-- Identidad Cátedra -->
+      <!-- Identidad General de Investigación / Epidemiología -->
       <div class="flex items-center gap-3">
         <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-500 via-cyan-500 to-rose-500 p-0.5 shadow-lg shadow-cyan-500/20">
           <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-            <i class="fa-solid fa-brain text-cyan-400 text-lg"></i>
+            <i class="fa-solid fa-dna text-cyan-400 text-lg"></i>
           </div>
         </div>
         <div>
           <div class="flex items-center gap-2">
             <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
-              UNSTA · Nutrición Infantil
+              Epidemiología & Causalidad Clínica
             </span>
-            <span class="text-xs text-slate-400 font-mono">Fase 1: Vía Colesterol</span>
+            <span class="text-xs text-slate-400 font-mono">Modelo Fisiopatológico</span>
           </div>
           <h1 class="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
             Red Neuronal Causal: Del Input al Infarto
@@ -110,7 +110,7 @@
       <div class="hidden md:flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1.5 rounded-2xl">
         <button onclick="goToPeldaño(1)" id="step-btn-1" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-emerald-400 bg-emerald-500/10 border border-emerald-500/30">
           <span class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-[10px]">1</span>
-          <span>Inputs Dietarios</span>
+          <span>Inputs Dietarios & Genética</span>
         </button>
         <i class="fa-solid fa-angle-right text-slate-600 text-xs"></i>
         <button onclick="goToPeldaño(2)" id="step-btn-2" class="step-btn px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 text-slate-400 hover:text-cyan-300">
@@ -150,10 +150,10 @@
       <div>
         <p class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-          Conexión Sináptica Activa · Vía Fisiopatológica 01
+          Conexión Sináptica Activa · Eje Aterogénico
         </p>
         <h2 class="text-lg sm:text-xl font-extrabold text-white mt-0.5">
-          Eje Aterogénico: Del Consumo de Grasas & Colesterol al Infarto
+          Eje Aterogénico: Del Consumo de Grasas & Colesterol al Infarto de Miocardio
         </h2>
       </div>
       
@@ -178,7 +178,6 @@
       <!-- Líneas Sinápticas (SVG Dinámico en Segundo Plano) -->
       <svg id="synapse-svg" class="absolute inset-0 w-full h-full pointer-events-none">
         <defs>
-          <!-- Gradientes para las sinapsis -->
           <linearGradient id="grad-1-2" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#10b981" />
             <stop offset="100%" stop-color="#06b6d4" />
@@ -192,7 +191,6 @@
             <stop offset="100%" stop-color="#ef4444" />
           </linearGradient>
 
-          <!-- Filtro de resplandor para las líneas -->
           <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3" result="blur" />
             <feMerge>
@@ -227,7 +225,7 @@
             <span class="text-xs uppercase font-extrabold tracking-widest text-emerald-400 font-mono">Peldaño 1: Input</span>
           </div>
 
-          <!-- Nodo 1.1: Colesterol Dietario (¡El que agregamos!) -->
+          <!-- Nodo 1.1: Colesterol Dietario -->
           <div id="node-col-diet" onclick="selectNode('col-diet', 1)" class="neuron cursor-pointer w-full max-w-[260px] bg-slate-900/90 border-2 border-emerald-500/70 p-3 rounded-2xl transition-all duration-300 hover:scale-105 glow-p1">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg flex-shrink-0">
@@ -261,12 +259,12 @@
               </div>
               <div>
                 <h4 class="text-xs font-bold text-white">Baja Fibra Soluble</h4>
-                <p class="text-[10px] text-slate-400 font-mono">Menor excreción de bilis</p>
+                <p class="text-[10px] text-slate-400 font-mono">Menor excreción biliar</p>
               </div>
             </div>
           </div>
 
-          <!-- Nodo 1.4: Hipercolesterolemia Familiar -->
+          <!-- Nodo 1.4: Hipercolesterolemia Familiar / Genética -->
           <div id="node-genetics" onclick="selectNode('genetics', 1)" class="neuron cursor-pointer w-full max-w-[260px] bg-slate-900/90 border-2 border-emerald-500/40 p-3 rounded-2xl transition-all duration-300 hover:scale-105 hover:border-emerald-400">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg flex-shrink-0">
@@ -274,7 +272,7 @@
               </div>
               <div>
                 <h4 class="text-xs font-bold text-white">Genética / HF</h4>
-                <p class="text-[10px] text-slate-400 font-mono">Mutación receptor LDL</p>
+                <p class="text-[10px] text-slate-400 font-mono">Mutación receptor LDLR / ApoB</p>
               </div>
             </div>
           </div>
@@ -289,7 +287,7 @@
             <span class="text-xs uppercase font-extrabold tracking-widest text-cyan-400 font-mono">Peldaño 2: Biomarcador</span>
           </div>
 
-          <!-- Nodo Central Peldaño 2 -->
+          <!-- Nodo Central Peldaño 2: C-LDL -->
           <div id="node-ldl" onclick="selectNode('ldl', 2)" class="neuron cursor-pointer w-full max-w-[280px] bg-slate-900/90 border-2 border-cyan-500/50 p-5 rounded-3xl transition-all duration-300 hover:scale-105 text-center flex flex-col items-center">
             <div class="w-16 h-16 rounded-2xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-3xl mb-3 shadow-lg shadow-cyan-500/20">
               🧪
@@ -298,13 +296,14 @@
               Subrogado Causal (+ + + +)
             </span>
             <h4 class="text-sm sm:text-base font-extrabold text-white">
-              Colesterol LDL Elevado
+              Colesterol LDL Plasmático
             </h4>
-            <p class="text-xs text-cyan-200/90 font-mono mt-1 font-semibold">
-              &gt; 160 – 190 mg/dL + ApoB
-            </p>
-            <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
-              Partículas aterogénicas circulantes que atraviesan la íntima arterial.
+            <div class="bg-slate-950/80 px-2.5 py-1 rounded-xl border border-slate-800 my-1 text-center">
+              <span class="text-[11px] text-emerald-400 font-mono font-bold block">Fisiológico: 50 – 70 mg/dL</span>
+              <span class="text-[11px] text-rose-400 font-mono font-bold block">Aterogénico: &gt; 70 mg/dL</span>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              Partículas aterogénicas (ApoB) que atraviesan e infiltran la íntima arterial.
             </p>
           </div>
         </div>
@@ -330,7 +329,7 @@
               Aterosclerosis Coronaria
             </h4>
             <p class="text-xs text-amber-200/90 font-mono mt-1 font-semibold">
-              EAC / Angina Estable
+              EAC / Angina Estable (CIE-10: I25)
             </p>
             <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">
               Placa de ateroma madura con núcleo lipídico y capa fibrosa (estenosis 60-70%).
@@ -408,13 +407,13 @@
       <!-- Contenido Explicativo Dividido en 3 Columnas -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
         
-        <!-- Columna 1: Mecanismo Biológico -->
+        <!-- Columna 1: Mecanismo Fisiopatológico -->
         <div class="space-y-2">
           <h4 class="text-xs font-mono uppercase font-extrabold text-cyan-400 flex items-center gap-2">
             <i class="fa-solid fa-microscope"></i> Fisiopatología en este Eslabón
           </h4>
           <p id="detail-mechanism" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            El colesterol ingresa por la alimentación (yemas de huevo, carnes, vísceras, mariscos). Se incorpora a los quilomicrones intestinales tras ser emulsificado por las sales biliares.
+            El colesterol ingresa por la alimentación (carnes, huevos, mariscos). Se incorpora a los quilomicrones intestinales tras ser emulsificado por las sales biliares.
           </p>
         </div>
 
@@ -428,13 +427,13 @@
           </p>
         </div>
 
-        <!-- Columna 3: Enfoque Pediátrico UNSTA -->
+        <!-- Columna 3: Evidencia Científica & Consenso Clínico -->
         <div class="space-y-2 p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
           <h4 class="text-xs font-mono uppercase font-extrabold text-emerald-400 flex items-center gap-2">
-            <i class="fa-solid fa-graduation-cap"></i> Enseñanza en Pediatría
+            <i class="fa-solid fa-book-medical"></i> Evidencia & Consenso Científico
           </h4>
-          <p id="detail-pediatrics" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            En niños mayores de 2 años, el foco dietético moderno no demoniza el colesterol del huevo entero, sino el exceso de ácidos grasos saturados y trans que anulan la recaptura hepática de LDL.
+          <p id="detail-clinical" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            La respuesta al colesterol dietario es no lineal y está modulada por la absorción intestinal y la presencia de grasas saturadas concomitantes.
           </p>
         </div>
 
@@ -448,7 +447,7 @@
   <!-- PIE DE PÁGINA                              -->
   <!-- ========================================== -->
   <footer class="relative z-10 border-t border-slate-900 bg-slate-950/90 py-4 text-center text-xs text-slate-500 font-mono">
-    Cátedra de Nutrición Infantil — UNSTA · Prof. Germán · Vía 01: Eje Causal del Colesterol LDL
+    Modelo de Causalidad Clínica · Eje Fisiopatológico del Colesterol LDL y Aterosclerosis
   </footer>
 
   <!-- ============================================================ -->
@@ -469,9 +468,9 @@
         icon: '🍳',
         iconBoxClass: 'bg-emerald-500/20 text-emerald-400 shadow-emerald-500/20',
         cardBorderClass: 'border-emerald-500/50',
-        mechanism: 'El colesterol ingresa por la alimentación mediante alimentos de origen animal. En el enterocito es transportado por la proteína NPC1L1 y empaquetado en quilomicrones que viajan por el sistema linfático hacia la circulación general.',
-        whyStage: 'Es un <strong>Input exógeno (Peldaño 1)</strong>: ingresa desde el ambiente por la boca. No es un análisis de sangre ni un diagnóstico clínico; es una variable cuantitativa de exposición dietaria.',
-        pediatrics: 'El colesterol dietario no actúa solo: interactúa fuertemente con la cantidad de grasas saturadas de la dieta. En pediatría, alimentos como el huevo aportan colina y luteína en una matriz beneficiosa, mientras que el colesterol de embutidos viaja junto a grasas trans y sodio.'
+        mechanism: 'El colesterol ingresa mediante alimentos de origen animal. En el enterocito es transportado selectivamente por la proteína NPC1L1 y empaquetado en quilomicrones que vierten a la linfa y luego al torrente sanguíneo hacia el hígado.',
+        whyStage: 'Es un <strong>Input exógeno (Peldaño 1)</strong>: ingresa desde el ambiente por la vía oral. No es una cifra sérica ni una patología; es una variable cuantitativa de exposición nutricional.',
+        clinical: 'El colesterol dietario interactúa directamente con la cantidad de ácidos grasos saturados de la dieta. La absorción intestinal varía entre individuos (del 20% al 80%), modulando el pool hepático que regula a la baja el receptor LDLR.'
       },
       'sat-fat': {
         stage: 1,
@@ -481,9 +480,9 @@
         icon: '🥩',
         iconBoxClass: 'bg-emerald-500/20 text-emerald-400 shadow-emerald-500/20',
         cardBorderClass: 'border-emerald-500/50',
-        mechanism: 'Los ácidos grasos saturados (especialmente mirístico y palmítico) y las grasas trans reducen drásticamente la expresión y actividad de los receptores hepáticos de LDL (LDLR), frenando la limpieza de colesterol de la sangre.',
-        whyStage: 'Es <strong>Peldaño 1 (Input Dietario)</strong>: Es el determinante dietario exógeno más potente para elevar el LDL circulante.',
-        pediatrics: 'Los snacks empaquetados, galletitas dulces y repostería infantil son las principales fuentes ocultas de grasas saturadas y aceites vegetales hidrogenados en niños.'
+        mechanism: 'Los ácidos grasos saturados (especialmente mirístico y palmítico) y las grasas trans reducen la fluidez de la membrana del hepatocito y disminuyen drásticamente la expresión y actividad de los receptores LDLR hepáticos, bloqueando la depuración del LDL plasmático.',
+        whyStage: 'Es <strong>Peldaño 1 (Input Dietario)</strong>: Constituye el determinante nutricional exógeno de mayor potencia para elevar de manera sostenida las partículas aterogénicas ApoB.',
+        clinical: 'Reemplazar las grasas saturadas por grasas poliinsaturadas y monoinsaturadas restaura la actividad de los receptores LDLR y reduce de forma estadísticamente significativa los eventos cardiovasculares duros (ensayos clínicos aleatorizados y metaanálisis Cochrane).'
       },
       'low-fiber': {
         stage: 1,
@@ -493,9 +492,9 @@
         icon: '🌾',
         iconBoxClass: 'bg-emerald-500/20 text-emerald-400 shadow-emerald-500/20',
         cardBorderClass: 'border-emerald-500/50',
-        mechanism: 'La fibra soluble (betaglucanos, pectinas) atrapa los ácidos biliares en la luz intestinal obligando a su excreción fecal. Si la dieta es pobre en fibra, el 95% de la bilis se reabsorbe, y el hígado no necesita gastar colesterol en fabricar nueva bilis.',
-        whyStage: 'Es <strong>Peldaño 1 (Déficit de Exposición Protectora)</strong>: Falta de vegetales, legumbres y frutas en el registro alimentario.',
-        pediatrics: 'Los escolares argentinos consumen menos de 10 gramos de fibra al día (la mitad de la recomendación), lo que favorece la elevación del colesterol plasmático temprano.'
+        mechanism: 'La fibra soluble viscosa (betaglucanos, psyllium, pectinas) forma una matriz en el lumen intestinal que atrapa sales biliares e impide su reabsorción ileal. En dietas deficientes en fibra, se reabsorbe el 95% de la bilis (circulación enterohepática completa), evitando que el hígado use colesterol endógeno para sintetizar nueva bilis.',
+        whyStage: 'Es <strong>Peldaño 1 (Déficit de Exposición Protectora)</strong>: Falta de consumo de alimentos enteros, legumbres, avena, semillas y vegetales en la dieta.',
+        clinical: 'La suplementación con fibra soluble viscosa (5 a 10 g/día) genera una reducción neta del 5% al 10% del colesterol LDL sin efectos adversos, estimulando la sobreexpresión de receptores LDLR hepáticos.'
       },
       'genetics': {
         stage: 1,
@@ -505,21 +504,21 @@
         icon: '🧬',
         iconBoxClass: 'bg-emerald-500/20 text-emerald-400 shadow-emerald-500/20',
         cardBorderClass: 'border-emerald-500/50',
-        mechanism: 'Mutaciones autosómicas dominantes en el gen del receptor de LDL (LDLR), en la apolipoproteína B (ApoB) o ganancia de función en PCSK9 impiden que el hígado capte las partículas aterogénicas de la sangre.',
-        whyStage: 'Es <strong>Peldaño 1 (Input Biológico Heredado)</strong>: Es la dotación genética de base con la que el paciente interactúa con el ambiente.',
-        pediatrics: 'El diagnóstico temprano en niños con antecedentes de padres infartados antes de los 50 años permite iniciar estatinas a partir de los 8-10 años de edad, salvándoles la vida.'
+        mechanism: 'Mutaciones autosómicas dominantes con pérdida de función en el gen del receptor de LDL (LDLR), en el ligando ApoB, o con ganancia de función en PCSK9 (que destruye el receptor en los lisosomas), impidiendo la recaptura de LDL independientemente de la dieta.',
+        whyStage: 'Es <strong>Peldaño 1 (Input Biológico Heredado)</strong>: Es la dotación genética basal con la cual el individuo nace y se expone al ambiente a lo largo de su vida.',
+        clinical: 'Los estudios de Randomización Mendeliana (Ference et al., Eur Heart J 2017) demuestran que las variantes genéticas asociadas a menor LDL confieren una protección cardiovascular 3 veces superior por cada mmol/L que la farmacoterapia iniciada en la adultez, confirmando el efecto acumulativo dependiente del tiempo de exposición.'
       },
       'ldl': {
         stage: 2,
-        title: 'Colesterol LDL Elevado (> 160-190 mg/dL) & ApoB',
+        title: 'Colesterol LDL Plasmático (> 70 mg/dL) & Partículas ApoB',
         badge: 'Peldaño 2: Biomarcador Plasmático / Subrogado Verdadero',
         badgeClass: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30',
         icon: '🧪',
         iconBoxClass: 'bg-cyan-500/20 text-cyan-300 shadow-cyan-500/20',
         cardBorderClass: 'border-cyan-500/50',
-        mechanism: 'El exceso de partículas LDL plasmáticas supera la capacidad de barrera del endotelio. Las partículas pequeñas y densas atraviesan la monocapa endotelial, se fijan a los proteoglicanos de la íntima arterial y se oxidan (oxLDL), disparando el reclutamiento de macrófagos.',
-        whyStage: 'Es <strong>Peldaño 2 (Biomarcador Intermedio)</strong>: Es una medición analítica continua en sangre (mg/dL). No es la enfermedad terminal, pero es un subrogado verdadero (Weintraub ++++) porque su elevación es causal de aterosclerosis.',
-        pediatrics: 'Un valor de c-LDL > 130 mg/dL en un escolar ya se considera elevado según el panel de expertos de la AAP (American Academy of Pediatrics).'
+        mechanism: 'El rango fisiológicamente normal en humanos sanos, neonatos y poblaciones libres de aterosclerosis es de <strong>50 a 70 mg/dL</strong> (O\'Keefe et al., JACC 2004). Cualquier concentración plasmática <strong>por encima de 70 mg/dL</strong> genera un gradiente de concentración excesivo: las lipoproteínas que contienen ApoB penetran pasivamente la monocapa endotelial de las arterias, quedan retenidas en la matriz extracelular de proteoglicanos y sufren oxidación (oxLDL), iniciando la respuesta inflamatoria.',
+        whyStage: 'Es <strong>Peldaño 2 (Biomarcador / Subrogado Verdadero)</strong>: Es una medición analítica cuantitativa continua en plasma (mg/dL). Es el agente causal directo y necesario para la génesis de la placa aterosclerótica (Consenso de la European Atherosclerosis Society, Ference et al. 2017).',
+        clinical: 'El riesgo aterosclerótico cardiovascular acumulado es una función del producto entre la concentración de LDL y la duración de la exposición (efecto dosis-tiempo o AUC). Mantener niveles fisiológicos entre 50 y 70 mg/dL detiene la progresión de la aterosclerosis e impide la acumulación de placa en la pared vascular.'
       },
       'aterosclerosis': {
         stage: 3,
@@ -529,9 +528,9 @@
         icon: '🫀',
         iconBoxClass: 'bg-amber-500/20 text-amber-300 shadow-amber-500/20',
         cardBorderClass: 'border-amber-500/50',
-        mechanism: 'Los macrófagos engullen oxLDL y se transforman en células espumosas, formando la estría grasa. Luego mueren creando un núcleo necrótico lipídico rodeado por una capa de colágeno fibrosa. La placa estenosa la luz de la arteria coronaria un 60-70%.',
-        whyStage: 'Es <strong>Peldaño 3 (Diagnóstico Nosológico / Bisagra)</strong>: Es una enfermedad estructural crónica diagnosticada (CIE-10: I25). El corazón del paciente aún bombea y sigue vivo, pero tiene arterias enfermas.',
-        pediatrics: 'Las autopsias pediátricas del Bogalusa Heart Study demostraron que las estrías grasas coronarias ya comienzan en niños de 10 años que tenían LDL elevado y obesidad.'
+        mechanism: 'Los macrófagos tisulares fagocitan partículas oxLDL a través de receptores scavenger, saturándose y convirtiéndose en células espumosas (foam cells). Su muerte por apoptosis libera un centro lipídico necrótico acelerado por cristales de colesterol, alrededor del cual los miocitos lisos vasculares sintetizan una capa de colágeno fibrosa. La placa estenosa la luz vascular reduciendo el flujo sanguíneo de reserva.',
+        whyStage: 'Es <strong>Peldaño 3 (Diagnóstico Nosológico / Bisagra)</strong>: Es una entidad patológica estructural crónica formalmente diagnosticada (CIE-10: I25). El miocardio aún se encuentra viable y perfundido en reposo, pero el árbol vascular está anatómica y funcionalmente enfermo.',
+        clinical: 'El ultrasonido intravascular (IVUS) y la tomografía coronaria (angioTC) evidencian que reducir el c-LDL por debajo de 50-70 mg/dL (ensayos ASTEROID, GLAGOV) no solo frena el crecimiento de la placa, sino que induce la regresión del volumen porcentual de ateroma y engrosa la capa fibrosa protectora.'
       },
       'infarto': {
         stage: 4,
@@ -541,9 +540,9 @@
         icon: '💔',
         iconBoxClass: 'bg-rose-500/20 text-rose-400 shadow-rose-500/30',
         cardBorderClass: 'border-rose-500/70 glow-p4',
-        mechanism: 'Las metaloproteinasas inflamatorias adelgazan la capa fibrosa de la placa. La placa se fisura o rompe, exponiendo el factor tisular a la sangre. Se forma un trombo masivo que ocluye el 100% de la arteria coronaria: el flujo sanguíneo cae a cero y las células del corazón mueren por necrosis irreversible.',
-        whyStage: 'Es <strong>Peldaño 4 (Desenlace Duro)</strong>: Es el evento clínico irreversible que destruye tejido miocárdico, causa discapacidad grave o muerte inmediata.',
-        pediatrics: 'El objetivo primordial de la Cátedra de Nutrición Infantil: prevenir que el niño inicie esta cascada causal para que a los 45 años no debute con un infarto fulminante.'
+        mechanism: 'La inflamación crónica intralesional mediada por metaloproteinasas degrada la matriz de colágeno de la capa fibrosa de la placa. Ocurre una fisura, erosión o ruptura de placa, exponiendo el núcleo lipídico rico en factor tisular a las plaquetas circulantes. Se desencadena una trombosis intravascular masiva instantánea que ocluye el 100% del lumen arterial coronario: sobreviene isquemia transmural aguda y muerte celular miocárdica irreversible.',
+        whyStage: 'Es <strong>Peldaño 4 (Desenlace Clínico Duro)</strong>: Es el evento definitivo mayor que produce necrosis anatómica irreversible de miocardio, insuficiencia cardíaca aguda, arritmias ventriculares letales o muerte súbita.',
+        clinical: 'El consenso internacional de la European Atherosclerosis Society y los metaanálisis del Cholesterol Treatment Trialists (CTT) demuestran que cada reducción de 38.7 mg/dL (1 mmol/L) en el c-LDL se traduce en una reducción fija del 22% en eventos cardiovasculares mayores e infartos, confirmando la relación causal directa entre la exposición al LDL y el desenlace duro.'
       }
     };
 
@@ -624,7 +623,7 @@
       document.getElementById('detail-title').textContent = data.title;
       document.getElementById('detail-mechanism').innerHTML = data.mechanism;
       document.getElementById('detail-why-stage').innerHTML = data.whyStage;
-      document.getElementById('detail-pediatrics').innerHTML = data.pediatrics;
+      document.getElementById('detail-clinical').innerHTML = data.clinical;
       
       const card = document.getElementById('detail-card');
       card.className = `bg-slate-900/95 border-2 ${data.cardBorderClass} rounded-3xl p-6 sm:p-8 backdrop-blur-md transition-all duration-300 shadow-2xl`;
@@ -659,7 +658,6 @@
       const p3_ate = getCenter('node-aterosclerosis');
       const p4_inf = getCenter('node-infarto');
 
-      // Trazar curvas bézier suaves
       function bezier(pStart, pEnd) {
         const dx = (pEnd.left - pStart.right) / 2;
         return `M ${pStart.right} ${pStart.y} C ${pStart.right + dx} ${pStart.y}, ${pEnd.left - dx} ${pEnd.y}, ${pEnd.left} ${pEnd.y}`;
@@ -716,7 +714,6 @@
       function animate() {
         ctx.clearRect(0, 0, w, h);
         
-        // Dibujar partículas
         for (let i = 0; i < count; i++) {
           const p = particles[i];
           p.x += p.vx;
@@ -730,7 +727,6 @@
           ctx.fillStyle = p.color;
           ctx.fill();
 
-          // Conectar con líneas tenues
           for (let j = i + 1; j < count; j++) {
             const p2 = particles[j];
             const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
