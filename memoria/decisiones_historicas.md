@@ -50,3 +50,5 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
      * 🩺 Solo Clínica y Laboratorio: Aísla examen físico, PA clasificada y parámetros bioquímicos.
      * ⚙️ Personalizado a Medida: Permite combinar checkboxes independientes manteniendo siempre membrete, filiación y firma profesional.
    - Cada vista modular actualiza dinámicamente el título del reporte (ej. «INFORME DE VALORACIÓN ANTROPOMÉTRICA GESTACIONAL (CALVO / IOM)») y su subtítulo de módulo A4.
+
+> **Estado a las 13:00 (01/10/2026)**: A solicitud de Germán, la rama master de alora-gest fue restablecida exactamente a su estado de las 11:20 (commit d9ad4c8). Todas las modificaciones de la auditoría y exportación modular quedaron archivadas de forma segura en la rama local ackup-auditoria-octubre.
