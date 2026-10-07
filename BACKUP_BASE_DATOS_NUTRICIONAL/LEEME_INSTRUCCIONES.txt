@@ -1,0 +1,32 @@
+========================================================================
+BASE DE DATOS NUTRICIONAL COMPLETA - NUTRIBOT & GYMBOT
+========================================================================
+Fecha de respaldo: 30 de Septiembre de 2026
+Total de alimentos curados: 572
+Total de columnas: 46 (39 nutrientes específicos + 7 metadatos)
+Fuente oficial: NCCDB (Nutrition Coordinating Center Food & Nutrient Database) / USDA / Argenfoods
+
+------------------------------------------------------------------------
+ARCHIVOS INCLUIDOS EN ESTA CARPETA:
+------------------------------------------------------------------------
+1. alimentos_backup.json:
+   - Formato JSON con indentación estándar.
+   - Ideal para importar en proyectos web, Node.js, Python, Flutter, React, o bases NoSQL (MongoDB / Firebase).
+
+2. alimentos_backup.csv:
+   - Formato de valores separados por coma, codificado en UTF-8 con BOM (utf-8-sig).
+   - Abre de forma nativa y perfecta en Microsoft Excel, Google Sheets o entornos de Data Science (Pandas / R) respetando tildes y caracteres en español.
+
+3. alimentos_backup.sql:
+   - Script SQL autónomo con instrucción CREATE TABLE IF NOT EXISTS e INSERTs individuales con cláusula ON CONFLICT.
+   - Listo para ejecutar directamente en el SQL Editor de cualquier proyecto nuevo de Supabase o en un servidor PostgreSQL.
+
+------------------------------------------------------------------------
+NUTRIENTES INCLUIDOS POR CADA 100 GRAMOS:
+------------------------------------------------------------------------
+- Energía y Macros: calorías, proteínas, carbohidratos totales, carbohidratos netos, fibra total, fibra soluble, fibra insoluble, azúcares.
+- Grasas y Lípidos: grasas totales, saturadas, monoinsaturadas, poliinsaturadas, colesterol, omega-3, omega-6.
+- Minerales y Electrolitos: calcio, hierro, magnesio, fósforo, potasio, sodio, zinc, selenio, manganeso, cobre, colina.
+- Vitaminas: A, C, D, E, K, B1 (tiamina), B2 (riboflavina), B3 (niacina), B6 (piridoxina), B12 (cobalamina), folatos (B9).
+- Fitoquímicos / Antinutrientes: fitatos, oxalatos.
+========================================================================

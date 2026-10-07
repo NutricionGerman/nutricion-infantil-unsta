@@ -92,3 +92,12 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * **Peldaño 4**: Desenlaces duros (*hard endpoints*, daño irreversible, pérdida de órgano o mortalidad).
     - La interfaz debe permitir consultar esta cascada vertical mediante un modal interactivo con selector dinámico de marcadores (Triglicéridos, c-LDL/ApoB, Presión Arterial, Cintura/Grasa Visceral, Glucemia/HbA1c, Granos Integrales/Fibra GBD, Sodio) y un resumen compacto inline sincronizado con el nodo activo.
 
+17. **Temas Excluidos del Programa de la Cátedra (Celiaquía)**:
+    - En la Cátedra de Nutrición Infantil **NO se enseña ni se evalúa Enfermedad Celíaca**. Jamás mencionarla en consignas, guiones o evaluaciones.
+    - El programa y el Trabajo Práctico Integrador se enfocan exclusivamente en:
+      * Evaluación antropométrica clínica completa (embarazo Calvo/IOM, lactantes y escolares OMS/SAP, pliegues tricipital y subescapular, perímetros braquial y cefálico, cintura y AMB de Frisancho).
+      * Nutrición en el embarazo (requerimientos, ganancia de peso y manejo de síntomas digestivos).
+      * Lactancia materna y fórmulas infantiles (preparación higiénica y dilución exacta sin hiperconcentración).
+      * Alimentación complementaria oportuna (densidad calórica, textura, fuentes de hierro/zinc e inocuidad).
+      * Nutrición en edad escolar (viandas saludables, ambiente escolar/kiosco y patrones vegetarianos con complementación proteica).
+

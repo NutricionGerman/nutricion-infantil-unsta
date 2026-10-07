@@ -52,3 +52,8 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
    - Cada vista modular actualiza dinámicamente el título del reporte (ej. «INFORME DE VALORACIÓN ANTROPOMÉTRICA GESTACIONAL (CALVO / IOM)») y su subtítulo de módulo A4.
 
 > **Estado a las 13:00 (01/10/2026)**: A solicitud de Germán, la rama master de alora-gest fue restablecida exactamente a su estado de las 11:20 (commit d9ad4c8). Todas las modificaciones de la auditoría y exportación modular quedaron archivadas de forma segura en la rama local ackup-auditoria-octubre.
+
+9. **Actualización del Catálogo Nutricional del Taller de Dietas (572 alimentos)**:
+   - Se actualizó la base de datos de dieta/alimentos.json y su réplica local PROYECTO_AISLADO/alimentos.json utilizando la base curada de BACKUP_BASE_DATOS_NUTRICIONAL (572 alimentos, 46 columnas).
+   - Se optimizó el motor de búsqueda en dieta/index.html con tokenización multitérmino e insensibilidad a tildes/mayúsculas, sincronizando los 16 alias semánticos con la nomenclatura exacta de productos nacionales (Casancrem, Finlandia, manteca, etc.).
+   - Se verificó con una suite de estrés de 4 niveles (mantenimiento/stress_test_dieta.py): integridad 46/46 campos, búsqueda difusa (500 queries), cálculo dietético simultáneo de 572 ítems (122.828 kcal) y navegación end-to-end con Microsoft Edge headless sin errores JS.

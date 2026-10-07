@@ -14,14 +14,14 @@ Para evitar confusiones, el proyecto tiene dos universos nutricionales clarament
    - **Juego "Duelo Nutricional"**: Utiliza una lista didáctica reducida de **25 alimentos clave** (`alimentos.js`) para comparar densidad de nutrientes en el proyector del aula.
 
 2. **Módulo "Taller de Dietas y Cálculo RDA" (`/dieta/` y `PROYECTO_AISLADO/`)**:
-   - Aplicación independiente orientada al cálculo dietético exhaustivo en base al catálogo completo de 560 alimentos (incluyendo fórmulas infantiles estándar e hiperconcentradas).
+   - Aplicación independiente orientada al cálculo dietético exhaustivo en base al catálogo completo de 572 alimentos curados (NCCDB / USDA / Argenfoods).
 
 ---
 
-## 🍎 El Catálogo de 560 Alimentos (`alimentos.json`)
+## 🍎 El Catálogo de 572 Alimentos (`alimentos.json`)
 
 * **Ubicación**: `dieta/alimentos.json` y `PROYECTO_AISLADO/alimentos.json`.
-* **Fuente**: Base de datos verificada de **USDA FoodData Central (SR Legacy) / NCCDB Verified** (generada el 4 de septiembre de 2026).
+* **Fuente**: Base de datos verificada de **NCCDB Verified / USDA FoodData Central / Argenfoods** (actualizada al 30 de septiembre de 2026).
 * **Estructura por alimento**:
   * Porción de referencia: **100 gramos**.
   * Energía (kcal), Proteínas, Carbohidratos totales, Carbohidratos netos, Fibra total, Fibra soluble e insoluble, Azúcares.

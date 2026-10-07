@@ -125,7 +125,7 @@
 
         <!-- Buscador Autocomplete Limpio con Botón de Asistente IA -->
         <div class="relative flex flex-col gap-1.5">
-          <label id="food-search-label" class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (560 disponibles):</label>
+          <label id="food-search-label" class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (572 disponibles):</label>
           <div class="flex gap-1.5">
             <div class="relative flex-1">
               <input type="text" id="food-search-input" 
@@ -853,9 +853,14 @@
         clearBtn.classList.add("hidden");
       }
 
-      const matches = q.length === 0 
+      const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const tokens = norm(q).split(/\s+/).filter(t => t.length > 0);
+      const matches = tokens.length === 0 
         ? appState.alimentosDB.slice(0, 15) 
-        : appState.alimentosDB.filter(a => a.nombre.toLowerCase().includes(q)).slice(0, 30);
+        : appState.alimentosDB.filter(a => {
+            const fNorm = norm(a.nombre);
+            return tokens.every(tok => fNorm.includes(tok));
+          }).slice(0, 30);
 
       box.innerHTML = "";
 
@@ -957,15 +962,15 @@
       "leche de avena": ["Bebida vegetal de avena sin azúcar", "Bebida vegetal de almendras sin azúcar", "Bebida vegetal de soja sin azúcar"],
       "leche de soja": ["Bebida vegetal de soja sin azúcar", "Bebida vegetal de almendras sin azúcar", "Bebida vegetal de avena sin azúcar"],
       "leche de coco": ["Bebida vegetal de coco sin azúcar", "Bebida vegetal de almendras sin azúcar"],
-      "margarina": ["Aceite de girasol", "Aceite de oliva virgen extra", "Manteca / Mantequilla"],
+      "margarina": ["Aceite de girasol", "Aceite de oliva virgen extra", "Manteca clásica argentina (La Serenísima / Sancor)"],
       "palta": ["Palta / Aguacate fresco", "Palta Hass / criolla"],
       "aguacate": ["Palta / Aguacate fresco", "Palta Hass / criolla"],
-      "frutilla": ["Fresa / Frutilla cruda"],
-      "anana": ["Piña / Ananá crudo"],
+      "frutilla": ["Frutillas / Fresas frescas", "Frutilla / Fresa fresca corondina"],
+      "anana": ["Ananá / Piña fresca"],
       "bife": ["Bife de chorizo vacuno a la plancha/parrilla", "Cuadril / Bife de cuadril a la plancha", "Bife angosto vacuno a la plancha"],
       "suprema": ["Pechuga de pollo a la plancha / cocida", "Pechuga de pollo sin piel a la plancha"],
-      "casancrem": ["Queso crema untable descremado / light", "Queso untable blanco entero"],
-      "queso untable": ["Queso crema untable descremado / light", "Queso untable blanco entero"]
+      "casancrem": ["Queso untable Casancrem Clásico (La Serenísima)", "Queso untable Casancrem Light / 0% Grasa", "Queso untable descremado / queso crema light"],
+      "queso untable": ["Queso untable Casancrem Clásico (La Serenísima)", "Queso untable descremado / queso crema light", "Queso untable Finlandia Clásico (La Serenísima)"]
     };
 
     function getCandidateFoods(query, topK = 8) {
