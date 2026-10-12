@@ -101,3 +101,9 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * Alimentación complementaria oportuna (densidad calórica, textura, fuentes de hierro/zinc e inocuidad).
       * Nutrición en edad escolar (viandas saludables, ambiente escolar/kiosco y patrones vegetarianos con complementación proteica).
 
+18. **Ajuste Manual de Metas Nutricionales (RDA) en la App de Dietas (`dieta/`)**:
+    - En lugar de automatizar de forma rígida todos los requerimientos para cada caso clínico del Trabajo Práctico Integrador (Casos 1 al 4: gestantes, lactantes, escolares), se promueve la **personalización manual activa por parte del estudiante**.
+    - La aplicación ofrece perfiles de referencia base (Adolescentes, Adultos, Embarazo 2°/3° Trimestre, Lactante 7-12 m, Escolar Masculino/Femenino) y dispone de un acordeón interactivo (`⚙️ Metas -> Ajustar Metas de Nutrientes Recomendados`) para editar manualmente los 25 nutrientes y límites (calcio, hierro, vitaminas, fibra, etc.).
+    - Esto fomenta el aprendizaje activo, la consulta de tablas de IDR/RDA (IOM/FAO) y el razonamiento clínico propio en vez de depender de una solución automática de "caja negra".
+
+

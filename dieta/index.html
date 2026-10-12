@@ -535,40 +535,47 @@
   </div>
 
   <!-- MODAL DE CONFIGURACIÓN DE METAS (CON GESTIÓN DE CLAVES Y RANGOS IOM) -->
+  <!-- MODAL DE CONFIGURACIÓN DE METAS (CON GESTIÓN DE CLAVES, RANGOS IOM Y NUTRIENTES PERSONALIZABLES) -->
   <div id="settings-modal" class="fixed inset-0 z-50 flex items-center justify-center p-3 modal-backdrop opacity-0 pointer-events-none transition-opacity duration-200">
-    <div class="modal-content w-full max-w-[460px] bg-cardbg border border-cardborder rounded-2xl p-4 shadow-2xl flex flex-col gap-3 transform scale-95 max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+    <div class="modal-content w-full max-w-[520px] bg-cardbg border border-cardborder rounded-2xl p-4 shadow-2xl flex flex-col gap-3 transform scale-95 max-h-[92vh] overflow-y-auto" onclick="event.stopPropagation()">
       <div class="flex justify-between items-center pb-2 border-b border-white/[0.06]">
-        <h3 class="text-sm font-bold text-white">⚙️ Configurar Caso del Alumno</h3>
+        <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+          <span>⚙️</span> Configurar Caso y Metas Clínicas
+        </h3>
         <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
       </div>
       
       <div class="flex flex-col gap-2.5 text-xs">
         <div>
-          <label class="text-slate-400 block mb-1">Nombre Alumno/a:</label>
-          <input type="text" id="setting-name" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white" placeholder="Ej: Mateo Pérez" />
+          <label class="text-slate-400 block mb-1">Nombre Alumno/a / Paciente:</label>
+          <input type="text" id="setting-name" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white" placeholder="Ej: Camila (Caso 1) / Tomás" />
         </div>
         <div>
-          <label class="text-slate-400 block mb-1">Grupo Etario / Perfil:</label>
+          <label class="text-slate-400 block mb-1">Grupo Etario / Perfil Base de Partida:</label>
           <select id="setting-profile" onchange="onProfileChange()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-semibold">
             <option value="Adolescente Masculino (14-18 años)">Adolescente Masculino (14-18 años)</option>
             <option value="Adolescente Femenino (14-18 años)">Adolescente Femenino (14-18 años)</option>
             <option value="Adulto Masculino (19-30 años)">Adulto Masculino (19-30 años)</option>
             <option value="Adulto Femenino (19-30 años)">Adulto Femenino (19-30 años)</option>
+            <option value="Embarazo (2° y 3° Trimestre)">🤰 Embarazo (2° y 3° Trimestre)</option>
+            <option value="Lactante (7 a 12 meses)">👶 Lactante (7 a 12 meses)</option>
+            <option value="Escolar Masculino (9 a 13 años)">🧒 Escolar Masculino (9 a 13 años)</option>
+            <option value="Escolar Femenino (9 a 13 años)">👧 Escolar Femenino (9 a 13 años)</option>
           </select>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="text-slate-400 block mb-1">Peso (kg):</label>
-            <input type="number" id="setting-weight" value="70" step="1" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
+            <input type="number" id="setting-weight" value="70" step="any" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
           </div>
           <div>
-            <label class="text-slate-400 block mb-1">Calorías Meta:</label>
-            <input type="number" id="setting-cal" value="2500" step="50" oninput="updateSettingsIomGrams()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
+            <label class="text-slate-400 block mb-1">Calorías Meta (kcal):</label>
+            <input type="number" id="setting-cal" value="2500" step="25" oninput="updateSettingsIomGrams()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
           </div>
         </div>
         <div>
           <label class="text-slate-400 block mb-1">Factor Proteína (g/kg): <span id="setting-prot-label" class="text-cyan-400 font-mono">0.85</span></label>
-          <input type="range" id="setting-prot-factor" min="0.80" max="2.40" step="0.05" value="0.85" oninput="document.getElementById('setting-prot-label').innerText = this.value" class="w-full" />
+          <input type="range" id="setting-prot-factor" min="0.50" max="3.00" step="0.05" value="0.85" oninput="document.getElementById('setting-prot-label').innerText = this.value" class="w-full" />
         </div>
 
         <!-- Rangos de Distribución Aceptables del IOM (AMDR) Preseleccionados -->
@@ -600,6 +607,158 @@
           <p class="text-[9.5px] text-slate-400 leading-tight">
             * La adecuación se marca como <b>100% Óptima (Verde)</b> mientras los gramos se encuentren dentro del rango IOM.
           </p>
+        </div>
+
+        <!-- ACORDEÓN DE METAS DE NUTRIENTES RECOMENDADOS (RDA) -->
+        <div class="rounded-xl border border-cyan-500/30 bg-appbg/90 overflow-hidden shadow-sm">
+          <button type="button" onclick="toggleNutrientTargetsSection()" class="w-full p-2.5 flex items-center justify-between text-left hover:bg-white/[0.04] transition-colors">
+            <div class="flex items-center gap-2">
+              <span class="text-sm">🎯</span>
+              <div>
+                <span class="text-xs font-bold text-white block">Ajustar Metas de Nutrientes Recomendados (RDA)</span>
+                <span class="text-[9.5px] text-cyan-300 block">Personaliza los requerimientos de tu caso clínico (Minerales, Vitaminas, Fibra)</span>
+              </div>
+            </div>
+            <span id="nutrient-targets-chevron" class="text-xs text-cyan-400 font-bold transition-transform">▼</span>
+          </button>
+
+          <div id="nutrient-targets-content" class="hidden p-3 border-t border-white/[0.06] flex flex-col gap-3">
+            <div class="flex items-center justify-between text-[10px] text-slate-400 bg-white/[0.02] p-2 rounded-lg">
+              <span>Introduce las metas investigadas para tu paciente:</span>
+              <button type="button" onclick="resetNutrientTargetsToProfile()" class="text-cyan-400 hover:text-cyan-300 font-bold underline cursor-pointer">
+                ↺ Restablecer al perfil base
+              </button>
+            </div>
+
+            <!-- Minerales -->
+            <div>
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">🌿 Minerales</span>
+              <div class="grid grid-cols-3 gap-1.5">
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Calcio">Calcio (mg):</label>
+                  <input type="number" step="any" id="target-calcio_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Hierro">Hierro (mg):</label>
+                  <input type="number" step="any" id="target-hierro_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Magnesio">Magnesio (mg):</label>
+                  <input type="number" step="any" id="target-magnesio_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Fósforo">Fósforo (mg):</label>
+                  <input type="number" step="any" id="target-fosforo_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Potasio">Potasio (mg):</label>
+                  <input type="number" step="any" id="target-potasio_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Zinc">Zinc (mg):</label>
+                  <input type="number" step="any" id="target-zinc_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Selenio">Selenio (µg):</label>
+                  <input type="number" step="any" id="target-selenio_ug" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Manganeso">Manganeso (mg):</label>
+                  <input type="number" step="any" id="target-manganeso_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Cobre">Cobre (mg):</label>
+                  <input type="number" step="any" id="target-cobre_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Vitaminas -->
+            <div>
+              <span class="text-[10px] font-bold text-sky-400 uppercase tracking-wider block mb-1">🍊 Vitaminas</span>
+              <div class="grid grid-cols-3 gap-1.5">
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Vitamina A">Vit. A (µg):</label>
+                  <input type="number" step="any" id="target-vitamina_a_ug" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Vitamina C">Vit. C (mg):</label>
+                  <input type="number" step="any" id="target-vitamina_c_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Vitamina D">Vit. D (IU):</label>
+                  <input type="number" step="any" id="target-vitamina_d_iu" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Vitamina E">Vit. E (mg):</label>
+                  <input type="number" step="any" id="target-vitamina_e_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Vitamina K">Vit. K (µg):</label>
+                  <input type="number" step="any" id="target-vitamina_k_ug" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="B1 Tiamina">B1 Tiamina (mg):</label>
+                  <input type="number" step="any" id="target-b1_tiamina_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="B2 Riboflavina">B2 Ribofl. (mg):</label>
+                  <input type="number" step="any" id="target-b2_riboflavina_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="B3 Niacina">B3 Niacina (mg):</label>
+                  <input type="number" step="any" id="target-b3_niacina_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="B6 Piridoxina">B6 Piridox. (mg):</label>
+                  <input type="number" step="any" id="target-b6_piridoxina_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Folatos B9">Folatos B9 (µg):</label>
+                  <input type="number" step="any" id="target-folatos_ug" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Vitamina B12">Vit. B12 (µg):</label>
+                  <input type="number" step="any" id="target-b12_cobalamina_ug" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Colina">Colina (mg):</label>
+                  <input type="number" step="any" id="target-colina_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Fibra y Lípidos -->
+            <div>
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">🥑 Fibra, Lípidos y Límites</span>
+              <div class="grid grid-cols-3 gap-1.5">
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Fibra Dietética">Fibra Diet. (g):</label>
+                  <input type="number" step="any" id="target-fibra_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Omega-3">Omega-3 (g):</label>
+                  <input type="number" step="any" id="target-omega_3_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Omega-6">Omega-6 (g):</label>
+                  <input type="number" step="any" id="target-omega_6_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Grasas Saturadas (máx)">Sat. máx (g):</label>
+                  <input type="number" step="any" id="target-grasas_saturadas_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Colesterol (máx)">Colesterol (mg):</label>
+                  <input type="number" step="any" id="target-colesterol_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Sodio (máx)">Sodio máx (mg):</label>
+                  <input type="number" step="any" id="target-sodio_mg" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- URL Google Sheets -->
@@ -731,6 +890,38 @@
         vitamina_a_ug: 700.0, vitamina_c_mg: 75.0, vitamina_d_iu: 600.0, vitamina_e_mg: 15.0, vitamina_k_ug: 90.0,
         b1_tiamina_mg: 1.1, b2_riboflavina_mg: 1.1, b3_niacina_mg: 14.0, b6_piridoxina_mg: 1.3, folatos_ug: 400.0,
         b12_cobalamina_ug: 2.4, colina_mg: 425.0
+      },
+      "Embarazo (2° y 3° Trimestre)": {
+        calorias_ref: 2400, prot_base_g_kg: 1.10, fibra_g: 28.0, grasas_saturadas_g: 22.0, colesterol_mg: 300.0,
+        omega_3_g: 1.4, omega_6_g: 13.0, calcio_mg: 1000.0, hierro_mg: 27.0, magnesio_mg: 350.0, fosforo_mg: 700.0,
+        potasio_mg: 2900.0, sodio_mg: 2300.0, zinc_mg: 11.0, selenio_ug: 60.0, manganeso_mg: 2.0, cobre_mg: 1.00,
+        vitamina_a_ug: 770.0, vitamina_c_mg: 85.0, vitamina_d_iu: 600.0, vitamina_e_mg: 15.0, vitamina_k_ug: 90.0,
+        b1_tiamina_mg: 1.4, b2_riboflavina_mg: 1.4, b3_niacina_mg: 18.0, b6_piridoxina_mg: 1.9, folatos_ug: 600.0,
+        b12_cobalamina_ug: 2.6, colina_mg: 450.0
+      },
+      "Lactante (7 a 12 meses)": {
+        calorias_ref: 750, prot_base_g_kg: 1.20, fibra_g: 10.0, grasas_saturadas_g: 8.0, colesterol_mg: 150.0,
+        omega_3_g: 0.5, omega_6_g: 4.6, calcio_mg: 260.0, hierro_mg: 11.0, magnesio_mg: 75.0, fosforo_mg: 275.0,
+        potasio_mg: 860.0, sodio_mg: 370.0, zinc_mg: 3.0, selenio_ug: 20.0, manganeso_mg: 0.6, cobre_mg: 0.22,
+        vitamina_a_ug: 500.0, vitamina_c_mg: 50.0, vitamina_d_iu: 400.0, vitamina_e_mg: 5.0, vitamina_k_ug: 2.5,
+        b1_tiamina_mg: 0.3, b2_riboflavina_mg: 0.4, b3_niacina_mg: 4.0, b6_piridoxina_mg: 0.3, folatos_ug: 80.0,
+        b12_cobalamina_ug: 0.5, colina_mg: 150.0
+      },
+      "Escolar Masculino (9 a 13 años)": {
+        calorias_ref: 2100, prot_base_g_kg: 0.95, fibra_g: 31.0, grasas_saturadas_g: 20.0, colesterol_mg: 300.0,
+        omega_3_g: 1.2, omega_6_g: 12.0, calcio_mg: 1300.0, hierro_mg: 8.0, magnesio_mg: 240.0, fosforo_mg: 1250.0,
+        potasio_mg: 2500.0, sodio_mg: 2200.0, zinc_mg: 8.0, selenio_ug: 40.0, manganeso_mg: 1.9, cobre_mg: 0.70,
+        vitamina_a_ug: 600.0, vitamina_c_mg: 45.0, vitamina_d_iu: 600.0, vitamina_e_mg: 11.0, vitamina_k_ug: 60.0,
+        b1_tiamina_mg: 0.9, b2_riboflavina_mg: 0.9, b3_niacina_mg: 12.0, b6_piridoxina_mg: 1.0, folatos_ug: 300.0,
+        b12_cobalamina_ug: 1.8, colina_mg: 375.0
+      },
+      "Escolar Femenino (9 a 13 años)": {
+        calorias_ref: 1900, prot_base_g_kg: 0.95, fibra_g: 26.0, grasas_saturadas_g: 18.0, colesterol_mg: 300.0,
+        omega_3_g: 1.0, omega_6_g: 10.0, calcio_mg: 1300.0, hierro_mg: 8.0, magnesio_mg: 240.0, fosforo_mg: 1250.0,
+        potasio_mg: 2300.0, sodio_mg: 2200.0, zinc_mg: 8.0, selenio_ug: 40.0, manganeso_mg: 1.6, cobre_mg: 0.70,
+        vitamina_a_ug: 600.0, vitamina_c_mg: 45.0, vitamina_d_iu: 600.0, vitamina_e_mg: 11.0, vitamina_k_ug: 60.0,
+        b1_tiamina_mg: 0.9, b2_riboflavina_mg: 0.9, b3_niacina_mg: 12.0, b6_piridoxina_mg: 1.0, folatos_ug: 300.0,
+        b12_cobalamina_ug: 1.8, colina_mg: 375.0
       }
     };
 
@@ -776,7 +967,8 @@
       iomCarbsMaxPct: 65,
       iomFatsMinPct: 20,
       iomFatsMaxPct: 35,
-      activeCategory: "all"
+      activeCategory: "all",
+      customTargets: {}
     };
 
     function showToast(message, type = "success") {
@@ -810,6 +1002,15 @@
         }
       } catch (e) {
         console.error("Error cargando alimentos.json:", e);
+      }
+
+      const savedCustomTargets = localStorage.getItem("NUTRI_CUSTOM_TARGETS");
+      if (savedCustomTargets) {
+        try {
+          appState.customTargets = JSON.parse(savedCustomTargets) || {};
+        } catch (e) {
+          console.error("Error al cargar metas personalizadas:", e);
+        }
       }
 
       checkUrlParams();
@@ -1182,6 +1383,16 @@
       targets.grasas_saturadas_g = Math.round((cal * 0.10) / 9);
       targets.grasas_monoinsaturadas_g = Math.round((cal * 0.12) / 9);
       targets.grasas_poliinsaturadas_g = Math.round((cal * 0.08) / 9);
+
+      // Metas de micronutrientes y límites personalizados por el alumno (caso clínico)
+      if (appState.customTargets && typeof appState.customTargets === "object") {
+        for (const [k, v] of Object.entries(appState.customTargets)) {
+          if (typeof v === "number" && !isNaN(v) && v > 0) {
+            targets[k] = v;
+          }
+        }
+      }
+
       return targets;
     }
 
@@ -1274,7 +1485,8 @@
       const totals = calculateTotals();
       const targets = getTargets();
 
-      document.getElementById("header-profile-text").innerText = `${appState.perfil} (${appState.peso} kg)`;
+      const hasCustom = appState.customTargets && Object.keys(appState.customTargets).length > 0;
+      document.getElementById("header-profile-text").innerText = `${appState.perfil}${hasCustom ? " · Metas editadas 🎯" : ""} (${appState.peso} kg)`;
 
       const cal = totals.calorias || 0;
       const prot = totals.proteinas_g || 0;
@@ -1935,7 +2147,8 @@
         icmin: appState.iomCarbsMinPct,
         icmax: appState.iomCarbsMaxPct,
         ifmin: appState.iomFatsMinPct,
-        ifmax: appState.iomFatsMaxPct
+        ifmax: appState.iomFatsMaxPct,
+        ct: appState.customTargets || {}
       };
       try {
         const jsonStr = JSON.stringify(payload);
@@ -1987,6 +2200,10 @@
           if (payload.icmax) appState.iomCarbsMaxPct = payload.icmax;
           if (payload.ifmin) appState.iomFatsMinPct = payload.ifmin;
           if (payload.ifmax) appState.iomFatsMaxPct = payload.ifmax;
+          if (payload.ct && typeof payload.ct === 'object') {
+            appState.customTargets = payload.ct;
+            localStorage.setItem("NUTRI_CUSTOM_TARGETS", JSON.stringify(appState.customTargets));
+          }
           showToast("🎉 ¡Dieta restaurada exitosamente desde el enlace!");
         } catch (e) {
           console.error("Error al decodificar dieta desde URL:", e);
@@ -2336,6 +2553,15 @@
         document.getElementById("setting-fats-max").value = appState.iomFatsMaxPct || 35;
         updateSettingsIomGrams();
 
+        // Rellenar metas de micronutrientes y límites (RDA actuales)
+        const currentTargets = getTargets();
+        document.querySelectorAll(".target-nutrient-input").forEach(input => {
+          const k = input.id.replace("target-", "");
+          if (currentTargets[k] !== undefined) {
+            input.value = currentTargets[k];
+          }
+        });
+
         const elGroq1 = document.getElementById("setting-groq-key1");
         if (elGroq1) {
           const keys = getStoredAiKeys();
@@ -2352,6 +2578,36 @@
         modal.classList.remove("opacity-0", "pointer-events-none");
         modal.querySelector(".modal-content").classList.remove("scale-95");
         modal.querySelector(".modal-content").classList.add("scale-100");
+      }
+    }
+
+    function toggleNutrientTargetsSection() {
+      const content = document.getElementById("nutrient-targets-content");
+      const chevron = document.getElementById("nutrient-targets-chevron");
+      if (!content) return;
+      const isHidden = content.classList.contains("hidden");
+      if (isHidden) {
+        content.classList.remove("hidden");
+        if (chevron) chevron.innerText = "▲";
+      } else {
+        content.classList.add("hidden");
+        if (chevron) chevron.innerText = "▼";
+      }
+    }
+
+    function resetNutrientTargetsToProfile() {
+      const p = document.getElementById("setting-profile").value;
+      const r = RDA_PROFILES[p] || RDA_PROFILES["Adolescente Masculino (14-18 años)"];
+      if (r) {
+        document.querySelectorAll(".target-nutrient-input").forEach(input => {
+          const k = input.id.replace("target-", "");
+          if (r[k] !== undefined) {
+            input.value = r[k];
+          }
+        });
+        appState.customTargets = {};
+        localStorage.removeItem("NUTRI_CUSTOM_TARGETS");
+        showToast("↺ Metas de nutrientes restablecidas al perfil base.");
       }
     }
 
@@ -2379,6 +2635,13 @@
         document.getElementById("setting-prot-factor").value = r.prot_base_g_kg;
         document.getElementById("setting-prot-label").innerText = r.prot_base_g_kg;
         updateSettingsIomGrams();
+        // Cargar metas oficiales del nuevo perfil seleccionado en los campos del acordeón
+        document.querySelectorAll(".target-nutrient-input").forEach(input => {
+          const k = input.id.replace("target-", "");
+          if (r[k] !== undefined) {
+            input.value = r[k];
+          }
+        });
       }
     }
 
@@ -2397,6 +2660,25 @@
       appState.iomFatsMinPct = parseFloat(document.getElementById("setting-fats-min").value) || 20;
       appState.iomFatsMaxPct = parseFloat(document.getElementById("setting-fats-max").value) || 35;
 
+      // Guardar metas personalizadas de nutrientes (RDA) si difieren del perfil base
+      const baseProfile = RDA_PROFILES[appState.perfil] || RDA_PROFILES["Adolescente Masculino (14-18 años)"];
+      const newCustomTargets = {};
+      document.querySelectorAll(".target-nutrient-input").forEach(input => {
+        const k = input.id.replace("target-", "");
+        const val = parseFloat(input.value);
+        if (!isNaN(val) && val > 0) {
+          if (baseProfile[k] === undefined || Math.abs(baseProfile[k] - val) > 0.001) {
+            newCustomTargets[k] = val;
+          }
+        }
+      });
+      appState.customTargets = newCustomTargets;
+      if (Object.keys(newCustomTargets).length > 0) {
+        localStorage.setItem("NUTRI_CUSTOM_TARGETS", JSON.stringify(newCustomTargets));
+      } else {
+        localStorage.removeItem("NUTRI_CUSTOM_TARGETS");
+      }
+
       const elGroq1 = document.getElementById("setting-groq-key1");
       if (elGroq1) {
         const k1 = elGroq1.value.trim();
@@ -2414,6 +2696,7 @@
 
       toggleSettingsModal();
       showToast("⚙️ Metas, perfil y configuración actualizados.");
+      updateShareLink();
       renderAll();
     }
 
