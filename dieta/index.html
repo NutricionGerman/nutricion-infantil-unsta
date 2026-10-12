@@ -125,7 +125,7 @@
 
         <!-- Buscador Autocomplete Limpio con Botón de Asistente IA -->
         <div class="relative flex flex-col gap-1.5">
-          <label id="food-search-label" class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (572 disponibles):</label>
+          <label id="food-search-label" class="text-[11px] font-medium text-slate-400 block">Buscar Alimento (577 disponibles):</label>
           <div class="flex gap-1.5">
             <div class="relative flex-1">
               <input type="text" id="food-search-input" 
@@ -566,16 +566,34 @@
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="text-slate-400 block mb-1">Peso (kg):</label>
-            <input type="number" id="setting-weight" value="70" step="any" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
+            <input type="number" id="setting-weight" value="70" step="any" oninput="updateSettingsIomGrams()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
           </div>
           <div>
             <label class="text-slate-400 block mb-1">Calorías Meta (kcal):</label>
             <input type="number" id="setting-cal" value="2500" step="25" oninput="updateSettingsIomGrams()" class="w-full p-2 rounded-xl bg-appbg border border-white/[0.08] text-white font-mono" />
           </div>
         </div>
-        <div>
-          <label class="text-slate-400 block mb-1">Factor Proteína (g/kg): <span id="setting-prot-label" class="text-cyan-400 font-mono">0.85</span></label>
-          <input type="range" id="setting-prot-factor" min="0.50" max="3.00" step="0.05" value="0.85" oninput="document.getElementById('setting-prot-label').innerText = this.value" class="w-full" />
+
+        <!-- Proteína Recomendada: Slider Factor + Gramos Totales Resultantes + Meta Manual -->
+        <div class="p-2.5 rounded-xl bg-appbg/80 border border-emerald-500/30 flex flex-col gap-1.5 shadow-sm">
+          <div class="flex justify-between items-center">
+            <span class="text-[11px] font-bold text-emerald-300">🥩 Meta de Proteínas:</span>
+            <span id="setting-prot-calc-badge" class="text-xs font-mono font-bold text-emerald-300 bg-emerald-950/70 px-2 py-0.5 rounded-lg border border-emerald-500/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]">59.5 g/día</span>
+          </div>
+          <div>
+            <div class="flex justify-between text-[10px] text-slate-400 mb-0.5">
+              <span>Factor Proteína: <b id="setting-prot-label" class="text-cyan-400 font-mono text-xs">0.85</b> g/kg</span>
+              <span id="setting-prot-formula-hint" class="font-mono text-slate-400">70.0 kg × 0.85 = 59.5g</span>
+            </div>
+            <input type="range" id="setting-prot-factor" min="0.50" max="3.00" step="0.05" value="0.85" oninput="onProtFactorSliderChange(this.value)" class="w-full accent-cyan-400 cursor-pointer" />
+          </div>
+          <div class="flex items-center justify-between text-[10px] pt-1 border-t border-white/[0.04]">
+            <span class="text-slate-400">Ajustar meta fija en gramos directamente:</span>
+            <div class="flex items-center gap-1">
+              <input type="number" id="setting-prot-manual-grams" step="0.1" placeholder="Ej: 10.0" oninput="onProtManualGramsChange(this.value)" class="w-20 p-1 rounded-lg bg-cardbg border border-emerald-500/40 text-emerald-300 font-mono text-center text-xs font-bold" />
+              <span class="text-slate-400 text-xs font-bold">g</span>
+            </div>
+          </div>
         </div>
 
         <!-- Rangos de Distribución Aceptables del IOM (AMDR) Preseleccionados -->
@@ -628,6 +646,21 @@
               <button type="button" onclick="resetNutrientTargetsToProfile()" class="text-cyan-400 hover:text-cyan-300 font-bold underline cursor-pointer">
                 ↺ Restablecer al perfil base
               </button>
+            </div>
+
+            <!-- Macronutrientes y Fibra -->
+            <div>
+              <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">🥩 Proteínas y Fibra Dietética</span>
+              <div class="grid grid-cols-2 gap-1.5">
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Meta de Proteínas">Proteínas (g):</label>
+                  <input type="number" step="any" id="target-proteinas_g" oninput="onProtManualGramsChange(this.value)" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-emerald-500/40 text-emerald-300 text-xs font-mono font-bold" />
+                </div>
+                <div>
+                  <label class="text-[9px] text-slate-400 block truncate" title="Fibra Dietética">Fibra Dietética (g):</label>
+                  <input type="number" step="any" id="target-fibra_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
+                </div>
+              </div>
             </div>
 
             <!-- Minerales -->
@@ -728,14 +761,10 @@
               </div>
             </div>
 
-            <!-- Fibra y Lípidos -->
+            <!-- Lípidos y Límites -->
             <div>
-              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">🥑 Fibra, Lípidos y Límites</span>
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">🥑 Lípidos y Límites (máx)</span>
               <div class="grid grid-cols-3 gap-1.5">
-                <div>
-                  <label class="text-[9px] text-slate-400 block truncate" title="Fibra Dietética">Fibra Diet. (g):</label>
-                  <input type="number" step="any" id="target-fibra_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
-                </div>
                 <div>
                   <label class="text-[9px] text-slate-400 block truncate" title="Omega-3">Omega-3 (g):</label>
                   <input type="number" step="any" id="target-omega_3_g" class="target-nutrient-input w-full p-1.5 rounded-lg bg-cardbg border border-white/[0.08] text-white text-xs font-mono font-semibold" />
@@ -939,7 +968,13 @@
       "hamburguesa": { oficial: "Carne vacuna magra cocida", consejo: "Para una hamburguesa casera, usa 'Carne vacuna magra cocida'." },
       "margarina": { oficial: "Aceite de girasol", consejo: "No hay margarina en la base; como materia grasa equivalente puedes usar Aceite de girasol o de oliva." },
       "manteca": { oficial: "Aceite de oliva virgen extra", consejo: "Como materia grasa equivalente puedes usar Aceite de oliva virgen extra o de girasol." },
-      "licuado": { oficial: "Plátano / Banana cruda", consejo: "Los licuados son platos compuestos: desglosa banana, avena y bebida vegetal." }
+      "licuado": { oficial: "Plátano / Banana cruda", consejo: "Los licuados son platos compuestos: desglosa banana, avena y bebida vegetal." },
+      "formula": { oficial: "Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", consejo: "Dispones de fórmula infantil en polvo (por medidas) o líquida preparada (por ml de mamadera)." },
+      "formula infantil": { oficial: "Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", consejo: "Dispones de fórmulas de inicio (0-6m) y continuación (6-12m) en polvo o líquida." },
+      "nutrilon": { oficial: "Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", consejo: "Búscala como 'Fórmula infantil de inicio' (Nutrilon 1) o 'de continuación' (Nutrilon 2)." },
+      "sancor bebe": { oficial: "Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", consejo: "Búscala como 'Fórmula infantil de inicio' o 'de continuación'." },
+      "leche materna": { oficial: "Leche materna / Leche humana madura fluida", consejo: "En la base figura como 'Leche materna / Leche humana madura fluida'." },
+      "pecho materno": { oficial: "Leche materna / Leche humana madura fluida", consejo: "En la base figura como 'Leche materna / Leche humana madura fluida'." }
     };
 
     // Configuración por defecto de Google Sheets para la hoja de cálculo de dietas
@@ -1171,7 +1206,19 @@
       "bife": ["Bife de chorizo vacuno a la plancha/parrilla", "Cuadril / Bife de cuadril a la plancha", "Bife angosto vacuno a la plancha"],
       "suprema": ["Pechuga de pollo a la plancha / cocida", "Pechuga de pollo sin piel a la plancha"],
       "casancrem": ["Queso untable Casancrem Clásico (La Serenísima)", "Queso untable Casancrem Light / 0% Grasa", "Queso untable descremado / queso crema light"],
-      "queso untable": ["Queso untable Casancrem Clásico (La Serenísima)", "Queso untable descremado / queso crema light", "Queso untable Finlandia Clásico (La Serenísima)"]
+      "queso untable": ["Queso untable Casancrem Clásico (La Serenísima)", "Queso untable descremado / queso crema light", "Queso untable Finlandia Clásico (La Serenísima)"],
+      "formula": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de inicio en polvo (0 a 6 meses - tipo Nutrilon 1 / SanCor Bebé 1)", "Fórmula infantil de continuación líquida / preparada (al 14% - tipo mamadera Nutrilon 2)", "Fórmula infantil de continuación en polvo (etapa 2: 6 a 12 meses - tipo Nutrilon 2 / SanCor Bebé 2)"],
+      "formula infantil": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de inicio en polvo (0 a 6 meses - tipo Nutrilon 1 / SanCor Bebé 1)", "Fórmula infantil de continuación líquida / preparada (al 14% - tipo mamadera Nutrilon 2)"],
+      "formula de inicio": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de inicio en polvo (0 a 6 meses - tipo Nutrilon 1 / SanCor Bebé 1)"],
+      "formula de continuacion": ["Fórmula infantil de continuación líquida / preparada (al 14% - tipo mamadera Nutrilon 2)", "Fórmula infantil de continuación en polvo (etapa 2: 6 a 12 meses - tipo Nutrilon 2 / SanCor Bebé 2)"],
+      "nutrilon": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de inicio en polvo (0 a 6 meses - tipo Nutrilon 1 / SanCor Bebé 1)", "Fórmula infantil de continuación líquida / preparada (al 14% - tipo mamadera Nutrilon 2)"],
+      "sancor bebe": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de inicio en polvo (0 a 6 meses - tipo Nutrilon 1 / SanCor Bebé 1)", "Fórmula infantil de continuación líquida / preparada (al 14% - tipo mamadera Nutrilon 2)"],
+      "nan": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de inicio en polvo (0 a 6 meses - tipo Nutrilon 1 / SanCor Bebé 1)"],
+      "mamadera": ["Fórmula infantil de inicio líquida / preparada (al 13.8% - tipo mamadera Nutrilon 1)", "Fórmula infantil de continuación líquida / preparada (al 14% - tipo mamadera Nutrilon 2)"],
+      "leche materna": ["Leche materna / Leche humana madura fluida"],
+      "leche humana": ["Leche materna / Leche humana madura fluida"],
+      "pecho": ["Leche materna / Leche humana madura fluida"],
+      "pecho materno": ["Leche materna / Leche humana madura fluida"]
     };
 
     function getCandidateFoods(query, topK = 8) {
@@ -2561,6 +2608,10 @@
             input.value = currentTargets[k];
           }
         });
+        const elProtManual = document.getElementById("setting-prot-manual-grams");
+        if (elProtManual && currentTargets.proteinas_g !== undefined) {
+          elProtManual.value = currentTargets.proteinas_g;
+        }
 
         const elGroq1 = document.getElementById("setting-groq-key1");
         if (elGroq1) {
@@ -2599,12 +2650,21 @@
       const p = document.getElementById("setting-profile").value;
       const r = RDA_PROFILES[p] || RDA_PROFILES["Adolescente Masculino (14-18 años)"];
       if (r) {
+        document.getElementById("setting-prot-factor").value = r.prot_base_g_kg || 0.85;
+        document.getElementById("setting-prot-label").innerText = r.prot_base_g_kg || 0.85;
+        updateSettingsIomGrams();
         document.querySelectorAll(".target-nutrient-input").forEach(input => {
           const k = input.id.replace("target-", "");
           if (r[k] !== undefined) {
             input.value = r[k];
           }
         });
+        const w = parseFloat(document.getElementById("setting-weight").value) || 70.0;
+        const defaultProtG = Math.round(w * (r.prot_base_g_kg || 0.85) * 10) / 10;
+        const elProtManual = document.getElementById("setting-prot-manual-grams");
+        if (elProtManual) elProtManual.value = defaultProtG;
+        const elTargetProt = document.getElementById("target-proteinas_g");
+        if (elTargetProt) elTargetProt.value = defaultProtG;
         appState.customTargets = {};
         localStorage.removeItem("NUTRI_CUSTOM_TARGETS");
         showToast("↺ Metas de nutrientes restablecidas al perfil base.");
@@ -2613,6 +2673,23 @@
 
     function updateSettingsIomGrams() {
       const cal = parseInt(document.getElementById("setting-cal").value) || 2500;
+      const weight = parseFloat(document.getElementById("setting-weight").value) || 70.0;
+      const protFactor = parseFloat(document.getElementById("setting-prot-factor").value) || 0.85;
+
+      const protG = Math.round(weight * protFactor * 10) / 10;
+      const elProtBadge = document.getElementById("setting-prot-calc-badge");
+      if (elProtBadge) elProtBadge.innerText = `${protG} g/día`;
+      const elProtFormula = document.getElementById("setting-prot-formula-hint");
+      if (elProtFormula) elProtFormula.innerText = `${weight.toFixed(1)} kg × ${protFactor.toFixed(2)} = ${protG}g`;
+      const elProtManual = document.getElementById("setting-prot-manual-grams");
+      if (elProtManual && document.activeElement !== elProtManual) {
+        elProtManual.value = protG;
+      }
+      const elTargetProt = document.getElementById("target-proteinas_g");
+      if (elTargetProt && document.activeElement !== elTargetProt) {
+        elTargetProt.value = protG;
+      }
+
       const cMin = parseFloat(document.getElementById("setting-carbs-min").value) || 45;
       const cMax = parseFloat(document.getElementById("setting-carbs-max").value) || 65;
       const fMin = parseFloat(document.getElementById("setting-fats-min").value) || 20;
@@ -2625,6 +2702,30 @@
 
       document.getElementById("setting-carbs-hint").innerText = `${cGMin} - ${cGMax}g (${cMin}-${cMax}%)`;
       document.getElementById("setting-fats-hint").innerText = `${fGMin} - ${fGMax}g (${fMin}-${fMax}%)`;
+    }
+
+    function onProtFactorSliderChange(val) {
+      document.getElementById("setting-prot-label").innerText = val;
+      updateSettingsIomGrams();
+    }
+
+    function onProtManualGramsChange(val) {
+      const g = parseFloat(val);
+      const weight = parseFloat(document.getElementById("setting-weight").value) || 70.0;
+      if (!isNaN(g) && g > 0 && weight > 0) {
+        const factor = Math.round((g / weight) * 100) / 100;
+        const slider = document.getElementById("setting-prot-factor");
+        if (slider) slider.value = Math.max(0.5, Math.min(3.0, factor));
+        document.getElementById("setting-prot-label").innerText = factor.toFixed(2);
+        const elProtBadge = document.getElementById("setting-prot-calc-badge");
+        if (elProtBadge) elProtBadge.innerText = `${g} g/día`;
+        const elProtFormula = document.getElementById("setting-prot-formula-hint");
+        if (elProtFormula) elProtFormula.innerText = `${weight.toFixed(1)} kg × ${factor.toFixed(2)} = ${g}g`;
+        const elProtManual = document.getElementById("setting-prot-manual-grams");
+        if (elProtManual && document.activeElement !== elProtManual) elProtManual.value = g;
+        const elTargetProt = document.getElementById("target-proteinas_g");
+        if (elTargetProt && document.activeElement !== elTargetProt) elTargetProt.value = g;
+      }
     }
 
     function onProfileChange() {
@@ -2662,12 +2763,17 @@
 
       // Guardar metas personalizadas de nutrientes (RDA) si difieren del perfil base
       const baseProfile = RDA_PROFILES[appState.perfil] || RDA_PROFILES["Adolescente Masculino (14-18 años)"];
+      const calcProtG = Math.round(appState.peso * appState.factorProt * 10) / 10;
       const newCustomTargets = {};
       document.querySelectorAll(".target-nutrient-input").forEach(input => {
         const k = input.id.replace("target-", "");
         const val = parseFloat(input.value);
         if (!isNaN(val) && val > 0) {
-          if (baseProfile[k] === undefined || Math.abs(baseProfile[k] - val) > 0.001) {
+          if (k === "proteinas_g") {
+            if (Math.abs(calcProtG - val) > 0.1) {
+              newCustomTargets[k] = val;
+            }
+          } else if (baseProfile[k] === undefined || Math.abs(baseProfile[k] - val) > 0.001) {
             newCustomTargets[k] = val;
           }
         }

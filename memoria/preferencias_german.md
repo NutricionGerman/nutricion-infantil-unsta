@@ -92,18 +92,25 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * **Peldaño 4**: Desenlaces duros (*hard endpoints*, daño irreversible, pérdida de órgano o mortalidad).
     - La interfaz debe permitir consultar esta cascada vertical mediante un modal interactivo con selector dinámico de marcadores (Triglicéridos, c-LDL/ApoB, Presión Arterial, Cintura/Grasa Visceral, Glucemia/HbA1c, Granos Integrales/Fibra GBD, Sodio) y un resumen compacto inline sincronizado con el nodo activo.
 
-17. **Temas Excluidos del Programa de la Cátedra (Celiaquía)**:
-    - En la Cátedra de Nutrición Infantil **NO se enseña ni se evalúa Enfermedad Celíaca**. Jamás mencionarla en consignas, guiones o evaluaciones.
-    - El programa y el Trabajo Práctico Integrador se enfocan exclusivamente en:
-      * Evaluación antropométrica clínica completa (embarazo Calvo/IOM, lactantes y escolares OMS/SAP, pliegues tricipital y subescapular, perímetros braquial y cefálico, cintura y AMB de Frisancho).
-      * Nutrición en el embarazo (requerimientos, ganancia de peso y manejo de síntomas digestivos).
-      * Lactancia materna y fórmulas infantiles (preparación higiénica y dilución exacta sin hiperconcentración).
-      * Alimentación complementaria oportuna (densidad calórica, textura, fuentes de hierro/zinc e inocuidad).
-      * Nutrición en edad escolar (viandas saludables, ambiente escolar/kiosco y patrones vegetarianos con complementación proteica).
+17. **Principio Cardinal del Programa: Cero Patología (Nutrición Infantil Normal / Fisiológica)**:
+    - En la Cátedra de Nutrición Infantil **NO se enseña ni se evalúa NINGUNA patología médica** (corresponde a Dietoterapia / Patología de años superiores que los alumnos aún no cursaron).
+    - **Quedan terminantemente excluidos de la evaluación**:
+      * **Diabetes Gestacional** (no exigir diagnósticos patológicos en embarazadas).
+      * **Resistencia a la Insulina / Acantosis Nigricans** (no exigir diagnósticos endocrinológicos en escolares).
+      * **Enfermedad Celíaca** (no exigir prescripción ni enfoque clínico celíaco).
+      * Cualquier otra entidad nosológica médica o de laboratorio.
+    - **NUNCA restar puntos ni penalizar** si los estudiantes no mencionan estas patologías o si se equivocan en conceptos de patología.
+    - El programa y el Trabajo Práctico Integrador se evalúan **exclusivamente sobre Nutrición Normal**:
+      * Evaluación antropométrica oficial completa (curvas gestacionales de ganancia de peso según Calvo/IOM; lactantes y escolares según estándares OMS/SAP con percentiles y Z-scores; pliegues tricipital y subescapular, perímetros braquial y cefálico, cintura y AMB de Frisancho).
+      * Nutrición en el embarazo fisiológico (requerimientos energéticos y de macronutrientes, ganancia ponderal armónica, pautas para síntomas comunes como náuseas/pirosis/constipación/edemas y reducción de azúcares/grasas saturadas).
+      * Lactancia materna y fórmulas infantiles (preparación higiénica y dilución exacta al 13-14% sin hiperconcentración de medidas).
+      * Alimentación complementaria oportuna fisiológica (edad de inicio a los 6 meses, texturas modificadas/papillas aplastadas con tenedor, densidad calórica, fuentes de hierro/zinc e inocuidad alimentaria, incluyendo advertencia contra la miel por botulismo).
+      * Nutrición en edad escolar (hábitos familiares saludables, viandas escolares equilibradas, ambiente escolar/kiosco, hidratación con agua pura y patrones vegetarianos con complementación proteica; sin dietas restrictivas extremas en sobrepeso).
 
-18. **Ajuste Manual de Metas Nutricionales (RDA) en la App de Dietas (`dieta/`)**:
-    - En lugar de automatizar de forma rígida todos los requerimientos para cada caso clínico del Trabajo Práctico Integrador (Casos 1 al 4: gestantes, lactantes, escolares), se promueve la **personalización manual activa por parte del estudiante**.
-    - La aplicación ofrece perfiles de referencia base (Adolescentes, Adultos, Embarazo 2°/3° Trimestre, Lactante 7-12 m, Escolar Masculino/Femenino) y dispone de un acordeón interactivo (`⚙️ Metas -> Ajustar Metas de Nutrientes Recomendados`) para editar manualmente los 25 nutrientes y límites (calcio, hierro, vitaminas, fibra, etc.).
-    - Esto fomenta el aprendizaje activo, la consulta de tablas de IDR/RDA (IOM/FAO) y el razonamiento clínico propio en vez de depender de una solución automática de "caja negra".
+18. **Ajustabilidad de Metas Clínicas y Fórmulas Infantiles Oficiales en el Taller de Dietas**:
+    - **Visualización y Ajuste Directo de Proteínas**: En el modal de configuración de metas clínicas, las proteínas se muestran tanto en factor ($g/kg/día$) como en **gramos totales diarios ($g/día$)** calculados en tiempo real con un badge destacado y campo directo editable, sincronizado bidireccionalmente con el factor y con el acordeón de metas clínicas.
+    - **Personalización Didáctica de Metas (RDA / IDR)**: Los estudiantes tienen la potestad de ajustar individualmente las metas de calorías, proteínas, carbohidratos, grasas y todos los micronutrientes para adaptarlos a los casos clínicos del Trabajo Integrador Final (lactantes, gestantes, preescolares, escolares).
+    - **Inclusión de Fórmulas Infantiles Oficiales y Leche Humana**: La base de alimentos del taller (`alimentos.json`) cuenta con 577 alimentos verificados con 46 columnas nutricionales completas, incorporando fórmulas infantiles de inicio y continuación (polvo y reconstituida líquida oficiales Nutricia Bagó: *Nutrilon Profutura 1 y 2*) y *Leche humana madura fluida* (USDA FDC / SAP).
+
 
 
