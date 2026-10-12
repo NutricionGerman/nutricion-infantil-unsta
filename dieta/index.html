@@ -1614,6 +1614,13 @@
       renderNutrientCards(totals, targets);
       renderPauta();
       updateShareLink();
+
+      const previewContainer = document.getElementById("infographic-preview-container");
+      const chartContainer = document.getElementById("nutrient-graphic-report-container");
+      if ((previewContainer && !previewContainer.classList.contains("hidden")) ||
+          (chartContainer && !chartContainer.classList.contains("hidden"))) {
+        updateChartPreview();
+      }
     }
 
     function renderDietList() {
@@ -2360,12 +2367,12 @@
           const barW = Math.max(0, (clampedPct / maxScale) * plotW);
           const barY = topY + idx * slotH + (slotH - barH) / 2;
 
-          let color = "#13a072"; // Verde adecuado
+          let color = "#13a072"; // Verde adecuado (>=100%)
           if (it.isLimit) {
             color = it.pct <= 100 ? "#13a072" : "#ef4444";
           } else {
             if (it.pct >= 100) color = "#13a072";
-            else if (it.pct >= 50) color = "#f59e0b";
+            else if (it.pct >= 70) color = "#f59e0b";
             else color = "#ef4444";
           }
 
@@ -2384,8 +2391,9 @@
           ctx.textAlign = "left";
           ctx.fillStyle = "#1e293b";
           ctx.font = "bold 11.5px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-          const dispTarget = it.target.toFixed(1);
-          const txt = `${it.val.toFixed(1)} / ${dispTarget}${it.unit} (${Math.round(it.pct)}%)`;
+          const dispVal = (it.val > 0 && it.val < 0.1) ? it.val.toFixed(2) : it.val.toFixed(1);
+          const dispTarget = (it.target > 0 && it.target < 1 && Math.abs(Math.round(it.target * 10) - it.target * 10) > 0.01) ? it.target.toFixed(2) : it.target.toFixed(1);
+          const txt = `${dispVal} / ${dispTarget}${it.unit} (${Math.round(it.pct)}%)`;
           ctx.fillText(txt, leftX + barW + 7, barY + barH - 6);
         });
 
