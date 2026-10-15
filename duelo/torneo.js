@@ -4,22 +4,23 @@
  * Eliminación Simple: 100 Jugadores -> 18 Grupos -> 7 Días -> 1 Campeón Supremo
  */
 
-// --- 1. BANCO OFICIAL DE LOS 15 JUEGOS (2 POR DÍA / 3 EN LA GRAN FINAL) ---
+// --- 1. BANCO OFICIAL DE LOS 15+ JUEGOS (DÍA 1: LOS 5 HITOS COMPLETOS / DÍAS 2-7: CLÍNICA Y FINAL) ---
 const TOURNAMENT_DAYS_GAMES = {
   1: {
     day: 1,
-    title: 'Día 1: Hitos Óseos Superiores (Ronda de 100)',
-    desc: 'Localización anatómica directa de los dos relieves óseos de referencia para el miembro superior.',
-    category: 'ANTROPOMETRÍA BÁSICA',
+    title: 'Día 1: Evaluación Antropométrica Integral (Ronda de 100 — Los 5 Hitos)',
+    desc: 'Localización completa de los 5 hitos oficiales de la cátedra para miembros superiores y cintura.',
+    category: 'ANTROPOMETRÍA CLÍNICA TOTAL',
     games: [
       {
         id: 'acromion',
-        name: 'Punto Acromial (Acromion)',
-        questionTitle: 'Punto Acromial (Acromion)',
-        category: 'Extremidad Superior',
+        name: '1/5: Punto Acromial (Acromion)',
+        questionTitle: '1/5: Punto Acromial (Hombro)',
+        category: 'Hito 1 de 5 • Hombro',
         mode: 'single_point',
         type: 'acromion',
-        desc: 'Borde superior y más externo del acromion de la escápula.',
+        promptInstruction: '🎯 Toca el Punto Acromial (borde superior y lateral más externo del acromion en el hombro)',
+        desc: 'Toca el borde superior y más externo del acromion de la escápula (hombro).',
         clinicalUse: 'Punto de partida proximal obligatorio para medir la longitud del brazo con cinta métrica.',
         toleranceRadius: 14,
         targets: [
@@ -29,37 +30,31 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'olecranon',
-        name: 'Olécranon (Codo a 90°)',
-        questionTitle: 'Olécranon (Codo a 90°)',
-        category: 'Extremidad Superior',
+        name: '2/5: Olécranon (Codo a 90°)',
+        questionTitle: '2/5: Olécranon (Codo a 90°)',
+        category: 'Hito 2 de 5 • Codo',
         mode: 'single_point',
         type: 'olecranon',
-        desc: 'Vértice posterior del olécranon (saliente del cúbito en el codo flexionado a 90°).',
-        clinicalUse: 'Hito distal para delimitar la distancia acromion-olécranon.',
+        promptInstruction: '🎯 Toca el Olécranon (vértice saliente del cúbito en el codo flexionado a 90°)',
+        desc: 'Toca el vértice posterior del olécranon (saliente ósea del cúbito en el codo flexionado a 90°).',
+        clinicalUse: 'Hito distal para delimitar la distancia acromion-olécranon con cinta métrica.',
         toleranceRadius: 14,
         targets: [
           { side: 'Codo Derecho', x: 70.9, y: 296.5 },
           { side: 'Codo Izquierdo', x: 320.6, y: 298.0 }
         ]
-      }
-    ]
-  },
-  2: {
-    day: 2,
-    title: 'Día 2: Marca Mesobraquial y Cintura CDC (Ronda de 50)',
-    desc: 'Cálculo de punto medio al 50% y localización de la cresta ilíaca para perímetro de cintura CDC.',
-    category: 'DERIVACIÓN Y TRONCO',
-    games: [
+      },
       {
         id: 'mesobraquial',
-        name: 'Marca Mesobraquial (Punto Medio)',
-        questionTitle: 'Marca Mesobraquial (Punto Medio)',
-        category: 'Extremidad Superior',
+        name: '3/5: Marca Mesobraquial (Punto Medio al 50%)',
+        questionTitle: '3/5: Marca Mesobraquial (50%)',
+        category: 'Hito 3 de 5 • Brazo Medio',
         mode: 'two_points_midpoint',
         type: 'arm',
         subType: 'arm',
-        desc: 'Marca los 2 extremos (Acromion y Olécranon) en cualquier orden para proyectar el 50%.',
-        clinicalUse: 'Nivel donde se mide Perímetro Braquial y Pliegue Tricipital (Frisancho).',
+        promptInstruction: '🎯 Marca los 2 puntos de referencia óseos (Acromion y Olécranon en cualquier orden) para calcular la medida mesobraquial',
+        desc: 'Marca los 2 extremos (Acromion y Olécranon en cualquier orden) para proyectar el punto medio al 50%.',
+        clinicalUse: 'Nivel anatómico estricto donde se mide Perímetro Braquial y Pliegue Tricipital (Frisancho).',
         toleranceRadius: 15,
         targets: [
           {
@@ -78,12 +73,13 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'cintura_cdc',
-        name: 'Circunferencia de Cintura: Protocolo CDC',
-        questionTitle: 'Cintura: Protocolo CDC (Cresta Ilíaca)',
-        category: 'Tronco / Cintura',
+        name: '4/5: Circunferencia de Cintura: Protocolo CDC',
+        questionTitle: '4/5: Cintura: Protocolo CDC (Cresta Ilíaca)',
+        category: 'Hito 4 de 5 • Cintura CDC',
         mode: 'waist_cdc',
         type: 'waist_cdc',
-        desc: 'Marca la cresta ilíaca para proyectar la cinta métrica horizontal (CDC).',
+        promptInstruction: '🎯 Marca el borde superior de la Cresta Ilíaca sobre la línea axilar media (Protocolo CDC)',
+        desc: 'Marca el borde superior de la Cresta Ilíaca sobre la línea axilar media para proyectar la cinta horizontal (CDC).',
         clinicalUse: 'Protocolo estándar CDC para percentilar riesgo cardiometabólico.',
         targetY: 330.0,
         torsoMinX: 135,
@@ -93,25 +89,18 @@ const TOURNAMENT_DAYS_GAMES = {
           { side: 'Cresta Derecha', x: 144.2, y: 332.1 },
           { side: 'Cresta Izquierda', x: 253.4, y: 326.9 }
         ]
-      }
-    ]
-  },
-  3: {
-    day: 3,
-    title: 'Día 3: Cintura OMS y Relieve Escapular (Ronda de 25)',
-    desc: 'Localización del espacio intercosto-ilíaco y borde inferior de la escápula.',
-    category: 'CLÍNICA DE TRONCO',
-    games: [
+      },
       {
         id: 'cintura_oms',
-        name: 'Circunferencia de Cintura: Protocolo OMS',
-        questionTitle: 'Cintura: Protocolo OMS (2 Puntos de Referencia)',
-        category: 'Tronco / Cintura',
+        name: '5/5: Circunferencia de Cintura: Protocolo OMS',
+        questionTitle: '5/5: Cintura: Protocolo OMS (2 Puntos de Referencia)',
+        category: 'Hito 5 de 5 • Cintura OMS',
         mode: 'two_points_midpoint',
         type: 'waist_oms',
         subType: 'waist_oms',
-        desc: 'Marca la 10ª costilla y cresta ilíaca en cualquier orden para proyectar el punto medio OMS.',
-        clinicalUse: 'Cintura natural según la OMS (aprox. 2.5 cm sobre la cresta ilíaca).',
+        promptInstruction: '🎯 Marca los 2 puntos de referencia (10ª Costilla y Cresta Ilíaca en cualquier orden) para proyectar la cintura OMS',
+        desc: 'Marca los 2 puntos de referencia (10ª costilla y cresta ilíaca en cualquier orden) para proyectar el plano de cintura OMS.',
+        clinicalUse: 'Cintura natural según la OMS (aprox. 2.5 cm sobre la cresta ilíaca en el punto medio intercosto-ilíaco).',
         targetY: 310.2,
         torsoMinX: 135,
         torsoMaxX: 275,
@@ -130,34 +119,19 @@ const TOURNAMENT_DAYS_GAMES = {
             midpoint: { x: 247.6, y: 310.2 }
           }
         ]
-      },
-      {
-        id: 'subescapular',
-        name: 'Punto Subescapular (PSE)',
-        questionTitle: 'Punto Subescapular (PSE)',
-        category: 'Tronco / Escápula',
-        mode: 'single_point',
-        type: 'subescapular',
-        desc: 'Ángulo inferior y más bajo de la escápula.',
-        clinicalUse: 'Hito anatómico de referencia para la toma del Pliegue Subescapular a 45° oblicuo.',
-        toleranceRadius: 14,
-        targets: [
-          { side: 'Escápula Derecha', x: 158.5, y: 236.4 },
-          { side: 'Escápula Izquierda', x: 247.5, y: 236.4 }
-        ]
       }
     ]
   },
-  4: {
-    day: 4,
-    title: 'Día 4: Pliegues Cutáneos y Riesgo Cardiometabólico (Cuartos de Final)',
-    desc: 'Evaluación del compartimento graso y punto de corte de Relación Cintura-Estatura.',
+  2: {
+    day: 2,
+    title: 'Día 2: Composición Corporal y Pliegues Cutáneos (Ronda de 50)',
+    desc: 'Evaluación del compartimento graso, pliegue subescapular y caso clínico de corte RCE.',
     category: 'COMPOSICIÓN Y RIESGO',
     games: [
       {
         id: 'pct_relief',
-        name: 'Toma del Pliegue Tricipital (PCT)',
-        questionTitle: 'Pliegue Cutáneo Tricipital (PCT)',
+        name: '1/3: Toma del Pliegue Tricipital (PCT)',
+        questionTitle: '1/3: Pliegue Tricipital (PCT)',
         category: 'Composición Corporal',
         mode: 'single_point',
         type: 'pct_relief',
@@ -170,13 +144,28 @@ const TOURNAMENT_DAYS_GAMES = {
         ]
       },
       {
+        id: 'subescapular',
+        name: '2/3: Punto Subescapular (PSE)',
+        questionTitle: '2/3: Punto Subescapular (PSE)',
+        category: 'Tronco / Escápula',
+        mode: 'single_point',
+        type: 'subescapular',
+        desc: 'Toca el ángulo inferior y más bajo de la escápula (omóplato).',
+        clinicalUse: 'Hito anatómico de referencia para la toma del Pliegue Subescapular a 45° oblicuo.',
+        toleranceRadius: 14,
+        targets: [
+          { side: 'Escápula Derecha', x: 158.5, y: 236.4 },
+          { side: 'Escápula Izquierda', x: 247.5, y: 236.4 }
+        ]
+      },
+      {
         id: 'rce_risk',
-        name: 'Riesgo Cardiometabólico: Punto de Corte RCE',
-        questionTitle: 'Riesgo Cardiometabólico: RCE',
+        name: '3/3: Caso Clínico: Corte de Riesgo RCE',
+        questionTitle: '3/3: Riesgo Cardiometabólico: RCE',
         category: 'Riesgo Cardiometabólico',
         mode: 'trivia_choice',
         type: 'trivia_choice',
-        desc: 'Un niño de 10 años tiene 72 cm de cintura y 140 cm de estatura. ¿Presenta riesgo?',
+        desc: 'Un niño de 10 años tiene 72 cm de cintura y 140 cm de estatura. ¿Presenta riesgo cardiometabólico?',
         clinicalUse: 'El índice Cintura/Estatura (RCE) >= 0.5 define adiposidad abdominal y riesgo metabólico.',
         options: [
           { text: 'Sí, RCE = 0.51 (Riesgo cardiovascular aumentado >= 0.5)', correct: true },
@@ -187,16 +176,16 @@ const TOURNAMENT_DAYS_GAMES = {
       }
     ]
   },
-  5: {
-    day: 5,
-    title: 'Día 5: Nutrición Pediátrica en Vegetarianismo (Semifinales)',
+  3: {
+    day: 3,
+    title: 'Día 3: Nutrición Pediátrica en Vegetarianismo (Ronda de 25)',
     desc: 'Micronutrientes críticos y complementación de aminoácidos esenciales.',
     category: 'VEGETARIANISMO PEDIÁTRICO',
     games: [
       {
         id: 'b12_mandatory',
-        name: 'Suplementación Crítica Obligatoria',
-        questionTitle: 'Suplementación Crítica Obligatoria',
+        name: '1/2: Suplementación Crítica Obligatoria',
+        questionTitle: '1/2: Suplementación Crítica Obligatoria',
         category: 'Vegetarianismo Pediátrico',
         mode: 'trivia_choice',
         type: 'trivia_choice',
@@ -211,8 +200,8 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'protein_complementation',
-        name: 'Pareja de Complementación Proteica',
-        questionTitle: 'Complementación Proteica',
+        name: '2/2: Pareja de Complementación Proteica',
+        questionTitle: '2/2: Complementación Proteica',
         category: 'Vegetarianismo Pediátrico',
         mode: 'trivia_choice',
         type: 'trivia_choice',
@@ -227,16 +216,16 @@ const TOURNAMENT_DAYS_GAMES = {
       }
     ]
   },
-  6: {
-    day: 6,
-    title: 'Día 6: Biodisponibilidad de Hierro y Kiosco Saludable (Final Triangular)',
+  4: {
+    day: 4,
+    title: 'Día 4: Biodisponibilidad de Hierro y Kiosco Saludable (Cuartos de Final)',
     desc: 'Absorción de hierro no hemínico y pautas de alimentación escolar.',
     category: 'EDAD ESCOLAR Y NUTRIENTES',
     games: [
       {
         id: 'iron_enhancer',
-        name: 'Facilitador de Absorción del Hierro',
-        questionTitle: 'Biodisponibilidad del Hierro',
+        name: '1/2: Facilitador de Absorción del Hierro',
+        questionTitle: '1/2: Biodisponibilidad del Hierro',
         category: 'Nutrientes y Biodisponibilidad',
         mode: 'trivia_choice',
         type: 'trivia_choice',
@@ -251,8 +240,8 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'school_snack',
-        name: 'Colación para el Kiosco Saludable',
-        questionTitle: 'Colación Kiosco Saludable',
+        name: '2/2: Colación para el Kiosco Saludable',
+        questionTitle: '2/2: Colación Kiosco Saludable',
         category: 'Kiosco Saludable',
         mode: 'trivia_choice',
         type: 'trivia_choice',
@@ -267,9 +256,89 @@ const TOURNAMENT_DAYS_GAMES = {
       }
     ]
   },
+  5: {
+    day: 5,
+    title: 'Día 5: Fórmulas Clínicas y Requerimientos Energéticos (Semifinales)',
+    desc: 'Cálculo de masa muscular y distribución armónica del Valor Calórico Total.',
+    category: 'FÓRMULAS Y REQUERIMIENTOS',
+    games: [
+      {
+        id: 'final_frisancho',
+        name: '1/2: Área Muscular del Brazo (Fórmula de Frisancho)',
+        questionTitle: '1/2: Área Muscular (AMB)',
+        category: 'Fórmulas Clínicas',
+        mode: 'trivia_choice',
+        type: 'trivia_choice',
+        desc: '¿Qué fórmula clínica de Frisancho estima el compartimento proteico muscular corrigiendo el hueso?',
+        clinicalUse: 'Área Muscular del Brazo corregida (AMBc) para evaluar desnutrición o sarcopenia.',
+        options: [
+          { text: 'AMB = [PB (cm) - (π x PCT (cm))]² / (4π) - 6.5 (varones) o 5.0 (mujeres)', correct: true },
+          { text: 'AMB = Peso (kg) / Talla² x PCT (mm)', correct: false },
+          { text: 'AMB = Perímetro Braquial / Perímetro Cefálico x 100', correct: false },
+          { text: 'AMB = Sumatoria de 4 pliegues x factor de densidad de Durnin', correct: false }
+        ]
+      },
+      {
+        id: 'formula_vct',
+        name: '2/2: Distribución de Macronutrientes (% VCT)',
+        questionTitle: '2/2: Distribución del VCT Pediátrico',
+        category: 'Requerimientos Nutricionales',
+        mode: 'trivia_choice',
+        type: 'trivia_choice',
+        desc: '¿Cuál es la distribución calórica (% VCT) estándar recomendada de macronutrientes en pediatría?',
+        clinicalUse: 'Pilar para la elaboración armónica de planes de alimentación pediátricos (Escudero).',
+        options: [
+          { text: 'Carbohidratos: 50-60%, Grasas: 25-35%, Proteínas: 10-15%', correct: true },
+          { text: 'Carbohidratos: 30%, Grasas: 50%, Proteínas: 20%', correct: false },
+          { text: 'Carbohidratos: 70%, Grasas: 10%, Proteínas: 20%', correct: false },
+          { text: 'Carbohidratos: 40%, Grasas: 40%, Proteínas: 20%', correct: false }
+        ]
+      }
+    ]
+  },
+  6: {
+    day: 6,
+    title: 'Día 6: Casos Clínicos y Diagnóstico Nutricional (Final Triangular)',
+    desc: 'Evaluación del estado nutricional, curvas de crecimiento y lactancia materna.',
+    category: 'CLÍNICA PEDIÁTRICA AVANZADA',
+    games: [
+      {
+        id: 'caso_waterlow',
+        name: '1/2: Clasificación de Desnutrición Infantil (Waterlow)',
+        questionTitle: '1/2: Clasificación de Waterlow',
+        category: 'Diagnóstico Nutricional',
+        mode: 'trivia_choice',
+        type: 'trivia_choice',
+        desc: 'Según la clasificación clínica de Waterlow, ¿cómo se define el desmedro o desnutrición crónica?',
+        clinicalUse: 'Diferenciación entre emaciación aguda (déficit de peso/talla) y cronicidad (talla baja).',
+        options: [
+          { text: 'Déficit de Talla para la Edad (T/E disminuido, con P/T conservado o normal)', correct: true },
+          { text: 'Déficit severo de Peso para la Talla (P/T < 70%) exclusivamente', correct: false },
+          { text: 'Caída de 2 desvíos estándar en el perímetro cefálico', correct: false },
+          { text: 'Edema bipedal simétrico con albúmina sérica baja', correct: false }
+        ]
+      },
+      {
+        id: 'evaluacion_lactancia',
+        name: '2/2: Proteínas de la Leche Humana',
+        questionTitle: '2/2: Composición de la Leche Materna',
+        category: 'Lactancia y Primeros Años',
+        mode: 'trivia_choice',
+        type: 'trivia_choice',
+        desc: '¿Cuál es la principal proteína del suero en la leche humana madura que facilita su digestión y absorción?',
+        clinicalUse: 'Diferencia fundamental con la leche de vaca que contiene beta-lactoglobulina (alérgeno común).',
+        options: [
+          { text: 'Alfa-lactoalbúmina (con ausencia de beta-lactoglobulina)', correct: true },
+          { text: 'Beta-lactoglobulina bovina', correct: false },
+          { text: 'Caseína insoluble en proporción 80:20', correct: false },
+          { text: 'Gluten hidrolizado', correct: false }
+        ]
+      }
+    ]
+  },
   7: {
     day: 7,
-    title: 'Día 7: La Gran Final — Batalla de Campeones (Duelo Supremo)',
+    title: 'Día 7: La Gran Final Suprema — Batalla de Campeones (Duelo Supremo)',
     desc: 'Los 3 desafíos integradores para coronar al Gran Maestro de la Cátedra.',
     category: 'GRAN FINAL SUPREMA',
     games: [
@@ -329,19 +398,19 @@ const TOURNAMENT_DAYS_GAMES = {
         ]
       },
       {
-        id: 'final_frisancho',
-        name: 'Desafío 3: Área Muscular del Brazo (AMB)',
-        questionTitle: 'Desafío 3: Área Muscular (AMB)',
-        category: 'Gran Final - Frisancho',
+        id: 'final_caso_clinico',
+        name: 'Desafío 3: Caso Pediátrico Integrador (Anemia)',
+        questionTitle: 'Desafío 3: Caso Clínico Pediátrico',
+        category: 'Gran Final - Conducta Clínica',
         mode: 'trivia_choice',
         type: 'trivia_choice',
-        desc: '¿Qué fórmula clínica de Frisancho estima el compartimento proteico muscular corrigiendo el hueso?',
-        clinicalUse: 'Área Muscular del Brazo corregida (AMBc) para evaluar desnutrición o sarcopenia.',
+        desc: 'Lactante de 8 meses con leche materna exclusiva sin alimentación complementaria ni suplementos. Palidez e irritabilidad. ¿Conducta?',
+        clinicalUse: 'Diagnóstico precoz y manejo terapéutico oportuno de la anemia ferropénica infantil.',
         options: [
-          { text: 'AMB = [PB (cm) - (π x PCT (cm))]² / (4π) - 6.5 (varones) o 5.0 (mujeres)', correct: true },
-          { text: 'AMB = Peso (kg) / Talla² x PCT (mm)', correct: false },
-          { text: 'AMB = Perímetro Braquial / Perímetro Cefálico x 100', correct: false },
-          { text: 'AMB = Sumatoria de 4 pliegues x factor de densidad de Durnin', correct: false }
+          { text: 'Anemia ferropénica carencial; indicar hierro terapéutico (3-6 mg/kg/día) e iniciar alimentación complementaria variada.', correct: true },
+          { text: 'Indicar exclusivamente suplementación con vitamina D a 400 UI/día.', correct: false },
+          { text: 'Suspender lactancia materna e indicar fórmula polimérica estándar.', correct: false },
+          { text: 'Indicar infusión de té con miel como aporte energético.', correct: false }
         ]
       }
     ]
@@ -615,7 +684,111 @@ class TournamentEngine {
   getLeaderboardGroups() {
     return [...this.state.groups].sort((a, b) => b.xpWon - a.xpWon || b.activePlayersCount - a.activePlayersCount);
   }
+
+  // Carga segura y en SOLO LECTURA de los alumnos y fotos reales de Firebase Firestore
+  async loadRealStudentsFromFirebase(db) {
+    if (!db) throw new Error("Firebase Firestore no está disponible.");
+
+    // 1. Obtener alumnos de la colección 'students'
+    const studentsSnap = await db.collection('students').get();
+    if (studentsSnap.empty) {
+      throw new Error("No se encontraron registros de alumnos en Firestore ('students').");
+    }
+
+    // 2. Obtener fotos de 'student_photos' y 'student_profiles'
+    const photoMap = {};
+    try {
+      const photosSnap = await db.collection('student_photos').get();
+      photosSnap.forEach(doc => {
+        const d = doc.data();
+        if (d && d.photo) photoMap[String(doc.id).trim()] = d.photo;
+      });
+    } catch (e) {
+      console.warn("Aviso: no se pudo leer student_photos:", e);
+    }
+
+    try {
+      const profilesSnap = await db.collection('student_profiles').get();
+      profilesSnap.forEach(doc => {
+        const d = doc.data();
+        const id = String(doc.id).trim();
+        if (d && d.photo && !photoMap[id]) photoMap[id] = d.photo;
+      });
+    } catch (e) {
+      console.warn("Aviso: no se pudo leer student_profiles:", e);
+    }
+
+    // 3. Crear los 18 Grupos Oficiales de la Cátedra UNSTA
+    const groups = [];
+    for (let i = 1; i <= 18; i++) {
+      groups.push({
+        id: `g_${i}`,
+        num: i,
+        name: `Grupo ${i}`,
+        xpWon: 0,
+        activePlayersCount: 0
+      });
+    }
+
+    // 4. Mapear alumnos reales sin alterar jamás la base de datos de producción
+    const players = [];
+    let idx = 0;
+    studentsSnap.forEach(doc => {
+      const data = doc.data();
+      const upStr = String(data.up || doc.id).trim();
+      let gNum = parseInt(data.grupo, 10);
+      if (isNaN(gNum) || gNum < 1 || gNum > 18) {
+        gNum = (idx % 18) + 1; // Fallback armónico de grupo si no estuviera asignado
+      }
+      const rawName = (data.nombre || '').trim();
+      const rawLastName = (data.apellido || '').trim();
+      const fullName = (rawName || rawLastName) ? `${rawName} ${rawLastName}`.trim() : `Alumno UP ${upStr}`;
+      const firstName = rawName ? rawName.split(' ')[0] : `Alumno ${upStr}`;
+      const photo = photoMap[upStr] || null;
+
+      players.push({
+        id: `real_${upStr}`,
+        up: upStr,
+        name: fullName,
+        firstName: firstName,
+        lastName: rawLastName,
+        groupId: `g_${gNum}`,
+        groupNum: gNum,
+        photo: photo,
+        alive: true,
+        pointsWon: 0,
+        roundEliminated: null
+      });
+      idx++;
+    });
+
+    // Actualizar conteos por grupo
+    groups.forEach(g => {
+      g.activePlayersCount = players.filter(p => p.groupId === g.id && p.alive).length;
+    });
+
+    // Guardar torneo en localStorage (Sandbox Local)
+    this.state = {
+      day: 1,
+      isRealFirebase: true,
+      isSimulatedMidnight: false,
+      history: {},
+      groups,
+      players,
+      currentMatchups: []
+    };
+
+    this.generateMatchupsForDay(1);
+    this.save();
+
+    return {
+      playersCount: players.length,
+      photosCount: Object.keys(photoMap).length
+    };
+  }
 }
 
-// Instancia global
+// Exportar al ámbito global del navegador
+window.TOURNAMENT_DAYS_GAMES = TOURNAMENT_DAYS_GAMES;
 window.tournamentEngine = new TournamentEngine();
+

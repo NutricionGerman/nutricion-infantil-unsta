@@ -30,6 +30,7 @@ class TournamentUI {
       tourneyCountdown: document.getElementById('tourneyCountdown'),
 
       // Botones de Simulación Docente
+      btnSimFirebase: document.getElementById('btnSimFirebase'),
       btnSimDemo: document.getElementById('btnSimDemo'),
       btnSimMidnight: document.getElementById('btnSimMidnight'),
       btnSimNextDay: document.getElementById('btnSimNextDay'),
@@ -60,6 +61,30 @@ class TournamentUI {
     }
     if (this.dom.btnBackToTournament) {
       this.dom.btnBackToTournament.addEventListener('click', () => this.switchView('tournament'));
+    }
+
+    // Sincronización Segura de Alumnos y Fotos de Firebase (Solo Lectura)
+    if (this.dom.btnSimFirebase) {
+      this.dom.btnSimFirebase.addEventListener('click', async () => {
+        if (!window.db) {
+          alert('No se detectó la base de datos de Firebase Firestore. Asegúrate de tener conexión a internet.');
+          return;
+        }
+        const prevText = this.dom.btnSimFirebase.textContent;
+        this.dom.btnSimFirebase.disabled = true;
+        this.dom.btnSimFirebase.textContent = '⏳ Leyendo alumnos y fotos de Firebase...';
+        try {
+          const res = await this.engine.loadRealStudentsFromFirebase(window.db);
+          this.render();
+          alert(`✅ ¡Alumnos y fotos de Firebase cargados con éxito!\n\n• Alumnos reales vinculados: ${res.playersCount}\n• Fotos de perfil cargadas: ${res.photosCount}\n• Grupos activos: 18\n\n🔒 Aislamiento Seguro: El torneo se ejecuta en Sandbox Local (localStorage). Ningún punto ni estado se alterará en la base de datos oficial.`);
+        } catch (err) {
+          console.error('Error al sincronizar con Firebase:', err);
+          alert('No se pudo cargar desde Firebase: ' + err.message);
+        } finally {
+          this.dom.btnSimFirebase.disabled = false;
+          this.dom.btnSimFirebase.textContent = prevText;
+        }
+      });
     }
 
     // Botones de simulación docente (Time Travel)
@@ -161,6 +186,15 @@ class TournamentUI {
     if (!this.dom.matchupsContainer) return;
     this.dom.matchupsContainer.innerHTML = '';
 
+    const renderAvatar = (player, isP2) => {
+      const color = isP2 ? 'var(--p2-color)' : 'var(--p1-color)';
+      if (player.photo) {
+        return `<img src="${player.photo}" class="player-avatar-thumb" alt="${player.firstName || player.name}" style="border: 1.5px solid ${color};" onerror="this.style.display='none'">`;
+      }
+      const initial = (player.firstName || player.name || '?').charAt(0).toUpperCase();
+      return `<div class="player-avatar-initial" style="border: 1.5px solid ${color}; color: ${color};">${initial}</div>`;
+    };
+
     matchups.forEach((m, idx) => {
       const card = document.createElement('div');
       card.className = `matchup-card ${m.status === 'finished' ? 'finished' : ''}`;
@@ -194,7 +228,8 @@ class TournamentUI {
         <div class="matchup-players">
           <div class="matchup-player-row ${p1Winner ? 'winner' : ''} ${m.revealed && !p1Winner ? 'loser' : ''}">
             <div class="player-info-cell">
-              <span style="font-size: 14px;">${p1Winner ? '👑' : '👤'}</span>
+              ${p1Winner ? '<span class="crown-badge">👑</span>' : ''}
+              ${renderAvatar(m.player1, false)}
               <span class="player-name-text">${m.player1.firstName || m.player1.name}</span>
               <span class="group-badge-pill">G${m.player1.groupNum}</span>
             </div>
@@ -202,7 +237,8 @@ class TournamentUI {
           </div>
           <div class="matchup-player-row ${p2Winner ? 'winner' : ''} ${m.revealed && !p2Winner ? 'loser' : ''}">
             <div class="player-info-cell">
-              <span style="font-size: 14px;">${p2Winner ? '👑' : '👤'}</span>
+              ${p2Winner ? '<span class="crown-badge">👑</span>' : ''}
+              ${renderAvatar(m.player2, true)}
               <span class="player-name-text">${m.player2.firstName || m.player2.name}</span>
               ${m.player2.groupNum ? `<span class="group-badge-pill">G${m.player2.groupNum}</span>` : ''}
             </div>
@@ -280,6 +316,8 @@ class TournamentUI {
     if (window.state) {
       window.state.p1Name = `${match.player1.firstName || match.player1.name} (G${match.player1.groupNum})`;
       window.state.p2Name = `${match.player2.firstName || match.player2.name} (G${match.player2.groupNum || '?'})`;
+      window.state.p1Photo = match.player1.photo || null;
+      window.state.p2Photo = match.player2.photo || null;
       window.state.mode = 'duel';
       window.state.currentMatchId = matchId;
       

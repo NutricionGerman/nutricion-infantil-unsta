@@ -216,6 +216,15 @@ const dom = {
   triviaQuestionDesc: document.getElementById('triviaQuestionDesc'),
   triviaOptionsGrid: document.getElementById('triviaOptionsGrid'),
   
+  // HUD Superior y Banner Pedagógico
+  arenaInstructionBanner: document.getElementById('arenaInstructionBanner'),
+  hudPlayerAvatar: document.getElementById('hudPlayerAvatar'),
+  hudPlayerName: document.getElementById('hudPlayerName'),
+  rulesModal: document.getElementById('rulesModal'),
+  btnOpenRulesModal: document.getElementById('btnOpenRulesModal'),
+  btnCloseRulesModal: document.getElementById('btnCloseRulesModal'),
+  btnDismissRulesModal: document.getElementById('btnDismissRulesModal'),
+  
   turnTag: document.getElementById('turnTag'),
   missionCategory: document.getElementById('missionCategory'),
   missionTitle: document.getElementById('missionTitle'),
@@ -258,6 +267,20 @@ const dom = {
   podiumDetails: document.getElementById('podiumDetails'),
   btnRematch: document.getElementById('btnRematch')
 };
+
+// Actualiza el avatar e identidad del jugador en el HUD superior
+function updateHudPlayerProfile(name, photo, turn) {
+  if (dom.hudPlayerName) dom.hudPlayerName.textContent = name || (turn === 'p2' ? 'Jugador 2' : 'Jugador 1');
+  if (dom.hudPlayerAvatar) {
+    if (photo) {
+      dom.hudPlayerAvatar.innerHTML = `<img src="${photo}" alt="${name}" class="hud-avatar-img">`;
+    } else {
+      const initial = (name && name.length > 0) ? name.charAt(0).toUpperCase() : (turn === 'p2' ? 'P2' : 'P1');
+      const color = (turn === 'p2') ? 'var(--p2-color)' : 'var(--p1-color)';
+      dom.hudPlayerAvatar.innerHTML = `<div class="hud-avatar-initial" style="border-color: ${color}; color: ${color};">${initial}</div>`;
+    }
+  }
+}
 
 // --- INICIALIZACIÓN ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -304,6 +327,23 @@ function setupEventListeners() {
   
   dom.btnToggleInspector.addEventListener('click', toggleInspectorMode);
   dom.btnMute.addEventListener('click', toggleMute);
+  
+  // Reglas Modal
+  if (dom.btnOpenRulesModal) {
+    dom.btnOpenRulesModal.addEventListener('click', () => {
+      if (dom.rulesModal) dom.rulesModal.style.display = 'flex';
+    });
+  }
+  if (dom.btnCloseRulesModal) {
+    dom.btnCloseRulesModal.addEventListener('click', () => {
+      if (dom.rulesModal) dom.rulesModal.style.display = 'none';
+    });
+  }
+  if (dom.btnDismissRulesModal) {
+    dom.btnDismissRulesModal.addEventListener('click', () => {
+      if (dom.rulesModal) dom.rulesModal.style.display = 'none';
+    });
+  }
   
   if (dom.btnRounds2) dom.btnRounds2.addEventListener('click', () => setRoundsCount(2));
   if (dom.btnRounds5) dom.btnRounds5.addEventListener('click', () => setRoundsCount(5));
@@ -462,6 +502,9 @@ function handleTwoPointsClick(coords, landmark) {
     dom.btnResetClicks.style.display = 'block';
     dom.btnConfirm.disabled = true;
     dom.btnConfirm.textContent = '📍 Ahora toca el 2º punto (en cualquier orden)';
+    if (dom.arenaInstructionBanner) {
+      dom.arenaInstructionBanner.textContent = '✅ 1º punto fijado. Toca el 2º punto de referencia óseo en cualquier orden';
+    }
     renderTwoPointsActivePins(landmark);
   } else {
     // Segundo clic
@@ -487,8 +530,10 @@ function handleTwoPointsClick(coords, landmark) {
     dom.btnConfirm.disabled = false;
     if (isOms) {
       dom.btnConfirm.textContent = `📍 Confirmar Cintura OMS (Punto Medio Y: ${midY})`;
+      if (dom.arenaInstructionBanner) dom.arenaInstructionBanner.textContent = `🎯 Ambos puntos fijados. Confirma el plano de cintura OMS (Y: ${midY})`;
     } else {
       dom.btnConfirm.textContent = `📍 Confirmar Marca Mesobraquial (50% en Y: ${midY})`;
+      if (dom.arenaInstructionBanner) dom.arenaInstructionBanner.textContent = `🎯 Ambos extremos fijados. Confirma la marca mesobraquial (50% en Y: ${midY})`;
     }
   }
 }
@@ -988,9 +1033,11 @@ function drawTargetBullseye(x, y) {
 
 function showRoundRevealCard(play) {
   dom.revealBox.style.display = 'block';
-  dom.revealScore.textContent = `+${play.score} pts`;
+  dom.revealScore.textContent = play.timeout ? '0 pts' : `+${play.score} pts`;
   
-  if (play.isTrivia) {
+  if (play.timeout) {
+    dom.revealDist.textContent = `⏱️ Tiempo Agotado (45.0s)`;
+  } else if (play.isTrivia) {
     dom.revealDist.textContent = play.isCorrect 
       ? `¡Respuesta Correcta! (${(play.timeMs / 1000).toFixed(2)}s)`
       : `Respuesta Incorrecta (${(play.timeMs / 1000).toFixed(2)}s)`;
@@ -1003,7 +1050,9 @@ function showRoundRevealCard(play) {
   }
   
   let feedback = '';
-  if (play.isTrivia) {
+  if (play.timeout) {
+    feedback = `⏰ <strong>¡Tiempo Límite Agotado (45.0s)!</strong> Se terminó el tiempo disponible para responder. Esta ronda otorga 0 puntos.`;
+  } else if (play.isTrivia) {
     feedback = play.isCorrect
       ? `🎯 <strong>¡Criterio Clínico Impecable!</strong> Has seleccionado la fundamentación exacta de la cátedra.`
       : `❌ <strong>Criterio Erróneo.</strong> Revisa las guías clínicas y recomendaciones oficiales de la cátedra.`;
@@ -1101,11 +1150,14 @@ function startPlayer2Turn() {
   state.selectedTriviaOptionIndex = null;
   
   const missionCard = document.querySelector('.mission-card');
-  missionCard.classList.add('p2-turn');
-  dom.turnTag.className = 'mission-turn-tag tag-p2';
-  dom.turnTag.textContent = `⚔️ Turno: ${state.p2Name}`;
-  dom.btnConfirm.classList.add('p2-btn');
+  if (missionCard) missionCard.classList.add('p2-turn');
+  if (dom.turnTag) {
+    dom.turnTag.className = 'mission-turn-tag tag-p2';
+    dom.turnTag.textContent = `⚔️ Turno: ${state.p2Name}`;
+  }
+  if (dom.btnConfirm) dom.btnConfirm.classList.add('p2-btn');
   
+  updateHudPlayerProfile(state.p2Name, state.p2Photo, 'p2');
   loadRoundPrompt();
 }
 
@@ -1118,23 +1170,34 @@ function loadRoundPrompt() {
   const isCdc = currentLandmark.mode === 'waist_cdc' || currentLandmark.type === 'skeleton_waist_cdc' || currentLandmark.type === 'waist_cdc';
   const isTrivia = currentLandmark.mode === 'trivia_choice' || currentLandmark.type === 'trivia_choice';
 
-  dom.roundIndicator.textContent = `Hito ${state.currentRoundIndex + 1} de ${state.roundsCount}`;
-  dom.missionCategory.textContent = (currentLandmark.category || 'ANTROPOMETRÍA').toUpperCase();
-  dom.missionTitle.textContent = currentLandmark.questionTitle || currentLandmark.name;
-  dom.missionDesc.textContent = currentLandmark.desc;
-  dom.clinicalNote.innerHTML = `🩺 <strong>Relevancia Clínica:</strong> ${currentLandmark.clinicalUse}`;
+  const isP2 = state.currentTurn === 'p2';
+  const activeName = isP2 ? state.p2Name : state.p1Name;
+  const activePhoto = isP2 ? state.p2Photo : state.p1Photo;
+  updateHudPlayerProfile(activeName, activePhoto, state.currentTurn);
+
+  if (dom.roundIndicator) dom.roundIndicator.textContent = `Hito ${state.currentRoundIndex + 1} de ${state.roundsCount}`;
+  if (dom.missionCategory) dom.missionCategory.textContent = (currentLandmark.category || 'ANTROPOMETRÍA').toUpperCase();
+  if (dom.missionTitle) dom.missionTitle.textContent = currentLandmark.questionTitle || currentLandmark.name;
+  if (dom.missionDesc) dom.missionDesc.textContent = currentLandmark.desc;
+  if (dom.clinicalNote) dom.clinicalNote.innerHTML = `🩺 <strong>Relevancia Clínica:</strong> ${currentLandmark.clinicalUse}`;
+
+  // Actualizar la franja de instrucción clara pedagógica
+  const promptText = currentLandmark.promptInstruction || currentLandmark.desc;
+  if (dom.arenaInstructionBanner) {
+    dom.arenaInstructionBanner.textContent = promptText;
+  }
   
   if (isTrivia) {
     if (dom.skeletonWrapper) dom.skeletonWrapper.style.display = 'none';
     if (dom.triviaViewport) dom.triviaViewport.style.display = 'flex';
-    if (dom.viewportInstructions) dom.viewportInstructions.textContent = '🧠 Selecciona la opción clínica correcta contra reloj';
+    if (dom.viewportInstructions) dom.viewportInstructions.textContent = '🧠 Selecciona la opción clínica correcta contra reloj (Límite: 45.0s)';
     dom.btnConfirm.disabled = true;
     dom.btnConfirm.textContent = '💡 Selecciona una Opción';
     renderTriviaCards(currentLandmark);
   } else {
     if (dom.skeletonWrapper) dom.skeletonWrapper.style.display = 'block';
     if (dom.triviaViewport) dom.triviaViewport.style.display = 'none';
-    if (dom.viewportInstructions) dom.viewportInstructions.textContent = '💡 Haz clic o toca directamente sobre el hueso correspondiente';
+    if (dom.viewportInstructions) dom.viewportInstructions.textContent = '💡 Haz clic o toca directamente sobre el hueso correspondiente (Límite: 45.0s)';
     if (isTwoPoints) {
       dom.btnConfirm.textContent = '📍 Toca el 1º punto (en cualquier orden)';
     } else if (isCdc) {
@@ -1187,19 +1250,111 @@ function revealTriviaResult(landmark, selectedIdx) {
   });
 }
 
+// LÍMITE ESTRICTO DE 45 SEGUNDOS POR HITO
+const ROUND_TIME_LIMIT_MS = 45000;
+
 function startTimer() {
   clearInterval(state.timerInterval);
   state.roundStartTime = performance.now();
-  dom.timerDisplay.classList.remove('warning');
+  if (dom.timerDisplay) {
+    dom.timerDisplay.classList.remove('warning', 'danger');
+    dom.timerDisplay.textContent = '45.0s';
+  }
   
   state.timerInterval = setInterval(() => {
     const elapsed = performance.now() - state.roundStartTime;
-    const seconds = Math.floor(elapsed / 1000);
-    const ms = Math.floor((elapsed % 1000) / 10);
-    dom.timerDisplay.textContent = `${String(seconds).padStart(2, '0')}:${String(ms).padStart(2, '0')}`;
+    const remainingMs = Math.max(0, ROUND_TIME_LIMIT_MS - elapsed);
+    const remainingSec = (remainingMs / 1000).toFixed(1);
     
-    if (seconds >= 10) dom.timerDisplay.classList.add('warning');
-  }, 30);
+    if (dom.timerDisplay) {
+      dom.timerDisplay.textContent = `${remainingSec}s`;
+      
+      if (remainingMs <= 5000) {
+        dom.timerDisplay.classList.remove('warning');
+        dom.timerDisplay.classList.add('danger');
+      } else if (remainingMs <= 15000) {
+        dom.timerDisplay.classList.add('warning');
+        dom.timerDisplay.classList.remove('danger');
+      } else {
+        dom.timerDisplay.classList.remove('warning', 'danger');
+      }
+    }
+    
+    if (remainingMs <= 0) {
+      clearInterval(state.timerInterval);
+      handleTimeOut();
+    }
+  }, 50);
+}
+
+// EXPIRACIÓN DEL TIEMPO (0 PUNTOS)
+function handleTimeOut() {
+  clearInterval(state.timerInterval);
+  sfx.hitMiss();
+  
+  const currentLandmark = state.activeLandmarks[state.currentRoundIndex];
+  if (!currentLandmark) return;
+  
+  const isTwoPoints = currentLandmark.mode === 'two_points_midpoint' || currentLandmark.type === 'skeleton_two_points' || currentLandmark.type === 'arm' || currentLandmark.type === 'waist_oms';
+  const isCdc = currentLandmark.mode === 'waist_cdc' || currentLandmark.type === 'skeleton_waist_cdc' || currentLandmark.type === 'waist_cdc';
+  const isTrivia = currentLandmark.mode === 'trivia_choice' || currentLandmark.type === 'trivia_choice';
+  
+  let playData = {
+    landmark: currentLandmark,
+    score: 0,
+    dist: 999,
+    timeMs: ROUND_TIME_LIMIT_MS,
+    timeout: true
+  };
+  
+  if (isTrivia) {
+    playData.isTrivia = true;
+    playData.isCorrect = false;
+    playData.selectedOption = 'Sin responder (Tiempo Agotado)';
+    if (dom.triviaOptionsGrid) {
+      const buttons = dom.triviaOptionsGrid.querySelectorAll('.trivia-option-btn');
+      (currentLandmark.options || []).forEach((opt, idx) => {
+        const btn = buttons[idx];
+        if (btn) {
+          btn.disabled = true;
+          if (opt.correct) btn.classList.add('correct');
+        }
+      });
+    }
+  } else if (isTwoPoints) {
+    playData.isTwoPoints = true;
+    const bestSide = currentLandmark.targets ? currentLandmark.targets[0] : null;
+    if (bestSide) {
+      playData.targetSide = bestSide.side;
+      playData.pTop = { clicked: { x: 0, y: 0 }, target: { ...bestSide.topRef }, dist: 999 };
+      playData.pBottom = { clicked: { x: 0, y: 0 }, target: { ...bestSide.bottomRef }, dist: 999 };
+      playData.midpoint = { clicked: { x: 0, y: 0 }, target: { ...bestSide.midpoint }, dist: 999 };
+      renderTwoPointsReveal(playData);
+    }
+  } else if (isCdc) {
+    playData.isCdc = true;
+    playData.errorY = 999;
+    renderCdcReveal(currentLandmark, { x: 200, y: 330 }, 0);
+  } else {
+    playData.isPoint = true;
+    const bestTarget = currentLandmark.targets ? currentLandmark.targets[0] : { x: 113.4, y: 154.8 };
+    playData.clicked = { x: 0, y: 0 };
+    playData.target = { ...bestTarget };
+    drawTargetBullseye(bestTarget.x, bestTarget.y);
+  }
+  
+  if (state.currentTurn === 'p1') {
+    state.p1History.push(playData);
+  } else {
+    state.p2History.push(playData);
+  }
+  
+  showRoundRevealCard(playData);
+  
+  dom.btnConfirm.disabled = true;
+  dom.btnConfirm.style.display = 'none';
+  dom.btnResetClicks.style.display = 'none';
+  dom.btnNext.style.display = 'block';
 }
 
 // --- PODIO FINAL Y VEREDICTO ---
