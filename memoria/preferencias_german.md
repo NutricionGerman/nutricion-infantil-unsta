@@ -112,5 +112,19 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Personalización Didáctica de Metas (RDA / IDR)**: Los estudiantes tienen la potestad de ajustar individualmente las metas de calorías, proteínas, carbohidratos, grasas y todos los micronutrientes para adaptarlos a los casos clínicos del Trabajo Integrador Final (lactantes, gestantes, preescolares, escolares).
     - **Inclusión de Fórmulas Infantiles Oficiales y Leche Humana**: La base de alimentos del taller (`alimentos.json`) cuenta con 577 alimentos verificados con 46 columnas nutricionales completas, incorporando fórmulas infantiles de inicio y continuación (polvo y reconstituida líquida oficiales Nutricia Bagó: *Nutrilon Profutura 1 y 2*) y *Leche humana madura fluida* (USDA FDC / SAP).
 
+19. **Duelo Antropométrico (GeoGuessr Anatómico)**:
+    - **Aislamiento**: Proyecto local e independiente dentro de `duelo/` (no se vincula a producción en `index.html` sin orden explícita).
+    - **Orden Independiente en Hitos de 2 Puntos**: Para la **Marca Mesobraquial** (Acromion y Olécranon) y **Cintura OMS** (Última Costilla y Cresta Ilíaca), el estudiante puede marcar ambos puntos en cualquier orden. El sistema los clasifica automáticamente en superior e inferior y calcula el punto medio al 50%.
+    - **Evaluación en el Eje Horizontal de Cintura**: Tanto la Cintura CDC ($Y = 330.0$, Cresta Ilíaca) como la Cintura OMS ($Y = 310.2$, punto medio intercosto-ilíaco) se evalúan estrictamente sobre el plano horizontal ($Y$), proyectando la cinta métrica horizontal correspondiente.
+    - **Modo Calibrador**: Fue retirado de la interfaz tras concluir la calibración milimétrica de coordenadas anatómicas oficiales.
+
+20. **Torneo de Supervivencia Grupal (100 Alumnos / 18 Grupos / 7 Días)**:
+    - **Eliminación Simple Asincrónica (24 hs por Fecha)**: Los alumnos juegan su duelo individualmente a lo largo del día hasta las 23:59 hs. A las 00:00 hs se revelan los resultados oficiales con transparencia pública (superposición de esqueletos, error en px y tiempo).
+    - **Regla Antifraternal de Cruces**: Los integrantes de un mismo grupo nunca se enfrentan entre sí durante las fases eliminatorias del torneo.
+    - **Puntuación Acumulativa por Grupo**: Cada victoria individual suma **+1 XP** para la bolsa de su grupo. Quien pierde queda eliminado como duelista pero conserva todos los puntos ya ganados.
+    - **Cronograma de 15 Juegos (2 por día / 3 en la final)**: Cada día tiene desafíos fijos e idénticos para todos los cruces. Al revelarse a medianoche, los desafíos se retiran del torneo y al día siguiente entran 2 juegos nuevos, eliminando cualquier posibilidad de trampa o filtración de coordenadas.
+    - **Panel Docente de Simulación ("Time Travel")**: Incluye botones para cargar 100 alumnos demo, avanzar el reloj a medianoche para probar los 7 días en minutos y resetear a cero.
+
+
 
 
