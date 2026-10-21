@@ -98,6 +98,13 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * **Diabetes Gestacional** (no exigir diagnósticos patológicos en embarazadas).
       * **Resistencia a la Insulina / Acantosis Nigricans** (no exigir diagnósticos endocrinológicos en escolares).
       * **Enfermedad Celíaca** (no exigir prescripción ni enfoque clínico celíaco).
+
+18. **Cuestionarios Prácticos de Opción Múltiple (Formato y Estructura)**:
+    - **Enunciados y Opciones Breves**: Redacción concisa, directa y sin enunciados largos ni opciones confusas o engañosas.
+    - **Alineación con las Clases Oficiales de Antropometría**: Evaluar exclusivamente lo impartido en las clases prácticas (puntos anatómicos óseos como acromion y olécranon, técnica de PB con brazo relajado, protocolos de circunferencia de cintura CDC sobre cresta ilíaca vs. OMS punto medio, y lectura al final de espiración no forzada).
+    - **Enfoque Pediátrico en Alimentación Basada en Plantas**: La suplementación de B12 debe evaluarse en dosificaciones pediátricas por franja etaria (ej. 4 a 8 años: 500 mcg/sem), no en adultos.
+    - **Patrón de Corrección de Claves**: Cuando se solicite estructurar claves mnemotécnicas o de control para exámenes, seguir el patrón exacto especificado (ej. B, B, C, C, B, B, C, C, B, B).
+
       * Cualquier otra entidad nosológica médica o de laboratorio.
     - **NUNCA restar puntos ni penalizar** si los estudiantes no mencionan estas patologías o si se equivocan en conceptos de patología.
     - El programa y el Trabajo Práctico Integrador se evalúan **exclusivamente sobre Nutrición Normal**:
@@ -124,6 +131,23 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Puntuación Acumulativa por Grupo**: Cada victoria individual suma **+1 XP** para la bolsa de su grupo. Quien pierde queda eliminado como duelista pero conserva todos los puntos ya ganados.
     - **Cronograma de 15 Juegos (2 por día / 3 en la final)**: Cada día tiene desafíos fijos e idénticos para todos los cruces. Al revelarse a medianoche, los desafíos se retiran del torneo y al día siguiente entran 2 juegos nuevos, eliminando cualquier posibilidad de trampa o filtración de coordenadas.
     - **Panel Docente de Simulación ("Time Travel")**: Incluye botones para cargar 100 alumnos demo, avanzar el reloj a medianoche para probar los 7 días en minutos y resetear a cero.
+
+21. **Cuestionario Práctico & Asistencia Automatizada (Formato Encuesta Paso a Paso · Fecha 21/10)**:
+    - **Formato Encuesta Individual (One-by-one)**: Cada pregunta se presenta de forma individualizada (1 a la vez) con barra de progreso porcentual y cronómetro activo en el encabezado.
+    - **Confidencialidad Total (Sin Spoilers ni Respuestas Reveladas)**:
+      * **Durante el cuestionario**: No se muestra ningún feedback ni colores verde/rojo que indiquen si la respuesta fue correcta o errada. En el muñeco del esqueleto tampoco se dibuja la diana verde ni las líneas de error, solo el pin neutro colocado por el alumno.
+      * **Al finalizar**: No se muestran las respuestas correctas, ni el desglose de preguntas, ni el comprobante con respuestas. El comprobante en PDF descargable es una **constancia oficial de entrega y asistencia** con código de validación, sin preguntas ni respuestas.
+    - **Criterio Oficial de Desempate (Precisión Anatómica en Píxeles)**:
+      * Para evitar empates en la cima (ej. múltiples alumnos con 15/15), el sistema calcula el **desvío milimétrico promedio en píxeles** de las 5 medidas del esqueleto (Acromion, Olécranon, Marca Mesobraquial, Cintura CDC y Cintura OMS).
+      * Menor error en píxeles = Mayor precisión quirúrgica.
+      * Criterios de ordenamiento en Google Sheets: 1º Puntaje total (Z->A), 2º Menor desvío en px (A->Z), 3º Menor tiempo empleado.
+    - **Estructura Híbrida Teórico-Práctica (15 Puntos)**:
+      * **10 preguntas teóricas** de opción múltiple (5 de antropometría clínica de cátedra y 5 de alimentación basada en plantas pediátrica con dosificaciones de B12 por edad), calibradas al patrón estricto de respuestas correctas: **B, B, C, C, B, B, C, C, B, B**.
+      * **5 desafíos interactivos** en el muñeco del esqueleto que evalúan la totalidad de medidas configuradas en el juego.
+    - **Protocolo de Asistencia & Anti-Trampas (Fecha 21/10)**:
+      * Detección de pérdida de foco (`blur`) y cambio de ventana/pestaña (`visibilitychange`).
+      * Envío automático sincrónico a Google Apps Script con `clase: "21_10"`, UP, Nombre, tiempo, puntaje con desvío en px, y columnas preparadas para ordenar sin empates.
+
 
 
 

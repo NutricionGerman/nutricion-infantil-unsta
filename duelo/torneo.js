@@ -14,13 +14,13 @@ const TOURNAMENT_DAYS_GAMES = {
     games: [
       {
         id: 'acromion',
-        name: '1/5: Punto Acromial (Acromion)',
-        questionTitle: '1/5: Punto Acromial (Hombro)',
+        name: 'Punto Acromial (Acromion)',
+        questionTitle: 'Punto Acromial (Acromion)',
         category: 'Hito 1 de 5 • Hombro',
         mode: 'single_point',
         type: 'acromion',
-        promptInstruction: '🎯 Toca el Punto Acromial (borde superior y lateral más externo del acromion en el hombro)',
-        desc: 'Toca el borde superior y más externo del acromion de la escápula (hombro).',
+        promptInstruction: 'Punto Acromial (Acromion)',
+        desc: 'Ubica el Punto Acromial en el esqueleto.',
         clinicalUse: 'Punto de partida proximal obligatorio para medir la longitud del brazo con cinta métrica.',
         toleranceRadius: 14,
         targets: [
@@ -30,13 +30,13 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'olecranon',
-        name: '2/5: Olécranon (Codo a 90°)',
-        questionTitle: '2/5: Olécranon (Codo a 90°)',
+        name: 'Olécranon (Codo a 90°)',
+        questionTitle: 'Olécranon (Codo a 90°)',
         category: 'Hito 2 de 5 • Codo',
         mode: 'single_point',
         type: 'olecranon',
-        promptInstruction: '🎯 Toca el Olécranon (vértice saliente del cúbito en el codo flexionado a 90°)',
-        desc: 'Toca el vértice posterior del olécranon (saliente ósea del cúbito en el codo flexionado a 90°).',
+        promptInstruction: 'Olécranon (Codo a 90°)',
+        desc: 'Ubica el Olécranon en el esqueleto con el codo a 90°.',
         clinicalUse: 'Hito distal para delimitar la distancia acromion-olécranon con cinta métrica.',
         toleranceRadius: 14,
         targets: [
@@ -46,14 +46,14 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'mesobraquial',
-        name: '3/5: Marca Mesobraquial (Punto Medio al 50%)',
-        questionTitle: '3/5: Marca Mesobraquial (50%)',
+        name: '2 Puntos de Referencia para Marca Mesobraquial',
+        questionTitle: '2 Puntos de Referencia para Marca Mesobraquial',
         category: 'Hito 3 de 5 • Brazo Medio',
         mode: 'two_points_midpoint',
         type: 'arm',
         subType: 'arm',
-        promptInstruction: '🎯 Marca los 2 puntos de referencia óseos (Acromion y Olécranon en cualquier orden) para calcular la medida mesobraquial',
-        desc: 'Marca los 2 extremos (Acromion y Olécranon en cualquier orden) para proyectar el punto medio al 50%.',
+        promptInstruction: '2 Puntos de Referencia para Marca Mesobraquial',
+        desc: 'Marca los 2 puntos anatómicos de referencia (en cualquier orden) para calcular la marca mesobraquial al 50%.',
         clinicalUse: 'Nivel anatómico estricto donde se mide Perímetro Braquial y Pliegue Tricipital (Frisancho).',
         toleranceRadius: 15,
         targets: [
@@ -73,13 +73,13 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'cintura_cdc',
-        name: '4/5: Circunferencia de Cintura: Protocolo CDC',
-        questionTitle: '4/5: Cintura: Protocolo CDC (Cresta Ilíaca)',
+        name: 'Punto de Referencia: Cintura CDC',
+        questionTitle: 'Punto de Referencia: Cintura CDC',
         category: 'Hito 4 de 5 • Cintura CDC',
         mode: 'waist_cdc',
         type: 'waist_cdc',
-        promptInstruction: '🎯 Marca el borde superior de la Cresta Ilíaca sobre la línea axilar media (Protocolo CDC)',
-        desc: 'Marca el borde superior de la Cresta Ilíaca sobre la línea axilar media para proyectar la cinta horizontal (CDC).',
+        promptInstruction: 'Punto de Referencia: Cintura CDC',
+        desc: 'Ubica el punto anatómico de referencia para la cintura según el protocolo CDC.',
         clinicalUse: 'Protocolo estándar CDC para percentilar riesgo cardiometabólico.',
         targetY: 330.0,
         torsoMinX: 135,
@@ -92,14 +92,14 @@ const TOURNAMENT_DAYS_GAMES = {
       },
       {
         id: 'cintura_oms',
-        name: '5/5: Circunferencia de Cintura: Protocolo OMS',
-        questionTitle: '5/5: Cintura: Protocolo OMS (2 Puntos de Referencia)',
+        name: '2 Puntos de Referencia para Cintura OMS',
+        questionTitle: '2 Puntos de Referencia para Cintura OMS',
         category: 'Hito 5 de 5 • Cintura OMS',
         mode: 'two_points_midpoint',
         type: 'waist_oms',
         subType: 'waist_oms',
-        promptInstruction: '🎯 Marca los 2 puntos de referencia (10ª Costilla y Cresta Ilíaca en cualquier orden) para proyectar la cintura OMS',
-        desc: 'Marca los 2 puntos de referencia (10ª costilla y cresta ilíaca en cualquier orden) para proyectar el plano de cintura OMS.',
+        promptInstruction: '2 Puntos de Referencia para Cintura OMS',
+        desc: 'Marca los 2 puntos anatómicos de referencia (en cualquier orden) para proyectar el plano de cintura OMS.',
         clinicalUse: 'Cintura natural según la OMS (aprox. 2.5 cm sobre la cresta ilíaca en el punto medio intercosto-ilíaco).',
         targetY: 310.2,
         torsoMinX: 135,
@@ -433,7 +433,7 @@ const DEMO_NAMES = [
 
 class TournamentEngine {
   constructor() {
-    this.storageKey = 'torneo_antropometria_unsta_state';
+    this.storageKey = 'torneo_antropometria_unsta_state_v2';
     this.state = null;
     this.init();
   }
@@ -506,53 +506,80 @@ class TournamentEngine {
   // Empareja a los jugadores asegurando que NUNCA se crucen del mismo grupo
   generateMatchupsForDay(day) {
     const alivePlayers = [...this.state.players.filter(p => p.alive)];
-    
-    // Algoritmo de emparejamiento aleatorio con restricción grupal
-    const matchups = [];
-    let unassigned = this.shuffleArray(alivePlayers);
+    let matchups = [];
+    let success = false;
+    let attempts = 0;
 
-    while (unassigned.length >= 2) {
-      const p1 = unassigned.shift();
-      // Buscar el primer rival que NO sea del mismo grupo
-      let rivalIdx = unassigned.findIndex(candidate => candidate.groupId !== p1.groupId);
-      
-      // En caso extremo (instancias finales si quedaran solo del mismo grupo), permitir cruce
-      if (rivalIdx === -1) {
-        rivalIdx = 0;
+    while (!success && attempts < 200) {
+      attempts++;
+      matchups = [];
+      let pool = this.shuffleArray([...alivePlayers]);
+
+      // Priorizar grupos con más jugadores vivos
+      const counts = {};
+      pool.forEach(p => { counts[p.groupId] = (counts[p.groupId] || 0) + 1; });
+      pool.sort((a, b) => counts[b.groupId] - counts[a.groupId]);
+
+      let conflict = false;
+
+      while (pool.length >= 2) {
+        const p1 = pool.shift();
+        const rivalIdx = pool.findIndex(c => c.groupId !== p1.groupId);
+        if (rivalIdx === -1) {
+          conflict = true;
+          break;
+        }
+        const p2 = pool.splice(rivalIdx, 1)[0];
+        matchups.push({
+          id: `m_d${day}_${matchups.length + 1}`,
+          day,
+          player1: p1,
+          player2: p2,
+          p1Result: null,
+          p2Result: null,
+          winnerId: null,
+          status: 'pending',
+          revealed: false
+        });
       }
 
-      const p2 = unassigned.splice(rivalIdx, 1)[0];
-      matchups.push({
-        id: `m_d${day}_${matchups.length + 1}`,
-        day,
-        player1: p1,
-        player2: p2,
-        p1Result: null,
-        p2Result: null,
-        winnerId: null,
-        status: 'pending', // 'pending', 'p1_played', 'p2_played', 'finished'
-        revealed: false
-      });
+      if (!conflict) {
+        if (pool.length === 1) {
+          const byePlayer = pool[0];
+          byePlayer.pointsWon += 1;
+          const grp = this.state.groups.find(g => g.id === byePlayer.groupId);
+          if (grp) grp.xpWon += 1;
+
+          matchups.push({
+            id: `m_d${day}_bye`,
+            day,
+            player1: byePlayer,
+            player2: { id: 'bye', name: 'Pase Libre (Sin Rival)', groupId: 'none', groupNum: 0 },
+            p1Result: { score: 1000, timeMs: 0, isBye: true },
+            p2Result: null,
+            winnerId: byePlayer.id,
+            status: 'finished',
+            revealed: true
+          });
+        }
+        success = true;
+      }
     }
 
-    // Si queda 1 jugador huérfano (impar), pasa automáticamente por Pase / Bye (+1 punto)
-    if (unassigned.length === 1) {
-      const byePlayer = unassigned[0];
-      byePlayer.pointsWon += 1;
-      const grp = this.state.groups.find(g => g.id === byePlayer.groupId);
-      if (grp) grp.xpWon += 1;
-      
-      matchups.push({
-        id: `m_d${day}_bye`,
-        day,
-        player1: byePlayer,
-        player2: { id: 'bye', name: 'Pase Libre / Bye', groupId: 'none', groupNum: 0 },
-        p1Result: { score: 1000, timeMs: 0, isBye: true },
-        p2Result: null,
-        winnerId: byePlayer.id,
-        status: 'finished',
-        revealed: true
-      });
+    // Red de seguridad: resolver cualquier posible cruce indebido por intercambio
+    for (const m of matchups) {
+      if (m.player2 && m.player2.id !== 'bye' && m.player1.groupId === m.player2.groupId) {
+        for (const other of matchups) {
+          if (other.id !== m.id && other.player2 && other.player2.id !== 'bye') {
+            if (other.player2.groupId !== m.player1.groupId && other.player1.groupId !== m.player2.groupId) {
+              const temp = m.player2;
+              m.player2 = other.player2;
+              other.player2 = temp;
+              break;
+            }
+          }
+        }
+      }
     }
 
     this.state.currentMatchups = matchups;
@@ -736,22 +763,52 @@ class TournamentEngine {
     studentsSnap.forEach(doc => {
       const data = doc.data();
       const upStr = String(data.up || doc.id).trim();
-      let gNum = parseInt(data.grupo, 10);
+
+      // Parsear Grupo real: data.group ("g_4", "4", 4) o data.grupo
+      const rawGroup = data.group !== undefined ? data.group : (data.grupo !== undefined ? data.grupo : '');
+      const groupMatch = String(rawGroup).match(/\d+/);
+      let gNum = groupMatch ? parseInt(groupMatch[0], 10) : NaN;
       if (isNaN(gNum) || gNum < 1 || gNum > 18) {
-        gNum = (idx % 18) + 1; // Fallback armónico de grupo si no estuviera asignado
+        gNum = (idx % 18) + 1; // Fallback armónico solo si no tiene grupo asignado
       }
-      const rawName = (data.nombre || '').trim();
-      const rawLastName = (data.apellido || '').trim();
-      const fullName = (rawName || rawLastName) ? `${rawName} ${rawLastName}`.trim() : `Alumno UP ${upStr}`;
-      const firstName = rawName ? rawName.split(' ')[0] : `Alumno ${upStr}`;
-      const photo = photoMap[upStr] || null;
+
+      // Parsear Nombres reales de estudiantes (compatibilidad con múltiples esquemas)
+      const rawFirstName = (data.firstName || data.nombre || '').trim();
+      const rawLastName = (data.lastName || data.apellido || '').trim();
+      const rawName = (data.name || '').trim();
+
+      let firstName = rawFirstName;
+      let lastName = rawLastName;
+      let displayName = '';
+
+      if (!firstName && rawName.includes(',')) {
+        const parts = rawName.split(',');
+        lastName = parts[0].trim();
+        firstName = parts[1].trim();
+      } else if (!firstName && rawName) {
+        firstName = rawName.split(' ')[0].trim();
+      }
+
+      if (firstName && lastName) {
+        // Ej: Antonella Avila Lucena
+        displayName = `${firstName} ${lastName}`;
+      } else if (rawName) {
+        displayName = rawName;
+      } else if (firstName) {
+        displayName = firstName;
+      } else {
+        displayName = `Alumno UP ${upStr}`;
+      }
+
+      const photo = data.photo || photoMap[upStr] || null;
 
       players.push({
         id: `real_${upStr}`,
         up: upStr,
-        name: fullName,
-        firstName: firstName,
-        lastName: rawLastName,
+        name: displayName,
+        displayName: displayName,
+        firstName: firstName || displayName.split(' ')[0],
+        lastName: lastName,
         groupId: `g_${gNum}`,
         groupNum: gNum,
         photo: photo,

@@ -224,7 +224,7 @@ function doPost(e) {
       // =========================================================================
       
       if (sheet.getLastRow() === 0 || sheet.getRange(1, 1).getValue() === "") {
-        var headers = ["Fecha y Hora", "UP / Legajo", "Nombre del Alumno", "Puntaje", "Tiempo", "Infracciones"];
+        var headers = ["Fecha y Hora", "UP / Legajo", "Nombre del Alumno", "Puntaje", "Desvío Esqueleto (px)", "Tiempo", "Infracciones"];
         for (var j = 1; j <= (data.respuestas ? data.respuestas.length : 0); j++) {
           headers.push("Pregunta " + j);
         }
@@ -237,6 +237,7 @@ function doPost(e) {
         data.up || "",
         data.nombre || "",
         data.puntaje || "",
+        data.desvio_px !== undefined ? (data.desvio_px + " px") : (data.error_px !== undefined ? data.error_px + " px" : "-"),
         data.tiempo || "",
         data.trampas !== undefined ? data.trampas : ""
       ];
@@ -261,3 +262,4 @@ function doPost(e) {
       .setMimeType(ContentService.MimeType.JSON);
   }
 }
+

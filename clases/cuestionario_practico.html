@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cuestionario Práctico & Asistencia 21/10 | Nutrición Infantil UNSTA</title>
+  
+  <!-- Tipografía Oficial -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Librerías de Apoyo: PDF y Confeti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: rgba(17, 24, 39, 0.92);
+      --card-border: rgba(255, 255, 255, 0.09);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --teal: #14b8a6;
+      --teal-light: #2dd4bf;
+      --emerald: #10b981;
+      --emerald-bg: rgba(16, 185, 129, 0.14);
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.14);
+      --rose: #ef4444;
+      --rose-bg: rgba(239, 68, 68, 0.14);
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --radius: 16px;
+      --font-title: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(20, 184, 166, 0.16) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.14) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(16, 185, 129, 0.06) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.55;
+      padding: 24px 16px 60px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* PANTALLAS */
+    .screen {
+      display: none;
+      width: 100%;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* TOAST DE ANTI-TRAMPAS */
+    #toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+      max-width: 380px;
+    }
+    .toast {
+      background: rgba(239, 68, 68, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.25s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* CARD BASE */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* HEADER */
+    .badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(20, 184, 166, 0.15);
+      border: 1px solid rgba(20, 184, 166, 0.3);
+      color: var(--teal-light);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.22;
+      margin-bottom: 10px;
+    }
+    h1 span {
+      background: linear-gradient(135deg, var(--teal-light), var(--emerald), var(--blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lead-text {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 22px;
+    }
+
+    /* INSTRUCTIONS LIST */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .info-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      padding: 12px 14px;
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .info-pill i {
+      font-size: 1.15rem;
+      color: var(--teal-light);
+      margin-top: 2px;
+    }
+    .info-pill-text strong {
+      display: block;
+      color: #f1f5f9;
+      font-size: 0.88rem;
+    }
+    .info-pill-text small {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    /* INPUTS & STUDENT SELECTOR */
+    .input-box {
+      margin-bottom: 22px;
+      text-align: left;
+    }
+    .input-box label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+    .input-box input, .input-box select {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .input-box input:focus, .input-box select:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.25);
+    }
+    .link-toggle {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--teal-light);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* BOTONES */
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--teal), #0d9488);
+      color: #0b1120;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 22px;
+      font-family: var(--font-title);
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 8px 20px rgba(20, 184, 166, 0.35);
+    }
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(20, 184, 166, 0.5);
+      background: linear-gradient(135deg, var(--teal-light), var(--teal));
+    }
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      box-shadow: none;
+      border: 1px solid var(--card-border);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    /* TOP BAR DEL CUESTIONARIO */
+    .top-status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 16px;
+      margin-bottom: 18px;
+    }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .status-item i {
+      color: var(--teal-light);
+    }
+    .cheat-badge {
+      background: var(--rose-bg);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      display: none;
+    }
+
+    /* BARRA DE PROGRESO ENCUESTA */
+    .survey-progress-wrap {
+      margin-bottom: 22px;
+    }
+    .survey-progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .survey-progress-track {
+      width: 100%;
+      height: 9px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .survey-progress-fill {
+      height: 100%;
+      width: 6.66%;
+      background: linear-gradient(90deg, var(--teal), var(--emerald));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* CONTENEDOR DE PREGUNTA */
+    .q-step-card {
+      position: relative;
+    }
+    .q-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .q-category-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .cat-antropo { background: rgba(59, 130, 246, 0.18); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.35); }
+    .cat-plantas { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .cat-skeleton { background: rgba(245, 158, 11, 0.18); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.35); }
+
+    .q-step-title {
+      font-family: var(--font-title);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+
+    /* OPCIONES DE RESPUESTA (PREGUNTAS 1-10) */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .opt-choice-btn {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #e2e8f0;
+      font-size: 0.94rem;
+      font-family: var(--font-body);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    .opt-choice-btn:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateX(4px);
+    }
+    .opt-letter-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .opt-choice-btn.selected {
+      background: rgba(20, 184, 166, 0.18);
+      border-color: var(--teal);
+    }
+    .opt-choice-btn.selected .opt-letter-badge {
+      background: var(--teal);
+      color: #0b1120;
+    }
+
+    /* VISOR INTERACTIVO DEL ESQUELETO (PREGUNTAS 11-15) */
+    .skeleton-survey-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .skeleton-goal-banner {
+      width: 100%;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: center;
+      font-size: 0.88rem;
+      color: #fef3c7;
+    }
+    .skeleton-goal-banner strong {
+      color: #fbbf24;
+    }
+
+    .skeleton-view-port {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      height: 480px;
+      background: radial-gradient(circle at center, #1e293b 0%, #090e1a 85%);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.75);
+      cursor: crosshair;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    .skeleton-view-port svg {
+      width: 100%;
+      height: 100%;
+      pointer-events: all;
+    }
+
+    .skeleton-toolbar {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+    }
+    .btn-skeleton-mini {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-skeleton-mini:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* PANTALLA DE CARGA / ENVÍO */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 17, 32, 0.92);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .loading-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .spinner-ring {
+      width: 55px;
+      height: 55px;
+      border: 4px solid rgba(20, 184, 166, 0.2);
+      border-top-color: var(--teal-light);
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* PANTALLA FINAL */
+    .result-badge-wrap {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .confirm-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 70%);
+      border: 3px solid var(--emerald);
+      margin: 0 auto 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.25);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .summary-card {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      text-align: center;
+    }
+    .summary-card small {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .summary-card strong {
+      font-size: 1.15rem;
+      color: #fff;
+      font-family: var(--font-title);
+    }
+
+    /* FOOTER */
+    .app-footer {
+      text-align: center;
+      margin-top: 35px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 16px 10px 40px; }
+      .card { padding: 20px 16px; }
+      h1 { font-size: 1.65rem; }
+      .q-step-title { font-size: 1.18rem; }
+      .skeleton-view-port { height: 410px; }
+      .top-status-bar { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONTENEDOR DE ADVERTENCIAS ANTI-TRAMPAS -->
+  <div id="toast-container"></div>
+
+  <!-- OVERLAY DE CARGA / SINCRONIZACIÓN -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner-ring"></div>
+    <h3 style="color:#fff; font-family:var(--font-title);">Registrando Asistencia 21/10...</h3>
+    <p style="color:var(--text-muted); font-size:0.9rem;">Enviando tu evaluación y métricas a la planilla oficial de la cátedra.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- ========================================================
+         PANTALLA 1: INICIO & IDENTIFICACIÓN DEL ALUMNO
+         ======================================================== -->
+    <div id="screenStart" class="screen active">
+      <div class="card" style="text-align: center;">
+        <div class="badge-top">
+          <i class="fa-solid fa-graduation-cap"></i> UNSTA · Cátedra de Nutrición Infantil
+        </div>
+        <h1>Cuestionario Práctico &<br><span>Asistencia del 21/10</span></h1>
+        <p class="lead-text">
+          Evaluación práctica individual: Protocolos Antropométricos de Cátedra (CDC y OMS), Nutrición Basada en Plantas y Hitos Clínicos en el Muñeco Anatómico.
+        </p>
+
+        <div class="info-grid">
+          <div class="info-pill">
+            <i class="fa-solid fa-list-ol"></i>
+            <div class="info-pill-text">
+              <strong>15 Preguntas Prácticas</strong>
+              <small>10 de opción múltiple + 5 interactivas del esqueleto.</small>
+            </div>
+          </div>
+          <div class="info-pill">
+            <i class="fa-solid fa-crosshairs"></i>
+            <div class="info-pill-text">
+              <strong>Precisión Quirúrgica</strong>
+              <small>La exactitud en los puntos anatómicos define el orden de mérito.</small>
+            </div>
+          </div>
+          <div class="info-pill">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div class="info-pill-text">
+              <strong>Sistema Anti-Trampas</strong>
+              <small>Registra pérdida de foco y cambios de pestaña.</small>
+            </div>
+          </div>
+          <div class="info-pill">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <div class="info-pill-text">
+              <strong>Asistencia Automática</strong>
+              <small>Se envía directamente a la hoja oficial de Drive.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- SELECTOR DE ALUMNO -->
+        <div class="input-box" id="selectorSearchGroup">
+          <label for="studentInputSearch"><i class="fa-solid fa-user-check"></i> Selecciona tu Apellido, Nombre o UP en la lista oficial:</label>
+          <input type="text" id="studentInputSearch" list="studentsDatalist" placeholder="Toca o escribe para buscar tu nombre..." autocomplete="off">
+          <datalist id="studentsDatalist"></datalist>
+          <a class="link-toggle" id="btnToggleManual"><i class="fa-solid fa-pen"></i> ¿No apareces en la lista? Ingresar datos manualmente</a>
+        </div>
+
+        <div class="input-box" id="selectorManualGroup" style="display: none;">
+          <label for="manualUpInput">Número de UP o DNI:</label>
+          <input type="text" id="manualUpInput" placeholder="Ej: 343240" style="margin-bottom: 12px;">
+          <label for="manualNameInput">Apellido y Nombre:</label>
+          <input type="text" id="manualNameInput" placeholder="Ej: PEREZ, Juan">
+          <a class="link-toggle" id="btnToggleSearch"><i class="fa-solid fa-list"></i> Volver al listado oficial de la cátedra</a>
+        </div>
+
+        <button class="btn" id="btnStartSurvey">
+          <i class="fa-solid fa-play"></i> Comenzar Cuestionario
+        </button>
+
+        <div style="margin-top: 18px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">
+          ⚠️ <strong>Aviso importante:</strong> Una vez iniciado, no salgas de la pestaña ni minimices la pantalla para evitar penalizaciones por anti-trampas en la planilla de asistencia.
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         PANTALLA 2: MODO ENCUESTA (PASO A PASO)
+         ======================================================== -->
+    <div id="screenSurvey" class="screen">
+      
+      <!-- STATUS BAR SUPERIOR -->
+      <div class="top-status-bar">
+        <div class="status-item">
+          <i class="fa-solid fa-user"></i>
+          <span id="activeStudentLabel">Alumno</span>
+        </div>
+        <div class="status-item">
+          <i class="fa-regular fa-clock"></i>
+          <span id="surveyTimerLabel">00:00</span>
+        </div>
+        <div class="cheat-badge" id="cheatBadge">
+          <i class="fa-solid fa-triangle-exclamation"></i> Infracciones: <span id="cheatCounterLabel">0</span>
+        </div>
+      </div>
+
+      <!-- BARRA DE PROGRESO ENCUESTA (SIN REVELAR ACIERTOS) -->
+      <div class="survey-progress-wrap">
+        <div class="survey-progress-labels">
+          <span id="progressStepText">Pregunta 1 de 15</span>
+          <span id="progressPercentText">Progreso: 7%</span>
+        </div>
+        <div class="survey-progress-track">
+          <div class="survey-progress-fill" id="surveyProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- CARD CONTENEDORA DE LA PREGUNTA ACTIVA -->
+      <div class="card q-step-card">
+        <div class="q-badge-row">
+          <span class="q-category-tag" id="qCategoryBadge">Categoría</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;" id="qStepNumLabel">Paso 1 de 15</span>
+        </div>
+
+        <h2 class="q-step-title" id="qStepTitle">Título de la pregunta...</h2>
+
+        <!-- BLOQUE DINÁMICO A: OPCIONES MÚLTIPLES (PREGUNTAS 1-10) -->
+        <div id="multipleChoiceContainer" style="display: none;">
+          <div class="options-grid" id="optionsList"></div>
+        </div>
+
+        <!-- BLOQUE DINÁMICO B: VISOR DEL ESQUELETO (PREGUNTAS 11-15) -->
+        <div id="skeletonContainerBlock" style="display: none;">
+          <div class="skeleton-survey-box">
+            <div class="skeleton-goal-banner" id="skeletonInstructionBanner">
+              Misión activa en el esqueleto...
+            </div>
+
+            <div class="skeleton-view-port" id="skeletonViewPort">
+              <svg id="skeletonSvg" viewBox="0 0 435.687 841.89" preserveAspectRatio="xMidYMid meet">
+                <image href="./skeleton_front.svg" xlink:href="../duelo/skeleton_front.svg" width="435.687" height="841.89" />
+                <g id="skeletonOverlayLayer"></g>
+              </svg>
+            </div>
+
+            <div class="skeleton-toolbar" id="skeletonToolbar">
+              <button class="btn-skeleton-mini" id="btnResetSkeletonMark">
+                <i class="fa-solid fa-rotate-left"></i> Reintentar Marcación
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTÓN DE AVANCE -->
+        <div style="margin-top: 10px;">
+          <button class="btn" id="btnNextStep" disabled>
+            <span>Siguiente Pregunta</span> <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================
+         PANTALLA 3: RESULTADOS & ASISTENCIA ENTREGADA (SIN SPOILERS)
+         ======================================================== -->
+    <div id="screenEnd" class="screen">
+      <div class="card" style="text-align: center;">
+        <div class="badge-top" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); color: var(--emerald);">
+          <i class="fa-solid fa-circle-check"></i> Asistencia Registrada Oficialmente · 21/10
+        </div>
+        <h1>¡Evaluación Práctica <span>Entregada</span>!</h1>
+        <p class="lead-text">Tus respuestas y registro de asistencia han sido guardados con éxito en la planilla de la cátedra.</p>
+
+        <!-- ÍCONO DE CONFIRMACIÓN -->
+        <div class="result-badge-wrap">
+          <div class="confirm-circle">
+            <i class="fa-solid fa-clipboard-check" style="font-size: 2.8rem; color: var(--emerald);"></i>
+          </div>
+          <h2 style="font-family: var(--font-title); font-size: 1.35rem; color: #f1f5f9; margin-bottom: 4px;">Entrega Confirmada</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Las calificaciones oficiales y el orden de mérito final serán informados por el docente.</p>
+        </div>
+
+        <!-- GRILLA DE MÉTRICAS OFICIALES -->
+        <div class="summary-grid">
+          <div class="summary-card">
+            <small>Estudiante</small>
+            <strong id="finalStudentName">--</strong>
+          </div>
+          <div class="summary-card">
+            <small>Fecha y Hora</small>
+            <strong id="finalDateTimeDisplay">--</strong>
+          </div>
+          <div class="summary-card">
+            <small>Tiempo Total</small>
+            <strong id="finalTimeDisplay">00:00</strong>
+          </div>
+          <div class="summary-card">
+            <small>Estado</small>
+            <strong style="color: var(--emerald);">Asistencia Registrada</strong>
+          </div>
+          <div class="summary-card" id="finalCheatsCard">
+            <small>Infracciones (Anti-trampas)</small>
+            <strong id="finalCheatsDisplay" style="color: var(--emerald);">0 (Impecable)</strong>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 15px; justify-content: center;">
+          <button class="btn" id="btnDownloadPdfReceipt" style="max-width: 400px;">
+            <i class="fa-solid fa-file-pdf"></i> Descargar Comprobante de Asistencia (PDF)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>Cátedra de Nutrición Infantil · Licenciatura en Nutrición · UNSTA</p>
+      <p>Módulo de Asistencia Digital y Autoevaluación Práctica Calibrada · Fecha: 21/10</p>
+    </footer>
+
+  </div>
+
+  <!-- SCRIPT DE ALUMNOS (CARGA OFICIAL) -->
+  <script src="assets/students.js"></script>
+
+  <script>
+    // =========================================================================
+    // 1. CONFIGURACIONES GENERALES & URL DE ASISTENCIA GOOGLE APPS SCRIPT
+    // =========================================================================
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxi3lgWj_MFPYhsl3UTjnaT0gVA8UJIbvfbUvL10B4QX0xhCXWKdONR9oiRvZSCW2h2XA/exec";
+
+    // Sintetizador Web Audio neutro
+    class SoundFx {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) this.ctx = new AudioCtx();
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.12, vol = 0.15) {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(vol, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      clickPin() { this.playTone(550, 'triangle', 0.07, 0.12); }
+    }
+    const sfx = new SoundFx();
+
+    // =========================================================================
+    // 2. BANCO MAESTRO DE 15 PREGUNTAS (10 TEÓRICAS + 5 ESQUELETO)
+    //    PATRÓN ESTRICTO EN PREGUNTAS 1-10: B, B, C, C, B, B, C, C, B, B
+    // =========================================================================
+    const SURVEY_QUESTIONS = [
+      // --- ANTROPOMETRÍA CLÍNICA (5 PREGUNTAS) ---
+      {
+        id: 1,
+        type: 'choice',
+        category: 'antropo',
+        categoryLabel: '📏 Antropometría Clínica',
+        title: 'Según el protocolo del CDC (NHANES) enseñado en la cátedra, ¿dónde se coloca la cinta métrica para medir la circunferencia de cintura?',
+        options: [
+          'En el punto medio entre la última costilla y la cresta ilíaca.',
+          'Inmediatamente por encima del borde superior de la cresta ilíaca (sobre la línea axilar media).',
+          'Exactamente a nivel de la cicatriz umbilical.',
+          'En la parte más angosta visible del abdomen tras una inspiración profunda.'
+        ],
+        correct: 1, // B
+        explanation: 'El protocolo CDC/NHANES ubica la cinta en plano horizontal justo por encima del borde superior de la cresta ilíaca, a diferencia de la OMS que toma el punto medio.'
+      },
+      {
+        id: 2,
+        type: 'choice',
+        category: 'antropo',
+        categoryLabel: '📏 Antropometría Clínica',
+        title: 'Según el protocolo de la OMS, ¿cuál es el punto anatómico de referencia para la medición de la circunferencia de cintura?',
+        options: [
+          'Justo por encima de la espina ilíaca anterosuperior.',
+          'En el punto medio entre el borde inferior de la última costilla palpable y la cresta ilíaca.',
+          'Sobre el reborde costal superior a la altura del apéndice xifoides.',
+          'Tres centímetros por debajo del ombligo con abdomen contraído.'
+        ],
+        correct: 1, // B
+        explanation: 'La OMS establece que la cintura se mide en el punto medio equidistante entre la última costilla palpable y la cresta ilíaca, con el paciente relajado.'
+      },
+      {
+        id: 3,
+        type: 'choice',
+        category: 'antropo',
+        categoryLabel: '📏 Antropometría Clínica',
+        title: 'Al medir la circunferencia de cintura (sea por CDC u OMS), ¿en qué momento respiratorio se debe hacer la lectura?',
+        options: [
+          'En el punto de máxima inspiración reteniendo el aire.',
+          'En cualquier momento mientras el paciente conversa relajado.',
+          'Al final de una espiración normal y no forzada (respiración suave).',
+          'Inmediatamente después de pedirle al niño que hunda el abdomen.'
+        ],
+        correct: 2, // C
+        explanation: 'La estandarización clínica exige realizar la lectura al final de una espiración suave y no forzada, con los brazos a los costados y el abdomen totalmente relajado.'
+      },
+      {
+        id: 4,
+        type: 'choice',
+        category: 'antropo',
+        categoryLabel: '📏 Antropometría Clínica',
+        title: 'Para marcar el punto mesobraquial del brazo, ¿cuáles son los dos puntos óseos de referencia que se palpan con el codo a 90°?',
+        options: [
+          'La clavícula y la apófisis estiloides del radio en la muñeca.',
+          'El ángulo inferior de la escápula y la fosa del codo.',
+          'El borde superolateral del acromion y el punto más distal del olécranon.',
+          'La cabeza del húmero y el pliegue anterior de flexión del brazo.'
+        ],
+        correct: 2, // C
+        explanation: 'El punto mesobraquial se ubica midiendo con cinta la distancia exacta entre el acromion (en el hombro) y el olécranon (vértice del codo a 90°), marcando el punto medio.'
+      },
+      {
+        id: 5,
+        type: 'choice',
+        category: 'antropo',
+        categoryLabel: '📏 Antropometría Clínica',
+        title: 'Al medir el Perímetro Braquial (PB) en el punto medio con la cinta métrica, ¿cuál es la posición correcta del brazo?',
+        options: [
+          'Con el codo flexionado a 90° y el bíceps en contracción máxima.',
+          'Con el brazo relajado y extendido al costado del cuerpo.',
+          'Con el brazo elevado horizontalmente a la altura del hombro.',
+          'Con la mano apoyada firmemente sobre la cintura en jarra.'
+        ],
+        correct: 1, // B
+        explanation: 'La marcación del punto medio se hace con el codo a 90°, pero la medición del Perímetro Braquial (PB) se toma con el brazo completamente relajado a lo largo del cuerpo.'
+      },
+
+      // --- ALIMENTACIÓN BASADA EN PLANTAS Y B12 (5 PREGUNTAS) ---
+      {
+        id: 6,
+        type: 'choice',
+        category: 'plantas',
+        categoryLabel: '🌿 Alimentación Basada en Plantas',
+        title: '¿Cuál es la forma química de Vitamina B12 de primera elección recomendada en pediatría por su estabilidad y respaldo?',
+        options: [
+          'Metilcobalamina líquida en frasco transparente.',
+          'Cianocobalamina.',
+          'Espirulina en polvo deshidratada.',
+          'Complejo multivitamínico con hierro y zinc.'
+        ],
+        correct: 1, // B
+        explanation: 'La cianocobalamina es la forma #1 por su alta estabilidad frente a la luz y calor, su bajo costo, amplia evidencia clínica y seguridad en pediatría.'
+      },
+      {
+        id: 7,
+        type: 'choice',
+        category: 'plantas',
+        categoryLabel: '🌿 Alimentación Basada en Plantas',
+        title: 'En un niño de 4 a 8 años que lleva una alimentación vegetariana o vegana, ¿cuál es la dosis preventiva de cianocobalamina por semana?',
+        options: [
+          '50 mcg una vez por semana.',
+          '2.000 mcg una vez por semana (dosis de adulto).',
+          '500 mcg una vez por semana (o 10 mcg diarios).',
+          '50.000 mcg en ampolla semestral.'
+        ],
+        correct: 2, // C
+        explanation: 'Según las guías de la cátedra: 1 a 3 años = 250 mcg/sem; 4 a 8 años = 500 mcg/sem (o 10 mcg/día); 9 a 13 años = 1.000 mcg/sem; a partir de 14 años = 2.000 mcg/sem.'
+      },
+      {
+        id: 8,
+        type: 'choice',
+        category: 'plantas',
+        categoryLabel: '🌿 Alimentación Basada en Plantas',
+        title: 'Según el video Medcomic de la cátedra, ¿por qué NO se debe dar la B12 dentro de un multivitamínico con minerales?',
+        options: [
+          'Porque provoca aumento excesivo del apetito en el niño.',
+          'Porque se elimina de inmediato por el sudor.',
+          'Porque minerales como el hierro y el cobre oxidan y destruyen la B12 activa.',
+          'Porque la B12 anula la absorción de los carbohidratos.'
+        ],
+        correct: 2, // C
+        explanation: 'En los multivitamínicos, los metales pro-oxidantes (hierro, cobre) oxidan la cobalamina activa formando análogos inactivos. Por eso debe tomarse siempre aislada.'
+      },
+      {
+        id: 9,
+        type: 'choice',
+        category: 'plantas',
+        categoryLabel: '🌿 Alimentación Basada en Plantas',
+        title: '¿Por qué las algas como la espirulina NO sirven para cubrir la Vitamina B12 en niños?',
+        options: [
+          'Porque tienen un exceso tóxico de cobalamina para el riñón.',
+          'Porque aportan pseudovitamina B12 (análogos inactivos que bloquean la absorción de la B12 real).',
+          'Porque exigen hervirse durante 8 horas seguidas.',
+          'Porque destruyen los glóbulos blancos en la digestión.'
+        ],
+        correct: 1, // B
+        explanation: 'Las algas contienen pseudovitamina B12 (análogos inactivos sin función biológica humana) que compiten por los receptores del íleon y falsean los análisis de laboratorio.'
+      },
+      {
+        id: 10,
+        type: 'choice',
+        category: 'plantas',
+        categoryLabel: '🌿 Alimentación Basada en Plantas',
+        title: '¿Qué combinación práctica en el almuerzo triplica la absorción del hierro vegetal (no hemínico) de las lentejas?',
+        options: [
+          'Acompañarlas con un vaso de leche de vaca o yogur.',
+          'Acompañarlas con una fuente de Vitamina C (como morrón crudo, tomate fresco o un cítrico).',
+          'Tomar una taza de té o mate caliente con la comida.',
+          'Espolvorear salvado de trigo crudo sin remojar.'
+        ],
+        correct: 1, // B
+        explanation: 'El hierro vegetal es férrico (Fe³⁺). La Vitamina C fresca lo reduce a ferroso (Fe²⁺), forma soluble que entra directamente por el transportador DMT-1, triplicando su biodisponibilidad.'
+      },
+
+      // --- LAS 5 MEDIDAS CONFIGURADAS EN EL DUELO DEL ESQUELETO ---
+      {
+        id: 11,
+        type: 'skeleton',
+        skeletonKey: 'acromion',
+        category: 'skeleton',
+        categoryLabel: '🎮 Duelo del Esqueleto (Medida 1/5)',
+        title: 'Desafío 1 del Esqueleto: Ubica el Punto Acromial (Acromion)',
+        instruction: 'Toca en el esqueleto sobre el Punto Acromial (borde superolateral del hombro derecho o izquierdo).',
+        targets: [
+          { side: 'Hombro Derecho (Pantalla Izq)', x: 113.4, y: 154.8 },
+          { side: 'Hombro Izquierdo (Pantalla Der)', x: 293.2, y: 157.4 }
+        ],
+        tolerance: 24,
+        explanation: 'El acromion es el punto de partida proximal obligatorio para medir la longitud del brazo con cinta métrica.'
+      },
+      {
+        id: 12,
+        type: 'skeleton',
+        skeletonKey: 'olecranon',
+        category: 'skeleton',
+        categoryLabel: '🎮 Duelo del Esqueleto (Medida 2/5)',
+        title: 'Desafío 2 del Esqueleto: Ubica el Olécranon (Codo a 90°)',
+        instruction: 'Toca sobre el vértice del codo flexionado a 90° (olécranon derecho o izquierdo).',
+        targets: [
+          { side: 'Codo Derecho (Pantalla Izq)', x: 70.9, y: 296.5 },
+          { side: 'Codo Izquierdo (Pantalla Der)', x: 320.6, y: 298.0 }
+        ],
+        tolerance: 24,
+        explanation: 'El olécranon es el hito óseo distal para delimitar la distancia acromion-olécranon.'
+      },
+      {
+        id: 13,
+        type: 'skeleton_two_points',
+        skeletonKey: 'mesobraquial',
+        category: 'skeleton',
+        categoryLabel: '🎮 Duelo del Esqueleto (Medida 3/5)',
+        title: 'Desafío 3 del Esqueleto: Marca Mesobraquial (Punto Medio al 50%)',
+        instruction: 'Toca los 2 hitos óseos del brazo (Acromion y Olécranon en cualquier orden). El sistema calculará el punto medio exacto al 50%.',
+        armTargets: [
+          {
+            side: 'Brazo Derecho (Pantalla Izq)',
+            topRef: { name: 'Acromion', x: 113.4, y: 154.8 },
+            bottomRef: { name: 'Olécranon', x: 70.9, y: 296.5 },
+            midpoint: { x: 92.2, y: 225.7 }
+          },
+          {
+            side: 'Brazo Izquierdo (Pantalla Der)',
+            topRef: { name: 'Acromion', x: 293.2, y: 157.4 },
+            bottomRef: { name: 'Olécranon', x: 320.6, y: 298.0 },
+            midpoint: { x: 306.9, y: 227.7 }
+          }
+        ],
+        tolerance: 20,
+        explanation: 'En la marca mesobraquial se toma el Perímetro Braquial y el Pliegue Tricipital para estimar masa muscular y grasa (Frisancho).'
+      },
+      {
+        id: 14,
+        type: 'skeleton',
+        skeletonKey: 'cintura_cdc',
+        category: 'skeleton',
+        categoryLabel: '🎮 Duelo del Esqueleto (Medida 4/5)',
+        title: 'Desafío 4 del Esqueleto: Punto de Referencia para Cintura CDC',
+        instruction: 'Ubica el punto anatómico de referencia según el protocolo CDC (borde superior de la cresta ilíaca).',
+        targets: [
+          { side: 'Cresta Derecha (Pantalla Izq)', x: 144.2, y: 332.1 },
+          { side: 'Cresta Izquierda (Pantalla Der)', x: 253.4, y: 326.9 }
+        ],
+        tolerance: 22,
+        explanation: 'En el protocolo CDC la cinta se apoya en el plano horizontal inmediatamente por encima del borde superior de la cresta ilíaca.'
+      },
+      {
+        id: 15,
+        type: 'skeleton_waist_oms',
+        skeletonKey: 'cintura_oms',
+        category: 'skeleton',
+        categoryLabel: '🎮 Duelo del Esqueleto (Medida 5/5)',
+        title: 'Desafío 5 del Esqueleto: Cintura OMS (Punto Medio Intercosto-Ilíaco)',
+        instruction: 'Toca los 2 puntos de referencia en el flanco (última costilla y cresta ilíaca en cualquier orden) para proyectar el plano de cintura OMS.',
+        flankTargets: [
+          {
+            side: 'Flanco Derecho (Pantalla Izq)',
+            topRef: { name: 'Última Costilla', x: 193.8, y: 297.4 },
+            bottomRef: { name: 'Cresta Ilíaca', x: 144.2, y: 332.1 },
+            targetY: 310.2
+          },
+          {
+            side: 'Flanco Izquierdo (Pantalla Der)',
+            topRef: { name: 'Última Costilla', x: 241.8, y: 297.4 },
+            bottomRef: { name: 'Cresta Ilíaca', x: 253.4, y: 326.9 },
+            targetY: 310.2
+          }
+        ],
+        toleranceY: 10,
+        explanation: 'La OMS proyecta la cintura en el punto medio intercosto-ilíaco de la cintura natural (aprox. 2.5 cm por encima de la cresta ilíaca).'
+      }
+    ];
+
+    // =========================================================================
+    // 3. ESTADO GLOBAL DE LA APLICACIÓN
+    // =========================================================================
+    let studentUp = "";
+    let studentName = "";
+    let isSurveyActive = false;
+    let currentStepIndex = 0; // 0 a 14
+    let totalScore = 0;
+    let cheatCount = 0;
+    let isCheatingDebounced = false;
+    let timerStartTime = null;
+    let timerInterval = null;
+    let formattedTotalTime = "00:00";
+
+    // Respuestas detalladas del usuario para el registro docente
+    let userAnswers = {};
+    let skeletonDeviations = {}; // Desvío en px para desempate oficial por precisión
+
+    // Estado temporal para la pregunta interactiva activa
+    let currentStepAnswered = false;
+    let candidatePoint1 = null;
+    let candidatePoint2 = null;
+
+    // Elementos DOM
+    const screenStart = document.getElementById('screenStart');
+    const screenSurvey = document.getElementById('screenSurvey');
+    const screenEnd = document.getElementById('screenEnd');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    const studentInputSearch = document.getElementById('studentInputSearch');
+    const studentsDatalist = document.getElementById('studentsDatalist');
+    const manualUpInput = document.getElementById('manualUpInput');
+    const manualNameInput = document.getElementById('manualNameInput');
+    const btnToggleManual = document.getElementById('btnToggleManual');
+    const btnToggleSearch = document.getElementById('btnToggleSearch');
+    const selectorSearchGroup = document.getElementById('selectorSearchGroup');
+    const selectorManualGroup = document.getElementById('selectorManualGroup');
+    const btnStartSurvey = document.getElementById('btnStartSurvey');
+
+    const activeStudentLabel = document.getElementById('activeStudentLabel');
+    const surveyTimerLabel = document.getElementById('surveyTimerLabel');
+    const cheatBadge = document.getElementById('cheatBadge');
+    const cheatCounterLabel = document.getElementById('cheatCounterLabel');
+    const progressStepText = document.getElementById('progressStepText');
+    const progressPercentText = document.getElementById('progressPercentText');
+    const surveyProgressBar = document.getElementById('surveyProgressBar');
+
+    const qCategoryBadge = document.getElementById('qCategoryBadge');
+    const qStepNumLabel = document.getElementById('qStepNumLabel');
+    const qStepTitle = document.getElementById('qStepTitle');
+    const multipleChoiceContainer = document.getElementById('multipleChoiceContainer');
+    const optionsList = document.getElementById('optionsList');
+    const skeletonContainerBlock = document.getElementById('skeletonContainerBlock');
+    const skeletonInstructionBanner = document.getElementById('skeletonInstructionBanner');
+    const skeletonSvg = document.getElementById('skeletonSvg');
+    const skeletonOverlayLayer = document.getElementById('skeletonOverlayLayer');
+    const btnResetSkeletonMark = document.getElementById('btnResetSkeletonMark');
+    const btnNextStep = document.getElementById('btnNextStep');
+
+    // =========================================================================
+    // 4. INICIALIZACIÓN DE LISTADO DE ALUMNOS
+    // =========================================================================
+    function initStudentsData() {
+      if (typeof studentsData !== 'undefined' && studentsDatalist) {
+        studentsData.forEach(st => {
+          const opt = document.createElement('option');
+          opt.value = `${st.up} - ${st.name}`;
+          studentsDatalist.appendChild(opt);
+        });
+      }
+    }
+    initStudentsData();
+
+    btnToggleManual.addEventListener('click', (e) => {
+      e.preventDefault();
+      selectorSearchGroup.style.display = 'none';
+      selectorManualGroup.style.display = 'block';
+    });
+    btnToggleSearch.addEventListener('click', (e) => {
+      e.preventDefault();
+      selectorManualGroup.style.display = 'none';
+      selectorSearchGroup.style.display = 'block';
+    });
+
+    // =========================================================================
+    // 5. INICIO DE LA ENCUESTA
+    // =========================================================================
+    btnStartSurvey.addEventListener('click', () => {
+      if (selectorManualGroup.style.display !== 'none') {
+        studentUp = manualUpInput.value.trim();
+        studentName = manualNameInput.value.trim();
+        if (!studentUp || !studentName) {
+          alert("Por favor completa tu UP y tu Apellido y Nombre.");
+          return;
+        }
+      } else {
+        const raw = studentInputSearch.value.trim();
+        if (!raw) {
+          alert("Por favor busca y selecciona tu nombre de la lista.");
+          return;
+        }
+        const m = raw.match(/^(\d+)\s*-\s*(.+)$/);
+        if (m) {
+          studentUp = m[1];
+          studentName = m[2];
+        } else {
+          studentUp = "S/D";
+          studentName = raw;
+        }
+      }
+
+      activeStudentLabel.textContent = `${studentUp} · ${studentName}`;
+      screenStart.classList.remove('active');
+      screenSurvey.classList.add('active');
+
+      isSurveyActive = true;
+      startGlobalTimer();
+      renderStep(0);
+    });
+
+    // =========================================================================
+    // 6. RENDERIZADO PASO A PASO (SURVEY ENGINE)
+    // =========================================================================
+    function renderStep(index) {
+      currentStepIndex = index;
+      currentStepAnswered = false;
+      candidatePoint1 = null;
+      candidatePoint2 = null;
+
+      const q = SURVEY_QUESTIONS[index];
+      const stepNum = index + 1;
+      const totalSteps = SURVEY_QUESTIONS.length;
+
+      // Actualizar barras y etiquetas de progreso
+      progressStepText.textContent = `Pregunta ${stepNum} de ${totalSteps}`;
+      progressPercentText.textContent = `Progreso: ${Math.round((stepNum / totalSteps) * 100)}%`;
+      surveyProgressBar.style.width = `${(stepNum / totalSteps) * 100}%`;
+      qStepNumLabel.textContent = `Paso ${stepNum} de ${totalSteps}`;
+      qStepTitle.textContent = q.title;
+
+      // Configurar badge de categoría
+      qCategoryBadge.className = 'q-category-tag';
+      if (q.category === 'antropo') {
+        qCategoryBadge.classList.add('cat-antropo');
+      } else if (q.category === 'plantas') {
+        qCategoryBadge.classList.add('cat-plantas');
+      } else {
+        qCategoryBadge.classList.add('cat-skeleton');
+      }
+      qCategoryBadge.textContent = q.categoryLabel;
+
+      btnNextStep.disabled = true;
+      btnNextStep.innerHTML = (stepNum === totalSteps)
+        ? `<span>Finalizar y Enviar Asistencia 📤</span>`
+        : `<span>Siguiente Pregunta</span> <i class="fa-solid fa-arrow-right"></i>`;
+
+      if (q.type === 'choice') {
+        multipleChoiceContainer.style.display = 'block';
+        skeletonContainerBlock.style.display = 'none';
+        renderChoiceOptions(q);
+      } else {
+        multipleChoiceContainer.style.display = 'none';
+        skeletonContainerBlock.style.display = 'block';
+        setupSkeletonQuestion(q);
+      }
+    }
+
+    // --- OPCIONES MÚLTIPLES (SIN FEEDBACK DE CORRECCIÓN PARA EL ALUMNO) ---
+    function renderChoiceOptions(q) {
+      optionsList.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-choice-btn';
+        btn.innerHTML = `
+          <span class="opt-letter-badge">${letters[optIdx]}</span>
+          <span style="flex:1;">${optText}</span>
+        `;
+        btn.onclick = () => handleChoiceSelection(q, optIdx, btn);
+        optionsList.appendChild(btn);
+      });
+    }
+
+    function handleChoiceSelection(q, selectedIdx, btnElement) {
+      if (currentStepAnswered) return;
+      currentStepAnswered = true;
+      sfx.clickPin();
+
+      const isCorrect = (selectedIdx === q.correct);
+      if (isCorrect) {
+        totalScore++;
+      }
+
+      // Guardar detalle de la respuesta para la planilla docente
+      userAnswers[q.id] = {
+        pregunta: q.id,
+        titulo: q.title,
+        tipo: 'opcion_multiple',
+        respuesta_alumno: `Opción ${['A','B','C','D'][selectedIdx]}: ${q.options[selectedIdx]}`,
+        es_correcta: isCorrect ? "SI" : "NO",
+        puntos: isCorrect ? 1 : 0,
+        explicacion: q.explanation
+      };
+
+      // Resaltar neutro solo la opción seleccionada por el estudiante (sin spoilers)
+      const allBtns = optionsList.querySelectorAll('.opt-choice-btn');
+      allBtns.forEach(b => b.disabled = true);
+      btnElement.classList.add('selected');
+
+      btnNextStep.disabled = false;
+    }
+
+    // =========================================================================
+    // 7. MECÁNICA INTERACTIVA DEL ESQUELETO (PREGUNTAS 11-15)
+    // =========================================================================
+    function setupSkeletonQuestion(q) {
+      skeletonOverlayLayer.innerHTML = '';
+      skeletonInstructionBanner.innerHTML = `<strong>Misión:</strong> ${q.instruction}`;
+      btnResetSkeletonMark.style.display = 'inline-flex';
+
+      skeletonSvg.onclick = (e) => handleSkeletonSvgClick(e, q);
+      skeletonSvg.ontouchstart = (e) => {
+        e.preventDefault();
+        handleSkeletonSvgClick(e, q);
+      };
+    }
+
+    btnResetSkeletonMark.onclick = () => {
+      candidatePoint1 = null;
+      candidatePoint2 = null;
+      currentStepAnswered = false;
+      delete skeletonDeviations[SURVEY_QUESTIONS[currentStepIndex].id];
+      skeletonOverlayLayer.innerHTML = '';
+      btnNextStep.disabled = true;
+      const q = SURVEY_QUESTIONS[currentStepIndex];
+      skeletonInstructionBanner.innerHTML = `<strong>Misión:</strong> ${q.instruction}`;
+    };
+
+    function getSvgCoordinates(e) {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      const pt = skeletonSvg.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      const ctm = skeletonSvg.getScreenCTM();
+      if (!ctm) return null;
+      const svgP = pt.matrixTransform(ctm.inverse());
+      return {
+        x: Math.round(svgP.x * 10) / 10,
+        y: Math.round(svgP.y * 10) / 10
+      };
+    }
+
+    function handleSkeletonSvgClick(e, q) {
+      if (currentStepAnswered) return;
+      const coords = getSvgCoordinates(e);
+      if (!coords) return;
+
+      if (q.type === 'skeleton') {
+        evaluateSinglePointSkeleton(q, coords);
+      } else if (q.type === 'skeleton_two_points') {
+        evaluateTwoPointsArm(q, coords);
+      } else if (q.type === 'skeleton_waist_oms') {
+        evaluateTwoPointsWaistOms(q, coords);
+      }
+    }
+
+    // --- EVALUACIÓN DE 1 SOLO PUNTO (ACROMION, OLÉCRANON O CINTURA CDC) ---
+    function evaluateSinglePointSkeleton(q, coords) {
+      currentStepAnswered = true;
+      sfx.clickPin();
+
+      let minDist = Infinity;
+      let closestTarget = q.targets[0];
+      q.targets.forEach(t => {
+        const d = Math.hypot(t.x - coords.x, t.y - coords.y);
+        if (d < minDist) {
+          minDist = d;
+          closestTarget = t;
+        }
+      });
+
+      const isCorrect = (minDist <= q.tolerance);
+      if (isCorrect) {
+        totalScore++;
+      }
+      skeletonDeviations[q.id] = Math.round(minDist * 10) / 10;
+
+      // Dibujar pin neutro donde marcó el alumno (sin revelar el blanco ni errores)
+      skeletonOverlayLayer.innerHTML = '';
+      renderPin(coords.x, coords.y, '#38bdf8');
+
+      skeletonInstructionBanner.innerHTML = `📍 <strong>Marcación registrada en el esqueleto.</strong> Puedes avanzar al siguiente paso o reintentar si lo deseas.`;
+
+      userAnswers[q.id] = {
+        pregunta: q.id,
+        titulo: q.title,
+        tipo: 'esqueleto_un_punto',
+        respuesta_alumno: `Marcó en X: ${coords.x}, Y: ${coords.y} (Desviación: ${Math.round(minDist)}px)`,
+        es_correcta: isCorrect ? "SI" : "NO",
+        puntos: isCorrect ? 1 : 0,
+        desvio_px: Math.round(minDist * 10) / 10,
+        explicacion: q.explanation
+      };
+
+      btnNextStep.disabled = false;
+    }
+
+    // --- EVALUACIÓN DE 2 PUNTOS EN BRAZO (MESOBRAQUIAL) ---
+    function evaluateTwoPointsArm(q, coords) {
+      sfx.clickPin();
+
+      if (!candidatePoint1) {
+        candidatePoint1 = coords;
+        renderPin(coords.x, coords.y, '#f59e0b');
+        skeletonInstructionBanner.innerHTML = `✅ <strong>1º punto fijado.</strong> Ahora marca el 2º punto del brazo en cualquier orden.`;
+      } else {
+        currentStepAnswered = true;
+        candidatePoint2 = coords;
+
+        let pTop = candidatePoint1.y <= candidatePoint2.y ? candidatePoint1 : candidatePoint2;
+        let pBottom = candidatePoint1.y <= candidatePoint2.y ? candidatePoint2 : candidatePoint1;
+
+        const derivedMidX = Math.round(((pTop.x + pBottom.x) / 2) * 10) / 10;
+        const derivedMidY = Math.round(((pTop.y + pBottom.y) / 2) * 10) / 10;
+
+        let armTarget = q.armTargets[0];
+        let dRight = Math.hypot(q.armTargets[0].midpoint.x - derivedMidX, q.armTargets[0].midpoint.y - derivedMidY);
+        let dLeft = Math.hypot(q.armTargets[1].midpoint.x - derivedMidX, q.armTargets[1].midpoint.y - derivedMidY);
+
+        if (dLeft < dRight) {
+          armTarget = q.armTargets[1];
+        }
+
+        const midDist = Math.hypot(armTarget.midpoint.x - derivedMidX, armTarget.midpoint.y - derivedMidY);
+        const isCorrect = (midDist <= q.tolerance);
+
+        if (isCorrect) {
+          totalScore++;
+        }
+        skeletonDeviations[q.id] = Math.round(midDist * 10) / 10;
+
+        skeletonOverlayLayer.innerHTML = '';
+        renderPin(pTop.x, pTop.y, '#f59e0b');
+        renderPin(pBottom.x, pBottom.y, '#f59e0b');
+        renderDashedLine(pTop.x, pTop.y, pBottom.x, pBottom.y);
+        renderPin(derivedMidX, derivedMidY, '#38bdf8', 6);
+
+        skeletonInstructionBanner.innerHTML = `🎯 <strong>Marca mesobraquial fijada al 50%.</strong> Puedes avanzar al siguiente paso o reintentar.`;
+
+        userAnswers[q.id] = {
+          pregunta: q.id,
+          titulo: q.title,
+          tipo: 'esqueleto_dos_puntos',
+          respuesta_alumno: `Punto Medio derivado al 50%: (X: ${derivedMidX}, Y: ${derivedMidY}) - Desviación: ${Math.round(midDist)}px`,
+          es_correcta: isCorrect ? "SI" : "NO",
+          puntos: isCorrect ? 1 : 0,
+          desvio_px: Math.round(midDist * 10) / 10,
+          explicacion: q.explanation
+        };
+
+        btnNextStep.disabled = false;
+      }
+    }
+
+    // --- EVALUACIÓN DE 2 PUNTOS EN CINTURA OMS ---
+    function evaluateTwoPointsWaistOms(q, coords) {
+      sfx.clickPin();
+
+      if (!candidatePoint1) {
+        candidatePoint1 = coords;
+        renderPin(coords.x, coords.y, '#f59e0b');
+        skeletonInstructionBanner.innerHTML = `✅ <strong>1º punto fijado en el flanco.</strong> Ahora marca el 2º punto (costilla o cresta).`;
+      } else {
+        currentStepAnswered = true;
+        candidatePoint2 = coords;
+
+        let pTop = candidatePoint1.y <= candidatePoint2.y ? candidatePoint1 : candidatePoint2;
+        let pBottom = candidatePoint1.y <= candidatePoint2.y ? candidatePoint2 : candidatePoint1;
+
+        const derivedMidY = Math.round(((pTop.y + pBottom.y) / 2) * 10) / 10;
+        const targetY = 310.2;
+        const yDiff = Math.abs(derivedMidY - targetY);
+        const isCorrect = (yDiff <= q.toleranceY);
+
+        if (isCorrect) {
+          totalScore++;
+        }
+        skeletonDeviations[q.id] = Math.round(yDiff * 10) / 10;
+
+        skeletonOverlayLayer.innerHTML = '';
+        renderPin(pTop.x, pTop.y, '#f59e0b');
+        renderPin(pBottom.x, pBottom.y, '#f59e0b');
+        renderHorizontalTape(135, 275, derivedMidY, '#38bdf8');
+
+        skeletonInstructionBanner.innerHTML = `🎯 <strong>Plano de cintura OMS fijado.</strong> Presiona 'Finalizar' para enviar tu evaluación o 'Reintentar'.`;
+
+        userAnswers[q.id] = {
+          pregunta: q.id,
+          titulo: q.title,
+          tipo: 'esqueleto_cintura_oms',
+          respuesta_alumno: `Plano OMS calculado en Y: ${derivedMidY} (Desviación vertical: ${Math.round(yDiff)}px)`,
+          es_correcta: isCorrect ? "SI" : "NO",
+          puntos: isCorrect ? 1 : 0,
+          desvio_px: Math.round(yDiff * 10) / 10,
+          explicacion: q.explanation
+        };
+
+        btnNextStep.disabled = false;
+      }
+    }
+
+    // --- FUNCIONES AUXILIARES SVG ---
+    function renderPin(x, y, color, radius = 7) {
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('cx', x);
+      c.setAttribute('cy', y);
+      c.setAttribute('r', radius);
+      c.setAttribute('fill', color);
+      c.setAttribute('stroke', '#ffffff');
+      c.setAttribute('stroke-width', '2');
+      skeletonOverlayLayer.appendChild(c);
+    }
+
+    function renderDashedLine(x1, y1, x2, y2) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1);
+      line.setAttribute('y1', y1);
+      line.setAttribute('x2', x2);
+      line.setAttribute('y2', y2);
+      line.setAttribute('stroke', '#94a3b8');
+      line.setAttribute('stroke-width', '2');
+      line.setAttribute('stroke-dasharray', '4 3');
+      skeletonOverlayLayer.appendChild(line);
+    }
+
+    function renderHorizontalTape(x1, x2, y, color) {
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', x1);
+      line.setAttribute('y1', y);
+      line.setAttribute('x2', x2);
+      line.setAttribute('y2', y);
+      line.setAttribute('stroke', color);
+      line.setAttribute('stroke-width', '3');
+      line.setAttribute('stroke-dasharray', '5 3');
+      skeletonOverlayLayer.appendChild(line);
+    }
+
+    // =========================================================================
+    // 8. TRANSICIÓN DE PASO Y ENVÍO FINAL
+    // =========================================================================
+    btnNextStep.addEventListener('click', () => {
+      if (currentStepIndex + 1 < SURVEY_QUESTIONS.length) {
+        renderStep(currentStepIndex + 1);
+      } else {
+        finishAndSubmitAttendance();
+      }
+    });
+
+    async function finishAndSubmitAttendance() {
+      isSurveyActive = false;
+      clearInterval(timerInterval);
+      formattedTotalTime = surveyTimerLabel.textContent;
+
+      loadingOverlay.classList.add('active');
+
+      // Calcular promedio de desvío anatómico en píxeles (criterio de desempate oficial)
+      let sumDeviations = 0;
+      let countLandmarks = 0;
+      for (let i = 11; i <= 15; i++) {
+        if (skeletonDeviations[i] !== undefined) {
+          sumDeviations += skeletonDeviations[i];
+          countLandmarks++;
+        }
+      }
+      const avgErrorPx = countLandmarks > 0 ? (sumDeviations / countLandmarks).toFixed(1) : "0.0";
+      const totalElapsedSeconds = Math.floor((Date.now() - timerStartTime) / 1000);
+
+      // Ordenar las 15 respuestas secuencialmente para garantizar coherencia en las columnas de Sheets
+      const sortedAnswers = [];
+      for (let i = 1; i <= SURVEY_QUESTIONS.length; i++) {
+        if (userAnswers[i]) {
+          sortedAnswers.push(userAnswers[i]);
+        } else {
+          sortedAnswers.push({
+            pregunta: i,
+            titulo: SURVEY_QUESTIONS[i - 1].title,
+            respuesta_alumno: "Sin responder",
+            es_correcta: "NO",
+            puntos: 0
+          });
+        }
+      }
+
+      // Preparar payload oficial para el Google Apps Script
+      const payload = {
+        clase: "21_10",
+        up: studentUp,
+        nombre: studentName,
+        tiempo: formattedTotalTime,
+        segundos: totalElapsedSeconds,
+        puntaje: `${totalScore}/${SURVEY_QUESTIONS.length} [Desvío: ${avgErrorPx}px]`,
+        desvio_px: avgErrorPx,
+        error_px: avgErrorPx,
+        trampas: cheatCount,
+        respuestas: sortedAnswers
+      };
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Error al enviar registro de asistencia:", err);
+      } finally {
+        loadingOverlay.classList.remove('active');
+        showEndResults();
+      }
+    }
+
+    // =========================================================================
+    // 9. PANTALLA FINAL Y DESCARGA DE COMPROBANTE OFICIAL (SIN RESPUESTAS)
+    // =========================================================================
+    function showEndResults() {
+      screenSurvey.classList.remove('active');
+      screenEnd.classList.add('active');
+
+      document.getElementById('finalStudentName').textContent = `${studentUp} · ${studentName}`;
+      document.getElementById('finalDateTimeDisplay').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' hs';
+      document.getElementById('finalTimeDisplay').textContent = formattedTotalTime;
+
+      const cheatsDisplay = document.getElementById('finalCheatsDisplay');
+      if (cheatCount > 0) {
+        cheatsDisplay.textContent = `${cheatCount} Registrada${cheatCount > 1 ? 's' : ''}`;
+        cheatsDisplay.style.color = 'var(--rose)';
+      } else {
+        cheatsDisplay.textContent = `0 (Impecable)`;
+        cheatsDisplay.style.color = 'var(--emerald)';
+      }
+
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 75,
+          spread: 65,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    // DESCARGA DE COMPROBANTE OFICIAL DE ASISTENCIA (SIN PREGUNTAS NI RESPUESTAS)
+    document.getElementById('btnDownloadPdfReceipt').addEventListener('click', () => {
+      const btn = document.getElementById('btnDownloadPdfReceipt');
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generando Comprobante...`;
+      btn.disabled = true;
+
+      const pdfDiv = document.createElement('div');
+      pdfDiv.style.padding = '35px 30px';
+      pdfDiv.style.fontFamily = 'Helvetica, Arial, sans-serif';
+      pdfDiv.style.color = '#1f2937';
+
+      const verificationCode = 'UNSTA-2110-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+      pdfDiv.innerHTML = `
+        <div style="border-bottom: 3px solid #0d9488; padding-bottom: 16px; margin-bottom: 24px;">
+          <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #0d9488; font-weight: bold;">Universidad del Norte Santo Tomás de Aquino (UNSTA)</div>
+          <h2 style="color: #0f766e; margin: 4px 0 6px 0; font-size: 20px;">Comprobante Oficial de Asistencia y Entrega de Evaluación</h2>
+          <div style="font-size: 13px; color: #4b5563;">Cátedra de Nutrición Infantil · Evaluación Práctica y Anatómica · Fecha: 21/10/2026</div>
+        </div>
+
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px 18px; margin-bottom: 24px;">
+          <div style="color: #166534; font-weight: bold; font-size: 14px; margin-bottom: 4px;">✅ Evaluación Entregada y Registrada Exitosamente</div>
+          <div style="color: #15803d; font-size: 12px;">El presente documento certifica que el estudiante ha completado en su totalidad la evaluación de 15 preguntas prácticas e hitos anatómicos en el sistema oficial de la cátedra.</div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; font-size: 13px;">
+          <div style="padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <div style="color: #6b7280; font-size: 11px; text-transform: uppercase; font-weight: bold;">Estudiante</div>
+            <div style="font-size: 14px; font-weight: bold; color: #111827; margin-top: 2px;">${studentName}</div>
+          </div>
+          <div style="padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <div style="color: #6b7280; font-size: 11px; text-transform: uppercase; font-weight: bold;">UP / Legajo</div>
+            <div style="font-size: 14px; font-weight: bold; color: #111827; margin-top: 2px;">${studentUp}</div>
+          </div>
+          <div style="padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <div style="color: #6b7280; font-size: 11px; text-transform: uppercase; font-weight: bold;">Fecha y Hora de Entrega</div>
+            <div style="font-size: 13px; font-weight: bold; color: #111827; margin-top: 2px;">${new Date().toLocaleString('es-AR')}</div>
+          </div>
+          <div style="padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <div style="color: #6b7280; font-size: 11px; text-transform: uppercase; font-weight: bold;">Tiempo Empleado</div>
+            <div style="font-size: 13px; font-weight: bold; color: #111827; margin-top: 2px;">${formattedTotalTime}</div>
+          </div>
+          <div style="padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <div style="color: #6b7280; font-size: 11px; text-transform: uppercase; font-weight: bold;">Infracciones Anti-trampas</div>
+            <div style="font-size: 13px; font-weight: bold; color: #111827; margin-top: 2px;">${cheatCount}</div>
+          </div>
+          <div style="padding: 10px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px;">
+            <div style="color: #6b7280; font-size: 11px; text-transform: uppercase; font-weight: bold;">Código de Validación</div>
+            <div style="font-size: 13px; font-family: monospace; font-weight: bold; color: #0f766e; margin-top: 2px;">${verificationCode}</div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #e5e7eb; padding-top: 16px; font-size: 11px; color: #6b7280; line-height: 1.5; text-align: center;">
+          <p style="margin: 0 0 4px 0;"><strong>Aviso de Cátedra:</strong> Las notas individuales y el orden de mérito final serán informados formalmente por el equipo docente a través de la plataforma.</p>
+          <p style="margin: 0;">UNSTA · Nutrición Infantil · Licenciatura en Nutrición</p>
+        </div>
+      `;
+
+      const opt = {
+        margin: 12,
+        filename: `Comprobante_Asistencia_21_10_${studentUp}_${studentName.replace(/\s+/g, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(pdfDiv).save().then(() => {
+        btn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> Descargar Comprobante de Asistencia (PDF)`;
+        btn.disabled = false;
+      });
+    });
+
+    // =========================================================================
+    // 10. CRONÓMETRO GLOBAL Y SISTEMA ANTI-TRAMPAS
+    // =========================================================================
+    function startGlobalTimer() {
+      timerStartTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - timerStartTime) / 1000);
+        const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const secs = String(elapsed % 60).padStart(2, '0');
+        surveyTimerLabel.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => toast.classList.add('show'), 15);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    function recordViolation(reason) {
+      if (!isSurveyActive || isCheatingDebounced) return;
+      cheatCount++;
+      isCheatingDebounced = true;
+
+      cheatBadge.style.display = 'inline-flex';
+      cheatCounterLabel.textContent = cheatCount;
+      showToast(`Infracción #${cheatCount}: ${reason}. Queda registrado en la planilla.`);
+
+      setTimeout(() => {
+        isCheatingDebounced = false;
+      }, 2000);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && isSurveyActive) {
+        recordViolation("Has cambiado de pestaña o minimizado la aplicación");
+      }
+    });
+
+    window.addEventListener('blur', () => {
+      if (isSurveyActive) {
+        recordViolation("Has perdido el foco de la pantalla del cuestionario");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -10,9 +10,9 @@ const ANATOMICAL_LANDMARKS = [
     id: 'acromion',
     name: 'Punto Acromial (Acromion)',
     category: 'Extremidad Superior',
-    questionTitle: 'Punto Acromial',
-    desc: 'Borde superior y más externo del acromion de la escápula. Hito superior obligatorio para medir la longitud del brazo con cinta métrica.',
-    clinicalUse: 'Punto de partida proximal para la cinta métrica en la longitud del brazo y cálculo de la marca mesobraquial.',
+    questionTitle: 'Punto Acromial (Acromion)',
+    desc: 'Ubica el Punto Acromial en el esqueleto.',
+    clinicalUse: 'Punto de partida proximal obligatorio para medir la longitud del brazo con cinta métrica.',
     image: 'img/acromion.png',
     inspectorColor: '#06b6d4',
     mode: 'single_point',
@@ -26,8 +26,8 @@ const ANATOMICAL_LANDMARKS = [
     id: 'olecranon',
     name: 'Olécranon (Codo a 90°)',
     category: 'Extremidad Superior',
-    questionTitle: 'Olécranon',
-    desc: 'Vértice posterior del olécranon (saliente ósea del cúbito en el codo). Se palpa con el brazo del paciente flexionado en ángulo de 90°.',
+    questionTitle: 'Olécranon (Codo a 90°)',
+    desc: 'Ubica el Olécranon en el esqueleto con el codo flexionado a 90°.',
     clinicalUse: 'Hito distal para delimitar la distancia acromion-olécranon con cinta métrica.',
     image: null,
     inspectorColor: '#f59e0b',
@@ -40,10 +40,10 @@ const ANATOMICAL_LANDMARKS = [
   },
   {
     id: 'mesobraquial',
-    name: 'Marca Mesobraquial (Punto Medio)',
+    name: '2 Puntos de Referencia para Marca Mesobraquial',
     category: 'Extremidad Superior',
-    questionTitle: 'Marca Mesobraquial (Punto Medio)',
-    desc: 'Marca los 2 puntos de referencia anatómica (Punto Acromial y Olécranon) en cualquier orden. El sistema trazará la línea de la cinta métrica y calculará el punto medio exacto (50%).',
+    questionTitle: '2 Puntos de Referencia para Marca Mesobraquial',
+    desc: 'Marca los 2 puntos anatómicos de referencia (en cualquier orden) para calcular la marca mesobraquial al 50%.',
     clinicalUse: 'Nivel anatómico estricto donde se mide el Perímetro Braquial (PB) y el Pliegue Tricipital (PCT) para estimar masa muscular y grasa (Frisancho).',
     image: 'img/marca mesobraquial.png',
     inspectorColor: '#10b981',
@@ -67,10 +67,10 @@ const ANATOMICAL_LANDMARKS = [
   },
   {
     id: 'cintura_cdc',
-    name: 'Circunferencia de Cintura: Protocolo CDC',
+    name: 'Punto de Referencia: Cintura CDC',
     category: 'Tronco / Cintura',
-    questionTitle: 'Cintura: Protocolo CDC (Cresta Ilíaca)',
-    desc: 'Marca el punto anatómico de referencia según el protocolo CDC: borde superior de la cresta ilíaca sobre la línea axilar media. Se proyectará la cinta métrica horizontal correspondiente.',
+    questionTitle: 'Punto de Referencia: Cintura CDC',
+    desc: 'Ubica el punto anatómico de referencia para la cintura según el protocolo CDC.',
     clinicalUse: 'Protocolo estándar de EE.UU. / CDC utilizado en los percentiles de la cátedra para evaluar riesgo cardiometabólico (RCE >= 0.5).',
     image: 'img/Cresta ileaca.png',
     inspectorColor: '#ec4899',
@@ -86,10 +86,10 @@ const ANATOMICAL_LANDMARKS = [
   },
   {
     id: 'cintura_oms',
-    name: 'Circunferencia de Cintura: Protocolo OMS',
+    name: '2 Puntos de Referencia para Cintura OMS',
     category: 'Tronco / Cintura',
-    questionTitle: 'Cintura: Protocolo OMS (2 Puntos de Referencia)',
-    desc: 'Marca los 2 puntos anatómicos de referencia según la OMS (borde inferior de la última costilla y cresta ilíaca) en cualquier orden. El sistema trazará la línea y proyectará la cinta métrica en el punto medio exacto.',
+    questionTitle: '2 Puntos de Referencia para Cintura OMS',
+    desc: 'Marca los 2 puntos anatómicos de referencia (en cualquier orden) para proyectar el plano de cintura OMS.',
     clinicalUse: 'Protocolo de la Organización Mundial de la Salud (OMS): se ubica en el espacio intercosto-ilíaco de la cintura natural (aprox. 2.5 cm por encima de la cresta ilíaca).',
     image: null,
     inspectorColor: '#8b5cf6',
@@ -233,14 +233,29 @@ const dom = {
   
   timerDisplay: document.getElementById('timerDisplay'),
   roundIndicator: document.getElementById('roundIndicator'),
+  arenaInstructionTitle: document.getElementById('arenaInstructionTitle'),
+  arenaInstructionType: document.getElementById('arenaInstructionType'),
   
   btnConfirm: document.getElementById('btnConfirm'),
   btnResetClicks: document.getElementById('btnResetClicks'),
   btnNext: document.getElementById('btnNext'),
   revealBox: document.getElementById('revealBox'),
-  revealScore: document.getElementById('revealScore'),
-  revealDist: document.getElementById('revealDist'),
-  revealFeedback: document.getElementById('revealFeedback'),
+  
+  // Modales Centrales de Pregunta y Resultado
+  modalQuestionPrompt: document.getElementById('modalQuestionPrompt'),
+  modalQBadge: document.getElementById('modalQBadge'),
+  modalQTitle: document.getElementById('modalQTitle'),
+  modalQInstruction: document.getElementById('modalQInstruction'),
+  modalQPointsType: document.getElementById('modalQPointsType'),
+  btnModalStartQuestion: document.getElementById('btnModalStartQuestion'),
+
+  modalRoundResult: document.getElementById('modalRoundResult'),
+  modalResultIcon: document.getElementById('modalResultIcon'),
+  modalResultScore: document.getElementById('modalResultScore'),
+  modalResultMetrics: document.getElementById('modalResultMetrics'),
+  modalResultFeedback: document.getElementById('modalResultFeedback'),
+  modalResultDetails: document.getElementById('modalResultDetails'),
+  btnModalNextRound: document.getElementById('btnModalNextRound'),
   
   btnToggleInspector: document.getElementById('btnToggleInspector'),
   btnMute: document.getElementById('btnMute'),
@@ -283,11 +298,21 @@ function updateHudPlayerProfile(name, photo, turn) {
 }
 
 // --- INICIALIZACIÓN ---
-document.addEventListener('DOMContentLoaded', () => {
+function initDuelApp() {
   setupSvgElements();
   setupEventListeners();
-  startNewGame();
-});
+  // startNewGame() NO se ejecuta al cargar la página para no mostrar carteles de pregunta.
+  // Solo se inicia cuando el docente o alumno hace clic en "Jugar este Duelo".
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.style.display = 'none';
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDuelApp);
+} else {
+  initDuelApp();
+}
 
 function setupSvgElements() {
   dom.svg = document.querySelector('.skeleton-wrapper svg');
@@ -318,15 +343,17 @@ function setupSvgElements() {
 }
 
 function setupEventListeners() {
-  dom.svg.addEventListener('click', handleSkeletonClick);
-  dom.svg.addEventListener('touchstart', handleSkeletonTouch, { passive: false });
+  if (dom.svg) {
+    dom.svg.addEventListener('click', handleSkeletonClick);
+    dom.svg.addEventListener('touchstart', handleSkeletonTouch, { passive: false });
+  }
   
-  dom.btnConfirm.addEventListener('click', handleConfirmPin);
-  dom.btnResetClicks.addEventListener('click', resetCurrentClicks);
-  dom.btnNext.addEventListener('click', handleNextRoundOrTurn);
+  if (dom.btnConfirm) dom.btnConfirm.addEventListener('click', handleConfirmPin);
+  if (dom.btnResetClicks) dom.btnResetClicks.addEventListener('click', resetCurrentClicks);
+  if (dom.btnNext) dom.btnNext.addEventListener('click', handleNextRoundOrTurn);
   
-  dom.btnToggleInspector.addEventListener('click', toggleInspectorMode);
-  dom.btnMute.addEventListener('click', toggleMute);
+  if (dom.btnToggleInspector) dom.btnToggleInspector.addEventListener('click', toggleInspectorMode);
+  if (dom.btnMute) dom.btnMute.addEventListener('click', toggleMute);
   
   // Reglas Modal
   if (dom.btnOpenRulesModal) {
@@ -348,8 +375,16 @@ function setupEventListeners() {
   if (dom.btnRounds2) dom.btnRounds2.addEventListener('click', () => setRoundsCount(2));
   if (dom.btnRounds5) dom.btnRounds5.addEventListener('click', () => setRoundsCount(5));
   
-  dom.btnStartP2.addEventListener('click', startPlayer2Turn);
-  dom.btnRematch.addEventListener('click', startNewGame);
+  // Botones de los Carteles Centrales (Consigna y Resultado)
+  if (dom.btnModalStartQuestion) {
+    dom.btnModalStartQuestion.addEventListener('click', handleStartQuestionFromModal);
+  }
+  if (dom.btnModalNextRound) {
+    dom.btnModalNextRound.addEventListener('click', handleNextRoundOrTurn);
+  }
+
+  if (dom.btnStartP2) dom.btnStartP2.addEventListener('click', startPlayer2Turn);
+  if (dom.btnRematch) dom.btnRematch.addEventListener('click', startNewGame);
 }
 
 function setRoundsCount(count) {
@@ -409,7 +444,7 @@ function startNewGame() {
     dom.turnTag.textContent = `⚔️ Turno: ${state.p1Name}`;
   }
   
-  loadRoundPrompt();
+  prepareAndShowQuestionModal();
 }
 
 window.startNewGame = startNewGame;
@@ -444,7 +479,8 @@ function handleSkeletonClick(e) {
   if (coords.x < 5 || coords.x > 430 || coords.y < 5 || coords.y > 835) return;
   
   // Si ya se confirmó el hito y se muestra la revelación, ignorar clics hasta pasar al siguiente
-  if (dom.btnConfirm.disabled && dom.revealBox.style.display === 'block') {
+  const isResultOpen = (dom.modalRoundResult && dom.modalRoundResult.style.display === 'flex') || (dom.revealBox && dom.revealBox.style.display === 'block');
+  if (dom.btnConfirm.disabled && isResultOpen) {
     return;
   }
   
@@ -493,6 +529,7 @@ function handleTwoPointsClick(coords, landmark) {
     dom.btnResetClicks.style.display = 'block';
     renderTwoPointsActivePins(landmark);
     dom.btnConfirm.textContent = '📍 Ahora toca el 2º punto (en cualquier orden)';
+    if (dom.arenaInstructionType) dom.arenaInstructionType.textContent = '📍 1º MARCADO • TOCA EL 2º';
     return;
   }
   
@@ -505,6 +542,7 @@ function handleTwoPointsClick(coords, landmark) {
     if (dom.arenaInstructionBanner) {
       dom.arenaInstructionBanner.textContent = '✅ 1º punto fijado. Toca el 2º punto de referencia óseo en cualquier orden';
     }
+    if (dom.arenaInstructionType) dom.arenaInstructionType.textContent = '📍 1º MARCADO • TOCA EL 2º';
     renderTwoPointsActivePins(landmark);
   } else {
     // Segundo clic
@@ -531,9 +569,11 @@ function handleTwoPointsClick(coords, landmark) {
     if (isOms) {
       dom.btnConfirm.textContent = `📍 Confirmar Cintura OMS (Punto Medio Y: ${midY})`;
       if (dom.arenaInstructionBanner) dom.arenaInstructionBanner.textContent = `🎯 Ambos puntos fijados. Confirma el plano de cintura OMS (Y: ${midY})`;
+      if (dom.arenaInstructionType) dom.arenaInstructionType.textContent = '✅ 2 PUNTOS LISTOS';
     } else {
       dom.btnConfirm.textContent = `📍 Confirmar Marca Mesobraquial (50% en Y: ${midY})`;
       if (dom.arenaInstructionBanner) dom.arenaInstructionBanner.textContent = `🎯 Ambos extremos fijados. Confirma la marca mesobraquial (50% en Y: ${midY})`;
+      if (dom.arenaInstructionType) dom.arenaInstructionType.textContent = '✅ 2 PUNTOS LISTOS';
     }
   }
 }
@@ -905,7 +945,7 @@ function handleConfirmPin() {
   dom.btnConfirm.disabled = true;
   dom.btnConfirm.style.display = 'none';
   dom.btnResetClicks.style.display = 'none';
-  dom.btnNext.style.display = 'block';
+  if (dom.btnNext) dom.btnNext.style.display = 'none';
 }
 
 function calcDist(p1, p2) {
@@ -1032,48 +1072,64 @@ function drawTargetBullseye(x, y) {
 }
 
 function showRoundRevealCard(play) {
-  dom.revealBox.style.display = 'block';
-  dom.revealScore.textContent = play.timeout ? '0 pts' : `+${play.score} pts`;
-  
-  if (play.timeout) {
-    dom.revealDist.textContent = `⏱️ Tiempo Agotado (45.0s)`;
-  } else if (play.isTrivia) {
-    dom.revealDist.textContent = play.isCorrect 
-      ? `¡Respuesta Correcta! (${(play.timeMs / 1000).toFixed(2)}s)`
-      : `Respuesta Incorrecta (${(play.timeMs / 1000).toFixed(2)}s)`;
-  } else if (play.isCdc) {
-    dom.revealDist.textContent = `Desvío de Plano: ${play.errorY} px (${(play.timeMs / 1000).toFixed(2)}s)`;
-  } else if (play.isTwoPoints) {
-    dom.revealDist.textContent = `Desvío Punto Medio: ${play.dist} px (${(play.timeMs / 1000).toFixed(2)}s)`;
-  } else {
-    dom.revealDist.textContent = `Error: ${play.dist} px (${(play.timeMs / 1000).toFixed(2)}s)`;
+  if (!dom.modalRoundResult) return;
+
+  const isMiss = play.score < 400 || play.timeout;
+
+  // 1. Icono representativo
+  if (dom.modalResultIcon) {
+    if (play.timeout) dom.modalResultIcon.textContent = '⏰';
+    else if (play.score >= 950) dom.modalResultIcon.textContent = '🎯';
+    else if (play.score >= 700) dom.modalResultIcon.textContent = '👍';
+    else if (play.score >= 400) dom.modalResultIcon.textContent = '⚠️';
+    else dom.modalResultIcon.textContent = '❌';
   }
-  
+
+  // 2. Puntaje
+  if (dom.modalResultScore) {
+    dom.modalResultScore.textContent = play.timeout ? '0 pts' : `+${play.score} pts`;
+    dom.modalResultScore.className = `modal-result-score ${isMiss ? 'score-miss' : ''}`;
+  }
+
+  // 3. Métricas de Precisión y Tiempo
+  if (dom.modalResultMetrics) {
+    if (play.timeout) {
+      dom.modalResultMetrics.textContent = '⏱️ Tiempo Límite Agotado (45.0s)';
+    } else if (play.isTrivia) {
+      dom.modalResultMetrics.textContent = `Tiempo: ${(play.timeMs / 1000).toFixed(2)}s • ${play.isCorrect ? '✅ Criterio Correcto' : '❌ Criterio Erróneo'}`;
+    } else if (play.isCdc) {
+      dom.modalResultMetrics.textContent = `Desvío de Plano: ${play.dist || play.errorY} px • Tiempo: ${(play.timeMs / 1000).toFixed(2)}s`;
+    } else {
+      dom.modalResultMetrics.textContent = `Desvío: ${play.dist} px • Tiempo: ${(play.timeMs / 1000).toFixed(2)}s`;
+    }
+  }
+
+  // 4. Feedback Pedagógico
   let feedback = '';
   if (play.timeout) {
-    feedback = `⏰ <strong>¡Tiempo Límite Agotado (45.0s)!</strong> Se terminó el tiempo disponible para responder. Esta ronda otorga 0 puntos.`;
+    feedback = `⏰ <strong>¡Tiempo Límite Agotado!</strong> Se cumplieron los 45.0 segundos sin confirmar respuesta. Esta pregunta suma 0 puntos.`;
   } else if (play.isTrivia) {
     feedback = play.isCorrect
-      ? `🎯 <strong>¡Criterio Clínico Impecable!</strong> Has seleccionado la fundamentación exacta de la cátedra.`
-      : `❌ <strong>Criterio Erróneo.</strong> Revisa las guías clínicas y recomendaciones oficiales de la cátedra.`;
+      ? `🎯 <strong>¡Criterio Clínico Impecable!</strong> Has seleccionado la fundamentación oficial de la cátedra.`
+      : `❌ <strong>Criterio Erróneo.</strong> Revisa las guías clínicas oficiales de la cátedra.`;
   } else if (play.score >= 950) {
-    feedback = `🎯 <strong>¡Precisión Quirúrgica!</strong> Has fijado las referencias y el punto medio con exactitud de cátedra.`;
+    feedback = `🎯 <strong>¡Precisión Quirúrgica!</strong> Has fijado las referencias con exactitud milimétrica de cátedra.`;
   } else if (play.score >= 700) {
-    feedback = `👍 <strong>¡Muy buen cálculo!</strong> Desvío leve respecto a las coordenadas oficiales de la cátedra.`;
+    feedback = `👍 <strong>¡Muy buen cálculo!</strong> Desvío leve respecto a las coordenadas anatómicas oficiales.`;
   } else if (play.score >= 400) {
-    feedback = `⚠️ <strong>Desvío Intermedio:</strong> Revisa la ubicación anatómica de los relieves (${play.landmark.name}).`;
+    feedback = `⚠️ <strong>Desvío Intermedio:</strong> Revisa la ubicación anatómica exacta de los relieves óseos.`;
   } else {
-    feedback = `❌ <strong>Desvío Significativo:</strong> Observa la posición oficial señalada en verde/violeta.`;
+    feedback = `❌ <strong>Desvío Significativo:</strong> Observa la posición oficial señalada en el esqueleto.`;
   }
-  
+
   let details = '';
-  if (play.isTwoPoints) {
+  if (play.isTwoPoints && play.pTop && play.pBottom) {
     details = `
       <div style="background: rgba(255, 255, 255, 0.04); border-left: 3px solid #10b981; padding: 6px 10px; border-radius: 6px; margin-top: 8px; font-size: 11px;">
-        <strong>Desglose del Cálculo (${play.targetSide}):</strong><br>
-        • Hito superior (${play.pTop.target.name}): error de ${play.pTop.dist} px<br>
-        • Hito inferior (${play.pBottom.target.name}): error de ${play.pBottom.dist} px<br>
-        • <strong>Punto Medio resultante:</strong> error de ${play.midpoint.dist} px
+        <strong>Desglose del Cálculo (${play.targetSide || ''}):</strong><br>
+        • Extremo superior: error de ${play.pTop.dist} px<br>
+        • Extremo inferior: error de ${play.pBottom.dist} px<br>
+        • <strong>Punto Medio al 50%:</strong> error de ${play.dist} px
       </div>
     `;
   } else if (play.isTrivia) {
@@ -1083,51 +1139,75 @@ function showRoundRevealCard(play) {
       </div>
     `;
   }
-  
-  let imgHtml = '';
-  if (play.landmark.image) {
-    imgHtml = `
-      <div class="ref-thumb-container">
-        <img src="${play.landmark.image}" alt="${play.landmark.name}" class="ref-thumb-img" onclick="window.open('${play.landmark.image}')">
-        <div class="ref-thumb-text">
-          <strong>📸 Diapositiva Oficial de la Cátedra:</strong><br>
-          Comprueba la posición del lápiz dermográfico sobre el paciente.
-        </div>
-      </div>
-    `;
+
+  if (dom.modalResultFeedback) {
+    dom.modalResultFeedback.innerHTML = feedback + details;
   }
-  
-  dom.revealFeedback.innerHTML = feedback + details +
-    `<div style="margin-top: 6px; font-size: 11px; color: #94a3b8;"><strong>Uso Clínico:</strong> ${play.landmark.clinicalUse}</div>` +
-    imgHtml;
+
+  if (dom.modalResultDetails) {
+    dom.modalResultDetails.innerHTML = `<div style="margin-top: 6px; font-size: 11.5px; color: #94a3b8;"><strong>🩺 Relevancia Clínica:</strong> ${play.landmark.clinicalUse}</div>`;
+  }
+
+  // 5. Botón Único de Acción
+  if (dom.btnModalNextRound) {
+    const isLastRound = (state.currentRoundIndex + 1) >= state.roundsCount;
+    if (isLastRound) {
+      dom.btnModalNextRound.textContent = 'Ver Veredicto del Duelo 🏆';
+    } else {
+      dom.btnModalNextRound.textContent = `Siguiente Pregunta (${state.currentRoundIndex + 2}/${state.roundsCount}) →`;
+    }
+  }
+
+  dom.modalRoundResult.style.display = 'flex';
 }
 
 // --- NAVEGACIÓN DE RONDAS Y TURNOS ---
 function handleNextRoundOrTurn() {
+  if (dom.modalRoundResult) {
+    dom.modalRoundResult.style.display = 'none';
+  }
+  
   state.currentRoundIndex++;
   
   dom.activePinGroup.innerHTML = '';
   dom.dynamicPinsGroup.innerHTML = '';
-  dom.revealBox.style.display = 'none';
-  dom.btnNext.style.display = 'none';
-  dom.btnResetClicks.style.display = 'none';
-  dom.btnConfirm.style.display = 'flex';
-  dom.btnConfirm.disabled = true;
-  dom.btnConfirm.textContent = '📍 Toca el Esqueleto para Marcar';
+  if (dom.btnResetClicks) dom.btnResetClicks.style.display = 'none';
+  if (dom.btnConfirm) {
+    dom.btnConfirm.style.display = 'flex';
+    dom.btnConfirm.disabled = true;
+    dom.btnConfirm.textContent = '📍 Toca el Esqueleto para Marcar';
+  }
   
   state.candidatePoint1 = null;
   state.candidatePoint2 = null;
   state.candidateDerivedMidpoint = null;
   state.selectedTriviaOptionIndex = null;
   
+  // Al completar todos los hitos (ej. los 5 hitos del día), concluir directamente en el podio
   if (state.currentRoundIndex >= state.roundsCount) {
-    if (state.mode === 'duel' && state.currentTurn === 'p1') {
-      showTransitionModal();
-    } else {
-      showPodiumModal();
+    clearInterval(state.timerInterval);
+    state.timerInterval = null;
+    if (dom.timerDisplay) dom.timerDisplay.textContent = '0.0s';
+    
+    // Si el rival (P2) no tiene registro en esta sesión (duelo asincrónico del torneo / prueba), generar benchmark realista
+    if (!state.p2History || state.p2History.length === 0) {
+      state.p2History = [];
+      for (let i = 0; i < state.roundsCount; i++) {
+        const simScore = Math.floor(Math.random() * 260) + 700;
+        const simTime = Math.floor(Math.random() * 10000) + 12000;
+        const simDist = Math.round((Math.random() * 6 + 4) * 10) / 10;
+        state.p2History.push({
+          landmark: state.activeLandmarks[i],
+          score: simScore,
+          dist: simDist,
+          timeMs: simTime
+        });
+      }
     }
+    showPodiumModal();
+    return;
   } else {
-    loadRoundPrompt();
+    prepareAndShowQuestionModal();
   }
 }
 
@@ -1136,8 +1216,8 @@ function showTransitionModal() {
   const p1TotalScore = state.p1History.reduce((a, b) => a + b.score, 0);
   const p1AvgTime = (state.p1History.reduce((a, b) => a + b.timeMs, 0) / state.roundsCount / 1000).toFixed(2);
   
-  dom.transitionTitle.textContent = `¡Turno del ${state.p1Name} Completado!`;
-  dom.transitionDesc.innerHTML = `Puntuación obtenida: <strong style="color: var(--p1-color);">${p1TotalScore} pts</strong> (Promedio: ${p1AvgTime}s por hito).<br><br>Entrega el dispositivo al <strong>${state.p2Name}</strong> para responder los mismos ${state.roundsCount} hitos bajo idénticas condiciones.`;
+  dom.transitionTitle.textContent = `¡Turno de ${state.p1Name} Completado!`;
+  dom.transitionDesc.innerHTML = `Puntuación acumulada: <strong style="color: var(--p1-color);">${p1TotalScore} pts</strong> (Promedio: ${p1AvgTime}s por hito).<br><br>Entrega el dispositivo a <strong>${state.p2Name}</strong> para responder los mismos ${state.roundsCount} desafíos bajo idénticas condiciones.`;
 }
 
 function startPlayer2Turn() {
@@ -1158,14 +1238,26 @@ function startPlayer2Turn() {
   if (dom.btnConfirm) dom.btnConfirm.classList.add('p2-btn');
   
   updateHudPlayerProfile(state.p2Name, state.p2Photo, 'p2');
-  loadRoundPrompt();
+  prepareAndShowQuestionModal();
 }
 
-function loadRoundPrompt() {
+// --- CARTEL CENTRAL DE CONSIGNA PREVIO A CADA PREGUNTA ---
+function prepareAndShowQuestionModal() {
   const currentLandmark = state.activeLandmarks[state.currentRoundIndex];
   if (!currentLandmark) return;
-  
+
+  // Pausar reloj: el tiempo NO corre mientras lee la preparación
+  clearInterval(state.timerInterval);
+  if (dom.timerDisplay) {
+    dom.timerDisplay.classList.remove('warning', 'danger');
+    dom.timerDisplay.textContent = '45.0s';
+  }
+
   state.selectedTriviaOptionIndex = null;
+  state.candidatePoint1 = null;
+  state.candidatePoint2 = null;
+  state.candidateDerivedMidpoint = null;
+
   const isTwoPoints = currentLandmark.mode === 'two_points_midpoint' || currentLandmark.type === 'skeleton_two_points' || currentLandmark.type === 'arm' || currentLandmark.type === 'waist_oms';
   const isCdc = currentLandmark.mode === 'waist_cdc' || currentLandmark.type === 'skeleton_waist_cdc' || currentLandmark.type === 'waist_cdc';
   const isTrivia = currentLandmark.mode === 'trivia_choice' || currentLandmark.type === 'trivia_choice';
@@ -1175,39 +1267,138 @@ function loadRoundPrompt() {
   const activePhoto = isP2 ? state.p2Photo : state.p1Photo;
   updateHudPlayerProfile(activeName, activePhoto, state.currentTurn);
 
-  if (dom.roundIndicator) dom.roundIndicator.textContent = `Hito ${state.currentRoundIndex + 1} de ${state.roundsCount}`;
-  if (dom.missionCategory) dom.missionCategory.textContent = (currentLandmark.category || 'ANTROPOMETRÍA').toUpperCase();
-  if (dom.missionTitle) dom.missionTitle.textContent = currentLandmark.questionTitle || currentLandmark.name;
-  if (dom.missionDesc) dom.missionDesc.textContent = currentLandmark.desc;
-  if (dom.clinicalNote) dom.clinicalNote.innerHTML = `🩺 <strong>Relevancia Clínica:</strong> ${currentLandmark.clinicalUse}`;
-
-  // Actualizar la franja de instrucción clara pedagógica
-  const promptText = currentLandmark.promptInstruction || currentLandmark.desc;
-  if (dom.arenaInstructionBanner) {
-    dom.arenaInstructionBanner.textContent = promptText;
+  if (dom.roundIndicator) dom.roundIndicator.textContent = `HITO ${state.currentRoundIndex + 1} DE ${state.roundsCount}`;
+  if (dom.arenaInstructionTitle) dom.arenaInstructionTitle.textContent = '⏱️ Esperando inicio...';
+  if (dom.arenaInstructionType) {
+    dom.arenaInstructionType.textContent = isTwoPoints ? '📏 2 PUNTOS' : (isCdc ? '📍 1 PUNTO (CDC)' : '🎯 1 SOLO PUNTO');
   }
   
+  // Enmascarar información anatómica en el fondo para evitar trampas mientras el reloj está en pausa
+  if (dom.missionCategory) dom.missionCategory.textContent = 'ANTROPOMETRÍA CLÍNICA';
+  if (dom.missionTitle) dom.missionTitle.textContent = `Desafío ${state.currentRoundIndex + 1} de ${state.roundsCount}`;
+  if (dom.missionDesc) dom.missionDesc.textContent = 'El hito anatómico se revelará en pantalla en cuanto inicie el cronómetro.';
+  if (dom.clinicalNote) dom.clinicalNote.innerHTML = `🩺 <strong>Desafío de Velocidad:</strong> Dispondrás de 45.0 segundos para ubicar la referencia.`;
+
+  // Poblar Cartel Central Modal de Preparación Anti-Trampa
+  if (dom.modalQuestionPrompt) {
+    if (dom.modalQBadge) {
+      dom.modalQBadge.textContent = `🎯 DESAFÍO ${state.currentRoundIndex + 1} DE ${state.roundsCount}`;
+    }
+    if (dom.modalQTitle) {
+      dom.modalQTitle.textContent = '¿Estás listo/a?';
+    }
+    if (dom.modalQInstruction) {
+      if (isTwoPoints) {
+        dom.modalQInstruction.innerHTML = `
+          Al presionar <strong>¡ESTOY LISTO!</strong> comenzará a correr el reloj de <strong>45.0 segundos</strong>.<br><br>
+          Deberás marcar en el esqueleto los <strong>2 puntos anatómicos de referencia óseos</strong> (en cualquier orden) para calcular el punto medio al 50%.
+        `;
+      } else if (isCdc) {
+        dom.modalQInstruction.innerHTML = `
+          Al presionar <strong>¡ESTOY LISTO!</strong> comenzará a correr el reloj de <strong>45.0 segundos</strong>.<br><br>
+          Deberás ubicar el <strong>punto anatómico de referencia</strong> para proyectar la cinta horizontal de cintura según CDC.
+        `;
+      } else {
+        dom.modalQInstruction.innerHTML = `
+          Al presionar <strong>¡ESTOY LISTO!</strong> comenzará a correr el reloj de <strong>45.0 segundos</strong>.<br><br>
+          Lee atentamente el hito anatómico que aparecerá en pantalla y márcalo rápidamente en el esqueleto.
+        `;
+      }
+    }
+    if (dom.modalQPointsType) {
+      if (isTwoPoints) {
+        dom.modalQPointsType.innerHTML = '📏 Tipo: <strong>2 Puntos de Referencia</strong>';
+      } else if (isCdc) {
+        dom.modalQPointsType.innerHTML = '📍 Tipo: <strong>1 Punto de Referencia</strong>';
+      } else if (isTrivia) {
+        dom.modalQPointsType.innerHTML = '🧠 Tipo: <strong>Opción Teórica</strong>';
+      } else {
+        dom.modalQPointsType.innerHTML = '🎯 Tipo: <strong>1 Solo Punto</strong>';
+      }
+    }
+    if (dom.btnModalStartQuestion) {
+      dom.btnModalStartQuestion.textContent = '¡ESTOY LISTO, EMPEZAR! ⏱️';
+    }
+
+    if (dom.modalRoundResult) dom.modalRoundResult.style.display = 'none';
+    dom.modalQuestionPrompt.style.display = 'flex';
+  }
+}
+
+// Al pulsar "¡ESTOY LISTO!": se oculta el cartel, se revela el hito en pantalla, se activa el esqueleto y arranca el reloj
+function handleStartQuestionFromModal() {
+  if (dom.modalQuestionPrompt) {
+    dom.modalQuestionPrompt.style.display = 'none';
+  }
+
+  const currentLandmark = state.activeLandmarks[state.currentRoundIndex];
+  if (!currentLandmark) return;
+
+  const isTwoPoints = currentLandmark.mode === 'two_points_midpoint' || currentLandmark.type === 'skeleton_two_points' || currentLandmark.type === 'arm' || currentLandmark.type === 'waist_oms';
+  const isCdc = currentLandmark.mode === 'waist_cdc' || currentLandmark.type === 'skeleton_waist_cdc' || currentLandmark.type === 'waist_cdc';
+  const isTrivia = currentLandmark.mode === 'trivia_choice' || currentLandmark.type === 'trivia_choice';
+
+  // Revelar la consigna limpia en el Header Enfocado (sin spoilers de localización ni duplicaciones)
+  const landmarkName = currentLandmark.name || currentLandmark.questionTitle;
+  if (dom.roundIndicator) {
+    dom.roundIndicator.textContent = `HITO ${state.currentRoundIndex + 1} DE ${state.roundsCount}`;
+  }
+  if (dom.arenaInstructionTitle) {
+    dom.arenaInstructionTitle.textContent = landmarkName;
+  }
+  if (dom.arenaInstructionType) {
+    if (isTwoPoints) {
+      dom.arenaInstructionType.textContent = '📏 2 PUNTOS DE REFERENCIA';
+    } else if (isCdc) {
+      dom.arenaInstructionType.textContent = '📍 1 PUNTO (CDC)';
+    } else if (isTrivia) {
+      dom.arenaInstructionType.textContent = '🧠 TEÓRICO';
+    } else {
+      dom.arenaInstructionType.textContent = '🎯 1 SOLO PUNTO';
+    }
+  }
+
+  if (dom.arenaInstructionBanner) {
+    dom.arenaInstructionBanner.textContent = landmarkName;
+  }
+  if (dom.missionTitle) dom.missionTitle.textContent = landmarkName;
+  if (dom.missionDesc) dom.missionDesc.textContent = currentLandmark.desc || 'Ubica el hito en el esqueleto.';
+  if (dom.clinicalNote) dom.clinicalNote.innerHTML = `🩺 <strong>Relevancia Clínica:</strong> ${currentLandmark.clinicalUse || ''}`;
+
   if (isTrivia) {
     if (dom.skeletonWrapper) dom.skeletonWrapper.style.display = 'none';
     if (dom.triviaViewport) dom.triviaViewport.style.display = 'flex';
     if (dom.viewportInstructions) dom.viewportInstructions.textContent = '🧠 Selecciona la opción clínica correcta contra reloj (Límite: 45.0s)';
-    dom.btnConfirm.disabled = true;
-    dom.btnConfirm.textContent = '💡 Selecciona una Opción';
+    if (dom.btnConfirm) {
+      dom.btnConfirm.disabled = true;
+      dom.btnConfirm.textContent = '💡 Selecciona una Opción';
+    }
     renderTriviaCards(currentLandmark);
   } else {
-    if (dom.skeletonWrapper) dom.skeletonWrapper.style.display = 'block';
+    if (dom.skeletonWrapper) dom.skeletonWrapper.style.display = 'flex';
     if (dom.triviaViewport) dom.triviaViewport.style.display = 'none';
     if (dom.viewportInstructions) dom.viewportInstructions.textContent = '💡 Haz clic o toca directamente sobre el hueso correspondiente (Límite: 45.0s)';
-    if (isTwoPoints) {
-      dom.btnConfirm.textContent = '📍 Toca el 1º punto (en cualquier orden)';
-    } else if (isCdc) {
-      dom.btnConfirm.textContent = '📍 Marca la Cresta Ilíaca CDC';
-    } else {
-      dom.btnConfirm.textContent = '📍 Toca el Esqueleto para Marcar';
+    if (dom.btnConfirm) {
+      dom.btnConfirm.disabled = true;
+      if (isTwoPoints) {
+        dom.btnConfirm.textContent = '📍 Toca el 1º punto de referencia (en cualquier orden)';
+      } else if (isCdc) {
+        dom.btnConfirm.textContent = '📍 Marca el punto de referencia CDC';
+      } else {
+        dom.btnConfirm.textContent = '📍 Toca el esqueleto para marcar';
+      }
     }
   }
-  
+
+  // Ahora sí corre el cronómetro de 45 segundos
   startTimer();
+}
+
+window.handleStartQuestionFromModal = handleStartQuestionFromModal;
+window.handleNextRoundOrTurn = handleNextRoundOrTurn;
+
+function loadRoundPrompt() {
+  prepareAndShowQuestionModal();
 }
 
 function renderTriviaCards(landmark) {
@@ -1222,7 +1413,8 @@ function renderTriviaCards(landmark) {
     btn.className = 'trivia-option-btn';
     btn.innerHTML = `<span class="trivia-option-letter">${letters[idx] || (idx + 1)}</span><span>${opt.text}</span>`;
     btn.addEventListener('click', () => {
-      if (dom.btnConfirm.disabled === false && dom.revealBox.style.display === 'block') return;
+      const isResultOpen = (dom.modalRoundResult && dom.modalRoundResult.style.display === 'flex') || (dom.revealBox && dom.revealBox.style.display === 'block');
+      if (dom.btnConfirm.disabled === false && isResultOpen) return;
       sfx.clickPin();
       state.selectedTriviaOptionIndex = idx;
       dom.triviaOptionsGrid.querySelectorAll('.trivia-option-btn').forEach((b, i) => {
@@ -1354,7 +1546,7 @@ function handleTimeOut() {
   dom.btnConfirm.disabled = true;
   dom.btnConfirm.style.display = 'none';
   dom.btnResetClicks.style.display = 'none';
-  dom.btnNext.style.display = 'block';
+  if (dom.btnNext) dom.btnNext.style.display = 'none';
 }
 
 // --- PODIO FINAL Y VEREDICTO ---

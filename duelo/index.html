@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Duelo Antropométrico - GeoGuessr Anatómico | UNSTA</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 <body>
 
@@ -135,39 +135,31 @@
   <!-- VISTA 2: ARENA DE BATALLA (ESQUELETO) -->
   <section id="viewArena" class="view-section" style="display: none;">
     
-    <!-- Top HUD Compacto de la Arena (Diseñado para Cero Scroll en Celular) -->
-    <div class="arena-top-hud">
-      <div class="hud-left-group">
-        <button id="btnBackToTournament" class="btn-back-bracket">
-          ← Cuadro
-        </button>
-        <div class="hud-player-badge">
-          <div id="hudPlayerAvatar" class="hud-avatar-circle">👤</div>
-          <div class="hud-player-info">
-            <span id="turnTag" class="mission-turn-tag tag-p1">Turno: P1</span>
-            <span id="hudPlayerName" class="hud-player-name">Jugador 1</span>
-          </div>
+    <!-- Header Limpio y Enfocado de la Arena (Cero Distracciones - Consigna Clara y Reloj) -->
+    <div class="arena-focused-header">
+      <div class="arena-header-top-row">
+        <div class="arena-consigna-meta">
+          <span id="roundIndicator" class="consigna-round-tag">HITO 1 DE 5</span>
+          <span id="arenaInstructionType" class="consigna-type-tag">🎯 1 SOLO PUNTO</span>
+        </div>
+
+        <div class="arena-clock-card" title="Tiempo Restante para Marcar">
+          <span class="clock-icon">⏱️</span>
+          <span id="timerDisplay" class="clock-digits">45.0s</span>
         </div>
       </div>
 
-      <div class="hud-center-group">
-        <span id="roundIndicator" class="hud-round-pill">Hito 1/5</span>
-        <div class="hud-timer-wrap" title="Límite: 45 segundos por hito">
-          <span class="hud-timer-icon">⏱️</span>
-          <span id="timerDisplay" class="hud-timer-digits">45.0s</span>
-        </div>
-      </div>
-
-      <div class="hud-right-group">
-        <button id="btnOpenRulesModal" class="btn-hud-rules" title="Consultar las reglas del duelo">
-          ⚖️ Reglas
-        </button>
-      </div>
+      <h2 id="arenaInstructionTitle" class="consigna-main-title">Punto Acromial (Acromion)</h2>
     </div>
 
-    <!-- Franja de Indicación Pedagógica Clara e Inmediata -->
-    <div id="arenaInstructionBanner" class="arena-instruction-strip">
-      🎯 Toca el hueso o punto de referencia anatómico correspondiente
+    <!-- Elementos de compatibilidad en segundo plano para el motor JS sin romper referencias -->
+    <div style="display: none;">
+      <button id="btnBackToTournament"></button>
+      <button id="btnOpenRulesModal"></button>
+      <div id="hudPlayerAvatar"></div>
+      <span id="turnTag"></span>
+      <span id="hudPlayerName"></span>
+      <div id="arenaInstructionBanner"></div>
     </div>
 
     <main class="main-container">
@@ -187,28 +179,13 @@
       </div>
 
       <!-- Barra de Acciones Flotante (Confirmar, Reintentar, Revelar, Continuar) -->
+      <!-- Barra de Acciones Flotante (Confirmar Respuesta) -->
       <div class="action-controls-card">
         <button id="btnConfirm" class="btn-action btn-confirm" disabled>
           📍 Toca el Esqueleto para Marcar
         </button>
         <button id="btnResetClicks" class="btn-action btn-reset-clicks" style="display: none;">
-          ↺ Volver a Marcar Puntos
-        </button>
-        
-        <!-- Caja de Revelación tras Confirmar -->
-        <div id="revealBox" class="reveal-box" style="display: none;">
-          <div class="reveal-score-row">
-            <span id="revealScore" class="reveal-points">+940 pts</span>
-            <span id="revealDist" class="reveal-dist">Error: 8.4 px (2.1s)</span>
-          </div>
-          <div id="revealFeedback" class="reveal-feedback">
-            🎯 ¡Excelente puntería! Has marcado con gran precisión.
-          </div>
-        </div>
-        
-        <!-- Botón Siguiente Hito / Turno -->
-        <button id="btnNext" class="btn-action btn-next" style="display: none;">
-          Continuar al Siguiente Hito →
+          ↺ Volver a Marcar
         </button>
       </div>
 
@@ -4985,12 +4962,12 @@
       <!-- Desglose por Hito -->
       <div id="podiumDetails" style="background: rgba(0,0,0,0.3); border-radius: 10px; padding: 12px; margin-bottom: 20px;"></div>
       
-      <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-        <button id="btnRematch" class="btn-action btn-confirm" style="max-width: 220px;">
-          ⚔️ Jugar Otra Partida
-        </button>
-        <button id="btnReturnToTournament" class="btn-action" style="max-width: 260px; background: rgba(56, 189, 248, 0.2); border: 1px solid #38bdf8; color: #38bdf8;" onclick="window.tournamentUI && window.tournamentUI.switchView('tournament')">
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button id="btnReturnToTournament" class="btn-action btn-confirm" style="max-width: 280px; background: linear-gradient(135deg, #0284c7, #0369a1); font-weight: 800; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);" onclick="window.tournamentUI && window.tournamentUI.switchView('tournament')">
           🏆 Volver al Cuadro del Torneo
+        </button>
+        <button id="btnRematch" class="btn-action" style="max-width: 200px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #cbd5e1;">
+          🔄 Reintentar Duelo
         </button>
       </div>
     </div>
@@ -5034,6 +5011,55 @@
     </div>
   </div>
 
+  <!-- Modal 1: Cartel Central de Preparación Anti-Trampa (Animación Pop-In) -->
+  <div id="modalQuestionPrompt" class="modal-overlay" style="display: none;">
+    <div class="modal-content modal-question-card animate-pop-in">
+      <div class="modal-q-badge" id="modalQBadge">🎯 DESAFÍO 1 DE 5</div>
+      <h2 class="modal-q-title" id="modalQTitle">¿Estás listo/a?</h2>
+      
+      <div class="modal-q-body">
+        <div class="modal-q-instruction-box">
+          <span class="modal-q-instruction-icon">⏱️</span>
+          <div class="modal-q-instruction-text" id="modalQInstruction">
+            Al presionar <strong>¡ESTOY LISTO!</strong> comenzará a correr el reloj de <strong>45.0 segundos</strong>.<br><br>
+            Lee atentamente el hito que aparecerá en pantalla y márcalo rápidamente en el esqueleto.
+          </div>
+        </div>
+        
+        <div class="modal-q-meta-row" id="modalQMetaRow">
+          <span class="modal-q-meta-item">⏱️ Tiempo: <strong>45.0s</strong></span>
+          <span class="modal-q-meta-item" id="modalQPointsType">🎯 Tipo: <strong>1 Solo Punto</strong></span>
+        </div>
+      </div>
+      
+      <button id="btnModalStartQuestion" class="btn-modal-primary">
+        ¡ESTOY LISTO, EMPEZAR! ⏱️
+      </button>
+      <button id="btnModalCancelToCuadro" type="button" onclick="window.tournamentUI && window.tournamentUI.switchView('tournament')" style="margin-top: 12px; background: transparent; border: none; color: #94a3b8; font-size: 13px; cursor: pointer; text-decoration: underline; width: 100%; text-align: center;">
+        ← Salir y Volver al Cuadro del Torneo
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal 2: Cartel Central de Resultado por Pregunta (Animación Pop-In) -->
+  <div id="modalRoundResult" class="modal-overlay" style="display: none;">
+    <div class="modal-content modal-result-card animate-pop-in">
+      <div class="modal-result-icon" id="modalResultIcon">🎯</div>
+      <div class="modal-result-score" id="modalResultScore">+1000 pts</div>
+      <div class="modal-result-metrics" id="modalResultMetrics">Error: 3.7 px • Tiempo: 10.65s</div>
+      
+      <div class="modal-result-feedback" id="modalResultFeedback">
+        ¡Precisión Quirúrgica! Has marcado con exactitud de cátedra.
+      </div>
+      
+      <div class="modal-result-details" id="modalResultDetails"></div>
+      
+      <button id="btnModalNextRound" class="btn-modal-primary">
+        Siguiente Pregunta →
+      </button>
+    </div>
+  </div>
+
   <!-- Firebase SDK Compat para lectura segura de fotos y alumnos reales -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -5060,9 +5086,9 @@
     }
   </script>
 
-  <!-- Scripts del Torneo y Juego -->
-  <script src="torneo.js"></script>
-  <script src="app.js"></script>
-  <script src="torneo_ui.js"></script>
+  <!-- Scripts del Torneo y Juego (con versión anti-caché) -->
+  <script src="torneo.js?v=2.3"></script>
+  <script src="app.js?v=2.3"></script>
+  <script src="torneo_ui.js?v=2.3"></script>
 </body>
 </html>

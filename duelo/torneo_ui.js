@@ -128,14 +128,29 @@ class TournamentUI {
 
   switchView(viewName) {
     if (viewName === 'tournament') {
+      document.body.classList.remove('in-arena');
       this.dom.viewTournament.style.display = 'block';
       this.dom.viewArena.style.display = 'none';
+      this.dom.viewArena.classList.remove('active');
       this.dom.btnTabTournament.classList.add('active');
       this.dom.btnTabArena.classList.remove('active');
+      
+      // Ocultar terminantemente cualquier modal abierto en pantalla
+      document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.style.display = 'none';
+      });
+      
+      // Detener cualquier temporizador activo
+      if (window.state && window.state.timerInterval) {
+        clearInterval(window.state.timerInterval);
+        window.state.timerInterval = null;
+      }
       this.render();
     } else {
+      document.body.classList.add('in-arena');
       this.dom.viewTournament.style.display = 'none';
       this.dom.viewArena.style.display = 'flex';
+      this.dom.viewArena.classList.add('active');
       this.dom.btnTabTournament.classList.remove('active');
       this.dom.btnTabArena.classList.add('active');
     }
@@ -230,7 +245,7 @@ class TournamentUI {
             <div class="player-info-cell">
               ${p1Winner ? '<span class="crown-badge">👑</span>' : ''}
               ${renderAvatar(m.player1, false)}
-              <span class="player-name-text">${m.player1.firstName || m.player1.name}</span>
+              <span class="player-name-text">${m.player1.displayName || m.player1.name || m.player1.firstName}</span>
               <span class="group-badge-pill">G${m.player1.groupNum}</span>
             </div>
             <span class="player-score-cell">${p1ScoreText}</span>
@@ -239,7 +254,7 @@ class TournamentUI {
             <div class="player-info-cell">
               ${p2Winner ? '<span class="crown-badge">👑</span>' : ''}
               ${renderAvatar(m.player2, true)}
-              <span class="player-name-text">${m.player2.firstName || m.player2.name}</span>
+              <span class="player-name-text">${m.player2.displayName || m.player2.name || m.player2.firstName}</span>
               ${m.player2.groupNum ? `<span class="group-badge-pill">G${m.player2.groupNum}</span>` : ''}
             </div>
             <span class="player-score-cell">${p2ScoreText}</span>
@@ -314,8 +329,10 @@ class TournamentUI {
 
     // Configurar jugadores en el estado general del juego
     if (window.state) {
-      window.state.p1Name = `${match.player1.firstName || match.player1.name} (G${match.player1.groupNum})`;
-      window.state.p2Name = `${match.player2.firstName || match.player2.name} (G${match.player2.groupNum || '?'})`;
+      const p1Display = match.player1.displayName || match.player1.name || match.player1.firstName;
+      const p2Display = match.player2.displayName || match.player2.name || match.player2.firstName;
+      window.state.p1Name = `${p1Display} (G${match.player1.groupNum})`;
+      window.state.p2Name = `${p2Display} (G${match.player2.groupNum || '?'})`;
       window.state.p1Photo = match.player1.photo || null;
       window.state.p2Photo = match.player2.photo || null;
       window.state.mode = 'duel';
