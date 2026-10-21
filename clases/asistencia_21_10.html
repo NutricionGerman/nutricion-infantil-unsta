@@ -1592,6 +1592,15 @@
       clearInterval(timerInterval);
       formattedTotalTime = surveyTimerLabel.textContent;
 
+      // Calcular el puntaje real estricto único de cada pregunta (máximo 15/15)
+      let strictScore = 0;
+      for (let i = 1; i <= SURVEY_QUESTIONS.length; i++) {
+        if (userAnswers[i] && (userAnswers[i].puntos === 1 || userAnswers[i].es_correcta === "SI")) {
+          strictScore++;
+        }
+      }
+      totalScore = strictScore;
+
       loadingOverlay.classList.add('active');
 
       // Calcular promedio de desvío anatómico en píxeles (criterio de desempate oficial)
