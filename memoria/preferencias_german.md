@@ -151,6 +151,11 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * **Integración en Portal Principal (`index.html`)**: Acceso directo y visible desde la barra superior de navegación, el menú móvil lateral, la tarjeta destacada en el Dashboard de Inicio y el catálogo de Clases (Clase 04).
       * **Muro de Validación Modal**: Al pulsar "Asistencia de Hoy", se despliega un modal solicitando la clave de 4 dígitos (`2110`). Al ingresar correctamente, desbloquea y redirige a `clases/asistencia_21_10.html?pass=2110`.
       * **Protección de Enlace Directo**: Si un alumno intenta acceder por URL directa sin pasar por el portal, la pantalla inicial del cuestionario le solicita obligatoriamente ingresar la clave `2110` para habilitar el botón "Comenzar Cuestionario".
+    - **Sincronización Final de Asistencia y Premiación en Firestore (21/10)**:
+      * **38 alumnos oficiales procesados** y vinculados con la sesión `sess_1792605600000` (`Clase 21/10 - Evaluación Práctica`) en `app_state/main`.
+      * **Escala Aplicada con Asistencia Incluida**: 1º Puesto: Mariana Roldán (+10 XP), 2º Puesto: Thiara Bazan (+9 XP), 3º Puesto: Florencia Mustafa (+8 XP), Grupo de Excelencia 15/15 (+6 XP), Santiago Vázquez (+4 XP por penalización de 2 infracciones), y resto de alumnos (+2 XP asistencia base).
+      * **19 alumnos ascendieron de Rango** en el portal oficial tras la impactación.
+      * Archivo físico oficial generado en `catedra/asistencias/asistencia 21-10.txt`.
 
 
 
