@@ -120,6 +120,5 @@
     </text>
   </g>
 
-  <!-- MARCO CLÍNICO PERIMETRAL -->
-  <rect x="25" y="25" width="1150" height="350" rx="14" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.3" stroke-dasharray="12,12"/>
+  
 </svg>

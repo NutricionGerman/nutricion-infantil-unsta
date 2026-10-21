@@ -126,6 +126,5 @@
     </text>
   </g>
 
-  <!-- MARCO DE RESPLANDOR CÁLIDO -->
-  <rect x="25" y="25" width="1150" height="350" rx="14" fill="none" stroke="#ea580c" stroke-width="1.8" stroke-opacity="0.45" stroke-dasharray="16,8"/>
+  
 </svg>

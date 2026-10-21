@@ -104,6 +104,5 @@
     </text>
   </g>
 
-  <!-- MARCO PERIMETRAL VITAL -->
-  <rect x="25" y="25" width="1150" height="350" rx="16" fill="none" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.35" stroke-dasharray="10,12"/>
+  
 </svg>

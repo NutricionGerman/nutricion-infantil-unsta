@@ -1,150 +1,160 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="100%" height="100%">
   <defs>
-    <!-- Fondo Abismal Mítico -->
-    <radialGradient id="abyssBg" cx="50%" cy="50%" r="85%">
-      <stop offset="0%" stop-color="#1d0a28" stop-opacity="0.98"/>
-      <stop offset="45%" stop-color="#0e0417" stop-opacity="0.99"/>
+    <!-- Fondo Abismal Mítico Ultra Profundo -->
+    <radialGradient id="abyssBg" cx="50%" cy="50%" r="90%">
+      <stop offset="0%" stop-color="#220b30" stop-opacity="0.98"/>
+      <stop offset="40%" stop-color="#12041c" stop-opacity="0.99"/>
       <stop offset="100%" stop-color="#040108" stop-opacity="1"/>
     </radialGradient>
 
     <!-- Gradiente Cromático Radiante Prisma (Leyenda 40 XP) -->
     <linearGradient id="radiantPrism" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ff4757">
-        <animate attributeName="stop-color" values="#ff4757; #ffa502; #2ed573; #1e90ff; #9b59b6; #ff4757" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="stop-color" values="#ff4757; #ffa502; #2ed573; #1e90ff; #9b59b6; #ff4757" dur="5s" repeatCount="indefinite"/>
       </stop>
       <stop offset="25%" stop-color="#ffa502">
-        <animate attributeName="stop-color" values="#ffa502; #2ed573; #1e90ff; #9b59b6; #ff4757; #ffa502" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="stop-color" values="#ffa502; #2ed573; #1e90ff; #9b59b6; #ff4757; #ffa502" dur="5s" repeatCount="indefinite"/>
       </stop>
       <stop offset="50%" stop-color="#2ed573">
-        <animate attributeName="stop-color" values="#2ed573; #1e90ff; #9b59b6; #ff4757; #ffa502; #2ed573" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="stop-color" values="#2ed573; #1e90ff; #9b59b6; #ff4757; #ffa502; #2ed573" dur="5s" repeatCount="indefinite"/>
       </stop>
       <stop offset="75%" stop-color="#1e90ff">
-        <animate attributeName="stop-color" values="#1e90ff; #9b59b6; #ff4757; #ffa502; #2ed573; #1e90ff" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="stop-color" values="#1e90ff; #9b59b6; #ff4757; #ffa502; #2ed573; #1e90ff" dur="5s" repeatCount="indefinite"/>
       </stop>
       <stop offset="100%" stop-color="#9b59b6">
-        <animate attributeName="stop-color" values="#9b59b6; #ff4757; #ffa502; #2ed573; #1e90ff; #9b59b6" dur="6s" repeatCount="indefinite"/>
+        <animate attributeName="stop-color" values="#9b59b6; #ff4757; #ffa502; #2ed573; #1e90ff; #9b59b6" dur="5s" repeatCount="indefinite"/>
       </stop>
     </linearGradient>
 
-    <linearGradient id="flameBeam" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ff4757" stop-opacity="0.35"/>
-      <stop offset="50%" stop-color="#ffa502" stop-opacity="0.2"/>
-      <stop offset="100%" stop-color="#ff4757" stop-opacity="0"/>
+    <!-- Rayos de Energía Lateral (Izquierda y Derecha) -->
+    <linearGradient id="streamLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ff4757" stop-opacity="0"/>
+      <stop offset="60%" stop-color="#ffa502" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#2ed573" stop-opacity="0.8"/>
     </linearGradient>
 
+    <linearGradient id="streamRight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2ed573" stop-opacity="0.8"/>
+      <stop offset="40%" stop-color="#1e90ff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#9b59b6" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Resplandor Radiante -->
     <filter id="radiantGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feGaussianBlur stdDeviation="8" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
 
     <filter id="intenseFlash" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feGaussianBlur stdDeviation="14" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
   </defs>
 
-  <!-- FONDO DEL VACÍO MÍTICO -->
+  <!-- 1. FONDO SIN BORDES RÍGIDOS (FULL-BLEED SEAMLESS) -->
   <rect width="1200" height="400" fill="url(#abyssBg)"/>
 
-  <!-- HAZ DE ENERGÍA RADIANTE VERTICAL -->
-  <g transform="translate(600, 200)" opacity="0.4">
-    <polygon points="0,-200 -250,200 250,200" fill="url(#flameBeam)">
-      <animate attributeName="opacity" values="0.3;0.6;0.3" dur="2.5s" repeatCount="indefinite"/>
-    </polygon>
+  <!-- 2. AURORAS LATERALES Y RISTRAS DE ENERGÍA HORIZONTAL (EFECTOS EN LOS COSTADOS) -->
+  <!-- Flanco Izquierdo -->
+  <g opacity="0.75" filter="url(#radiantGlow)">
+    <path d="M 0,185 Q 160,160 320,195 T 480,200" fill="none" stroke="url(#streamLeft)" stroke-width="2.5">
+      <animate attributeName="stroke-dasharray" values="0,600; 600,0; 0,600" dur="4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 0,215 Q 180,240 340,205 T 480,200" fill="none" stroke="url(#streamLeft)" stroke-width="2">
+      <animate attributeName="stroke-dasharray" values="600,0; 0,600; 600,0" dur="4.5s" repeatCount="indefinite"/>
+    </path>
+    <!-- Chevrons / Flechas de Poder Lateral Izquierdas -->
+    <path d="M 160,190 L 175,200 L 160,210" fill="none" stroke="#ffa502" stroke-width="2" stroke-linecap="round" opacity="0.8">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 190,190 L 205,200 L 190,210" fill="none" stroke="#2ed573" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2.2s" repeatCount="indefinite"/>
+    </path>
   </g>
 
-  <!-- ONDAS DE CHOQUE EXPANSIVAS PRISMÁTICAS (BURST CROMÁTICO) -->
-  <circle cx="600" cy="180" r="120" fill="none" stroke="url(#radiantPrism)" stroke-width="2" opacity="0.6" filter="url(#radiantGlow)">
-    <animate attributeName="r" values="90;240;90" dur="4s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.8;0.05;0.8" dur="4s" repeatCount="indefinite"/>
-    <animate attributeName="stroke-width" values="3;0.5;3" dur="4s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="600" cy="180" r="160" fill="none" stroke="#ffa502" stroke-width="1.5" opacity="0.4">
-    <animate attributeName="r" values="130;280;130" dur="4.8s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0;0.6" dur="4.8s" repeatCount="indefinite"/>
+  <!-- Flanco Derecho -->
+  <g opacity="0.75" filter="url(#radiantGlow)">
+    <path d="M 720,200 Q 860,165 1020,205 T 1200,185" fill="none" stroke="url(#streamRight)" stroke-width="2.5">
+      <animate attributeName="stroke-dasharray" values="0,600; 600,0; 0,600" dur="4s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 720,200 Q 880,235 1040,195 T 1200,215" fill="none" stroke="url(#streamRight)" stroke-width="2">
+      <animate attributeName="stroke-dasharray" values="600,0; 0,600; 600,0" dur="4.5s" repeatCount="indefinite"/>
+    </path>
+    <!-- Chevrons / Flechas de Poder Lateral Derechas -->
+    <path d="M 1040,190 L 1025,200 L 1040,210" fill="none" stroke="#1e90ff" stroke-width="2" stroke-linecap="round" opacity="0.8">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 1010,190 L 995,200 L 1010,210" fill="none" stroke="#9b59b6" stroke-width="2" stroke-linecap="round" opacity="0.6">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2.2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- 3. HAZ DE LUZ RADIANTE CENTRAL Y ONDAS DE CHOQUE EXPANSIVAS -->
+  <circle cx="600" cy="200" r="85" fill="none" stroke="url(#radiantPrism)" stroke-width="2" opacity="0.65" filter="url(#radiantGlow)">
+    <animate attributeName="r" values="70;190;70" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;0.05;0.8" dur="3.5s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="2.5;0.5;2.5" dur="3.5s" repeatCount="indefinite"/>
   </circle>
 
-  <!-- ANILLOS RÚNICOS DE LEYENDA (ROTACIÓN OPUESTA) -->
-  <g transform="translate(600, 180)" opacity="0.55">
-    <circle cx="0" cy="0" r="135" fill="none" stroke="url(#radiantPrism)" stroke-width="1.8" stroke-dasharray="14,10,6,10">
-      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="45s" repeatCount="indefinite"/>
+  <!-- ANILLOS RÚNICOS CENTRALES COMPACTOS (ROTACIÓN OPUESTA) -->
+  <g transform="translate(600, 200)" opacity="0.55">
+    <circle cx="0" cy="0" r="95" fill="none" stroke="url(#radiantPrism)" stroke-width="1.5" stroke-dasharray="10,8,4,8">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="30s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="0" cy="0" r="155" fill="none" stroke="#2ed573" stroke-width="1" stroke-dasharray="8,16">
-      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="55s" repeatCount="indefinite"/>
+    <circle cx="0" cy="0" r="115" fill="none" stroke="#2ed573" stroke-width="1" stroke-dasharray="6,12">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="40s" repeatCount="indefinite"/>
     </circle>
   </g>
 
-  <!-- ALAS DE FUEGO CURVO HERALDICAS (INSIGNIA LEYENDA) -->
-  <g transform="translate(600, 175)" filter="url(#radiantGlow)">
-    <!-- Ala de Fuego Izquierda -->
+  <!-- 4. INSIGNIA LEYENDA CENTRAL: PERFECTAMENTE CENTRADA (Y=200) Y ESCALADA AL 68% -->
+  <!-- Esto garantiza que en la fila de ranking (altura 60px) se vea 100% entera sin cortarse -->
+  <g transform="translate(600, 200) scale(0.68)" filter="url(#radiantGlow)">
+    <!-- Alas de Fuego Curvo Radiante Izquierda -->
     <path d="M 0,40 C -40,30 -90,10 -120,-30 C -105,-10 -70,5 -50,-10 C -75,-35 -85,-70 -60,-85 C -55,-60 -35,-40 -20,-20 C -25,-45 -20,-80 0,-105 C 0,-70 -10,-40 0,-15 Z" 
-          fill="url(#radiantPrism)" opacity="0.9">
-      <animate attributeName="transform" type="scale" values="1;1.06;1" dur="2.4s" repeatCount="indefinite"/>
+          fill="url(#radiantPrism)" opacity="0.95">
+      <animate attributeName="transform" type="scale" values="1;1.05;1" dur="2.2s" repeatCount="indefinite"/>
     </path>
 
-    <!-- Ala de Fuego Derecha (Espejada) -->
+    <!-- Alas de Fuego Curvo Radiante Derecha (Espejada) -->
     <path d="M 0,40 C 40,30 90,10 120,-30 C 105,-10 70,5 50,-10 C 75,-35 85,-70 60,-85 C 55,-60 35,-40 20,-20 C 25,-45 20,-80 0,-105 C 0,-70 10,-40 0,-15 Z" 
-          fill="url(#radiantPrism)" opacity="0.9">
-      <animate attributeName="transform" type="scale" values="1;1.06;1" dur="2.4s" repeatCount="indefinite"/>
+          fill="url(#radiantPrism)" opacity="0.95">
+      <animate attributeName="transform" type="scale" values="1;1.05;1" dur="2.2s" repeatCount="indefinite"/>
     </path>
 
-    <!-- Corona Radiante Central -->
+    <!-- Corona Radiante Superior -->
     <path d="M -30,-45 L 0,-85 L 30,-45 L 18,-30 L 0,-45 L -18,-30 Z" fill="#ffffff" filter="url(#intenseFlash)">
-      <animate attributeName="opacity" values="0.8;1;0.8" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.85;1;0.85" dur="1.5s" repeatCount="indefinite"/>
     </path>
 
-    <!-- Núcleo Radiante de Poder Puro -->
+    <!-- Núcleo de Diamante Radiante -->
     <polygon points="0,-18 14,0 0,18 -14,0" fill="#ffffff" filter="url(#intenseFlash)">
-      <animate attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="8s" repeatCount="indefinite"/>
     </polygon>
     <circle cx="0" cy="0" r="5" fill="#fef08a"/>
   </g>
 
-  <!-- CHISPAS PRISMÁTICAS FLOTANTES (ASCENSO DE LEYENDA) -->
+  <!-- 5. CONSTELACIÓN DE CHISPAS PRISMÁTICAS DISTRIBUIDAS A LO LARGO DE TODO EL ANCHO -->
   <g filter="url(#radiantGlow)">
-    <circle cx="200" cy="350" r="3" fill="#ff4757">
-      <animate attributeName="cy" values="370;40" dur="6s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;1;0" dur="6s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="380" cy="360" r="3.5" fill="#ffa502">
-      <animate attributeName="cy" values="370;30" dur="7s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;1;0" dur="7s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="500" cy="340" r="2.5" fill="#2ed573">
-      <animate attributeName="cy" values="370;50" dur="5.5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;0.9;0" dur="5.5s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="700" cy="350" r="3" fill="#1e90ff">
-      <animate attributeName="cy" values="370;40" dur="6.5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;1;0" dur="6.5s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="850" cy="360" r="3.5" fill="#9b59b6">
-      <animate attributeName="cy" values="370;30" dur="8s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;1;0" dur="8s" repeatCount="indefinite"/>
-    </circle>
-    <circle cx="1020" cy="340" r="2.8" fill="#ff4757">
-      <animate attributeName="cy" values="370;50" dur="6s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0;0.9;0" dur="6s" repeatCount="indefinite"/>
-    </circle>
+    <!-- Flanco Izquierdo -->
+    <circle cx="90" cy="220" r="2.5" fill="#ff4757"><animate attributeName="cy" values="240;160;240" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="210" cy="180" r="3" fill="#ffa502"><animate attributeName="cy" values="160;240;160" dur="4.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite"/></circle>
+    <circle cx="330" cy="210" r="2.5" fill="#2ed573"><animate attributeName="cy" values="230;170;230" dur="3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;1;0.5" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="450" cy="190" r="3.2" fill="#1e90ff"><animate attributeName="cy" values="170;230;170" dur="4.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;1;0.4" dur="4.2s" repeatCount="indefinite"/></circle>
+
+    <!-- Flanco Derecho -->
+    <circle cx="750" cy="190" r="3.2" fill="#2ed573"><animate attributeName="cy" values="170;230;170" dur="4.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;1;0.4" dur="4.2s" repeatCount="indefinite"/></circle>
+    <circle cx="870" cy="210" r="2.5" fill="#1e90ff"><animate attributeName="cy" values="230;170;230" dur="3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;1;0.5" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="990" cy="180" r="3" fill="#9b59b6"><animate attributeName="cy" values="160;240;160" dur="4.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1110" cy="220" r="2.5" fill="#ff4757"><animate attributeName="cy" values="240;160;240" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/></circle>
   </g>
 
-  <!-- TEXTO HERÁLDICO DE LEYENDA -->
-  <g transform="translate(600, 315)">
-    <text x="0" y="0" text-anchor="middle" font-family="'Inter', system-ui, sans-serif" font-size="16" font-weight="900" fill="url(#radiantPrism)" letter-spacing="9" filter="url(#radiantGlow)">
+  <!-- 6. TEXTO HERÁLDICO DISCRETO INFERIOR (UBICADO CERCA DE LA BASE PARA NO COLISIONAR) -->
+  <g transform="translate(600, 345)">
+    <text x="0" y="0" text-anchor="middle" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="900" fill="url(#radiantPrism)" letter-spacing="8" filter="url(#radiantGlow)">
       RANGO LEYENDA · 40 XP
     </text>
-    <text x="0" y="24" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="800" fill="#ffa502" letter-spacing="5">
+    <text x="0" y="20" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="700" fill="#ffa502" letter-spacing="4">
       ★ STATUS RADIANT · ELITE CÁTEDRA DE NUTRICIÓN UNSTA ★
     </text>
-  </g>
-
-  <!-- MARCO DE RESPLANDOR PRISMÁTICO CON VÉRTICES DE DIAMANTE -->
-  <g stroke="url(#radiantPrism)" fill="none" stroke-width="2" opacity="0.75">
-    <rect x="25" y="25" width="1150" height="350" rx="14" stroke-dasharray="24,12"/>
-    <!-- Vértices -->
-    <polygon points="25,25 40,25 25,40" fill="url(#radiantPrism)"/>
-    <polygon points="1175,25 1160,25 1175,40" fill="url(#radiantPrism)"/>
-    <polygon points="25,375 40,375 25,360" fill="url(#radiantPrism)"/>
-    <polygon points="1175,375 1160,375 1175,360" fill="url(#radiantPrism)"/>
   </g>
 </svg>

@@ -129,6 +129,5 @@
     </text>
   </g>
 
-  <!-- MARCO FINO PERIMETRAL -->
-  <rect x="25" y="25" width="1150" height="350" rx="14" fill="none" stroke="#818cf8" stroke-width="1.2" stroke-opacity="0.35" stroke-dasharray="14,14"/>
+  
 </svg>

@@ -101,8 +101,5 @@
     </text>
   </g>
 
-  <!-- MARCO SCI-FI CON LÍNEAS DE CORTE -->
-  <g stroke="#00f2fe" fill="none" stroke-width="1.5" opacity="0.5">
-    <path d="M 30,60 L 30,30 L 60,30 M 1140,30 L 1170,30 L 1170,60 M 30,340 L 30,370 L 60,370 M 1140,370 L 1170,370 L 1170,340"/>
-  </g>
+  
 </svg>
