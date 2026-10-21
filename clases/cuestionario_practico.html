@@ -650,6 +650,15 @@
           <a class="link-toggle" id="btnToggleSearch"><i class="fa-solid fa-list"></i> Volver al listado oficial de la cátedra</a>
         </div>
 
+                <!-- CONTRASEÑA DE ACCESO REQUERIDA (2110) -->
+        <div class="input-box" id="passwordAccessGroup" style="margin-top: 14px;">
+          <label for="accessPasswordInput"><i class="fa-solid fa-key" style="color: var(--teal-light);"></i> Contraseña de Acceso:</label>
+          <input type="password" id="accessPasswordInput" placeholder="Ingresa la clave de clase (4 dígitos)..." autocomplete="off">
+          <div id="passwordErrorMsg" style="display: none; color: #fca5a5; font-size: 0.8rem; margin-top: 6px; text-align: left; padding: 6px 10px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Contraseña incorrecta. Solicita la clave al docente Germán.
+          </div>
+        </div>
+
         <button class="btn" id="btnStartSurvey">
           <i class="fa-solid fa-play"></i> Comenzar Cuestionario
         </button>
@@ -1177,10 +1186,35 @@
       selectorSearchGroup.style.display = 'block';
     });
 
+        // Auto-detectar contraseña desde URL o sesión
+    const accessPasswordInput = document.getElementById('accessPasswordInput');
+    const passwordErrorMsg = document.getElementById('passwordErrorMsg');
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const passParam = urlParams.get('pass') || sessionStorage.getItem('asistencia_21_10_pass');
+      if (passParam === '2110' && accessPasswordInput) {
+        accessPasswordInput.value = '2110';
+      }
+    } catch (e) {}
+
     // =========================================================================
     // 5. INICIO DE LA ENCUESTA
     // =========================================================================
-    btnStartSurvey.addEventListener('click', () => {
+        btnStartSurvey.addEventListener('click', () => {
+      // Validar Contraseña Oficial (2110)
+      const typedPass = accessPasswordInput ? accessPasswordInput.value.trim() : '';
+      if (typedPass !== '2110') {
+        if (passwordErrorMsg) passwordErrorMsg.style.display = 'block';
+        if (accessPasswordInput) {
+          accessPasswordInput.style.borderColor = '#ef4444';
+          accessPasswordInput.focus();
+        }
+        return;
+      } else {
+        if (passwordErrorMsg) passwordErrorMsg.style.display = 'none';
+        sessionStorage.setItem('asistencia_21_10_pass', '2110');
+      }
+
       if (selectorManualGroup.style.display !== 'none') {
         studentUp = manualUpInput.value.trim();
         studentName = manualNameInput.value.trim();
