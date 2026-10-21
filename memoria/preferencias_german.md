@@ -147,6 +147,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Protocolo de Asistencia & Anti-Trampas (Fecha 21/10)**:
       * Detección de pérdida de foco (`blur`) y cambio de ventana/pestaña (`visibilitychange`).
       * Envío automático sincrónico a Google Apps Script con `clase: "21_10"`, UP, Nombre, tiempo, puntaje con desvío en px, y columnas preparadas para ordenar sin empates.
+    - **Acceso Protegido por Contraseña (`2110`)**:
+      * **Integración en Portal Principal (`index.html`)**: Acceso directo y visible desde la barra superior de navegación, el menú móvil lateral, la tarjeta destacada en el Dashboard de Inicio y el catálogo de Clases (Clase 04).
+      * **Muro de Validación Modal**: Al pulsar "Asistencia de Hoy", se despliega un modal solicitando la clave de 4 dígitos (`2110`). Al ingresar correctamente, desbloquea y redirige a `clases/asistencia_21_10.html?pass=2110`.
+      * **Protección de Enlace Directo**: Si un alumno intenta acceder por URL directa sin pasar por el portal, la pantalla inicial del cuestionario le solicita obligatoriamente ingresar la clave `2110` para habilitar el botón "Comenzar Cuestionario".
 
 
 
