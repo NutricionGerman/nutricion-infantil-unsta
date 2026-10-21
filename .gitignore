@@ -48,3 +48,7 @@ scratch/
 # Carpetas aisladas / no subir
 PROYECTO_AISLADO/
 **/PROYECTO_AISLADO/
+
+# Borradores y ensayos personales
+discurso_ensayo.html
+Trabajos integradores finales/
