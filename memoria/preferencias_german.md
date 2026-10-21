@@ -166,7 +166,7 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * *⚡ VFX & Magia*: Fuego Carmesí, Ki Super Saiyan, Stealth Speed, Partículas, Neón, Éter Oscuro, etc.
       * *🕹️ Pixel & Lo-Fi*: Lluvia en ventana, Setup Gamer Lo-Fi, Estudio calma, Michis pescando, Sunset naranja, Pac-Man, etc.
       * *🎬 Videos MP4*: Soporte de bucles de video como banner de perfil y fila de ranking.
-      * *🎨 Creados con Código (SVG Vectorial)*: Colección de 8 banners generativos ultra livianos (<8.5 KB, 60 FPS): `campeon_oro_unsta.svg`, `precision_quirurgica.svg`, `nutricion_celular.svg`, `arcade_synthwave_unsta.svg`, `constelacion_pediatrica.svg`, `fuego_racha_academica.svg`, `curvas_oms_crecimiento.svg` y `rango_leyenda.svg` (Radiant 40 XP).
+      * *🎨 Creados con Código (SVG Vectorial)*: Colección de 9 banners generativos ultra livianos (<12 KB, 60 FPS, full-bleed sin bordes rígidos y con laterales animados): `campeon_oro_unsta.svg`, `precision_quirurgica.svg`, `nutricion_celular.svg`, `arcade_synthwave_unsta.svg`, `constelacion_pediatrica.svg`, `fuego_racha_academica.svg`, `curvas_oms_crecimiento.svg`, `rango_leyenda.svg` (Radiant 40 XP) y `asistencia_perfecta.svg` (100% Presentismo).
     - **Búsqueda Dinámica & URL Externa**: Barra de filtrado en tiempo real por palabras clave ("fuego", "oro", "catedra", etc.) y campo para probar cualquier URL personalizada antes de guardar.
     - **Actualización Reactiva sin Recarga Forzada**: Al pulsar "Guardar y Asignar", actualiza Firestore (`students/<up>.customBackground`), actualiza el perfil del alumno y la tabla de ranking en pantalla en el momento, y emite un toast de confirmación. Permite también quitar el fondo con un solo clic.
 
