@@ -204,6 +204,16 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * El banner de fondo (`customBackground`) y la insignia de honor (`honorDistinction`) son 100% independientes y modulares.
       * Un estudiante (como el 1º puesto con asistencia perfecta) puede equipar simultáneamente el **Banner de Campeón Absoluto** de fondo Y activar la **Insignia de Asistencia Perfecta 100%** superpuesta (o tener el banner de asistencia y desactivar la insignia, o usar un banner personal con la insignia).
 
+25. **Control de Acceso Estricto en el Inventario y Banners (Modo Vitrina Solo Lectura)**:
+    - **Regla Inquebrantable de Autorización**: Solo el **alumno propietario de la cuenta** (`isOwnProfile`: UP verificado contra la sesión activa) o el **docente a cargo** (`isTeacher`: autenticado vía Firebase Auth o sesión docente activa) tienen privilegios para modificar fondos, equipar banners o activar/desactivar distinciones de honor en Firestore.
+    - **Comportamiento para Terceros y Visitantes (`!canEdit`)**:
+      * La barra de recompensas en el perfil se titula **«🏆 Vitrina de Premios y Logros»** con botón **«Ver Vitrina»**.
+      * Al abrirla, se presenta en **Modo Vitrina de Exhibición (Solo Lectura)**:
+        - Se omiten por completo los botones interactivos de modificación (`[Usar de Fondo]`, `[Activar Insignia]`, `[Quitar]`).
+        - En su lugar se muestran únicamente distintivos informativos pasivos (`✓ Fondo en Uso`, `✓ Distintivo Activo`, `✓ Desbloqueado`, `🔒 Bloqueado`).
+        - Se bloquean los listeners de guardado en Firestore con alertas de seguridad preventiva si un usuario intenta forzar la acción desde consola.
+      * Las funciones administrativas (`adminModBackground` y `adminModHonorDistinction`) quedan restringidas exclusivamente al docente logueado.
+
 
 
 

@@ -11481,9 +11481,10 @@
                 const portalContainer = document.getElementById('student-portal-result-container');
                 
                 // Verificar si el perfil que se visualiza es el del usuario logueado
-                const isOwnProfile = (window.currentStudentUP && String(window.currentStudentUP).trim() === String(student.up).trim());
-                // El docente siempre tiene permiso de edición si está logueado en su sesión (opcional, pero ayuda)
-                const isTeacher = !!window.currentTeacherData; 
+                const loggedInUP = window.currentStudentUP || window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up') || localStorage.getItem('userUP');
+                const isOwnProfile = !!(loggedInUP && String(loggedInUP).trim() === String(student.up).trim());
+                // El docente siempre tiene permiso de edición si está logueado en su sesión
+                const isTeacher = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData; 
                 const canEdit = isOwnProfile || isTeacher;
 
                 const relevantSessions = fullData.sessions.filter(s => !s.group || s.group === "" || s.group === student.group);
@@ -11968,6 +11969,12 @@
                         const unlockedCount = studentRewards.filter(r => r.isUnlocked).length;
                         const claimedList = student.claimedRewardPopups || [];
                         const hasUnclaimed = studentRewards.some(r => r.isUnlocked && !claimedList.includes(r.id));
+                        
+                        const barTitle = canEdit ? 'Mis Premios e Inventario de Banners' : `Vitrina de Premios y Logros`;
+                        const barIcon = canEdit ? '🎒' : '🏆';
+                        const barActionText = canEdit ? 'Abrir Inventario' : 'Ver Vitrina';
+                        const actionIcon = canEdit ? 'fa-chevron-right' : 'fa-eye';
+
                         return `
                         <div class="app-reward-inventory-bar" onclick="openStudentRewardInventory('${student.up}')" style="
                             background: linear-gradient(135deg, rgba(250,204,21,0.12) 0%, rgba(16,185,129,0.08) 100%);
@@ -11983,18 +11990,18 @@
                             box-shadow: 0 4px 14px rgba(0,0,0,0.4);
                         " onmouseover="this.style.transform='translateY(-2px)'; this.style.borderColor='rgba(250,204,21,0.6)';" onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='rgba(250,204,21,0.35)';">
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <div style="font-size: 1.35rem;">🎒</div>
+                                <div style="font-size: 1.35rem;">${barIcon}</div>
                                 <div>
                                     <div style="font-weight: 800; font-size: 0.88rem; color: #fef08a; display: flex; align-items: center; gap: 8px;">
-                                        Mis Premios e Inventario de Banners
-                                        ${hasUnclaimed ? `<span style="background: #10b981; color: #fff; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 800;">¡Nuevo!</span>` : ''}
+                                        ${barTitle}
+                                        ${(canEdit && hasUnclaimed) ? `<span style="background: #10b981; color: #fff; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; font-weight: 800;">¡Nuevo!</span>` : ''}
                                     </div>
                                     <div style="font-size: 0.74rem; color: #cbd5e1;">${unlockedCount} de 3 premios desbloqueados por mérito</div>
                                 </div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 6px; color: #facc15; font-size: 0.8rem; font-weight: 700;">
-                                <span>Abrir Inventario</span>
-                                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+                                <span>${barActionText}</span>
+                                <i class="fas ${actionIcon}" style="font-size: 0.75rem;"></i>
                             </div>
                         </div>
                         `;
@@ -15508,6 +15515,11 @@
             };
 
             window.adminModBackground = async (up) => {
+                const isTeacher = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData;
+                if (!isTeacher) {
+                    Swal.fire('Acceso Restringido', 'Solo el docente autenticado puede gestionar los fondos desde el panel de control.', 'warning');
+                    return;
+                }
                 const studentsList = (window.fullData && window.fullData.students) ? window.fullData.students : [];
                 const s = studentsList.find(st => String(st.up).trim() === String(up).trim());
                 if (!s) {
@@ -16650,8 +16662,8 @@
                 // GUARDIA ESTRICTA: El pop-up de felicitación SÓLO debe mostrarse al propio alumno cuando inicia sesión con su UP.
                 // NUNCA debe mostrarse al docente mientras audita o administra la plataforma.
                 const isDocente = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData;
-                const loggedInUP = window.loggedInStudentUP || window.currentStudentUP || sessionStorage.getItem('aw_authenticated_up');
-                const isSelf = loggedInUP && String(loggedInUP).trim() === String(student.up).trim();
+                const loggedInUP = window.currentStudentUP || window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up') || localStorage.getItem('userUP');
+                const isSelf = !!(loggedInUP && String(loggedInUP).trim() === String(student.up).trim());
                 if (isDocente || !isSelf) return;
 
                 const claimed = student.claimedRewardPopups || [];
@@ -16852,17 +16864,85 @@
                 const s = studentsList.find(st => String(st.up).trim() === String(up).trim());
                 if (!s) return;
 
+                // Verificación Estricta de Permisos: Solo el propio alumno logueado o el docente pueden modificar
+                const isTeacher = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData;
+                const loggedInUP = window.currentStudentUP || window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up') || localStorage.getItem('userUP');
+                const isOwnProfile = !!(loggedInUP && String(loggedInUP).trim() === String(s.up).trim());
+                const canEdit = isTeacher || isOwnProfile;
+
                 const rewards = window.getStudentRewardDefinitions(s);
                 const studentDisplayName = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || s.name || 'Alumno sin nombre'}`.trim();
 
                 const attendanceReward = rewards.find(r => r.id === 'asistencia_perfecta');
                 const hasHonorActive = !!(s.honorDistinction && s.honorDistinction.type === 'asistencia_perfecta');
 
+                const bannerExplHTML = canEdit ? `
+                    <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 12px; line-height: 1.4;">
+                        <i class="fas fa-info-circle" style="color: #38bdf8;"></i> <strong>Combinación Libre:</strong> Puedes equipar un <strong>Banner de Fondo</strong> y activar simultáneamente la <strong>Insignia de Asistencia Perfecta</strong> (o usarlos por separado).
+                    </div>
+                ` : `
+                    <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 14px; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25); border-radius: 10px; padding: 8px 12px; line-height: 1.4;">
+                        <i class="fas fa-shield-alt" style="color: #38bdf8;"></i> <strong>Vitrina de Exhibición (Solo Lectura):</strong> Estás observando los premios y distinciones de este estudiante en modo lectura. Solo el alumno propietario o el docente a cargo pueden cambiar la personalización de este perfil.
+                    </div>
+                `;
+
+                // Botón Quitar Fondo en la sección 2: solo si canEdit
+                const removeBgBtnHTML = (canEdit && s.customBackground) ? `
+                    <button id="inventory-btn-remove-background" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; cursor: pointer;">
+                        Quitar Fondo Actual
+                    </button>
+                ` : '';
+
+                // Botón o Estado de la Insignia de Honor
+                let honorActionHTML = '';
+                if (!attendanceReward || !attendanceReward.isUnlocked) {
+                    honorActionHTML = `
+                        <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-lock"></i> Bloqueado
+                        </div>
+                    `;
+                } else if (hasHonorActive) {
+                    if (canEdit) {
+                        honorActionHTML = `
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <span style="background: rgba(16,185,129,0.25); border: 1px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+                                    <i class="fas fa-check"></i> Activo
+                                </span>
+                                <button id="inventory-btn-remove-honor" style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 5px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; cursor: pointer;">
+                                    Quitar
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        honorActionHTML = `
+                            <span style="background: rgba(16,185,129,0.25); border: 1.5px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+                                <i class="fas fa-check-circle"></i> Distintivo Activo
+                            </span>
+                        `;
+                    }
+                } else {
+                    if (canEdit) {
+                        honorActionHTML = `
+                            <button id="inventory-btn-equip-honor" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
+                                <i class="fas fa-medal"></i> Activar Insignia
+                            </button>
+                        `;
+                    } else {
+                        honorActionHTML = `
+                            <span style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.4); color: #38bdf8; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+                                <i class="fas fa-award"></i> Desbloqueado
+                            </span>
+                        `;
+                    }
+                }
+
                 const modalHtml = `
                     <div style="font-family: 'Inter', system-ui, sans-serif; text-align: left;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                             <div>
-                                <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Mochila de Recompensas</div>
+                                <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">
+                                    ${canEdit ? 'Mochila de Recompensas' : 'Vitrina Pública de Recompensas'}
+                                </div>
                                 <div style="font-size: 1.05rem; font-weight: 700; color: #fff;">${studentDisplayName} <span style="font-size: 0.8rem; color: #38bdf8;">(UP: ${s.up})</span></div>
                             </div>
                             <div style="font-size: 0.78rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); color: #facc15;">
@@ -16870,9 +16950,7 @@
                             </div>
                         </div>
 
-                        <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 12px; line-height: 1.4;">
-                            <i class="fas fa-info-circle" style="color: #38bdf8;"></i> <strong>Combinación Libre:</strong> Puedes equipar un <strong>Banner de Fondo</strong> y activar simultáneamente la <strong>Insignia de Asistencia Perfecta</strong> (o usarlos por separado).
-                        </div>
+                        ${bannerExplHTML}
 
                         <!-- SECCIÓN 1: DISTINTIVO DE HONOR (MARCO & CINTA HOLOGRÁFICA) -->
                         <div style="font-size: 0.82rem; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
@@ -16896,24 +16974,7 @@
                                 </div>
                             </div>
                             <div>
-                                ${!attendanceReward || !attendanceReward.isUnlocked ? `
-                                    <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                                        <i class="fas fa-lock"></i> Bloqueado
-                                    </div>
-                                ` : hasHonorActive ? `
-                                    <div style="display: flex; gap: 8px; align-items: center;">
-                                        <span style="background: rgba(16,185,129,0.25); border: 1px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
-                                            <i class="fas fa-check"></i> Activo
-                                        </span>
-                                        <button id="inventory-btn-remove-honor" style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 5px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; cursor: pointer;">
-                                            Quitar
-                                        </button>
-                                    </div>
-                                ` : `
-                                    <button id="inventory-btn-equip-honor" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
-                                        <i class="fas fa-medal"></i> Activar Insignia
-                                    </button>
-                                `}
+                                ${honorActionHTML}
                             </div>
                         </div>
 
@@ -16922,11 +16983,7 @@
                             <span style="display: flex; align-items: center; gap: 6px;">
                                 <i class="fas fa-palette"></i> 2. Banners de Fondo de Perfil
                             </span>
-                            ${s.customBackground ? `
-                                <button id="inventory-btn-remove-background" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; cursor: pointer;">
-                                    Quitar Fondo Actual
-                                </button>
-                            ` : ''}
+                            ${removeBgBtnHTML}
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
@@ -16943,16 +17000,24 @@
                                     `;
                                 } else if (isEquipped) {
                                     statusBtnHTML = `
-                                        <span style="background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
-                                            <i class="fas fa-check"></i> Fondo en Uso
+                                        <span style="background: rgba(16,185,129,0.2); border: 1.5px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+                                            <i class="fas fa-check-circle"></i> Fondo en Uso
                                         </span>
                                     `;
                                 } else {
-                                    statusBtnHTML = `
-                                        <button class="inventory-btn-equip-banner" data-banner-url="${r.banner}" data-banner-name="${r.name}" style="background: linear-gradient(135deg, ${r.color} 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-                                            <i class="fas fa-image"></i> Usar de Fondo
-                                        </button>
-                                    `;
+                                    if (canEdit) {
+                                        statusBtnHTML = `
+                                            <button class="inventory-btn-equip-banner" data-banner-url="${r.banner}" data-banner-name="${r.name}" style="background: linear-gradient(135deg, ${r.color} 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                                                <i class="fas fa-image"></i> Usar de Fondo
+                                            </button>
+                                        `;
+                                    } else {
+                                        statusBtnHTML = `
+                                            <span style="background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.4); color: #38bdf8; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+                                                <i class="fas fa-award"></i> Desbloqueado
+                                            </span>
+                                        `;
+                                    }
                                 }
 
                                 return `
@@ -16988,8 +17053,10 @@
                 `;
 
                 Swal.fire({
-                    title: `<div style="display:flex; align-items:center; justify-content:center; gap:10px; font-size:1.15rem; color:#facc15; font-weight:800;">
+                    title: canEdit ? `<div style="display:flex; align-items:center; justify-content:center; gap:10px; font-size:1.15rem; color:#facc15; font-weight:800;">
                         <i class="fas fa-backpack"></i> Recompensas Académicas Desbloqueables
+                    </div>` : `<div style="display:flex; align-items:center; justify-content:center; gap:10px; font-size:1.15rem; color:#facc15; font-weight:800;">
+                        <i class="fas fa-trophy"></i> Vitrina de Logros y Recompensas
                     </div>`,
                     html: modalHtml,
                     width: '660px',
@@ -16999,6 +17066,9 @@
                     showCloseButton: true,
                     customClass: { popup: 'honor-swal-popup' },
                     didOpen: (modalEl) => {
+                        // Si el usuario no tiene permisos de edición (es un visitante u otro compañero), no se asocian eventos de modificación
+                        if (!canEdit) return;
+
                         const btnEquipHonor = modalEl.querySelector('#inventory-btn-equip-honor');
                         const btnRemoveHonor = modalEl.querySelector('#inventory-btn-remove-honor');
                         const equipBannerBtns = modalEl.querySelectorAll('.inventory-btn-equip-banner');
@@ -17007,6 +17077,10 @@
                         // Activar Insignia de Honor (SIN alterar el banner de fondo)
                         if (btnEquipHonor) {
                             btnEquipHonor.addEventListener('click', async () => {
+                                if (!canEdit) {
+                                    Swal.fire('Acceso Restringido', 'Solo el alumno propietario o el docente a cargo pueden modificar este perfil.', 'warning');
+                                    return;
+                                }
                                 btnEquipHonor.disabled = true;
                                 btnEquipHonor.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Activando...';
                                 try {
@@ -17047,6 +17121,10 @@
                         // Quitar Insignia de Honor (SIN alterar el banner de fondo)
                         if (btnRemoveHonor) {
                             btnRemoveHonor.addEventListener('click', async () => {
+                                if (!canEdit) {
+                                    Swal.fire('Acceso Restringido', 'Solo el alumno propietario o el docente a cargo pueden modificar este perfil.', 'warning');
+                                    return;
+                                }
                                 btnRemoveHonor.disabled = true;
                                 btnRemoveHonor.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                                 try {
@@ -17079,6 +17157,10 @@
                         // Equipar Banner de Fondo (SIN alterar la insignia de honor existente)
                         equipBannerBtns.forEach(btn => {
                             btn.addEventListener('click', async () => {
+                                if (!canEdit) {
+                                    Swal.fire('Acceso Restringido', 'Solo el alumno propietario o el docente a cargo pueden modificar este perfil.', 'warning');
+                                    return;
+                                }
                                 const bannerUrl = btn.dataset.bannerUrl;
                                 const bannerName = btn.dataset.bannerName;
                                 btn.disabled = true;
@@ -17114,6 +17196,10 @@
                         // Quitar Banner de Fondo (SIN alterar la insignia de honor)
                         if (btnRemoveBg) {
                             btnRemoveBg.addEventListener('click', async () => {
+                                if (!canEdit) {
+                                    Swal.fire('Acceso Restringido', 'Solo el alumno propietario o el docente a cargo pueden modificar este perfil.', 'warning');
+                                    return;
+                                }
                                 btnRemoveBg.disabled = true;
                                 btnRemoveBg.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                                 try {
@@ -17147,6 +17233,11 @@
             };
 
             window.adminModHonorDistinction = async (up) => {
+                const isTeacher = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData;
+                if (!isTeacher) {
+                    Swal.fire('Acceso Restringido', 'Solo el docente autenticado puede gestionar distinciones de honor.', 'warning');
+                    return;
+                }
                 const studentsList = (window.fullData && window.fullData.students) ? window.fullData.students : [];
                 const s = studentsList.find(st => String(st.up).trim() === String(up).trim());
                 if (!s) {
