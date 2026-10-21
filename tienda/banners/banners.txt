@@ -47,26 +47,7 @@ tienda/banners/rendimiento.png (imagen)
 tienda/banners/grupal.png (imagen2)
 tienda/banners/individual.png (imagen 3)
 tienda/banners/3.png (imagen 3)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+50: tienda/banners/campeon_oro_unsta.svg (Vector Animado: Campeón Dorado UNSTA)
+51: tienda/banners/precision_quirurgica.svg (Vector Animado: Precisión Quirúrgica)
+52: tienda/banners/nutricion_celular.svg (Vector Animado: Nutrición Celular Vital)
+53: tienda/banners/arcade_synthwave_unsta.svg (Vector Animado: Arcade Synthwave Neón)
