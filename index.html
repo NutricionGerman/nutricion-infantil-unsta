@@ -16641,6 +16641,9 @@
                 ];
             };
 
+            // ========================================================
+            // CELEBRACIÓN DE DESBLOQUEO AUTOMÁTICO (POP-UP CON CONFETI)
+            // ========================================================
             window.checkAndTriggerRewardPopup = async (student, rewards) => {
                 if (!student || !rewards) return;
 
@@ -16661,6 +16664,8 @@
 
                 const firstName = (student.firstName || student.nombre || student.name || 'Estudiante').trim().split(/\s+/)[0];
 
+                const isAsistencia = (newReward.id === 'asistencia_perfecta');
+
                 const popupHtml = `
                     <div style="font-family: 'Inter', system-ui, sans-serif; text-align: center; padding: 6px 4px;">
                         <div style="font-size: 0.78rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px;">
@@ -16680,63 +16685,107 @@
                         <p style="color: #f8fafc; font-size: 0.9rem; line-height: 1.45; margin: 0 0 10px 0;">
                             ¡Felicitaciones, <strong>${firstName}</strong>! ${newReward.reason}
                         </p>
-                        <p style="color: #94a3b8; font-size: 0.8rem; margin: 0 0 18px 0; line-height: 1.35;">
-                            ¿Deseas equipar este banner en tu perfil ahora mismo o prefieres guardarlo en tu inventario para usarlo cuando quieras?
+                        ${isAsistencia ? `
+                        <p style="color: #34d399; font-size: 0.8rem; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); border-radius: 8px; padding: 6px 10px; margin: 0 0 14px 0;">
+                            <i class="fas fa-medal"></i> <strong>Premio Especial:</strong> Desbloqueaste tanto el <strong>Banner Oficial</strong> como la <strong>Insignia de Honor</strong> (marco holográfico y cinta flotante). Puedes activarlos juntos o combinarlos con tus otros fondos.
                         </p>
+                        ` : `
+                        <p style="color: #94a3b8; font-size: 0.8rem; margin: 0 0 16px 0; line-height: 1.35;">
+                            ¿Deseas equipar este banner ahora como fondo de tu perfil o prefieres guardarlo en tu inventario para usarlo cuando quieras?
+                        </p>
+                        `}
 
-                        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
                             <button id="reward-popup-btn-inventory" style="
                                 background: rgba(255,255,255,0.08);
                                 border: 1px solid rgba(255,255,255,0.25);
                                 color: #cbd5e1;
-                                padding: 9px 18px;
+                                padding: 8px 16px;
                                 border-radius: 10px;
                                 font-size: 0.82rem;
                                 font-weight: 700;
                                 cursor: pointer;
                                 display: inline-flex;
                                 align-items: center;
-                                gap: 7px;
+                                gap: 6px;
                                 transition: all 0.2s;
                             ">
-                                <i class="fas fa-backpack"></i> Guardar en mi Inventario
+                                <i class="fas fa-backpack"></i> Guardar en Inventario
                             </button>
+                            ${isAsistencia ? `
+                            <button id="reward-popup-btn-honor-only" style="
+                                background: rgba(16,185,129,0.2);
+                                border: 1px solid #10b981;
+                                color: #a7f3d0;
+                                padding: 8px 16px;
+                                border-radius: 10px;
+                                font-size: 0.82rem;
+                                font-weight: 800;
+                                cursor: pointer;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                                transition: all 0.2s;
+                            ">
+                                <i class="fas fa-medal"></i> Activar Solo Insignia
+                            </button>
+                            <button id="reward-popup-btn-both" style="
+                                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                                border: none;
+                                color: #fff;
+                                padding: 8px 18px;
+                                border-radius: 10px;
+                                font-size: 0.82rem;
+                                font-weight: 800;
+                                cursor: pointer;
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 6px;
+                                box-shadow: 0 4px 15px rgba(16,185,129,0.4);
+                                transition: all 0.2s;
+                            ">
+                                <i class="fas fa-magic"></i> Activar Banner e Insignia
+                            </button>
+                            ` : `
                             <button id="reward-popup-btn-equip" style="
                                 background: linear-gradient(135deg, ${newReward.color} 0%, #059669 100%);
                                 border: none;
                                 color: #fff;
-                                padding: 9px 22px;
+                                padding: 8px 20px;
                                 border-radius: 10px;
                                 font-size: 0.84rem;
                                 font-weight: 800;
                                 cursor: pointer;
                                 display: inline-flex;
                                 align-items: center;
-                                gap: 7px;
+                                gap: 6px;
                                 box-shadow: 0 4px 15px ${newReward.color}55;
                                 transition: all 0.2s;
                             ">
-                                <i class="fas fa-check-circle"></i> ¡Equipar Ahora!
+                                <i class="fas fa-check-circle"></i> ¡Equipar Banner Ahora!
                             </button>
+                            `}
                         </div>
                     </div>
                 `;
 
                 Swal.fire({
                     html: popupHtml,
-                    width: '540px',
+                    width: '560px',
                     padding: '1.25rem',
                     background: '#121420',
                     showConfirmButton: false,
                     showCloseButton: true,
                     customClass: { popup: 'honor-swal-popup' },
                     didOpen: (modalEl) => {
-                        const btnEquip = modalEl.querySelector('#reward-popup-btn-equip');
                         const btnInventory = modalEl.querySelector('#reward-popup-btn-inventory');
+                        const btnEquip = modalEl.querySelector('#reward-popup-btn-equip');
+                        const btnBoth = modalEl.querySelector('#reward-popup-btn-both');
+                        const btnHonorOnly = modalEl.querySelector('#reward-popup-btn-honor-only');
 
-                        const saveChoice = async (equipNow) => {
-                            btnEquip.disabled = true;
-                            btnInventory.disabled = true;
+                        const applySave = async (mode) => {
+                            // mode: 'inventory_only' | 'banner_only' | 'both' | 'honor_only'
+                            modalEl.querySelectorAll('button').forEach(b => b.disabled = true);
 
                             try {
                                 const upClean = String(student.up).trim();
@@ -16749,57 +16798,55 @@
                                 if (!student.claimedRewardPopups) student.claimedRewardPopups = [];
                                 if (!student.claimedRewardPopups.includes(newReward.id)) student.claimedRewardPopups.push(newReward.id);
 
-                                if (equipNow) {
+                                if (mode === 'both') {
                                     updatePayload.customBackground = newReward.banner;
                                     student.customBackground = newReward.banner;
-                                    if (newReward.hasHonorDistinction) {
-                                        updatePayload.honorDistinction = newReward.honorDistinction;
-                                        student.honorDistinction = newReward.honorDistinction;
-                                    } else {
-                                        // Si equipa otro premio, limpiar distintivo de honor
-                                        updatePayload.honorDistinction = firebase.firestore.FieldValue.delete();
-                                        delete student.honorDistinction;
-                                    }
+                                    updatePayload.honorDistinction = newReward.honorDistinction;
+                                    student.honorDistinction = newReward.honorDistinction;
+                                } else if (mode === 'honor_only') {
+                                    // Activa solo la insignia de honor SIN tocar el banner de fondo
+                                    updatePayload.honorDistinction = newReward.honorDistinction;
+                                    student.honorDistinction = newReward.honorDistinction;
+                                } else if (mode === 'banner_only') {
+                                    // Activa solo el banner SIN tocar el distintivo de honor existente
+                                    updatePayload.customBackground = newReward.banner;
+                                    student.customBackground = newReward.banner;
                                 }
 
                                 await db.collection('students').doc(upClean).update(updatePayload);
                                 Swal.close();
 
-                                if (equipNow) {
-                                    if (typeof displayStudentPortalView === 'function') displayStudentPortalView(student);
-                                    if (typeof displayExtendedStudentRanking === 'function') displayExtendedStudentRanking();
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: '¡Premio Equipado!',
-                                        text: `Tu perfil ahora luce el banner de ${newReward.name}.`,
-                                        timer: 2000,
-                                        showConfirmButton: false,
-                                        background: '#121420',
-                                        color: '#fff'
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'info',
-                                        title: '¡Guardado en tu Inventario!',
-                                        text: 'Podrás equipar tu premio cuando quieras desde el botón "Mis Premios e Inventario" de tu perfil.',
-                                        timer: 2500,
-                                        showConfirmButton: false,
-                                        background: '#121420',
-                                        color: '#fff'
-                                    });
-                                }
+                                if (typeof displayStudentPortalView === 'function') displayStudentPortalView(student);
+                                if (typeof displayExtendedStudentRanking === 'function') displayExtendedStudentRanking();
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: mode === 'inventory_only' ? '¡Guardado en tu Inventario!' : '¡Premio Equipado!',
+                                    text: mode === 'inventory_only' 
+                                        ? 'Podrás equipar tu premio cuando quieras desde el botón "Mis Premios e Inventario" de tu perfil.' 
+                                        : 'Tu perfil se ha actualizado correctamente con tu recompensa.',
+                                    timer: 2200,
+                                    showConfirmButton: false,
+                                    background: '#121420',
+                                    color: '#fff'
+                                });
                             } catch(e) {
                                 console.error('Error al guardar recompensa:', e);
                                 Swal.close();
                             }
                         };
 
-                        btnEquip.addEventListener('click', () => saveChoice(true));
-                        btnInventory.addEventListener('click', () => saveChoice(false));
+                        if (btnInventory) btnInventory.addEventListener('click', () => applySave('inventory_only'));
+                        if (btnEquip) btnEquip.addEventListener('click', () => applySave('banner_only'));
+                        if (btnBoth) btnBoth.addEventListener('click', () => applySave('both'));
+                        if (btnHonorOnly) btnHonorOnly.addEventListener('click', () => applySave('honor_only'));
                     }
                 });
             };
 
+            // ========================================================
+            // INVENTARIO MODULAR DEL ESTUDIANTE (BANNERS & DISTINTIVOS INDEPENDIENTES)
+            // ========================================================
             window.openStudentRewardInventory = async (up) => {
                 const studentsList = (window.fullData && window.fullData.students) ? window.fullData.students : [];
                 const s = studentsList.find(st => String(st.up).trim() === String(up).trim());
@@ -16808,23 +16855,81 @@
                 const rewards = window.getStudentRewardDefinitions(s);
                 const studentDisplayName = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || s.name || 'Alumno sin nombre'}`.trim();
 
+                const attendanceReward = rewards.find(r => r.id === 'asistencia_perfecta');
+                const hasHonorActive = !!(s.honorDistinction && s.honorDistinction.type === 'asistencia_perfecta');
+
                 const modalHtml = `
                     <div style="font-family: 'Inter', system-ui, sans-serif; text-align: left;">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                             <div>
-                                <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Inventario del Estudiante</div>
+                                <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Mochila de Recompensas</div>
                                 <div style="font-size: 1.05rem; font-weight: 700; color: #fff;">${studentDisplayName} <span style="font-size: 0.8rem; color: #38bdf8;">(UP: ${s.up})</span></div>
                             </div>
                             <div style="font-size: 0.78rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); color: #facc15;">
-                                <i class="fas fa-trophy"></i> ${rewards.filter(r => r.isUnlocked).length} de 3 Desbloqueados
+                                <i class="fas fa-trophy"></i> ${rewards.filter(r => r.isUnlocked).length} de 3 Premios Obtenidos
                             </div>
                         </div>
 
-                        <div style="font-size: 0.8rem; color: #cbd5e1; margin-bottom: 14px;">
-                            Aquí puedes ver todos los premios oficiales que has obtenido por mérito académico. Puedes equipar cualquiera de tus banners desbloqueados o quitarlos cuando prefieras:
+                        <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 12px; line-height: 1.4;">
+                            <i class="fas fa-info-circle" style="color: #38bdf8;"></i> <strong>Combinación Libre:</strong> Puedes equipar un <strong>Banner de Fondo</strong> y activar simultáneamente la <strong>Insignia de Asistencia Perfecta</strong> (o usarlos por separado).
                         </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+                        <!-- SECCIÓN 1: DISTINTIVO DE HONOR (MARCO & CINTA HOLOGRÁFICA) -->
+                        <div style="font-size: 0.82rem; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-medal"></i> 1. Insignia & Distintivo de Honor Superpuesto
+                        </div>
+                        <div style="background: rgba(16,185,129,${attendanceReward && attendanceReward.isUnlocked ? '0.06' : '0.02'}); border: 1.5px solid ${attendanceReward && attendanceReward.isUnlocked ? (hasHonorActive ? '#10b981' : 'rgba(16,185,129,0.35)') : 'rgba(255,255,255,0.08)'}; border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; opacity: ${attendanceReward && attendanceReward.isUnlocked ? '1' : '0.65'};">
+                            <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                                <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(16,185,129,0.18); border: 2px solid #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #34d399; flex-shrink: 0; box-shadow: 0 0 12px rgba(16,185,129,0.35);">
+                                    <i class="fas fa-medal"></i>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 800; font-size: 0.86rem; color: #fff; display: flex; align-items: center; gap: 6px;">
+                                        Insignia de Asistencia Perfecta 100%
+                                        <span style="font-size: 0.65rem; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #a7f3d0; padding: 1px 6px; border-radius: 6px;">Marco + Cinta + Ranking</span>
+                                    </div>
+                                    <div style="font-size: 0.72rem; color: ${attendanceReward && attendanceReward.isUnlocked ? '#94a3b8' : '#f87171'}; margin-top: 3px;">
+                                        ${attendanceReward && attendanceReward.isUnlocked 
+                                            ? 'Cinta flotante holográfica, marco pulsante esmeralda y medalla brillante en el ranking.' 
+                                            : ('Requisito: ' + attendanceReward.reqText)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                ${!attendanceReward || !attendanceReward.isUnlocked ? `
+                                    <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-lock"></i> Bloqueado
+                                    </div>
+                                ` : hasHonorActive ? `
+                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                        <span style="background: rgba(16,185,129,0.25); border: 1px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+                                            <i class="fas fa-check"></i> Activo
+                                        </span>
+                                        <button id="inventory-btn-remove-honor" style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 5px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; cursor: pointer;">
+                                            Quitar
+                                        </button>
+                                    </div>
+                                ` : `
+                                    <button id="inventory-btn-equip-honor" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
+                                        <i class="fas fa-medal"></i> Activar Insignia
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN 2: BANNERS DE FONDO DESBLOQUEADOS -->
+                        <div style="font-size: 0.82rem; font-weight: 800; color: #facc15; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;">
+                            <span style="display: flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-palette"></i> 2. Banners de Fondo de Perfil
+                            </span>
+                            ${s.customBackground ? `
+                                <button id="inventory-btn-remove-background" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 3px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 600; cursor: pointer;">
+                                    Quitar Fondo Actual
+                                </button>
+                            ` : ''}
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px;">
                             ${rewards.map(r => {
                                 const isEquipped = (s.customBackground === r.banner);
                                 const unlocked = r.isUnlocked;
@@ -16838,26 +16943,21 @@
                                     `;
                                 } else if (isEquipped) {
                                     statusBtnHTML = `
-                                        <div style="display: flex; gap: 8px; align-items: center;">
-                                            <span style="background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
-                                                <i class="fas fa-check"></i> En Uso
-                                            </span>
-                                            <button class="inventory-btn-unequip" data-reward-id="${r.id}" style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 5px 10px; border-radius: 8px; font-size: 0.74rem; font-weight: 700; cursor: pointer;">
-                                                Quitar
-                                            </button>
-                                        </div>
+                                        <span style="background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #34d399; padding: 5px 12px; border-radius: 8px; font-size: 0.76rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;">
+                                            <i class="fas fa-check"></i> Fondo en Uso
+                                        </span>
                                     `;
                                 } else {
                                     statusBtnHTML = `
-                                        <button class="inventory-btn-equip" data-reward-id="${r.id}" style="background: linear-gradient(135deg, ${r.color} 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-                                            <i class="fas fa-magic"></i> Equipar
+                                        <button class="inventory-btn-equip-banner" data-banner-url="${r.banner}" data-banner-name="${r.name}" style="background: linear-gradient(135deg, ${r.color} 0%, #059669 100%); border: none; color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                                            <i class="fas fa-image"></i> Usar de Fondo
                                         </button>
                                     `;
                                 }
 
                                 return `
-                                    <div style="background: rgba(255,255,255,${unlocked ? '0.04' : '0.01'}); border: 1.5px solid ${unlocked ? (isEquipped ? '#10b981' : r.color + '55') : 'rgba(255,255,255,0.08)'}; border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; opacity: ${unlocked ? '1' : '0.65'};">
-                                        <div style="display: flex; align-items: center; gap: 14px; flex: 1;">
+                                    <div style="background: rgba(255,255,255,${unlocked ? '0.04' : '0.01'}); border: 1.5px solid ${unlocked ? (isEquipped ? '#10b981' : r.color + '55') : 'rgba(255,255,255,0.08)'}; border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; opacity: ${unlocked ? '1' : '0.65'};">
+                                        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
                                             <div style="width: 80px; height: 50px; border-radius: 8px; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.2); background: #000; position: relative;">
                                                 <img src="${r.banner}" style="width: 100%; height: 100%; object-fit: cover;">
                                                 ${!unlocked ? '<div style="position:absolute; inset:0; background:rgba(0,0,0,0.65); display:flex; align-items:center; justify-content:center; color:#fff;"><i class="fas fa-lock"></i></div>' : ''}
@@ -16865,7 +16965,6 @@
                                             <div>
                                                 <div style="font-weight: 800; font-size: 0.86rem; color: #fff; display: flex; align-items: center; gap: 6px;">
                                                     <i class="fas ${r.icon}" style="color: ${r.color};"></i> ${r.name}
-                                                    ${r.hasHonorDistinction ? '<span style="font-size: 0.65rem; background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #a7f3d0; padding: 1px 6px; border-radius: 6px;">+ Distintivo de Honor</span>' : ''}
                                                 </div>
                                                 <div style="font-size: 0.72rem; color: ${unlocked ? '#94a3b8' : '#f87171'}; margin-top: 3px;">
                                                     ${unlocked ? r.reason : ('Requisito: ' + r.reqText)}
@@ -16893,41 +16992,104 @@
                         <i class="fas fa-backpack"></i> Recompensas Académicas Desbloqueables
                     </div>`,
                     html: modalHtml,
-                    width: '640px',
+                    width: '660px',
                     padding: '1.25rem',
                     background: '#121420',
                     showConfirmButton: false,
                     showCloseButton: true,
                     customClass: { popup: 'honor-swal-popup' },
                     didOpen: (modalEl) => {
-                        const equipBtns = modalEl.querySelectorAll('.inventory-btn-equip');
-                        const unequipBtns = modalEl.querySelectorAll('.inventory-btn-unequip');
+                        const btnEquipHonor = modalEl.querySelector('#inventory-btn-equip-honor');
+                        const btnRemoveHonor = modalEl.querySelector('#inventory-btn-remove-honor');
+                        const equipBannerBtns = modalEl.querySelectorAll('.inventory-btn-equip-banner');
+                        const btnRemoveBg = modalEl.querySelector('#inventory-btn-remove-background');
 
-                        equipBtns.forEach(btn => {
+                        // Activar Insignia de Honor (SIN alterar el banner de fondo)
+                        if (btnEquipHonor) {
+                            btnEquipHonor.addEventListener('click', async () => {
+                                btnEquipHonor.disabled = true;
+                                btnEquipHonor.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Activando...';
+                                try {
+                                    const upClean = String(s.up).trim();
+                                    const distData = {
+                                        type: 'asistencia_perfecta',
+                                        title: 'ASISTENCIA PERFECTA 100%',
+                                        shortTitle: 'ASISTENCIA PERFECTA 100%',
+                                        style: 'emerald',
+                                        icon: 'fa-calendar-check',
+                                        assignedAt: new Date().toISOString()
+                                    };
+                                    await db.collection('students').doc(upClean).update({
+                                        honorDistinction: distData
+                                    });
+                                    s.honorDistinction = distData;
+                                    Swal.close();
+
+                                    if (typeof displayStudentPortalView === 'function') displayStudentPortalView(s);
+                                    if (typeof displayExtendedStudentRanking === 'function') displayExtendedStudentRanking();
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '¡Insignia de Honor Activada!',
+                                        text: 'Tu perfil y ranking ahora lucen el marco y distintivo de Asistencia Perfecta (tu fondo actual se mantiene intacto).',
+                                        timer: 2200,
+                                        showConfirmButton: false,
+                                        background: '#121420',
+                                        color: '#fff'
+                                    });
+                                } catch(e) {
+                                    console.error(e);
+                                    Swal.fire('Error', 'No se pudo activar la insignia: ' + e.message, 'error');
+                                }
+                            });
+                        }
+
+                        // Quitar Insignia de Honor (SIN alterar el banner de fondo)
+                        if (btnRemoveHonor) {
+                            btnRemoveHonor.addEventListener('click', async () => {
+                                btnRemoveHonor.disabled = true;
+                                btnRemoveHonor.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                                try {
+                                    const upClean = String(s.up).trim();
+                                    await db.collection('students').doc(upClean).update({
+                                        honorDistinction: firebase.firestore.FieldValue.delete()
+                                    });
+                                    delete s.honorDistinction;
+                                    Swal.close();
+
+                                    if (typeof displayStudentPortalView === 'function') displayStudentPortalView(s);
+                                    if (typeof displayExtendedStudentRanking === 'function') displayExtendedStudentRanking();
+
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: 'Insignia Desactivada',
+                                        text: 'Has quitado el distintivo de honor.',
+                                        timer: 1800,
+                                        showConfirmButton: false,
+                                        background: '#121420',
+                                        color: '#fff'
+                                    });
+                                } catch(e) {
+                                    console.error(e);
+                                    Swal.fire('Error', 'No se pudo quitar la insignia: ' + e.message, 'error');
+                                }
+                            });
+                        }
+
+                        // Equipar Banner de Fondo (SIN alterar la insignia de honor existente)
+                        equipBannerBtns.forEach(btn => {
                             btn.addEventListener('click', async () => {
-                                const rId = btn.dataset.rewardId;
-                                const targetReward = rewards.find(r => r.id === rId);
-                                if (!targetReward) return;
-
+                                const bannerUrl = btn.dataset.bannerUrl;
+                                const bannerName = btn.dataset.bannerName;
                                 btn.disabled = true;
                                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Equipando...';
 
                                 try {
                                     const upClean = String(s.up).trim();
-                                    const updatePayload = {
-                                        customBackground: targetReward.banner
-                                    };
-                                    s.customBackground = targetReward.banner;
-
-                                    if (targetReward.hasHonorDistinction) {
-                                        updatePayload.honorDistinction = targetReward.honorDistinction;
-                                        s.honorDistinction = targetReward.honorDistinction;
-                                    } else {
-                                        updatePayload.honorDistinction = firebase.firestore.FieldValue.delete();
-                                        delete s.honorDistinction;
-                                    }
-
-                                    await db.collection('students').doc(upClean).update(updatePayload);
+                                    await db.collection('students').doc(upClean).update({
+                                        customBackground: bannerUrl
+                                    });
+                                    s.customBackground = bannerUrl;
                                     Swal.close();
 
                                     if (typeof displayStudentPortalView === 'function') displayStudentPortalView(s);
@@ -16936,33 +17098,30 @@
                                     Swal.fire({
                                         icon: 'success',
                                         title: '¡Banner Equipado!',
-                                        text: `Has equipado "${targetReward.name}".`,
-                                        timer: 1800,
+                                        text: `Has colocado de fondo "${bannerName}". Tu insignia de honor se mantiene activa encima.`,
+                                        timer: 2200,
                                         showConfirmButton: false,
                                         background: '#121420',
                                         color: '#fff'
                                     });
                                 } catch(e) {
-                                    console.error('Error al equipar:', e);
-                                    Swal.fire('Error', 'No se pudo equipar: ' + e.message, 'error');
+                                    console.error(e);
+                                    Swal.fire('Error', 'No se pudo equipar el banner: ' + e.message, 'error');
                                 }
                             });
                         });
 
-                        unequipBtns.forEach(btn => {
-                            btn.addEventListener('click', async () => {
-                                btn.disabled = true;
-                                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-
+                        // Quitar Banner de Fondo (SIN alterar la insignia de honor)
+                        if (btnRemoveBg) {
+                            btnRemoveBg.addEventListener('click', async () => {
+                                btnRemoveBg.disabled = true;
+                                btnRemoveBg.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
                                 try {
                                     const upClean = String(s.up).trim();
                                     await db.collection('students').doc(upClean).update({
-                                        customBackground: firebase.firestore.FieldValue.delete(),
-                                        honorDistinction: firebase.firestore.FieldValue.delete()
+                                        customBackground: firebase.firestore.FieldValue.delete()
                                     });
                                     delete s.customBackground;
-                                    delete s.honorDistinction;
-
                                     Swal.close();
 
                                     if (typeof displayStudentPortalView === 'function') displayStudentPortalView(s);
@@ -16970,19 +17129,19 @@
 
                                     Swal.fire({
                                         icon: 'info',
-                                        title: 'Desequipado',
-                                        text: 'Has devuelto tu perfil al estilo estándar.',
+                                        title: 'Fondo Removido',
+                                        text: 'Has quitado el banner de fondo personalizado.',
                                         timer: 1800,
                                         showConfirmButton: false,
                                         background: '#121420',
                                         color: '#fff'
                                     });
                                 } catch(e) {
-                                    console.error('Error al desequipar:', e);
-                                    Swal.fire('Error', 'No se pudo desequipar: ' + e.message, 'error');
+                                    console.error(e);
+                                    Swal.fire('Error', 'No se pudo quitar el fondo: ' + e.message, 'error');
                                 }
                             });
-                        });
+                        }
                     }
                 });
             };
