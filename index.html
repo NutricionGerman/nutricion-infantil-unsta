@@ -5830,17 +5830,7 @@
                         }
                     }
 
-                    function applyLocalTestBanner(arr) {
-                        if (!arr) return;
-                        const testStu = arr.find(s => String(s.up).trim() === '999999' || (s.name && s.name.toUpperCase().includes('PRUEBA')));
-                        if (testStu) {
-                            testStu.customBackground = 'Crear_animacion_para_video_musica_20260913180349.mp4';
-                            if ((testStu.xp || 0) < 15) {
-                                testStu.xp = 15; // Puesto #1 en ranking para prueba visual directa
-                            }
-                        }
-                    }
-                    applyLocalTestBanner(studentsArray);
+// [Mock de banner local removido para respetar Firestore]
 
                     // 3. RECONSTRUIR OBJETO GLOBAL PARA COMPATIBILIDAD
                     fullData = {
@@ -5869,7 +5859,6 @@
                     db.collection('students').onSnapshot(snap => {
                         let updatedStudents = [];
                         snap.forEach(doc => updatedStudents.push(doc.data()));
-                        applyLocalTestBanner(updatedStudents);
                         
                         fullData.students = updatedStudents;
                         window.fullData = fullData;
@@ -10862,8 +10851,7 @@
                         const isVideo = student.customBackground && (
                             student.customBackground.endsWith('.mp4') || 
                             student.customBackground.endsWith('.webm') || 
-                            student.customBackground.includes('.mp4?') ||
-                            student.customBackground.includes('Crear_animacion')
+                            student.customBackground.includes('.mp4?')
                         );
 
                         if (student.customBackground) {
@@ -11581,8 +11569,7 @@
                 const isVideo = student.customBackground && (
                     student.customBackground.endsWith('.mp4') || 
                     student.customBackground.endsWith('.webm') || 
-                    student.customBackground.includes('.mp4?') ||
-                    student.customBackground.includes('Crear_animacion')
+                    student.customBackground.includes('.mp4?')
                 );
 
                 if (student.customBackground) {
@@ -16042,7 +16029,8 @@
                                 saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
 
                                 try {
-                                    const finalUrl = (selectedUrl || '').trim();
+                                    const typedVal = (customUrlInput ? customUrlInput.value : '').trim();
+                                    const finalUrl = (selectedUrl || typedVal || '').trim();
                                     if (finalUrl) {
                                         await db.collection('students').doc(String(up).trim()).update({
                                             customBackground: finalUrl
