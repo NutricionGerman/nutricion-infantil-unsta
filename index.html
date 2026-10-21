@@ -12248,11 +12248,14 @@
                     });
                 }
 
-                // Comprobar si hay nuevo premio desbloqueado y felicitar al estudiante
+                // Comprobar si hay nuevo premio desbloqueado y felicitar al estudiante (SÓLO si es el propio alumno, no el docente)
                 setTimeout(() => {
-                    if (typeof window.checkAndTriggerRewardPopup === 'function' && typeof window.getStudentRewardDefinitions === 'function') {
-                        const rList = window.getStudentRewardDefinitions(student);
-                        window.checkAndTriggerRewardPopup(student, rList);
+                    const isDocente = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData;
+                    if (!isDocente && isOwnProfile) {
+                        if (typeof window.checkAndTriggerRewardPopup === 'function' && typeof window.getStudentRewardDefinitions === 'function') {
+                            const rList = window.getStudentRewardDefinitions(student);
+                            window.checkAndTriggerRewardPopup(student, rList);
+                        }
                     }
                 }, 600);
             }
@@ -16640,6 +16643,14 @@
 
             window.checkAndTriggerRewardPopup = async (student, rewards) => {
                 if (!student || !rewards) return;
+
+                // GUARDIA ESTRICTA: El pop-up de felicitación SÓLO debe mostrarse al propio alumno cuando inicia sesión con su UP.
+                // NUNCA debe mostrarse al docente mientras audita o administra la plataforma.
+                const isDocente = !!(firebase.auth && firebase.auth().currentUser) || !!window.currentTeacherData;
+                const loggedInUP = window.loggedInStudentUP || window.currentStudentUP || sessionStorage.getItem('aw_authenticated_up');
+                const isSelf = loggedInUP && String(loggedInUP).trim() === String(student.up).trim();
+                if (isDocente || !isSelf) return;
+
                 const claimed = student.claimedRewardPopups || [];
                 const newReward = rewards.find(r => r.isUnlocked && !claimed.includes(r.id));
                 if (!newReward) return;
