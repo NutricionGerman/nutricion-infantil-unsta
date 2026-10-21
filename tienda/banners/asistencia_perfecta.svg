@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="100%" height="100%">
+  <defs>
+    <!-- Fondo Esmeralda & Abismo Teal Profundo -->
+    <radialGradient id="emeraldBg" cx="50%" cy="50%" r="90%">
+      <stop offset="0%" stop-color="#07291e" stop-opacity="0.98"/>
+      <stop offset="45%" stop-color="#04140f" stop-opacity="0.99"/>
+      <stop offset="100%" stop-color="#020806" stop-opacity="1"/>
+    </radialGradient>
+
+    <!-- Gradiente Esmeralda de Constancia Impecable -->
+    <linearGradient id="mintGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="40%" stop-color="#34d399"/>
+      <stop offset="80%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <linearGradient id="goldLaurel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffd700"/>
+      <stop offset="50%" stop-color="#fffbeb"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+
+    <!-- Rayos Horizontales Laterales -->
+    <linearGradient id="beamLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00f2fe" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#10b981" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.85"/>
+    </linearGradient>
+
+    <linearGradient id="beamRight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#10b981" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#00f2fe" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Filtros de Resplandor Vital -->
+    <filter id="vitalGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <filter id="shieldFlash" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- 1. FONDO FULL-BLEED SIN BORDES RÍGIDOS -->
+  <rect width="1200" height="400" fill="url(#emeraldBg)"/>
+
+  <!-- 2. FLUJOS HORIZONTALES Y NODOS EN LOS COSTADOS (TIMELINE DE ASISTENCIAS) -->
+  <!-- Flanco Izquierdo: Líneas de Presentismo Continuo -->
+  <g opacity="0.8" filter="url(#vitalGlow)">
+    <path d="M 0,185 Q 160,165 320,195 T 480,200" fill="none" stroke="url(#beamLeft)" stroke-width="2.5">
+      <animate attributeName="stroke-dasharray" values="0,600; 600,0; 0,600" dur="4.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 0,215 Q 180,235 340,205 T 480,200" fill="none" stroke="url(#beamLeft)" stroke-width="1.8">
+      <animate attributeName="stroke-dasharray" values="600,0; 0,600; 600,0" dur="4.8s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Nodos de Asistencia / Tildes en el Tiempo Izquierdos -->
+    <g transform="translate(140, 200)">
+      <circle cx="0" cy="0" r="10" fill="#04140f" stroke="#10b981" stroke-width="1.5"/>
+      <path d="M -4,0 L -1,3 L 4,-3" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#10b981" stroke-width="1" opacity="0.4">
+        <animate attributeName="r" values="10;20;10" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <g transform="translate(260, 200)">
+      <circle cx="0" cy="0" r="10" fill="#04140f" stroke="#34d399" stroke-width="1.5"/>
+      <path d="M -4,0 L -1,3 L 4,-3" fill="none" stroke="#00f2fe" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#34d399" stroke-width="1" opacity="0.4">
+        <animate attributeName="r" values="10;20;10" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <g transform="translate(380, 200)">
+      <circle cx="0" cy="0" r="10" fill="#04140f" stroke="#00f2fe" stroke-width="1.5"/>
+      <path d="M -4,0 L -1,3 L 4,-3" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#00f2fe" stroke-width="1" opacity="0.4">
+        <animate attributeName="r" values="10;20;10" dur="2.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- Flanco Derecho: Líneas de Presentismo Continuo -->
+  <g opacity="0.8" filter="url(#vitalGlow)">
+    <path d="M 720,200 Q 860,165 1020,205 T 1200,185" fill="none" stroke="url(#beamRight)" stroke-width="2.5">
+      <animate attributeName="stroke-dasharray" values="0,600; 600,0; 0,600" dur="4.2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 720,200 Q 880,235 1040,195 T 1200,215" fill="none" stroke="url(#beamRight)" stroke-width="1.8">
+      <animate attributeName="stroke-dasharray" values="600,0; 0,600; 600,0" dur="4.8s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Nodos de Asistencia / Tildes en el Tiempo Derechos -->
+    <g transform="translate(820, 200)">
+      <circle cx="0" cy="0" r="10" fill="#04140f" stroke="#00f2fe" stroke-width="1.5"/>
+      <path d="M -4,0 L -1,3 L 4,-3" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#00f2fe" stroke-width="1" opacity="0.4">
+        <animate attributeName="r" values="10;20;10" dur="2.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <g transform="translate(940, 200)">
+      <circle cx="0" cy="0" r="10" fill="#04140f" stroke="#34d399" stroke-width="1.5"/>
+      <path d="M -4,0 L -1,3 L 4,-3" fill="none" stroke="#00f2fe" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#34d399" stroke-width="1" opacity="0.4">
+        <animate attributeName="r" values="10;20;10" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <g transform="translate(1060, 200)">
+      <circle cx="0" cy="0" r="10" fill="#04140f" stroke="#10b981" stroke-width="1.5"/>
+      <path d="M -4,0 L -1,3 L 4,-3" fill="none" stroke="#34d399" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#10b981" stroke-width="1" opacity="0.4">
+        <animate attributeName="r" values="10;20;10" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+
+  <!-- 3. ONDAS DE ENERGÍA Y ANILLOS DE 100% COMPLETITUD -->
+  <circle cx="600" cy="200" r="80" fill="none" stroke="#34d399" stroke-width="2" opacity="0.6" filter="url(#vitalGlow)">
+    <animate attributeName="r" values="65;170;65" dur="3.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.75;0.05;0.75" dur="3.8s" repeatCount="indefinite"/>
+    <animate attributeName="stroke-width" values="2.5;0.5;2.5" dur="3.8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Anillos concéntricos rotatorios -->
+  <g transform="translate(600, 200)" opacity="0.55">
+    <circle cx="0" cy="0" r="95" fill="none" stroke="url(#mintGrad)" stroke-width="1.5" stroke-dasharray="12,8">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="35s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="0" cy="0" r="115" fill="none" stroke="#ffd700" stroke-width="1" stroke-dasharray="6,12" opacity="0.7">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="45s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- 4. INSIGNIA CENTRAL DE ASISTENCIA PERFECTA (CENTRO EXACTO Y=200, ESCALA 0.70) -->
+  <g transform="translate(600, 200) scale(0.70)" filter="url(#vitalGlow)">
+    <!-- Corona de Laureles Dorados de la Constancia -->
+    <path d="M -85,-15 C -130,-50 -135,35 -85,60 C -65,40 -65,10 -85,-15 Z" fill="url(#goldLaurel)" opacity="0.9">
+      <animate attributeName="transform" type="translate" values="0,0; -4,-2; 0,0" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M 85,-15 C 130,-50 135,35 85,60 C 65,40 65,10 85,-15 Z" fill="url(#goldLaurel)" opacity="0.9">
+      <animate attributeName="transform" type="translate" values="0,0; 4,-2; 0,0" dur="2.5s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Escudo / Medalla Esmeralda Central -->
+    <polygon points="0,-65 52,-25 52,35 0,75 -52,35 -52,-25" fill="#04140f" stroke="url(#mintGrad)" stroke-width="3">
+      <animate attributeName="stroke" values="#10b981;#00f2fe;#34d399;#10b981" dur="4s" repeatCount="indefinite"/>
+    </polygon>
+
+    <!-- Corona de Estrellas Superiores -->
+    <circle cx="-25" cy="-75" r="3.5" fill="#ffd700"/>
+    <circle cx="0" cy="-85" r="5" fill="#ffffff" filter="url(#shieldFlash)"/>
+    <circle cx="25" cy="-75" r="3.5" fill="#ffd700"/>
+
+    <!-- Tilde Monumental de Presentismo (Checkmark 100%) -->
+    <path d="M -22,5 L -6,21 L 22,-14" fill="none" stroke="#ffffff" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#shieldFlash)">
+      <animate attributeName="opacity" values="0.85;1;0.85" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+
+    <!-- Marca de 100% -->
+    <text x="0" y="52" text-anchor="middle" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="900" fill="#34d399" letter-spacing="1">
+      100%
+    </text>
+  </g>
+
+  <!-- 5. CHISPAS VITALES FLOTANTES DISTRIBUIDAS -->
+  <g filter="url(#vitalGlow)">
+    <circle cx="70" cy="220" r="2.2" fill="#34d399"><animate attributeName="cy" values="240;160;240" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.9;0.3" dur="4s" repeatCount="indefinite"/></circle>
+    <circle cx="200" cy="180" r="2.8" fill="#ffd700"><animate attributeName="cy" values="160;240;160" dur="4.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite"/></circle>
+    <circle cx="320" cy="210" r="2.2" fill="#00f2fe"><animate attributeName="cy" values="230;170;230" dur="3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;1;0.5" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="440" cy="190" r="2.5" fill="#34d399"><animate attributeName="cy" values="170;230;170" dur="4.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.9;0.4" dur="4.2s" repeatCount="indefinite"/></circle>
+    
+    <circle cx="760" cy="190" r="2.5" fill="#34d399"><animate attributeName="cy" values="170;230;170" dur="4.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.9;0.4" dur="4.2s" repeatCount="indefinite"/></circle>
+    <circle cx="880" cy="210" r="2.2" fill="#00f2fe"><animate attributeName="cy" values="230;170;230" dur="3.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;1;0.5" dur="3.8s" repeatCount="indefinite"/></circle>
+    <circle cx="1000" cy="180" r="2.8" fill="#ffd700"><animate attributeName="cy" values="160;240;160" dur="4.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;1;0.4" dur="4.5s" repeatCount="indefinite"/></circle>
+    <circle cx="1130" cy="220" r="2.2" fill="#34d399"><animate attributeName="cy" values="240;160;240" dur="4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.3;0.9;0.3" dur="4s" repeatCount="indefinite"/></circle>
+  </g>
+
+  <!-- 6. TIPOGRAFÍA INFERIOR HERÁLDICA -->
+  <g transform="translate(600, 345)">
+    <text x="0" y="0" text-anchor="middle" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="900" fill="url(#mintGrad)" letter-spacing="8" filter="url(#vitalGlow)">
+      ASISTENCIA PERFECTA · 100%
+    </text>
+    <text x="0" y="20" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="800" fill="#ffd700" letter-spacing="4">
+      ★ COMPROMISO &amp; PUNTUALIDAD · CÁTEDRA UNSTA ★
+    </text>
+  </g>
+</svg>
