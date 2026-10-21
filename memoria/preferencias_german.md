@@ -200,6 +200,10 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * `[✨ Equipar Ahora]`: Asigna el banner (y distintivo si es asistencia perfecta) de inmediato.
       * `[🎒 Guardar en mi Inventario]`: Conserva su fondo actual y guarda el premio desbloqueado.
     - **Inventario del Alumno en el Perfil**: Barra interactiva `[🎒 Mis Premios e Inventario de Banners]` en el perfil del alumno que abre el modal de gestión con el estado de los 3 premios (En Uso, Equipar, Bloqueado 🔒 con explicación del requisito).
+    - **Desacoplamiento Total entre Banner e Insignia**:
+      * El banner de fondo (`customBackground`) y la insignia de honor (`honorDistinction`) son 100% independientes y modulares.
+      * Un estudiante (como el 1º puesto con asistencia perfecta) puede equipar simultáneamente el **Banner de Campeón Absoluto** de fondo Y activar la **Insignia de Asistencia Perfecta 100%** superpuesta (o tener el banner de asistencia y desactivar la insignia, o usar un banner personal con la insignia).
+
 
 
 
