@@ -4191,23 +4191,115 @@
         }
         .epic-honor-floating-marquee.style-radiant .epic-honor-sparkle { color: #ffa502; text-shadow: 0 0 10px #ffa502; }
 
-        /* Insignia en Ranking */
+        /* ========================================================
+           INSIGNIA ÉPICA EN EL RANKING (CLON HOLOGRÁFICO DEL BANNER)
+           ======================================================== */
         .ranking-honor-badge {
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 800;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            padding: 3px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             white-space: nowrap;
-            letter-spacing: 0.5px;
+            user-select: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            cursor: default;
         }
-        .ranking-honor-badge.badge-emerald { background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #a7f3d0; box-shadow: 0 0 8px rgba(16,185,129,0.35); }
-        .ranking-honor-badge.badge-gold { background: rgba(250,204,21,0.2); border: 1px solid #facc15; color: #fef08a; box-shadow: 0 0 8px rgba(250,204,21,0.35); }
-        .ranking-honor-badge.badge-fire { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #fca5a5; box-shadow: 0 0 8px rgba(239,68,68,0.35); }
-        .ranking-honor-badge.badge-sapphire { background: rgba(56,189,248,0.2); border: 1px solid #38bdf8; color: #bae6fd; box-shadow: 0 0 8px rgba(56,189,248,0.35); }
-        .ranking-honor-badge.badge-radiant { background: rgba(255,71,87,0.2); border: 1px solid #ff4757; color: #fecdd3; box-shadow: 0 0 8px rgba(255,71,87,0.35); }
+
+        .ranking-honor-badge:hover {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .ranking-honor-badge .ranking-honor-text {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 0.72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s linear infinite;
+        }
+
+        .ranking-honor-badge .ranking-honor-sparkle {
+            font-size: 0.75rem;
+            animation: sparkleSpin 3s ease-in-out infinite;
+        }
+
+        /* --- ESMERALDA (Asistencia Perfecta) --- */
+        .ranking-honor-badge.badge-emerald {
+            background: linear-gradient(135deg, rgba(6, 41, 30, 0.92) 0%, rgba(4, 20, 15, 0.96) 100%);
+            border-color: rgba(16, 185, 129, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 16px rgba(16, 185, 129, 0.5);
+        }
+        .ranking-honor-badge.badge-emerald .ranking-honor-text {
+            background-image: linear-gradient(90deg, #34d399 0%, #ffffff 30%, #ffd700 50%, #ffffff 70%, #34d399 100%);
+        }
+        .ranking-honor-badge.badge-emerald .ranking-honor-sparkle {
+            color: #34d399;
+            text-shadow: 0 0 8px #34d399;
+        }
+
+        /* --- ORO (1º Puesto Histórico) --- */
+        .ranking-honor-badge.badge-gold {
+            background: linear-gradient(135deg, rgba(45, 34, 8, 0.92) 0%, rgba(20, 16, 8, 0.96) 100%);
+            border-color: rgba(250, 204, 21, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 16px rgba(250, 204, 21, 0.5);
+        }
+        .ranking-honor-badge.badge-gold .ranking-honor-text {
+            background-image: linear-gradient(90deg, #facc15 0%, #ffffff 25%, #fef08a 50%, #ffffff 75%, #facc15 100%);
+        }
+        .ranking-honor-badge.badge-gold .ranking-honor-sparkle {
+            color: #facc15;
+            text-shadow: 0 0 8px #facc15;
+        }
+
+        /* --- FUEGO (En Racha Imparable) --- */
+        .ranking-honor-badge.badge-fire {
+            background: linear-gradient(135deg, rgba(69, 10, 10, 0.92) 0%, rgba(20, 4, 4, 0.96) 100%);
+            border-color: rgba(239, 68, 68, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 16px rgba(239, 68, 68, 0.5);
+        }
+        .ranking-honor-badge.badge-fire .ranking-honor-text {
+            background-image: linear-gradient(90deg, #f87171 0%, #fef08a 35%, #ffffff 50%, #f97316 75%, #f87171 100%);
+        }
+        .ranking-honor-badge.badge-fire .ranking-honor-sparkle {
+            color: #f97316;
+            text-shadow: 0 0 8px #f97316;
+        }
+
+        /* --- ZAFIRO (Cuadro de Honor) --- */
+        .ranking-honor-badge.badge-sapphire {
+            background: linear-gradient(135deg, rgba(14, 23, 38, 0.92) 0%, rgba(8, 13, 23, 0.96) 100%);
+            border-color: rgba(56, 189, 248, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 16px rgba(56, 189, 248, 0.5);
+        }
+        .ranking-honor-badge.badge-sapphire .ranking-honor-text {
+            background-image: linear-gradient(90deg, #38bdf8 0%, #ffffff 30%, #818cf8 50%, #ffffff 70%, #38bdf8 100%);
+        }
+        .ranking-honor-badge.badge-sapphire .ranking-honor-sparkle {
+            color: #38bdf8;
+            text-shadow: 0 0 8px #38bdf8;
+        }
+
+        /* --- RADIANTE (Estatus Leyenda) --- */
+        .ranking-honor-badge.badge-radiant {
+            background: linear-gradient(135deg, rgba(29, 10, 40, 0.92) 0%, rgba(14, 4, 23, 0.96) 100%);
+            border-color: rgba(255, 71, 87, 0.85);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 16px rgba(255, 71, 87, 0.5);
+        }
+        .ranking-honor-badge.badge-radiant .ranking-honor-text {
+            background-image: linear-gradient(90deg, #ff4757 0%, #ffa502 25%, #2ed573 50%, #1e90ff 75%, #ff4757 100%);
+        }
+        .ranking-honor-badge.badge-radiant .ranking-honor-sparkle {
+            color: #ffa502;
+            text-shadow: 0 0 8px #ffa502;
+        }
 
         .rank-row.rank-honor-border-emerald { border-left: 4px solid #10b981 !important; }
         .rank-row.rank-honor-border-gold { border-left: 4px solid #facc15 !important; }
@@ -11080,9 +11172,16 @@
                         if (student.honorDistinction && student.honorDistinction.style) {
                             const hStyle = student.honorDistinction.style;
                             const hIcon = student.honorDistinction.icon || 'fa-medal';
-                            const hText = student.honorDistinction.shortTitle || student.honorDistinction.title || 'Honor';
+                            // Usar el título épico completo con efecto shimmer y destellos idéntico al banner
+                            const hTitle = student.honorDistinction.title || student.honorDistinction.shortTitle || 'HONOR';
                             honorRowClass = `rank-honor-border-${hStyle}`;
-                            honorBadgeHTML = `<span class="ranking-honor-badge badge-${hStyle}" title="${student.honorDistinction.title || ''}"><i class="fas ${hIcon}"></i> ${hText}</span>`;
+                            honorBadgeHTML = `
+                                <span class="ranking-honor-badge badge-${hStyle}" title="${hTitle}">
+                                    <i class="fas ${hIcon} ranking-honor-sparkle"></i>
+                                    <span class="ranking-honor-text">${hTitle}</span>
+                                    <i class="fas fa-sparkles ranking-honor-sparkle"></i>
+                                </span>
+                            `;
                         }
 
                         listHTML += `
@@ -11165,9 +11264,15 @@
                         if (me.honorDistinction && me.honorDistinction.style) {
                             const mhStyle = me.honorDistinction.style;
                             const mhIcon = me.honorDistinction.icon || 'fa-medal';
-                            const mhText = me.honorDistinction.shortTitle || me.honorDistinction.title || 'Honor';
+                            const mhTitle = me.honorDistinction.title || me.honorDistinction.shortTitle || 'HONOR';
                             myHonorBarClass = `rank-honor-border-${mhStyle}`;
-                            myHonorBadgeHTML = `<span class="ranking-honor-badge badge-${mhStyle}"><i class="fas ${mhIcon}"></i> ${mhText}</span>`;
+                            myHonorBadgeHTML = `
+                                <span class="ranking-honor-badge badge-${mhStyle}" title="${mhTitle}">
+                                    <i class="fas ${mhIcon} ranking-honor-sparkle"></i>
+                                    <span class="ranking-honor-text">${mhTitle}</span>
+                                    <i class="fas fa-sparkles ranking-honor-sparkle"></i>
+                                </span>
+                            `;
                         }
 
                         currentUserBarHTML = `
@@ -16425,7 +16530,7 @@
                     {
                         id: 'asistencia_perfecta',
                         title: 'ASISTENCIA PERFECTA 100%',
-                        shortTitle: '100% Asist.',
+                        shortTitle: 'ASISTENCIA PERFECTA 100%',
                         style: 'emerald',
                         icon: 'fa-calendar-check',
                         badge: '🌿 ASISTENCIA 100%',
@@ -16435,7 +16540,7 @@
                     {
                         id: 'primer_puesto',
                         title: '1º PUESTO · RÉCORD HISTÓRICO',
-                        shortTitle: '1º Puesto 👑',
+                        shortTitle: '1º PUESTO · RÉCORD HISTÓRICO',
                         style: 'gold',
                         icon: 'fa-crown',
                         badge: '👑 LÍDER PODIO',
@@ -16445,7 +16550,7 @@
                     {
                         id: 'cuadro_honor',
                         title: 'CUADRO DE HONOR · MÉRITO 15/15',
-                        shortTitle: 'Cuadro Honor',
+                        shortTitle: 'CUADRO DE HONOR · MÉRITO 15/15',
                         style: 'sapphire',
                         icon: 'fa-award',
                         badge: '💎 MÉRITO ACADÉMICO',
@@ -16455,7 +16560,7 @@
                     {
                         id: 'en_racha',
                         title: 'EN RACHA · IMPARABLE ON FIRE',
-                        shortTitle: 'En Racha 🔥',
+                        shortTitle: 'EN RACHA · IMPARABLE ON FIRE',
                         style: 'fire',
                         icon: 'fa-fire-flame-curved',
                         badge: '🔥 EN RACHA',
@@ -16465,7 +16570,7 @@
                     {
                         id: 'leyenda',
                         title: 'ESTATUS LEYENDA · XP RADIANT',
-                        shortTitle: 'Leyenda ⭐',
+                        shortTitle: 'ESTATUS LEYENDA · XP RADIANT',
                         style: 'radiant',
                         icon: 'fa-meteor',
                         badge: '🌌 MÁXIMO RANGO',
@@ -16735,8 +16840,10 @@
                             `;
 
                             badgePill.innerHTML = `
-                                <span class="ranking-honor-badge badge-${dist.style}">
-                                    <i class="fas ${dist.icon || 'fa-medal'}"></i> ${dist.shortTitle || dist.title}
+                                <span class="ranking-honor-badge badge-${dist.style}" title="${dist.title}">
+                                    <i class="fas ${dist.icon || 'fa-medal'} ranking-honor-sparkle"></i>
+                                    <span class="ranking-honor-text">${dist.title}</span>
+                                    <i class="fas fa-sparkles ranking-honor-sparkle"></i>
                                 </span>
                             `;
                         };
