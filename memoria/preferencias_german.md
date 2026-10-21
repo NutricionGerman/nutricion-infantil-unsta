@@ -170,6 +170,28 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Búsqueda Dinámica & URL Externa**: Barra de filtrado en tiempo real por palabras clave ("fuego", "oro", "catedra", etc.) y campo para probar cualquier URL personalizada antes de guardar.
     - **Actualización Reactiva sin Recarga Forzada**: Al pulsar "Guardar y Asignar", actualiza Firestore (`students/<up>.customBackground`), actualiza el perfil del alumno y la tabla de ranking en pantalla en el momento, y emite un toast de confirmación. Permite también quitar el fondo con un solo clic.
 
+23. **Sistema de Distintivos de Honor Épicos & Marcos Pulsantes Superpuestos (Overlay)**:
+    - **Concepto y Aislamiento del Banner**: Diseñado para premiar méritos específicos (como Asistencia Perfecta 100%, 1º Puesto Histórico, Cuadro de Honor, etc.) mediante un título animado flotante y un marco brillante pulsante que se superponen por encima del encabezado del perfil sin alterar ni sobrescribir el banner o fondo que el alumno ya tenga asignado (`student.customBackground` se conserva intacto).
+    - **Efecto Visual del Título Flotante (Ribbon Marquee)**:
+      * Cinta translúcida flotante con efecto *glassmorphism*, desenfoque de fondo y borde iluminado.
+      * Tipografía Inter ultra-black (900) con espaciado amplio, destellos laterales giratorios y un degradado de luz que brilla continuamente sobre las letras (`@keyframes textShimmer`).
+      * Animación de respiración épica (`@keyframes epicHonorBreathe` en bucle de 8.5s): entra suavemente con escala y desenfoque, se mantiene radiante, y se desvanece de forma armónica para volver a respirar sin tapar el banner de fondo ni la foto del alumno.
+    - **Marcos Pulsantes & Distintivos en el Ranking**:
+      * Marco perimetral redondeado que pulsa en sintonía con el estilo de la distinción (`.honor-frame-emerald`, `.honor-frame-gold`, `.honor-frame-fire`, `.honor-frame-sapphire`, `.honor-frame-radiant`).
+      * En la tabla de clasificación (`.rank-row`), añade un borde lateral distintivo del color del honor y una insignia brillante (`.ranking-honor-badge`) al lado del nombre del estudiante.
+    - **Panel Docente & Selector Interactivo**:
+      * Acceso mediante el botón `Distintivo de Honor` en las *Herramientas de Docente* dentro del perfil del alumno.
+      * Previsualizador en vivo que renderiza en tiempo real la foto del estudiante, su fondo actual debajo, el marco seleccionado y el ribbon flotante.
+      * Catálogo de 5 Presets Clave:
+        1. 🌿 *Asistencia Perfecta 100%* (Esmeralda con destellos menta y oro).
+        2. 👑 *1º Puesto · Récord Histórico* (Oro puro triunfal con aura de campeón).
+        3. 💎 *Cuadro de Honor · Mérito 15/15* (Zafiro celeste cibernético de excelencia académica).
+        4. 🔥 *En Racha · Imparable On Fire* (Llamas de fuego y lava incandescente).
+        5. 🌌 *Estatus Leyenda · XP Radiant* (Arcoíris prismático cromático).
+      * Modo *Personalizado*: Permite al docente tipear cualquier texto de título flotante e insignia de ranking, elegir el icono y seleccionar la paleta de color del marco.
+      * Botón *Quitar Distintivo*: Elimina el campo `honorDistinction` en Firestore (`FieldValue.delete()`) devolviendo el marco a su estado estándar.
+
+
 
 
 

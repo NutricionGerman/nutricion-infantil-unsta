@@ -4006,6 +4006,214 @@
         }
 
         @keyframes energyStripes { 0% { background-position: 0 0; } 100% { background-position: 50px 0; } }
+
+        /* ========================================================
+           MARCOS Y DISTINTIVOS DE HONOR ÉPICOS (OVERLAY MARQUEE)
+           ======================================================== */
+        @keyframes epicHonorBreathe {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -10px) scale(0.95);
+                filter: blur(4px);
+            }
+            14% {
+                opacity: 1;
+                transform: translate(-50%, 0) scale(1);
+                filter: blur(0px);
+            }
+            72% {
+                opacity: 1;
+                transform: translate(-50%, 0) scale(1);
+                filter: blur(0px);
+            }
+            86% {
+                opacity: 0;
+                transform: translate(-50%, 6px) scale(0.97);
+                filter: blur(3px);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -10px) scale(0.95);
+                filter: blur(4px);
+            }
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes sparkleSpin {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.3) rotate(90deg); opacity: 1; }
+        }
+
+        @keyframes framePulseEmerald {
+            0%, 100% { border-color: #10b981; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), inset 0 0 15px rgba(16, 185, 129, 0.15); }
+            50% { border-color: #34d399; box-shadow: 0 0 35px rgba(52, 211, 153, 0.75), inset 0 0 25px rgba(52, 211, 153, 0.25); }
+        }
+
+        @keyframes framePulseGold {
+            0%, 100% { border-color: #facc15; box-shadow: 0 0 20px rgba(250, 204, 21, 0.4), inset 0 0 15px rgba(250, 204, 21, 0.15); }
+            50% { border-color: #fef08a; box-shadow: 0 0 35px rgba(254, 240, 138, 0.75), inset 0 0 25px rgba(254, 240, 138, 0.25); }
+        }
+
+        @keyframes framePulseFire {
+            0%, 100% { border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.15); }
+            50% { border-color: #f97316; box-shadow: 0 0 35px rgba(249, 115, 22, 0.75), inset 0 0 25px rgba(249, 115, 22, 0.25); }
+        }
+
+        @keyframes framePulseSapphire {
+            0%, 100% { border-color: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.15); }
+            50% { border-color: #818cf8; box-shadow: 0 0 35px rgba(129, 140, 248, 0.75), inset 0 0 25px rgba(129, 140, 248, 0.25); }
+        }
+
+        @keyframes framePulseRadiant {
+            0% { border-color: #ff4757; box-shadow: 0 0 25px rgba(255, 71, 87, 0.6); }
+            25% { border-color: #ffa502; box-shadow: 0 0 25px rgba(255, 165, 2, 0.6); }
+            50% { border-color: #2ed573; box-shadow: 0 0 25px rgba(46, 213, 115, 0.6); }
+            75% { border-color: #1e90ff; box-shadow: 0 0 25px rgba(30, 144, 255, 0.6); }
+            100% { border-color: #ff4757; box-shadow: 0 0 25px rgba(255, 71, 87, 0.6); }
+        }
+
+        .honor-frame-emerald {
+            border: 2px solid #10b981 !important;
+            animation: framePulseEmerald 3s ease-in-out infinite !important;
+        }
+        .honor-frame-gold {
+            border: 2px solid #facc15 !important;
+            animation: framePulseGold 3s ease-in-out infinite !important;
+        }
+        .honor-frame-fire {
+            border: 2px solid #ef4444 !important;
+            animation: framePulseFire 2.5s ease-in-out infinite !important;
+        }
+        .honor-frame-sapphire {
+            border: 2px solid #38bdf8 !important;
+            animation: framePulseSapphire 3s ease-in-out infinite !important;
+        }
+        .honor-frame-radiant {
+            border: 2px solid #ff4757 !important;
+            animation: framePulseRadiant 4s ease-in-out infinite !important;
+        }
+
+        .epic-honor-floating-marquee {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 10;
+            pointer-events: none;
+            animation: epicHonorBreathe 8.5s ease-in-out infinite;
+            width: max-content;
+            max-width: 90%;
+        }
+
+        .epic-honor-ribbon {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 20px;
+            border-radius: 30px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            user-select: none;
+        }
+
+        .epic-honor-text {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-size: 0.82rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s linear infinite;
+        }
+
+        .epic-honor-sparkle {
+            font-size: 0.95rem;
+            animation: sparkleSpin 3s ease-in-out infinite;
+        }
+
+        /* Estilos de Ribbon según categoría */
+        .epic-honor-floating-marquee.style-emerald .epic-honor-ribbon {
+            background: linear-gradient(135deg, rgba(6, 41, 30, 0.88) 0%, rgba(4, 20, 15, 0.94) 100%);
+            border-color: rgba(16, 185, 129, 0.65);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(16, 185, 129, 0.45);
+        }
+        .epic-honor-floating-marquee.style-emerald .epic-honor-text {
+            background-image: linear-gradient(90deg, #34d399 0%, #ffffff 30%, #ffd700 50%, #ffffff 70%, #34d399 100%);
+        }
+        .epic-honor-floating-marquee.style-emerald .epic-honor-sparkle { color: #34d399; text-shadow: 0 0 10px #34d399; }
+
+        .epic-honor-floating-marquee.style-gold .epic-honor-ribbon {
+            background: linear-gradient(135deg, rgba(45, 34, 8, 0.9) 0%, rgba(20, 16, 8, 0.95) 100%);
+            border-color: rgba(250, 204, 21, 0.7);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(250, 204, 21, 0.5);
+        }
+        .epic-honor-floating-marquee.style-gold .epic-honor-text {
+            background-image: linear-gradient(90deg, #facc15 0%, #ffffff 25%, #fef08a 50%, #ffffff 75%, #facc15 100%);
+        }
+        .epic-honor-floating-marquee.style-gold .epic-honor-sparkle { color: #facc15; text-shadow: 0 0 10px #facc15; }
+
+        .epic-honor-floating-marquee.style-fire .epic-honor-ribbon {
+            background: linear-gradient(135deg, rgba(69, 10, 10, 0.9) 0%, rgba(20, 4, 4, 0.95) 100%);
+            border-color: rgba(239, 68, 68, 0.7);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(239, 68, 68, 0.5);
+        }
+        .epic-honor-floating-marquee.style-fire .epic-honor-text {
+            background-image: linear-gradient(90deg, #f87171 0%, #fef08a 35%, #ffffff 50%, #f97316 75%, #f87171 100%);
+        }
+        .epic-honor-floating-marquee.style-fire .epic-honor-sparkle { color: #f97316; text-shadow: 0 0 10px #f97316; }
+
+        .epic-honor-floating-marquee.style-sapphire .epic-honor-ribbon {
+            background: linear-gradient(135deg, rgba(14, 23, 38, 0.9) 0%, rgba(8, 13, 23, 0.95) 100%);
+            border-color: rgba(56, 189, 248, 0.7);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(56, 189, 248, 0.5);
+        }
+        .epic-honor-floating-marquee.style-sapphire .epic-honor-text {
+            background-image: linear-gradient(90deg, #38bdf8 0%, #ffffff 30%, #818cf8 50%, #ffffff 70%, #38bdf8 100%);
+        }
+        .epic-honor-floating-marquee.style-sapphire .epic-honor-sparkle { color: #38bdf8; text-shadow: 0 0 10px #38bdf8; }
+
+        .epic-honor-floating-marquee.style-radiant .epic-honor-ribbon {
+            background: linear-gradient(135deg, rgba(29, 10, 40, 0.9) 0%, rgba(14, 4, 23, 0.95) 100%);
+            border-color: rgba(255, 71, 87, 0.7);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 25px rgba(255, 71, 87, 0.5);
+        }
+        .epic-honor-floating-marquee.style-radiant .epic-honor-text {
+            background-image: linear-gradient(90deg, #ff4757 0%, #ffa502 25%, #2ed573 50%, #1e90ff 75%, #ff4757 100%);
+        }
+        .epic-honor-floating-marquee.style-radiant .epic-honor-sparkle { color: #ffa502; text-shadow: 0 0 10px #ffa502; }
+
+        /* Insignia en Ranking */
+        .ranking-honor-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+        .ranking-honor-badge.badge-emerald { background: rgba(16,185,129,0.2); border: 1px solid #10b981; color: #a7f3d0; box-shadow: 0 0 8px rgba(16,185,129,0.35); }
+        .ranking-honor-badge.badge-gold { background: rgba(250,204,21,0.2); border: 1px solid #facc15; color: #fef08a; box-shadow: 0 0 8px rgba(250,204,21,0.35); }
+        .ranking-honor-badge.badge-fire { background: rgba(239,68,68,0.2); border: 1px solid #ef4444; color: #fca5a5; box-shadow: 0 0 8px rgba(239,68,68,0.35); }
+        .ranking-honor-badge.badge-sapphire { background: rgba(56,189,248,0.2); border: 1px solid #38bdf8; color: #bae6fd; box-shadow: 0 0 8px rgba(56,189,248,0.35); }
+        .ranking-honor-badge.badge-radiant { background: rgba(255,71,87,0.2); border: 1px solid #ff4757; color: #fecdd3; box-shadow: 0 0 8px rgba(255,71,87,0.35); }
+
+        .rank-row.rank-honor-border-emerald { border-left: 4px solid #10b981 !important; }
+        .rank-row.rank-honor-border-gold { border-left: 4px solid #facc15 !important; }
+        .rank-row.rank-honor-border-fire { border-left: 4px solid #ef4444 !important; }
+        .rank-row.rank-honor-border-sapphire { border-left: 4px solid #38bdf8 !important; }
+        .rank-row.rank-honor-border-radiant { border-left: 4px solid #ff4757 !important; }
         .tier-supreme .tier-name i { color: #00F0FF; filter: drop-shadow(0 0 15px #00F0FF); }
         .fill-supreme { 
             background: linear-gradient(90deg, #180033, #e056fd, #00F0FF, #180033);
@@ -10867,8 +11075,18 @@
                             }
                         }
 
+                        let honorRowClass = '';
+                        let honorBadgeHTML = '';
+                        if (student.honorDistinction && student.honorDistinction.style) {
+                            const hStyle = student.honorDistinction.style;
+                            const hIcon = student.honorDistinction.icon || 'fa-medal';
+                            const hText = student.honorDistinction.shortTitle || student.honorDistinction.title || 'Honor';
+                            honorRowClass = `rank-honor-border-${hStyle}`;
+                            honorBadgeHTML = `<span class="ranking-honor-badge badge-${hStyle}" title="${student.honorDistinction.title || ''}"><i class="fas ${hIcon}"></i> ${hText}</span>`;
+                        }
+
                         listHTML += `
-                        <div class="rank-row ${rankClass} group-member-item ${isVideo ? 'has-video-banner' : ''}" data-up="${student.up}" ${rowStyle}>
+                        <div class="rank-row ${rankClass} group-member-item ${isVideo ? 'has-video-banner' : ''} ${honorRowClass}" data-up="${student.up}" ${rowStyle}>
                             ${videoHTML}
                             <div class="rank-number">${index + 1}</div>
                             <div class="avatar-container">
@@ -10876,8 +11094,9 @@
                                 <div id="photo-stu-${student.up}"></div>
                             </div>
                             <div class="user-info">
-                                <div class="name-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                                <div class="name-wrapper" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                     <div class="user-name" style="color: white; font-size: 14px; font-weight: 600;">${firstNameOnly}</div>
+                                    ${honorBadgeHTML}
                                     ${cromosHTML}
                                 </div>
                             </div>
@@ -10941,17 +11160,28 @@
                             });
                         }
 
+                        let myHonorBadgeHTML = '';
+                        let myHonorBarClass = '';
+                        if (me.honorDistinction && me.honorDistinction.style) {
+                            const mhStyle = me.honorDistinction.style;
+                            const mhIcon = me.honorDistinction.icon || 'fa-medal';
+                            const mhText = me.honorDistinction.shortTitle || me.honorDistinction.title || 'Honor';
+                            myHonorBarClass = `rank-honor-border-${mhStyle}`;
+                            myHonorBadgeHTML = `<span class="ranking-honor-badge badge-${mhStyle}"><i class="fas ${mhIcon}"></i> ${mhText}</span>`;
+                        }
+
                         currentUserBarHTML = `
                         <div class="ranking-current-user-wrapper">
-                            <div class="current-user-bar" data-up="${me.up}">
+                            <div class="current-user-bar ${myHonorBarClass}" data-up="${me.up}">
                                 <div class="badge-you">ESTE ERES TÚ</div>
                                 <div class="rank-number" style="width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 1rem; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1);">${myIndex + 1}</div>
                                 <div class="avatar-container">
                                     <div id="photo-stu-current-user"></div>
                                 </div>
                                 <div class="user-info" style="flex-grow: 1;">
-                                    <div class="name-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                                    <div class="name-wrapper" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                         <div class="user-name" style="color: white; font-size: 14px; font-weight: 700;">${myFirstNameOnly}</div>
+                                        ${myHonorBadgeHTML}
                                         ${myCromosHTML}
                                     </div>
                                 </div>
@@ -11535,6 +11765,7 @@
                         <div style="display:flex; gap: 10px; flex-wrap: wrap;">
                             <button class="nav-button" onclick="adminModXP('${student.up}')" style="border-color: var(--xp-color); color: var(--xp-color); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-star"></i> Modificar XP</button>
                             <button class="nav-button" onclick="adminModBackground('${student.up}')" style="border-color: #ec4899; color: #ec4899; padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-palette"></i> Banner / Fondo Animado</button>
+                            <button class="nav-button" onclick="adminModHonorDistinction('${student.up}')" style="border-color: #10b981; color: #10b981; padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-medal"></i> Distintivo de Honor</button>
                             <button class="nav-button" onclick="adminModManualAtt('${student.up}')" style="border-color: var(--accent-teal); color: var(--accent-teal); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-user-check"></i> Asistencia Normal</button>
                         </div>
                     </div>
@@ -11572,6 +11803,26 @@
                     student.customBackground.includes('.mp4?')
                 );
 
+                // --- DISTINTIVO DE HONOR ÉPICO (OVERLAY MARQUEE & MARCO) ---
+                let honorFrameClass = '';
+                let honorMarqueeHTML = '';
+                if (student.honorDistinction && student.honorDistinction.style) {
+                    const hStyle = student.honorDistinction.style;
+                    const hIcon = student.honorDistinction.icon || 'fa-medal';
+                    const hTitle = student.honorDistinction.title || 'Distintivo de Honor';
+                    honorFrameClass = `honor-frame-${hStyle}`;
+                    honorMarqueeHTML = `
+                        <div class="epic-honor-floating-marquee style-${hStyle}">
+                            <div class="epic-honor-ribbon">
+                                <i class="fas ${hIcon} epic-honor-sparkle"></i>
+                                <span class="epic-honor-text">${hTitle}</span>
+                                <i class="fas fa-sparkles epic-honor-sparkle"></i>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                let headerInlineStyle = '';
                 if (student.customBackground) {
                     if (isVideo) {
                         videoHeaderHTML = `
@@ -11580,15 +11831,19 @@
                             </video>
                             <div class="portal-header-video-overlay" style="position: absolute; inset:0; background: linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(15,17,23,0.35) 45%, rgba(15,17,23,0.1) 100%); z-index: 1; pointer-events: none;"></div>
                         `;
+                        headerInlineStyle = 'position: relative; overflow: hidden; border-radius: 24px; border: 1px solid var(--accent-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.6);';
                     } else {
-                        headerBg = `background: linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(26,26,46,0.35) 50%, rgba(26,26,46,0.1) 100%), url('${student.customBackground}') center/cover no-repeat; border-radius: 24px; border: 1px solid var(--accent-orange); text-shadow: 0 2px 5px rgba(0,0,0,0.9);`;
+                        headerInlineStyle = `background: linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(26,26,46,0.35) 50%, rgba(26,26,46,0.1) 100%), url('${student.customBackground}') center/cover no-repeat; border-radius: 24px; border: 1px solid var(--accent-orange); text-shadow: 0 2px 5px rgba(0,0,0,0.9); position: relative;`;
                     }
+                } else {
+                    headerInlineStyle = 'position: relative; border-radius: 24px; border: 1px solid rgba(255,255,255,0.1); background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);';
                 }
 
                 portalHTML += `
                 <div class="app-profile-container">
                     
-                    <div class="app-profile-header ${isVideo ? 'has-video-banner' : ''}" style="${isVideo ? 'position: relative; overflow: hidden; border-radius: 24px; border: 1px solid var(--accent-orange); box-shadow: 0 10px 30px rgba(0,0,0,0.6);' : (headerBg ? `${headerBg}` : '')}">
+                    <div class="app-profile-header ${isVideo ? 'has-video-banner' : ''} ${honorFrameClass}" style="${headerInlineStyle}">
+                        ${honorMarqueeHTML}
                         ${videoHeaderHTML}
                         <div class="app-avatar-wrapper" style="position: relative; z-index: 2;">
                             <div id="portal-photo" style="width: 100%; height: 100%; border-radius: 50%; overflow: hidden; display: flex; justify-content: center; align-items: center;">
@@ -16145,6 +16400,474 @@
                                 }
                             });
                         }
+                    }
+                });
+            };
+
+
+            // ========================================================
+            // PANEL DOCENTE: DISTINTIVO DE HONOR ÉPICO (OVERLAY MARQUEE)
+            // ========================================================
+            window.adminModHonorDistinction = async (up) => {
+                const studentsList = (window.fullData && window.fullData.students) ? window.fullData.students : [];
+                const s = studentsList.find(st => String(st.up).trim() === String(up).trim());
+                if (!s) {
+                    Swal.fire('Error', 'No se encontró la información del alumno con UP ' + up, 'error');
+                    return;
+                }
+
+                const studentDisplayName = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || s.name || 'Alumno sin nombre'}`.trim();
+                
+                let currentDistinction = s.honorDistinction ? { ...s.honorDistinction } : null;
+                let activeDistinction = currentDistinction ? { ...currentDistinction } : null;
+
+                const presets = [
+                    {
+                        id: 'asistencia_perfecta',
+                        title: 'ASISTENCIA PERFECTA 100%',
+                        shortTitle: '100% Asist.',
+                        style: 'emerald',
+                        icon: 'fa-calendar-check',
+                        badge: '🌿 ASISTENCIA 100%',
+                        desc: 'Constancia absoluta e impecable en todas las clases',
+                        accent: '#10b981'
+                    },
+                    {
+                        id: 'primer_puesto',
+                        title: '1º PUESTO · RÉCORD HISTÓRICO',
+                        shortTitle: '1º Puesto 👑',
+                        style: 'gold',
+                        icon: 'fa-crown',
+                        badge: '👑 LÍDER PODIO',
+                        desc: 'Líder supremo en la cima del podio de la cátedra',
+                        accent: '#facc15'
+                    },
+                    {
+                        id: 'cuadro_honor',
+                        title: 'CUADRO DE HONOR · MÉRITO 15/15',
+                        shortTitle: 'Cuadro Honor',
+                        style: 'sapphire',
+                        icon: 'fa-award',
+                        badge: '💎 MÉRITO ACADÉMICO',
+                        desc: 'Excelencia de élite en entrega de trabajos prácticos',
+                        accent: '#38bdf8'
+                    },
+                    {
+                        id: 'en_racha',
+                        title: 'EN RACHA · IMPARABLE ON FIRE',
+                        shortTitle: 'En Racha 🔥',
+                        style: 'fire',
+                        icon: 'fa-fire-flame-curved',
+                        badge: '🔥 EN RACHA',
+                        desc: 'Superación continua y racha activa en la cátedra',
+                        accent: '#f97316'
+                    },
+                    {
+                        id: 'leyenda',
+                        title: 'ESTATUS LEYENDA · XP RADIANT',
+                        shortTitle: 'Leyenda ⭐',
+                        style: 'radiant',
+                        icon: 'fa-meteor',
+                        badge: '🌌 MÁXIMO RANGO',
+                        desc: 'Rango legendario cósmico alcanzado en la gamificación',
+                        accent: '#ff4757'
+                    }
+                ];
+
+                const modalHtml = `
+                <style>
+                    .honor-swal-popup {
+                        border: 1px solid rgba(16, 185, 129, 0.4) !important;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9) !important;
+                        border-radius: 22px !important;
+                    }
+                    .honor-preset-card {
+                        background: rgba(255, 255, 255, 0.03);
+                        border: 2px solid rgba(255, 255, 255, 0.08);
+                        border-radius: 12px;
+                        padding: 12px 14px;
+                        cursor: pointer;
+                        transition: all 0.22s ease;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+                        position: relative;
+                        user-select: none;
+                        text-align: left;
+                    }
+                    .honor-preset-card:hover {
+                        transform: translateY(-2px);
+                        border-color: rgba(255, 255, 255, 0.3);
+                        background: rgba(255, 255, 255, 0.06);
+                    }
+                    .honor-preset-card.active {
+                        border-color: var(--card-accent, #10b981) !important;
+                        box-shadow: 0 0 20px rgba(16, 185, 129, 0.35) !important;
+                        background: rgba(16, 185, 129, 0.08) !important;
+                    }
+                    .honor-style-dot {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        border: 2px solid transparent;
+                        transition: all 0.2s;
+                    }
+                    .honor-style-dot.selected {
+                        transform: scale(1.2);
+                        border-color: #fff;
+                        box-shadow: 0 0 10px rgba(255,255,255,0.8);
+                    }
+                </style>
+
+                <div style="font-family: 'Inter', system-ui, sans-serif; text-align: left;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div>
+                            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">Estudiante Seleccionado</div>
+                            <div style="font-size: 1.05rem; font-weight: 700; color: #f8fafc;">${studentDisplayName} <span style="font-size: 0.8rem; color: #38bdf8; font-weight: 600;">(UP: ${s.up})</span></div>
+                        </div>
+                        <div id="honor-current-badge-indicator" style="font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 700; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); color: #cbd5e1;">
+                            ${currentDistinction ? '<i class="fas fa-check-circle" style="color:#10b981;"></i> Distintivo Activo' : 'Sin Distintivo'}
+                        </div>
+                    </div>
+
+                    <!-- VISTA PREVIA EN VIVO -->
+                    <div style="margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px;">
+                                <i class="fas fa-eye" style="color:#10b981;"></i> Previsualización en Vivo del Perfil
+                            </span>
+                            <span style="font-size: 0.72rem; color: #64748b;">El fondo actual del alumno se conserva 100% debajo</span>
+                        </div>
+                        
+                        <div id="honor-preview-header" style="position: relative; height: 160px; border-radius: 18px; border: 2px solid rgba(255,255,255,0.12); overflow: hidden; display: flex; align-items: flex-end; padding: 18px 20px; box-sizing: border-box; transition: all 0.3s ease;">
+                            <!-- Background (SVG / Video / IMG / Glass) -->
+                            <div id="honor-preview-bg" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;"></div>
+                            
+                            <!-- Floating Epic Ribbon Marquee -->
+                            <div id="honor-preview-marquee-slot" style="position: absolute; top: 12px; left: 50%; transform: translate(-50%, 0); z-index: 10; pointer-events: none; width: max-content; max-width: 90%;"></div>
+
+                            <!-- Avatar & Name at bottom -->
+                            <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 14px;">
+                                <div id="honor-preview-avatar" style="width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.6);">
+                                    <i class="fas fa-user" style="font-size: 1.5rem; color: #94a3b8;"></i>
+                                </div>
+                                <div>
+                                    <div style="color: #fff; font-weight: 700; font-size: 1.1rem; text-shadow: 0 2px 6px rgba(0,0,0,0.9);">${studentDisplayName}</div>
+                                    <div id="honor-preview-badge-pill" style="margin-top: 4px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRESETS GRID -->
+                    <div style="font-size: 0.78rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
+                        Selecciona un Distintivo de Honor Preconfigurado:
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 9px; margin-bottom: 14px;" id="honor-preset-container">
+                        ${presets.map(p => `
+                            <div class="honor-preset-card ${activeDistinction && activeDistinction.style === p.style && activeDistinction.title === p.title ? 'active' : ''}" data-preset-id="${p.id}" style="--card-accent: ${p.accent};">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <span style="font-size: 0.7rem; font-weight: 800; color: ${p.accent}; padding: 2px 7px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid ${p.accent}55;">
+                                        <i class="fas ${p.icon}"></i> ${p.badge}
+                                    </span>
+                                    <i class="fas fa-chevron-right" style="font-size: 0.7rem; color: #64748b;"></i>
+                                </div>
+                                <div style="font-weight: 800; font-size: 0.84rem; color: #fff; margin-top: 4px; letter-spacing: 0.5px;">${p.title}</div>
+                                <div style="font-size: 0.74rem; color: #94a3b8; line-height: 1.3;">${p.desc}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <!-- OPCIÓN PERSONALIZADA TOGGLE -->
+                    <div style="background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 14px; margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" id="honor-custom-toggle-btn">
+                            <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                                <i class="fas fa-sliders-h"></i> Crear Distintivo Personalizado a Medida
+                            </span>
+                            <i class="fas fa-chevron-down" id="honor-custom-arrow" style="font-size: 0.75rem; color: #38bdf8; transition: transform 0.2s;"></i>
+                        </div>
+                        <div id="honor-custom-panel" style="display: none; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                                <div>
+                                    <label style="font-size: 0.72rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 4px;">Título Flotante Épico:</label>
+                                    <input type="text" id="honor-custom-title" value="${activeDistinction && activeDistinction.id === 'custom' ? activeDistinction.title : ''}" placeholder="Ej: ASISTENCIA PERFECTA 100%" style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 0.78rem; font-weight: 700;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 0.72rem; color: #94a3b8; font-weight: 600; display: block; margin-bottom: 4px;">Texto para Insignia Ranking:</label>
+                                    <input type="text" id="honor-custom-short" value="${activeDistinction && activeDistinction.id === 'custom' ? activeDistinction.shortTitle : ''}" placeholder="Ej: 100% Asist." style="width: 100%; box-sizing: border-box; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 0.78rem;">
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Estilo y Color del Marco:</span>
+                                    <div style="display: flex; gap: 6px;" id="honor-style-picker">
+                                        <div class="honor-style-dot ${(!activeDistinction || activeDistinction.style === 'emerald') ? 'selected' : ''}" data-style="emerald" style="background: #10b981;" title="Esmeralda"></div>
+                                        <div class="honor-style-dot ${activeDistinction && activeDistinction.style === 'gold' ? 'selected' : ''}" data-style="gold" style="background: #facc15;" title="Oro"></div>
+                                        <div class="honor-style-dot ${activeDistinction && activeDistinction.style === 'sapphire' ? 'selected' : ''}" data-style="sapphire" style="background: #38bdf8;" title="Zafiro"></div>
+                                        <div class="honor-style-dot ${activeDistinction && activeDistinction.style === 'fire' ? 'selected' : ''}" data-style="fire" style="background: #ef4444;" title="Fuego"></div>
+                                        <div class="honor-style-dot ${activeDistinction && activeDistinction.style === 'radiant' ? 'selected' : ''}" data-style="radiant" style="background: linear-gradient(45deg, #ff4757, #ffa502, #2ed573, #1e90ff);" title="Radiante"></div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 600;">Icono:</span>
+                                    <select id="honor-custom-icon" style="background: #1e293b; color: #fff; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 4px 8px; font-size: 0.75rem;">
+                                        <option value="fa-calendar-check">📅 Calendario / Asistencia</option>
+                                        <option value="fa-medal">🏅 Medalla de Honor</option>
+                                        <option value="fa-crown">👑 Corona Real</option>
+                                        <option value="fa-award">🎖️ Escudo Mérito</option>
+                                        <option value="fa-fire-flame-curved">🔥 Fuego / Racha</option>
+                                        <option value="fa-meteor">☄️ Meteoro / Leyenda</option>
+                                        <option value="fa-star">⭐ Estrella Brillante</option>
+                                        <option value="fa-trophy">🏆 Trofeo Dorado</option>
+                                        <option value="fa-graduation-cap">🎓 Birrete Académico</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FOOTER ACTIONS -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <button id="honor-btn-remove" style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-trash-alt"></i> Quitar Distintivo
+                        </button>
+                        <div style="display: flex; gap: 8px;">
+                            <button id="honor-btn-cancel" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+                                Cancelar
+                            </button>
+                            <button id="honor-btn-save" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: white; padding: 6px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
+                                <i class="fas fa-check-circle"></i> Guardar y Asignar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                Swal.fire({
+                    title: `<div style="display:flex; align-items:center; justify-content:center; gap:10px; font-size:1.15rem; color:#10b981; font-weight:800;">
+                        <i class="fas fa-medal"></i> Distintivo de Honor & Título Épico
+                    </div>`,
+                    html: modalHtml,
+                    width: '850px',
+                    padding: '1.25rem',
+                    background: '#121420',
+                    color: '#ffffff',
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    focusConfirm: false,
+                    customClass: {
+                        popup: 'honor-swal-popup'
+                    },
+                    didOpen: (modalEl) => {
+                        const previewHeader = modalEl.querySelector('#honor-preview-header');
+                        const bgBox = modalEl.querySelector('#honor-preview-bg');
+                        const marqueeSlot = modalEl.querySelector('#honor-preview-marquee-slot');
+                        const badgePill = modalEl.querySelector('#honor-preview-badge-pill');
+                        const avatarEl = modalEl.querySelector('#honor-preview-avatar');
+                        const presetCards = modalEl.querySelectorAll('.honor-preset-card');
+                        const toggleCustomBtn = modalEl.querySelector('#honor-custom-toggle-btn');
+                        const customPanel = modalEl.querySelector('#honor-custom-panel');
+                        const customArrow = modalEl.querySelector('#honor-custom-arrow');
+                        const customTitleInput = modalEl.querySelector('#honor-custom-title');
+                        const customShortInput = modalEl.querySelector('#honor-custom-short');
+                        const customIconSelect = modalEl.querySelector('#honor-custom-icon');
+                        const styleDots = modalEl.querySelectorAll('.honor-style-dot');
+                        const removeBtn = modalEl.querySelector('#honor-btn-remove');
+                        const cancelBtn = modalEl.querySelector('#honor-btn-cancel');
+                        const saveBtn = modalEl.querySelector('#honor-btn-save');
+
+                        let selectedCustomStyle = (activeDistinction && activeDistinction.style) || 'emerald';
+
+                        // Cargar foto del alumno
+                        if (typeof findImage === 'function') {
+                            findImage(s.up, (photoHTML) => {
+                                if (avatarEl && photoHTML) {
+                                    avatarEl.innerHTML = photoHTML;
+                                    const img = avatarEl.querySelector('img');
+                                    if (img) img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 50%;';
+                                }
+                            });
+                        }
+
+                        // Cargar fondo actual del alumno en la caja de preview
+                        if (s.customBackground) {
+                            const isVid = s.customBackground.endsWith('.mp4') || s.customBackground.endsWith('.webm') || s.customBackground.includes('.mp4?');
+                            if (isVid) {
+                                bgBox.innerHTML = `
+                                    <video autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; opacity:0.85;">
+                                        <source src="${s.customBackground}" type="video/mp4">
+                                    </video>
+                                    <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(15,17,23,0.3) 50%, rgba(15,17,23,0.1) 100%);"></div>
+                                `;
+                            } else {
+                                bgBox.style.background = `linear-gradient(0deg, rgba(15,17,23,0.95) 0%, rgba(26,26,46,0.35) 50%, rgba(26,26,46,0.1) 100%), url('${s.customBackground}') center/cover no-repeat`;
+                            }
+                        } else {
+                            bgBox.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)';
+                        }
+
+                        // Función para refrescar el preview
+                        const updatePreview = (dist) => {
+                            // Remover clases de marcos previos
+                            ['honor-frame-emerald', 'honor-frame-gold', 'honor-frame-sapphire', 'honor-frame-fire', 'honor-frame-radiant'].forEach(cls => {
+                                previewHeader.classList.remove(cls);
+                            });
+
+                            if (!dist || !dist.style || !dist.title) {
+                                previewHeader.style.border = '2px solid rgba(255,255,255,0.12)';
+                                marqueeSlot.innerHTML = '';
+                                badgePill.innerHTML = '<span style="font-size:0.75rem; color:#64748b;"><i class="fas fa-minus-circle"></i> Sin Distintivo Activo (Marco Estándar)</span>';
+                                return;
+                            }
+
+                            previewHeader.style.border = '';
+                            previewHeader.classList.add(`honor-frame-${dist.style}`);
+                            
+                            marqueeSlot.innerHTML = `
+                                <div class="epic-honor-floating-marquee style-${dist.style}" style="position:relative; top:0; left:0; transform:none; animation:none; opacity:1;">
+                                    <div class="epic-honor-ribbon">
+                                        <i class="fas ${dist.icon || 'fa-medal'} epic-honor-sparkle"></i>
+                                        <span class="epic-honor-text">${dist.title}</span>
+                                        <i class="fas fa-sparkles epic-honor-sparkle"></i>
+                                    </div>
+                                </div>
+                            `;
+
+                            badgePill.innerHTML = `
+                                <span class="ranking-honor-badge badge-${dist.style}">
+                                    <i class="fas ${dist.icon || 'fa-medal'}"></i> ${dist.shortTitle || dist.title}
+                                </span>
+                            `;
+                        };
+
+                        // Inicializar vista previa
+                        updatePreview(activeDistinction);
+
+                        // Presets click
+                        presetCards.forEach(card => {
+                            card.addEventListener('click', () => {
+                                const pId = card.dataset.presetId;
+                                const p = presets.find(item => item.id === pId);
+                                if (p) {
+                                    presetCards.forEach(c => c.classList.remove('active'));
+                                    card.classList.add('active');
+                                    activeDistinction = {
+                                        id: p.id,
+                                        title: p.title,
+                                        shortTitle: p.shortTitle,
+                                        style: p.style,
+                                        icon: p.icon
+                                    };
+                                    updatePreview(activeDistinction);
+                                }
+                            });
+                        });
+
+                        // Toggle custom
+                        toggleCustomBtn.addEventListener('click', () => {
+                            const isHidden = customPanel.style.display === 'none';
+                            customPanel.style.display = isHidden ? 'block' : 'none';
+                            customArrow.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+                        });
+
+                        // Eventos Custom
+                        const applyCustom = () => {
+                            const tVal = (customTitleInput.value || '').trim();
+                            const sVal = (customShortInput.value || '').trim() || tVal;
+                            if (tVal) {
+                                presetCards.forEach(c => c.classList.remove('active'));
+                                activeDistinction = {
+                                    id: 'custom',
+                                    title: tVal,
+                                    shortTitle: sVal,
+                                    style: selectedCustomStyle,
+                                    icon: customIconSelect.value
+                                };
+                                updatePreview(activeDistinction);
+                            }
+                        };
+
+                        customTitleInput.addEventListener('input', applyCustom);
+                        customShortInput.addEventListener('input', applyCustom);
+                        customIconSelect.addEventListener('change', applyCustom);
+
+                        styleDots.forEach(dot => {
+                            dot.addEventListener('click', () => {
+                                styleDots.forEach(d => d.classList.remove('selected'));
+                                dot.classList.add('selected');
+                                selectedCustomStyle = dot.dataset.style;
+                                applyCustom();
+                            });
+                        });
+
+                        // Botón Quitar
+                        removeBtn.addEventListener('click', () => {
+                            activeDistinction = null;
+                            presetCards.forEach(c => c.classList.remove('active'));
+                            customTitleInput.value = '';
+                            customShortInput.value = '';
+                            updatePreview(null);
+                        });
+
+                        // Botón Cancelar
+                        cancelBtn.addEventListener('click', () => Swal.close());
+
+                        // Botón Guardar
+                        saveBtn.addEventListener('click', async () => {
+                            saveBtn.disabled = true;
+                            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+                            try {
+                                if (activeDistinction && activeDistinction.title && activeDistinction.style) {
+                                    const dataToSave = {
+                                        type: activeDistinction.id || 'custom',
+                                        title: activeDistinction.title.trim(),
+                                        shortTitle: (activeDistinction.shortTitle || activeDistinction.title).trim(),
+                                        style: activeDistinction.style,
+                                        icon: activeDistinction.icon || 'fa-medal',
+                                        assignedAt: new Date().toISOString()
+                                    };
+                                    await db.collection('students').doc(String(up).trim()).update({
+                                        honorDistinction: dataToSave
+                                    });
+                                    s.honorDistinction = dataToSave;
+                                } else {
+                                    await db.collection('students').doc(String(up).trim()).update({
+                                        honorDistinction: firebase.firestore.FieldValue.delete()
+                                    });
+                                    delete s.honorDistinction;
+                                }
+
+                                Swal.close();
+
+                                // Refrescar vistas en vivo
+                                if (typeof displayStudentPortalView === 'function') {
+                                    try { displayStudentPortalView(s); } catch (e) { console.warn(e); }
+                                }
+                                if (typeof generateRanking === 'function') {
+                                    try { generateRanking(); } catch (e) { console.warn(e); }
+                                }
+                                if (typeof displayExtendedStudentRanking === 'function') {
+                                    try { displayExtendedStudentRanking(); } catch (e) { console.warn(e); }
+                                }
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: activeDistinction ? '¡Distintivo de Honor Asignado!' : '¡Distintivo Removido!',
+                                    text: activeDistinction ? `Se asignó "${activeDistinction.title}" a ${studentDisplayName}.` : `Se removió el distintivo de ${studentDisplayName}.`,
+                                    timer: 2000,
+                                    showConfirmButton: false,
+                                    background: '#121420',
+                                    color: '#fff'
+                                });
+                            } catch (err) {
+                                console.error(err);
+                                saveBtn.disabled = false;
+                                saveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Reintentar';
+                                Swal.fire('Error al Guardar', 'No se pudo guardar en Firestore: ' + err.message, 'error');
+                            }
+                        });
                     }
                 });
             };
