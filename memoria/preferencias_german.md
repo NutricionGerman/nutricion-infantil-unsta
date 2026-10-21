@@ -157,6 +157,19 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * **19 alumnos ascendieron de Rango** en el portal oficial tras la impactación.
       * Archivo físico oficial generado en `catedra/asistencias/asistencia 21-10.txt`.
 
+22. **Selector Visual de Fondos Animados & Banners en Panel Docente**:
+    - **Acceso Directo desde Perfil de Alumno**: En la vista de perfil de cualquier alumno, dentro del bloque *Herramientas de Docente*, el botón `Banner / Fondo Animado` abre un modal interactivo completo con galería visual y previsualizador en vivo.
+    - **Live Preview en Tiempo Real**: Simula con fidelidad el encabezado real del portal (con avatar del alumno, nombre, UP, grupo y puntos). Al hacer clic en cualquier tarjeta de la galería, el banner cambia instantáneamente en la vista previa (soporta tanto imágenes/GIFs con degradado oscuro oficial como videos `.mp4` en loop).
+    - **Catálogo Curado con Filtros por Pestañas**:
+      * *👑 Podio & Épicos*: `Alteration Gold UI` (VFX Oro recomendado para 1º Puesto), `Dark Gold Ornaments` (VFX recomendado para 2º Puesto), `Universo Galaxia` (Recomendado para 3º Puesto), `Hero Cátedra MP4` (Video loop de alta gama), `Aura Celeste Divina`.
+      * *🏛️ Oficial Cátedra*: 10 banners institucionales UNSTA (`rendimiento.png`, `promocion.png`, `grupal.png`, `individual.png`, `Regular.png`, `Libre.png`, etc.).
+      * *⚡ VFX & Magia*: Fuego Carmesí, Ki Super Saiyan, Stealth Speed, Partículas, Neón, Éter Oscuro, etc.
+      * *🕹️ Pixel & Lo-Fi*: Lluvia en ventana, Setup Gamer Lo-Fi, Estudio calma, Michis pescando, Sunset naranja, Pac-Man, etc.
+      * *🎬 Videos MP4*: Soporte de bucles de video como banner de perfil y fila de ranking.
+    - **Búsqueda Dinámica & URL Externa**: Barra de filtrado en tiempo real por palabras clave ("fuego", "oro", "catedra", etc.) y campo para probar cualquier URL personalizada antes de guardar.
+    - **Actualización Reactiva sin Recarga Forzada**: Al pulsar "Guardar y Asignar", actualiza Firestore (`students/<up>.customBackground`), actualiza el perfil del alumno y la tabla de ranking en pantalla en el momento, y emite un toast de confirmación. Permite también quitar el fondo con un solo clic.
+
+
 
 
 

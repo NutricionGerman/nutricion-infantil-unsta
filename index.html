@@ -11546,7 +11546,7 @@
                         <h4 style="color: var(--accent-orange); margin: 0 0 10px 0; font-size: 1rem;"><i class="fas fa-tools"></i> Herramientas de Docente</h4>
                         <div style="display:flex; gap: 10px; flex-wrap: wrap;">
                             <button class="nav-button" onclick="adminModXP('${student.up}')" style="border-color: var(--xp-color); color: var(--xp-color); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-star"></i> Modificar XP</button>
-                            <button class="nav-button" onclick="adminModBackground('${student.up}')" style="border-color: #ec4899; color: #ec4899; padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-image"></i> Fondo Animado</button>
+                            <button class="nav-button" onclick="adminModBackground('${student.up}')" style="border-color: #ec4899; color: #ec4899; padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-palette"></i> Banner / Fondo Animado</button>
                             <button class="nav-button" onclick="adminModManualAtt('${student.up}')" style="border-color: var(--accent-teal); color: var(--accent-teal); padding: 6px 12px; font-size: 0.8rem;"><i class="fas fa-user-check"></i> Asistencia Normal</button>
                         </div>
                     </div>
@@ -15113,36 +15113,978 @@
             };
 
             window.adminModBackground = async (up) => {
-                const s = window.fullData.students.find(st => String(st.up) === String(up));
-                if(!s) return;
-                const { value: url, isConfirmed } = await Swal.fire({
-                    title: 'Fondo Animado',
-                    input: 'text',
-                    inputLabel: 'URL del GIF/Imagen (vacío para quitar)',
-                    inputValue: s.customBackground || '',
-                    showCancelButton: true,
-                    confirmButtonText: 'Guardar',
-                    background: '#1a1a2e',
-                    color: '#fff'
-                });
-                
-                if (isConfirmed) {
-                    try {
-                        const newUrl = (url || '').trim();
-                        if (newUrl) {
-                            await db.collection('students').doc(String(up).trim()).update({ customBackground: newUrl });
-                        } else {
-                            await db.collection('students').doc(String(up).trim()).update({ customBackground: firebase.firestore.FieldValue.delete() });
-                        }
-                        s.customBackground = newUrl;
-                        Swal.fire('Guardado', 'El fondo ha sido actualizado.', 'success').then(() => {
-                            location.reload(true);
-                        });
-                    } catch (e) {
-                        console.error(e);
-                        Swal.fire('Error', 'Hubo un problema al guardar.', 'error');
-                    }
+                const studentsList = (window.fullData && window.fullData.students) ? window.fullData.students : [];
+                const s = studentsList.find(st => String(st.up).trim() === String(up).trim());
+                if (!s) {
+                    Swal.fire('Error', 'No se encontró la información del alumno con UP ' + up, 'error');
+                    return;
                 }
+
+                const studentDisplayName = `${s.lastName || s.apellido || ''} ${(s.lastName || s.apellido) ? ',' : ''} ${s.firstName || s.nombre || s.name || 'Alumno sin nombre'}`.trim();
+                let selectedUrl = s.customBackground || '';
+
+                // Catálogo maestro curado con categorización y etiquetas
+                const curatedCatalog = [
+                    // --- 👑 PODIO Y ÉPICOS ---
+                    {
+                        name: 'Alteration Gold UI (VFX Oro)',
+                        url: 'https://cdnb.artstation.com/p/assets/images/images/065/846/217/original/alice-persdotter-rydberg-alteration-ui-vfx.gif?1691396879',
+                        category: 'podio',
+                        tags: 'oro dorado vfx podio 1 primer puesto magia brillante luz',
+                        badge: '⭐ TOP 1 ORO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Dark Gold Ornaments (VFX Épico)',
+                        url: 'https://cdnb.artstation.com/p/assets/images/images/077/404/713/original/ivan-boyko-ornaments4-2.gif?1719369890',
+                        category: 'podio',
+                        tags: 'oro dorado ornaments runas vfx podio 2 3 plata',
+                        badge: '🥈 TOP 2 PLATA',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Universo Galaxia Infinita',
+                        url: 'https://i.gifer.com/embedded/download/Uftd.gif',
+                        category: 'podio',
+                        tags: 'universo galaxia estrellas espacio cosmico podio 3 bronce',
+                        badge: '🥉 TOP 3 BRONCE',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Hero Cátedra MP4 (Video Loop)',
+                        url: 'tienda/hero-simple/hero.mp4',
+                        category: 'video',
+                        tags: 'video mp4 animado cátedra oficial podio hero loop',
+                        badge: '🎬 VIDEO MP4',
+                        type: 'mp4'
+                    },
+                    {
+                        name: 'Aura Celeste Divina',
+                        url: 'https://i.pinimg.com/originals/eb/03/6c/eb036c3b4ab6ac086f8da8ed8ac76eda.gif',
+                        category: 'podio',
+                        tags: 'aura celeste azul energia vfx magia divinidad honor',
+                        badge: '✨ AURA ÉPICA',
+                        type: 'gif'
+                    },
+
+                    // --- 🏛️ OFICIALES CÁTEDRA ---
+                    {
+                        name: 'Rendimiento Académico Oficial',
+                        url: 'tienda/banners/rendimiento.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra rendimiento académico unsta',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Promoción Directa (Clásico)',
+                        url: 'tienda/banners/promocion.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra promoción oro unsta',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Promoción Directa (Gold v2)',
+                        url: 'tienda/banners/promocion02.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra promoción oro v2 unsta',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Mérito Individual Cátedra',
+                        url: 'tienda/banners/individual.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra individual merito medalla',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Trabajo en Equipo Cátedra',
+                        url: 'tienda/banners/grupal.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra grupo equipo cooperativo cooperacion',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Regularidad Académica',
+                        url: 'tienda/banners/Regular.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra regular unsta verde',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Regularidad Cyan (v2)',
+                        url: 'tienda/banners/regular02.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra regular cyan v2 unsta',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Insignia Medalla Cátedra',
+                        url: 'tienda/banners/3.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra medalla insignia 3',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Desafío Pendiente (Libre)',
+                        url: 'tienda/banners/Libre.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra libre pendiente desafio',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+                    {
+                        name: 'Desafío Pendiente v2',
+                        url: 'tienda/banners/libre02.png',
+                        category: 'catedra',
+                        tags: 'oficial cátedra libre pendiente v2',
+                        badge: '🏛️ OFICIAL',
+                        type: 'png'
+                    },
+
+                    // --- ⚡ VFX Y ELEMENTALES ---
+                    {
+                        name: 'Fuego Carmesí',
+                        url: 'https://i.pinimg.com/originals/de/e9/86/dee986b92033c942037f1772a6ff6df5.gif',
+                        category: 'vfx',
+                        tags: 'fuego rojo llamas energia vfx calor fuerza',
+                        badge: '🔥 FUEGO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Ki Legendario Super Saiyan',
+                        url: 'https://i.redd.it/5km5uycgekac1.gif',
+                        category: 'vfx',
+                        tags: 'dragon ball anime ki energia poder aura saiyan',
+                        badge: '⚡ PODER',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Hipervelocidad Stealth Dark',
+                        url: 'https://i.pinimg.com/originals/dd/b7/d2/ddb7d26375807f772c47b7df57a15395.gif',
+                        category: 'vfx',
+                        tags: 'speed velocidad negro dark rayas movimiento',
+                        badge: '⚡ SPEED',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Partículas de Energía Mágica',
+                        url: 'https://i.pinimg.com/originals/dd/98/f6/dd98f672c0c09e3c5f95d5100e653f38.gif',
+                        category: 'vfx',
+                        tags: 'particulas luces magia chispas destello',
+                        badge: '✨ MAGIA',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Ráfaga de Energía Neón',
+                        url: 'https://i.pinimg.com/originals/11/0f/2b/110f2bbc1027482ffe89b353d49b958e.gif',
+                        category: 'vfx',
+                        tags: 'energia neon rayos vfx laser relampago',
+                        badge: '⚡ NEÓN',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Éter Oscuro Flotante',
+                        url: 'https://i.pinimg.com/originals/d5/4c/15/d54c15302cc31d5b8729085c249e5e10.gif',
+                        category: 'vfx',
+                        tags: 'eter humo negro dark magia sombra misterio',
+                        badge: '🌑 DARK',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Peces Luminosos Abisales',
+                        url: 'https://i.pinimg.com/originals/b9/79/07/b97907dd35f41d660eea020e8477996d.gif',
+                        category: 'vfx',
+                        tags: 'peces azul luminosos agua mar bioluminiscencia zen',
+                        badge: '🌊 ZEN',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Mariposas de Luz',
+                        url: 'https://i.pinimg.com/originals/3b/28/0f/3b280f780227ac3177ef940d0d338f9f.gif',
+                        category: 'vfx',
+                        tags: 'mariposas brillo azul noche luces magia flutter',
+                        badge: '🦋 MAGIA',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Murciélagos Góticos',
+                        url: 'https://i.pinimg.com/originals/6d/85/d3/6d85d3c9dbad2047e9d3de851893c54c.gif',
+                        category: 'vfx',
+                        tags: 'murcielagos noche luna gotico dark terror alas',
+                        badge: '🦇 GÓTICO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Espíritu Lobo Lunar',
+                        url: 'https://i.pinimg.com/originals/e5/07/36/e507364557703858ff50f33d8a08404c.gif',
+                        category: 'vfx',
+                        tags: 'lobo fantasma espiritu luna noche aullido místico',
+                        badge: '🐺 MÍSTICO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Dark Hearts Neo',
+                        url: 'https://i.pinimg.com/originals/3f/3d/9b/3f3d9b221088cb6524317c5b649a656d.gif',
+                        category: 'vfx',
+                        tags: 'negro corazones neo dark goth vfx amor oscuro',
+                        badge: '🖤 NEO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Resplandor Místico',
+                        url: 'https://i.pinimg.com/originals/d7/59/44/d759447b869765bd98d827565055407e.gif',
+                        category: 'vfx',
+                        tags: 'resplandor mistico luces destello vfx magia',
+                        badge: '✨ MÍSTICO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Expedición Psicodélica',
+                        url: 'https://trancentral.tv/wp-content/uploads/2016/05/expedition.gif',
+                        category: 'vfx',
+                        tags: 'psicodelica colores tridimensional viaje mente trance',
+                        badge: '🌀 PSICODÉLICO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Void Cósmico Psicodélico',
+                        url: 'https://trancentral.tv/wp-content/uploads/2016/05/10_void_animated.gif',
+                        category: 'vfx',
+                        tags: 'void agujero negro cosmico psicodelica espacio trance',
+                        badge: '🌌 VOID',
+                        type: 'gif'
+                    },
+
+                    // --- 🕹️ PIXEL ART Y RETRO ---
+                    {
+                        name: 'Pixel Art: Lluvia en Ventana',
+                        url: 'https://giffiles.alphacoders.com/162/162646.gif',
+                        category: 'pixel',
+                        tags: 'pixel art lluvia ventana lo-fi calma retro gotas',
+                        badge: '🌧️ PIXEL ART',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Pixel Art: Setup Gamer / Dev',
+                        url: 'https://preview.redd.it/for-hire-pixel-art-commissions-open-stream-overlays-stream-v0-rkhg94btanue1.gif?width=640&crop=smart&auto=webp&s=22f87444d23ddbc8646a2f6c32583a4ca4643fa1',
+                        category: 'pixel',
+                        tags: 'pixel art setup computadora pc gamer lo-fi stream monitor',
+                        badge: '💻 DEV GAMER',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Sesión de Estudio Calma',
+                        url: 'https://i.pinimg.com/originals/e9/52/ed/e952eddc2ac4ad78a95c7b9ca916cf4e.gif',
+                        category: 'pixel',
+                        tags: 'estudio calma blanco lo-fi libros escribir tranquilidad',
+                        badge: '☕ LO-FI',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Michis Pescando en Lago',
+                        url: 'https://64.media.tumblr.com/9429cbd4d6d893fbd1e3f90419dee05c/db568c8e11797355-67/s1280x1920/03d4f9c5971b87aadc0cd223f14e0535f500866c.gif',
+                        category: 'pixel',
+                        tags: 'pixel gatos michis pesca noche calma lago peces',
+                        badge: '🐱 COZY',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Fogata Nocturna en Bosque',
+                        url: 'https://i.pinimg.com/originals/be/94/b1/be94b141f40bf349d1f2d4006cb031db.gif',
+                        category: 'pixel',
+                        tags: 'pixel fogata campamento bosque noche fuego camping',
+                        badge: '🏕️ CAMP',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Ciudad Sunset Naranja',
+                        url: 'https://64.media.tumblr.com/9cff938216133142406c9f61970acd2f/tumblr_njjcz1NLp51rnbw6mo1_540.gif',
+                        category: 'pixel',
+                        tags: 'pixel atardecer naranja ciudad edificios sunset nostalgia',
+                        badge: '🌇 RETRO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Pac-Man Neón Arcade',
+                        url: 'https://i.pinimg.com/originals/f6/7a/12/f67a122b8f6af771bcabd8db7c641c5e.gif',
+                        category: 'pixel',
+                        tags: 'pacman arcade juego retro neon gamer laberinto fantasmas',
+                        badge: '🕹️ ARCADE',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Nave Espacial Orbital',
+                        url: 'https://i.pinimg.com/originals/01/78/6e/01786ed7b3c75565e3c87fffd4e30374.gif',
+                        category: 'pixel',
+                        tags: 'nave espacial sci-fi estrellas orbita cosmos cockpit',
+                        badge: '🚀 SCI-FI',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Noche Azul Estrellada Anime',
+                        url: 'https://animesher.com/orig/1/117/1171/11717/animesher.com_anime-scenery-anime-gif-scenery-gif-1171721.gif',
+                        category: 'pixel',
+                        tags: 'anime noche azul estrellas luces paisaje noche bella',
+                        badge: '🌌 ANIME',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Océano Turquesa Koi',
+                        url: 'https://i.pinimg.com/originals/ae/52/d9/ae52d968e7d8117170d2eeff6245ca5c.gif',
+                        category: 'pixel',
+                        tags: 'turquesa agua pez koi estanque calma zen peces nadando',
+                        badge: '🐟 ZEN',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Sakura Petals en Viento',
+                        url: 'https://i.pinimg.com/originals/7f/f9/a2/7ff9a27da311166cc40ccfd331d1c7e5.gif',
+                        category: 'pixel',
+                        tags: 'sakura flores rosas petalos primavera arbol cerezo',
+                        badge: '🌸 FLORAL',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Hollow Knight Mood',
+                        url: 'https://64.media.tumblr.com/31384150d8f0e0036e8371fe1fade386/70e5f7eb31cb06ac-3d/s540x810/b2c2dfa665c4e1a007ad2a8e544698e9f7a1b5a0.gifv',
+                        category: 'pixel',
+                        tags: 'hollow knight juego gamer noche misterio espada hallownest',
+                        badge: '⚔️ GAMER',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Tren Fantasía Violeta',
+                        url: 'https://i.pinimg.com/originals/a3/e9/01/a3e901d9fbff9a6ff765a900824629f0.gif',
+                        category: 'pixel',
+                        tags: 'tren violeta purpura viaje anime noche lluvia estacion',
+                        badge: '🚂 FANTASÍA',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Cascada Niebla Mística',
+                        url: 'https://i.pinimg.com/originals/8b/88/04/8b8804f68dd860a430c7b323c4cf4eea.gif',
+                        category: 'pixel',
+                        tags: 'cascada agua niebla gris paisaje zen montana fluir',
+                        badge: '🏔️ PAISAJE',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Bosque Esmeralda Calma',
+                        url: 'https://i.pinimg.com/originals/40/9d/a4/409da4dc00fca0b271407d734c59ea7f.gif',
+                        category: 'pixel',
+                        tags: 'verde bosque naturaleza calma arboles rayo luz hojas',
+                        badge: '🌿 ZEN',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Pixel Art: Chica en Atardecer',
+                        url: 'https://i.redd.it/4n3saz2c3nib1.gif',
+                        category: 'pixel',
+                        tags: 'pixel art chica cielo atardecer nubes retro viento',
+                        badge: '🌅 PIXEL',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Pixel Art: Paseo Urbano',
+                        url: 'https://i.pinimg.com/originals/17/c3/0a/17c30a274865498d44b3c9f47ff37ee2.gif',
+                        category: 'pixel',
+                        tags: 'pixel art chica caminando ciudad calle semaforo',
+                        badge: '🚶 PIXEL',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Molino de Viento al Atardecer',
+                        url: 'https://i.pinimg.com/originals/80/ec/77/80ec77932091113c4970a88f69b9bb4f.gif',
+                        category: 'pixel',
+                        tags: 'molino viento atardecer campo calma granja',
+                        badge: '🌾 PAISAJE',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Trabajo Lo-Fi Nocturno',
+                        url: 'https://i.pinimg.com/originals/ca/26/2e/ca262e0354eea311c41134c3e4bc3bc2.gif',
+                        category: 'pixel',
+                        tags: 'lo-fi trabajo noche oficina pantalla cafe concentracion',
+                        badge: '☕ LO-FI',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Lluvia Púrpura Anime',
+                        url: 'https://i.pinimg.com/originals/84/cc/00/84cc005b1b6afcb7a935e53eb2c0b374.gif',
+                        category: 'pixel',
+                        tags: 'lluvia violeta purpura anime chica paraguas gotas',
+                        badge: '☂️ ANIME',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Brillo Rosado Floral',
+                        url: 'https://i.pinimg.com/originals/0e/35/f5/0e35f5b16b8ba60a10fdd360de075def.gif',
+                        category: 'pixel',
+                        tags: 'rosa flores destellos brillo luz cute amor',
+                        badge: '🌸 ROSA',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Vinland Saga Vintage',
+                        url: 'https://i.pinimg.com/originals/85/df/e6/85dfe641aeafd5a414af1cb3e5d132af.gif',
+                        category: 'pixel',
+                        tags: 'marron vinland anime vintage retro campo trigo',
+                        badge: '⚔️ VINTAGE',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Mirada Anime Cyber',
+                        url: 'https://i.pinimg.com/originals/dc/3e/cd/dc3ecdab0fa15f3bd29d1e20718648e6.gif',
+                        category: 'pixel',
+                        tags: 'ojos chica anime cyber mirada glitch futurista',
+                        badge: '👁️ CYBER',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Carrera Nocturna',
+                        url: 'https://i.pinimg.com/originals/31/40/f8/3140f8e9acf79393f5b1fbb93292b33f.gif',
+                        category: 'pixel',
+                        tags: 'corriendo noche luna sombra silueta deporte',
+                        badge: '🏃 NOCTURNO',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Pixel Art: Atardecer Carrera',
+                        url: 'https://i.pinimg.com/originals/5b/ce/4f/5bce4f65f172d4c8875576883ea4bbf2.gif',
+                        category: 'pixel',
+                        tags: 'pixel chica corriendo atardecer retro sol running',
+                        badge: '🏃 PIXEL',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Arcade Retro Nostalgia',
+                        url: 'https://i.pinimg.com/originals/08/17/fe/0817fef65bc83ccfd536772d0536e7d1.gif',
+                        category: 'pixel',
+                        tags: 'arcade retro nostalgia juego fichas 80s 90s fichines',
+                        badge: '👾 ARCADE',
+                        type: 'gif'
+                    },
+                    {
+                        name: 'Bosque de Fantasía y Gnomos',
+                        url: 'https://garystanton.co.uk/content/images/2020/05/Banner01.gif',
+                        category: 'pixel',
+                        tags: 'pato gnomos bosque verde cuento fantasia magico',
+                        badge: '🦆 RETRO',
+                        type: 'gif'
+                    }
+                ];
+
+                const modalHtml = `
+                <style>
+                    .admin-banner-swal-popup {
+                        border: 1px solid rgba(255, 165, 0, 0.4) !important;
+                        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85) !important;
+                        border-radius: 20px !important;
+                    }
+                    .banner-pick-card {
+                        background: rgba(255, 255, 255, 0.04);
+                        border: 2px solid rgba(255, 255, 255, 0.08);
+                        border-radius: 10px;
+                        overflow: hidden;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+                        user-select: none;
+                    }
+                    .banner-pick-card:hover {
+                        border-color: #ffa500;
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 16px rgba(255, 165, 0, 0.25);
+                        background: rgba(255, 255, 255, 0.08);
+                    }
+                    .banner-pick-card.selected {
+                        border-color: #10b981 !important;
+                        box-shadow: 0 0 16px rgba(16, 185, 129, 0.5) !important;
+                        background: rgba(16, 185, 129, 0.12) !important;
+                    }
+                    .banner-pick-thumb-box {
+                        position: relative;
+                        width: 100%;
+                        height: 85px;
+                        background: #000;
+                        overflow: hidden;
+                    }
+                    .banner-pick-thumb-img {
+                        width: 100%;
+                        height: 100%;
+                        background-position: center;
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        transition: transform 0.3s ease;
+                    }
+                    .banner-pick-thumb-video {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    .banner-pick-card:hover .banner-pick-thumb-img {
+                        transform: scale(1.06);
+                    }
+                    .banner-pick-type-badge {
+                        position: absolute;
+                        top: 5px;
+                        left: 5px;
+                        background: rgba(0, 0, 0, 0.75);
+                        backdrop-filter: blur(4px);
+                        color: #facc15;
+                        font-size: 0.65rem;
+                        font-weight: 800;
+                        padding: 2px 6px;
+                        border-radius: 4px;
+                        border: 1px solid rgba(250, 204, 21, 0.3);
+                        pointer-events: none;
+                    }
+                    .banner-pick-selected-check {
+                        position: absolute;
+                        top: 5px;
+                        right: 5px;
+                        background: #10b981;
+                        color: #fff;
+                        width: 22px;
+                        height: 22px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 0.75rem;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+                        pointer-events: none;
+                    }
+                    .banner-pick-title {
+                        padding: 7px 9px;
+                        font-size: 0.76rem;
+                        font-weight: 600;
+                        color: #e2e8f0;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-align: left;
+                    }
+                    .banner-tab-btn {
+                        background: rgba(255, 255, 255, 0.05);
+                        border: 1px solid rgba(255, 255, 255, 0.15);
+                        color: #cbd5e1;
+                        padding: 5px 12px;
+                        border-radius: 20px;
+                        font-size: 0.78rem;
+                        cursor: pointer;
+                        font-weight: 600;
+                        transition: all 0.2s;
+                        white-space: nowrap;
+                    }
+                    .banner-tab-btn:hover {
+                        background: rgba(255, 165, 0, 0.15);
+                        border-color: #ffa500;
+                        color: #ffa500;
+                    }
+                    .banner-tab-btn.active {
+                        background: linear-gradient(135deg, #ffa500, #ff7300) !important;
+                        color: #121420 !important;
+                        border-color: #ffa500 !important;
+                        font-weight: 800 !important;
+                        box-shadow: 0 2px 8px rgba(255, 165, 0, 0.35);
+                    }
+                    #admin-banner-grid::-webkit-scrollbar {
+                        width: 7px;
+                    }
+                    #admin-banner-grid::-webkit-scrollbar-thumb {
+                        background: rgba(255, 165, 0, 0.3);
+                        border-radius: 4px;
+                    }
+                    #admin-banner-grid::-webkit-scrollbar-thumb:hover {
+                        background: #ffa500;
+                    }
+                </style>
+
+                <div style="text-align: left; font-family: 'Inter', system-ui, -apple-system, sans-serif; color: #f1f5f9;">
+
+                    <!-- LIVE PREVIEW CARD -->
+                    <div style="margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 0.78rem; font-weight: 800; color: #ffa500; text-transform: uppercase; letter-spacing: 0.8px;">
+                                <i class="fas fa-eye"></i> Vista Previa en Tiempo Real
+                            </span>
+                            <span id="admin-preview-banner-badge" style="background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 8px; font-size: 0.75rem; color: #94a3b8; font-weight: 600;">
+                                <i class="fas fa-spinner fa-spin"></i> Inicializando...
+                            </span>
+                        </div>
+
+                        <div id="admin-banner-live-preview" style="position: relative; width: 100%; height: 130px; border-radius: 16px; overflow: hidden; border: 1.5px solid #ffa500; box-shadow: 0 10px 25px rgba(0,0,0,0.7); display: flex; align-items: flex-end; padding: 14px 18px; transition: background 0.3s ease;">
+                            <div id="admin-preview-overlay" style="position: absolute; inset: 0; background: linear-gradient(0deg, rgba(15,17,23,0.92) 0%, rgba(26,26,46,0.35) 50%, rgba(26,26,46,0.1) 100%); z-index: 1; pointer-events: none;"></div>
+                            
+                            <div style="position: relative; z-index: 2; display: flex; align-items: center; gap: 14px; width: 100%;">
+                                <div id="modal-preview-avatar" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #ffa500; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #1a1a2e; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.6); font-size: 1.5rem; color: #cbd5e1;">
+                                    <i class="fas fa-user-graduate"></i>
+                                </div>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-size: 1.15rem; font-weight: 800; color: #ffffff; text-shadow: 0 2px 6px rgba(0,0,0,0.95); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        ${studentDisplayName}
+                                    </div>
+                                    <div style="display: flex; gap: 6px; align-items: center; margin-top: 4px; flex-wrap: wrap;">
+                                        <span style="background: rgba(255,165,0,0.22); color: #ffa500; border: 1px solid rgba(255,165,0,0.4); padding: 1px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700;">UP: ${s.up}</span>
+                                        <span style="background: rgba(16,185,129,0.22); color: #10b981; border: 1px solid rgba(16,185,129,0.4); padding: 1px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700;">Grupo ${s.group || 'Sin Grupo'}</span>
+                                        <span style="background: rgba(236,72,153,0.22); color: #ec4899; border: 1px solid rgba(236,72,153,0.4); padding: 1px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 800;">${s.xp || 0} XP</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOOLBAR & FILTERS -->
+                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px;">
+                        <div id="admin-banner-tabs" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 3px; max-width: 68%;">
+                            <button class="banner-tab-btn active" data-filter="all">Todos</button>
+                            <button class="banner-tab-btn" data-filter="podio">👑 Podio & Épicos</button>
+                            <button class="banner-tab-btn" data-filter="catedra">🏛️ Oficial Cátedra</button>
+                            <button class="banner-tab-btn" data-filter="vfx">⚡ VFX & Magia</button>
+                            <button class="banner-tab-btn" data-filter="pixel">🕹️ Pixel & Lo-Fi</button>
+                            <button class="banner-tab-btn" data-filter="video">🎬 Videos MP4</button>
+                        </div>
+                        <div style="position: relative; flex-shrink: 0;">
+                            <input type="text" id="admin-banner-search" placeholder="🔍 Buscar por nombre..." style="background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; width: 175px; outline: none;">
+                        </div>
+                    </div>
+
+                    <!-- GALLERY GRID -->
+                    <div id="admin-banner-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; max-height: 280px; overflow-y: auto; padding: 6px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                        <!-- Cards will be populated here -->
+                    </div>
+
+                    <!-- CUSTOM URL INPUT -->
+                    <div style="display: flex; gap: 8px; margin-top: 10px; background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 10px; border: 1px dashed rgba(255,255,255,0.18); align-items: center;">
+                        <i class="fas fa-link" style="color: #ffa500; font-size: 0.85rem;"></i>
+                        <input type="text" id="admin-banner-custom-url" value="${s.customBackground || ''}" placeholder="O pega una URL personalizada externa (https://...)..." style="flex: 1; background: transparent; border: none; color: #fff; font-size: 0.78rem; outline: none;">
+                        <button id="admin-banner-btn-preview-url" style="background: rgba(255,165,0,0.2); border: 1px solid #ffa500; color: #ffa500; padding: 4px 10px; border-radius: 6px; font-size: 0.74rem; font-weight: 700; cursor: pointer; white-space: nowrap;">
+                            Probar URL
+                        </button>
+                    </div>
+
+                    <!-- FOOTER ACTIONS -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <button id="admin-banner-btn-remove" style="background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fca5a5; padding: 6px 14px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-ban"></i> Sin Fondo (Quitar)
+                        </button>
+
+                        <div style="display: flex; gap: 8px;">
+                            <button id="admin-banner-btn-cancel" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #cbd5e1; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+                                Cancelar
+                            </button>
+                            <button id="admin-banner-btn-save" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; color: white; padding: 6px 18px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(16,185,129,0.35);">
+                                <i class="fas fa-check-circle"></i> Guardar y Asignar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                Swal.fire({
+                    title: `<div style="display:flex; align-items:center; justify-content:center; gap:10px; font-size:1.15rem; color:#ffa500; font-weight:800;">
+                        <i class="fas fa-palette"></i> Galería de Fondos Animados & Banners
+                    </div>`,
+                    html: modalHtml,
+                    width: '880px',
+                    padding: '1.25rem',
+                    background: '#121420',
+                    color: '#ffffff',
+                    showConfirmButton: false,
+                    showCloseButton: true,
+                    focusConfirm: false,
+                    customClass: {
+                        popup: 'admin-banner-swal-popup'
+                    },
+                    didOpen: async (modalEl) => {
+                        const previewContainer = modalEl.querySelector('#admin-banner-live-preview');
+                        const badgeEl = modalEl.querySelector('#admin-preview-banner-badge');
+                        const gridEl = modalEl.querySelector('#admin-banner-grid');
+                        const searchInput = modalEl.querySelector('#admin-banner-search');
+                        const customUrlInput = modalEl.querySelector('#admin-banner-custom-url');
+                        const previewUrlBtn = modalEl.querySelector('#admin-banner-btn-preview-url');
+                        const removeBtn = modalEl.querySelector('#admin-banner-btn-remove');
+                        const cancelBtn = modalEl.querySelector('#admin-banner-btn-cancel');
+                        const saveBtn = modalEl.querySelector('#admin-banner-btn-save');
+                        const tabBtns = modalEl.querySelectorAll('.banner-tab-btn');
+
+                        // Cargar foto del alumno en la vista previa
+                        if (typeof findImage === 'function') {
+                            findImage(s.up, (photoHTML) => {
+                                const avatarEl = modalEl.querySelector('#modal-preview-avatar');
+                                if (avatarEl && photoHTML) {
+                                    avatarEl.innerHTML = photoHTML;
+                                    const img = avatarEl.querySelector('img');
+                                    if (img) img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 50%;';
+                                }
+                            });
+                        }
+
+                        // Intentar cargar banners adicionales desde banners.txt sin duplicar
+                        let allBanners = [...curatedCatalog];
+                        try {
+                            const res = await fetch('tienda/banners/banners.txt?t=' + Date.now());
+                            if (res.ok) {
+                                const text = await res.text();
+                                if (!text.toLowerCase().includes('<!doctype html>')) {
+                                    const lines = text.split('\n');
+                                    lines.forEach((line, idx) => {
+                                        const trimmed = line.trim();
+                                        if (!trimmed) return;
+                                        const parts = trimmed.split(' ');
+                                        const urlFound = parts.find(p => p.startsWith('http') || p.startsWith('tienda/') || p.match(/\.(png|gif|jpe?g|webp|mp4)$/i));
+                                        if (urlFound && !allBanners.some(b => b.url === urlFound)) {
+                                            const descPart = trimmed.replace(urlFound, '').replace(/[()]/g, '').trim() || ('Banner Extra #' + (idx + 1));
+                                            const isMp4 = urlFound.endsWith('.mp4') || urlFound.endsWith('.webm');
+                                            allBanners.push({
+                                                name: descPart,
+                                                url: urlFound,
+                                                category: isMp4 ? 'video' : 'pixel',
+                                                tags: descPart.toLowerCase(),
+                                                badge: isMp4 ? 'MP4' : 'EXTRA',
+                                                type: isMp4 ? 'mp4' : (urlFound.endsWith('.png') ? 'png' : 'gif')
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        } catch (e) {
+                            console.warn('Lectura de banners.txt opcional falló:', e);
+                        }
+
+                        // Función para actualizar la Vista Previa en Vivo
+                        const updatePreview = (url, name) => {
+                            if (!previewContainer) return;
+                            const isVideo = url && (
+                                url.endsWith('.mp4') || 
+                                url.endsWith('.webm') || 
+                                url.includes('.mp4?') ||
+                                url.includes('Crear_animacion')
+                            );
+
+                            // Limpiar video existente si lo hubiera
+                            const oldVideo = previewContainer.querySelector('.admin-preview-video');
+                            if (oldVideo) oldVideo.remove();
+
+                            if (!url) {
+                                previewContainer.style.background = 'linear-gradient(135deg, #1e1e38 0%, #0f101d 100%)';
+                                if (badgeEl) {
+                                    badgeEl.innerHTML = '<i class="fas fa-ban" style="color:#ef4444;"></i> Sin Fondo (Predeterminado)';
+                                    badgeEl.style.color = '#cbd5e1';
+                                }
+                                return;
+                            }
+
+                            if (isVideo) {
+                                previewContainer.style.background = '#0a0a14';
+                                const video = document.createElement('video');
+                                video.className = 'admin-preview-video';
+                                video.src = url;
+                                video.autoplay = true;
+                                video.loop = true;
+                                video.muted = true;
+                                video.playsInline = true;
+                                video.style.cssText = 'position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:0.85; pointer-events:none;';
+                                previewContainer.insertBefore(video, previewContainer.firstChild);
+                            } else {
+                                previewContainer.style.background = `linear-gradient(0deg, rgba(15,17,23,0.92) 0%, rgba(26,26,46,0.35) 50%, rgba(26,26,46,0.1) 100%), url('${url}') center/cover no-repeat`;
+                            }
+
+                            if (badgeEl) {
+                                const found = allBanners.find(b => b.url === url);
+                                const displayName = name || (found ? found.name : 'Personalizado');
+                                badgeEl.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> ${displayName}`;
+                                badgeEl.style.color = '#10b981';
+                            }
+                        };
+
+                        // Renderizar tarjetas en el grid
+                        let currentFilter = 'all';
+                        let currentSearch = '';
+
+                        const renderGrid = () => {
+                            if (!gridEl) return;
+                            gridEl.innerHTML = '';
+
+                            const filtered = allBanners.filter(b => {
+                                const matchCat = (currentFilter === 'all') || (b.category === currentFilter);
+                                const textToMatch = `${b.name} ${b.tags || ''} ${b.category}`.toLowerCase();
+                                const matchSearch = !currentSearch || textToMatch.includes(currentSearch.toLowerCase());
+                                return matchCat && matchSearch;
+                            });
+
+                            if (filtered.length === 0) {
+                                gridEl.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 25px; color: #94a3b8; font-size: 0.85rem;"><i class="fas fa-search"></i> No se encontraron banners con ese criterio.</div>';
+                                return;
+                            }
+
+                            filtered.forEach(b => {
+                                const isSelected = (selectedUrl && selectedUrl.trim() === b.url.trim());
+                                const card = document.createElement('div');
+                                card.className = `banner-pick-card ${isSelected ? 'selected' : ''}`;
+                                card.dataset.url = b.url;
+
+                                card.innerHTML = `
+                                    <div class="banner-pick-thumb-box">
+                                        ${b.type === 'mp4' 
+                                            ? `<video src="${b.url}" autoplay loop muted playsinline class="banner-pick-thumb-video"></video>` 
+                                            : `<div class="banner-pick-thumb-img" style="background-image: url('${b.url}');"></div>`
+                                        }
+                                        <span class="banner-pick-type-badge">${b.badge || (b.type ? b.type.toUpperCase() : 'GIF')}</span>
+                                        ${isSelected ? '<span class="banner-pick-selected-check"><i class="fas fa-check"></i></span>' : ''}
+                                    </div>
+                                    <div class="banner-pick-title" title="${b.name}">${b.name}</div>
+                                `;
+
+                                // Clic para previsualizar y seleccionar
+                                card.addEventListener('click', () => {
+                                    selectedUrl = b.url;
+                                    if (customUrlInput) customUrlInput.value = b.url;
+                                    gridEl.querySelectorAll('.banner-pick-card').forEach(c => {
+                                        c.classList.remove('selected');
+                                        const chk = c.querySelector('.banner-pick-selected-check');
+                                        if (chk) chk.remove();
+                                    });
+                                    card.classList.add('selected');
+                                    const thumbBox = card.querySelector('.banner-pick-thumb-box');
+                                    if (thumbBox && !thumbBox.querySelector('.banner-pick-selected-check')) {
+                                        const chk = document.createElement('span');
+                                        chk.className = 'banner-pick-selected-check';
+                                        chk.innerHTML = '<i class="fas fa-check"></i>';
+                                        thumbBox.appendChild(chk);
+                                    }
+                                    updatePreview(b.url, b.name);
+                                });
+
+                                // Doble clic para aplicar de inmediato
+                                card.addEventListener('dblclick', () => {
+                                    selectedUrl = b.url;
+                                    saveBtn.click();
+                                });
+
+                                gridEl.appendChild(card);
+                            });
+                        };
+
+                        // Inicializar vista previa y renderizado
+                        updatePreview(selectedUrl, s.customBackground ? 'Fondo Actual' : '');
+                        renderGrid();
+
+                        // Eventos de Pestañas
+                        tabBtns.forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                tabBtns.forEach(b => b.classList.remove('active'));
+                                btn.classList.add('active');
+                                currentFilter = btn.dataset.filter || 'all';
+                                renderGrid();
+                            });
+                        });
+
+                        // Evento de Búsqueda
+                        if (searchInput) {
+                            searchInput.addEventListener('input', (e) => {
+                                currentSearch = e.target.value.trim();
+                                renderGrid();
+                            });
+                        }
+
+                        // Evento Probar URL personalizada
+                        if (previewUrlBtn) {
+                            previewUrlBtn.addEventListener('click', () => {
+                                const customVal = (customUrlInput ? customUrlInput.value : '').trim();
+                                selectedUrl = customVal;
+                                updatePreview(customVal, customVal ? 'URL Personalizada' : 'Sin Fondo');
+                            });
+                        }
+
+                        if (customUrlInput) {
+                            customUrlInput.addEventListener('keydown', (e) => {
+                                if (e.key === 'Enter') {
+                                    previewUrlBtn.click();
+                                }
+                            });
+                        }
+
+                        // Evento Quitar Fondo
+                        if (removeBtn) {
+                            removeBtn.addEventListener('click', () => {
+                                selectedUrl = '';
+                                if (customUrlInput) customUrlInput.value = '';
+                                gridEl.querySelectorAll('.banner-pick-card').forEach(c => {
+                                    c.classList.remove('selected');
+                                    const chk = c.querySelector('.banner-pick-selected-check');
+                                    if (chk) chk.remove();
+                                });
+                                updatePreview('', '');
+                            });
+                        }
+
+                        // Evento Cancelar
+                        if (cancelBtn) {
+                            cancelBtn.addEventListener('click', () => Swal.close());
+                        }
+
+                        // Evento Guardar y Asignar
+                        if (saveBtn) {
+                            saveBtn.addEventListener('click', async () => {
+                                saveBtn.disabled = true;
+                                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+                                try {
+                                    const finalUrl = (selectedUrl || '').trim();
+                                    if (finalUrl) {
+                                        await db.collection('students').doc(String(up).trim()).update({
+                                            customBackground: finalUrl
+                                        });
+                                        s.customBackground = finalUrl;
+                                    } else {
+                                        await db.collection('students').doc(String(up).trim()).update({
+                                            customBackground: firebase.firestore.FieldValue.delete()
+                                        });
+                                        delete s.customBackground;
+                                    }
+
+                                    Swal.close();
+
+                                    // Actualizar vista del alumno en vivo si está abierta
+                                    if (document.getElementById('portal-photo') || document.getElementById('student-portal-result-container')) {
+                                        try { displayStudentPortalView(s); } catch (e) { console.warn(e); }
+                                    }
+                                    // Actualizar filas del ranking en vivo
+                                    if (typeof generateRanking === 'function') {
+                                        try { generateRanking(); } catch (e) { console.warn(e); }
+                                    }
+
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '¡Fondo Actualizado!',
+                                        text: finalUrl ? `Se asignó el banner correctamente a ${studentDisplayName}.` : `Se removió el fondo personalizado de ${studentDisplayName}.`,
+                                        timer: 2000,
+                                        showConfirmButton: false,
+                                        background: '#1a1a2e',
+                                        color: '#fff'
+                                    });
+                                } catch (err) {
+                                    console.error(err);
+                                    saveBtn.disabled = false;
+                                    saveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Reintentar';
+                                    Swal.fire('Error al Guardar', 'No se pudo guardar en Firestore: ' + err.message, 'error');
+                                }
+                            });
+                        }
+                    }
+                });
             };
 
             window.adminModXP = async (up) => {
