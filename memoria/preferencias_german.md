@@ -191,6 +191,17 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
       * Modo *Personalizado*: Permite al docente tipear cualquier texto de título flotante e insignia de ranking, elegir el icono y seleccionar la paleta de color del marco.
       * Botón *Quitar Distintivo*: Elimina el campo `honorDistinction` en Firestore (`FieldValue.delete()`) devolviendo el marco a su estado estándar.
 
+24. **Sistema Automático de Desbloqueo de Premios & Inventario de Recompensas**:
+    - **Los 3 Premios Desbloqueables Oficiales**:
+      1. 🌿 *Asistencia Perfecta 100%*: Desbloquea el banner vectorial `asistencia_perfecta.svg` Y el Distintivo de Honor holográfico flotante (marco esmeralda + ribbon marquee). Condición: 100% de asistencia calculada con clases dictadas.
+      2. 🏆 *Campeón Absoluto (1º Puesto)*: Desbloquea el banner vectorial `campeon_absoluto.svg` (Égida de Oro y Trofeo). Condición: Estar en el 1º puesto del ranking general de XP. Sin distintivo de honor superpuesto.
+      3. 🌌 *Estatus Leyenda (40 XP Radiant)*: Desbloquea el banner vectorial `rango_leyenda.svg` (Fuego Prisma). Condición: Alcanzar o superar los 40 XP. Sin distintivo de honor superpuesto.
+    - **Detección Automática & Modal de Celebración**: Al ingresar el estudiante a su perfil, el sistema evalúa si cumple cualquiera de las 3 condiciones. Si desbloqueó un premio nuevo que aún no ha visto, se lanza una lluvia de confeti y un modal explicativo con dos opciones:
+      * `[✨ Equipar Ahora]`: Asigna el banner (y distintivo si es asistencia perfecta) de inmediato.
+      * `[🎒 Guardar en mi Inventario]`: Conserva su fondo actual y guarda el premio desbloqueado.
+    - **Inventario del Alumno en el Perfil**: Barra interactiva `[🎒 Mis Premios e Inventario de Banners]` en el perfil del alumno que abre el modal de gestión con el estado de los 3 premios (En Uso, Equipar, Bloqueado 🔒 con explicación del requisito).
+
+
 
 
 
