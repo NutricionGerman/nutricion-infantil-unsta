@@ -16789,6 +16789,22 @@
                     showConfirmButton: false,
                     showCloseButton: true,
                     customClass: { popup: 'honor-swal-popup' },
+                    didClose: () => {
+                        // Garantía de única vez: Si el alumno cerró con la 'X', tecla ESC o clic fuera sin presionar un botón,
+                        // se registra automáticamente como guardado en su inventario para que NUNCA vuelva a salir de forma repetitiva.
+                        const claimed = student.claimedRewardPopups || [];
+                        if (!claimed.includes(newReward.id)) {
+                            const upClean = String(student.up).trim();
+                            db.collection('students').doc(upClean).update({
+                                inventory: firebase.firestore.FieldValue.arrayUnion(newReward.id),
+                                claimedRewardPopups: firebase.firestore.FieldValue.arrayUnion(newReward.id)
+                            }).catch(err => console.warn('Error al marcar popup cerrado:', err));
+                            if (!student.inventory) student.inventory = [];
+                            if (!student.inventory.includes(newReward.id)) student.inventory.push(newReward.id);
+                            if (!student.claimedRewardPopups) student.claimedRewardPopups = [];
+                            student.claimedRewardPopups.push(newReward.id);
+                        }
+                    },
                     didOpen: (modalEl) => {
                         const btnInventory = modalEl.querySelector('#reward-popup-btn-inventory');
                         const btnEquip = modalEl.querySelector('#reward-popup-btn-equip');
