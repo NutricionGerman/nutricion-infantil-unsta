@@ -16896,11 +16896,7 @@
                     <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 14px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); border-radius: 10px; padding: 8px 12px; line-height: 1.4;">
                         <i class="fas fa-info-circle" style="color: #38bdf8;"></i> <strong>Combinación Libre:</strong> Puedes equipar un <strong>Banner de Fondo</strong> y activar simultáneamente la <strong>Insignia de Asistencia Perfecta</strong> (o usarlos por separado).
                     </div>
-                ` : `
-                    <div style="font-size: 0.78rem; color: #cbd5e1; margin-bottom: 14px; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25); border-radius: 10px; padding: 8px 12px; line-height: 1.4;">
-                        <i class="fas fa-shield-alt" style="color: #38bdf8;"></i> <strong>Vitrina de Exhibición (Solo Lectura):</strong> Estás observando los premios y distinciones de este estudiante en modo lectura. Solo el alumno propietario o el docente a cargo pueden cambiar la personalización de este perfil.
-                    </div>
-                `;
+                ` : '';
 
                 // Botón Quitar Fondo en la sección 2: solo si canEdit
                 const removeBgBtnHTML = (canEdit && s.customBackground) ? `
@@ -16957,7 +16953,7 @@
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                             <div>
                                 <div style="font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">
-                                    ${canEdit ? 'Mochila de Recompensas' : 'Vitrina Pública de Recompensas'}
+                                    ${canEdit ? 'Mochila de Recompensas' : 'Vitrina de Recompensas'}
                                 </div>
                                 <div style="font-size: 1.05rem; font-weight: 700; color: #fff;">${studentDisplayName} <span style="font-size: 0.8rem; color: #38bdf8;">(UP: ${s.up})</span></div>
                             </div>
