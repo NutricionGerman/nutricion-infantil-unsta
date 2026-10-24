@@ -164,6 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.switchTab = (tab) => {
       console.log(`[Navigation] Cambiando a pestaña: ${tab}`);
       setActiveTab(tab);
+      window.scrollTo({ top: 0, behavior: "smooth" });
       if (tab === "evaluacion") {
         if (!oralExamActive) {
           showDashboardScreen();
@@ -1178,10 +1179,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderAvatarHtml(student, sizeClass = "w-10 h-10", ringClass = "border border-slate-700") {
-    if (student.photo) {
-      return `<img src="${student.photo}" alt="${student.name}" class="${sizeClass} rounded-full object-cover ${ringClass} bg-slate-800" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div style="display:none;" class="contents">${renderInitialsAvatar(student.name, sizeClass, ringClass)}</div>`;
-    }
-    return renderInitialsAvatar(student.name, sizeClass, ringClass);
+    const initials = getInitials(student.name);
+    const fallbackSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="%234f46e5"/><text x="50%" y="54%" font-family="sans-serif" font-size="22" font-weight="bold" fill="%23ffffff" dominant-baseline="middle" text-anchor="middle">${initials}</text></svg>`;
+    const photoSrc = student.photo || fallbackSvg;
+    const safeName = (student.name || '').replace(/"/g, '&quot;');
+    return `<img src="${photoSrc}" alt="${safeName}" class="${sizeClass} rounded-full object-cover ${ringClass} bg-slate-800 shrink-0" onerror="this.onerror=null; this.src='${fallbackSvg}';">`;
   }
 
   async function loadRankingData(forceRefresh = false) {
@@ -1213,6 +1215,11 @@ document.addEventListener("DOMContentLoaded", () => {
           photosSnap.forEach(doc => {
             const data = doc.data() || {};
             if (data.photo) cachedPhotosMap[doc.id] = data.photo;
+          });
+          const profilesSnap = await db.collection("student_profiles").get();
+          profilesSnap.forEach(doc => {
+            const data = doc.data() || {};
+            if (data.photo && !cachedPhotosMap[doc.id]) cachedPhotosMap[doc.id] = data.photo;
           });
         } catch(e) {
           console.warn("Carga de fotos auxiliares opcional:", e);
@@ -1349,7 +1356,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Helper para tarjeta del podio
     const renderPodiumCard = (student, place) => {
-      if (!student) return '<div class="opacity-30 p-4 border border-dashed border-slate-800 rounded-2xl text-center text-xs text-slate-500">Vacante</div>';
+      if (!student) {
+        const orderCls = place === 1 ? 'order-1 sm:order-2 mt-0 sm:-mt-6' : (place === 2 ? 'order-2 sm:order-1' : 'order-3 sm:order-3');
+        return `
+          <div class="${orderCls} opacity-40 p-6 border border-dashed border-slate-800 rounded-3xl text-center text-xs text-slate-500 flex flex-col items-center justify-center min-h-[160px] bg-slate-950/30">
+            <i class="fa-solid fa-trophy text-slate-600 text-2xl mb-2"></i>
+            <span class="font-bold text-slate-400">${place}º Puesto</span>
+            <span class="text-[10px] text-slate-600 mt-1">Vacante</span>
+          </div>
+        `;
+      }
       
       const isCurrent = currentUp && student.up === currentUp;
       let placeClass = "";
@@ -1359,13 +1375,13 @@ document.addEventListener("DOMContentLoaded", () => {
       let glowClass = "";
 
       if (place === 1) {
-        placeClass = "order-2 sm:order-2 -mt-4 sm:-mt-6 border-amber-500/50 bg-gradient-to-b from-amber-950/30 via-slate-900 to-slate-900";
+        placeClass = "order-1 sm:order-2 mt-0 sm:-mt-6 border-amber-500/50 bg-gradient-to-b from-amber-950/30 via-slate-900 to-slate-900";
         ringClass = "ring-4 ring-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.5)]";
         medalIcon = '<i class="fa-solid fa-crown text-amber-400 text-xl animate-bounce"></i>';
         titleBadge = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-amber-400 text-slate-950 tracking-wider">1º Puesto</span>';
         glowClass = "shadow-[0_0_35px_rgba(245,158,11,0.15)]";
       } else if (place === 2) {
-        placeClass = "order-1 sm:order-1 border-slate-700 bg-gradient-to-b from-slate-800/40 via-slate-900 to-slate-900";
+        placeClass = "order-2 sm:order-1 border-slate-700 bg-gradient-to-b from-slate-800/40 via-slate-900 to-slate-900";
         ringClass = "ring-2 ring-slate-300 shadow-[0_0_15px_rgba(203,213,225,0.3)]";
         medalIcon = '<i class="fa-solid fa-medal text-slate-300 text-lg"></i>';
         titleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-slate-300 text-slate-950 tracking-wider">2º Puesto</span>';
