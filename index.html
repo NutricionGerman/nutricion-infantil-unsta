@@ -12552,8 +12552,30 @@
                     </div>`;
 
                 try {
-                    const docSnap = await db.collection('oral_submissions').doc(`${up}_${partialKey}`).get();
-                    if (!docSnap.exists) {
+                    let data = null;
+                    try {
+                        const docSnap = await db.collection('oral_submissions').doc(`${up}_${partialKey}`).get();
+                        if (docSnap.exists) {
+                            data = docSnap.data();
+                        }
+                    } catch(errDoc) {
+                        console.warn("Consulta Firestore oral_submissions:", errDoc);
+                    }
+
+                    // Fallback a LocalStorage si se rindió localmente
+                    if (!data) {
+                        try {
+                            const rawLocal = localStorage.getItem('unsta_repaso_parcial_2_state');
+                            if (rawLocal) {
+                                const parsed = JSON.parse(rawLocal);
+                                if (parsed.partialSubmissions && parsed.partialSubmissions[partialKey]) {
+                                    data = parsed.partialSubmissions[partialKey];
+                                }
+                            }
+                        } catch(e) {}
+                    }
+
+                    if (!data) {
                         container.innerHTML = `
                             <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.02); border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px;">
                                 <div style="font-size: 2rem; margin-bottom: 10px;">📋</div>
@@ -12562,8 +12584,6 @@
                             </div>`;
                         return;
                     }
-
-                    const data = docSnap.data();
                     const answers = data.answers || [];
                     const finalGrade = data.grade !== undefined ? data.grade : '--';
                     const isPassed = typeof finalGrade === 'number' && finalGrade >= 7.0;

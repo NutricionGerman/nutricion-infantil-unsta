@@ -126,6 +126,12 @@ class StorageManager {
     return this.getOverallAverage();
   }
 
+  recordPartialSubmission(partialKey, submissionData) {
+    if (!this.state.partialSubmissions) this.state.partialSubmissions = {};
+    this.state.partialSubmissions[partialKey] = submissionData;
+    this.saveState();
+  }
+
   getOverallAverage() {
     const keys = ['u5_p1', 'u5_p2', 'u6_p1', 'u6_p2', 'u7_p1', 'u7_p2'];
     const grades = this.state.partialGrades || {};

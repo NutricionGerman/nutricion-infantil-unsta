@@ -1081,6 +1081,20 @@ document.addEventListener("DOMContentLoaded", () => {
         };
       });
 
+      // Guardar localmente de inmediato en LocalStorage
+      if (typeof sm.recordPartialSubmission === 'function') {
+        sm.recordPartialSubmission(partialKey, {
+          up,
+          studentName,
+          partialKey,
+          grade: result.finalGrade,
+          passed: result.passed,
+          generalFeedback: result.generalFeedback || "",
+          timestamp: new Date().toISOString(),
+          answers: formattedAnswers
+        });
+      }
+
       await db.collection('oral_submissions').doc(`${up}_${partialKey}`).set({
         up,
         studentName,
