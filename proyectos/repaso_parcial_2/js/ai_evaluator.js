@@ -1,0 +1,297 @@
+/**
+ * EVALUADOR DE EXAMEN ORAL CON INTELIGENCIA ARTIFICIAL (10 PREGUNTAS)
+ * Cascada de Evaluación Oficial UNSTA:
+ * 1° Titular: Gemini (gemini-3.5-flash) - Calidez y rigor pedagógico universitario
+ * 2° Suplente 1: DeepSeek (deepseek-v4.1-flash:free vía Token Harbor) - Minuciosidad técnica y clínica
+ * 3° Suplente 2: Groq (openai/gpt-oss-120b) - Inmediatez de emergencia ultra-rápida
+ * 4° Fallback: Motor Heurístico Local UNSTA (sin conexión / offline)
+ *
+ * Cátedra de Nutrición Infantil UNSTA
+ */
+
+class AIEvaluator {
+  constructor() {
+    this.config = window.UNSTA_AI_CONFIG || {};
+    this.geminiApiKey = this.config.geminiApiKey || localStorage.getItem("unsta_gemini_key") || "";
+    this.geminiModel = this.config.geminiModel || "gemini-3.5-flash";
+
+    this.deepseekApiKey = this.config.deepseekApiKey || localStorage.getItem("unsta_deepseek_key") || "";
+    this.deepseekModel = this.config.deepseekModel || "deepseek-v4.1-flash:free";
+    this.deepseekEndpoint = this.config.deepseekEndpoint || "https://tokenharbor.ai/v1/chat/completions";
+
+    this.groqApiKey = this.config.groqApiKey || localStorage.getItem("unsta_groq_key") || "";
+    this.groqModel = this.config.groqModel || "openai/gpt-oss-120b";
+    this.groqEndpoint = this.config.groqEndpoint || "https://api.groq.com/openai/v1/chat/completions";
+  }
+
+  cleanAndParseJSON(text) {
+    if (typeof text !== "string") return text;
+    let cleaned = text.trim();
+    if (cleaned.startsWith("```json")) {
+      cleaned = cleaned.replace(/^```json\s*/i, "").replace(/\s*```$/, "");
+    } else if (cleaned.startsWith("```")) {
+      cleaned = cleaned.replace(/^```\s*/, "").replace(/\s*```$/, "");
+    }
+    return JSON.parse(cleaned);
+  }
+
+  async evaluateExam(studentName, up, examItems) {
+    const systemPrompt = `Eres el Docente Evaluador del Segundo Examen Parcial Teórico de la Cátedra de Nutrición Infantil de la UNSTA (Universidad del Norte Santo Tomás de Aquino).
+Tu misión es evaluar con rigor científico, criterio pedagógico y calidez docente las respuestas orales de los estudiantes en un examen oral de 10 preguntas.
+
+CRITERIOS OFICIALES DE EVALUACIÓN DE LA CÁTEDRA (3 UNIDADES Y 6 PARCIALES):
+- UNIDAD 5 (Dietas Basadas en Plantas en Pediatría):
+  * Patrones (Ovolacto, Lacto, Ovo, Vegano estricto) y 6 grupos elementales.
+  * Proteínas y el Mito del 'Valor Biológico': En la cátedra de Germán se enseña EXPLÍCITAMENTE que el concepto de "proteínas incompletas", "bajo valor biológico" vegetal y la supuesta necesidad de "combinar en el plato para elevar el valor biológico" es un MITO de la nutrición reduccionista antigua. Todas las plantas contienen los 9 aminoácidos esenciales.
+    ESTÁ TERMINANTEMENTE PROHIBIDO corregir al alumno exigiéndole que hable de "elevar el valor biológico" o "combinar en la comida".
+    Lo evaluado como correcto es: aminoácidos limitantes relativos (Lisina en cereales/frutos secos, Metionina en legumbres) y la complementación metabólica orgánica a través del pool plasmático e intrahepático libre que recircula durante 12 a 24 horas a lo largo del día.
+  * Micronutrientes: Hierro vegetal Fe³⁺ reducido por Vitamina C a Fe²⁺ absorbible por DMT-1; inhibidores (fitatos, taninos, calcio); biodisponibilidad de calcio en brócoli/kale vs mito espinaca por oxalatos; técnicas de zinc (tostado, germinación, masa madre); omega-3 ALA en chía/lino molido.
+  * Vitamina B12: Suplementación farmacológica innegociable con Cianocobalamina. Peligro de falsos análogos inactivos en espirulina/nori que falsean analítica. Esquema semanal: 6-3a (250 µg/sem), 4-8a (500 µg/sem), 9-13a (1000 µg/sem), ≥14a (2000 µg/sem). Saturación de Factor Intrínseco a 1.5 µg y difusión pasiva del 1%.
+
+- UNIDAD 6 (Crecimiento y Etapas del Desarrollo):
+  * Ritmo de crecimiento: 2-3 kg/año, talla uniforme, estirón puberal (50% peso adulto, 15-20% talla), dimorfismo sexual (grasa ginoide vs duplicación muscular).
+  * Fisiología y Conductas: Anorexia fisiológica normal en preescolar; neofobia alimentaria (pico 2 a 5 años, 8 a 15 exposiciones sin forzar); 23 hs de TV semanal con >50% avisos de ultraprocesados; omisión del desayuno.
+  * Requerimientos: Proteínas promedio 1,2 g/kg/d en preescolar/escolar; RDA Hierro (1-3a: 7mg, 4-10a: 10mg, adolescentes varones: 12mg, mujeres: 15mg por menstruación). Vitaminas (A: 1500 UI, D: 400 UI, C: 30-50mg, B1: 0.4mg, B2: 0.6mg, B12: 1mcg). Minerales (Calcio 800-1300mg, Zinc 10mg acrodermatitis).
+  * Alimentación Perceptiva (ENNyS 2018-19 - Zapata & Marconi): reciprocidad, 5 patrones (autónomo, pantallas, forzado/controlador, indulgente, desatento).
+  * CAPA-2 (CESNI): GAPA (verduras/frutas a 1/3, lácteos <50% y enteros, opcionales al triple); Sistema NOVA (Grupos 1 a 4, ultraprocesados aportan >70% azúcares libres y >65% sodio).
+
+- UNIDAD 7 (Situaciones Especiales en Adolescencia y Deporte):
+  * Embarazo y Lactancia adolescente: Doble demanda biológica (competencia de crecimiento materno y fetal). Adición calórica (+340 kcal 2°T, +452 kcal 3°T; +500 kcal lactancia); proteínas adicionales (+25 g/d); ácido fólico 600 µg/d (prevención DTN); hierro 27-30 mg/d (suplemento 30-60 mg/d); calcio 1300 mg/d (superior a adultas para proteger masa ósea materna); líquidos 2.5-3 L/d en lactancia.
+  * Niño y Adolescente Deportista: Gasto energético con costo de crecimiento; Hidratos de Carbono (5 a 8 g/kg/d o 50-60% VCT para repleción de glucógeno); Grasas saludables (25-30% VCT, no menos de 20%); Protocolo de hidratación en 3 fases: antes (400-600 ml 2-3h antes), durante (100-250 ml cada 15-20 min, sed tardía) y después (reponer 150% del peso perdido); Agua sola para <1h vs bebidas isotónicas (4-8% CHO, 20-30 mEq/L Na) para >1h o calor extremo; riesgo de hiponatremia por sobrehidratación hipotónica; anemia del deportista por impacto plantar repetido (foot-strike hemolysis); Tríada de la Mujer Atleta (baja energía, amenorrea, osteoporosis precoz/fracturas por estrés).
+  * DIRECTIVA DOCENTE ESTRICTA SOBRE PROTEÍNAS EN DEPORTE: La cátedra sigue exclusivamente las RDA del Institute of Medicine (IOM). NO penalizar ni exigir valores de proteína inflados (como 1.2 a 1.5 g/kg/d).
+
+- Principio rector transversal: Cero patología (nutrición fisiológica y normal).
+
+INSTRUCCIONES DE RESPUESTA:
+Debes evaluar las 10 preguntas y responder EXCLUSIVAMENTE un objeto JSON válido con esta estructura exacta:
+{
+  "finalGrade": 8.5,
+  "passed": true,
+  "isHonor": false,
+  "isDistinguished": true,
+  "statusTitle": "Aprobado con Solvencia",
+  "generalFeedback": "Devolución general para el alumno destacando sus fortalezas y áreas a reforzar...",
+  "questionsReview": [
+    {
+      "questionNumber": 1,
+      "question": "texto de la pregunta",
+      "grade": 9,
+      "strengths": "Qué explicó con exactitud...",
+      "improvements": "Qué concepto, cifra exacta o detalle omitió..."
+    }
+  ]
+}`;
+
+    const formattedQuestions = examItems.map((item, idx) => ({
+      questionNumber: idx + 1,
+      question: item.question,
+      officialAnswer: item.officialAnswer,
+      keyPointsRequired: item.keyPoints || [],
+      studentTranscript: item.studentTranscript || "El estudiante no respondió verbalmente o no se detectó audio.",
+      durationSeconds: item.durationSecs || 0
+    }));
+
+    const userPayload = {
+      student: { name: studentName || "Estudiante UNSTA", up: up || "Sin Legajo" },
+      examAnswers: formattedQuestions
+    };
+
+    // 1° INTENTO: GEMINI (TITULAR)
+    if (this.geminiApiKey) {
+      try {
+        console.log("[AIEvaluator] Evaluando con Gemini 3.5 Flash (Titular)...");
+        const res = await this.callGemini(systemPrompt, userPayload);
+        res.evaluatorEngine = "Gemini 3.5 Flash";
+        res.evaluatorIcon = "fa-brands fa-google text-blue-400";
+        res.isHonor = res.finalGrade >= 9.0;
+        res.isDistinguished = res.finalGrade >= 8.0 && res.finalGrade < 9.0;
+        return res;
+      } catch (errGemini) {
+        console.warn("[AIEvaluator] Gemini saturado o con error, pasando a DeepSeek:", errGemini);
+      }
+    }
+
+    // 2° INTENTO: DEEPSEEK (SUPLENTE 1)
+    if (this.deepseekApiKey) {
+      try {
+        console.log("[AIEvaluator] Evaluando con DeepSeek V4.1 Flash vía Token Harbor (Suplente 1)...");
+        const res = await this.callDeepSeek(systemPrompt, userPayload);
+        res.evaluatorEngine = "DeepSeek V4.1 Flash (Token Harbor)";
+        res.evaluatorIcon = "fa-solid fa-brain text-sky-400";
+        res.isHonor = res.finalGrade >= 9.0;
+        res.isDistinguished = res.finalGrade >= 8.0 && res.finalGrade < 9.0;
+        return res;
+      } catch (errDeepSeek) {
+        console.warn("[AIEvaluator] DeepSeek no disponible o saturado, pasando a Groq:", errDeepSeek);
+      }
+    }
+
+    // 3° INTENTO: GROQ (SUPLENTE 2 - EMERGENCIA)
+    if (this.groqApiKey) {
+      try {
+        console.log("[AIEvaluator] Evaluando con Groq OSS-120B (Suplente 2 - Emergencia)...");
+        const res = await this.callGroq(systemPrompt, userPayload);
+        res.evaluatorEngine = "Groq OSS-120B";
+        res.evaluatorIcon = "fa-solid fa-bolt text-amber-400";
+        res.isHonor = res.finalGrade >= 9.0;
+        res.isDistinguished = res.finalGrade >= 8.0 && res.finalGrade < 9.0;
+        return res;
+      } catch (errGroq) {
+        console.warn("[AIEvaluator] Groq falló, activando motor heurístico local:", errGroq);
+      }
+    }
+
+    // 4° FALLBACK: HEURÍSTICO LOCAL
+    console.log("[AIEvaluator] Utilizando motor heurístico docente local.");
+    const res = this.heuristicFallback(examItems);
+    res.evaluatorEngine = "Motor Heurístico Local UNSTA";
+    res.evaluatorIcon = "fa-solid fa-microchip text-slate-400";
+    return res;
+  }
+
+  async callGemini(systemPrompt, userPayload) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${this.geminiModel}:generateContent?key=${this.geminiApiKey}`;
+    const body = {
+      systemInstruction: { parts: [{ text: systemPrompt }] },
+      contents: [{ role: "user", parts: [{ text: JSON.stringify(userPayload) }] }],
+      generationConfig: {
+        temperature: 0.2,
+        maxOutputTokens: 3500,
+        responseMimeType: "application/json"
+      }
+    };
+
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`Gemini API Error ${resp.status}: ${errText}`);
+    }
+
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error("Gemini no devolvió texto de respuesta.");
+    return this.cleanAndParseJSON(text);
+  }
+
+  async callDeepSeek(systemPrompt, userPayload) {
+    const body = {
+      model: this.deepseekModel,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: JSON.stringify(userPayload) }
+      ],
+      temperature: 0.2,
+      max_tokens: 3500
+    };
+
+    const resp = await fetch(this.deepseekEndpoint, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${this.deepseekApiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`DeepSeek Token Harbor API Error ${resp.status}: ${errText}`);
+    }
+
+    const data = await resp.json();
+    const content = data.choices?.[0]?.message?.content;
+    if (!content) throw new Error("DeepSeek no devolvió contenido de respuesta.");
+    return this.cleanAndParseJSON(content);
+  }
+
+  async callGroq(systemPrompt, userPayload) {
+    const body = {
+      model: this.groqModel,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: JSON.stringify(userPayload) }
+      ],
+      temperature: 0.2,
+      max_tokens: 3500
+    };
+
+    const resp = await fetch(this.groqEndpoint, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${this.groqApiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error(`Groq API Error ${resp.status}: ${errText}`);
+    }
+
+    const data = await resp.json();
+    const content = data.choices?.[0]?.message?.content;
+    if (!content) throw new Error("Groq no devolvió contenido de respuesta.");
+    return this.cleanAndParseJSON(content);
+  }
+
+  heuristicFallback(examItems) {
+    let totalScore = 0;
+    const questionsReview = examItems.map((item, idx) => {
+      const transcript = (item.studentTranscript || "").toLowerCase();
+      const keywords = (item.keywords || []).map(k => k.toLowerCase());
+      let matchedCount = 0;
+      keywords.forEach(k => {
+        if (transcript.includes(k)) matchedCount++;
+      });
+
+      const score = Math.min(10, Math.max(3, Math.round((matchedCount / Math.max(1, keywords.length)) * 10)));
+      totalScore += score;
+
+      return {
+        questionNumber: idx + 1,
+        question: item.question,
+        grade: score,
+        strengths: score >= 7
+          ? "Abordó los conceptos centrales y terminología de cátedra."
+          : "Identificó de manera general el tema solicitado.",
+        improvements: score >= 7
+          ? "Profundizar en la fundamentación de los autores y dosis exactas."
+          : "Faltó mayor precisión en las cifras de la bibliografía oficial."
+      };
+    });
+
+    const finalGrade = Math.round((totalScore / examItems.length) * 10) / 10;
+    const passed = finalGrade >= 7.0;
+    const isHonor = finalGrade >= 9.0;
+    const isDistinguished = finalGrade >= 8.0 && finalGrade < 9.0;
+
+    let statusTitle = "A Recuperar";
+    if (isHonor) statusTitle = "¡Cuadro de Honor!";
+    else if (isDistinguished) statusTitle = "¡Aprobado con Distinción!";
+    else if (passed) statusTitle = "Aprobado con Solvencia";
+
+    return {
+      finalGrade,
+      passed,
+      isHonor,
+      isDistinguished,
+      statusTitle,
+      generalFeedback: isHonor
+        ? "Desempeño excepcional. Dominio impecable de requerimientos, bibliografía y desarrollo clínico."
+        : isDistinguished
+        ? "Muy buen desempeño en el examen oral. Demostraste solvencia técnica y precisión conceptual destacada."
+        : passed
+        ? "Demostraste buen dominio general de los contenidos evaluados. Puedes revisar los detalles observados para perfeccionar tu examen presencial."
+        : "El puntaje obtenido se encuentra por debajo de la regularidad (7.0). Te sugerimos repasar intensivamente con las tarjetas y repetir la evaluación oral.",
+      questionsReview
+    };
+  }
+}
+
+window.aiEvaluator = new AIEvaluator();

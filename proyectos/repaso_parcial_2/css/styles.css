@@ -1,0 +1,206 @@
+/**
+ * ESTILOS VISUALES & EFECTOS 3D
+ * Cátedra de Nutrición Infantil UNSTA - App de Repaso 2° Parcial
+ */
+
+/* Perspectiva y giro 3D para Flashcards */
+.perspective-1000 {
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  min-height: 430px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flashcard-inner.flipped {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  border-radius: 1.5rem;
+  overflow-y: auto;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.flashcard-inner.flipped .card-front {
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  z-index: 1;
+}
+
+.flashcard-inner.flipped .card-back {
+  z-index: 2;
+  pointer-events: auto;
+}
+
+/* Animación de Ondas de Sonido (Ecualizador de Audio) */
+.audio-wave-bar {
+  display: inline-block;
+  width: 3px;
+  height: 12px;
+  background-color: #38bdf8;
+  border-radius: 2px;
+  margin: 0 1.5px;
+  animation: audioWave 1.2s ease-in-out infinite alternate;
+}
+
+.audio-wave-bar:nth-child(2) {
+  animation-delay: 0.2s;
+  height: 18px;
+}
+
+.audio-wave-bar:nth-child(3) {
+  animation-delay: 0.4s;
+  height: 24px;
+}
+
+.audio-wave-bar:nth-child(4) {
+  animation-delay: 0.1s;
+  height: 16px;
+}
+
+.audio-wave-bar:nth-child(5) {
+  animation-delay: 0.3s;
+  height: 20px;
+}
+
+@keyframes audioWave {
+  0% {
+    transform: scaleY(0.3);
+  }
+  100% {
+    transform: scaleY(1.4);
+  }
+}
+
+/* Micrófono palpitante al grabar respuesta oral */
+@keyframes recordPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.recording-pulse {
+  animation: recordPulse 1.5s infinite;
+}
+
+/* Efecto de Respiración y Brillo para Niveles */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
+  }
+}
+
+.glow-active {
+  animation: glowPulse 3s infinite ease-in-out;
+}
+
+/* Estilos de Impresión Oficial para el Examen Oral y Boletín Consolidado */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #oralExamResultScreen,
+  #oralExamResultScreen *,
+  #oralDashboardScreen,
+  #oralDashboardScreen * {
+    visibility: visible;
+  }
+  #oralExamResultScreen,
+  #oralDashboardScreen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 2px solid #1e3a8a !important;
+  }
+  #oralExamResultScreen div,
+  #oralDashboardScreen div {
+    background: white !important;
+    color: black !important;
+    border-color: #cbd5e1 !important;
+  }
+  #oralExamResultScreen h2,
+  #oralExamResultScreen h3,
+  #oralExamResultScreen h4,
+  #oralExamResultScreen h5,
+  #oralExamResultScreen p,
+  #oralExamResultScreen span,
+  #oralDashboardScreen h2,
+  #oralDashboardScreen h3,
+  #oralDashboardScreen h4,
+  #oralDashboardScreen h5,
+  #oralDashboardScreen p,
+  #oralDashboardScreen span {
+    color: black !important;
+  }
+  #oralFinalGradeBadge,
+  #boardOverallAverage {
+    color: #15803d !important; /* verde oscuro para impresión */
+  }
+  #btnRetryOralExam,
+  #btnPrintOralDiploma,
+  #btnPrintConsolidatedReport,
+  .btn-start-partial,
+  #btnReturnToDashboardFromResult {
+    display: none !important;
+  }
+}
+
+/* Scrollbar estilizada */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.5);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.8);
+}

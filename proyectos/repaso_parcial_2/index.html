@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repaso & Examen Oral · 2° Parcial Nutrición Infantil (UNSTA)</title>
+  <link rel="icon" type="image/svg+xml" href="../../iconos/icono.svg">
+  
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+  <!-- ========================================================================
+       ENCABEZADO INSTITUCIONAL & NAVEGACIÓN EN 2 SECCIONES
+       ======================================================================== -->
+  <header class="border-b border-slate-800 bg-slate-900/95 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Logo y Título -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-[11px] uppercase tracking-wider font-extrabold text-indigo-400 block">UNSTA · Nutrición Infantil</span>
+          <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">Preparación 2° Parcial Teórico</h1>
+        </div>
+      </div>
+
+      <!-- Estado del Alumno -->
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-2 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700 text-xs">
+          <span class="flex items-center text-amber-400 font-bold" title="Racha activa">
+            <i class="fa-solid fa-fire mr-1 text-amber-500"></i>
+            <span id="headerStreak">1 d</span>
+          </span>
+          <span class="text-slate-600">|</span>
+          <span class="flex items-center text-indigo-400 font-bold" title="Puntos XP">
+            <i class="fa-solid fa-bolt mr-1"></i>
+            <span id="headerXP">0 XP</span>
+          </span>
+        </div>
+
+        <button id="editStudentInfoBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-xl border border-slate-700 text-xs text-slate-200 transition" title="Editar Nombre y Legajo">
+          <i class="fa-solid fa-user-pen text-slate-400"></i>
+          <span id="headerStudentName" class="max-w-[130px] truncate font-medium">Estudiante UNSTA</span>
+        </button>
+
+        <!-- Indicador de audio activo -->
+        <div id="audioWaveIndicator" class="hidden flex items-center h-5 px-2 bg-sky-950/40 rounded-lg border border-sky-500/30">
+          <span class="audio-wave-bar"></span>
+          <span class="audio-wave-bar"></span>
+          <span class="audio-wave-bar"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NAVEGACIÓN EN 2 GRANDES SECCIONES -->
+    <div class="bg-slate-900 border-t border-slate-800 px-4 py-2">
+      <div class="max-w-5xl mx-auto flex space-x-2">
+        <button id="tabBtn_repaso" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-2 transition shadow-md bg-indigo-600 text-white">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>1. Mazo de Repaso Activo</span>
+        </button>
+        <button id="tabBtn_evaluacion" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-2 transition text-slate-400 hover:bg-slate-800">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>2. Mesa de Exámenes Orales & Tablero (6 Parciales)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       CONTENIDO PRINCIPAL: LAS 2 SECCIONES
+       ======================================================================== -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
+
+    <!-- ======================================================================
+         SECCIÓN 1: MAZO DE REPASO ACTIVO
+         ====================================================================== -->
+    <section id="section_repaso" class="space-y-6">
+      
+      <!-- Barra de Filtro de Mazo y Contadores Anki -->
+      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-2 w-full sm:w-auto">
+          <label for="deckSelectorSelect" class="text-xs font-bold text-slate-400 uppercase">Tema:</label>
+          <select id="deckSelectorSelect" class="bg-slate-800 text-slate-100 text-xs sm:text-sm font-semibold rounded-xl px-3 py-2 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-auto">
+            <option value="all">📚 Todos los Temas (66 tarjetas · 3 Unidades)</option>
+            <optgroup label="🌱 UNIDAD 5: Dietas Basadas en Plantas">
+              <option value="u5_all">🌱 Toda la Unidad 5 (22 tarjetas)</option>
+              <option value="u5_p1">  └ Parcial 1: Patrones, Grupos y Proteínas</option>
+              <option value="u5_p2">  └ Parcial 2: Micronutrientes y Vitamina B12</option>
+            </optgroup>
+            <optgroup label="👶 UNIDAD 6: Etapas del Desarrollo">
+              <option value="u6_all">👶 Toda la Unidad 6 (22 tarjetas)</option>
+              <option value="u6_p1">  └ Parcial 3: Crecimiento Fisiológico y Conductas</option>
+              <option value="u6_p2">  └ Parcial 4: Requerimientos, Perceptiva y CAPA-2</option>
+            </optgroup>
+            <optgroup label="🏃 UNIDAD 7: Situaciones Especiales y Deporte">
+              <option value="u7_all">🏃 Toda la Unidad 7 (22 tarjetas)</option>
+              <option value="u7_p1">  └ Parcial 5: Embarazo y Lactancia en Adolescencia</option>
+              <option value="u7_p2">  └ Parcial 6: Nutrición en el Niño Deportista</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <!-- Los 3 Contadores del Mazo -->
+        <div class="flex items-center space-x-2 text-xs font-mono">
+          <span class="px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 font-bold" title="Tarjetas nuevas que aún no viste hoy">
+            <span class="w-2 h-2 rounded-full bg-blue-400 inline-block mr-1"></span> <span id="deckCountNew">0</span> Nuevas
+          </span>
+          <span class="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 font-bold" title="Tarjetas en proceso de aprendizaje o para reiterar">
+            <span class="w-2 h-2 rounded-full bg-amber-400 inline-block mr-1"></span> <span id="deckCountReview">0</span> Por Repasar
+          </span>
+          <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold" title="Tarjetas aprendidas y dominadas">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block mr-1"></span> <span id="deckCountMastered">0</span> Dominadas
+          </span>
+        </div>
+      </div>
+
+      <!-- Tarjeta 3D Activa -->
+      <div id="deckCardViewContainer" class="perspective-1000 max-w-xl mx-auto w-full min-h-[420px]">
+        <div id="flashcardInner" class="flashcard-inner relative w-full h-full min-h-[420px] rounded-3xl shadow-2xl">
+          
+          <!-- Cara Frontal (Pregunta) -->
+          <div class="card-face card-front bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 border-2 border-indigo-500/40 p-6 sm:p-8 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span id="flashcardDeckBadge" class="text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30">
+                  Concepto Clave
+                </span>
+                <div class="flex items-center space-x-2">
+                  <span id="flashcardCounter" class="text-xs font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-1 rounded-lg">1 / 33</span>
+                  <button id="speakCardBtn" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white flex items-center justify-center transition" title="Escuchar pregunta">
+                    <i class="fa-solid fa-volume-high text-xs"></i>
+                  </button>
+                </div>
+              </div>
+              <h3 id="flashcardQuestionText" class="text-lg sm:text-xl font-bold text-white leading-relaxed mt-2">
+                Cargando pregunta...
+              </h3>
+              <p id="flashcardHintText" class="text-xs text-indigo-300/80 italic mt-3">
+                Pista pedagógica...
+              </p>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800/80 space-y-3">
+              <button id="btnFlipToAnswer" class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-extrabold text-sm rounded-2xl shadow-lg shadow-indigo-600/20 transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-rotate"></i>
+                <span>Voltear Tarjeta (Ver Respuesta Oficial)</span>
+              </button>
+              <div class="flex items-center justify-between text-xs text-slate-500">
+                <button id="cardPrevBtn" class="hover:text-slate-300 transition">
+                  <i class="fa-solid fa-chevron-left mr-1"></i> Anterior
+                </button>
+                <button id="cardNextBtn" class="hover:text-slate-300 transition">
+                  Siguiente <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cara Posterior (Respuesta Oficial + Botones de Repetición) -->
+          <div class="card-face card-back bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 border-2 border-emerald-500/40 p-6 sm:p-8 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full border border-emerald-500/30">
+                  Respuesta Oficial de Cátedra
+                </span>
+                <button id="speakAnswerBtn" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-emerald-600 text-slate-300 hover:text-white flex items-center justify-center transition" title="Escuchar respuesta oficial">
+                  <i class="fa-solid fa-volume-high text-xs"></i>
+                </button>
+              </div>
+
+              <div id="flashcardAnswerText" class="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed whitespace-pre-line bg-slate-950/70 p-4 rounded-2xl border border-emerald-500/20">
+                Cargando respuesta oficial...
+              </div>
+
+              <div id="flashcardKeyPointsContainer" class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-xs space-y-1">
+                <span class="text-amber-400 font-bold block mb-1">Criterios Clave a Recordar:</span>
+                <div id="flashcardKeyPointsList" class="space-y-1 text-slate-300 text-[11px]"></div>
+              </div>
+            </div>
+
+            <!-- Botones de Refuerzo del Mazo -->
+            <div class="pt-3 border-t border-slate-800 space-y-2">
+              <p class="text-center text-xs text-slate-400 font-medium">¿Cómo recordaste esta tarjeta?</p>
+              <div class="grid grid-cols-3 gap-2">
+                <button id="btnAnkiAgain" class="py-2.5 px-2 rounded-xl bg-rose-950/50 hover:bg-rose-900/70 border border-rose-500/40 text-rose-300 text-xs font-bold transition flex flex-col items-center">
+                  <i class="fa-solid fa-xmark text-sm mb-0.5"></i>
+                  <span>Repetir</span>
+                  <span class="text-[9px] text-rose-400 font-normal">Sale pronto</span>
+                </button>
+                <button id="btnAnkiHard" class="py-2.5 px-2 rounded-xl bg-amber-950/50 hover:bg-amber-900/70 border border-amber-500/40 text-amber-300 text-xs font-bold transition flex flex-col items-center">
+                  <i class="fa-solid fa-question text-sm mb-0.5"></i>
+                  <span>Dudé</span>
+                  <span class="text-[9px] text-amber-400 font-normal">+3 XP</span>
+                </button>
+                <button id="btnAnkiGood" class="py-2.5 px-2 rounded-xl bg-emerald-950/50 hover:bg-emerald-900/70 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition flex flex-col items-center">
+                  <i class="fa-solid fa-check text-sm mb-0.5"></i>
+                  <span>¡Dominada!</span>
+                  <span class="text-[9px] text-emerald-400 font-normal">+10 XP</span>
+                </button>
+              </div>
+              <button id="btnFlipBackToQuestion" class="w-full text-center text-xs text-slate-400 hover:text-white pt-1 transition">
+                <i class="fa-solid fa-rotate mr-1"></i> Volver a la pregunta
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Pantalla de Mazo Completado -->
+      <div id="deckFinishedScreen" class="hidden max-w-xl mx-auto bg-slate-900 border border-emerald-500/30 rounded-3xl p-8 text-center space-y-5 shadow-2xl">
+        <div class="w-16 h-16 rounded-3xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-3xl">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h3 class="text-2xl font-black text-white">¡Mazo Completado por Hoy!</h3>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+          Has dominado todas las tarjetas de este mazo. La repetición activa ha fijado los conceptos clave en tu memoria de largo plazo.
+        </p>
+        <div class="pt-2 flex flex-wrap justify-center gap-3">
+          <button id="btnRestartDeck" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition">
+            <i class="fa-solid fa-rotate-right mr-1.5"></i> Repasar este Mazo de Nuevo
+          </button>
+          <button onclick="document.getElementById('tabBtn_evaluacion').click()" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-xl shadow-lg transition">
+            <i class="fa-solid fa-microphone mr-1.5"></i> Rendir Examen Oral Ahora
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         SECCIÓN 2: EXÁMENES ORALES & TABLERO DE LOS 6 PARCIALES
+         ====================================================================== -->
+    <section id="section_evaluacion" class="hidden space-y-6">
+      
+      <!-- Pantalla 2.1: TABLERO DE LOS 6 PARCIALES & BOLETÍN OFICIAL -->
+      <div id="oralDashboardScreen" class="space-y-6">
+
+        <!-- Banner de Encabezado: Promedio General y Cuadro de Honor -->
+        <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 border-2 border-indigo-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl">
+          
+          <!-- Banner Holográfico de Honor si Promedio >= 9.0 -->
+          <div id="boardHonorBanner" class="hidden bg-gradient-to-r from-amber-500/20 via-yellow-500/30 to-amber-500/20 border-2 border-amber-500/60 p-4 rounded-2xl mb-4 text-center space-y-1 animate-pulse">
+            <span class="text-2xl">👑</span>
+            <h4 class="text-sm sm:text-base font-black text-amber-300 uppercase tracking-wider">¡Mérito de Excelencia · Cuadro de Honor de la Cátedra!</h4>
+            <p class="text-xs text-amber-200/90">
+              Has alcanzado un promedio general de <strong id="boardHonorGradeText">9.0</strong> con los 6 parciales aprobados. Desbloqueaste la Medalla de Oro, el Marco Zafiro Holográfico y +10 XP.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+                UNSTA · Nutrición Infantil
+              </span>
+              <h2 class="text-xl sm:text-2xl font-black text-white mt-2">Tablero de Dominio · 2° Parcial Teórico</h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-lg">
+                Completa los <strong>6 parciales orales</strong> (2 por unidad). Cada parcial evalúa 10 preguntas por audio con IA. Al final se promedian todas las calificaciones.
+              </p>
+            </div>
+
+            <!-- Promedio Consolidado -->
+            <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 text-center min-w-[170px] shadow-lg">
+              <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Promedio General</span>
+              <div id="boardOverallAverage" class="text-4xl font-black text-indigo-400 font-mono tracking-tight">
+                -- / 10
+              </div>
+              <span id="boardCompletedCount" class="text-[11px] text-slate-400 block mt-1">0 de 6 Completados</span>
+            </div>
+          </div>
+
+          <!-- Datos del Estudiante -->
+          <div class="mt-6 pt-5 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1 font-semibold">Nombre y Apellido:</label>
+              <input type="text" id="oralStudentNameInput" placeholder="Ej: Mariana Roldán" class="w-full bg-slate-950 text-slate-100 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1 font-semibold">UP / Legajo:</label>
+              <input type="text" id="oralStudentUpInput" placeholder="Ej: 84920" class="w-full bg-slate-950 text-slate-100 text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
+
+          <!-- Vitrina de Honor: Medalla Exclusiva de Cuadro de Honor (Solo Promedio >= 9.0) -->
+          <div class="mt-6 pt-5 border-t border-slate-800/80">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-amber-400 flex items-center space-x-2">
+                <i class="fa-solid fa-crown"></i>
+                <span>Máxima Distinción de Cátedra · Cuadro de Honor</span>
+              </span>
+              <span id="boardMedalsSummaryText" class="text-[11px] font-mono text-slate-400">Requisito: Promedio ≥ 9.0</span>
+            </div>
+            
+            <!-- Tarjeta Única Exclusiva: Medalla de Oro -->
+            <div id="medalCard_gold" class="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 transition opacity-50">
+              <div class="flex items-center space-x-3.5">
+                <div id="medalGoldIconWrapper" class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 text-slate-500 flex items-center justify-center text-3xl shrink-0 transition">
+                  👑
+                </div>
+                <div>
+                  <div class="flex items-center space-x-2">
+                    <h5 id="medalGoldTitle" class="text-sm font-black text-slate-300">Medalla de Oro Laureada · Cuadro de Honor</h5>
+                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-950/80 text-amber-300 font-extrabold border border-amber-600/40">+10 XP</span>
+                  </div>
+                  <p class="text-xs text-slate-400 mt-0.5">
+                    Reservada estrictamente para estudiantes que completen los 6 parciales con <strong>promedio final ≥ 9.0</strong>.
+                  </p>
+                  <span class="text-[11px] font-bold text-slate-500 block mt-1" id="medalStatus_gold">🔒 Bloqueada (Rinde los 6 parciales para calificar)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grilla de las 3 Unidades y 6 Parciales -->
+        <div class="space-y-6">
+
+          <!-- UNIDAD 5 -->
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider">UNIDAD 5: Dietas Basadas en Plantas en Pediatría</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Parcial 1 -->
+              <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 space-y-3 transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                      Parcial 1 · Nivel 1
+                    </span>
+                    <span id="gradeBadge_u5_p1" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                      Pendiente
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-white">Patrones, 6 Grupos y Proteínas</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Ovolacto, Vegano, aminoácidos limitantes (Lisina vs Metionina) y pool plasmático de 12-24 hs.
+                  </p>
+                </div>
+                <button type="button" class="btn-start-partial w-full py-2.5 bg-slate-800 hover:bg-emerald-600 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2" data-partial="u5_p1">
+                  <i class="fa-solid fa-microphone text-xs"></i>
+                  <span>Rendir Parcial 1 (10 Preguntas)</span>
+                </button>
+              </div>
+
+              <!-- Parcial 2 -->
+              <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 space-y-3 transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                      Parcial 2 · Nivel 2
+                    </span>
+                    <span id="gradeBadge_u5_p2" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                      Pendiente
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-white">Micronutrientes Críticos y Suplementación de B12</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Hierro Fe³⁺ vs Vitamina C, zinc, calcio vegetal vs oxalatos, omega-3 y dosis de cianocobalamina.
+                  </p>
+                </div>
+                <button type="button" class="btn-start-partial w-full py-2.5 bg-slate-800 hover:bg-emerald-600 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2" data-partial="u5_p2">
+                  <i class="fa-solid fa-microphone text-xs"></i>
+                  <span>Rendir Parcial 2 (10 Preguntas)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- UNIDAD 6 -->
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span>
+              <h3 class="text-sm font-bold text-sky-400 uppercase tracking-wider">UNIDAD 6: Crecimiento y Etapas del Desarrollo</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Parcial 3 -->
+              <div class="bg-slate-900 border border-slate-800 hover:border-sky-500/40 rounded-2xl p-5 space-y-3 transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-500/20">
+                      Parcial 3 · Nivel 1
+                    </span>
+                    <span id="gradeBadge_u6_p1" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                      Pendiente
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-white">Crecimiento Fisiológico y Conductas</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Ritmo 2-3 kg/año, estirón puberal, anorexia fisiológica, neofobia (2-5 años) y pantallas.
+                  </p>
+                </div>
+                <button type="button" class="btn-start-partial w-full py-2.5 bg-slate-800 hover:bg-sky-600 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2" data-partial="u6_p1">
+                  <i class="fa-solid fa-microphone text-xs"></i>
+                  <span>Rendir Parcial 3 (10 Preguntas)</span>
+                </button>
+              </div>
+
+              <!-- Parcial 4 -->
+              <div class="bg-slate-900 border border-slate-800 hover:border-sky-500/40 rounded-2xl p-5 space-y-3 transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-300 border border-sky-500/20">
+                      Parcial 4 · Nivel 2
+                    </span>
+                    <span id="gradeBadge_u6_p2" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                      Pendiente
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-white">Requerimientos Cuantitativos, Perceptiva y CAPA-2</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    RDA de hierro por edad, ENNyS 2018-19 (5 patrones), Guías GAPA y Sistema NOVA 1 a 4.
+                  </p>
+                </div>
+                <button type="button" class="btn-start-partial w-full py-2.5 bg-slate-800 hover:bg-sky-600 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2" data-partial="u6_p2">
+                  <i class="fa-solid fa-microphone text-xs"></i>
+                  <span>Rendir Parcial 4 (10 Preguntas)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- UNIDAD 7 -->
+          <div class="space-y-3">
+            <div class="flex items-center space-x-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+              <h3 class="text-sm font-bold text-purple-400 uppercase tracking-wider">UNIDAD 7: Situaciones Especiales y Deporte</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Parcial 5 -->
+              <div class="bg-slate-900 border border-slate-800 hover:border-purple-500/40 rounded-2xl p-5 space-y-3 transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                      Parcial 5 · Nivel 1
+                    </span>
+                    <span id="gradeBadge_u7_p1" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                      Pendiente
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-white">Embarazo y Lactancia en la Adolescencia</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Doble demanda biológica, +340/+452 kcal, +500 kcal en lactancia, +25g proteínas, hierro y calcio 1300mg.
+                  </p>
+                </div>
+                <button type="button" class="btn-start-partial w-full py-2.5 bg-slate-800 hover:bg-purple-600 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2" data-partial="u7_p1">
+                  <i class="fa-solid fa-microphone text-xs"></i>
+                  <span>Rendir Parcial 5 (10 Preguntas)</span>
+                </button>
+              </div>
+
+              <!-- Parcial 6 -->
+              <div class="bg-slate-900 border border-slate-800 hover:border-purple-500/40 rounded-2xl p-5 space-y-3 transition flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                      Parcial 6 · Nivel 2
+                    </span>
+                    <span id="gradeBadge_u7_p2" class="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-slate-800 text-slate-400 border border-slate-700">
+                      Pendiente
+                    </span>
+                  </div>
+                  <h4 class="text-sm font-bold text-white">Nutrición e Hidratación en el Niño Deportista</h4>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                    GET y crecimiento, HC 5-8 g/kg, protocolo de hidratación antes/durante/después (150%) y Tríada de la Atleta.
+                  </p>
+                </div>
+                <button type="button" class="btn-start-partial w-full py-2.5 bg-slate-800 hover:bg-purple-600 text-slate-200 hover:text-white text-xs font-bold rounded-xl transition flex items-center justify-center space-x-2" data-partial="u7_p2">
+                  <i class="fa-solid fa-microphone text-xs"></i>
+                  <span>Rendir Parcial 6 (10 Preguntas)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Acciones del Tablero -->
+        <div class="pt-2 flex justify-center">
+          <button id="btnPrintConsolidatedReport" type="button" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-2xl border border-slate-700 transition flex items-center space-x-2">
+            <i class="fa-solid fa-print"></i>
+            <span>Imprimir Boletín Oficial Consolidado (PDF)</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pantalla 2.2: Pregunta Oral Activa (Cero Spoilers) -->
+      <div id="oralExamActiveScreen" class="hidden max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5">
+        
+        <!-- Barra Superior: Salir al Tablero y Título del Parcial -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <button id="btnBackToDashboard" type="button" class="text-xs text-slate-400 hover:text-white flex items-center space-x-1.5 transition">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Volver al Tablero</span>
+          </button>
+          <span id="oralExamPartialTitle" class="text-xs font-bold text-indigo-400 truncate max-w-xs">Parcial</span>
+        </div>
+        
+        <!-- Píldoras de Navegación de las 10 Preguntas -->
+        <div class="space-y-1.5 border-b border-slate-800 pb-4">
+          <div class="flex items-center justify-between text-xs text-slate-400">
+            <span class="font-bold text-indigo-400 uppercase tracking-wider text-[11px]" id="oralExamTopicBadge">TEMA</span>
+            <span class="font-mono font-bold text-white" id="oralExamQuestionCounter">Pregunta 1 de 10</span>
+          </div>
+          <div id="oralPillsContainer" class="flex flex-wrap gap-1.5 justify-center pt-1"></div>
+        </div>
+
+        <!-- Enunciado de la Pregunta -->
+        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex items-start justify-between gap-3">
+          <h3 id="oralExamQuestionText" class="text-base sm:text-lg font-bold text-white leading-relaxed flex-1">
+            Cargando pregunta de examen...
+          </h3>
+          <button id="oralExamSpeakQuestionBtn" class="shrink-0 w-9 h-9 rounded-xl bg-slate-800 hover:bg-indigo-600 text-slate-300 hover:text-white flex items-center justify-center transition" title="Escuchar pregunta en voz alta">
+            <i class="fa-solid fa-volume-high text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Estudio de Grabación Oral -->
+        <div class="bg-slate-950 p-6 rounded-2xl border border-indigo-500/30 text-center space-y-4">
+          <div class="flex items-center justify-center space-x-2">
+            <span id="oralRecordingBadge" class="hidden font-mono font-bold text-xs text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/30 animate-pulse">
+              🔴 GRABANDO AUDIO: <span id="oralRecordTimerText">00:00</span>
+            </span>
+            <span id="oralAudioSavedBadge" class="hidden font-bold text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
+              <i class="fa-solid fa-check mr-1"></i> Audio Registrado
+            </span>
+          </div>
+
+          <!-- Botón de Grabar / Detener -->
+          <button id="btnRecordOralAnswer" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-extrabold text-sm flex items-center space-x-2 mx-auto shadow-lg shadow-rose-600/30 transition active:scale-95">
+            <i class="fa-solid fa-microphone text-base"></i>
+            <span id="btnRecordOralAnswerText">Grabar mi Respuesta</span>
+          </button>
+
+          <!-- Reproductor de audio grabado -->
+          <div id="oralPlaybackWrapper" class="hidden max-w-sm mx-auto pt-2">
+            <p class="text-[11px] text-slate-400 mb-1">Escucha tu respuesta grabada:</p>
+            <audio id="oralRecordedPlayer" controls class="w-full h-8 rounded-lg"></audio>
+          </div>
+
+          <!-- Transcripción en vivo -->
+          <div id="oralLiveTranscriptWrapper" class="hidden text-left bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 max-h-24 overflow-y-auto font-mono">
+            <span class="text-slate-500 text-[10px] uppercase font-bold block mb-1">Transcripción de tu voz:</span>
+            <p id="oralLiveTranscriptText">...</p>
+          </div>
+        </div>
+
+        <!-- Navegación entre las 10 preguntas -->
+        <div class="flex items-center justify-between pt-2">
+          <button id="btnOralPrevQuestion" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">
+            <i class="fa-solid fa-chevron-left mr-1"></i> Anterior
+          </button>
+          
+          <button id="btnOralNextQuestion" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-extrabold rounded-xl shadow-lg transition">
+            <span>Siguiente Pregunta</span> <i class="fa-solid fa-chevron-right ml-1"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pantalla 2.3: Cargando Evaluación con IA -->
+      <div id="oralExamLoadingScreen" class="hidden max-w-lg mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto text-2xl animate-spin">
+          <i class="fa-solid fa-circle-notch"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">Evaluando tus 10 respuestas orales...</h3>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          El docente virtual con Inteligencia Artificial está procesando tus 10 audios, cotejando con la bibliografía de cátedra (Mohedano, CAPA-2, ENNyS) y calculando tu calificación final.
+        </p>
+      </div>
+
+      <!-- Pantalla 2.4: Resultados Oficiales & Devolución de la IA -->
+      <div id="oralExamResultScreen" class="hidden max-w-3xl mx-auto space-y-6">
+        
+        <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 border-2 border-indigo-500/40 rounded-3xl p-6 sm:p-8 text-center space-y-4 shadow-2xl">
+          
+          <!-- Banner de Honor si Nota >= 9 -->
+          <div id="oralHonorDistinctionBanner" class="hidden bg-gradient-to-r from-amber-500/20 via-yellow-500/30 to-amber-500/20 border-2 border-amber-500/60 p-4 rounded-2xl mb-2 text-center space-y-1 animate-pulse">
+            <span class="text-xl">👑</span>
+            <h4 class="text-sm font-black text-amber-300 uppercase tracking-wider">¡Mérito de Excelencia · Cuadro de Honor!</h4>
+            <p class="text-xs text-amber-200/90">
+              Has obtenido una calificación igual o superior a <strong>9 / 10</strong>. Has desbloqueado el Distintivo de Honor para el portal oficial.
+            </p>
+          </div>
+
+
+
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-400">
+            Dictamen Oficial · Mesa de Examen Oral (10 Preguntas)
+          </span>
+          <div id="oralFinalGradeBadge" class="text-6xl font-black text-emerald-400 font-mono tracking-tight">
+            8.5 / 10
+          </div>
+          <h3 id="oralStatusTitle" class="text-lg sm:text-xl font-bold text-white">
+            ¡Aprobado con Solvencia!
+          </h3>
+          
+          <div class="max-w-xl mx-auto bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-xs sm:text-sm text-slate-300 leading-relaxed text-left">
+            <strong class="text-indigo-400 block mb-1">Devolución General del Docente:</strong>
+            <p id="oralGeneralFeedbackText">Cargando devolución...</p>
+          </div>
+
+          <div class="pt-2 flex flex-wrap justify-center gap-3">
+            <button id="btnReturnToDashboardFromResult" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-xl shadow-lg transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-table-columns"></i>
+              <span>Volver al Tablero y Ver Promedio</span>
+            </button>
+            <button id="btnRetryOralExam" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition">
+              <i class="fa-solid fa-rotate mr-1.5"></i> Repetir este Parcial
+            </button>
+            <button id="btnPrintOralDiploma" class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black rounded-xl shadow-lg transition">
+              <i class="fa-solid fa-print mr-1.5"></i> Imprimir Constancia / PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Desglose de las 10 Preguntas -->
+        <div class="space-y-3">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Desglose de Calificación Pregunta por Pregunta:
+          </h4>
+          <div id="oralQuestionsBreakdownList" class="space-y-3"></div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       PIE DE PÁGINA
+       ======================================================================== -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
+    <p>Cátedra de Nutrición Infantil · UNSTA | Mazo de Repaso Activo & Examen Oral con IA</p>
+  </footer>
+
+  <!-- Firebase SDK para Sincronización Oficial -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/data_flashcards.js"></script>
+  <script src="js/audio_engine.js"></script>
+  <script src="js/audio_recorder.js"></script>
+  <script src="js/ai_evaluator.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

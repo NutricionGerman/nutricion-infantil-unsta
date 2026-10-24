@@ -67,3 +67,37 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
     - **Consignas Anatómicas Sin Spoilers y Rigor de Cátedra**: Al pulsar *«¡ESTOY LISTO, EMPEZAR!»* el cronómetro arranca de inmediato y se revela el nombre formal sin spoilers orientativos. Se ajustó la nomenclatura para solicitar con exactitud los relieves óseos de referencia: *«2 Puntos de Referencia para Marca Mesobraquial»* (Acromion y Olécranon para proyectar el punto medio al 50%) y *«2 Puntos de Referencia para Cintura OMS»* (10ª costilla y cresta ilíaca).
     - **Flujo de Duelo Asincrónico sin Bucles**: En el torneo cada alumno compite desde su propio móvil. Al culminar el 5º hito del día, se elimina la transición de "entrega el dispositivo a tu compañero" y se avanza directamente al podio con el benchmark de puntuación del rival, evitando que se reinicien las 5 preguntas.
     - **Higiene Total de Modales y Versionado Anti-Caché**: Al entrar a la página (`initDuelApp`) y al pulsar *«🏆 Volver al Cuadro del Torneo»* (`switchView('tournament')`), se fuerza `display: none` en todos los `.modal-overlay` y se cancelan los temporizadores. Se agregaron parámetros de versión (`?v=2.3`) en los `<script>` y `<link>` para impedir que la caché del navegador retenga código obsoleto.
+
+11. **Gimnasio Cognitivo de Repaso para el 2° Parcial Teórico (Unidad 6)**:
+    - **Ubicación Aislada**: Se desarrolla de forma 100% independiente en `proyectos/repaso_parcial_2/`, sin alterar `index.html` del portal principal ni colecciones de producción de Firestore.
+    - **Arquitectura Simplificada en 2 Secciones Maestras**:
+      * *Sección 1 — Mazo de Repaso Activo (Repetición Espaciada)*: Interfaz pulida y limpia sin mención comercial de marcas externas. Flujo de mazo barajado con cola dinámica (`studyQueue`) y 3 contadores en tiempo real: *Nuevas* (azul), *Por Repasar* (ámbar) y *Dominadas* (verde). Las tarjetas falladas («Repetir») se reinsertan a 2 posiciones para afianzarlas rápidamente; «Dudé» se reinserta a 4-5 posiciones (+3 XP); y «¡Dominada!» se retira de la cola activa (+10 XP). Al vaciarse la cola, se presenta una pantalla de felicitación con opción de reinicio.
+      * *Sección 2 — Tablero de Dominio de 6 Parciales & Mesa Oral con IA*: Estructura de 3 Unidades Temáticas con 2 Niveles/Parciales por unidad (total 6 parciales de 10 preguntas orales cada uno). Boletín interactivo con promedio ponderado general, cero spoilers durante el examen, y reporte final con:
+        - Nota individual y promedio consolidado.
+        - **Visualización de la Transcripción de Voz**: El estudiante puede leer textualmente lo que el reconocedor de voz captó de su respuesta.
+        - **Criterio Oficial de Cátedra Desplegable**: Permite contrastar su respuesta con la solución oficial esperada.
+        - **Reproductor de Audio**: Para escuchar su grabación original.
+        - **Devolución de la IA**: Aciertos específicos y puntos a reforzar.
+    - **Criterio Estricto en Deporte**: Queda terminantemente excluido cualquier requisito de 1.2 a 1.5 g/kg de proteína en deportistas por orden de Germán (alineación con la RDA oficial del IOM). Foco en hidratos (5-8 g/kg), grasas (25-30%), protocolo de hidratación (150% del peso perdido, agua vs isotónicas), anemia por impacto y Tríada de la Mujer Atleta.
+    - **Motor de Inteligencia Artificial Dual (Groq + Gemini)**:
+      * Evaluación en ~1.5 segundos mediante LPU de Groq (`openai/gpt-oss-120b` / Llama-3) en formato JSON estricto (`temperature: 0.2`, `max_tokens: 3000`). Respaldo heurístico y de Google AI Studio (Gemini 1.5 Flash).
+      * Corrección docente rigurosa sobre los 10 audios: nota final sobre 10, devolución cualitativa general y desglose detallado pregunta por pregunta.
+    - **Distintivo de Honor (Nota ≥ 9) & Hoja de Ruta Fase 2**:
+      * Si la nota es $\ge 9.0$, se activa el banner holográfico de honor en el reporte y se emite constancia imprimible para PDF.
+      * *Fase 2*: Conexión directa con Firestore `students/<up>.honorDistinction` asignando el estilo zafiro (`honor-frame-sapphire`) y medalla de mérito en el ranking de la cátedra.
+    - **Seguridad de Credenciales**: Claves API almacenadas en `js/config.js` e ignoradas de forma estricta en `.gitignore` para prevenir revocaciones automáticas en GitHub.
+
+12. **Cadena de Fallback de IA Silenciosa y Sistema de Honor Exclusivo (Promedio ≥ 9.0)**:
+    - **Cascada de 3 Motores de IA de Alta Gama**:
+      * *1° Titular*: **Gemini** (`gemini-3.5-flash`). Máxima calidad pedagógica y comprensión de voz argentina/pediátrica.
+      * *2° Suplente*: **DeepSeek** (`deepseek-v4.1-flash:free` vía Token Harbor `tokenharbor.ai`). Se activa ante cualquier fallo o saturación de Gemini; destaca por su rigor técnico minucioso en pautas de consultorio.
+      * *3° Emergencia*: **Groq** (`openai/gpt-oss-120b`). Inmediatez ultra-rápida ante saturación de los dos anteriores.
+      * *4° Fallback local*: Heurístico docente por coincidencia de palabras clave.
+    - **Discreción Docente Absoluta**: Cero mención de nombres de modelos en la interfaz visual. Se presenta formalmente como «Devolución Docente de la Cátedra de Nutrición Infantil».
+    - **Exclusividad Estricta de Medalla y Banner (Únicamente Promedio $\ge 9.0$)**:
+      * Para calificaciones de 7 u 8 no se otorga ningún banner ni medalla (solo calificación regular de aprobación).
+      * *👑 Medalla de Oro Laureada & Banner Imperial*: Desbloqueados exclusivamente para promedios $\ge 9.0$ en los 6 parciales (+10 XP en Firestore y marco zafiro de honor en el ranking oficial).
+    - **Integración con la Plataforma Oficial (`index.html`)**:
+      * *Auto-login*: Cartel emergente en el portal al iniciar sesión que redirige con `?up=...&name=...`, precargando datos sin reingreso de nombre/legajo.
+      * *Visibilidad Pública de Notas*: Tarjeta del 2° Parcial en el perfil del alumno (`displayStudentPortalView`), accesible tanto para el alumno como para compañeros que visiten su perfil.
+      * *Visor de Respuestas*: Modal interactivo que consulta `oral_submissions` y despliega las 10 preguntas con la **transcripción de voz del alumno**, la **solución oficial esperada** y los aciertos/observaciones del docente.

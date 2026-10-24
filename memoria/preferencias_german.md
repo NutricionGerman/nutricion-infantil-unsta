@@ -214,6 +214,62 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
         - Se bloquean los listeners de guardado en Firestore con alertas de seguridad preventiva si un usuario intenta forzar la acción desde consola.
       * Las funciones administrativas (`adminModBackground` y `adminModHonorDistinction`) quedan restringidas exclusivamente al docente logueado.
 
+26. **Formato Oficial de Evaluaciones Parciales Escritas (Frente y Dorso en 2 Páginas)**:
+    - **Estructura de Hoja**: Exactamente 2 páginas en total (1 hoja física doble faz: Frente = Encabezado, Grilla de Respuestas y Preguntas 1 a 4; Dorso = Preguntas 5 a 10).
+    - **Encabezado y Datos del Estudiante**:
+      * Membrete institucional: UNSTA, Facultad de Ciencias de la Salud, Cátedra de Nutrición Infantil y TEMA en el margen superior derecho (fuente grande y clara).
+      * Renglón de datos del estudiante: ÚNICAMENTE `Apellido y Nombre: _______________________` y `UP / Legajo: _____________`. **NO** incluir Fecha, Comisión ni Grupo.
+    - **Grilla de Corrección Frontal**:
+      * Ubicada en la parte superior del frente (Página 1).
+      * Tabla de 10 filas (Pregunta 1 a Pregunta 10) con 4 columnas de opciones (`☐ A`, `☐ B`, `☐ C`, `☐ D`).
+      * Panel lateral derecho limpio: Instrucciones breves con viñetas, rótulo "NOTA FINAL" con recuadro cuadrado nítido para la calificación numérica del docente y texto "/ 10 PUNTOS (Cada pregunta vale 1 punto)". Sin bordes superiores ni líneas intermedias innecesarias ni corchetes rotos.
+    - **Tipografía y Legibilidad de Impresión**:
+      * Enunciados de preguntas en **10.0 pt (negrita)** y opciones de respuesta en **9.5 pt** con interlineado 1.05.
+      * Mantiene óptima legibilidad para impresión y fotocopiado sin desbordar el presupuesto de 2 páginas.
+
+27. **Rigor en Requerimientos de Proteínas (IOM vs Otras Bibliografías en Deporte y Adolescencia)**:
+    - Germán **NO está de acuerdo** con cifras infladas de proteínas para el niño/adolescente deportista (como 1.2 a 1.5 g/kg/d de ciertas publicaciones).
+    - La cátedra se rige estrictamente por las recomendaciones oficiales del **Institute of Medicine (IOM)**.
+    - **TERMINANTEMENTE PROHIBIDO PREGUNTAR O EXIGIR 1.2 - 1.5 g/kg/d de proteínas en deportistas**.
+    - La evaluación de nutrición en el niño deportista debe focalizarse en:
+      * Hidratos de carbono: 5 a 8 g/kg/d según intensidad y duración para repleción de glucógeno.
+      * Grasas saludables: 25 a 30% del VCT.
+      * Protocolo riguroso de hidratación (antes: 400-600 ml, durante: 100-250 ml cada 15-20 min, después: 150% del peso perdido; agua vs isotónicas).
+      * Micronutrientes críticos (hierro/anemia por impacto mecánico, calcio, vitamina D).
+      * Prevención de la Tríada de la Mujer Atleta (baja energía, amenorrea, osteoporosis).
+
+28. **Estructura del 2° Parcial Teórico (6 Parciales / 2 Niveles por Unidad)**:
+    - 3 Unidades Temáticas oficiales de cátedra (Unidad 5, Unidad 6, Unidad 7).
+    - 2 Parciales por unidad (total 6 parciales / niveles de dominio).
+    - Cada parcial consta de **10 preguntas orales** evaluadas con IA.
+    - Calificación final: Promedio matemático consolidado de los 6 parciales sobre 10.
+
+29. **Cadena de Evaluación con IA en Cascada Silenciosa (Gemini → DeepSeek → Groq → Heurístico)**:
+    - **1° Titular**: **Gemini** (`gemini-3.5-flash` vía Google AI Studio). Prioridad docente máxima por su calidez pedagógica, comprensión de lenguaje oral coloquial y corrección académica universitaria.
+    - **2° Suplente 1**: **DeepSeek** (`deepseek-v4.1-flash:free` vía Token Harbor endpoint OpenAI). Rigor técnico y clínico minucioso; se activa inmediatamente si Gemini está saturado (HTTP 429, 503) o no responde.
+    - **3° Suplente 2**: **Groq** (`openai/gpt-oss-120b`). Inmediatez de emergencia ultra-rápida (<1s); se activa si DeepSeek no responde.
+    - **4° Fallback Local**: Algoritmo heurístico docente (sin conexión / offline / sin tokens) que analiza palabras clave de cátedra.
+    - **Discreción Docente Absoluta**: **CERO mención de modelos de IA en la interfaz de usuario**. La corrección y feedback se presentan formalmente como *«Devolución Docente de la Cátedra de Nutrición Infantil»*. Toda la cascada técnica opera de forma 100% invisible para el estudiante.
+
+30. **Exclusividad Estricta de Medallas y Banners (Únicamente para Promedio $\ge 9.0$)**:
+    - **Regla Inquebrantable**: **Para notas de 7 u 8 no se otorga NADA** (ni medallas de bronce ni plata, ni banners de distinción). Solo se refleja la calificación numérica de aprobación regular sin ornamentos.
+    - **👑 Cuadro de Honor Exclusivo ($\ge 9.0$)**:
+      * **Medalla de Oro Laureada**: Altorrelieve 3D dorado con corona y ramas de laurel.
+      * **Banner Imperial de Honor**: Fondo azul noche galáctico con filigranas doradas y destellos animados (`animate-pulse`).
+      * **Recompensa**: **+10 XP** acreditados en Firestore y marco de honor en el ranking general del portal.
+
+31. **Auto-Login y Visor de Respuestas Público en el Portal (`index.html`)**:
+    - **Auto-Login sin Reingreso de Datos**: Al ingresar al portal, un cartel de bienvenida invita al alumno a la Mesa Oral y lo redirige pasando sus parámetros (`?up=...&name=...`), evitando tener que escribir su nombre y legajo dos veces.
+    - **Visibilidad Pública en el Perfil**: La tarjeta del 2° Parcial se exhibe en el perfil del alumno (`displayStudentPortalView`), permitiendo que compañeros y docentes vean las notas de los 6 parciales y la Medalla de Oro (si sacó $\ge 9.0$).
+    - **Modal de Revisión («Ver Respuestas»)**: Botón interactivo que abre el expediente con las 10 preguntas de cada parcial, mostrando la **transcripción de la voz del alumno**, el **criterio oficial esperado** y los aciertos/observaciones docentes.
+
+32. **Proteínas Vegetales: Desmitificación Radical del «Valor Biológico» y Complementación en el Mismo Plato**:
+    - **Principio Doctrinal**: En la Cátedra de Nutrición Infantil de Germán se enseña categóricamente que el concepto de que las proteínas vegetales son "incompletas" o de "bajo valor biológico" y la supuesta necesidad de "combinar cereales y legumbres en el mismo plato para elevar el valor biológico" es un **mito perimido de la nutrición reduccionista antigua**.
+    - **Fisiología Real de Cátedra**: Todas las plantas contienen los 9 aminoácidos esenciales. Existen aminoácidos limitantes relativos (Lisina en cereales/semillas, Metionina en legumbres), pero el organismo humano dispone de un **pool metabólico plasmático e intrahepático de aminoácidos libres que recircula entre 12 y 24 horas**. Por ende, la complementación metabólica ocurre a lo largo del día con una dieta variada sin ninguna necesidad de combinarlos en la misma ingesta.
+    - **Directiva Innegociable para la IA Evaluadora**: **PROHIBIDO taxativamente corregir a un alumno exigiéndole que hable de «elevar el valor biológico» o «combinar en el plato»**. La evaluación debe felicitar y puntuar con nota máxima al estudiante que mencione el pool plasmático de 12 a 24 horas y desmitifique activamente la falsa necesidad de combinación en la misma comida.
+
+
+
 
 
 
