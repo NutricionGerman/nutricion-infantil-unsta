@@ -1158,7 +1158,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getInitials(name) {
     if (!name) return "UN";
-    const parts = name.trim().split(/\s+/);
+    const cleaned = String(name).replace(/[,;]/g, ' ').trim();
+    const parts = cleaned.split(/\s+/).filter(p => p.length > 0);
+    if (parts.length === 0) return "UN";
     if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }
@@ -1173,17 +1175,25 @@ document.addEventListener("DOMContentLoaded", () => {
       "from-amber-600 to-orange-700"
     ];
     let hash = 0;
-    for (let i = 0; i < (name || "").length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    const str = String(name || "");
+    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
     const color = colors[Math.abs(hash) % colors.length];
-    return `<div class="${sizeClass} rounded-full bg-gradient-to-br ${color} ${ringClass} flex items-center justify-center font-bold text-white text-xs sm:text-sm shadow-inner shrink-0">${initials}</div>`;
+    return `<div class="${sizeClass} rounded-full bg-gradient-to-br ${color} ${ringClass} flex items-center justify-center font-bold text-white text-xs sm:text-sm shadow-inner shrink-0 select-none">${initials}</div>`;
   }
 
   function renderAvatarHtml(student, sizeClass = "w-10 h-10", ringClass = "border border-slate-700") {
-    const initials = getInitials(student.name);
-    const fallbackSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="%234f46e5"/><text x="50%" y="54%" font-family="sans-serif" font-size="22" font-weight="bold" fill="%23ffffff" dominant-baseline="middle" text-anchor="middle">${initials}</text></svg>`;
-    const photoSrc = student.photo || fallbackSvg;
-    const safeName = (student.name || '').replace(/"/g, '&quot;');
-    return `<img src="${photoSrc}" alt="${safeName}" class="${sizeClass} rounded-full object-cover ${ringClass} bg-slate-800 shrink-0" onerror="this.onerror=null; this.src='${fallbackSvg}';">`;
+    const safeName = (student.name || 'Estudiante').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const initialsDiv = renderInitialsAvatar(student.name, sizeClass, ringClass);
+
+    if (student.photo && typeof student.photo === 'string' && (student.photo.startsWith('http') || student.photo.startsWith('data:image'))) {
+      return `
+        <div class="relative ${sizeClass} shrink-0 inline-block overflow-hidden rounded-full">
+          ${initialsDiv}
+          <img src="${student.photo}" alt="${safeName}" class="absolute inset-0 w-full h-full rounded-full object-cover ${ringClass} bg-slate-800" onerror="this.remove();">
+        </div>
+      `;
+    }
+    return initialsDiv;
   }
 
   async function loadRankingData(forceRefresh = false) {
