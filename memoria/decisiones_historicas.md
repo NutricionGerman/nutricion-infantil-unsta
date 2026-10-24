@@ -75,7 +75,7 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * *Sección 2 — Tablero de Dominio de 6 Parciales & Mesa Oral con IA*: Estructura de 3 Unidades Temáticas con 2 Niveles/Parciales por unidad (total 6 parciales de 10 preguntas orales cada uno). Boletín interactivo con promedio ponderado general, cero spoilers durante el examen, y reporte final con:
         - Nota individual y promedio consolidado.
         - **Visualización de la Transcripción de Voz**: El estudiante puede leer textualmente lo que el reconocedor de voz captó de su respuesta.
-        - **Criterio Oficial de Cátedra Desplegable**: Permite contrastar su respuesta con la solución oficial esperada.
+        - **Ocultamiento de Solución Oficial**: Por directiva docente de Germán, no se revela el criterio o solución oficial redactada de la cátedra para mantener la integridad pedagógica de las evaluaciones; solo se despliega la transcripción, aciertos y observaciones.
         - **Reproductor de Audio**: Para escuchar su grabación original.
         - **Devolución de la IA**: Aciertos específicos y puntos a reforzar.
     - **Criterio Estricto en Deporte**: Queda terminantemente excluido cualquier requisito de 1.2 a 1.5 g/kg de proteína en deportistas por orden de Germán (alineación con la RDA oficial del IOM). Foco en hidratos (5-8 g/kg), grasas (25-30%), protocolo de hidratación (150% del peso perdido, agua vs isotónicas), anemia por impacto y Tríada de la Mujer Atleta.
@@ -100,4 +100,4 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
     - **Integración con la Plataforma Oficial (`index.html`)**:
       * *Auto-login*: Cartel emergente en el portal al iniciar sesión que redirige con `?up=...&name=...`, precargando datos sin reingreso de nombre/legajo.
       * *Visibilidad Pública de Notas*: Tarjeta del 2° Parcial en el perfil del alumno (`displayStudentPortalView`), accesible tanto para el alumno como para compañeros que visiten su perfil.
-      * *Visor de Respuestas*: Modal interactivo que consulta `oral_submissions` y despliega las 10 preguntas con la **transcripción de voz del alumno**, la **solución oficial esperada** y los aciertos/observaciones del docente.
+      * *Visor de Respuestas*: Modal interactivo que consulta `oral_submissions` y despliega las 10 preguntas con la **transcripción de voz del alumno**, los aciertos y las observaciones del docente, omitiendo intencionalmente la solución oficial de la cátedra por orden docente.

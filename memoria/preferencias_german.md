@@ -261,7 +261,8 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
 31. **Auto-Login y Visor de Respuestas Público en el Portal (`index.html`)**:
     - **Auto-Login sin Reingreso de Datos**: Al ingresar al portal, un cartel de bienvenida invita al alumno a la Mesa Oral y lo redirige pasando sus parámetros (`?up=...&name=...`), evitando tener que escribir su nombre y legajo dos veces.
     - **Visibilidad Pública en el Perfil**: La tarjeta del 2° Parcial se exhibe en el perfil del alumno (`displayStudentPortalView`), permitiendo que compañeros y docentes vean las notas de los 6 parciales y la Medalla de Oro (si sacó $\ge 9.0$).
-    - **Modal de Revisión («Ver Respuestas»)**: Botón interactivo que abre el expediente con las 10 preguntas de cada parcial, mostrando la **transcripción de la voz del alumno**, el **criterio oficial esperado** y los aciertos/observaciones docentes.
+    - **Modal de Revisión («Ver Respuestas»)**: Botón interactivo que abre el expediente con las 10 preguntas de cada parcial, mostrando la **transcripción de la voz del alumno**, su nota, y los **aciertos y observaciones docentes**.
+    - **Confidencialidad de la Solución de Cátedra**: **NUNCA se muestra la solución o criterio oficial redactado de la cátedra** ni en la pantalla de resultados del examen oral ni en el modal de respuestas del portal. El estudiante solo tiene acceso a su propia transcripción grabada, su nota y la devolución/feedback docente.
 
 32. **Proteínas Vegetales: Desmitificación Radical del «Valor Biológico» y Complementación en el Mismo Plato**:
     - **Principio Doctrinal**: En la Cátedra de Nutrición Infantil de Germán se enseña categóricamente que el concepto de que las proteínas vegetales son "incompletas" o de "bajo valor biológico" y la supuesta necesidad de "combinar cereales y legumbres en el mismo plato para elevar el valor biológico" es un **mito perimido de la nutrición reduccionista antigua**.

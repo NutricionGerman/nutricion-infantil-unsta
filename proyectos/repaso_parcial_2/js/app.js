@@ -965,18 +965,6 @@ document.addEventListener("DOMContentLoaded", () => {
              </div>`
           : "";
 
-        const officialAnswerHtml = studentAns && studentAns.officialAnswer
-          ? `<details class="group bg-slate-950/40 border border-slate-800 rounded-xl overflow-hidden text-xs">
-               <summary class="flex items-center justify-between px-3 py-2 font-bold text-slate-400 hover:text-emerald-400 cursor-pointer transition select-none">
-                 <span><i class="fa-solid fa-book-bookmark text-emerald-400 mr-1.5"></i> Ver Criterio Oficial de Cátedra</span>
-                 <i class="fa-solid fa-chevron-down text-[10px] group-open:rotate-180 transition-transform"></i>
-               </summary>
-               <div class="px-3 pb-3 pt-1 text-slate-300 border-t border-slate-800/80 whitespace-pre-line leading-relaxed text-[11px]">
-                 ${studentAns.officialAnswer}
-               </div>
-             </details>`
-          : "";
-
         return `
           <div class="bg-slate-900 border ${rev.grade >= 7 ? "border-emerald-500/30" : "border-rose-500/30"} rounded-2xl p-4 sm:p-5 space-y-3">
             <div class="flex items-center justify-between">
@@ -1010,9 +998,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p class="text-slate-300">${rev.improvements}</p>
               </div>
             </div>
-
-            <!-- Criterio Oficial de Cátedra -->
-            ${officialAnswerHtml}
 
             <!-- Reproductor de Audio -->
             ${audioPlayerHtml}
