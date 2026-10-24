@@ -70,14 +70,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
 
 11. **Gimnasio Cognitivo de Repaso para el 2° Parcial Teórico (Unidad 6)**:
     - **Ubicación Aislada**: Se desarrolla de forma 100% independiente en `proyectos/repaso_parcial_2/`, sin alterar `index.html` del portal principal ni colecciones de producción de Firestore.
-    - **Arquitectura Simplificada en 2 Secciones Maestras**:
-      * *Sección 1 — Mazo de Repaso Activo (Repetición Espaciada)*: Interfaz pulida y limpia sin mención comercial de marcas externas. Flujo de mazo barajado con cola dinámica (`studyQueue`) y 3 contadores en tiempo real: *Nuevas* (azul), *Por Repasar* (ámbar) y *Dominadas* (verde). Las tarjetas falladas («Repetir») se reinsertan a 2 posiciones para afianzarlas rápidamente; «Dudé» se reinserta a 4-5 posiciones (+3 XP); y «¡Dominada!» se retira de la cola activa (+10 XP). Al vaciarse la cola, se presenta una pantalla de felicitación con opción de reinicio.
-      * *Sección 2 — Tablero de Dominio de 6 Parciales & Mesa Oral con IA*: Estructura de 3 Unidades Temáticas con 2 Niveles/Parciales por unidad (total 6 parciales de 10 preguntas orales cada uno). Boletín interactivo con promedio ponderado general, cero spoilers durante el examen, y reporte final con:
+    - **Arquitectura Optimizada en 3 Secciones Claras (Nombres Cortos y Móvil-Friendly)**:
+      * *Sección 1 — Tarjetas (Repetición Espaciada)*: Interfaz pulida y limpia sin mención comercial de marcas externas. Flujo de mazo barajado con cola dinámica (`studyQueue`) y 3 contadores en tiempo real: *Nuevas* (azul), *Por Repasar* (ámbar) y *Dominadas* (verde). Las tarjetas falladas («Repetir») se reinsertan a 2 posiciones para afianzarlas rápidamente; «Dudé» se reinserta a 4-5 posiciones (+3 XP); y «¡Dominada!» se retira de la cola activa (+10 XP).
+      * *Sección 2 — Examen Oral (Active Recall)*: Estructura de 3 Unidades Temáticas con 2 Niveles/Parciales por unidad (total 6 parciales de 10 preguntas orales cada uno). Boletín interactivo con promedio ponderado general, cero spoilers durante el examen, y reporte final con:
         - Nota individual y promedio consolidado.
         - **Visualización de la Transcripción de Voz**: El estudiante puede leer textualmente lo que el reconocedor de voz captó de su respuesta.
         - **Ocultamiento de Solución Oficial**: Por directiva docente de Germán, no se revela el criterio o solución oficial redactada de la cátedra para mantener la integridad pedagógica de las evaluaciones; solo se despliega la transcripción, aciertos y observaciones.
         - **Reproductor de Audio**: Para escuchar su grabación original.
-        - **Devolución de la IA**: Aciertos específicos y puntos a reforzar.
+        - **Devolución Docente**: Aciertos específicos y puntos a reforzar.
+      * *Sección 3 — Ranking (En Vivo con Podio Olímpico y Fotos)*: Visualización en tiempo real del progreso de todos los estudiantes conectado a Firestore (`students` y `student_photos`). Podio olímpico con oro, plata y bronce, resalte especial para el estudiante logueado («TÚ»), filtros por promedio de examen oral vs XP global, y distintivo de corona para quienes alcancen el Cuadro de Honor ($\ge 9.0$).
     - **Criterio Estricto en Deporte**: Queda terminantemente excluido cualquier requisito de 1.2 a 1.5 g/kg de proteína en deportistas por orden de Germán (alineación con la RDA oficial del IOM). Foco en hidratos (5-8 g/kg), grasas (25-30%), protocolo de hidratación (150% del peso perdido, agua vs isotónicas), anemia por impacto y Tríada de la Mujer Atleta.
     - **Motor de Inteligencia Artificial Dual (Groq + Gemini)**:
       * Evaluación en ~1.5 segundos mediante LPU de Groq (`openai/gpt-oss-120b` / Llama-3) en formato JSON estricto (`temperature: 0.2`, `max_tokens: 3000`). Respaldo heurístico y de Google AI Studio (Gemini 1.5 Flash).

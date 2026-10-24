@@ -85,23 +85,27 @@
 
     </div>
 
-    <!-- NAVEGACIÓN EN 2 GRANDES SECCIONES -->
+    <!-- NAVEGACIÓN EN 3 GRANDES SECCIONES -->
     <div class="bg-slate-900 border-t border-slate-800 px-4 py-2">
       <div class="max-w-5xl mx-auto flex space-x-2">
-        <button id="tabBtn_repaso" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-2 transition shadow-md bg-indigo-600 text-white">
+        <button id="tabBtn_repaso" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white">
           <i class="fa-solid fa-layer-group"></i>
-          <span>1. Mazo de Repaso Activo</span>
+          <span>Tarjetas</span>
         </button>
-        <button id="tabBtn_evaluacion" class="flex-1 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-2 transition text-slate-400 hover:bg-slate-800">
-          <i class="fa-solid fa-graduation-cap"></i>
-          <span>2. Mesa de Exámenes Orales & Tablero (6 Parciales)</span>
+        <button id="tabBtn_evaluacion" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800">
+          <i class="fa-solid fa-microphone-lines"></i>
+          <span>Examen Oral</span>
+        </button>
+        <button id="tabBtn_ranking" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800">
+          <i class="fa-solid fa-trophy text-amber-400"></i>
+          <span>Ranking</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- ========================================================================
-       CONTENIDO PRINCIPAL: LAS 2 SECCIONES
+       CONTENIDO PRINCIPAL: LAS 3 SECCIONES
        ======================================================================== -->
   <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
 
@@ -290,7 +294,7 @@
               </span>
               <h2 class="text-xl sm:text-2xl font-black text-white mt-2">Tablero de Dominio · 2° Parcial Teórico</h2>
               <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-lg">
-                Completa los <strong>6 parciales orales</strong> (2 por unidad). Cada parcial evalúa 10 preguntas por audio con IA. Al final se promedian todas las calificaciones.
+                Completa los <strong>6 parciales orales</strong> (2 por unidad) respondiendo con tu voz mediante <strong>Active Recall</strong>. Al final se promedian todas las calificaciones.
               </p>
             </div>
 
@@ -663,13 +667,75 @@
 
     </section>
 
+    <!-- ======================================================================
+         SECCIÓN 3: RANKING EN VIVO & CUADRO DE HONOR
+         ====================================================================== -->
+    <section id="section_ranking" class="hidden space-y-6">
+
+      <!-- Encabezado de la Sección de Ranking -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 border-2 border-indigo-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+              UNSTA · Nutrición Infantil
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-white mt-2 flex items-center space-x-2">
+              <i class="fa-solid fa-trophy text-amber-400"></i>
+              <span>Ranking de Estudiantes en Vivo</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+              Posiciones y calificaciones en tiempo real. Quienes alcanzan promedio <strong>≥ 9.0</strong> ingresan al <strong>Cuadro de Honor</strong> con medalla dorada y +10 XP.
+            </p>
+          </div>
+
+          <!-- Filtros de Orden y Botón Actualizar -->
+          <div class="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
+            <div class="bg-slate-950/80 p-1 rounded-xl border border-slate-800 flex space-x-1 text-xs">
+              <button id="rankFilterOral" class="px-3 py-1.5 rounded-lg font-bold bg-indigo-600 text-white transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-microphone-lines"></i>
+                <span>Repaso Parcial</span>
+              </button>
+              <button id="rankFilterXp" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-bolt"></i>
+                <span>XP Global</span>
+              </button>
+            </div>
+            <button id="btnRefreshRanking" title="Actualizar en vivo" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span class="hidden sm:inline">Actualizar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Barra de Estado y Leyenda -->
+        <div class="mt-4 pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex items-center space-x-2 text-emerald-400">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span class="font-bold">Sincronizado con Base de Datos Oficial</span>
+          </div>
+          <div class="text-slate-400">
+            <span class="text-amber-300 font-bold">👑 Cuadro de Honor:</span> Promedio ≥ 9.0 (+10 XP)
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenedor del Podio Olímpico y la Tabla de Posiciones -->
+      <div id="rankingContainer" class="space-y-6">
+        <!-- Renderizado dinámico desde app.js -->
+      </div>
+
+    </section>
+
   </main>
 
   <!-- ========================================================================
        PIE DE PÁGINA
        ======================================================================== -->
   <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
-    <p>Cátedra de Nutrición Infantil · UNSTA | Mazo de Repaso Activo & Examen Oral con IA</p>
+    <p>Cátedra de Nutrición Infantil · UNSTA | Plataforma de Repaso y Autoevaluación</p>
   </footer>
 
   <!-- Firebase SDK para Sincronización Oficial -->
