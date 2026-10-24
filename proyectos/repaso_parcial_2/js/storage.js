@@ -174,6 +174,10 @@ class StorageManager {
     };
   }
 
+  getStudentOverallStats() {
+    return this.getOverallAverage();
+  }
+
   recordExamResult(score, maxScore, timeTakenSecs) {
     const passed = score >= 7; // Aprueba con 7/10
     const examEntry = {

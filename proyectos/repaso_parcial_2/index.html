@@ -88,15 +88,15 @@
     <!-- NAVEGACIÓN EN 3 GRANDES SECCIONES -->
     <div class="bg-slate-900 border-t border-slate-800 px-4 py-2">
       <div class="max-w-5xl mx-auto flex space-x-2">
-        <button id="tabBtn_repaso" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white">
+        <button id="tabBtn_repaso" onclick="window.switchTab && window.switchTab('repaso')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white cursor-pointer">
           <i class="fa-solid fa-layer-group"></i>
           <span>Tarjetas</span>
         </button>
-        <button id="tabBtn_evaluacion" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800">
+        <button id="tabBtn_evaluacion" onclick="window.switchTab && window.switchTab('evaluacion')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
           <i class="fa-solid fa-microphone-lines"></i>
           <span>Examen Oral</span>
         </button>
-        <button id="tabBtn_ranking" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800">
+        <button id="tabBtn_ranking" onclick="window.switchTab && window.switchTab('ranking')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
           <i class="fa-solid fa-trophy text-amber-400"></i>
           <span>Ranking</span>
         </button>
@@ -742,13 +742,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-  <!-- Scripts -->
-  <script src="js/config.js"></script>
-  <script src="js/data_flashcards.js"></script>
-  <script src="js/audio_engine.js"></script>
-  <script src="js/audio_recorder.js"></script>
-  <script src="js/ai_evaluator.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Scripts con Cache-Buster para Forzar Actualización Inmediata -->
+  <script src="js/config.js?v=2.3"></script>
+  <script src="js/data_flashcards.js?v=2.3"></script>
+  <script src="js/audio_engine.js?v=2.3"></script>
+  <script src="js/audio_recorder.js?v=2.3"></script>
+  <script src="js/ai_evaluator.js?v=2.3"></script>
+  <script src="js/storage.js?v=2.3"></script>
+  <script src="js/app.js?v=2.3"></script>
 </body>
 </html>

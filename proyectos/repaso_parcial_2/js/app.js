@@ -149,8 +149,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const setActiveTab = (tab) => {
       currentSection = tab;
-      const activeClass = "flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white";
-      const inactiveClass = "flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800";
+      const activeClass = "flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white cursor-pointer";
+      const inactiveClass = "flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer";
 
       if (btnRepaso) btnRepaso.className = (tab === 'repaso') ? activeClass : inactiveClass;
       if (btnEvaluacion) btnEvaluacion.className = (tab === 'evaluacion') ? activeClass : inactiveClass;
@@ -161,27 +161,29 @@ document.addEventListener("DOMContentLoaded", () => {
       if (secRanking) secRanking.classList.toggle("hidden", tab !== 'ranking');
     };
 
-    if (btnRepaso) {
-      btnRepaso.addEventListener("click", () => {
-        setActiveTab("repaso");
-      });
-    }
-
-    if (btnEvaluacion) {
-      btnEvaluacion.addEventListener("click", () => {
-        setActiveTab("evaluacion");
+    window.switchTab = (tab) => {
+      console.log(`[Navigation] Cambiando a pestaña: ${tab}`);
+      setActiveTab(tab);
+      if (tab === "evaluacion") {
         if (!oralExamActive) {
           showDashboardScreen();
         }
         updateOralDashboardUI();
-      });
+      } else if (tab === "ranking") {
+        loadRankingData();
+      }
+    };
+
+    if (btnRepaso) {
+      btnRepaso.addEventListener("click", () => window.switchTab("repaso"));
+    }
+
+    if (btnEvaluacion) {
+      btnEvaluacion.addEventListener("click", () => window.switchTab("evaluacion"));
     }
 
     if (btnRanking) {
-      btnRanking.addEventListener("click", () => {
-        setActiveTab("ranking");
-        loadRankingData();
-      });
+      btnRanking.addEventListener("click", () => window.switchTab("ranking"));
     }
   }
 
@@ -1265,8 +1267,8 @@ document.addEventListener("DOMContentLoaded", () => {
       // Si el estudiante actual tiene datos locales en sm que aún no impactaron, fusionar
       const currentUp = String(sm.state.up || "").trim();
       if (currentUp) {
-        const localStats = sm.getStudentOverallStats();
-        if (localStats.completedCount > 0) {
+        const localStats = (typeof sm.getOverallAverage === 'function') ? sm.getOverallAverage() : ((typeof sm.getStudentOverallStats === 'function') ? sm.getStudentOverallStats() : null);
+        if (localStats && localStats.completedCount > 0) {
           const me = list.find(s => s.up === currentUp);
           if (me) {
             if (me.oralAverage === null || localStats.completedCount >= me.completedCount) {
@@ -1274,6 +1276,17 @@ document.addEventListener("DOMContentLoaded", () => {
               me.completedCount = localStats.completedCount;
               me.isHonor = localStats.isHonor;
             }
+          } else {
+            list.push({
+              up: currentUp,
+              name: sm.state.studentName || "Estudiante UNSTA",
+              group: "Cátedra",
+              photo: cachedPhotosMap[currentUp] || null,
+              xp: sm.state.xp || 0,
+              oralAverage: localStats.average,
+              completedCount: localStats.completedCount,
+              isHonor: localStats.isHonor
+            });
           }
         }
       }
