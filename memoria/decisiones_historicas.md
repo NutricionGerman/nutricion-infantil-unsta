@@ -153,3 +153,19 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Se añadió la interfaz de corrección interactiva: el estudiante puede visualizar el texto transcribido por Whisper y presionar **«Corregir texto»** para editar cualquier detalle antes de que sea evaluado por el modelo calificador.
       * Se actualizó el versionado de caché a `v=3.0` en `proyectos/repaso_parcial_2/index.html`.
 
+
+17. **Corrección Quirúrgica de Palabra Única Anti-Trampas y Solución del Tartamudeo en Examen Oral**:
+    - **Diagnóstico del Tartamudeo ('se se se diferencian...')**:
+      * En Web Speech API con `continuous: true`, los navegadores basados en Chromium (Chrome/Edge en Windows) acumulan los resultados de la sesión en el arreglo global `event.results`.
+      * Al iterar desde `event.resultIndex` y concatenar con operador acumulativo (`+=`) sobre una variable global, cada fragmento intermedio se volvía a agregar sobre el anterior, provocando una avalancha de repeticiones continuas.
+      * **Solución**: Se reconstruye el buffer linealmente de 0 a `results.length - 1` en cada evento para el preview en vivo, y se procesa el audio definitivo directamente a través de **Whisper Large v3 Turbo (OpenAI)**.
+    - **Regla de Seguridad Anti-Trampas Innegociable para Examen Oral**:
+      * Permitir un `<textarea>` de edición libre abría una vulnerabilidad crítica: los estudiantes podían abrir ChatGPT o apuntes, copiar la respuesta completa y pegarla sin haber hablado.
+      * Se eliminó totalmente el cuadro de texto libre y se reemplazó por un sistema interactivo de **fichas de palabras (chips)**.
+      * El alumno puede hacer clic exclusivamente sobre una palabra específica mal captada.
+      * Se abre un modal de SweetAlert2 con restricciones de seguridad de nivel académico:
+        1. **Anti-Paste**: Evento `paste` cancelado (`e.preventDefault()`) con advertencia de trampa.
+        2. **Anti-Space**: Barra espaciadora bloqueada para impedir oraciones o párrafos.
+        3. **Validación Token Único**: No se aceptan espacios en blanco ni cadenas vacías.
+        4. **Límite Estricto**: Máximo **3 correcciones de palabras** por cada una de las 10 preguntas.
+      * Versionado de scripts elevado a `v=3.1` en `proyectos/repaso_parcial_2/index.html`.
