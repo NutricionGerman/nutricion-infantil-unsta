@@ -32,7 +32,44 @@ class AIEvaluator {
     } else if (cleaned.startsWith("```")) {
       cleaned = cleaned.replace(/^```\s*/, "").replace(/\s*```$/, "");
     }
-    return JSON.parse(cleaned);
+    const parsed = JSON.parse(cleaned);
+
+    // POST-PROCESAMIENTO DE COHERENCIA Y JUSTICIA DOCENTE:
+    // Si una pregunta tiene nota 9 pero no tiene observaciones relevantes en 'improvements',
+    // elevar automáticamente a 10 para garantizar coherencia absoluta e impedir penalizaciones injustas.
+    if (parsed && Array.isArray(parsed.questionsReview)) {
+      let scoreModified = false;
+      parsed.questionsReview.forEach(q => {
+        const imp = (q.improvements || "").toLowerCase().trim();
+        const noRelevantObservations = 
+          !imp || 
+          imp.includes("ninguna") || 
+          imp.includes("sin observaci") || 
+          imp.includes("no se detectaron") || 
+          imp.includes("completa y precisa") || 
+          imp.includes("excelente") ||
+          imp.includes("no hay observaciones") ||
+          imp.includes("no omitió") ||
+          imp.includes("correcta") ||
+          imp === "-";
+
+        if (Number(q.grade) === 9 && noRelevantObservations) {
+          console.log(`[AIEvaluator] Coherencia docente: Pregunta ${q.questionNumber} elevada de 9 a 10 por ausencia de observaciones relevantes.`);
+          q.grade = 10;
+          scoreModified = true;
+        }
+      });
+
+      if (scoreModified) {
+        const sum = parsed.questionsReview.reduce((acc, curr) => acc + (Number(curr.grade) || 0), 0);
+        parsed.finalGrade = Math.round((sum / parsed.questionsReview.length) * 10) / 10;
+        parsed.passed = parsed.finalGrade >= 7.0;
+        parsed.isHonor = parsed.finalGrade >= 9.0;
+        parsed.isDistinguished = parsed.finalGrade >= 8.0 && parsed.finalGrade < 9.0;
+      }
+    }
+
+    return parsed;
   }
 
   async evaluateExam(studentName, up, examItems) {
@@ -61,6 +98,23 @@ CRITERIOS OFICIALES DE EVALUACIÓN DE LA CÁTEDRA (3 UNIDADES Y 6 PARCIALES):
   * DIRECTIVA DOCENTE ESTRICTA SOBRE PROTEÍNAS EN DEPORTE: La cátedra sigue exclusivamente las RDA del Institute of Medicine (IOM). NO penalizar ni exigir valores de proteína inflados (como 1.2 a 1.5 g/kg/d).
 
 - Principio rector transversal: Cero patología (nutrición fisiológica y normal).
+
+RÚBRICA Y CALIBRACIÓN DE NOTAS (CRITERIO PEDAGÓGICO DOCENTE INNEGOCIABLE):
+1. CRITERIO PARA LA NOTA 10 (EXCELENTE / COMPLETO):
+   - Si el estudiante aborda con claridad y sin errores conceptuales los puntos clave centrales (keyPointsRequired), LA CALIFICACIÓN DEBE SER 10 OBLIGATORIAMENTE.
+   - En una respuesta oral, la concisión y la precisión directa son virtudes pedagógicas. ESTÁ PROHIBIDO penalizar a un alumno por no recitar párrafos enciclopédicos si la idea central y los datos nucleares fueron expresados correctamente.
+   - REGLA DE COHERENCIA ESTRICTA (ANTI-CONTRADICCIÓN): Si en el campo "improvements" no señalas un error concreto o una omisión conceptual relevante, ESTÁ TERMINANTEMENTE PROHIBIDO ASIGNAR 9; DEBES CALIFICAR CON 10. En "improvements" escribirás: "Ninguna observación relevante. Respuesta oral completa y precisa."
+2. CRITERIO PARA LA NOTA 9:
+   - Solo se califica con 9 si el estudiante omitió un matiz secundario menor o una cifra accesoria explícitamente requerida en keyPointsRequired. Dicha omisión DEBE quedar obligatoriamente fundamentada y detallada en "improvements".
+3. CRITERIO PARA NOTA 8:
+   - Abordó bien la temática general pero faltó desarrollar uno de los puntos clave requeridos.
+4. CRITERIO PARA NOTA 7 (APROBADO REGULAR):
+   - Cumplió con lo mínimo indispensable para aprobar el concepto.
+5. NOTA < 7 (DESAPROBADO / INSUFICIENTE):
+   - Errores conceptuales graves, confusión de términos o respuesta en blanco.
+
+PROHIBICIÓN DEL SESGO DE TIMIDEZ DEL EVALUADOR:
+- No tengas miedo ni cautela artificial en calificar con 10. En la cátedra de Germán, el 10 premia la solvencia y exactitud del estudiante sobre el contenido de la tarjeta.
 
 INSTRUCCIONES DE RESPUESTA:
 Debes evaluar las 10 preguntas y responder EXCLUSIVAMENTE un objeto JSON válido con esta estructura exacta:
@@ -260,7 +314,9 @@ Debes evaluar las 10 preguntas y responder EXCLUSIVAMENTE un objeto JSON válido
         strengths: score >= 7
           ? "Abordó los conceptos centrales y terminología de cátedra."
           : "Identificó de manera general el tema solicitado.",
-        improvements: score >= 7
+        improvements: score === 10
+          ? "Ninguna observación relevante. Respuesta oral completa y precisa."
+          : score >= 7
           ? "Profundizar en la fundamentación de los autores y dosis exactas."
           : "Faltó mayor precisión en las cifras de la bibliografía oficial."
       };
