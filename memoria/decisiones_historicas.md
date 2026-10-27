@@ -236,3 +236,17 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Actualización en el Panel Docente y exportación CSV de canjes indicando promedio y cantidad de parciales rendidos.
       * Versionado de caché elevado a `tienda.js?v=1.36` en `index.html`.
 
+25. **Escala de Calificación Progresiva para Puntos Prácticos (+3: $\ge 7.5$, +4: $\ge 8.0$, +5: $\ge 8.5$)**:
+    - **Criterio Docente Escalonado de Cátedra**:
+      * **+1 y +2 Puntos Prácticos**: 6 exámenes orales completados con **Promedio $\ge 7.0$** (10 XP y 15 XP).
+      * **+3 Puntos Prácticos**: 6 exámenes orales completados con **Promedio $\ge 7.5$** (20 XP).
+      * **+4 Puntos Prácticos**: 6 exámenes orales completados con **Promedio $\ge 8.0$** (25 XP).
+      * **+5 Puntos Prácticos**: 6 exámenes orales completados con **Promedio $\ge 8.5$** (30 XP).
+    - **Adaptación en la Interfaz de la Tienda (`tienda.js`)**:
+      * Función helper `getRequiredOralGradeForPoints(pts)`.
+      * En cada tarjeta de la tienda, se despliega una insignia interactiva: `Requiere Oral ≥ X.X` o `Habilitado (Oral ≥ X.X)` con checkmark verde según el promedio y estado del estudiante.
+      * El banner panorámico detalla la escala completa de notas mínimas.
+      * Modal SweetAlert2 específico: Si una alumna no alcanza la nota de corte de un tier (ej. tiene 7.2 e intenta comprar +3 puntos), se le informa su promedio, la nota requerida, los puntos faltantes y se le invita a recuperar preguntas por 1 XP o re-rendir parciales con botón directo.
+      * Panel Docente: La tabla de bonificaciones muestra el mínimo requerido (`Mín: X.X`) y colorea en verde (#34d399) solo a quienes cumplen la calificación del tier que adquirieron.
+      * Versionado de caché elevado a `tienda.js?v=1.37` en `index.html`.
+

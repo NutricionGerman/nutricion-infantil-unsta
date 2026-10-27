@@ -129,6 +129,16 @@
         return status.average;
     }
 
+    // Requisitos de calificación oral escalonada según la cantidad de puntos bonificables
+    function getRequiredOralGradeForPoints(pts) {
+        const p = Number(pts) || 1;
+        if (p >= 5) return 8.5; // +5 puntos -> Promedio >= 8.5
+        if (p >= 4) return 8.0; // +4 puntos -> Promedio >= 8.0
+        if (p >= 3) return 7.5; // +3 puntos -> Promedio >= 7.5
+        return 7.0;             // +1 y +2 puntos -> Promedio >= 7.0
+    }
+    window.getRequiredOralGradeForPoints = getRequiredOralGradeForPoints;
+
     // 4. Lógica del Alumno (Tienda Tab)
     window.renderTiendaTab = async () => {
         const container = document.getElementById('tienda-tab-content');
@@ -203,7 +213,7 @@
                             Canjea de 1 a 5 Puntos con tus XP
                         </h4>
                         <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
-                            Suma bonificación a tu nota práctica con tus XP (Habilitado con los 6 parciales orales y promedio general ≥ 7.0).
+                            Suma bonificación a tu nota práctica con tus XP (6 parciales orales · +1 y +2 pts: prom ≥ 7.0 · +3 pts: prom ≥ 7.5 · +4 pts: prom ≥ 8.0 · +5 pts: prom ≥ 8.5).
                             ${puntosCanjeadosActualmente > 0 ? ` · Ya canjeaste <strong style="color: #fde047;">+${puntosCanjeadosActualmente} punto(s)</strong>` : ' · 1 punto = 10 XP hasta 5 puntos = 30 XP'}
                         </p>
                     </div>
@@ -219,6 +229,8 @@
         const PUNTOS_THEMES = {
             1: {
                 tier: '🥉 Bronce',
+                minNota: 7.0,
+                reqText: 'Promedio ≥ 7.0',
                 badgeBg: 'linear-gradient(135deg, #78350f 0%, #b45309 50%, #d97706 100%)',
                 bannerBg: 'radial-gradient(circle at 50% 35%, rgba(245, 158, 11, 0.4) 0%, rgba(120, 53, 15, 0.22) 55%, rgba(15, 23, 42, 0.95) 100%)',
                 borderColor: 'rgba(245, 158, 11, 0.5)',
@@ -230,6 +242,8 @@
             },
             2: {
                 tier: '🥈 Platino',
+                minNota: 7.0,
+                reqText: 'Promedio ≥ 7.0',
                 badgeBg: 'linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #38bdf8 100%)',
                 bannerBg: 'radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.4) 0%, rgba(3, 105, 161, 0.22) 55%, rgba(15, 23, 42, 0.95) 100%)',
                 borderColor: 'rgba(56, 189, 248, 0.55)',
@@ -241,6 +255,8 @@
             },
             3: {
                 tier: '🥇 Oro Imperial',
+                minNota: 7.5,
+                reqText: 'Promedio ≥ 7.5',
                 badgeBg: 'linear-gradient(135deg, #a16207 0%, #eab308 50%, #fef08a 100%)',
                 bannerBg: 'radial-gradient(circle at 50% 35%, rgba(234, 179, 8, 0.5) 0%, rgba(161, 98, 7, 0.25) 55%, rgba(15, 23, 42, 0.95) 100%)',
                 borderColor: 'rgba(234, 179, 8, 0.7)',
@@ -252,6 +268,8 @@
             },
             4: {
                 tier: '💎 Esmeralda',
+                minNota: 8.0,
+                reqText: 'Promedio ≥ 8.0',
                 badgeBg: 'linear-gradient(135deg, #065f46 0%, #10b981 50%, #6ee7b7 100%)',
                 bannerBg: 'radial-gradient(circle at 50% 35%, rgba(16, 185, 129, 0.5) 0%, rgba(6, 95, 70, 0.25) 55%, rgba(15, 23, 42, 0.95) 100%)',
                 borderColor: 'rgba(16, 185, 129, 0.7)',
@@ -263,6 +281,8 @@
             },
             5: {
                 tier: '👑 Legendaria',
+                minNota: 8.5,
+                reqText: 'Promedio ≥ 8.5',
                 badgeBg: 'linear-gradient(135deg, #701a75 0%, #c026d3 50%, #f472b6 100%)',
                 bannerBg: 'radial-gradient(circle at 50% 35%, rgba(217, 70, 239, 0.55) 0%, rgba(112, 26, 117, 0.28) 55%, rgba(15, 23, 42, 0.95) 100%)',
                 borderColor: 'rgba(217, 70, 239, 0.8)',
@@ -319,6 +339,23 @@
                     if (isPuntosItem) {
                         const pts = Number(item.points) || 1;
                         const theme = PUNTOS_THEMES[pts] || PUNTOS_THEMES[1];
+                        const minNotaRequired = theme.minNota || getRequiredOralGradeForPoints(pts);
+                        const has6Completed = oralStatus.completedCount >= 6;
+                        const hasNota = (oralStatus.average !== null && oralStatus.average >= minNotaRequired);
+                        const isUnlocked = has6Completed && hasNota;
+
+                        const reqBadgeHTML = `
+                            <div style="margin: 2px 0 10px; display: flex; justify-content: center;">
+                                <span style="font-size: 0.72rem; font-weight: 800; padding: 3px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 5px; ${
+                                    isUnlocked 
+                                        ? 'background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7;' 
+                                        : 'background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde047;'
+                                }">
+                                    <i class="fas ${isUnlocked ? 'fa-check-circle' : 'fa-lock'}"></i>
+                                    ${isUnlocked ? `Habilitado (Oral ≥ ${minNotaRequired.toFixed(1)})` : `Requiere Oral ≥ ${minNotaRequired.toFixed(1)}`}
+                                </span>
+                            </div>
+                        `;
 
                         regularHTML += `
                             <div class="item-card practical-bonus-card" style="position: relative; overflow: hidden; padding: 0 !important; border: 1.5px solid ${theme.borderColor}; background: linear-gradient(180deg, rgba(20,24,35,0.98) 0%, #0c0e14 100%); border-radius: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 18px ${theme.glowColor}; display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s;">
@@ -352,9 +389,10 @@
                                     <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: ${theme.accentColor}; margin-bottom: 3px; text-align: center;">
                                         Bonificación Oficial
                                     </div>
-                                    <h4 style="color: #ffffff; font-size: 1.05rem; font-weight: 800; text-align: center; margin: 0 0 8px 0; line-height: 1.25;">
+                                    <h4 style="color: #ffffff; font-size: 1.05rem; font-weight: 800; text-align: center; margin: 0 0 6px 0; line-height: 1.25;">
                                         ${item.name}
                                     </h4>
+                                    ${reqBadgeHTML}
                                     <p style="color: #94a3b8; font-size: 0.78rem; line-height: 1.42; text-align: center; margin: 0 0 14px 0; flex-grow: 1;">
                                         ${item.desc}
                                     </p>
@@ -616,43 +654,29 @@
             }
 
             // ========================================================
-            // VERIFICACIÓN OBLIGATORIA: 6 EXÁMENES ORALES CON PROMEDIO >= 7.0
+            // VERIFICACIÓN OBLIGATORIA: 6 EXÁMENES ORALES Y NOTA SEGÚN TIER
+            // (+1/+2: Promedio >= 7.0 | +3: Promedio >= 7.5 | +4: Promedio >= 8.0 | +5: Promedio >= 8.5)
             // ========================================================
             const isPracticalPointsItem = item.category === 'parcial_practico' || item.requiresParcialTeorico || (item.name && item.name.includes('Parcial Práctico'));
             
             if (isPracticalPointsItem) {
                 const oralStatus = getStudentOralExamStatus(studentData);
                 
-                if (!oralStatus.isApproved) {
-                    let detalleEstado = '';
-                    if (oralStatus.completedCount < 6) {
-                        detalleEstado = `
-                            Has completado <strong style="color: #f59e0b; font-size: 1.05rem;">${oralStatus.completedCount} de 6</strong> parciales orales.<br>
-                            Te faltan rendir <strong style="color: #ef4444; font-size: 1.05rem;">${oralStatus.missingCount} examen(es)</strong> para desbloquear la compra.
-                            ${oralStatus.average !== null ? `<div style="margin-top: 8px; color: #94a3b8; font-size: 0.84rem;">Promedio parcial de tus módulos rendidos: <strong style="color: ${oralStatus.average >= 7 ? '#34d399' : '#f87171'}; font-size: 0.95rem;">${oralStatus.average.toFixed(1)} / 10</strong></div>` : ''}
-                        `;
-                    } else if (oralStatus.average < 7.0) {
-                        detalleEstado = `
-                            Rendiste los 6 exámenes, pero tu promedio general es de <strong style="color: #ef4444; font-size: 1.08rem;">${oralStatus.average.toFixed(1)} / 10</strong> (se requiere <strong style="color: #34d399;">≥ 7.0</strong>).<br>
-                            <span style="color: #cbd5e1; font-size: 0.84rem; display: inline-block; margin-top: 6px;">
-                                Puedes mejorar preguntas específicas con 1 XP o re-rendir los parciales donde tuviste menor puntaje para subir tu promedio.
-                            </span>
-                        `;
-                    } else {
-                        detalleEstado = `Aún no registras exámenes orales rendidos en la plataforma.`;
-                    }
-
+                // 1. Debe haber completado los 6 exámenes orales
+                if (oralStatus.completedCount < 6) {
                     Swal.fire({
                         icon: 'warning',
-                        title: '¡Examen Oral Requerido!',
+                        title: '¡6 Parciales Orales Requeridos!',
                         html: `
                             <div style="text-align: center; padding: 6px;">
                                 <div style="font-size: 3.2rem; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));">🎙️</div>
                                 <p style="font-size: 1.05rem; line-height: 1.5; color: #fff; font-weight: 700; margin-bottom: 14px;">
-                                    Para canjear puntos de bonificación práctica debes tener aprobados los <strong>6 exámenes orales</strong> con un <strong>promedio general mayor o igual a 7.0</strong>.
+                                    Para canjear puntos de bonificación práctica debes haber completado los <strong>6 exámenes orales</strong> de la cátedra.
                                 </p>
                                 <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; margin-bottom: 14px; line-height: 1.55;">
-                                    ${detalleEstado}
+                                    Has completado <strong style="color: #f59e0b; font-size: 1.05rem;">${oralStatus.completedCount} de 6</strong> parciales orales.<br>
+                                    Te faltan rendir <strong style="color: #ef4444; font-size: 1.05rem;">${oralStatus.missingCount} examen(es)</strong> para desbloquear la tienda.
+                                    ${oralStatus.average !== null ? `<div style="margin-top: 8px; color: #94a3b8; font-size: 0.84rem;">Promedio parcial de tus módulos rendidos: <strong style="color: ${oralStatus.average >= 7 ? '#34d399' : '#f87171'}; font-size: 0.95rem;">${oralStatus.average.toFixed(1)} / 10</strong></div>` : ''}
                                 </div>
                                 <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 0;">
                                     Rinde tus respuestas orales con micrófono para certificar tus conocimientos y habilitar el canje de puntos para el práctico.
@@ -678,12 +702,12 @@
                     return;
                 }
 
-                // Tope máximo de 5 puntos acumulados para el práctico
+                // 2. Tope máximo de 5 puntos acumulados para el práctico
                 const existingPoints = (studentData.inventory || [])
                     .filter(inv => inv.category === 'parcial_practico' || (inv.id && inv.id.startsWith('item_practico_')))
                     .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
                 
-                const pointsToAdd = Number(item.points) || 0;
+                const pointsToAdd = Number(item.points) || 1;
                 if (existingPoints + pointsToAdd > 5) {
                     Swal.fire({
                         icon: 'info',
@@ -702,6 +726,53 @@
                         background: '#1a1a2e',
                         color: '#fff',
                         confirmButtonColor: '#FFA500'
+                    });
+                    return;
+                }
+
+                // 3. Verificación de Nota según Tier de Puntos
+                const targetPoints = Math.max(pointsToAdd, existingPoints + pointsToAdd);
+                const requiredGrade = getRequiredOralGradeForPoints(targetPoints);
+                const currentAvg = oralStatus.average !== null ? oralStatus.average : 0;
+
+                if (currentAvg < requiredGrade) {
+                    const diff = Math.round((requiredGrade - currentAvg) * 10) / 10;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: `¡Promedio Oral Insuficiente para +${pointsToAdd} Pts!`,
+                        html: `
+                            <div style="text-align: center; padding: 6px;">
+                                <div style="font-size: 3.2rem; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));">🎯</div>
+                                <p style="font-size: 1.05rem; line-height: 1.5; color: #fff; font-weight: 700; margin-bottom: 14px;">
+                                    Para canjear <strong>+${pointsToAdd} Punto(s) Práctico(s)</strong> requieres un promedio general en los exámenes orales <strong>≥ ${requiredGrade.toFixed(1)}</strong>.
+                                </p>
+                                <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; margin-bottom: 14px; line-height: 1.6; font-size: 0.92rem;">
+                                    Tu promedio general registrado: <strong style="color: #ef4444; font-size: 1.15rem;">${currentAvg.toFixed(1)} / 10</strong><br>
+                                    Promedio requerido para este beneficio: <strong style="color: #34d399; font-size: 1.15rem;">≥ ${requiredGrade.toFixed(1)} / 10</strong><br>
+                                    <span style="color: #cbd5e1; font-size: 0.84rem; display: inline-block; margin-top: 8px;">
+                                        ¡Estás a solo <strong>${diff > 0 ? diff : 0.1} puntos</strong> de promedio! Puedes recuperar preguntas individuales por solo 1 XP o re-rendir parciales para subir tu nota a ${requiredGrade.toFixed(1)}.
+                                    </span>
+                                </div>
+                                <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 0;">
+                                    Rinde o mejora tus respuestas orales para certificar tus conocimientos y habilitar este canje.
+                                </p>
+                            </div>
+                        `,
+                        background: '#1a1a2e',
+                        color: '#fff',
+                        showCancelButton: true,
+                        confirmButtonColor: '#6366f1',
+                        cancelButtonColor: '#475569',
+                        confirmButtonText: '<i class="fas fa-microphone-alt"></i> Ir a Mejorar Examen Oral Ahora',
+                        cancelButtonText: 'Cerrar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (typeof window.goToRepasoParcial2 === 'function') {
+                                window.goToRepasoParcial2(targetUP, encodeURIComponent(studentData.name || ''), 'evaluacion');
+                            } else {
+                                window.location.href = `proyectos/repaso_parcial_2/index.html?tab=evaluacion&up=${encodeURIComponent(targetUP)}&name=${encodeURIComponent(studentData.name || '')}`;
+                            }
+                        }
                     });
                     return;
                 }
@@ -1074,8 +1145,10 @@
                         .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
                 
                 const oralStatus = getStudentOralExamStatus(student);
-                const notaColor = oralStatus.isApproved ? '#34d399' : (oralStatus.average !== null && oralStatus.average >= 7 ? '#f59e0b' : '#f87171');
-                const notaText = oralStatus.average !== null ? `${oralStatus.average.toFixed(1)} / 10 (${oralStatus.completedCount}/6)` : 'Sin rendir';
+                const reqGrade = getRequiredOralGradeForPoints(points);
+                const isQualified = (oralStatus.completedCount >= 6 && oralStatus.average !== null && oralStatus.average >= reqGrade);
+                const notaColor = isQualified ? '#34d399' : (oralStatus.average !== null && oralStatus.average >= 7 ? '#f59e0b' : '#f87171');
+                const notaText = oralStatus.average !== null ? `${oralStatus.average.toFixed(1)} / 10 (${oralStatus.completedCount}/6 · Mín: ${reqGrade.toFixed(1)})` : 'Sin rendir';
                 
                 const practicalItems = (student.inventory || [])
                     .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')));
