@@ -1112,6 +1112,22 @@ const FLASHCARDS_DECKS = {
           "Causa edema celular cerebral, cefalea y convulsiones"
         ],
         keywords: ["hiponatremia", "135", "dilucional", "sobrehidratación", "sodio", "edema cerebral", "electrolitos"]
+      },
+      {
+        id: "u7_23",
+        deck: "u7_p2",
+        question: "¿Cuál es la postura oficial pediátrica (AEP/SAP) sobre el uso de suplementos de proteínas, creatina y ayudas ergogénicas en el adolescente deportista, y en qué casos está justificada la suplementación?",
+        hint: "Principio 'Food First' (alimentos primero), falta de evidencia/seguridad en menores y justificación exclusiva ante deficiencias clínicas comprobadas.",
+        answer: "La postura oficial establece que los suplementos nutricionales y ergogénicos NO están recomendados en la edad pediátrica:\n1. Principio 'Food First': Una alimentación variada y suficiente cubre con holgura la energía y las proteínas requeridas (1,2 a 1,6 g/kg/d). Los batidos o polvos comerciales de proteínas no han demostrado mejorar el rendimiento físico en niños ni adolescentes.\n2. Creatina y aminoácidos (BCAA, glutamina, carnitina): Su uso está formalmente desaconsejado en menores de 18 años por falta de estudios de seguridad a largo plazo, riesgo de sobrecarga metabólica y posible interferencia en la absorción de otros aminoácidos esenciales.\n3. Suplementación justificada: Se reserva únicamente para deficiencias de micronutrientes clínicamente diagnosticadas (hierro en anemia o hemólisis de impacto, calcio o vitamina D) bajo supervisión médica/nutricional, o bebidas isotónicas para reposición hidroelectrolítica en esfuerzos intensos superiores a 1 hora.",
+        source: "Comité de Nutrición AEP 2014",
+        tags: ["suplementación", "deporte", "ergogénicos", "creatina", "proteínas", "Food First"],
+        keyPoints: [
+          "Los suplementos nutricionales y ergogénicos NO están recomendados en la edad pediátrica",
+          "Principio 'Food First': los requerimientos calóricos y proteicos se cubren con alimentos enteros",
+          "Suplementos proteicos, creatina y BCAA no tienen indicación en menores y conllevan riesgos",
+          "La suplementación solo se justifica ante deficiencias clínicas documentadas (hierro, vit D, calcio) o bebidas isotónicas en esfuerzos >1 hora"
+        ],
+        keywords: ["suplementación", "suplementos", "pediátrica", "food first", "proteínas", "creatina", "bcaa", "no recomendados", "deficiencias", "micronutrientes", "hierro", "rendimiento", "seguridad"]
       }
     ]
   }
