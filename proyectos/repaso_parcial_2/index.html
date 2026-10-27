@@ -187,6 +187,9 @@
                 <button id="cardPrevBtn" class="hover:text-slate-300 transition">
                   <i class="fa-solid fa-chevron-left mr-1"></i> Anterior
                 </button>
+                <button id="btnStudyResetAll" class="hover:text-amber-300 text-slate-400 text-[11px] font-semibold transition px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700" title="Volver a incluir todas las tarjetas dominadas en el repaso">
+                  <i class="fa-solid fa-rotate-right mr-1 text-amber-400"></i> Reiniciar Mazo
+                </button>
                 <button id="cardNextBtn" class="hover:text-slate-300 transition">
                   Siguiente <i class="fa-solid fa-chevron-right ml-1"></i>
                 </button>
@@ -233,12 +236,17 @@
                 <button id="btnAnkiGood" class="py-2.5 px-2 rounded-xl bg-emerald-950/50 hover:bg-emerald-900/70 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition flex flex-col items-center">
                   <i class="fa-solid fa-check text-sm mb-0.5"></i>
                   <span>¡Dominada!</span>
-                  <span class="text-[9px] text-emerald-400 font-normal">+10 XP</span>
+                  <span class="text-[9px] text-emerald-400 font-normal">+10 XP · Archivar</span>
                 </button>
               </div>
-              <button id="btnFlipBackToQuestion" class="w-full text-center text-xs text-slate-400 hover:text-white pt-1 transition">
-                <i class="fa-solid fa-rotate mr-1"></i> Volver a la pregunta
-              </button>
+              <div class="flex items-center justify-between pt-1">
+                <button id="btnFlipBackToQuestion" class="text-xs text-slate-400 hover:text-white transition">
+                  <i class="fa-solid fa-rotate mr-1"></i> Volver a la pregunta
+                </button>
+                <button id="btnStudyResetAllBack" class="text-[11px] text-slate-400 hover:text-amber-300 transition" title="Reiniciar mazo">
+                  <i class="fa-solid fa-rotate-right mr-1 text-amber-400"></i> Reiniciar mazo
+                </button>
+              </div>
             </div>
 
           </div>
@@ -759,13 +767,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts con Cache-Buster para Forzar Actualización Inmediata -->
-  <script src="js/config.js?v=4.0"></script>
-  <script src="js/data_flashcards.js?v=4.0"></script>
-  <script src="js/audio_engine.js?v=4.0"></script>
-  <script src="js/fix-webm-duration.js?v=4.0"></script>
-  <script src="js/audio_recorder.js?v=4.0"></script>
-  <script src="js/ai_evaluator.js?v=4.0"></script>
-  <script src="js/storage.js?v=4.0"></script>
-  <script src="js/app.js?v=4.0"></script>
+  <script src="js/config.js?v=4.1"></script>
+  <script src="js/data_flashcards.js?v=4.1"></script>
+  <script src="js/audio_engine.js?v=4.1"></script>
+  <script src="js/fix-webm-duration.js?v=4.1"></script>
+  <script src="js/audio_recorder.js?v=4.1"></script>
+  <script src="js/ai_evaluator.js?v=4.1"></script>
+  <script src="js/storage.js?v=4.1"></script>
+  <script src="js/app.js?v=4.1"></script>
 </body>
 </html>

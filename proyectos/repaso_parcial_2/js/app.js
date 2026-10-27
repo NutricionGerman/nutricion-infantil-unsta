@@ -252,6 +252,18 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
+    const quickResetBtns = [document.getElementById("btnStudyResetAll"), document.getElementById("btnStudyResetAllBack")];
+    quickResetBtns.forEach(btn => {
+      if (btn) {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          sessionSeenCardIds.clear();
+          loadStudyQueue(true);
+          renderCurrentCard();
+        });
+      }
+    });
+
     const speakQBtn = document.getElementById("speakCardBtn");
     const speakABtn = document.getElementById("speakAnswerBtn");
 
