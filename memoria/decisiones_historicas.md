@@ -134,9 +134,13 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Cuando el estudiante presiona "Canjear", el sistema valida en tiempo real si tiene aprobado el **Examen Oral con nota $\ge 7.0$**.
       * Si aún no lo rindió o tiene nota $< 7$, se dispara el cartel modal indicándole que debe aprobar el examen oral, mostrando su nota actual e incorporando el botón de acción directa **«🎙️ Ir a Rendir Examen Oral Ahora»**.
       * Al pulsar el botón de rendir, la aplicación navega directamente a la pestaña de Examen Oral (`proyectos/repaso_parcial_2/index.html?tab=evaluacion&up=...&name=...`) mostrando de inmediato el tablero de los 6 parciales con grabación de voz por IA.
+    - **Horario de Cierre y Verificación Docente**:
+      * **Cierre Automático**: Configurado para hoy **27 de octubre de 2026 a las 23:59:59 (11:59 PM)** (`expiresAt: 2026-10-27T23:59:59-03:00`). Al expirar, los ítems se ocultan automáticamente en la tienda y cualquier intento de compra queda rechazado.
+      * **Panel Docente & Descarga de Lista**: En `index.html` (Pestaña "Panel Docente" -> "Gestión Tienda XP") se incorporó una **Tabla en Vivo de Bonificaciones** y el botón **«Descargar Planilla 2° Parcial Práctico (CSV / Excel)»** que exporta Legajo, Alumno, Grupo, Puntos Bonificados (+1 a +5), Nota Teórica/Oral, Fecha y Saldo XP.
+      * **Script de Consulta Inmediata**: Archivo `verificar_compras_parcial2.js` para auditoría instantánea desde la consola.
     - **Impacto y Persistencia**:
-      * Los ítems fueron actualizados en la colección `app_state/tienda_items` de Firestore eliminando la fecha de expiración pasada.
+      * Los ítems fueron actualizados en la colección `app_state/tienda_items` de Firestore con la fecha de expiración límite fijada para hoy a las 23:59:59.
       * Se crearon 5 distintivos vectoriales SVG optimizados en `tienda/badges/`.
       * Se actualizó `tienda.js` y `proyectos/repaso_parcial_2/js/app.js` con soporte para el parámetro `tab=evaluacion`.
-      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html`.
+      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html` (v=1.34).
 

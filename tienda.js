@@ -130,10 +130,15 @@
                         🎯
                     </div>
                     <div>
-                        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #a5b4fc;">
-                            Canje Oficial · 2° Parcial Práctico
+                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #a5b4fc;">
+                                Canje Oficial · 2° Parcial Práctico
+                            </span>
+                            <span style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 1px 7px;">
+                                ⏰ Cierra Hoy 23:59 hs
+                            </span>
                         </div>
-                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 3px 0 2px;">
+                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 4px 0 2px;">
                             Canjea de 1 a 5 Puntos con tus XP
                         </h4>
                         <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
@@ -386,6 +391,18 @@
             const item = items.find(i => i.id === itemId);
             if (!item) {
                 Swal.fire('Error', 'Ítem no encontrado en el catálogo de la tienda.', 'error');
+                return;
+            }
+
+            // Verificación de expiración (Cierre de tienda)
+            if (item.expiresAt && new Date(item.expiresAt) <= new Date()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tienda Cerrada',
+                    text: 'La tienda oficial cerró hoy a las 23:59 hs. El canje de puntos ya no se encuentra disponible.',
+                    background: '#1a1a2e',
+                    color: '#fff'
+                });
                 return;
             }
 
@@ -833,13 +850,116 @@
         const container = document.getElementById('admin-tienda-list');
         if (!container) return;
         
-        container.innerHTML = '<div style="text-align:center; padding:20px; color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Cargando ítems...</div>';
+        container.innerHTML = '<div style="text-align:center; padding:20px; color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Cargando datos de la tienda...</div>';
         
         const items = await loadTiendaItems();
         
-        let html = '';
+        // 1. Panel y Tabla en Vivo de Bonificaciones del 2° Parcial Práctico
+        let bonusStudents = [];
+        if (window.fullData && window.fullData.students) {
+            bonusStudents = window.fullData.students.filter(student => {
+                const points = typeof student.puntosParcialPractico2 === 'number' && student.puntosParcialPractico2 > 0
+                    ? student.puntosParcialPractico2
+                    : (student.inventory || [])
+                        .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')))
+                        .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+                return points > 0;
+            });
+        }
+
+        let bonusRowsHTML = '';
+        if (bonusStudents.length === 0) {
+            bonusRowsHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 22px; color: #94a3b8; font-size: 0.88rem;">
+                        <i class="fas fa-info-circle" style="margin-right: 6px;"></i> Aún no se han registrado canjes de puntos para el 2° Parcial Práctico. Los alumnos pueden canjear hasta hoy a las <strong>23:59 hs</strong>.
+                    </td>
+                </tr>
+            `;
+        } else {
+            bonusStudents.forEach(student => {
+                const points = typeof student.puntosParcialPractico2 === 'number' && student.puntosParcialPractico2 > 0
+                    ? student.puntosParcialPractico2
+                    : (student.inventory || [])
+                        .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')))
+                        .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+                
+                const notaTeorica = getStudentTheoreticalGrade(student);
+                const notaColor = (notaTeorica !== null && notaTeorica >= 7) ? '#34d399' : '#f87171';
+                const notaText = notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10` : 'Sin rendir';
+                
+                const practicalItems = (student.inventory || [])
+                    .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')));
+                
+                const lastPurchase = practicalItems.length > 0 && practicalItems[practicalItems.length - 1].purchasedAt
+                    ? new Date(practicalItems[practicalItems.length - 1].purchasedAt).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })
+                    : '-';
+
+                bonusRowsHTML += `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem;">
+                        <td style="padding: 10px 12px; font-weight: 700; color: #cbd5e1;">${student.up || '-'}</td>
+                        <td style="padding: 10px 12px; font-weight: 800; color: #fff;">${student.name || '-'}</td>
+                        <td style="padding: 10px 12px; color: #94a3b8;">${student.group ? `Grupo ${student.group}` : '-'}</td>
+                        <td style="padding: 10px 12px; text-align: center;">
+                            <span style="background: rgba(16, 185, 129, 0.2); border: 1.5px solid #10b981; color: #6ee7b7; font-weight: 900; font-size: 0.95rem; padding: 2px 10px; border-radius: 8px; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);">
+                                +${points} pts
+                            </span>
+                        </td>
+                        <td style="padding: 10px 12px; text-align: center; font-weight: 800; color: ${notaColor};">
+                            ${notaText}
+                        </td>
+                        <td style="padding: 10px 12px; color: #94a3b8; font-size: 0.8rem;">${lastPurchase}</td>
+                        <td style="padding: 10px 12px; text-align: right; font-weight: 700; color: #fde047;">${student.xp || 0} XP</td>
+                    </tr>
+                `;
+            });
+        }
+
+        const bonusPanelHTML = `
+            <div style="background: linear-gradient(135deg, rgba(6, 78, 59, 0.35) 0%, rgba(15, 23, 42, 0.85) 100%); border: 1.5px solid rgba(16, 185, 129, 0.5); border-radius: 16px; padding: 20px; margin-bottom: 25px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                    <div>
+                        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #6ee7b7;">
+                            Planilla Oficial de Canje
+                        </div>
+                        <h4 style="font-size: 1.2rem; font-weight: 900; color: #fff; margin: 3px 0 2px;">
+                            🎯 Bonificaciones · 2° Parcial Práctico (${bonusStudents.length} Alumnos)
+                        </h4>
+                        <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0;">
+                            La tienda cierra automáticamente hoy a las <strong style="color: #fca5a5;">23:59 hs (11:59 PM)</strong>. Puntos acreditados para sumar al acta práctica.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button onclick="downloadBonificacionesPracticoCSV()" style="background: linear-gradient(135deg, #10b981, #059669); border: none; color: white; padding: 10px 18px; border-radius: 10px; font-size: 0.84rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);">
+                            <i class="fas fa-file-excel"></i> Descargar Planilla (CSV / Excel)
+                        </button>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto; background: rgba(0,0,0,0.25); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 0.74rem; text-transform: uppercase; letter-spacing: 1px; color: #94a3b8; background: rgba(255,255,255,0.03);">
+                                <th style="padding: 10px 12px;">Legajo (UP)</th>
+                                <th style="padding: 10px 12px;">Estudiante</th>
+                                <th style="padding: 10px 12px;">Grupo</th>
+                                <th style="padding: 10px 12px; text-align: center;">Puntos Sumados</th>
+                                <th style="padding: 10px 12px; text-align: center;">Nota Oral/Teórica</th>
+                                <th style="padding: 10px 12px;">Último Canje</th>
+                                <th style="padding: 10px 12px; text-align: right;">Saldo XP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${bonusRowsHTML}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+
+        let catalogHTML = '<h5 style="color: #ec4899; margin: 20px 0 10px 0; font-size: 1rem;"><i class="fas fa-boxes"></i> Catálogo Activo de la Tienda</h5>';
         if (items.length === 0) {
-            html = '<p style="color:#aaa;">No hay ítems en la tienda. Crea uno nuevo.</p>';
+            catalogHTML += '<p style="color:#aaa;">No hay ítems en la tienda. Crea uno nuevo.</p>';
         } else {
             const now = new Date();
             items.forEach((item, index) => {
@@ -864,7 +984,7 @@
                     auctionInfo = `<p style="margin:5px 0 0 0; font-size:0.85rem; color:#ccc;">Costo: ${item.cost} XP | Tipo: Venta Directa</p>`;
                 }
 
-                html += `
+                catalogHTML += `
                     <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <h4 style="margin:0; color:#FFA500;"><i class="${item.icon}"></i> ${item.name} ${statusBadge}</h4>
@@ -880,7 +1000,7 @@
                 `;
             });
         }
-        container.innerHTML = html;
+        container.innerHTML = bonusPanelHTML + catalogHTML;
     };
 
     window.openCreateTiendaItemModal = () => {
@@ -1127,6 +1247,63 @@
                 alert("Error al eliminar.");
             }
         }
+    };
+
+    window.downloadBonificacionesPracticoCSV = () => {
+        if (!window.fullData || !window.fullData.students) {
+            Swal.fire('Error', 'Los datos de alumnos aún no están cargados. Asegúrate de iniciar sesión en el portal.', 'error');
+            return;
+        }
+        
+        let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // BOM para Excel
+        csvContent += "Legajo (UP);Nombre y Apellido;Grupo;Puntos Bonificados (+);Nota 2° Parcial Teórico / Oral;Saldo XP Actual;Última Fecha de Canje;Detalle Canjes\r\n";
+
+        let encontrados = 0;
+
+        window.fullData.students.forEach(student => {
+            const points = typeof student.puntosParcialPractico2 === 'number' && student.puntosParcialPractico2 > 0
+                ? student.puntosParcialPractico2
+                : (student.inventory || [])
+                    .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')))
+                    .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+
+            if (points > 0) {
+                encontrados++;
+                const up = student.up || '';
+                const nombre = (student.name || '').replace(/;/g, ',');
+                const grupo = student.group ? `Grupo ${student.group}` : '';
+                const notaTeorica = getStudentTheoreticalGrade(student);
+                const notaStr = notaTeorica !== null ? notaTeorica.toFixed(1) : 'Sin rendir';
+                const xp = student.xp || 0;
+
+                const practicalItems = (student.inventory || [])
+                    .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')));
+                
+                const fechas = practicalItems.map(it => it.purchasedAt ? new Date(it.purchasedAt).toLocaleString() : '').filter(Boolean).join(' | ');
+                const itemsStr = practicalItems.map(it => `${it.name} (+${it.points || 1}pt)`).join(' + ').replace(/;/g, ',');
+
+                csvContent += `"${up}";"${nombre}";"${grupo}";"+${points}";"${notaStr}";"${xp}";"${fechas}";"${itemsStr}"\r\n`;
+            }
+        });
+
+        if (encontrados === 0) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Sin Compras Registradas',
+                text: 'Aún no hay ningún alumno que haya canjeado puntos para el 2° Parcial Práctico. Los alumnos pueden canjear hasta hoy a las 23:59 hs.',
+                background: '#1a1a2e',
+                color: '#fff'
+            });
+            return;
+        }
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `bonificaciones_2do_parcial_practico_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     window.downloadTiendaCSV = () => {
