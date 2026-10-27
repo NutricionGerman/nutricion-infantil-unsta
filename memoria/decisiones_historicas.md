@@ -199,3 +199,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
     - Si un estudiante que ya completó un parcial oral presiona "Reintentar Parcial", el sistema despliega un modal SweetAlert2 con su nota actual (ej: 8.5/10 - Aprobado), advirtiéndole que iniciar un nuevo intento generará 10 nuevas preguntas y actualizará su calificación previa.
     - Se ofrecen dos botones: "Sí, Rendir de Nuevo" y "Cancelar (Mantener Nota)".
     - Versionado actualizado a `v=3.5` en `proyectos/repaso_parcial_2/index.html`.
+
+22. **Recuperación Focalizada de Pregunta Individual por 1 XP**:
+    - **Mecánica Gamificada y Pedagógica**: En la pantalla de resultados del examen oral (`oralExamResultScreen`), cada una de las 10 preguntas que tenga nota inferior a 10 muestra el botón interactivo **"Recuperar pregunta (1 XP)"**.
+    - **Flujo de Ejecución**:
+      1. Se valida que el estudiante tenga al menos 1 XP disponible (tanto en memoria local como en Firestore `students/${up}`).
+      2. Se abre un modal de grabación donde puede volver a escuchar la consigna y grabar nuevamente solo esa respuesta de voz.
+      3. Se procesa con Whisper y se le permite corrección quirúrgica de palabras.
+      4. La IA evalúa exclusivamente esa pregunta con la rúbrica oficial de cátedra.
+      5. **Garantía de Mejor Nota (*Best Score*)**: La nota de la pregunta solo se actualiza si el nuevo resultado supera al anterior (`Math.max(oldGrade, newGrade)`), protegiendo al alumno de perder puntos.
+      6. Se deduce 1 XP del perfil del estudiante y se sincroniza en Firestore.
+      7. Se recalcula automáticamente el promedio del parcial, el estatus de Cuadro de Honor ($\ge 9.0$) y se actualiza la planilla y base de datos.
+    - Versionado elevado a `v=3.6` en `proyectos/repaso_parcial_2/index.html`.
