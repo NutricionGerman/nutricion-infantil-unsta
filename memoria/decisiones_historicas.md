@@ -309,6 +309,18 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Versionado anti-caché elevado a `v=4.0` en `proyectos/repaso_parcial_2/index.html`.
       * Compensación docente de cátedra: Se acreditaron +6 XP a Gimena Godoy (UP 344025), elevando su saldo oficial de 37 a 43 XP en Firestore y asentado en su `xpHistory` para cubrir el costo de recuperación individual de preguntas o como bonificación de cátedra.
 
+31. **Cascada Dual de Modelos Whisper (Turbo + V3), Reintentos Automáticos y Botones de Rescate**:
+    - **Diagnóstico del Cuello de Botella Simultáneo (Casos Paz, Bazan y Gerez a las 18:40-18:55 hs)**:
+      * Múltiples alumnos ingresaron a rendir en simultáneo por la proximidad del cierre de tienda y examen. Al enviar audios largos (>30-45s) en paralelo, superaron la cuota por minuto de audio en Groq (`whisper-large-v3-turbo` restringe la tasa a 120 segundos de audio por minuto).
+      * La API devolvía HTTP 429 (Too Many Requests), y como el código no tenía reintentos ni modelos de respaldo, la transcripción caía a "Sin transcripción disponible" bloqueando al alumno.
+    - **Solución Arquitectónica Inmune a Caídas**:
+      * Cascada Multi-Modelo: Si `whisper-large-v3-turbo` se satura (429), salta inmediatamente a `whisper-large-v3` (que posee un pool de cuota separado de 7.200 segundos).
+      * Reintento automático con pausas de red.
+      * Conservación del Blob de audio en memoria y botón **«🔄 Reintentar Transcribir»** para que el alumno pueda volver a procesar su audio grabado sin volver a hablar.
+      * Botón de rescate infalible **«✍️ Escribir lo que dije en el audio»**: si los servidores de transcripción estuvieran saturados, el alumno puede tipear lo que dijo en la grabación para que la IA lo califique sin perder su intento.
+      * Versionado anti-caché elevado a `v=4.2` en `proyectos/repaso_parcial_2/index.html`.
+
+
 
 
 
