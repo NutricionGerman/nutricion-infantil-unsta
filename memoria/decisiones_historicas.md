@@ -194,3 +194,8 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       1. **Rúbrica Estricta en el Prompt**: Se instruyó que en un examen oral la concisión y precisión directa son virtudes docentes. Si el alumno cubre los `keyPointsRequired` sin errores y no hay omisiones que señalar, **LA NOTA ES 10 OBLIGATORIAMENTE**.
       2. **Post-Procesador Determinista en Código (`cleanAndParseJSON`)**: Si la IA devolviese un 9 pero el campo de mejoras indica "ninguna", "sin observaciones", "completa y precisa", etc., el código eleva automáticamente la calificación a 10 y recalcula el promedio exacto del examen.
     - Versionado elevado a `v=3.4` en `proyectos/repaso_parcial_2/index.html`.
+
+21. **Cartel de Confirmación y Advertencia al Reintentar Parcial Completado**:
+    - Si un estudiante que ya completó un parcial oral presiona "Reintentar Parcial", el sistema despliega un modal SweetAlert2 con su nota actual (ej: 8.5/10 - Aprobado), advirtiéndole que iniciar un nuevo intento generará 10 nuevas preguntas y actualizará su calificación previa.
+    - Se ofrecen dos botones: "Sí, Rendir de Nuevo" y "Cancelar (Mantener Nota)".
+    - Versionado actualizado a `v=3.5` en `proyectos/repaso_parcial_2/index.html`.
