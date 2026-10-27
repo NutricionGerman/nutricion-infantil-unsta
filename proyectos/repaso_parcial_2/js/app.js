@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentQuestionTranscript = "";
   let currentQuestionDuration = 0;
   let oralWordEditsPerQuestion = {};
+  let currentExamResult = null;
 
   // Inicialización Segura de Firebase Firestore
   let db = null;
@@ -1211,6 +1212,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderOralExamResults(result) {
+    currentExamResult = result;
     document.getElementById("oralExamLoadingScreen").classList.add("hidden");
     document.getElementById("oralExamResultScreen").classList.remove("hidden");
 
@@ -1280,11 +1282,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return `
           <div class="bg-slate-900 border ${rev.grade >= 7 ? "border-emerald-500/30" : "border-rose-500/30"} rounded-2xl p-4 sm:p-5 space-y-3">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-wrap gap-2">
               <span class="text-xs font-bold text-slate-400">Pregunta ${idx + 1} de 10</span>
-              <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full ${rev.grade >= 7 ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "bg-rose-500/20 text-rose-300 border border-rose-500/30"}">
-                Nota: ${rev.grade} / 10
-              </span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono font-bold px-2.5 py-0.5 rounded-full ${rev.grade >= 7 ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" : "bg-rose-500/20 text-rose-300 border border-rose-500/30"}">
+                  Nota: ${rev.grade} / 10
+                </span>
+                ${rev.grade < 10
+                  ? `<button type="button" 
+                             class="btn-recover-single-q px-2.5 py-1 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-[11px] font-bold flex items-center gap-1.5 shadow-md shadow-indigo-600/30 transition active:scale-95 cursor-pointer"
+                             data-qindex="${idx}"
+                             title="Re-grabar solo esta pregunta para subir su nota (Costo: 1 XP)">
+                       <i class="fa-solid fa-rotate-right text-xs"></i>
+                       <span>Recuperar pregunta</span>
+                       <span class="bg-amber-400 text-slate-950 text-[10px] font-black px-1.5 py-0.2 rounded-full font-mono">1 XP</span>
+                     </button>`
+                  : `<span class="text-[11px] text-emerald-400 font-extrabold flex items-center gap-1 bg-emerald-500/10 px-2 py-0.5 rounded-lg border border-emerald-500/30">
+                       <i class="fa-solid fa-circle-check"></i> Máximo (10/10)
+                     </span>`
+                }
+              </div>
             </div>
 
             <h5 class="text-sm font-bold text-slate-100">${rev.question}</h5>
@@ -1317,6 +1334,13 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
       }).join("");
+
+      document.querySelectorAll(".btn-recover-single-q").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const qIdx = parseInt(btn.dataset.qindex, 10);
+          openSingleQuestionRecoveryModal(qIdx);
+        });
+      });
     }
 
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1814,3 +1838,359 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+  async function openSingleQuestionRecoveryModal(qIdx) {
+    if (!currentExamResult || !currentExamResult.questionsReview) return;
+    const rev = currentExamResult.questionsReview[qIdx];
+    const q = oralExamQuestions[qIdx];
+    if (!rev || !q) return;
+
+    // Sincronizar XP de Firestore si está disponible
+    if (db && sm.state.up) {
+      try {
+        const stuSnap = await db.collection('students').doc(String(sm.state.up).trim()).get();
+        if (stuSnap.exists && typeof stuSnap.data().xp === 'number') {
+          sm.state.xp = stuSnap.data().xp;
+          sm.saveState();
+          initHeaderStats();
+        }
+      } catch(e) {}
+    }
+
+    const currentXP = sm.state.xp || 0;
+    const RECOVERY_COST_XP = 1;
+
+    if (currentXP < RECOVERY_COST_XP) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Saldo de XP Insuficiente',
+          html: `
+            <div class="text-left text-xs sm:text-sm space-y-2 text-slate-300">
+              <p>Para recuperar esta pregunta necesitas al menos <strong>${RECOVERY_COST_XP} XP</strong>.</p>
+              <p>Tu saldo actual es de <strong class="text-amber-400 font-mono">${currentXP} XP</strong>.</p>
+              <div class="bg-indigo-950/40 p-2.5 rounded-xl border border-indigo-500/30 text-indigo-300 text-xs">
+                💡 <em>Tip: Asiste a las clases de la cátedra (+2 XP cada una) o domina tarjetas flashcards para sumar XP.</em>
+              </div>
+            </div>
+          `,
+          background: '#0f172a',
+          color: '#f8fafc',
+          confirmButtonColor: '#6366f1',
+          confirmButtonText: 'Entendido'
+        });
+      } else {
+        alert(`Necesitas al menos ${RECOVERY_COST_XP} XP para recuperar esta pregunta.`);
+      }
+      return;
+    }
+
+    let recoveredAudioUrl = null;
+    let recoveredTranscript = "";
+    let recoveredDuration = 0;
+
+    Swal.fire({
+      title: `<span class="text-base font-black text-white flex items-center justify-center gap-2"><i class="fa-solid fa-rotate-right text-indigo-400"></i> Recuperar Pregunta ${qIdx + 1}</span>`,
+      html: `
+        <div class="text-left text-xs sm:text-sm space-y-3">
+          <!-- Tarjeta de Consigna -->
+          <div class="bg-slate-900 border border-indigo-500/30 p-3.5 rounded-2xl space-y-1.5">
+            <div class="flex items-center justify-between text-[11px] text-slate-400">
+              <span class="font-bold uppercase tracking-wider text-indigo-400">Consigna Oficial</span>
+              <span class="font-mono font-bold text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/30">
+                Nota actual: ${rev.grade} / 10
+              </span>
+            </div>
+            <p class="text-slate-100 font-semibold leading-relaxed text-xs sm:text-sm">
+              ${escapeHtml(q.question)}
+            </p>
+          </div>
+
+          <!-- Información de Costo & Garantía Pedagógica -->
+          <div class="bg-slate-950/70 border border-slate-800 p-2.5 rounded-xl flex items-center justify-between text-xs">
+            <span class="text-slate-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-coins text-amber-400"></i>
+              <span>Costo de recuperación:</span>
+            </span>
+            <span class="font-mono font-black text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/30">
+              1 XP (Tu saldo: ${currentXP} XP)
+            </span>
+          </div>
+
+          <!-- Grabador de Voz en Modal -->
+          <div class="text-center py-2 space-y-2">
+            <div class="flex items-center justify-center gap-2">
+              <button id="modalBtnRecord" type="button" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-extrabold text-xs flex items-center space-x-2 shadow-lg shadow-rose-600/30 transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-microphone"></i>
+                <span id="modalBtnRecordText">Grabar Nueva Respuesta</span>
+              </button>
+              <span id="modalRecordTimerBadge" class="hidden text-xs font-mono font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/30 animate-pulse">
+                🔴 00:00
+              </span>
+            </div>
+
+            <!-- Reproductor de la nueva grabación -->
+            <div id="modalPlayerWrapper" class="hidden pt-1 max-w-sm mx-auto">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                <span>Escucha tu nuevo audio:</span>
+                <span id="modalDurationBadge" class="font-mono text-xs text-indigo-300 font-bold">00:00</span>
+              </div>
+              <audio id="modalAudioPlayer" controls class="w-full h-8 rounded-lg"></audio>
+            </div>
+
+            <!-- Contenedor de Transcripción con Fichas de Palabras -->
+            <div id="modalTranscriptWrapper" class="hidden text-left bg-slate-950/90 p-3 rounded-xl border border-indigo-500/30 text-xs text-slate-200 shadow-inner space-y-1.5">
+              <div class="flex items-center justify-between flex-wrap gap-1">
+                <span class="text-indigo-400 text-[10px] uppercase font-extrabold flex items-center gap-1.5">
+                  <i class="fa-solid fa-microphone-lines"></i> Transcripción Oficial:
+                </span>
+                <span id="modalWordEditCounter" class="text-[10px] text-indigo-300/80 font-medium">
+                  Toca cualquier palabra para corregirla
+                </span>
+              </div>
+              <div id="modalTranscriptContainer" class="leading-relaxed font-sans text-xs text-slate-100 bg-slate-900/80 p-2.5 rounded-lg border border-slate-800 min-h-[40px] flex flex-wrap gap-1 items-center">
+                ...
+              </div>
+            </div>
+          </div>
+
+          <p class="text-[10px] text-slate-400 italic text-center">
+            🛡️ <strong>Garantía de Cátedra:</strong> Solo se actualizará tu nota si obtienes una calificación mayor a ${rev.grade}/10. Si fuera menor, conservas tu nota actual.
+          </p>
+        </div>
+      `,
+      background: '#0f172a',
+      color: '#f8fafc',
+      showCancelButton: true,
+      confirmButtonText: '<i class="fa-solid fa-graduation-cap mr-1.5"></i> Calificar y Aplicar Mejora (1 XP)',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#6366f1',
+      cancelButtonColor: '#475569',
+      customClass: { popup: 'border border-indigo-500/30 rounded-3xl max-w-lg w-full' },
+      didOpen: () => {
+        const btnRec = document.getElementById("modalBtnRecord");
+        const btnRecText = document.getElementById("modalBtnRecordText");
+        const timerBadge = document.getElementById("modalRecordTimerBadge");
+        const playerWrapper = document.getElementById("modalPlayerWrapper");
+        const player = document.getElementById("modalAudioPlayer");
+        const transcriptWrapper = document.getElementById("modalTranscriptWrapper");
+        const transcriptContainer = document.getElementById("modalTranscriptContainer");
+        const durationBadge = document.getElementById("modalDurationBadge");
+
+        const confirmBtn = Swal.getConfirmButton();
+        if (confirmBtn) confirmBtn.disabled = true;
+
+        if (btnRec) {
+          btnRec.addEventListener("click", async () => {
+            if (!recorder.isRecording) {
+              if (playerWrapper) playerWrapper.classList.add("hidden");
+              if (transcriptWrapper) transcriptWrapper.classList.add("hidden");
+              if (timerBadge) timerBadge.classList.remove("hidden");
+              if (confirmBtn) confirmBtn.disabled = true;
+
+              btnRec.className = "px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs flex items-center space-x-2 shadow-lg transition active:scale-95 cursor-pointer recording-pulse";
+              btnRecText.textContent = "⏹️ Detener Grabación";
+
+              await recorder.startRecording(
+                (secs) => {
+                  const m = Math.floor(secs / 60).toString().padStart(2, "0");
+                  const s = (secs % 60).toString().padStart(2, "0");
+                  if (timerBadge) timerBadge.textContent = `🔴 ${m}:${s}`;
+                },
+                null,
+                (err) => {
+                  alert("No se pudo iniciar el micrófono.");
+                }
+              );
+            } else {
+              btnRecText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo...';
+              btnRec.disabled = true;
+
+              const res = await recorder.stopRecording();
+              btnRec.disabled = false;
+              btnRec.className = "px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-extrabold text-xs flex items-center space-x-2 shadow-lg transition active:scale-95 cursor-pointer";
+              btnRecText.textContent = "Volver a Grabar";
+              if (timerBadge) timerBadge.classList.add("hidden");
+
+              if (res) {
+                recoveredAudioUrl = res.audioUrl;
+                recoveredTranscript = res.transcript;
+                recoveredDuration = res.durationSecs;
+
+                if (playerWrapper && player && res.audioUrl) {
+                  player.src = res.audioUrl;
+                  if (durationBadge) durationBadge.textContent = formatDuration(res.durationSecs || 0);
+                  playerWrapper.classList.remove("hidden");
+                }
+
+                if (transcriptWrapper && transcriptContainer) {
+                  transcriptWrapper.classList.remove("hidden");
+                  renderModalWords(recoveredTranscript);
+                }
+
+                if (confirmBtn) confirmBtn.disabled = false;
+              }
+            }
+          });
+        }
+
+        function renderModalWords(text) {
+          if (!transcriptContainer) return;
+          transcriptContainer.innerHTML = "";
+          const words = (text || "").trim().split(/\s+/);
+          words.forEach((word, wIdx) => {
+            const chip = document.createElement("button");
+            chip.type = "button";
+            chip.className = "inline-flex items-center px-1.5 py-0.5 m-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600 hover:text-white text-slate-200 text-xs font-medium border border-slate-700 hover:border-indigo-400 transition cursor-pointer select-none active:scale-95";
+            chip.textContent = word;
+            chip.title = "Toca para corregir esta palabra";
+            chip.addEventListener("click", () => {
+              openModalWordCorrection(wIdx, word);
+            });
+            transcriptContainer.appendChild(chip);
+          });
+        }
+
+        function openModalWordCorrection(wIdx, oldWord) {
+          const newW = prompt(`Corregir palabra "${oldWord}" (solo 1 palabra, sin espacios):`, oldWord);
+          if (newW && !/\s/.test(newW.trim())) {
+            const words = (recoveredTranscript || "").trim().split(/\s+/);
+            if (words[wIdx] !== undefined) {
+              words[wIdx] = newW.trim();
+              recoveredTranscript = words.join(" ");
+              renderModalWords(recoveredTranscript);
+            }
+          }
+        }
+      },
+      preConfirm: () => {
+        if (!recoveredTranscript || recoveredTranscript.trim().length === 0) {
+          Swal.showValidationMessage('Debes grabar tu respuesta antes de calificar.');
+          return false;
+        }
+        return {
+          audioUrl: recoveredAudioUrl,
+          transcript: recoveredTranscript.trim(),
+          durationSecs: recoveredDuration
+        };
+      }
+    }).then(async (dialogRes) => {
+      if (dialogRes.isConfirmed && dialogRes.value) {
+        const payload = dialogRes.value;
+
+        Swal.fire({
+          title: 'Evaluando con Inteligencia Artificial...',
+          html: '<div class="text-xs text-slate-300 space-y-2"><p>La IA está evaluando tu respuesta con rigor docente.</p><i class="fa-solid fa-brain text-indigo-400 text-3xl animate-pulse mt-2"></i></div>',
+          background: '#0f172a',
+          color: '#f8fafc',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        try {
+          const evalResult = await ai.evaluateSingleQuestion(
+            q.question,
+            q.answer,
+            q.keyPoints || [],
+            payload.transcript
+          );
+
+          // 1. Debitar 1 XP del alumno
+          sm.addXP(-1);
+          initHeaderStats();
+
+          // Sincronizar débito de XP en Firestore
+          const up = String(sm.state.up || "").trim();
+          if (db && up && up !== "Sin Legajo" && up !== "UNSTA") {
+            try {
+              await db.collection('students').doc(up).update({
+                xp: firebase.firestore.FieldValue.increment(-1)
+              });
+            } catch(eXp) {
+              console.warn("[Firestore] Error actualizando XP tras recuperación:", eXp);
+            }
+          }
+
+          // 2. Política de Mejor Nota (Best Score)
+          const oldGrade = rev.grade;
+          const newGrade = Math.max(oldGrade, evalResult.grade);
+
+          rev.grade = newGrade;
+          rev.strengths = evalResult.strengths;
+          rev.improvements = evalResult.improvements;
+
+          if (oralStudentAnswers[qIdx]) {
+            oralStudentAnswers[qIdx].studentTranscript = payload.transcript;
+            if (payload.audioUrl) oralStudentAnswers[qIdx].audioUrl = payload.audioUrl;
+            if (payload.durationSecs) oralStudentAnswers[qIdx].durationSecs = payload.durationSecs;
+          }
+
+          // 3. Recalcular promedio general del parcial
+          const sum = currentExamResult.questionsReview.reduce((acc, curr) => acc + (Number(curr.grade) || 0), 0);
+          currentExamResult.finalGrade = Math.round((sum / 10) * 10) / 10;
+          currentExamResult.passed = currentExamResult.finalGrade >= 7.0;
+          currentExamResult.isHonor = currentExamResult.finalGrade >= 9.0;
+          currentExamResult.isDistinguished = currentExamResult.finalGrade >= 8.0 && currentExamResult.finalGrade < 9.0;
+
+          if (sm.state.partialGrades && sm.state.partialGrades[currentOralPartialKey]) {
+            sm.state.partialGrades[currentOralPartialKey].grade = currentExamResult.finalGrade;
+            sm.state.partialGrades[currentOralPartialKey].passed = currentExamResult.passed;
+            sm.saveState();
+          }
+
+          syncExamToFirestore(currentOralPartialKey, currentExamResult, oralStudentAnswers);
+          renderOralExamResults(currentExamResult);
+
+          if (evalResult.grade > oldGrade) {
+            Swal.fire({
+              icon: 'success',
+              title: '¡Pregunta Superada con Éxito!',
+              html: `
+                <div class="text-xs sm:text-sm text-slate-300 space-y-2 text-left">
+                  <p>Tu calificación en esta pregunta subió de <strong class="text-rose-400 font-mono">${oldGrade}/10</strong> a <strong class="text-emerald-400 font-mono text-base">${newGrade}/10</strong> 🎉.</p>
+                  <p>Tu nuevo promedio en este parcial es de <strong class="text-indigo-300 font-mono text-base">${currentExamResult.finalGrade} / 10</strong>.</p>
+                  <p class="text-[11px] text-amber-400/90 bg-amber-500/10 p-2 rounded-xl border border-amber-500/20">
+                    Se debitó 1 XP de tu saldo por la recuperación docente.
+                  </p>
+                </div>
+              `,
+              background: '#0f172a',
+              color: '#f8fafc',
+              confirmButtonColor: '#6366f1',
+              confirmButtonText: 'Genial, continuar'
+            });
+          } else {
+            Swal.fire({
+              icon: 'info',
+              title: 'Nota Conservada',
+              html: `
+                <div class="text-xs sm:text-sm text-slate-300 space-y-2 text-left">
+                  <p>En este intento obtuviste <strong class="font-mono text-indigo-300">${evalResult.grade}/10</strong>.</p>
+                  <p>Por la <em>Garantía de Cátedra</em>, <strong>se conserva tu mejor nota anterior (${oldGrade}/10)</strong> para proteger tu promedio.</p>
+                  <p class="text-[11px] text-amber-400/90 bg-amber-500/10 p-2 rounded-xl border border-amber-500/20">
+                    Se debitó 1 XP de tu saldo por la evaluación.
+                  </p>
+                </div>
+              `,
+              background: '#0f172a',
+              color: '#f8fafc',
+              confirmButtonColor: '#6366f1',
+              confirmButtonText: 'Entendido'
+            });
+          }
+
+        } catch (errEval) {
+          console.error("Error evaluando pregunta individual:", errEval);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de Evaluación',
+            text: 'Ocurrió un error al contactar al evaluador de IA. No se debitó tu XP.',
+            background: '#0f172a',
+            color: '#f8fafc',
+            confirmButtonColor: '#6366f1'
+          });
+        }
+      }
+    });
+  }

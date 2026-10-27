@@ -348,6 +348,113 @@ Debes evaluar las 10 preguntas y responder EXCLUSIVAMENTE un objeto JSON válido
       questionsReview
     };
   }
+
+  async evaluateSingleQuestion(question, officialAnswer, keyPoints, studentTranscript) {
+    const systemPrompt = `Eres el Docente Evaluador de la Cátedra de Nutrición Infantil de la UNSTA.
+Tu misión es evaluar con rigor científico, calidez docente y criterio pedagógico la respuesta oral de un estudiante para una sola pregunta de examen oral.
+
+CRITERIOS OFICIALES DE EVALUACIÓN DE LA CÁTEDRA:
+- Principio rector: Nutrición normal y fisiológica (cero patología).
+- Proteínas vegetales: En la cátedra de Germán NO se exige combinar en el plato ni se enseña que las proteínas vegetales sean incompletas o de bajo valor biológico (eso es un mito reduccionista antiguo). Se evalúa el pool de aminoácidos libres circulante (12-24h) y los aminoácidos limitantes relativos (Lisina en cereales/frutos secos, Metionina en legumbres).
+- Proteínas en deporte: Se respetan las RDA del IOM (no inflar valores).
+- Hidratación: 3 fases (antes, durante, después). B12: Suplementación farmacológica innegociable con cianocobalamina.
+
+RÚBRICA DE CALIFICACIÓN (1 a 10):
+- NOTA 10 (Excelente / Completa): Si el estudiante aborda con claridad y sin errores conceptuales los puntos clave centrales (keyPointsRequired), LA NOTA DEBE SER 10 OBLIGATORIAMENTE. La concisión y la precisión directa son virtudes; NO penalizar si la respuesta fue sintética pero correcta. Si no hay observaciones de error o falta relevante, la nota DEBE ser 10 y en improvements pondrás: "Ninguna observación relevante. Respuesta oral completa y precisa."
+- NOTA 9: Omitió un matiz secundario menor o cifra accesoria, detallado en improvements.
+- NOTA 8: Respondió bien en general pero faltó desarrollar uno de los puntos clave.
+- NOTA 7: Cumplió lo mínimo para aprobar.
+- NOTA < 7: Errores conceptuales graves o respuesta insuficiente.
+
+PROHIBICIÓN DEL SESGO DE TIMIDEZ:
+No tengas cautela en calificar con 10 si la respuesta cubre lo requerido.
+
+Debes responder EXCLUSIVAMENTE un objeto JSON válido con esta estructura:
+{
+  "grade": 10,
+  "strengths": "Qué explicó con exactitud...",
+  "improvements": "Ninguna observación relevante. Respuesta oral completa y precisa."
+}`;
+
+    const userPayload = {
+      question,
+      officialAnswer,
+      keyPointsRequired: keyPoints || [],
+      studentTranscript: studentTranscript || "El estudiante no respondió verbalmente."
+    };
+
+    if (this.geminiApiKey) {
+      try {
+        const res = await this.callGemini(systemPrompt, userPayload);
+        return this.cleanSingleQuestionResult(res);
+      } catch (e) {
+        console.warn("[AIEvaluator] Gemini falló en pregunta individual, pasando a suplente:", e);
+      }
+    }
+
+    if (this.deepseekApiKey) {
+      try {
+        const res = await this.callDeepSeek(systemPrompt, userPayload);
+        return this.cleanSingleQuestionResult(res);
+      } catch (e) {
+        console.warn("[AIEvaluator] DeepSeek falló en pregunta individual, pasando a Groq:", e);
+      }
+    }
+
+    if (this.groqApiKey) {
+      try {
+        const res = await this.callGroq(systemPrompt, userPayload);
+        return this.cleanSingleQuestionResult(res);
+      } catch (e) {
+        console.warn("[AIEvaluator] Groq falló en pregunta individual:", e);
+      }
+    }
+
+    return this.heuristicSingleQuestion(keyPoints, studentTranscript);
+  }
+
+  cleanSingleQuestionResult(res) {
+    if (!res) return { grade: 7, strengths: "Respuesta oral registrada.", improvements: "Revisar conceptos de cátedra." };
+    let grade = Number(res.grade) || 7;
+    const imp = (res.improvements || "").toLowerCase().trim();
+    const noRelevantObservations = 
+      !imp || 
+      imp.includes("ninguna") || 
+      imp.includes("sin observaci") || 
+      imp.includes("no se detectaron") || 
+      imp.includes("completa y precisa") || 
+      imp.includes("excelente") ||
+      imp.includes("no hay observaciones") ||
+      imp.includes("no omitió") ||
+      imp === "-";
+
+    if (grade === 9 && noRelevantObservations) {
+      grade = 10;
+    }
+
+    return {
+      grade: Math.min(10, Math.max(1, grade)),
+      strengths: res.strengths || "Abordó los conceptos centrales y terminología de cátedra.",
+      improvements: grade === 10 ? "Ninguna observación relevante. Respuesta oral completa y precisa." : (res.improvements || "Profundizar en los detalles de cátedra.")
+    };
+  }
+
+  heuristicSingleQuestion(keyPoints, studentTranscript) {
+    const text = (studentTranscript || "").toLowerCase();
+    const points = keyPoints || [];
+    let matched = 0;
+    points.forEach(p => {
+      const words = p.toLowerCase().split(/\s+/).filter(w => w.length > 4);
+      if (words.some(w => text.includes(w))) matched++;
+    });
+    const score = Math.min(10, Math.max(3, Math.round((matched / Math.max(1, points.length)) * 10)));
+    return {
+      grade: score,
+      strengths: score >= 7 ? "Abordó los conceptos nucleares de la pregunta." : "Respuesta registrada.",
+      improvements: score === 10 ? "Ninguna observación relevante. Respuesta oral completa y precisa." : "Faltó mayor precisión en las cifras de cátedra."
+    };
+  }
+
 }
 
 window.aiEvaluator = new AIEvaluator();
