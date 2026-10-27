@@ -41,41 +41,92 @@
         }
     }
 
-    // 3. Función auxiliar para obtener la nota del 2° Parcial Teórico
-    function getStudentTheoreticalGrade(studentData) {
-        if (!studentData) return null;
-        
-        // 1. Campo directo parcial2
-        if (typeof studentData.parcial2 === 'number' && !isNaN(studentData.parcial2)) {
-            return studentData.parcial2;
+    // 3. Función auxiliar para obtener el estado oficial del Examen Oral / 2° Parcial Teórico
+    function getStudentOralExamStatus(studentData) {
+        if (!studentData) {
+            return {
+                isApproved: false,
+                completedCount: 0,
+                totalRequired: 6,
+                missingCount: 6,
+                average: null,
+                requiresExam: true
+            };
         }
-        if (studentData.parcial2 !== null && studentData.parcial2 !== undefined && studentData.parcial2 !== '' && !isNaN(parseFloat(studentData.parcial2))) {
-            return parseFloat(studentData.parcial2);
+
+        // 1. Aprobación docente manual directa (si el docente cargó la nota del 2° parcial previamente)
+        if (typeof studentData.parcial2 === 'number' && !isNaN(studentData.parcial2) && studentData.parcial2 >= 7.0) {
+            return {
+                isApproved: true,
+                completedCount: 6,
+                totalRequired: 6,
+                missingCount: 0,
+                average: studentData.parcial2,
+                requiresExam: false,
+                isTeacherOverride: true
+            };
         }
-        
-        // 2. Campo alternativo parcial2_teoria
-        if (typeof studentData.parcial2_teoria === 'number' && !isNaN(studentData.parcial2_teoria)) {
-            return studentData.parcial2_teoria;
+        if (typeof studentData.parcial2_teoria === 'number' && !isNaN(studentData.parcial2_teoria) && studentData.parcial2_teoria >= 7.0) {
+            return {
+                isApproved: true,
+                completedCount: 6,
+                totalRequired: 6,
+                missingCount: 0,
+                average: studentData.parcial2_teoria,
+                requiresExam: false,
+                isTeacherOverride: true
+            };
         }
-        if (studentData.parcial2_teoria !== null && studentData.parcial2_teoria !== undefined && studentData.parcial2_teoria !== '' && !isNaN(parseFloat(studentData.parcial2_teoria))) {
-            return parseFloat(studentData.parcial2_teoria);
-        }
-        
-        // 3. oralExams (Mesa de Exámenes Orales del 2° Parcial)
+
+        // 2. oralExams (Mesa de Exámenes Orales del 2° Parcial: 6 parciales)
+        let completedCount = 0;
+        let average = null;
+
         if (studentData.oralExams) {
-            if (typeof studentData.oralExams.average === 'number' && !isNaN(studentData.oralExams.average)) {
-                return studentData.oralExams.average;
+            if (typeof studentData.oralExams.completedCount === 'number') {
+                completedCount = studentData.oralExams.completedCount;
             }
+            if (typeof studentData.oralExams.average === 'number' && !isNaN(studentData.oralExams.average)) {
+                average = studentData.oralExams.average;
+            }
+
+            // Validar de forma exhaustiva los parciales registrados
             if (studentData.oralExams.partials) {
-                const pKeys = Object.keys(studentData.oralExams.partials);
-                if (pKeys.length > 0) {
-                    const sum = pKeys.reduce((acc, k) => acc + (Number(studentData.oralExams.partials[k].grade) || 0), 0);
-                    return sum / pKeys.length;
+                const requiredKeys = ['u5_p1', 'u5_p2', 'u6_p1', 'u6_p2', 'u7_p1', 'u7_p2'];
+                let actualCount = 0;
+                let sum = 0;
+                requiredKeys.forEach(k => {
+                    const p = studentData.oralExams.partials[k];
+                    if (p && typeof p.grade === 'number' && !isNaN(p.grade)) {
+                        actualCount++;
+                        sum += p.grade;
+                    }
+                });
+                completedCount = Math.max(completedCount, actualCount);
+                if (actualCount > 0) {
+                    average = Math.round((sum / actualCount) * 10) / 10;
                 }
             }
         }
-        
-        return null;
+
+        // Criterio Cátedra UNSTA: 6 exámenes orales completados Y promedio general >= 7.0
+        const isApproved = (completedCount >= 6 && average !== null && average >= 7.0);
+        const missingCount = Math.max(0, 6 - completedCount);
+
+        return {
+            isApproved,
+            completedCount,
+            totalRequired: 6,
+            missingCount,
+            average,
+            requiresExam: !isApproved
+        };
+    }
+
+    // Compatibilidad retroactiva
+    function getStudentTheoreticalGrade(studentData) {
+        const status = getStudentOralExamStatus(studentData);
+        return status.average;
     }
 
     // 4. Lógica del Alumno (Tienda Tab)
@@ -117,11 +168,20 @@
         const now = new Date();
         const activeItems = items.filter(i => !i.expiresAt || new Date(i.expiresAt) > now);
 
-        const notaTeorica = getStudentTheoreticalGrade(studentData);
-        const isTeoricoAprobado = (notaTeorica !== null && notaTeorica >= 7);
+        const oralStatus = getStudentOralExamStatus(studentData);
+        const isTeoricoAprobado = oralStatus.isApproved;
+        const notaTeorica = oralStatus.average;
         const puntosCanjeadosActualmente = (studentData.inventory || [])
             .filter(inv => inv.category === 'parcial_practico' || (inv.id && inv.id.startsWith('item_practico_')))
             .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+
+        const badgeOralHTML = isTeoricoAprobado
+            ? `<span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;">
+                <i class="fas fa-check-circle"></i> Orales Aprobados (6/6 · Promedio: ${notaTeorica !== null ? notaTeorica.toFixed(1) : '7.0'})
+               </span>`
+            : `<span style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #fde047; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;">
+                <i class="fas fa-lock"></i> Requiere 6/6 Orales (Llevas ${oralStatus.completedCount}/6${notaTeorica !== null ? ` · Prom: ${notaTeorica.toFixed(1)}` : ''})
+               </span>`;
 
         const bannerTeoricoHTML = `
             <div style="background: linear-gradient(135deg, rgba(30,27,75,0.7) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 18px; padding: 18px 22px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
@@ -134,6 +194,7 @@
                             <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #a5b4fc;">
                                 Canje Oficial · 2° Parcial Práctico
                             </span>
+                            ${badgeOralHTML}
                             <span style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 1px 7px;">
                                 ⏰ Cierra Hoy 23:59 hs
                             </span>
@@ -142,14 +203,14 @@
                             Canjea de 1 a 5 Puntos con tus XP
                         </h4>
                         <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
-                            Suma bonificación a tu nota práctica canjeando tus puntos de experiencia.
+                            Suma bonificación a tu nota práctica con tus XP (Habilitado con los 6 parciales orales y promedio general ≥ 7.0).
                             ${puntosCanjeadosActualmente > 0 ? ` · Ya canjeaste <strong style="color: #fde047;">+${puntosCanjeadosActualmente} punto(s)</strong>` : ' · 1 punto = 10 XP hasta 5 puntos = 30 XP'}
                         </p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <button onclick="goToRepasoParcial2('${targetUP}', '${encodeURIComponent(studentData.name || '')}', 'evaluacion')" style="background: linear-gradient(135deg, #4f46e5, #6366f1); border: 1px solid rgba(165, 180, 252, 0.4); color: #fff; padding: 10px 18px; border-radius: 12px; font-size: 0.84rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35); transition: all 0.2s;">
-                        <i class="fas fa-microphone-alt"></i> Ir a Rendir Examen Oral
+                        <i class="fas fa-microphone-alt"></i> ${isTeoricoAprobado ? 'Ver Exámenes Orales' : 'Rendir Parciales Faltantes'}
                     </button>
                 </div>
             </div>
@@ -555,14 +616,32 @@
             }
 
             // ========================================================
-            // VERIFICACIÓN OBLIGATORIA: 2° PARCIAL TEÓRICO NOTA >= 7
+            // VERIFICACIÓN OBLIGATORIA: 6 EXÁMENES ORALES CON PROMEDIO >= 7.0
             // ========================================================
             const isPracticalPointsItem = item.category === 'parcial_practico' || item.requiresParcialTeorico || (item.name && item.name.includes('Parcial Práctico'));
             
             if (isPracticalPointsItem) {
-                const notaTeorica = getStudentTheoreticalGrade(studentData);
+                const oralStatus = getStudentOralExamStatus(studentData);
                 
-                if (notaTeorica === null || notaTeorica < 7) {
+                if (!oralStatus.isApproved) {
+                    let detalleEstado = '';
+                    if (oralStatus.completedCount < 6) {
+                        detalleEstado = `
+                            Has completado <strong style="color: #f59e0b; font-size: 1.05rem;">${oralStatus.completedCount} de 6</strong> parciales orales.<br>
+                            Te faltan rendir <strong style="color: #ef4444; font-size: 1.05rem;">${oralStatus.missingCount} examen(es)</strong> para desbloquear la compra.
+                            ${oralStatus.average !== null ? `<div style="margin-top: 8px; color: #94a3b8; font-size: 0.84rem;">Promedio parcial de tus módulos rendidos: <strong style="color: ${oralStatus.average >= 7 ? '#34d399' : '#f87171'}; font-size: 0.95rem;">${oralStatus.average.toFixed(1)} / 10</strong></div>` : ''}
+                        `;
+                    } else if (oralStatus.average < 7.0) {
+                        detalleEstado = `
+                            Rendiste los 6 exámenes, pero tu promedio general es de <strong style="color: #ef4444; font-size: 1.08rem;">${oralStatus.average.toFixed(1)} / 10</strong> (se requiere <strong style="color: #34d399;">≥ 7.0</strong>).<br>
+                            <span style="color: #cbd5e1; font-size: 0.84rem; display: inline-block; margin-top: 6px;">
+                                Puedes mejorar preguntas específicas con 1 XP o re-rendir los parciales donde tuviste menor puntaje para subir tu promedio.
+                            </span>
+                        `;
+                    } else {
+                        detalleEstado = `Aún no registras exámenes orales rendidos en la plataforma.`;
+                    }
+
                     Swal.fire({
                         icon: 'warning',
                         title: '¡Examen Oral Requerido!',
@@ -570,13 +649,10 @@
                             <div style="text-align: center; padding: 6px;">
                                 <div style="font-size: 3.2rem; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));">🎙️</div>
                                 <p style="font-size: 1.05rem; line-height: 1.5; color: #fff; font-weight: 700; margin-bottom: 14px;">
-                                    No puedes comprar puntos a menos que tengas aprobado el <strong>Examen Oral con nota 7 o más</strong>.
+                                    Para canjear puntos de bonificación práctica debes tener aprobados los <strong>6 exámenes orales</strong> con un <strong>promedio general mayor o igual a 7.0</strong>.
                                 </p>
-                                <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
-                                    <span style="font-size: 0.82rem; color: #94a3b8;">Tu calificación registrada en el Examen Oral:</span><br>
-                                    <strong style="font-size: 1.25rem; color: ${notaTeorica !== null ? '#ef4444' : '#f59e0b'};">
-                                        ${notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10 (Requiere ≥ 7.0)` : 'Examen aún no rendido'}
-                                    </strong>
+                                <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 14px; margin-bottom: 14px; line-height: 1.55;">
+                                    ${detalleEstado}
                                 </div>
                                 <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 0;">
                                     Rinde tus respuestas orales con micrófono para certificar tus conocimientos y habilitar el canje de puntos para el práctico.
@@ -997,9 +1073,9 @@
                         .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')))
                         .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
                 
-                const notaTeorica = getStudentTheoreticalGrade(student);
-                const notaColor = (notaTeorica !== null && notaTeorica >= 7) ? '#34d399' : '#f87171';
-                const notaText = notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10` : 'Sin rendir';
+                const oralStatus = getStudentOralExamStatus(student);
+                const notaColor = oralStatus.isApproved ? '#34d399' : (oralStatus.average !== null && oralStatus.average >= 7 ? '#f59e0b' : '#f87171');
+                const notaText = oralStatus.average !== null ? `${oralStatus.average.toFixed(1)} / 10 (${oralStatus.completedCount}/6)` : 'Sin rendir';
                 
                 const practicalItems = (student.inventory || [])
                     .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')));
@@ -1385,8 +1461,8 @@
                 const up = student.up || '';
                 const nombre = (student.name || '').replace(/;/g, ',');
                 const grupo = student.group ? `Grupo ${student.group}` : '';
-                const notaTeorica = getStudentTheoreticalGrade(student);
-                const notaStr = notaTeorica !== null ? notaTeorica.toFixed(1) : 'Sin rendir';
+                const oralStatus = getStudentOralExamStatus(student);
+                const notaStr = oralStatus.average !== null ? `${oralStatus.average.toFixed(1)} (${oralStatus.completedCount}/6)` : 'Sin rendir';
                 const xp = student.xp || 0;
 
                 const practicalItems = (student.inventory || [])

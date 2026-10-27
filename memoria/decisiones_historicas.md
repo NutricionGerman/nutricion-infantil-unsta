@@ -223,3 +223,16 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Se otorga una única vez mediante control de bandera (`honorBonusAwarded: true`).
     - **Sincronización Total con Firestore**: Los puntos acreditados se suman atómicamente a `students/${up}.xp` vía `FieldValue.increment()`.
     - Versionado actualizado a `v=3.7` en `proyectos/repaso_parcial_2/index.html`.
+
+24. **Criterio Estricto de Canje en Tienda: 6 Exámenes Orales Completados con Promedio $\ge 7.0$**:
+    - **Diagnóstico y Corrección de Regla**: Anteriormente la tienda validaba únicamente que la nota teórica existente fuese $\ge 7.0$ (`notaTeorica >= 7`), lo que permitía que un alumno que solo hubiera rendido 1 parcial con nota 8 pudiera comprar puntos prácticos sin haber completado los otros 5 módulos.
+    - **Regla Innegociable Cátedra UNSTA**:
+      * Para poder canjear puntos bonificables para el 2° Parcial Práctico (de +1 a +5 puntos), el alumno debe tener **completados los 6 exámenes orales** (`completedCount === 6`) Y el **promedio general entre los 6 debe ser $\ge 7.0$**.
+      * El beneficio de Cuadro de Honor (+10 XP y Medalla de Oro) sigue siendo con promedio $\ge 9.0$.
+    - **Implementación en la Tienda (`tienda.js`)**:
+      * Función `getStudentOralExamStatus(studentData)`: evalúa exhaustivamente `oralExams` en Firestore (`completedCount`, `average`, y los 6 parciales `u5_p1` a `u7_p2`).
+      * Banner Informativo en vivo en la Tienda: Muestra el estado del alumno (`Oral Aprobado (6/6 · Promedio X.X)` o `Requiere 6/6 Orales (Llevas X/6 · Prom: Y.Y)`).
+      * Modal de Bloqueo Explicativo: Si el alumno intenta comprar sin cumplir ambas condiciones, el modal detalla cuántos parciales le faltan (`X de 6 completados, faltan Y`) o su promedio actual, con botón directo a rendir los módulos orales.
+      * Actualización en el Panel Docente y exportación CSV de canjes indicando promedio y cantidad de parciales rendidos.
+      * Versionado de caché elevado a `tienda.js?v=1.36` en `index.html`.
+
