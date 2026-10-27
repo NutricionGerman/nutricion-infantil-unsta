@@ -318,7 +318,9 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Reintento automático con pausas de red.
       * Conservación del Blob de audio en memoria y botón **«🔄 Reintentar Transcribir»** para que el alumno pueda volver a procesar su audio grabado sin volver a hablar.
       * Botón de rescate infalible **«✍️ Escribir lo que dije en el audio»**: si los servidores de transcripción estuvieran saturados, el alumno puede tipear lo que dijo en la grabación para que la IA lo califique sin perder su intento.
-      * Versionado anti-caché elevado a `v=4.2` en `proyectos/repaso_parcial_2/index.html`.
+      * Versionado anti-caché elevado a `v=4.3` en `proyectos/repaso_parcial_2/index.html`.
+      * Pool Multi-Clave Groq: Se integraron las 3 nuevas claves proporcionadas por el docente en `config.js` (`groqApiKeys`). Cada petición de audio se distribuye mediante balanceo Round-Robin, y si alguna clave arrojara límite o fallo, el sistema conmuta automáticamente a las siguientes en milisegundos.
+
 
 
 
