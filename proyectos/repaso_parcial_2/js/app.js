@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentQuestionAudioUrl = null;
   let currentQuestionTranscript = "";
   let currentQuestionDuration = 0;
+  let oralWordEditsPerQuestion = {};
 
   // Inicialización Segura de Firebase Firestore
   let db = null;
@@ -639,6 +640,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     oralExamCurrentIndex = 0;
     oralStudentAnswers = new Array(TOTAL_ORAL_QUESTIONS).fill(null);
+    oralWordEditsPerQuestion = {};
     currentQuestionAudioUrl = null;
     currentQuestionTranscript = "";
     currentQuestionDuration = 0;
@@ -737,10 +739,9 @@ document.addEventListener("DOMContentLoaded", () => {
         player.src = existing.audioUrl;
         playerWrapper.classList.remove("hidden");
       }
-      if (transcriptWrapper && transcriptText && existing.studentTranscript) {
-        transcriptText.textContent = existing.studentTranscript;
+      if (transcriptWrapper && existing.studentTranscript) {
         transcriptWrapper.classList.remove("hidden");
-        setupTranscriptEditor();
+        renderInteractiveTranscriptWords();
       }
       if (savedBadge) savedBadge.classList.remove("hidden");
     } else {
@@ -776,7 +777,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const timerBadge = document.getElementById("oralRecordingBadge");
     const timerText = document.getElementById("oralRecordTimerText");
     const transcriptWrapper = document.getElementById("oralLiveTranscriptWrapper");
-    const transcriptText = document.getElementById("oralLiveTranscriptText");
     const savedBadge = document.getElementById("oralAudioSavedBadge");
     const playerWrapper = document.getElementById("oralPlaybackWrapper");
     const player = document.getElementById("oralRecordedPlayer");
@@ -786,7 +786,15 @@ document.addEventListener("DOMContentLoaded", () => {
       if (playerWrapper) playerWrapper.classList.add("hidden");
       if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
       if (timerBadge) timerBadge.classList.remove("hidden");
-      if (transcriptText) transcriptText.textContent = "Te escucho con atención... habla con claridad.";
+      
+      const container = document.getElementById("oralLiveTranscriptContainer");
+      if (container) {
+        container.innerHTML = '<span class="text-indigo-400 animate-pulse flex items-center gap-2"><i class="fa-solid fa-microphone-lines"></i> Escuchando... Habla con claridad hacia el micrófono.</span>';
+      }
+      const counterEl = document.getElementById("oralWordEditCounter");
+      if (counterEl) {
+        counterEl.textContent = "Grabando en vivo...";
+      }
 
       if (btn) {
         btn.className = "px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-sm flex items-center space-x-2 mx-auto recording-pulse shadow-lg transition active:scale-95";
@@ -800,7 +808,10 @@ document.addEventListener("DOMContentLoaded", () => {
           if (timerText) timerText.textContent = `${m}:${s}`;
         },
         (liveText) => {
-          if (transcriptText) transcriptText.textContent = liveText || "...";
+          const c = document.getElementById("oralLiveTranscriptContainer");
+          if (c) {
+            c.innerHTML = `<span class="text-slate-300 italic flex items-center gap-1.5"><i class="fa-solid fa-microphone-lines text-indigo-400 animate-pulse"></i> ${escapeHtml(liveText || "Escuchando voz...")}</span>`;
+          }
         },
         (err) => {
           alert("No se pudo iniciar el micrófono. Revisa los permisos en tu navegador.");
@@ -810,10 +821,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     } else {
       if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo con Whisper AI...';
-      if (transcriptText) {
-        transcriptText.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse"><i class="fa-solid fa-brain mr-1.5"></i> Whisper AI está transcribiendo con precisión técnica médica...</span>';
-        if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
+      const container = document.getElementById("oralLiveTranscriptContainer");
+      if (container) {
+        container.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse flex items-center gap-2"><i class="fa-solid fa-brain"></i> Whisper AI está procesando el audio con precisión médica...</span>';
       }
+      if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
       if (btn) btn.disabled = true;
 
       const result = await recorder.stopRecording();
@@ -829,14 +841,11 @@ document.addEventListener("DOMContentLoaded", () => {
           player.src = result.audioUrl;
           playerWrapper.classList.remove("hidden");
         }
-        if (transcriptWrapper && transcriptText) {
-          transcriptText.textContent = result.transcript || "(Audio registrado con éxito)";
+        if (transcriptWrapper) {
           transcriptWrapper.classList.remove("hidden");
+          renderInteractiveTranscriptWords();
         }
         if (savedBadge) savedBadge.classList.remove("hidden");
-
-        // Configurar editor manual de transcripción
-        setupTranscriptEditor();
 
         saveCurrentQuestionAnswer();
         renderOralPillsNavigation();
@@ -844,41 +853,201 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function setupTranscriptEditor() {
-    const editBtn = document.getElementById("btnEditTranscript");
-    const textP = document.getElementById("oralLiveTranscriptText");
-    const textInput = document.getElementById("oralEditTranscriptInput");
-    if (!editBtn || !textP || !textInput) return;
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
-    textInput.classList.add("hidden");
-    textP.classList.remove("hidden");
-    editBtn.innerHTML = '<i class="fa-solid fa-pen mr-1"></i> Corregir texto';
-    editBtn.className = "text-[10px] text-indigo-300 hover:text-white underline font-semibold transition cursor-pointer";
+  function renderInteractiveTranscriptWords() {
+    const container = document.getElementById("oralLiveTranscriptContainer");
+    const counterEl = document.getElementById("oralWordEditCounter");
+    if (!container) return;
 
-    if (!editBtn.dataset.bound) {
-      editBtn.dataset.bound = "true";
-      editBtn.addEventListener("click", () => {
-        const isEditing = !textInput.classList.contains("hidden");
-        if (isEditing) {
-          const newText = textInput.value.trim();
-          if (newText.length > 0) {
-            currentQuestionTranscript = newText;
-            textP.textContent = newText;
-            saveCurrentQuestionAnswer();
-          }
-          textInput.classList.add("hidden");
-          textP.classList.remove("hidden");
-          editBtn.innerHTML = '<i class="fa-solid fa-pen mr-1"></i> Corregir texto';
-          editBtn.className = "text-[10px] text-indigo-300 hover:text-white underline font-semibold transition cursor-pointer";
-        } else {
-          textInput.value = currentQuestionTranscript || textP.textContent || "";
-          textP.classList.add("hidden");
-          textInput.classList.remove("hidden");
-          textInput.focus();
-          editBtn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Guardar texto';
-          editBtn.className = "text-[10px] text-emerald-400 hover:text-emerald-300 font-extrabold transition cursor-pointer bg-emerald-500/10 px-2 py-0.5 rounded";
-        }
+    const transcript = (currentQuestionTranscript || "").trim();
+    if (!transcript) {
+      container.innerHTML = '<span class="text-slate-500 italic text-xs">Sin transcripción disponible</span>';
+      if (counterEl) counterEl.textContent = "";
+      return;
+    }
+
+    const usedEdits = oralWordEditsPerQuestion[oralExamCurrentIndex] || 0;
+    const maxEdits = 3;
+
+    if (counterEl) {
+      if (usedEdits >= maxEdits) {
+        counterEl.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-lock mr-1"></i> Límite de ${maxEdits} correcciones alcanzado</span>`;
+      } else {
+        counterEl.innerHTML = `<span class="text-indigo-300 font-medium">Correcciones usadas: <b>${usedEdits}/${maxEdits}</b> (toca una palabra para editarla)</span>`;
+      }
+    }
+
+    container.innerHTML = "";
+    const words = transcript.split(/\s+/);
+    words.forEach((word, index) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "inline-flex items-center px-2 py-0.5 m-0.5 rounded-lg bg-slate-800/90 hover:bg-indigo-600 hover:text-white text-slate-200 text-xs sm:text-sm font-medium border border-slate-700/70 hover:border-indigo-400 transition cursor-pointer select-none active:scale-95";
+      chip.title = usedEdits >= maxEdits ? "Límite de correcciones alcanzado" : "Toca para corregir esta palabra";
+      chip.textContent = word;
+
+      chip.addEventListener("click", () => {
+        openWordCorrectionModal(index, word);
       });
+
+      container.appendChild(chip);
+    });
+  }
+
+  function openWordCorrectionModal(wordIndex, oldWord) {
+    const usedEdits = oralWordEditsPerQuestion[oralExamCurrentIndex] || 0;
+    const maxEdits = 3;
+
+    if (usedEdits >= maxEdits) {
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Límite de correcciones alcanzado',
+          text: `Para garantizar la legitimidad y autenticidad del examen oral, se permite un máximo de ${maxEdits} correcciones puntuales de palabras por respuesta.`,
+          confirmButtonColor: '#6366f1',
+          confirmButtonText: 'Entendido'
+        });
+      } else {
+        alert(`Has alcanzado el límite de ${maxEdits} correcciones para esta pregunta.`);
+      }
+      return;
+    }
+
+    if (typeof Swal === 'undefined') {
+      const userWord = prompt(`Corregir palabra "${oldWord}" (solo 1 palabra, sin espacios):`, oldWord);
+      if (userWord && !/\s/.test(userWord.trim())) {
+        applyWordCorrection(wordIndex, userWord.trim());
+      }
+      return;
+    }
+
+    Swal.fire({
+      title: '<span class="text-base font-black text-white">Corrección Quirúrgica de Palabra</span>',
+      html: `
+        <div class="text-left text-xs space-y-3">
+          <p class="text-slate-300">
+            Palabra captada por el micrófono:
+          </p>
+          <div class="text-sm font-extrabold text-rose-300 bg-rose-950/40 border border-rose-500/40 p-2.5 rounded-xl text-center font-mono select-none">
+            "${escapeHtml(oldWord)}"
+          </div>
+          <div class="space-y-1">
+            <label class="block font-bold text-slate-200">
+              Palabra correcta médica / técnica (1 sola palabra):
+            </label>
+            <input id="swalInputSingleWord" 
+                   type="text" 
+                   maxlength="30" 
+                   autocomplete="off" 
+                   spellcheck="false" 
+                   placeholder="Ej: bioequivalente" 
+                   class="w-full px-3 py-2 bg-slate-900 border border-indigo-500/70 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center">
+          </div>
+          <div class="text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 flex items-start gap-2">
+            <i class="fa-solid fa-shield-halved text-amber-400 mt-0.5"></i>
+            <div>
+              <p class="font-bold">Seguridad Anti-Copia Activa:</p>
+              <p class="text-slate-400">Pegar texto (Ctrl+V) y barra espaciadora están estrictamente bloqueados. Solo puedes escribir una palabra concreta.</p>
+            </div>
+          </div>
+          <div class="text-[10px] text-indigo-400 text-right font-semibold">
+            Corrección restante para esta pregunta: ${maxEdits - usedEdits - 1} disponible(s) tras guardar
+          </div>
+        </div>
+      `,
+      background: '#0f172a',
+      color: '#f8fafc',
+      showCancelButton: true,
+      confirmButtonText: '<i class="fa-solid fa-check mr-1.5"></i> Aplicar Corrección',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#6366f1',
+      cancelButtonColor: '#475569',
+      customClass: {
+        popup: 'border border-indigo-500/30 rounded-2xl'
+      },
+      didOpen: () => {
+        const input = document.getElementById('swalInputSingleWord');
+        if (!input) return;
+        input.focus();
+
+        // 1. Anti-Paste: Bloquear pegado absoluto
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          Swal.showValidationMessage('⚠️ Prohibido pegar texto en el examen oral. Debes escribir la palabra.');
+        });
+
+        // 2. Anti-Space: Bloquear barra espaciadora
+        input.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.code === 'Space') {
+            e.preventDefault();
+            Swal.showValidationMessage('⚠️ Solo 1 palabra concreta. Los espacios no están permitidos.');
+          }
+        });
+
+        // Resetear advertencias al teclear
+        input.addEventListener('input', () => {
+          Swal.resetValidationMessage();
+        });
+      },
+      preConfirm: () => {
+        const input = document.getElementById('swalInputSingleWord');
+        if (!input) return false;
+        const cleanVal = input.value.trim();
+        if (!cleanVal) {
+          Swal.showValidationMessage('Por favor escribe la palabra corregida.');
+          return false;
+        }
+        if (/\s/.test(cleanVal)) {
+          Swal.showValidationMessage('⚠️ Solo puedes ingresar una sola palabra (sin espacios).');
+          return false;
+        }
+        if (cleanVal.length > 35) {
+          Swal.showValidationMessage('Palabra demasiado larga.');
+          return false;
+        }
+        return cleanVal;
+      }
+    }).then((res) => {
+      if (res.isConfirmed && res.value) {
+        applyWordCorrection(wordIndex, res.value);
+      }
+    });
+  }
+
+  function applyWordCorrection(wordIndex, newWord) {
+    const transcript = (currentQuestionTranscript || "").trim();
+    if (!transcript) return;
+
+    const words = transcript.split(/\s+/);
+    if (words[wordIndex] !== undefined) {
+      // Reemplazar quirúrgicamente la palabra
+      words[wordIndex] = newWord;
+      currentQuestionTranscript = words.join(" ");
+
+      oralWordEditsPerQuestion[oralExamCurrentIndex] = (oralWordEditsPerQuestion[oralExamCurrentIndex] || 0) + 1;
+      saveCurrentQuestionAnswer();
+      renderInteractiveTranscriptWords();
+
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: `Palabra actualizada: "${newWord}"`,
+          showConfirmButton: false,
+          timer: 1800,
+          timerProgressBar: true
+        });
+      }
     }
   }
 

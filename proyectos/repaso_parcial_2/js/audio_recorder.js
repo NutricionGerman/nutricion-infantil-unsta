@@ -59,19 +59,21 @@ class AudioRecorderEngine {
         }, 1000);
       }
 
-      // Reconocimiento de voz para transcripción en vivo
+      // Reconocimiento de voz para transcripción en vivo (sin acumulación repetida)
       if (this.recognition) {
         this.recognition.onresult = (event) => {
-          let interimTranscript = "";
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
+          let finalStr = "";
+          let interimStr = "";
+          for (let i = 0; i < event.results.length; ++i) {
             if (event.results[i].isFinal) {
-              this.currentTranscript += event.results[i][0].transcript + " ";
+              finalStr += event.results[i][0].transcript + " ";
             } else {
-              interimTranscript += event.results[i][0].transcript;
+              interimStr += event.results[i][0].transcript;
             }
           }
+          this.currentTranscript = finalStr.trim();
           if (onTranscript) {
-            onTranscript((this.currentTranscript + " " + interimTranscript).trim());
+            onTranscript((this.currentTranscript + " " + interimStr).trim());
           }
         };
 
