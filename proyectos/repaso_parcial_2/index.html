@@ -568,7 +568,7 @@
         <div class="bg-slate-950 p-6 rounded-2xl border border-indigo-500/30 text-center space-y-4">
           <div class="flex items-center justify-center space-x-2">
             <span id="oralRecordingBadge" class="hidden font-mono font-bold text-xs text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/30 animate-pulse">
-              🔴 GRABANDO AUDIO: <span id="oralRecordTimerText">00:00</span>
+              🔴 GRABANDO AUDIO: <span id="oralRecordTimerText">00:00 / 00:40</span>
             </span>
             <span id="oralAudioSavedBadge" class="hidden font-bold text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
               <i class="fa-solid fa-check mr-1"></i> Audio Registrado
@@ -576,6 +576,7 @@
           </div>
 
           <!-- Botón de Grabar / Detener -->
+          <p class="text-[11px] text-slate-400 flex items-center justify-center gap-1.5"><i class="fa-regular fa-clock text-indigo-400"></i> Límite de síntesis: <strong>máximo 40 segundos</strong> por respuesta</p>
           <button id="btnRecordOralAnswer" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-extrabold text-sm flex items-center space-x-2 mx-auto shadow-lg shadow-rose-600/30 transition active:scale-95">
             <i class="fa-solid fa-microphone text-base"></i>
             <span id="btnRecordOralAnswerText">Grabar mi Respuesta</span>
@@ -767,13 +768,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts con Cache-Buster para Forzar Actualización Inmediata -->
-  <script src="js/config.js?v=4.3"></script>
-  <script src="js/data_flashcards.js?v=4.3"></script>
-  <script src="js/audio_engine.js?v=4.3"></script>
-  <script src="js/fix-webm-duration.js?v=4.3"></script>
-  <script src="js/audio_recorder.js?v=4.3"></script>
-  <script src="js/ai_evaluator.js?v=4.3"></script>
-  <script src="js/storage.js?v=4.3"></script>
-  <script src="js/app.js?v=4.3"></script>
+  <script src="js/config.js?v=4.4"></script>
+  <script src="js/data_flashcards.js?v=4.4"></script>
+  <script src="js/audio_engine.js?v=4.4"></script>
+  <script src="js/fix-webm-duration.js?v=4.4"></script>
+  <script src="js/audio_recorder.js?v=4.4"></script>
+  <script src="js/ai_evaluator.js?v=4.4"></script>
+  <script src="js/storage.js?v=4.4"></script>
+  <script src="js/app.js?v=4.4"></script>
 </body>
 </html>

@@ -884,13 +884,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (btnText) btnText.textContent = "⏹️ Detener y Guardar Audio";
 
+      let autoStopping = false;
       await recorder.startRecording(
         (secs) => {
           const m = Math.floor(secs / 60).toString().padStart(2, "0");
           const s = (secs % 60).toString().padStart(2, "0");
-          if (timerText) timerText.textContent = `${m}:${s}`;
+          if (timerText) timerText.textContent = `${m}:${s} / 00:40`;
+
+          if (timerBadge) {
+            if (secs >= 30) {
+              timerBadge.className = "font-mono font-bold text-xs text-amber-300 bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/40 animate-pulse";
+            } else {
+              timerBadge.className = "font-mono font-bold text-xs text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/30 animate-pulse";
+            }
+          }
+
+          if (secs >= 40 && !autoStopping) {
+            autoStopping = true;
+            if (recorder.isRecording) {
+              toggleOralExamRecording();
+            }
+          }
         },
-        null, // Sin transcripción en tiempo real durante la grabación
+        null,
         (err) => {
           alert("No se pudo iniciar el micrófono. Revisa los permisos en tu navegador.");
           resetOralRecordUI();
@@ -1223,9 +1239,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("btnRecordOralAnswer");
     const btnText = document.getElementById("btnRecordOralAnswerText");
     const timerBadge = document.getElementById("oralRecordingBadge");
+    const timerText = document.getElementById("oralRecordTimerText");
     const transcriptWrapper = document.getElementById("oralLiveTranscriptWrapper");
     const savedBadge = document.getElementById("oralAudioSavedBadge");
     const playerWrapper = document.getElementById("oralPlaybackWrapper");
+
+    if (timerText) timerText.textContent = "00:00 / 00:40";
 
     if (btn) {
       btn.className = "px-6 py-3.5 rounded-2xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-extrabold text-sm flex items-center space-x-2 mx-auto shadow-lg shadow-rose-600/30 transition active:scale-95";
@@ -2182,11 +2201,25 @@ document.addEventListener("DOMContentLoaded", () => {
               btnRec.className = "px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs flex items-center space-x-2 shadow-lg transition active:scale-95 cursor-pointer recording-pulse";
               btnRecText.textContent = "⏹️ Detener Grabación";
 
+              let autoStopModal = false;
               await recorder.startRecording(
                 (secs) => {
                   const m = Math.floor(secs / 60).toString().padStart(2, "0");
                   const s = (secs % 60).toString().padStart(2, "0");
-                  if (timerBadge) timerBadge.textContent = `🔴 ${m}:${s}`;
+                  if (timerBadge) {
+                    timerBadge.textContent = `🔴 ${m}:${s} / 00:40`;
+                    if (secs >= 30) {
+                      timerBadge.className = "text-xs font-mono font-bold text-amber-300 bg-amber-500/20 px-2.5 py-1.5 rounded-xl border border-amber-500/40 animate-pulse";
+                    } else {
+                      timerBadge.className = "text-xs font-mono font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/30 animate-pulse";
+                    }
+                  }
+                  if (secs >= 40 && !autoStopModal) {
+                    autoStopModal = true;
+                    if (recorder.isRecording && btnRec) {
+                      btnRec.click();
+                    }
+                  }
                 },
                 null,
                 (err) => {
