@@ -823,6 +823,60 @@
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
+                        // Doble cerrojo de seguridad obligatorio antes de procesar
+                        if (isPracticalPointsItem) {
+                            const freshDoc = await db.collection('students').doc(String(targetUP).trim()).get();
+                            const freshData = freshDoc.exists ? freshDoc.data() : studentData;
+                            const freshOral = getStudentOralExamStatus(freshData);
+                            const ptsToAdd = Number(item.points) || 1;
+                            const existing = (freshData.inventory || [])
+                                .filter(it => it.category === 'parcial_practico' || (it.id && String(it.id).startsWith('item_practico_')))
+                                .reduce((s, it) => s + (Number(it.points) || 0), 0);
+                            const totalTarget = Math.max(ptsToAdd, existing + ptsToAdd);
+                            const reqGrade = getRequiredOralGradeForPoints(totalTarget);
+
+                            // Excepción especial autorizada por el profesor solo para el primer alumno que completó (Luca Delani)
+                            const isExempt = (String(targetUP).trim() === '344036');
+
+                            if (!isExempt) {
+                                if (freshOral.completedCount < 6) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Requisito de Cátedra Incompleto',
+                                        html: `
+                                            <p style="color:#cbd5e1; font-size:0.95rem;">
+                                                Debes tener completados los <strong>6 exámenes orales</strong> de la cátedra para canjear bonificaciones prácticas.
+                                            </p>
+                                            <div style="background:rgba(255,255,255,0.06); padding:10px; border-radius:10px; margin-top:10px; color:#f59e0b;">
+                                                Has rendido <strong>${freshOral.completedCount} de 6</strong> exámenes. Te faltan <strong>${freshOral.missingCount}</strong>.
+                                            </div>
+                                        `,
+                                        background: '#1a1a2e',
+                                        color: '#fff'
+                                    });
+                                    return;
+                                }
+
+                                if (freshOral.average === null || freshOral.average < reqGrade) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Nota Mínima Requerida',
+                                        html: `
+                                            <p style="color:#cbd5e1; font-size:0.95rem;">
+                                                Este ítem de +${ptsToAdd} puntos requiere un promedio general en los 6 exámenes orales <strong>≥ ${reqGrade.toFixed(1)}</strong>.
+                                            </p>
+                                            <div style="background:rgba(255,255,255,0.06); padding:10px; border-radius:10px; margin-top:10px; color:#ef4444;">
+                                                Tu promedio actual registrado es de <strong>${freshOral.average !== null ? freshOral.average.toFixed(1) : 0} / 10</strong>.
+                                            </div>
+                                        `,
+                                        background: '#1a1a2e',
+                                        color: '#fff'
+                                    });
+                                    return;
+                                }
+                            }
+                        }
+
                         Swal.fire({
                             title: 'Procesando canje...',
                             background: '#1a1a2e',

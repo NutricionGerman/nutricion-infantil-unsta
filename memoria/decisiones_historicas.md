@@ -276,4 +276,17 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Se insertaron retroactivamente los renglones históricos en Firestore para los 4 alumnos que rindieron hoy.
       * Versionado de caché elevado a `v=3.9` en `proyectos/repaso_parcial_2/index.html`.
 
+28. **Doble Cerrojo de Seguridad Transaccional en Tienda y Concesión al Primer Finalista**:
+    - **Caso Luca Delani (UP 344036)**: Completó anticipadamente los 6 exámenes orales con promedio de 7.6 y adquirió el ítem de +5 Puntos Prácticos (30 XP) a las 13:30 hs antes de que se estableciera el piso de $\ge 8.5$. El docente autorizó convalidarle la bonificación de manera excepcional y exclusiva por haber sido el primer alumno en finalizar el circuito completo.
+    - **Doble Cerrojo de Seguridad en `tienda.js`**:
+      * Para evitar que cualquier otro alumno pueda eludir la validación (incluso si tiene una pestaña antigua abierta con caché o manipula la interfaz), se agregó una verificación obligatoria directamente dentro de la función de confirmación previa a la escritura en Firestore (`db.collection('students').doc(...).update(...)`).
+      * En ese instante exacto, el sistema consulta en tiempo real el documento del alumno desde Firestore (`freshDoc`), recalcula los exámenes completados (`freshOral.completedCount === 6`) y evalúa que su promedio cumpla el umbral específico del tier:
+        - +1 y +2 Puntos: Promedio $\ge 7.0$
+        - +3 Puntos: Promedio $\ge 7.5$
+        - +4 Puntos: Promedio $\ge 8.0$
+        - +5 Puntos: Promedio $\ge 8.5$
+      * Si el alumno no es Luca Delani (`targetUP !== '344036'`) y no cumple estrictamente con ambos requisitos (los 6 exámenes completados y promedio mínimo requerido para el nivel de puntos), la transacción se aborta de inmediato con una alerta modal bloqueante sin tocar sus XP ni su inventario.
+      * Versionado anti-caché elevado a `tienda.js?v=1.39` en `index.html`.
+
+
 
