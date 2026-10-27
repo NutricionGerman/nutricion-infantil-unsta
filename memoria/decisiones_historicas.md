@@ -169,3 +169,14 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
         3. **Validación Token Único**: No se aceptan espacios en blanco ni cadenas vacías.
         4. **Límite Estricto**: Máximo **3 correcciones de palabras** por cada una de las 10 preguntas.
       * Versionado de scripts elevado a `v=3.1` en `proyectos/repaso_parcial_2/index.html`.
+
+18. **Neutralización de Marcas de IA y Corrección de Metadatos de Duración WebM**:
+    - **Neutralización de UI**: Se removieron todas las leyendas visibles de "Whisper AI (OpenAI)" o referencias de proveedores de IA para los alumnos, reemplazándolas por nomenclaturas institucionales y pedagógicas neutras ("Transcripción Oficial de tu Voz", "Procesando transcripción...").
+    - **Diagnóstico del Fallo de Duración en Chrome (Audio de 5s marcando 7m 28s)**:
+      * `MediaRecorder` en Chromium graba audio en contenedor WebM en modo streaming y no escribe el elemento `Duration` en el encabezado EBML del archivo.
+      * El elemento nativo `<audio controls>` de Chrome, al no encontrar la duración, intenta extrapolar la longitud basada en una tasa de bits errónea, produciendo duraciones ficticias (ej. 7 minutos 28 segundos).
+      * **Solución Integral**:
+        1. Se incorporó `fix-webm-duration.js` localmente para inyectar los milisegundos reales medidos con precisión (`Date.now() - startTime`) directamente en el binario del blob WebM antes de crear su URL.
+        2. Se añadió un manejador de seguridad en el evento `loadedmetadata` del `<audio>` para corregir `currentTime` si Chromium reportara `Infinity` o duraciones desproporcionadas.
+        3. Se añadieron etiquetas visuales formateadas (`00:05`, etc.) tanto en la mesa de examen como en la pantalla de revisión de las 10 preguntas.
+      * Versionado elevado a `v=3.2` en `proyectos/repaso_parcial_2/index.html`.
