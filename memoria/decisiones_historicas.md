@@ -185,3 +185,12 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
     - **Correcciones Quirúrgicas Ilimitadas**: Se eliminó el tope artificial de 3 correcciones por respuesta. Los alumnos pueden corregir todas las palabras individuales que hayan sido mal captadas por el micrófono, manteniendo intactas las barreras anti-copia (1 sola palabra, barra espaciadora desactivada, pegado bloqueado).
     - **Grabación Limpia**: Durante la grabación activa, la caja de transcripción se mantiene oculta para evitar distracciones o parpadeos en pantalla. Una vez presionado "Detener y Guardar Audio", se procesa y se despliega la transcripción completa de una sola vez.
     - Versionado actualizado a `v=3.3` en `proyectos/repaso_parcial_2/index.html`.
+
+20. **Calibración de Rúbrica y Corrección del Sesgo de Timidez del Evaluador IA**:
+    - **Diagnóstico del Fallo de Calificación (9 en vez de 10 sin observaciones)**:
+      * Los modelos de lenguaje presentan por defecto un sesgo de "aversión a notas extremas" (*regression to the mean*), mostrándose reacios a otorgar el 10 perfecto incluso cuando la respuesta cubre el 100% de los puntos clave.
+      * Además, la presencia obligatoria de un campo "improvements" inducía al modelo a restar 1 punto artificialmente para justificar que no era un 10.
+    - **Solución Pedagógica y Técnica en Dos Capas**:
+      1. **Rúbrica Estricta en el Prompt**: Se instruyó que en un examen oral la concisión y precisión directa son virtudes docentes. Si el alumno cubre los `keyPointsRequired` sin errores y no hay omisiones que señalar, **LA NOTA ES 10 OBLIGATORIAMENTE**.
+      2. **Post-Procesador Determinista en Código (`cleanAndParseJSON`)**: Si la IA devolviese un 9 pero el campo de mejoras indica "ninguna", "sin observaciones", "completa y precisa", etc., el código eleva automáticamente la calificación a 10 y recalcula el promedio exacto del examen.
+    - Versionado elevado a `v=3.4` en `proyectos/repaso_parcial_2/index.html`.
