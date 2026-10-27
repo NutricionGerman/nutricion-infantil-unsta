@@ -180,3 +180,8 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
         2. Se añadió un manejador de seguridad en el evento `loadedmetadata` del `<audio>` para corregir `currentTime` si Chromium reportara `Infinity` o duraciones desproporcionadas.
         3. Se añadieron etiquetas visuales formateadas (`00:05`, etc.) tanto en la mesa de examen como en la pantalla de revisión de las 10 preguntas.
       * Versionado elevado a `v=3.2` en `proyectos/repaso_parcial_2/index.html`.
+
+19. **Correcciones Ilimitadas y Grabación Limpia (Sin Transcripción en Vivo)**:
+    - **Correcciones Quirúrgicas Ilimitadas**: Se eliminó el tope artificial de 3 correcciones por respuesta. Los alumnos pueden corregir todas las palabras individuales que hayan sido mal captadas por el micrófono, manteniendo intactas las barreras anti-copia (1 sola palabra, barra espaciadora desactivada, pegado bloqueado).
+    - **Grabación Limpia**: Durante la grabación activa, la caja de transcripción se mantiene oculta para evitar distracciones o parpadeos en pantalla. Una vez presionado "Detener y Guardar Audio", se procesa y se despliega la transcripción completa de una sola vez.
+    - Versionado actualizado a `v=3.3` en `proyectos/repaso_parcial_2/index.html`.
