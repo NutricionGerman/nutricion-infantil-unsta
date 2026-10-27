@@ -211,3 +211,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       6. Se deduce 1 XP del perfil del estudiante y se sincroniza en Firestore.
       7. Se recalcula automáticamente el promedio del parcial, el estatus de Cuadro de Honor ($\ge 9.0$) y se actualiza la planilla y base de datos.
     - Versionado elevado a `v=3.6` en `proyectos/repaso_parcial_2/index.html`.
+
+23. **Sistema de Bonificación de XP por Módulos y Cuadro de Honor**:
+    - **Recompensas por Módulo Individual (6 parciales)**:
+      * **Nota $\ge 9.0$**: Otorga **+2 XP**.
+      * **Nota $\ge 8.0$ y $< 9.0$**: Otorga **+1 XP**.
+      * **Nota $< 8.0$**: 0 XP (se aprueba con 7.0 pero sin bono de XP).
+      * **Control Anti-Exploit de Deltas**: Se lleva el registro de XP otorgado previamente por módulo (`partialXpAwarded[partialKey]`). Si un estudiante que tenía 8 (+1 XP) mejora a 9 (+2 XP), solo se le acredita la diferencia (+1 XP), impidiendo farmear XP en bucles de reintentos.
+    - **Bonificación de Cierre de Cátedra (Cuadro de Honor)**:
+      * Al completar los 6 parciales con **promedio general $\ge 9.0$**, se acreditan automáticamente los **+10 XP** del Cuadro de Honor junto a la Medalla de Oro.
+      * Se otorga una única vez mediante control de bandera (`honorBonusAwarded: true`).
+    - **Sincronización Total con Firestore**: Los puntos acreditados se suman atómicamente a `students/${up}.xp` vía `FieldValue.increment()`.
+    - Versionado actualizado a `v=3.7` en `proyectos/repaso_parcial_2/index.html`.
