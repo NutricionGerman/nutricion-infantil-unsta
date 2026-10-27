@@ -799,17 +799,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!recorder.isRecording) {
       if (savedBadge) savedBadge.classList.add("hidden");
       if (playerWrapper) playerWrapper.classList.add("hidden");
-      if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
+      if (transcriptWrapper) transcriptWrapper.classList.add("hidden"); // Oculto durante la grabación
       if (timerBadge) timerBadge.classList.remove("hidden");
-      
-      const container = document.getElementById("oralLiveTranscriptContainer");
-      if (container) {
-        container.innerHTML = '<span class="text-indigo-400 animate-pulse flex items-center gap-2"><i class="fa-solid fa-microphone-lines"></i> Escuchando... Habla con claridad hacia el micrófono.</span>';
-      }
-      const counterEl = document.getElementById("oralWordEditCounter");
-      if (counterEl) {
-        counterEl.textContent = "Grabando en vivo...";
-      }
 
       if (btn) {
         btn.className = "px-6 py-3.5 rounded-2xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-sm flex items-center space-x-2 mx-auto recording-pulse shadow-lg transition active:scale-95";
@@ -822,12 +813,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const s = (secs % 60).toString().padStart(2, "0");
           if (timerText) timerText.textContent = `${m}:${s}`;
         },
-        (liveText) => {
-          const c = document.getElementById("oralLiveTranscriptContainer");
-          if (c) {
-            c.innerHTML = `<span class="text-slate-300 italic flex items-center gap-1.5"><i class="fa-solid fa-microphone-lines text-indigo-400 animate-pulse"></i> ${escapeHtml(liveText || "Escuchando voz...")}</span>`;
-          }
-        },
+        null, // Sin transcripción en tiempo real durante la grabación
         (err) => {
           alert("No se pudo iniciar el micrófono. Revisa los permisos en tu navegador.");
           resetOralRecordUI();
@@ -913,13 +899,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const usedEdits = oralWordEditsPerQuestion[oralExamCurrentIndex] || 0;
-    const maxEdits = 3;
 
     if (counterEl) {
-      if (usedEdits >= maxEdits) {
-        counterEl.innerHTML = `<span class="text-amber-400 font-bold"><i class="fa-solid fa-lock mr-1"></i> Límite de ${maxEdits} correcciones alcanzado</span>`;
+      if (usedEdits > 0) {
+        counterEl.innerHTML = `<span class="text-indigo-300 font-medium">Correcciones realizadas: <b>${usedEdits}</b> (toca cualquier palabra para editar)</span>`;
       } else {
-        counterEl.innerHTML = `<span class="text-indigo-300 font-medium">Correcciones usadas: <b>${usedEdits}/${maxEdits}</b> (toca una palabra para editarla)</span>`;
+        counterEl.innerHTML = `<span class="text-indigo-300/80 font-medium">Toca cualquier palabra para corregirla</span>`;
       }
     }
 
@@ -929,7 +914,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const chip = document.createElement("button");
       chip.type = "button";
       chip.className = "inline-flex items-center px-2 py-0.5 m-0.5 rounded-lg bg-slate-800/90 hover:bg-indigo-600 hover:text-white text-slate-200 text-xs sm:text-sm font-medium border border-slate-700/70 hover:border-indigo-400 transition cursor-pointer select-none active:scale-95";
-      chip.title = usedEdits >= maxEdits ? "Límite de correcciones alcanzado" : "Toca para corregir esta palabra";
+      chip.title = "Toca para corregir esta palabra";
       chip.textContent = word;
 
       chip.addEventListener("click", () => {
@@ -941,24 +926,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openWordCorrectionModal(wordIndex, oldWord) {
-    const usedEdits = oralWordEditsPerQuestion[oralExamCurrentIndex] || 0;
-    const maxEdits = 3;
-
-    if (usedEdits >= maxEdits) {
-      if (typeof Swal !== 'undefined') {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Límite de correcciones alcanzado',
-          text: `Para garantizar la legitimidad y autenticidad del examen oral, se permite un máximo de ${maxEdits} correcciones puntuales de palabras por respuesta.`,
-          confirmButtonColor: '#6366f1',
-          confirmButtonText: 'Entendido'
-        });
-      } else {
-        alert(`Has alcanzado el límite de ${maxEdits} correcciones para esta pregunta.`);
-      }
-      return;
-    }
-
     if (typeof Swal === 'undefined') {
       const userWord = prompt(`Corregir palabra "${oldWord}" (solo 1 palabra, sin espacios):`, oldWord);
       if (userWord && !/\s/.test(userWord.trim())) {
@@ -995,9 +962,6 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="font-bold">Seguridad Anti-Copia Activa:</p>
               <p class="text-slate-400">Pegar texto (Ctrl+V) y barra espaciadora están estrictamente bloqueados. Solo puedes escribir una palabra concreta.</p>
             </div>
-          </div>
-          <div class="text-[10px] text-indigo-400 text-right font-semibold">
-            Corrección restante para esta pregunta: ${maxEdits - usedEdits - 1} disponible(s) tras guardar
           </div>
         </div>
       `,
