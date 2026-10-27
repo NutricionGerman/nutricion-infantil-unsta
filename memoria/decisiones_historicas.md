@@ -307,6 +307,8 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Grabación en fragmentos continuos cada 1000ms (`mediaRecorder.start(1000)`) para impedir que WebKit descarte fragmentos al invocar `.stop()`.
       * Alertas preventivas en `app.js`: advertencia explícita si se grabó audio pero no se detectó texto antes de avanzar, e indicador con triángulo amarillo en las píldoras de navegación.
       * Versionado anti-caché elevado a `v=4.0` en `proyectos/repaso_parcial_2/index.html`.
+      * Compensación docente de cátedra: Se acreditaron +6 XP a Gimena Godoy (UP 344025), elevando su saldo oficial de 37 a 43 XP en Firestore y asentado en su `xpHistory` para cubrir el costo de recuperación individual de preguntas o como bonificación de cátedra.
+
 
 
 
