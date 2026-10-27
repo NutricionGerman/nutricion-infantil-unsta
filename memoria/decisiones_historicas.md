@@ -288,5 +288,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Si el alumno no es Luca Delani (`targetUP !== '344036'`) y no cumple estrictamente con ambos requisitos (los 6 exámenes completados y promedio mínimo requerido para el nivel de puntos), la transacción se aborta de inmediato con una alerta modal bloqueante sin tocar sus XP ni su inventario.
       * Versionado anti-caché elevado a `tienda.js?v=1.39` en `index.html`.
 
+29. **Reversión de Compra Temprana para Francisco Fernández Salazar (UP 344037)**:
+    - **Diagnóstico**: El alumno había adquirido el ítem de +5 Puntos Prácticos a las 13:02 hs con 30 XP acumulados antes de que se conectaran los requisitos del oral a la tienda, sin tener exámenes orales rendidos (0 de 6 completados).
+    - **Resolución Docente**: Revertir la compra para que deba completar los 6 exámenes orales con promedio $\ge 8.5$ antes de poder acceder a la bonificación.
+    - **Acción Ejecutada en Firestore**:
+      * Reintegro completo de 30 XP (saldo restituido de 7 a 37 XP).
+      * Remoción del ítem `item_practico_5pt` de su arreglo de `inventory`.
+      * Inserción en `xpHistory` de la transacción de reembolso: `Reintegro de Tienda: +5 Puntos Prácticos (Requiere 6 exámenes orales completados con promedio ≥ 8.5)`.
+      * La planilla de bonificaciones del Panel Docente y el script de verificación en vivo confirman únicamente 1 comprador activo: Luca Delani.
+
+
 
 
