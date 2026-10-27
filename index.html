@@ -4457,7 +4457,7 @@
             <button class="close-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
         </div>
         <ul class="mobile-side-nav-list">
-            <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); goToRepasoParcial2();" style="color: #a5b4fc; font-weight: 700; background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4);"><i class="fas fa-microphone-alt"></i> 🎙️ 2° Parcial Teórico (Mesa Oral)</button></li>
+            <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); goToRepasoParcial2(null, null, 'evaluacion');" style="color: #a5b4fc; font-weight: 700; background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4);"><i class="fas fa-microphone-alt"></i> 🎙️ 2° Parcial Teórico (Mesa Oral)</button></li>
             <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-clases" onclick="toggleMobileMenu()"><i class="fas fa-chalkboard-teacher"></i> Clases</button></li>
             <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-proyectos" onclick="toggleMobileMenu()"><i class="fas fa-folder-open"></i> Proyectos</button></li>
             <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-contacto" onclick="toggleMobileMenu()"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
@@ -12479,7 +12479,7 @@
                         </div>
                         
                         <div style="display: flex; gap: 10px;">
-                            <button onclick="goToRepasoParcial2('${upParam}', '${nameParam}')" style="flex: 1; background: linear-gradient(135deg, #4f46e5, #6366f1); color: #fff; border: none; border-radius: 16px; padding: 13px; font-size: 0.92rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35); transition: all 0.2s;">
+                            <button onclick="goToRepasoParcial2('${upParam}', '${nameParam}', 'evaluacion')" style="flex: 1; background: linear-gradient(135deg, #4f46e5, #6366f1); color: #fff; border: none; border-radius: 16px; padding: 13px; font-size: 0.92rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35); transition: all 0.2s;">
                                 <i class="fas fa-play" style="margin-right: 6px;"></i> Comenzar Ahora
                             </button>
                             <button onclick="dismissParcial2Announcement()" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #94a3b8; border-radius: 16px; padding: 13px 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
@@ -12499,7 +12499,7 @@
                 if (modal) modal.remove();
             };
 
-            window.goToRepasoParcial2 = function(up, name) {
+            window.goToRepasoParcial2 = function(up, name, tab) {
                 sessionStorage.setItem('parcial2_popup_dismissed', 'true');
                 if (!up || up === 'undefined' || up === 'null') {
                     const activeUP = sessionStorage.getItem('aw_authenticated_up') || window.loggedInStudentUP || window.currentStudentUP || localStorage.getItem('userUP');
@@ -12512,8 +12512,18 @@
                     }
                 }
                 let target = 'proyectos/repaso_parcial_2/index.html';
+                const queryParts = [];
                 if (up && up !== 'undefined' && up !== 'null') {
-                    target += `?up=${encodeURIComponent(up)}&name=${encodeURIComponent(name || '')}`;
+                    queryParts.push(`up=${encodeURIComponent(up)}`);
+                }
+                if (name && name !== 'undefined' && name !== 'null') {
+                    queryParts.push(`name=${encodeURIComponent(name || '')}`);
+                }
+                if (tab) {
+                    queryParts.push(`tab=${encodeURIComponent(tab)}`);
+                }
+                if (queryParts.length > 0) {
+                    target += '?' + queryParts.join('&');
                 }
                 window.location.href = target;
             };
@@ -19508,7 +19518,7 @@
             }
         }
     </script>
-    <script src="tienda.js?v=1.32"></script>
+    <script src="tienda.js?v=1.33"></script>
 </body>
 
 </html>

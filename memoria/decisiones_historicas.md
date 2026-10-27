@@ -129,13 +129,14 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * 3 puntos prácticos = 20 XP
       * 4 puntos prácticos = 25 XP
       * 5 puntos prácticos = 30 XP
-    - **Regla Innegociable de Validación Pedagógica**:
-      * El alumno debe tener **aprobado el 2° Parcial Teórico con nota $\ge 7$** (`nota >= 7.0`).
-      * Se evalúa `parcial2`, `parcial2_teoria` o el promedio de exámenes orales en `oralExams`.
-      * Si la nota es inferior a 7 o el alumno aún no rindió el parcial teórico, la compra se bloquea inmediatamente y se dispara una alerta que informa la restricción.
+    - **Regla Innegociable de Validación Pedagógica y Flujo Amigable**:
+      * Los productos se presentan de manera abierta y atractiva en la Tienda sin candados de bloqueo previo ni carteles prohibitivos.
+      * Cuando el estudiante presiona "Canjear", el sistema valida en tiempo real si tiene aprobado el **Examen Oral con nota $\ge 7.0$**.
+      * Si aún no lo rindió o tiene nota $< 7$, se dispara el cartel modal indicándole que debe aprobar el examen oral, mostrando su nota actual e incorporando el botón de acción directa **«🎙️ Ir a Rendir Examen Oral Ahora»**.
+      * Al pulsar el botón de rendir, la aplicación navega directamente a la pestaña de Examen Oral (`proyectos/repaso_parcial_2/index.html?tab=evaluacion&up=...&name=...`) mostrando de inmediato el tablero de los 6 parciales con grabación de voz por IA.
     - **Impacto y Persistencia**:
       * Los ítems fueron actualizados en la colección `app_state/tienda_items` de Firestore eliminando la fecha de expiración pasada.
       * Se crearon 5 distintivos vectoriales SVG optimizados en `tienda/badges/`.
-      * Se actualizó `tienda.js` con validación previa de nota teórica, banner dinámico informativo de estado (habilitado vs condicionado) y deducción segura de XP.
-      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html` (indicando los puntos canjeados en verde esmeralda).
+      * Se actualizó `tienda.js` y `proyectos/repaso_parcial_2/js/app.js` con soporte para el parámetro `tab=evaluacion`.
+      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html`.
 

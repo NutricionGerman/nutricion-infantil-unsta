@@ -55,10 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Leer parámetros de URL para auto-login (desde el portal principal)
+  let paramTab = null;
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const paramUp = urlParams.get('up');
     const paramName = urlParams.get('name');
+    paramTab = urlParams.get('tab');
     if (paramUp && paramUp !== 'undefined' && paramUp !== 'null') {
       const studentName = (paramName && paramName !== 'undefined' && paramName !== 'null') ? decodeURIComponent(paramName) : (sm.state.studentName || "Estudiante UNSTA");
       sm.setStudentInfo(studentName, paramUp);
@@ -73,6 +75,21 @@ document.addEventListener("DOMContentLoaded", () => {
   setupRepasoDeck();
   setupOralExamDashboard();
   setupRankingSection();
+
+  // Si se solicita directamente la pestaña de Examen Oral o Ranking por URL
+  if (paramTab && (paramTab === 'evaluacion' || paramTab === 'oral')) {
+    setTimeout(() => {
+      if (typeof window.switchTab === 'function') {
+        window.switchTab('evaluacion');
+      }
+    }, 50);
+  } else if (paramTab === 'ranking') {
+    setTimeout(() => {
+      if (typeof window.switchTab === 'function') {
+        window.switchTab('ranking');
+      }
+    }, 50);
+  }
 
   // Animación del ecualizador cuando el sintetizador de voz está activo
   if (audio) {

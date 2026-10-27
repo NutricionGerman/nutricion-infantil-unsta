@@ -124,27 +124,27 @@
             .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
 
         const bannerTeoricoHTML = `
-            <div style="background: linear-gradient(135deg, rgba(30,27,75,0.75) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid ${isTeoricoAprobado ? 'rgba(16,185,129,0.45)' : 'rgba(245,158,11,0.45)'}; border-radius: 18px; padding: 18px 22px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+            <div style="background: linear-gradient(135deg, rgba(30,27,75,0.7) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 18px; padding: 18px 22px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
                 <div style="display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 52px; height: 52px; border-radius: 16px; background: ${isTeoricoAprobado ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}; border: 1px solid ${isTeoricoAprobado ? 'rgba(16,185,129,0.4)' : 'rgba(245,158,11,0.4)'}; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0;">
-                        ${isTeoricoAprobado ? '🎯' : '🔒'}
+                    <div style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(168,85,247,0.25)); border: 1px solid rgba(129,140,248,0.45); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(99,102,241,0.3);">
+                        🎯
                     </div>
                     <div>
-                        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: ${isTeoricoAprobado ? '#34d399' : '#fbbf24'};">
-                            ${isTeoricoAprobado ? 'Canje Habilitado · 2° Parcial Práctico' : 'Canje Condicionado · 2° Parcial Práctico'}
+                        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #a5b4fc;">
+                            Canje Oficial · 2° Parcial Práctico
                         </div>
                         <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 3px 0 2px;">
-                            ${isTeoricoAprobado ? '¡Tienes el 2° Parcial Teórico Aprobado!' : 'Requiere 2° Parcial Teórico Aprobado (Nota ≥ 7)'}
+                            Canjea de 1 a 5 Puntos con tus XP
                         </h4>
                         <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
-                            Tu nota teórica: <strong style="color: ${isTeoricoAprobado ? '#34d399' : '#f87171'};">${notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10` : 'Sin rendir'}</strong>
-                            ${puntosCanjeadosActualmente > 0 ? ` · Ya canjeaste <strong style="color: #fde047;">+${puntosCanjeadosActualmente} punto(s) prácticos</strong>` : ' · Canjea hasta 5 puntos para el práctico'}
+                            Suma bonificación a tu nota práctica canjeando tus puntos de experiencia.
+                            ${puntosCanjeadosActualmente > 0 ? ` · Ya canjeaste <strong style="color: #fde047;">+${puntosCanjeadosActualmente} punto(s)</strong>` : ' · 1 punto = 10 XP hasta 5 puntos = 30 XP'}
                         </p>
                     </div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <button onclick="goToRepasoParcial2('${targetUP}', '${encodeURIComponent(studentData.name || '')}')" style="background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; padding: 9px 15px; border-radius: 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
-                        <i class="fas fa-microphone-alt"></i> ${isTeoricoAprobado ? 'Ver Repaso Teórico' : 'Ir a Rendir / Repasar'}
+                    <button onclick="goToRepasoParcial2('${targetUP}', '${encodeURIComponent(studentData.name || '')}', 'evaluacion')" style="background: linear-gradient(135deg, #4f46e5, #6366f1); border: 1px solid rgba(165, 180, 252, 0.4); color: #fff; padding: 10px 18px; border-radius: 12px; font-size: 0.84rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35); transition: all 0.2s;">
+                        <i class="fas fa-microphone-alt"></i> Ir a Rendir Examen Oral
                     </button>
                 </div>
             </div>
@@ -435,28 +435,39 @@
                 if (notaTeorica === null || notaTeorica < 7) {
                     Swal.fire({
                         icon: 'warning',
-                        title: '¡Requisito Obligatorio!',
+                        title: '¡Examen Oral Requerido!',
                         html: `
                             <div style="text-align: center; padding: 6px;">
-                                <div style="font-size: 3.5rem; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));">🔒</div>
-                                <p style="font-size: 1.05rem; line-height: 1.5; color: #fff; font-weight: 700; margin-bottom: 15px;">
-                                    No puedes comprar puntos para el examen práctico a menos que tengas hecho y aprobado el <strong>2° Parcial Teórico con nota 7 o más</strong>.
+                                <div style="font-size: 3.2rem; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));">🎙️</div>
+                                <p style="font-size: 1.05rem; line-height: 1.5; color: #fff; font-weight: 700; margin-bottom: 14px;">
+                                    No puedes comprar puntos a menos que tengas aprobado el <strong>Examen Oral con nota 7 o más</strong>.
                                 </p>
-                                <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px; margin-bottom: 15px;">
-                                    <span style="font-size: 0.85rem; color: #94a3b8;">Tu calificación registrada en el 2° Parcial Teórico:</span><br>
+                                <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 12px; margin-bottom: 14px;">
+                                    <span style="font-size: 0.82rem; color: #94a3b8;">Tu calificación registrada en el Examen Oral:</span><br>
                                     <strong style="font-size: 1.25rem; color: ${notaTeorica !== null ? '#ef4444' : '#f59e0b'};">
-                                        ${notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10 (Insuficiente)` : 'Examen aún no rendido'}
+                                        ${notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10 (Requiere ≥ 7.0)` : 'Examen aún no rendido'}
                                     </strong>
                                 </div>
-                                <p style="font-size: 0.82rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0;">
-                                    📚 Repasa en la sección <strong>2° Parcial</strong> con las flashcards y rinde tus evaluaciones orales para desbloquear el canje de puntos.
+                                <p style="font-size: 0.82rem; color: #cbd5e1; line-height: 1.4; margin-bottom: 0;">
+                                    Rinde tus respuestas orales con micrófono para certificar tus conocimientos y habilitar el canje de puntos para el práctico.
                                 </p>
                             </div>
                         `,
                         background: '#1a1a2e',
                         color: '#fff',
-                        confirmButtonColor: '#FFA500',
-                        confirmButtonText: '<i class="fas fa-check"></i> Entendido'
+                        showCancelButton: true,
+                        confirmButtonColor: '#6366f1',
+                        cancelButtonColor: '#475569',
+                        confirmButtonText: '<i class="fas fa-microphone-alt"></i> Ir a Rendir Examen Oral Ahora',
+                        cancelButtonText: 'Cerrar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (typeof window.goToRepasoParcial2 === 'function') {
+                                window.goToRepasoParcial2(targetUP, encodeURIComponent(studentData.name || ''), 'evaluacion');
+                            } else {
+                                window.location.href = `proyectos/repaso_parcial_2/index.html?tab=evaluacion&up=${encodeURIComponent(targetUP)}&name=${encodeURIComponent(studentData.name || '')}`;
+                            }
+                        }
                     });
                     return;
                 }
