@@ -1370,6 +1370,18 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function getOralExamTitle(key) {
+    const titles = {
+      u5_p1: "Parcial 1 (U5 - Dietas Basadas en Plantas)",
+      u5_p2: "Parcial 2 (U5 - Micronutrientes y B12)",
+      u6_p1: "Parcial 3 (U6 - Crecimiento y Apetito)",
+      u6_p2: "Parcial 4 (U6 - Requerimientos y CAPA-2)",
+      u7_p1: "Parcial 5 (U7 - Embarazo en Adolescencia)",
+      u7_p2: "Parcial 6 (U7 - Niño Deportista)"
+    };
+    return titles[key] || `Módulo ${key}`;
+  }
+
   async function syncExamToFirestore(partialKey, result, answers) {
     if (!db) return;
     const up = String(sm.state.up || "").trim();
@@ -1397,13 +1409,41 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         };
 
-        // Sincronizar bonificaciones de XP acumuladas en Firestore
+        // Sincronizar bonificaciones de XP acumuladas en Firestore y registrar en xpHistory
         if (result.xpAwardedReport) {
           if (result.xpAwardedReport.moduleTargetXp > 0) {
             updateData[`oralExams.partialXpAwarded.${partialKey}`] = result.xpAwardedReport.moduleTargetXp;
           }
           if (result.xpAwardedReport.totalXpGained > 0) {
             updateData["xp"] = firebase.firestore.FieldValue.increment(result.xpAwardedReport.totalXpGained);
+
+            // Registrar en el Historial Oficial de XP del Alumno (xpHistory)
+            let sHistory = studentDoc.data().xpHistory || [];
+            const prevXP = Number(studentDoc.data().xp || 0);
+            let runningXP = prevXP;
+            const pTitle = getOralExamTitle(partialKey);
+
+            if (result.xpAwardedReport.deltaXp > 0) {
+              runningXP += result.xpAwardedReport.deltaXp;
+              sHistory.push({
+                timestamp: new Date().toISOString(),
+                amount: result.xpAwardedReport.deltaXp,
+                reason: `Examen Oral: ${pTitle} (Nota ${result.finalGrade}/10)`,
+                newXP: runningXP
+              });
+            }
+
+            if (result.xpAwardedReport.honorXpAwarded > 0) {
+              runningXP += result.xpAwardedReport.honorXpAwarded;
+              sHistory.push({
+                timestamp: new Date().toISOString(),
+                amount: result.xpAwardedReport.honorXpAwarded,
+                reason: `👑 Cuadro de Honor: Promedio ${summary.average}/10 en 6 Parciales Orales`,
+                newXP: runningXP
+              });
+            }
+
+            updateData["xpHistory"] = sHistory;
           }
         }
 
@@ -2133,13 +2173,26 @@ document.addEventListener("DOMContentLoaded", () => {
           sm.addXP(-1);
           initHeaderStats();
 
-          // Sincronizar débito de XP en Firestore
+          // Sincronizar débito de XP en Firestore y registrar en xpHistory
           const up = String(sm.state.up || "").trim();
           if (db && up && up !== "Sin Legajo" && up !== "UNSTA") {
             try {
-              await db.collection('students').doc(up).update({
-                xp: firebase.firestore.FieldValue.increment(-1)
-              });
+              const sDoc = await db.collection('students').doc(up).get();
+              if (sDoc.exists) {
+                const curXP = Number(sDoc.data().xp || 0) - 1;
+                const hist = sDoc.data().xpHistory || [];
+                const pTitle = getOralExamTitle(currentOralPartialKey);
+                hist.push({
+                  timestamp: new Date().toISOString(),
+                  amount: -1,
+                  reason: `Recuperación de pregunta: ${pTitle}`,
+                  newXP: curXP
+                });
+                await db.collection('students').doc(up).update({
+                  xp: curXP,
+                  xpHistory: hist
+                });
+              }
             } catch(eXp) {
               console.warn("[Firestore] Error actualizando XP tras recuperación:", eXp);
             }

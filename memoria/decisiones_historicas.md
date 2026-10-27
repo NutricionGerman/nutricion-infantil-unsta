@@ -268,4 +268,12 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Santiago Jesús Vázquez (UP 343815, U5P1: 8.7, U5P2: 8.9) $\rightarrow$ +2 XP (saldo de 32 a 34 XP).
       * Luca Delani (UP 344036, U6P1: 8.5) $\rightarrow$ +1 XP (saldo de 39 a 40 XP).
 
+27. **Registro Oficial de Bonificaciones y Débitos en la Tabla de Historial de XP (`xpHistory`)**:
+    - **Diagnóstico**: Al acreditar XP en Firestore mediante `FieldValue.increment(...)`, el saldo numérico global aumentaba, pero no se agregaba la fila correspondiente en la tabla del modal "Historial de XP" del perfil del alumno.
+    - **Solución en `app.js`**:
+      * En `syncExamToFirestore`: Se genera y persiste el objeto en el array `xpHistory` con `timestamp`, `amount`, `reason` (ej. `Examen Oral: Parcial 1 (U5 - Dietas Basadas en Plantas) - Nota 9.0/10`) y `newXP`.
+      * En recuperación de pregunta: Se registra el débito con `amount: -1`, `reason` y nuevo total en `xpHistory`.
+      * Se insertaron retroactivamente los renglones históricos en Firestore para los 4 alumnos que rindieron hoy.
+      * Versionado de caché elevado a `v=3.9` en `proyectos/repaso_parcial_2/index.html`.
+
 
