@@ -740,6 +740,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (transcriptWrapper && transcriptText && existing.studentTranscript) {
         transcriptText.textContent = existing.studentTranscript;
         transcriptWrapper.classList.remove("hidden");
+        setupTranscriptEditor();
       }
       if (savedBadge) savedBadge.classList.remove("hidden");
     } else {
@@ -808,8 +809,16 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     } else {
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo con Whisper AI...';
+      if (transcriptText) {
+        transcriptText.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse"><i class="fa-solid fa-brain mr-1.5"></i> Whisper AI está transcribiendo con precisión técnica médica...</span>';
+        if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
+      }
+      if (btn) btn.disabled = true;
+
       const result = await recorder.stopRecording();
       resetOralRecordUI();
+      if (btn) btn.disabled = false;
 
       if (result) {
         currentQuestionAudioUrl = result.audioUrl;
@@ -826,9 +835,50 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (savedBadge) savedBadge.classList.remove("hidden");
 
+        // Configurar editor manual de transcripción
+        setupTranscriptEditor();
+
         saveCurrentQuestionAnswer();
         renderOralPillsNavigation();
       }
+    }
+  }
+
+  function setupTranscriptEditor() {
+    const editBtn = document.getElementById("btnEditTranscript");
+    const textP = document.getElementById("oralLiveTranscriptText");
+    const textInput = document.getElementById("oralEditTranscriptInput");
+    if (!editBtn || !textP || !textInput) return;
+
+    textInput.classList.add("hidden");
+    textP.classList.remove("hidden");
+    editBtn.innerHTML = '<i class="fa-solid fa-pen mr-1"></i> Corregir texto';
+    editBtn.className = "text-[10px] text-indigo-300 hover:text-white underline font-semibold transition cursor-pointer";
+
+    if (!editBtn.dataset.bound) {
+      editBtn.dataset.bound = "true";
+      editBtn.addEventListener("click", () => {
+        const isEditing = !textInput.classList.contains("hidden");
+        if (isEditing) {
+          const newText = textInput.value.trim();
+          if (newText.length > 0) {
+            currentQuestionTranscript = newText;
+            textP.textContent = newText;
+            saveCurrentQuestionAnswer();
+          }
+          textInput.classList.add("hidden");
+          textP.classList.remove("hidden");
+          editBtn.innerHTML = '<i class="fa-solid fa-pen mr-1"></i> Corregir texto';
+          editBtn.className = "text-[10px] text-indigo-300 hover:text-white underline font-semibold transition cursor-pointer";
+        } else {
+          textInput.value = currentQuestionTranscript || textP.textContent || "";
+          textP.classList.add("hidden");
+          textInput.classList.remove("hidden");
+          textInput.focus();
+          editBtn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Guardar texto';
+          editBtn.className = "text-[10px] text-emerald-400 hover:text-emerald-300 font-extrabold transition cursor-pointer bg-emerald-500/10 px-2 py-0.5 rounded";
+        }
+      });
     }
   }
 

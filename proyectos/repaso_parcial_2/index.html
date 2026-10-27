@@ -579,10 +579,18 @@
             <audio id="oralRecordedPlayer" controls class="w-full h-8 rounded-lg"></audio>
           </div>
 
-          <!-- Transcripción en vivo -->
-          <div id="oralLiveTranscriptWrapper" class="hidden text-left bg-slate-900 p-3 rounded-xl border border-slate-800 text-xs text-slate-300 max-h-24 overflow-y-auto font-mono">
-            <span class="text-slate-500 text-[10px] uppercase font-bold block mb-1">Transcripción de tu voz:</span>
-            <p id="oralLiveTranscriptText">...</p>
+          <!-- Transcripción Oficial con Whisper AI -->
+          <div id="oralLiveTranscriptWrapper" class="hidden text-left bg-slate-900/90 p-3.5 rounded-2xl border border-indigo-500/30 text-xs text-slate-200 shadow-md">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-indigo-400 text-[10px] uppercase font-extrabold flex items-center gap-1.5">
+                <i class="fa-solid fa-brain"></i> Transcripción Whisper AI (OpenAI):
+              </span>
+              <button type="button" id="btnEditTranscript" class="text-[10px] text-indigo-300 hover:text-white underline font-semibold transition cursor-pointer" title="Editar texto si hubo algún error en el micrófono">
+                <i class="fa-solid fa-pen mr-1"></i> Corregir texto
+              </button>
+            </div>
+            <p id="oralLiveTranscriptText" class="leading-relaxed font-sans text-xs sm:text-sm text-slate-100 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800">...</p>
+            <textarea id="oralEditTranscriptInput" class="hidden w-full bg-slate-950 text-slate-100 p-2.5 rounded-xl border border-indigo-500/50 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 font-sans leading-relaxed" rows="3"></textarea>
           </div>
         </div>
 
@@ -736,12 +744,12 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts con Cache-Buster para Forzar Actualización Inmediata -->
-  <script src="js/config.js?v=2.6"></script>
-  <script src="js/data_flashcards.js?v=2.6"></script>
-  <script src="js/audio_engine.js?v=2.6"></script>
-  <script src="js/audio_recorder.js?v=2.6"></script>
-  <script src="js/ai_evaluator.js?v=2.6"></script>
-  <script src="js/storage.js?v=2.6"></script>
-  <script src="js/app.js?v=2.6"></script>
+  <script src="js/config.js?v=3.0"></script>
+  <script src="js/data_flashcards.js?v=3.0"></script>
+  <script src="js/audio_engine.js?v=3.0"></script>
+  <script src="js/audio_recorder.js?v=3.0"></script>
+  <script src="js/ai_evaluator.js?v=3.0"></script>
+  <script src="js/storage.js?v=3.0"></script>
+  <script src="js/app.js?v=3.0"></script>
 </body>
 </html>

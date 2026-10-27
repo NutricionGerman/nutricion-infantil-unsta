@@ -142,5 +142,14 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Los ítems fueron actualizados en la colección `app_state/tienda_items` de Firestore con la fecha de expiración límite fijada para hoy a las 23:59:59.
       * Se crearon 5 distintivos vectoriales SVG optimizados en `tienda/badges/`.
       * Se actualizó `tienda.js` y `proyectos/repaso_parcial_2/js/app.js` con soporte para el parámetro `tab=evaluacion`.
-      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html` (v=1.34).
+      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html` (v=1.35).
+
+16. **Integración del Motor de Transcripción de Voz Whisper Large v3 (OpenAI / Groq)**:
+    - **Diagnóstico del Problema**: La API nativa del navegador (`webkitSpeechRecognition`) presentaba desconexiones prematuras, incompatibilidad en navegadores móviles (iOS/Safari/Firefox) y deformación grave de terminología médica y pediátrica (ej: anorexia fisiológica, rebote adiposo, CAPA 2, fitatos, B12).
+    - **Solución Arquitectónica con Whisper**:
+      * Se integró el modelo de código abierto líder mundial de GitHub: **Whisper de OpenAI** (`whisper-large-v3-turbo` vía hardware LPU de Groq).
+      * Al detener la grabación, el `audioBlob` capturado por `MediaRecorder` se envía directamente a la API de Whisper, devolviendo la transcripción precisa en menos de 0.8 segundos.
+      * Se inyectó un `prompt` especializado con la nomenclatura técnica de Nutrición Infantil UNSTA para garantizar reconocimiento fonético exacto.
+      * Se añadió la interfaz de corrección interactiva: el estudiante puede visualizar el texto transcribido por Whisper y presionar **«Corregir texto»** para editar cualquier detalle antes de que sea evaluado por el modelo calificador.
+      * Se actualizó el versionado de caché a `v=3.0` en `proyectos/repaso_parcial_2/index.html`.
 

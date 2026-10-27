@@ -113,7 +113,7 @@ class AudioRecorderEngine {
 
       const elapsedSecs = Math.floor((Date.now() - this.recordingStartTime) / 1000);
 
-      this.mediaRecorder.onstop = () => {
+      this.mediaRecorder.onstop = async () => {
         const audioBlob = new Blob(this.audioChunks, { type: "audio/webm;codecs=opus" });
         if (this.latestAudioUrl) {
           URL.revokeObjectURL(this.latestAudioUrl);
@@ -127,16 +127,69 @@ class AudioRecorderEngine {
         }
 
         this.isRecording = false;
+
+        // Transcripción de Máxima Precisión con Whisper (OpenAI / Groq)
+        let finalTranscript = (this.currentTranscript || "").trim();
+        try {
+          const whisperResult = await this.transcribeWithWhisper(audioBlob);
+          if (whisperResult && whisperResult.trim().length > 0) {
+            finalTranscript = whisperResult.trim();
+          }
+        } catch (eW) {
+          console.warn("[Whisper] Fallback a SpeechRecognition local:", eW);
+        }
+
         resolve({
           audioBlob,
           audioUrl: this.latestAudioUrl,
-          transcript: this.currentTranscript.trim(),
+          transcript: finalTranscript,
           durationSecs: elapsedSecs
         });
       };
 
       this.mediaRecorder.stop();
     });
+  }
+
+  async transcribeWithWhisper(audioBlob) {
+    try {
+      const config = window.UNSTA_AI_CONFIG;
+      if (!config || !config.groqApiKey) {
+        console.warn("[Whisper] No hay clave de Groq configurada, usando fallback.");
+        return null;
+      }
+
+      console.log("[Whisper] Procesando audio con Whisper Large v3 (OpenAI)...");
+      const formData = new FormData();
+      formData.append('file', audioBlob, 'respuesta_oral.webm');
+      formData.append('model', 'whisper-large-v3-turbo');
+      formData.append('language', 'es');
+      formData.append('temperature', '0.0');
+      formData.append('prompt', 'Examen oral de Nutrición Infantil UNSTA: preescolar, escolar, adolescente, embarazo, CAPA 2, Guías Alimentarias, alimentos ultraprocesados, vegetarianismo, vitamina B12, hierro, cinc, calcio, fitatos, biodisponibilidad, suplementación, deportista, hidratación, triada de la mujer atleta');
+
+      const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + config.groqApiKey
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        console.warn("[Whisper] Error en API de Whisper:", await response.text());
+        return null;
+      }
+
+      const data = await response.json();
+      if (data && data.text) {
+        console.log("[Whisper] Transcripción completada con éxito:", data.text);
+        return data.text.trim();
+      }
+      return null;
+    } catch (e) {
+      console.warn("[Whisper] Error conectando con Whisper:", e);
+      return null;
+    }
   }
 
   evaluateKeywords(transcript, card) {
