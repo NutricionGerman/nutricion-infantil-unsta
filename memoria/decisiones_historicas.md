@@ -102,3 +102,21 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * *Auto-login*: Cartel emergente en el portal al iniciar sesión que redirige con `?up=...&name=...`, precargando datos sin reingreso de nombre/legajo.
       * *Visibilidad Pública de Notas*: Tarjeta del 2° Parcial en el perfil del alumno (`displayStudentPortalView`), accesible tanto para el alumno como para compañeros que visiten su perfil.
       * *Visor de Respuestas*: Modal interactivo que consulta `oral_submissions` y despliega las 10 preguntas con la **transcripción de voz del alumno**, los aciertos y las observaciones del docente, omitiendo intencionalmente la solución oficial de la cátedra por orden docente.
+13. **Blindaje de Suplementación en el Niño y Adolescente Deportista (Unidad 7)**:
+    - Se integró la tarjeta `u7_23` en `proyectos/repaso_parcial_2/js/data_flashcards.js` en el mazo `u7_p2` para cubrir con rigor el tema oficial del 2° Parcial (Tema 2, Pregunta 4).
+    - Alineación estricta con el Comité de Nutrición de la AEP (2014):
+      * Principio *Food First*: los suplementos proteicos y ergogénicos no están indicados en menores.
+      * Creatina y aminoácidos (BCAA, glutamina, carnitina): formalmente desaconsejados por falta de seguridad y riesgo metabólico.
+      * Indicación exclusiva ante deficiencias de micronutrientes comprobadas (hierro, vitamina D, calcio) o bebidas isotónicas en esfuerzos >1 hora.
+    - Se actualizaron los selectores en `index.html` (67 tarjetas totales / 23 en Unidad 7) y se incrementó el versionado anti-caché a `?v=2.6`.
+
+14. **Resolución de Conflicto de Credenciales Git (Cuenta NutricionGerman vs Gmtfp)**:
+    - La máquina local posee GitHub CLI (`gh.exe`) configurado globalmente en `~/.gitconfig` con el usuario `Gmtfp`, lo que provocaba errores HTTP 403 al intentar hacer push a `NutricionGerman/nutricion-infantil-unsta.git`.
+    - Solución arquitectónica persistente: en `.git/config` local del repositorio se configuró:
+      ```ini
+      [credential "https://github.com"]
+          helper =
+          helper = manager
+          username = NutricionGerman
+      ```
+      Esto vacía la lista heredada de helpers para `github.com` en este repositorio específico y fuerza el uso directo de Git Credential Manager con la cuenta de `NutricionGerman`.
