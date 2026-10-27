@@ -161,7 +161,7 @@ class AudioRecorderEngine {
         return null;
       }
 
-      console.log("[Whisper] Procesando audio con Whisper Large v3 (OpenAI)...");
+      console.log("[AudioRecorder] Procesando audio de alta fidelidad...");
       const formData = new FormData();
       formData.append('file', audioBlob, 'respuesta_oral.webm');
       formData.append('model', 'whisper-large-v3-turbo');

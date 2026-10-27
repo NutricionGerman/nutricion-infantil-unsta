@@ -737,7 +737,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (playerWrapper && player && existing.audioUrl) {
         player.src = existing.audioUrl;
+        const durationEl = document.getElementById("oralPlaybackDurationText");
+        if (durationEl) durationEl.textContent = formatDuration(existing.durationSecs || 0);
         playerWrapper.classList.remove("hidden");
+
+        if (!player.dataset.fixedDurationBound) {
+          player.dataset.fixedDurationBound = "true";
+          player.addEventListener('loadedmetadata', () => {
+            if (player.duration === Infinity || player.duration > 3600) {
+              player.currentTime = Number.MAX_SAFE_INTEGER;
+              player.addEventListener('timeupdate', function onTime() {
+                player.currentTime = 0;
+                player.removeEventListener('timeupdate', onTime);
+              }, { once: true });
+            }
+          });
+        }
       }
       if (transcriptWrapper && existing.studentTranscript) {
         transcriptWrapper.classList.remove("hidden");
@@ -820,10 +835,10 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     } else {
-      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo con Whisper AI...';
+      if (btnText) btnText.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo audio...';
       const container = document.getElementById("oralLiveTranscriptContainer");
       if (container) {
-        container.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse flex items-center gap-2"><i class="fa-solid fa-brain"></i> Whisper AI está procesando el audio con precisión médica...</span>';
+        container.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Procesando audio con alta precisión fonética...</span>';
       }
       if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
       if (btn) btn.disabled = true;
@@ -839,7 +854,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (playerWrapper && player && result.audioUrl) {
           player.src = result.audioUrl;
+          const durationEl = document.getElementById("oralPlaybackDurationText");
+          if (durationEl) durationEl.textContent = formatDuration(result.durationSecs || 0);
           playerWrapper.classList.remove("hidden");
+
+          if (!player.dataset.fixedDurationBound) {
+            player.dataset.fixedDurationBound = "true";
+            player.addEventListener('loadedmetadata', () => {
+              if (player.duration === Infinity || player.duration > 3600) {
+                player.currentTime = Number.MAX_SAFE_INTEGER;
+                player.addEventListener('timeupdate', function onTime() {
+                  player.currentTime = 0;
+                  player.removeEventListener('timeupdate', onTime);
+                }, { once: true });
+              }
+            });
+          }
         }
         if (transcriptWrapper) {
           transcriptWrapper.classList.remove("hidden");
@@ -851,6 +881,13 @@ document.addEventListener("DOMContentLoaded", () => {
         renderOralPillsNavigation();
       }
     }
+  }
+
+  function formatDuration(secs) {
+    const s = Math.max(0, Math.round(secs || 0));
+    const m = Math.floor(s / 60).toString().padStart(2, "0");
+    const remS = (s % 60).toString().padStart(2, "0");
+    return `${m}:${remS}`;
   }
 
   function escapeHtml(str) {
@@ -1215,7 +1252,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const audioPlayerHtml = studentAns && studentAns.audioUrl
           ? `<div class="pt-2 border-t border-slate-800/80">
-               <span class="text-[10px] text-slate-400 block mb-1"><i class="fa-solid fa-volume-high mr-1"></i> Escuchar tu grabación de audio:</span>
+               <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                 <span><i class="fa-solid fa-volume-high mr-1 text-indigo-400"></i> Escuchar tu grabación de audio:</span>
+                 <span class="font-mono text-[11px] text-indigo-300 font-bold bg-slate-950 px-2 py-0.5 rounded-md border border-slate-800">
+                   <i class="fa-regular fa-clock mr-1 text-[10px]"></i>${formatDuration(studentAns.durationSecs || 0)}
+                 </span>
+               </div>
                <audio controls src="${studentAns.audioUrl}" class="w-full h-8 rounded-lg"></audio>
              </div>`
           : "";

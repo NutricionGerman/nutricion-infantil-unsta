@@ -575,15 +575,18 @@
 
           <!-- Reproductor de audio grabado -->
           <div id="oralPlaybackWrapper" class="hidden max-w-sm mx-auto pt-2">
-            <p class="text-[11px] text-slate-400 mb-1">Escucha tu respuesta grabada:</p>
+            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+              <span>Escucha tu respuesta grabada:</span>
+              <span id="oralPlaybackDurationText" class="font-mono text-xs text-indigo-300 font-bold">00:00</span>
+            </div>
             <audio id="oralRecordedPlayer" controls class="w-full h-8 rounded-lg"></audio>
           </div>
 
-          <!-- Transcripción Oficial con Whisper AI -->
+          <!-- Transcripción Oficial de tu Voz -->
           <div id="oralLiveTranscriptWrapper" class="hidden text-left bg-slate-900/90 p-3.5 rounded-2xl border border-indigo-500/30 text-xs text-slate-200 shadow-md">
             <div class="flex items-center justify-between mb-1.5 flex-wrap gap-1">
               <span class="text-indigo-400 text-[10px] uppercase font-extrabold flex items-center gap-1.5">
-                <i class="fa-solid fa-brain"></i> Transcripción Whisper AI (OpenAI):
+                <i class="fa-solid fa-microphone-lines"></i> Transcripción Oficial de tu Voz:
               </span>
               <span id="oralWordEditCounter" class="text-[10px] text-indigo-300/80 font-bold">
                 Toca una palabra para corregirla (máx. 3)
@@ -748,12 +751,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts con Cache-Buster para Forzar Actualización Inmediata -->
-  <script src="js/config.js?v=3.1"></script>
-  <script src="js/data_flashcards.js?v=3.1"></script>
-  <script src="js/audio_engine.js?v=3.1"></script>
-  <script src="js/audio_recorder.js?v=3.1"></script>
-  <script src="js/ai_evaluator.js?v=3.1"></script>
-  <script src="js/storage.js?v=3.1"></script>
-  <script src="js/app.js?v=3.1"></script>
+  <script src="js/config.js?v=3.2"></script>
+  <script src="js/data_flashcards.js?v=3.2"></script>
+  <script src="js/audio_engine.js?v=3.2"></script>
+  <script src="js/fix-webm-duration.js?v=3.2"></script>
+  <script src="js/audio_recorder.js?v=3.2"></script>
+  <script src="js/ai_evaluator.js?v=3.2"></script>
+  <script src="js/storage.js?v=3.2"></script>
+  <script src="js/app.js?v=3.2"></script>
 </body>
 </html>
