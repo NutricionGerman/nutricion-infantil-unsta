@@ -25,6 +25,15 @@ class StorageManager {
         u7_p1: null,
         u7_p2: null
       },
+      partialXpAwarded: {
+        u5_p1: 0,
+        u5_p2: 0,
+        u6_p1: 0,
+        u6_p2: 0,
+        u7_p1: 0,
+        u7_p2: 0
+      },
+      honorBonusAwarded: false,
       examHistory: [],
       novaScore: 0,
       etapasScore: 0,
@@ -114,16 +123,54 @@ class StorageManager {
 
   recordPartialGrade(partialKey, grade, maxGrade = 10) {
     if (!this.state.partialGrades) this.state.partialGrades = {};
-    const passed = grade >= 7.0;
+    if (!this.state.partialXpAwarded) this.state.partialXpAwarded = {};
+
+    const roundedGrade = Math.round(grade * 10) / 10;
+    const passed = roundedGrade >= 7.0;
     this.state.partialGrades[partialKey] = {
-      grade: Math.round(grade * 10) / 10,
+      grade: roundedGrade,
       maxGrade,
       passed,
       date: new Date().toLocaleDateString()
     };
-    this.addXP(Math.round(grade * 15));
+
+    // Recompensa de XP oficial cátedra UNSTA:
+    // Nota >= 9.0 -> 2 XP
+    // Nota >= 8.5 -> 1 XP (o >= 8.0 según criterio cátedra)
+    let moduleTargetXp = 0;
+    if (roundedGrade >= 9.0) {
+      moduleTargetXp = 2;
+    } else if (roundedGrade >= 8.5) {
+      moduleTargetXp = 1;
+    }
+
+    const previousModuleXp = Number(this.state.partialXpAwarded[partialKey]) || 0;
+    const deltaXp = Math.max(0, moduleTargetXp - previousModuleXp);
+    if (deltaXp > 0) {
+      this.state.partialXpAwarded[partialKey] = moduleTargetXp;
+      this.addXP(deltaXp);
+    }
+
+    // Cuadro de Honor (+10 XP) si completó los 6 parciales con promedio >= 9.0
+    const summary = this.getOverallAverage();
+    let honorXpAwarded = 0;
+    if (summary.isHonor && !this.state.honorBonusAwarded) {
+      honorXpAwarded = 10;
+      this.state.honorBonusAwarded = true;
+      this.addXP(10);
+    }
+
+    const totalXpGained = deltaXp + honorXpAwarded;
     this.saveState();
-    return this.getOverallAverage();
+
+    return {
+      summary,
+      totalXpGained,
+      deltaXp,
+      moduleTargetXp,
+      previousModuleXp,
+      honorXpAwarded
+    };
   }
 
   recordPartialSubmission(partialKey, submissionData) {

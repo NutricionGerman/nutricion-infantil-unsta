@@ -1398,8 +1398,13 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         // Sincronizar bonificaciones de XP acumuladas en Firestore
-        if (result.xpAwardedReport && result.xpAwardedReport.totalXpGained > 0) {
-          updateData["xp"] = firebase.firestore.FieldValue.increment(result.xpAwardedReport.totalXpGained);
+        if (result.xpAwardedReport) {
+          if (result.xpAwardedReport.moduleTargetXp > 0) {
+            updateData[`oralExams.partialXpAwarded.${partialKey}`] = result.xpAwardedReport.moduleTargetXp;
+          }
+          if (result.xpAwardedReport.totalXpGained > 0) {
+            updateData["xp"] = firebase.firestore.FieldValue.increment(result.xpAwardedReport.totalXpGained);
+          }
         }
 
         // Si completa los 6 y alcanza Cuadro de Honor (>= 9.0), acreditar distinción
@@ -2161,11 +2166,9 @@ document.addEventListener("DOMContentLoaded", () => {
           currentExamResult.isHonor = currentExamResult.finalGrade >= 9.0;
           currentExamResult.isDistinguished = currentExamResult.finalGrade >= 8.0 && currentExamResult.finalGrade < 9.0;
 
-          if (sm.state.partialGrades && sm.state.partialGrades[currentOralPartialKey]) {
-            sm.state.partialGrades[currentOralPartialKey].grade = currentExamResult.finalGrade;
-            sm.state.partialGrades[currentOralPartialKey].passed = currentExamResult.passed;
-            sm.saveState();
-          }
+          // Actualizar nota en Storage y computar si la mejora en la pregunta le otorgó nuevo delta de XP
+          const xpReport = sm.recordPartialGrade(currentOralPartialKey, currentExamResult.finalGrade);
+          currentExamResult.xpAwardedReport = xpReport;
 
           syncExamToFirestore(currentOralPartialKey, currentExamResult, oralStudentAnswers);
           renderOralExamResults(currentExamResult);

@@ -251,3 +251,21 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Panel Docente: La tabla de bonificaciones muestra el mínimo requerido (`Mín: X.X`) y colorea en verde (#34d399) solo a quienes cumplen la calificación del tier que adquirieron.
       * Versionado de caché elevado a `tienda.js?v=1.38` en `index.html`.
 
+26. **Reparación y Acreditación Retroactiva de Recompensas de XP por Nota en Exámenes Orales**:
+    - **Diagnóstico del Fallo de Acreditación**:
+      * En `proyectos/repaso_parcial_2/js/storage.js`, el método `recordPartialGrade` no retornaba el objeto con `totalXpGained`, sino `this.getOverallAverage()`.
+      * Debido a esto, en `app.js` la condición `result.xpAwardedReport.totalXpGained > 0` evaluaba como falso/indefinido y la llamada `FieldValue.increment(...)` a Firestore nunca se ejecutaba.
+    - **Solución y Regla de Recompensas Aplicada**:
+      * Nota $\ge 9.0$: Otorga **+2 XP**.
+      * Nota $\ge 8.5$: Otorga **+1 XP** (soporta $\ge 8.0$ si el docente lo confirma).
+      * Promedio final $\ge 9.0$ en los 6 parciales: **+10 XP** (Cuadro de Honor).
+      * Se implementó el control de deltas en `storage.js` para evitar duplicación al re-rendir o recuperar preguntas.
+      * Se conectó `syncExamToFirestore` para guardar `oralExams.partialXpAwarded.${partialKey}` en Firestore.
+      * Se actualizó la versión de scripts a `v=3.8` en `proyectos/repaso_parcial_2/index.html`.
+    - **Acreditación Retroactiva en Firestore**:
+      * Juan Martín Paz (UP 344022, U5P1: 9.0) $\rightarrow$ +2 XP (saldo de 21 a 23 XP).
+      * Antonella Ávila Lucena (UP 343269, U5P2: 8.7) $\rightarrow$ +1 XP (saldo de 37 a 38 XP).
+      * Santiago Jesús Vázquez (UP 343815, U5P1: 8.7, U5P2: 8.9) $\rightarrow$ +2 XP (saldo de 32 a 34 XP).
+      * Luca Delani (UP 344036, U6P1: 8.5) $\rightarrow$ +1 XP (saldo de 39 a 40 XP).
+
+
