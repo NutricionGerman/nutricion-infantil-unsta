@@ -321,6 +321,16 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Versionado anti-caché elevado a `v=4.3` en `proyectos/repaso_parcial_2/index.html`.
       * Pool Multi-Clave Groq: Se integraron las 3 nuevas claves proporcionadas por el docente en `config.js` (`groqApiKeys`). Cada petición de audio se distribuye mediante balanceo Round-Robin, y si alguna clave arrojara límite o fallo, el sistema conmuta automáticamente a las siguientes en milisegundos.
 
+32. **Límite Estricto de 40 Segundos por Pregunta Oral con Auto-Stop**:
+    - **Criterio Docente**: Fijar un tope máximo de 40 segundos por pregunta oral tanto en el examen general de 10 preguntas como en el modal de recuperación individual.
+    - **Implementación Técnica**:
+      * Indicador dinámico de tiempo: `🔴 00:15 / 00:40`.
+      * Alerta visual a los 30 segundos: el distintivo cambia a color ámbar pulsante para avisar que quedan 10 segundos.
+      * Auto-Stop a los 40 segundos: el sistema detiene y guarda automáticamente la grabación, enviándola a transcribir sin que el alumno pierda lo que dijo.
+      * Eficiencia de Cuota: Archivos livianos (<70 KB) que viajan al instante en redes móviles y aseguran una capacidad superior a 30 alumnos en simultáneo sin saturar las APIs de Groq.
+      * Versionado anti-caché elevado a `v=4.4` en `proyectos/repaso_parcial_2/index.html`.
+
+
 
 
 
