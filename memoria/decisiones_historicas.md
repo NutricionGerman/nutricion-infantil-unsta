@@ -244,9 +244,10 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * **+5 Puntos Prácticos**: 6 exámenes orales completados con **Promedio $\ge 8.5$** (30 XP).
     - **Adaptación en la Interfaz de la Tienda (`tienda.js`)**:
       * Función helper `getRequiredOralGradeForPoints(pts)`.
-      * En cada tarjeta de la tienda, se despliega una insignia interactiva: `Requiere Oral ≥ X.X` o `Habilitado (Oral ≥ X.X)` con checkmark verde según el promedio y estado del estudiante.
+      * En cada tarjeta de la tienda, se despliega la insignia interactiva oficial solicitada por el docente: `Requiere Nota ≥ X.X` o `Habilitado (Nota ≥ X.X)` con checkmark verde según el promedio y estado del estudiante.
+      * Se actualizaron las descripciones oficiales tanto en Firestore (`app_state/tienda_items`) como dinámicamente en código para reflejar la nota exacta de cada beneficio (+3: nota $\ge 7.5$, +4: nota $\ge 8$, +5: nota $\ge 8.5$).
       * El banner panorámico detalla la escala completa de notas mínimas.
       * Modal SweetAlert2 específico: Si una alumna no alcanza la nota de corte de un tier (ej. tiene 7.2 e intenta comprar +3 puntos), se le informa su promedio, la nota requerida, los puntos faltantes y se le invita a recuperar preguntas por 1 XP o re-rendir parciales con botón directo.
       * Panel Docente: La tabla de bonificaciones muestra el mínimo requerido (`Mín: X.X`) y colorea en verde (#34d399) solo a quienes cumplen la calificación del tier que adquirieron.
-      * Versionado de caché elevado a `tienda.js?v=1.37` en `index.html`.
+      * Versionado de caché elevado a `tienda.js?v=1.38` en `index.html`.
 

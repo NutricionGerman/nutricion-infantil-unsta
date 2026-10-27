@@ -343,6 +343,7 @@
                         const has6Completed = oralStatus.completedCount >= 6;
                         const hasNota = (oralStatus.average !== null && oralStatus.average >= minNotaRequired);
                         const isUnlocked = has6Completed && hasNota;
+                        const formattedReq = (minNotaRequired === 7 || minNotaRequired === 8) ? minNotaRequired.toString() : minNotaRequired.toFixed(1);
 
                         const reqBadgeHTML = `
                             <div style="margin: 2px 0 10px; display: flex; justify-content: center;">
@@ -352,10 +353,15 @@
                                         : 'background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde047;'
                                 }">
                                     <i class="fas ${isUnlocked ? 'fa-check-circle' : 'fa-lock'}"></i>
-                                    ${isUnlocked ? `Habilitado (Oral ≥ ${minNotaRequired.toFixed(1)})` : `Requiere Oral ≥ ${minNotaRequired.toFixed(1)}`}
+                                    ${isUnlocked ? `Habilitado (Nota ≥ ${formattedReq})` : `Requiere Nota ≥ ${formattedReq}`}
                                 </span>
                             </div>
                         `;
+
+                        let itemDescription = item.desc || '';
+                        if (itemDescription.includes('nota ≥')) {
+                            itemDescription = itemDescription.replace(/nota\s*≥\s*[\d\.,]+/i, `nota ≥ ${formattedReq}`);
+                        }
 
                         regularHTML += `
                             <div class="item-card practical-bonus-card" style="position: relative; overflow: hidden; padding: 0 !important; border: 1.5px solid ${theme.borderColor}; background: linear-gradient(180deg, rgba(20,24,35,0.98) 0%, #0c0e14 100%); border-radius: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 18px ${theme.glowColor}; display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s;">
@@ -394,7 +400,7 @@
                                     </h4>
                                     ${reqBadgeHTML}
                                     <p style="color: #94a3b8; font-size: 0.78rem; line-height: 1.42; text-align: center; margin: 0 0 14px 0; flex-grow: 1;">
-                                        ${item.desc}
+                                        ${itemDescription}
                                     </p>
                                     
                                     ${timeIndicator}
