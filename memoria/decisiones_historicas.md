@@ -297,6 +297,18 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Inserción en `xpHistory` de la transacción de reembolso: `Reintegro de Tienda: +5 Puntos Prácticos (Requiere 6 exámenes orales completados con promedio ≥ 8.5)`.
       * La planilla de bonificaciones del Panel Docente y el script de verificación en vivo confirman únicamente 1 comprador activo: Luca Delani.
 
+30. **Compatibilidad Universal para Examen Oral en iOS Safari (iPhone) y Corrección de Transcripción Whisper**:
+    - **Diagnóstico del Caso Gimena Godoy (UP 344025 - Maru)**:
+      * Al rendir desde un iPhone (iOS Safari), 4 de las 10 preguntas quedaron como '(Sin respuesta de voz registrada)', el reproductor de audio arrojó '▶ Error' a pesar de haber grabado 24 segundos y la calificación final cayó a 5.1/10.
+      * Causa raíz: En iOS Safari `MediaRecorder` graba exclusivamente en contenedor MP4/AAC (`audio/mp4`). El código anterior forzaba el Blob a `type: 'audio/webm;codecs=opus'` y enviaba el archivo como `respuesta_oral.webm` a Groq Whisper. Esto provocaba que el reproductor nativo de Safari fallara (`▶ Error`) y que la API de Whisper rechazara el archivo por inconsistencia de contenedor. Al fallar Whisper y desconectarse `webkitSpeechRecognition` en Safari, la transcripción quedaba vacía y la IA calificaba con 3/10 por omisión.
+    - **Solución Arquitectónica Implementada**:
+      * Negociación dinámica de códecs en `audio_recorder.js`: detección automática con `MediaRecorder.isTypeSupported` priorizando `audio/mp4` en iOS y `audio/webm` en Android/Chrome.
+      * Creación del Blob con el MIME nativo real del navegador y mapeo dinámico de la extensión enviada a Groq Whisper (`respuesta_oral.m4a`, `.aac`, `.webm`).
+      * Grabación en fragmentos continuos cada 1000ms (`mediaRecorder.start(1000)`) para impedir que WebKit descarte fragmentos al invocar `.stop()`.
+      * Alertas preventivas en `app.js`: advertencia explícita si se grabó audio pero no se detectó texto antes de avanzar, e indicador con triángulo amarillo en las píldoras de navegación.
+      * Versionado anti-caché elevado a `v=4.0` en `proyectos/repaso_parcial_2/index.html`.
+
+
 
 
 

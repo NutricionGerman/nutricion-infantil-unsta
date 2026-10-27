@@ -729,21 +729,28 @@ document.addEventListener("DOMContentLoaded", () => {
       pillBtn.id = `oralPill_${i}`;
 
       const hasAudio = oralStudentAnswers[i] && oralStudentAnswers[i].audioUrl;
+      const hasTranscript = oralStudentAnswers[i] && oralStudentAnswers[i].studentTranscript && !oralStudentAnswers[i].studentTranscript.startsWith("El estudiante no");
       const isCurrent = (i === oralExamCurrentIndex);
 
       let classes = "w-8 h-8 rounded-lg text-xs font-bold transition flex items-center justify-center ";
       if (isCurrent) {
         classes += "bg-indigo-600 text-white ring-2 ring-indigo-400 shadow-md scale-105";
-      } else if (hasAudio) {
+      } else if (hasAudio && hasTranscript) {
         classes += "bg-emerald-950/70 text-emerald-300 border border-emerald-500/50";
+      } else if (hasAudio && !hasTranscript) {
+        classes += "bg-amber-950/70 text-amber-300 border border-amber-500/50";
       } else {
         classes += "bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700";
       }
 
       pillBtn.className = classes;
-      pillBtn.innerHTML = hasAudio
-        ? `<i class="fa-solid fa-check text-[10px]"></i>`
-        : `${i + 1}`;
+      if (hasAudio && hasTranscript) {
+        pillBtn.innerHTML = `<i class="fa-solid fa-check text-[10px]"></i>`;
+      } else if (hasAudio && !hasTranscript) {
+        pillBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-[10px] text-amber-400"></i>`;
+      } else {
+        pillBtn.innerHTML = `${i + 1}`;
+      }
       pillBtn.title = `Ir a Pregunta ${i + 1}`;
 
       pillBtn.addEventListener("click", async () => {
@@ -1147,9 +1154,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     saveCurrentQuestionAnswer();
 
-    if (!currentQuestionAudioUrl && !currentQuestionTranscript) {
+    const currAns = oralStudentAnswers[oralExamCurrentIndex];
+    const hasAudio = !!(currAns && currAns.audioUrl && (currAns.durationSecs || 0) >= 2);
+    const hasTranscript = !!(currAns && currAns.studentTranscript && !currAns.studentTranscript.startsWith("El estudiante no"));
+
+    if (!hasAudio && !hasTranscript) {
       const confirmSkip = confirm(`No has grabado tu respuesta oral para la Pregunta ${oralExamCurrentIndex + 1}. ¿Deseas continuar de todos modos sin responder?`);
       if (!confirmSkip) return;
+    } else if (hasAudio && !hasTranscript) {
+      const confirmAudioOnly = confirm(`Detectamos tu grabación de audio (${formatDuration(currAns.durationSecs)}) pero no se detectó texto en la transcripción. ¿Deseas continuar de todos modos o prefieres re-grabar la respuesta antes de avanzar?`);
+      if (!confirmAudioOnly) return;
     }
 
     if (oralExamCurrentIndex < TOTAL_ORAL_QUESTIONS - 1) {
@@ -1159,10 +1173,10 @@ document.addEventListener("DOMContentLoaded", () => {
       currentQuestionDuration = 0;
       renderOralExamQuestion();
     } else {
-      const missingCount = oralStudentAnswers.filter(a => !a || (!a.audioUrl && a.studentTranscript.startsWith("El estudiante no"))).length;
+      const missingTranscriptCount = oralStudentAnswers.filter(a => !a || !a.studentTranscript || a.studentTranscript.startsWith("El estudiante no")).length;
       let promptMsg = `¿Deseas finalizar tu examen oral y enviar las 10 respuestas de este parcial a calificar con la Inteligencia Artificial?`;
-      if (missingCount > 0) {
-        promptMsg = `Tienes ${missingCount} de las 10 preguntas sin audio grabado. ¿Deseas entregar el examen de todos modos?`;
+      if (missingTranscriptCount > 0) {
+        promptMsg = `⚠️ Atención: Tienes ${missingTranscriptCount} de las 10 preguntas sin respuesta de voz registrada o transcrita. La IA las calificará como preguntas no respondidas. ¿Deseas entregar el examen de todos modos?`;
       }
       if (confirm(promptMsg)) {
         submitOralExamToAI();

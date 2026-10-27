@@ -1,6 +1,7 @@
 /**
  * GRABADOR DE VOZ Y EVALUADOR ORAL (MediaRecorder + SpeechRecognition)
  * Nutrición Infantil UNSTA - Modo Examen Oral & Recuperación Activa
+ * Compatible con iOS Safari (MP4/AAC) y Chrome/Android/Desktop (WebM/Opus)
  */
 
 class AudioRecorderEngine {
@@ -14,12 +15,33 @@ class AudioRecorderEngine {
     this.currentTranscript = "";
     this.recognition = null;
     this.latestAudioUrl = null;
+    this.currentMimeType = "";
 
     this.initSpeechRecognition();
   }
 
   isSupported() {
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  }
+
+  getBestMimeType() {
+    const candidates = [
+      'audio/webm;codecs=opus',
+      'audio/webm',
+      'audio/mp4',
+      'audio/aac',
+      'audio/ogg;codecs=opus',
+      'audio/ogg'
+    ];
+    if (typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported) {
+      return '';
+    }
+    for (const t of candidates) {
+      if (MediaRecorder.isTypeSupported(t)) {
+        return t;
+      }
+    }
+    return '';
   }
 
   initSpeechRecognition() {
@@ -38,16 +60,28 @@ class AudioRecorderEngine {
     this.currentTranscript = "";
 
     try {
-      this.audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      this.mediaRecorder = new MediaRecorder(this.audioStream);
+      this.audioStream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+
+      const bestMime = this.getBestMimeType();
+      const options = bestMime ? { mimeType: bestMime } : {};
+      
+      this.mediaRecorder = new MediaRecorder(this.audioStream, options);
+      this.currentMimeType = this.mediaRecorder.mimeType || bestMime || 'audio/webm';
 
       this.mediaRecorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
+        if (event.data && event.data.size > 0) {
           this.audioChunks.push(event.data);
         }
       };
 
-      this.mediaRecorder.start();
+      // Chunks cada 1000ms para evitar pérdida de datos en iOS Safari al detener
+      this.mediaRecorder.start(1000);
       this.isRecording = true;
       this.recordingStartTime = Date.now();
 
@@ -59,7 +93,7 @@ class AudioRecorderEngine {
         }, 1000);
       }
 
-      // Reconocimiento de voz para transcripción en vivo (sin acumulación repetida)
+      // Reconocimiento de voz para transcripción en vivo
       if (this.recognition) {
         this.recognition.onresult = (event) => {
           let finalStr = "";
@@ -116,7 +150,10 @@ class AudioRecorderEngine {
       const elapsedSecs = Math.floor((Date.now() - this.recordingStartTime) / 1000);
 
       this.mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(this.audioChunks, { type: "audio/webm;codecs=opus" });
+        // Usar el MIME real soportado por el navegador (audio/mp4 en iOS Safari, audio/webm en Chrome/Firefox)
+        const mime = this.currentMimeType || (this.mediaRecorder && this.mediaRecorder.mimeType) || 'audio/webm';
+        const audioBlob = new Blob(this.audioChunks, { type: mime });
+
         if (this.latestAudioUrl) {
           URL.revokeObjectURL(this.latestAudioUrl);
         }
@@ -145,7 +182,8 @@ class AudioRecorderEngine {
           audioBlob,
           audioUrl: this.latestAudioUrl,
           transcript: finalTranscript,
-          durationSecs: elapsedSecs
+          durationSecs: elapsedSecs,
+          mimeType: mime
         });
       };
 
@@ -155,15 +193,34 @@ class AudioRecorderEngine {
 
   async transcribeWithWhisper(audioBlob) {
     try {
+      if (!audioBlob || audioBlob.size < 500) {
+        console.warn("[Whisper] Audio demasiado corto o vacío.");
+        return null;
+      }
+
       const config = window.UNSTA_AI_CONFIG;
       if (!config || !config.groqApiKey) {
         console.warn("[Whisper] No hay clave de Groq configurada, usando fallback.");
         return null;
       }
 
-      console.log("[AudioRecorder] Procesando audio de alta fidelidad...");
+      console.log("[AudioRecorder] Procesando audio de alta fidelidad con Whisper...");
       const formData = new FormData();
-      formData.append('file', audioBlob, 'respuesta_oral.webm');
+
+      // Ajustar extensión según el MIME real para compatibilidad con Whisper de Groq
+      const mime = (audioBlob.type || this.currentMimeType || '').toLowerCase();
+      let filename = 'respuesta_oral.webm';
+      if (mime.includes('mp4') || mime.includes('m4a')) {
+        filename = 'respuesta_oral.m4a';
+      } else if (mime.includes('aac')) {
+        filename = 'respuesta_oral.aac';
+      } else if (mime.includes('ogg')) {
+        filename = 'respuesta_oral.ogg';
+      } else if (mime.includes('wav')) {
+        filename = 'respuesta_oral.wav';
+      }
+
+      formData.append('file', audioBlob, filename);
       formData.append('model', 'whisper-large-v3-turbo');
       formData.append('language', 'es');
       formData.append('temperature', '0.0');
