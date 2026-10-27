@@ -100,6 +100,15 @@
 .item-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.1); }
 .item-card.gold { border-color: rgba(255, 215, 0, 0.2); background: linear-gradient(180deg, rgba(255,215,0,0.03) 0%, #12141A 100%); }
 
+.practical-bonus-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 36px rgba(0,0,0,0.7) !important;
+}
+.practical-bonus-card .btn-buy:hover {
+    transform: scale(1.12);
+    filter: brightness(1.15);
+}
+
 .item-icon { font-size: 45px; margin-bottom: 15px; align-self: center; text-align: center; height: 60px; display: flex; align-items: center; justify-content: center; }
 .item-icon img { max-height: 100%; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5)); }
 .item-card.gold .item-icon { filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.4)); }

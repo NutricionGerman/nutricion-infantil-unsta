@@ -155,6 +155,64 @@
             </div>
         `;
 
+        const PUNTOS_THEMES = {
+            1: {
+                tier: '🥉 Bronce',
+                badgeBg: 'linear-gradient(135deg, #78350f 0%, #b45309 50%, #d97706 100%)',
+                bannerBg: 'radial-gradient(circle at 50% 35%, rgba(245, 158, 11, 0.4) 0%, rgba(120, 53, 15, 0.22) 55%, rgba(15, 23, 42, 0.95) 100%)',
+                borderColor: 'rgba(245, 158, 11, 0.5)',
+                glowColor: 'rgba(245, 158, 11, 0.35)',
+                textColor: '#fef3c7',
+                accentColor: '#f59e0b',
+                stars: '★☆☆☆☆',
+                btnGrad: 'linear-gradient(135deg, #f59e0b, #b45309)'
+            },
+            2: {
+                tier: '🥈 Platino',
+                badgeBg: 'linear-gradient(135deg, #0369a1 0%, #0284c7 50%, #38bdf8 100%)',
+                bannerBg: 'radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.4) 0%, rgba(3, 105, 161, 0.22) 55%, rgba(15, 23, 42, 0.95) 100%)',
+                borderColor: 'rgba(56, 189, 248, 0.55)',
+                glowColor: 'rgba(56, 189, 248, 0.35)',
+                textColor: '#e0f2fe',
+                accentColor: '#38bdf8',
+                stars: '★★☆☆☆',
+                btnGrad: 'linear-gradient(135deg, #38bdf8, #0284c7)'
+            },
+            3: {
+                tier: '🥇 Oro Imperial',
+                badgeBg: 'linear-gradient(135deg, #a16207 0%, #eab308 50%, #fef08a 100%)',
+                bannerBg: 'radial-gradient(circle at 50% 35%, rgba(234, 179, 8, 0.5) 0%, rgba(161, 98, 7, 0.25) 55%, rgba(15, 23, 42, 0.95) 100%)',
+                borderColor: 'rgba(234, 179, 8, 0.7)',
+                glowColor: 'rgba(234, 179, 8, 0.45)',
+                textColor: '#fef08a',
+                accentColor: '#eab308',
+                stars: '★★★☆☆',
+                btnGrad: 'linear-gradient(135deg, #eab308, #ca8a04)'
+            },
+            4: {
+                tier: '💎 Esmeralda',
+                badgeBg: 'linear-gradient(135deg, #065f46 0%, #10b981 50%, #6ee7b7 100%)',
+                bannerBg: 'radial-gradient(circle at 50% 35%, rgba(16, 185, 129, 0.5) 0%, rgba(6, 95, 70, 0.25) 55%, rgba(15, 23, 42, 0.95) 100%)',
+                borderColor: 'rgba(16, 185, 129, 0.7)',
+                glowColor: 'rgba(16, 185, 129, 0.45)',
+                textColor: '#a7f3d0',
+                accentColor: '#10b981',
+                stars: '★★★★☆',
+                btnGrad: 'linear-gradient(135deg, #10b981, #059669)'
+            },
+            5: {
+                tier: '👑 Legendaria',
+                badgeBg: 'linear-gradient(135deg, #701a75 0%, #c026d3 50%, #f472b6 100%)',
+                bannerBg: 'radial-gradient(circle at 50% 35%, rgba(217, 70, 239, 0.55) 0%, rgba(112, 26, 117, 0.28) 55%, rgba(15, 23, 42, 0.95) 100%)',
+                borderColor: 'rgba(217, 70, 239, 0.8)',
+                glowColor: 'rgba(217, 70, 239, 0.55)',
+                textColor: '#fdf4ff',
+                accentColor: '#e879f9',
+                stars: '★★★★★',
+                btnGrad: 'linear-gradient(135deg, #c026d3, #9333ea)'
+            }
+        };
+
         let legendaryHTML = '';
         let regularHTML = '';
         let hasLegendary = false;
@@ -195,33 +253,88 @@
                         </div>
                     `;
                 } else {
-                    const canAfford = currentXP >= item.cost;
                     const isPuntosItem = item.category === 'parcial_practico' || !!item.points || (item.name && item.name.includes('Parcial Práctico'));
-                    const isGold = item.cost >= 20 || (item.points && item.points >= 3);
                     
-                    const badgeHTML = isPuntosItem 
-                        ? `<div style="position: absolute; top: 12px; right: 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fef08a; font-size: 0.72rem; font-weight: 800; border-radius: 8px; padding: 2px 8px; letter-spacing: 0.5px; z-index: 2;">+${item.points || 1} PRÁCTICO</div>`
-                        : '';
+                    if (isPuntosItem) {
+                        const pts = Number(item.points) || 1;
+                        const theme = PUNTOS_THEMES[pts] || PUNTOS_THEMES[1];
 
-                    const mediaHTML = imageUrl 
-                        ? `<div class="item-icon"><img src="${imageUrl}" alt="Item Image"/></div>`
-                        : `<div class="item-icon ${!isGold ? 'item-icon-normal' : ''}"><i class="${item.icon || 'fas fa-box'}"></i></div>`;
+                        regularHTML += `
+                            <div class="item-card practical-bonus-card" style="position: relative; overflow: hidden; padding: 0 !important; border: 1.5px solid ${theme.borderColor}; background: linear-gradient(180deg, rgba(20,24,35,0.98) 0%, #0c0e14 100%); border-radius: 22px; box-shadow: 0 8px 24px rgba(0,0,0,0.6), 0 0 18px ${theme.glowColor}; display: flex; flex-direction: column; transition: transform 0.3s, box-shadow 0.3s;">
+                                
+                                <!-- BANNER PANORÁMICO SUPERIOR -->
+                                <div style="position: relative; height: 135px; background: ${theme.bannerBg}; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid ${theme.borderColor};">
+                                    
+                                    <!-- Badge de Bonificación Práctica arriba a la derecha -->
+                                    <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); border: 1px solid ${theme.borderColor}; color: ${theme.textColor}; font-size: 0.65rem; font-weight: 900; letter-spacing: 0.8px; padding: 3px 8px; border-radius: 6px; backdrop-filter: blur(4px); box-shadow: 0 2px 6px rgba(0,0,0,0.5);">
+                                        +${pts} PRÁCTICO
+                                    </div>
+                                    
+                                    <!-- Badge de Tier / Rango arriba a la izquierda -->
+                                    <div style="position: absolute; top: 10px; left: 10px; background: ${theme.badgeBg}; color: #ffffff; font-size: 0.62rem; font-weight: 900; letter-spacing: 0.6px; padding: 3px 8px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); text-transform: uppercase;">
+                                        ${theme.tier}
+                                    </div>
 
-                    regularHTML += `
-                        <div class="item-card ${isGold ? 'gold' : ''}" style="position: relative;">
-                            ${badgeHTML}
-                            ${mediaHTML}
-                            <div class="item-title">${item.name}</div>
-                            <div class="item-desc">${item.desc}</div>
-                            ${timeIndicator}
-                            <div class="item-footer">
-                                <div class="item-price">${item.cost} <span>XP</span></div>
-                                <button class="btn-buy" onclick="buyTiendaItem('${item.id}')" title="Canjear ${item.name} (${item.cost} XP)">
-                                    <i class="fa-solid fa-cart-shopping"></i>
-                                </button>
+                                    <!-- MEDALLÓN 3D EMBLEMA -->
+                                    <div style="width: 78px; height: 78px; border-radius: 50%; background: ${theme.badgeBg}; border: 3px solid #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 6px 20px ${theme.glowColor}, inset 0 2px 6px rgba(255,255,255,0.6); position: relative; z-index: 2; margin-top: 10px;">
+                                        <span style="font-size: 0.62rem; color: #fff; letter-spacing: 1.5px; line-height: 1; margin-bottom: 2px; text-shadow: 0 1px 3px rgba(0,0,0,0.6);">${theme.stars}</span>
+                                        <span style="font-size: 2.05rem; font-weight: 900; font-family: 'Impact', 'Arial Black', sans-serif; color: #ffffff; line-height: 0.88; text-shadow: 0 2px 8px rgba(0,0,0,0.65);">+${pts}</span>
+                                        <span style="font-size: 0.52rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.95); line-height: 1; margin-top: 2px;">PUNTOS</span>
+                                    </div>
+                                    
+                                    <!-- Listón decorativo inferior -->
+                                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: ${theme.badgeBg}; opacity: 0.9;"></div>
+                                </div>
+
+                                <!-- CUERPO Y DETALLES -->
+                                <div style="padding: 16px 18px 18px; display: flex; flex-direction: column; flex-grow: 1;">
+                                    <div style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: ${theme.accentColor}; margin-bottom: 3px; text-align: center;">
+                                        Bonificación Oficial
+                                    </div>
+                                    <h4 style="color: #ffffff; font-size: 1.05rem; font-weight: 800; text-align: center; margin: 0 0 8px 0; line-height: 1.25;">
+                                        ${item.name}
+                                    </h4>
+                                    <p style="color: #94a3b8; font-size: 0.78rem; line-height: 1.42; text-align: center; margin: 0 0 14px 0; flex-grow: 1;">
+                                        ${item.desc}
+                                    </p>
+                                    
+                                    ${timeIndicator}
+                                    
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06);">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <span style="font-size: 0.65rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Costo</span>
+                                            <div style="color: #fff; font-size: 1.35rem; font-weight: 900; font-family: 'Inter', sans-serif; display: flex; align-items: baseline; gap: 4px;">
+                                                ${item.cost} <span style="color: #f59e0b; font-size: 0.78rem; font-weight: 800;">XP</span>
+                                            </div>
+                                        </div>
+                                        <button class="btn-buy" onclick="buyTiendaItem('${item.id}')" title="Canjear ${item.name} (${item.cost} XP)" style="background: ${theme.btnGrad}; box-shadow: 0 4px 15px ${theme.glowColor}; border-radius: 12px; width: 45px; height: 45px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: transform 0.2s;">
+                                            <i class="fa-solid fa-cart-shopping"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
+                    } else {
+                        const isGold = item.cost >= 20;
+                        const mediaHTML = imageUrl 
+                            ? `<div class="item-icon"><img src="${imageUrl}" alt="Item Image"/></div>`
+                            : `<div class="item-icon ${!isGold ? 'item-icon-normal' : ''}"><i class="${item.icon || 'fas fa-box'}"></i></div>`;
+
+                        regularHTML += `
+                            <div class="item-card ${isGold ? 'gold' : ''}" style="position: relative;">
+                                ${mediaHTML}
+                                <div class="item-title">${item.name}</div>
+                                <div class="item-desc">${item.desc}</div>
+                                ${timeIndicator}
+                                <div class="item-footer">
+                                    <div class="item-price">${item.cost} <span>XP</span></div>
+                                    <button class="btn-buy" onclick="buyTiendaItem('${item.id}')" title="Canjear ${item.name} (${item.cost} XP)">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
                 }
             });
         }
