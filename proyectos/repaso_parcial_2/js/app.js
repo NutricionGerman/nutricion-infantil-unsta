@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let oralExamCurrentIndex = 0;
   let oralStudentAnswers = []; // [ { question, officialAnswer, keyPoints, keywords, studentTranscript, audioUrl, durationSecs } ]
   let currentQuestionAudioUrl = null;
+  let currentQuestionAudioBlob = null;
   let currentQuestionTranscript = "";
   let currentQuestionDuration = 0;
   let oralWordEditsPerQuestion = {};
@@ -836,6 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (savedBadge) savedBadge.classList.remove("hidden");
     } else {
       currentQuestionAudioUrl = null;
+      currentQuestionAudioBlob = null;
       currentQuestionTranscript = "";
       currentQuestionDuration = 0;
     }
@@ -910,6 +912,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (result) {
         currentQuestionAudioUrl = result.audioUrl;
+        currentQuestionAudioBlob = result.audioBlob;
         currentQuestionTranscript = result.transcript;
         currentQuestionDuration = result.durationSecs;
 
@@ -968,8 +971,97 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const transcript = (currentQuestionTranscript || "").trim();
     if (!transcript) {
-      container.innerHTML = '<span class="text-slate-500 italic text-xs">Sin transcripción disponible</span>';
+      container.innerHTML = `
+        <div class="space-y-2 py-1 w-full text-left">
+          <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Audio registrado con éxito, pero la transcripción automática tardó o se saturó.</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <button id="btnRetryTranscribeNow" type="button" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow transition cursor-pointer">
+              <i class="fa-solid fa-rotate-right"></i> <span>Reintentar Transcribir</span>
+            </button>
+            <button id="btnManualTypeAudioText" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition cursor-pointer">
+              <i class="fa-solid fa-keyboard text-amber-400"></i> <span>Escribir lo que dije en el audio</span>
+            </button>
+          </div>
+        </div>
+      `;
       if (counterEl) counterEl.textContent = "";
+
+      const btnRetry = document.getElementById("btnRetryTranscribeNow");
+      if (btnRetry) {
+        btnRetry.addEventListener("click", async () => {
+          btnRetry.disabled = true;
+          btnRetry.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo...';
+          try {
+            if (currentQuestionAudioBlob) {
+              const text = await recorder.transcribeWithWhisper(currentQuestionAudioBlob);
+              if (text && text.trim().length > 0) {
+                currentQuestionTranscript = text.trim();
+                saveCurrentQuestionAnswer();
+                renderInteractiveTranscriptWords();
+                renderOralPillsNavigation();
+                return;
+              }
+            }
+            alert("El servidor de transcripción está saturado por la cantidad de alumnos rindiendo a la vez. Por favor toca el botón 'Escribir lo que dije en el audio' para guardar tu respuesta.");
+          } catch(e) {
+            console.error(e);
+          } finally {
+            btnRetry.disabled = false;
+            btnRetry.innerHTML = '<i class="fa-solid fa-rotate-right mr-1"></i> Reintentar Transcribir';
+          }
+        });
+      }
+
+      const btnManual = document.getElementById("btnManualTypeAudioText");
+      if (btnManual) {
+        btnManual.addEventListener("click", () => {
+          if (typeof Swal === 'undefined') {
+            const manualText = prompt("Escribe lo que respondiste en tu grabación de audio:");
+            if (manualText && manualText.trim().length > 5) {
+              currentQuestionTranscript = manualText.trim();
+              saveCurrentQuestionAnswer();
+              renderInteractiveTranscriptWords();
+              renderOralPillsNavigation();
+            }
+            return;
+          }
+
+          Swal.fire({
+            title: '<span class="text-base font-bold text-white">Ingresar Texto de tu Respuesta de Voz</span>',
+            html: `
+              <div class="text-left text-xs space-y-2 text-slate-300">
+                <p>Tu grabación de audio ya quedó registrada en el sistema. Escribe con tus palabras lo que dijiste para que la IA lo evalúe:</p>
+                <textarea id="swalManualAudioText" rows="4" class="w-full p-2.5 bg-slate-900 border border-indigo-500/50 rounded-xl text-white text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribe aquí lo que dijiste en el audio..."></textarea>
+              </div>
+            `,
+            background: '#0f172a',
+            color: '#f8fafc',
+            showCancelButton: true,
+            confirmButtonText: 'Guardar Respuesta',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#6366f1',
+            cancelButtonColor: '#475569',
+            preConfirm: () => {
+              const val = document.getElementById("swalManualAudioText")?.value?.trim();
+              if (!val || val.length < 5) {
+                Swal.showValidationMessage("Por favor escribe tu respuesta completa.");
+                return false;
+              }
+              return val;
+            }
+          }).then((res) => {
+            if (res.isConfirmed && res.value) {
+              currentQuestionTranscript = res.value;
+              saveCurrentQuestionAnswer();
+              renderInteractiveTranscriptWords();
+              renderOralPillsNavigation();
+            }
+          });
+        });
+      }
       return;
     }
 

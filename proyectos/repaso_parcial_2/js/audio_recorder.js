@@ -191,7 +191,7 @@ class AudioRecorderEngine {
     });
   }
 
-  async transcribeWithWhisper(audioBlob) {
+    async transcribeWithWhisper(audioBlob) {
     try {
       if (!audioBlob || audioBlob.size < 500) {
         console.warn("[Whisper] Audio demasiado corto o vacío.");
@@ -204,10 +204,6 @@ class AudioRecorderEngine {
         return null;
       }
 
-      console.log("[AudioRecorder] Procesando audio de alta fidelidad con Whisper...");
-      const formData = new FormData();
-
-      // Ajustar extensión según el MIME real para compatibilidad con Whisper de Groq
       const mime = (audioBlob.type || this.currentMimeType || '').toLowerCase();
       let filename = 'respuesta_oral.webm';
       if (mime.includes('mp4') || mime.includes('m4a')) {
@@ -220,33 +216,54 @@ class AudioRecorderEngine {
         filename = 'respuesta_oral.wav';
       }
 
-      formData.append('file', audioBlob, filename);
-      formData.append('model', 'whisper-large-v3-turbo');
-      formData.append('language', 'es');
-      formData.append('temperature', '0.0');
-      formData.append('prompt', 'Examen oral de Nutrición Infantil UNSTA: preescolar, escolar, adolescente, embarazo, CAPA 2, Guías Alimentarias, alimentos ultraprocesados, vegetarianismo, vitamina B12, hierro, cinc, calcio, fitatos, biodisponibilidad, suplementación, deportista, hidratación, triada de la mujer atleta');
+      // Cascada de modelos Whisper en Groq: turbo primero, si falla o da 429 pasa a v3 estándar
+      const modelsToTry = ['whisper-large-v3-turbo', 'whisper-large-v3'];
 
-      const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + config.groqApiKey
-        },
-        body: formData
-      });
+      for (const modelName of modelsToTry) {
+        for (let attempt = 1; attempt <= 2; attempt++) {
+          try {
+            console.log(`[AudioRecorder] Intentando transcripción con ${modelName} (intento ${attempt})...`);
+            const formData = new FormData();
+            formData.append('file', audioBlob, filename);
+            formData.append('model', modelName);
+            formData.append('language', 'es');
+            formData.append('temperature', '0.0');
+            formData.append('prompt', 'Examen oral de Nutrición Infantil UNSTA: preescolar, escolar, adolescente, embarazo, CAPA 2, Guías Alimentarias, alimentos ultraprocesados, vegetarianismo, vitamina B12, hierro, cinc, calcio, fitatos, biodisponibilidad, suplementación, deportista, hidratación, triada de la mujer atleta');
 
-      if (!response.ok) {
-        console.warn("[Whisper] Error en API de Whisper:", await response.text());
-        return null;
+            const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + config.groqApiKey
+              },
+              body: formData
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              if (data && data.text && data.text.trim().length > 0) {
+                console.log(`[Whisper] Transcripción completada con éxito (${modelName}):`, data.text);
+                return data.text.trim();
+              }
+            } else {
+              const errText = await response.text();
+              console.warn(`[Whisper] Error ${response.status} en ${modelName}:`, errText);
+              // Si es rate limit (429) o error temporal, salta directo al siguiente modelo
+              if (response.status === 429 || response.status >= 500) {
+                break; // prueba el siguiente modelo
+              }
+            }
+          } catch (eFetch) {
+            console.warn(`[Whisper] Error de red en ${modelName} (intento ${attempt}):`, eFetch);
+            if (attempt === 1) {
+              await new Promise(r => setTimeout(r, 800)); // pequeña pausa antes del reintento
+            }
+          }
+        }
       }
 
-      const data = await response.json();
-      if (data && data.text) {
-        console.log("[Whisper] Transcripción completada con éxito:", data.text);
-        return data.text.trim();
-      }
       return null;
     } catch (e) {
-      console.warn("[Whisper] Error conectando con Whisper:", e);
+      console.warn("[Whisper] Error general conectando con Whisper:", e);
       return null;
     }
   }
