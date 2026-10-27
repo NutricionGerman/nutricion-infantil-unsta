@@ -592,7 +592,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (badge) {
         if (record && typeof record.grade === "number") {
           const isPassed = record.grade >= 7.0;
-          badge.textContent = `Nota: ${record.grade} / 10`;
+          let xpTag = "";
+          if (record.grade >= 9.0) xpTag = " (+2 XP)";
+          else if (record.grade >= 8.0) xpTag = " (+1 XP)";
+          badge.textContent = `Nota: ${record.grade} / 10${xpTag}`;
           badge.className = isPassed
             ? "text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
             : "text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30";
@@ -1216,9 +1219,30 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("oralExamLoadingScreen").classList.add("hidden");
     document.getElementById("oralExamResultScreen").classList.remove("hidden");
 
-    // Guardar la nota oficial de este parcial específico en Storage
-    sm.recordPartialGrade(currentOralPartialKey, result.finalGrade);
+    // Guardar la nota oficial de este parcial específico en Storage y computar XP ganado
+    const xpReport = sm.recordPartialGrade(currentOralPartialKey, result.finalGrade);
+    result.xpAwardedReport = xpReport;
     initHeaderStats();
+
+    // Mostrar banner de XP ganado si hubo bonificación
+    const xpBanner = document.getElementById("oralXpGainedBanner");
+    const xpText = document.getElementById("oralXpGainedText");
+    if (xpBanner && xpText) {
+      if (xpReport && xpReport.totalXpGained > 0) {
+        let msg = `¡Ganaste +${xpReport.totalXpGained} XP!`;
+        if (xpReport.deltaXp > 0 && xpReport.honorXpAwarded > 0) {
+          msg = `🎉 ¡Ganaste +${xpReport.totalXpGained} XP! (+${xpReport.deltaXp} XP por tu nota en este módulo y +10 XP por el Cuadro de Honor)`;
+        } else if (xpReport.deltaXp > 0) {
+          msg = `🎉 ¡Ganaste +${xpReport.deltaXp} XP por tu calificación de ${result.finalGrade} / 10 en este módulo!`;
+        } else if (xpReport.honorXpAwarded > 0) {
+          msg = `👑 ¡Desbloqueaste el Cuadro de Honor! +10 XP acreditados a tu cuenta.`;
+        }
+        xpText.innerHTML = `<i class="fa-solid fa-coins text-amber-400 mr-1.5"></i> <span>${msg}</span>`;
+        xpBanner.classList.remove("hidden");
+      } else {
+        xpBanner.classList.add("hidden");
+      }
+    }
 
     // Banner de Honor EXCLUSIVO si nota >= 9 en este parcial
     const honorBanner = document.getElementById("oralHonorDistinctionBanner");
@@ -1373,9 +1397,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         };
 
-        // Si completa los 6 y alcanza Cuadro de Honor (>= 9.0), acreditar +10 XP y distinción
+        // Sincronizar bonificaciones de XP acumuladas en Firestore
+        if (result.xpAwardedReport && result.xpAwardedReport.totalXpGained > 0) {
+          updateData["xp"] = firebase.firestore.FieldValue.increment(result.xpAwardedReport.totalXpGained);
+        }
+
+        // Si completa los 6 y alcanza Cuadro de Honor (>= 9.0), acreditar distinción
         if (summary.isHonor) {
-          updateData["xp"] = firebase.firestore.FieldValue.increment(10);
           updateData["honorDistinction"] = {
             style: "gold",
             title: "CUADRO DE HONOR",
