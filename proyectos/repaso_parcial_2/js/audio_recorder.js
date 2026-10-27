@@ -191,7 +191,7 @@ class AudioRecorderEngine {
     });
   }
 
-    async transcribeWithWhisper(audioBlob) {
+      async transcribeWithWhisper(audioBlob) {
     try {
       if (!audioBlob || audioBlob.size < 500) {
         console.warn("[Whisper] Audio demasiado corto o vacío.");
@@ -199,8 +199,12 @@ class AudioRecorderEngine {
       }
 
       const config = window.UNSTA_AI_CONFIG;
-      if (!config || !config.groqApiKey) {
-        console.warn("[Whisper] No hay clave de Groq configurada, usando fallback.");
+      const apiKeys = (config && config.groqApiKeys && config.groqApiKeys.length > 0)
+        ? config.groqApiKeys
+        : (config && config.groqApiKey ? [config.groqApiKey] : []);
+
+      if (apiKeys.length === 0) {
+        console.warn("[Whisper] No hay claves de Groq configuradas, usando fallback.");
         return null;
       }
 
@@ -216,13 +220,19 @@ class AudioRecorderEngine {
         filename = 'respuesta_oral.wav';
       }
 
-      // Cascada de modelos Whisper en Groq: turbo primero, si falla o da 429 pasa a v3 estándar
       const modelsToTry = ['whisper-large-v3-turbo', 'whisper-large-v3'];
 
-      for (const modelName of modelsToTry) {
-        for (let attempt = 1; attempt <= 2; attempt++) {
+      if (typeof window._groqKeyIdx !== 'number') {
+        window._groqKeyIdx = Math.floor(Math.random() * apiKeys.length);
+      }
+
+      for (let kStep = 0; kStep < apiKeys.length; kStep++) {
+        const keyIndex = (window._groqKeyIdx + kStep) % apiKeys.length;
+        const currentKey = apiKeys[keyIndex];
+
+        for (const modelName of modelsToTry) {
           try {
-            console.log(`[AudioRecorder] Intentando transcripción con ${modelName} (intento ${attempt})...`);
+            console.log(`[AudioRecorder] Whisper vía clave #${keyIndex + 1} (${modelName})...`);
             const formData = new FormData();
             formData.append('file', audioBlob, filename);
             formData.append('model', modelName);
@@ -233,7 +243,7 @@ class AudioRecorderEngine {
             const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
               method: 'POST',
               headers: {
-                'Authorization': 'Bearer ' + config.groqApiKey
+                'Authorization': 'Bearer ' + currentKey
               },
               body: formData
             });
@@ -241,22 +251,19 @@ class AudioRecorderEngine {
             if (response.ok) {
               const data = await response.json();
               if (data && data.text && data.text.trim().length > 0) {
-                console.log(`[Whisper] Transcripción completada con éxito (${modelName}):`, data.text);
+                console.log(`[Whisper] Transcripción exitosa con clave #${keyIndex + 1} (${modelName}):`, data.text);
+                window._groqKeyIdx = (keyIndex + 1) % apiKeys.length;
                 return data.text.trim();
               }
             } else {
               const errText = await response.text();
-              console.warn(`[Whisper] Error ${response.status} en ${modelName}:`, errText);
-              // Si es rate limit (429) o error temporal, salta directo al siguiente modelo
-              if (response.status === 429 || response.status >= 500) {
-                break; // prueba el siguiente modelo
+              console.warn(`[Whisper] Error ${response.status} en clave #${keyIndex + 1} (${modelName}):`, errText);
+              if (response.status === 401 || response.status === 429) {
+                break; // Probar siguiente clave
               }
             }
           } catch (eFetch) {
-            console.warn(`[Whisper] Error de red en ${modelName} (intento ${attempt}):`, eFetch);
-            if (attempt === 1) {
-              await new Promise(r => setTimeout(r, 800)); // pequeña pausa antes del reintento
-            }
+            console.warn(`[Whisper] Error de red en clave #${keyIndex + 1}:`, eFetch);
           }
         }
       }
