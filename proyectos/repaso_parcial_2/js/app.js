@@ -634,6 +634,58 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // Verificar si el alumno ya rindió este parcial con anterioridad
+    const existingRecord = sm.state.partialGrades ? sm.state.partialGrades[partialKey] : null;
+    if (existingRecord && typeof existingRecord.grade === 'number') {
+      const isPassed = existingRecord.grade >= 7.0;
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          title: '¿Rendir este parcial de nuevo?',
+          html: `
+            <div class="text-left text-xs sm:text-sm space-y-3">
+              <p class="text-slate-300">
+                Actualmente ya tienes una calificación oficial registrada en este parcial:
+              </p>
+              <div class="text-center bg-slate-900 border ${isPassed ? 'border-emerald-500/50' : 'border-rose-500/50'} p-3 rounded-2xl">
+                <span class="text-3xl font-black ${isPassed ? 'text-emerald-400' : 'text-rose-400'} font-mono">
+                  ${existingRecord.grade} / 10
+                </span>
+                <p class="text-[11px] text-slate-400 mt-1">
+                  Estado: <strong class="${isPassed ? 'text-emerald-300' : 'text-rose-300'}">${isPassed ? 'Aprobado' : 'A Recuperar'}</strong> ${existingRecord.date ? `(${existingRecord.date})` : ''}
+                </p>
+              </div>
+              <div class="text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-xl flex items-start gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-amber-400 mt-0.5"></i>
+                <span>
+                  <strong>Atención docente:</strong> Si inicias este intento, responderás 10 nuevas preguntas orales y <strong>tu calificación anterior se actualizará con el nuevo resultado que obtengas</strong> en este parcial.
+                </span>
+              </div>
+            </div>
+          `,
+          background: '#0f172a',
+          color: '#f8fafc',
+          showCancelButton: true,
+          confirmButtonText: '<i class="fa-solid fa-rotate mr-1.5"></i> Sí, Rendir de Nuevo',
+          cancelButtonText: 'Cancelar (Mantener Nota)',
+          confirmButtonColor: '#6366f1',
+          cancelButtonColor: '#475569',
+          customClass: { popup: 'border border-indigo-500/30 rounded-2xl' }
+        }).then((res) => {
+          if (res.isConfirmed) {
+            launchOralExamSession(partialKey, partialData);
+          }
+        });
+        return;
+      } else {
+        const proceed = confirm(`Ya tienes una nota de ${existingRecord.grade}/10 en este parcial. Si rindes de nuevo, tu calificación se actualizará con el nuevo intento. ¿Deseas continuar?`);
+        if (!proceed) return;
+      }
+    }
+
+    launchOralExamSession(partialKey, partialData);
+  }
+
+  function launchOralExamSession(partialKey, partialData) {
     // Seleccionar EXACTAMENTE 10 preguntas aleatorias de este parcial
     const shuffled = [...partialData.cards].sort(() => Math.random() - 0.5);
     oralExamQuestions = shuffled.slice(0, TOTAL_ORAL_QUESTIONS);
