@@ -41,7 +41,44 @@
         }
     }
 
-    // 3. Lógica del Alumno (Tienda Tab)
+    // 3. Función auxiliar para obtener la nota del 2° Parcial Teórico
+    function getStudentTheoreticalGrade(studentData) {
+        if (!studentData) return null;
+        
+        // 1. Campo directo parcial2
+        if (typeof studentData.parcial2 === 'number' && !isNaN(studentData.parcial2)) {
+            return studentData.parcial2;
+        }
+        if (studentData.parcial2 !== null && studentData.parcial2 !== undefined && studentData.parcial2 !== '' && !isNaN(parseFloat(studentData.parcial2))) {
+            return parseFloat(studentData.parcial2);
+        }
+        
+        // 2. Campo alternativo parcial2_teoria
+        if (typeof studentData.parcial2_teoria === 'number' && !isNaN(studentData.parcial2_teoria)) {
+            return studentData.parcial2_teoria;
+        }
+        if (studentData.parcial2_teoria !== null && studentData.parcial2_teoria !== undefined && studentData.parcial2_teoria !== '' && !isNaN(parseFloat(studentData.parcial2_teoria))) {
+            return parseFloat(studentData.parcial2_teoria);
+        }
+        
+        // 3. oralExams (Mesa de Exámenes Orales del 2° Parcial)
+        if (studentData.oralExams) {
+            if (typeof studentData.oralExams.average === 'number' && !isNaN(studentData.oralExams.average)) {
+                return studentData.oralExams.average;
+            }
+            if (studentData.oralExams.partials) {
+                const pKeys = Object.keys(studentData.oralExams.partials);
+                if (pKeys.length > 0) {
+                    const sum = pKeys.reduce((acc, k) => acc + (Number(studentData.oralExams.partials[k].grade) || 0), 0);
+                    return sum / pKeys.length;
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    // 4. Lógica del Alumno (Tienda Tab)
     window.renderTiendaTab = async () => {
         const container = document.getElementById('tienda-tab-content');
         if (!container) return;
@@ -79,6 +116,39 @@
         const currentXP = studentData.xp || 0;
         const now = new Date();
         const activeItems = items.filter(i => !i.expiresAt || new Date(i.expiresAt) > now);
+
+        const notaTeorica = getStudentTheoreticalGrade(studentData);
+        const isTeoricoAprobado = (notaTeorica !== null && notaTeorica >= 7);
+        const puntosCanjeadosActualmente = (studentData.inventory || [])
+            .filter(inv => inv.category === 'parcial_practico' || (inv.id && inv.id.startsWith('item_practico_')))
+            .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+
+        const bannerTeoricoHTML = `
+            <div style="background: linear-gradient(135deg, rgba(30,27,75,0.75) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid ${isTeoricoAprobado ? 'rgba(16,185,129,0.45)' : 'rgba(245,158,11,0.45)'}; border-radius: 18px; padding: 18px 22px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 52px; height: 52px; border-radius: 16px; background: ${isTeoricoAprobado ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)'}; border: 1px solid ${isTeoricoAprobado ? 'rgba(16,185,129,0.4)' : 'rgba(245,158,11,0.4)'}; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0;">
+                        ${isTeoricoAprobado ? '🎯' : '🔒'}
+                    </div>
+                    <div>
+                        <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: ${isTeoricoAprobado ? '#34d399' : '#fbbf24'};">
+                            ${isTeoricoAprobado ? 'Canje Habilitado · 2° Parcial Práctico' : 'Canje Condicionado · 2° Parcial Práctico'}
+                        </div>
+                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 3px 0 2px;">
+                            ${isTeoricoAprobado ? '¡Tienes el 2° Parcial Teórico Aprobado!' : 'Requiere 2° Parcial Teórico Aprobado (Nota ≥ 7)'}
+                        </h4>
+                        <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
+                            Tu nota teórica: <strong style="color: ${isTeoricoAprobado ? '#34d399' : '#f87171'};">${notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10` : 'Sin rendir'}</strong>
+                            ${puntosCanjeadosActualmente > 0 ? ` · Ya canjeaste <strong style="color: #fde047;">+${puntosCanjeadosActualmente} punto(s) prácticos</strong>` : ' · Canjea hasta 5 puntos para el práctico'}
+                        </p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button onclick="goToRepasoParcial2('${targetUP}', '${encodeURIComponent(studentData.name || '')}')" style="background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(99, 102, 241, 0.4); color: #c7d2fe; padding: 9px 15px; border-radius: 12px; font-size: 0.82rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                        <i class="fas fa-microphone-alt"></i> ${isTeoricoAprobado ? 'Ver Repaso Teórico' : 'Ir a Rendir / Repasar'}
+                    </button>
+                </div>
+            </div>
+        `;
 
         let legendaryHTML = '';
         let regularHTML = '';
@@ -121,22 +191,28 @@
                     `;
                 } else {
                     const canAfford = currentXP >= item.cost;
-                    const isGold = item.cost >= 20;
+                    const isPuntosItem = item.category === 'parcial_practico' || !!item.points || (item.name && item.name.includes('Parcial Práctico'));
+                    const isGold = item.cost >= 20 || (item.points && item.points >= 3);
                     
+                    const badgeHTML = isPuntosItem 
+                        ? `<div style="position: absolute; top: 12px; right: 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fef08a; font-size: 0.72rem; font-weight: 800; border-radius: 8px; padding: 2px 8px; letter-spacing: 0.5px; z-index: 2;">+${item.points || 1} PRÁCTICO</div>`
+                        : '';
+
                     const mediaHTML = imageUrl 
                         ? `<div class="item-icon"><img src="${imageUrl}" alt="Item Image"/></div>`
                         : `<div class="item-icon ${!isGold ? 'item-icon-normal' : ''}"><i class="${item.icon || 'fas fa-box'}"></i></div>`;
 
                     regularHTML += `
-                        <div class="item-card ${isGold ? 'gold' : ''}">
+                        <div class="item-card ${isGold ? 'gold' : ''}" style="position: relative;">
+                            ${badgeHTML}
                             ${mediaHTML}
                             <div class="item-title">${item.name}</div>
                             <div class="item-desc">${item.desc}</div>
                             ${timeIndicator}
                             <div class="item-footer">
                                 <div class="item-price">${item.cost} <span>XP</span></div>
-                                <button class="btn-buy" onclick="buyTiendaItem('${item.id}')">
-                                    <i class="fa-solid fa-plus"></i>
+                                <button class="btn-buy" onclick="buyTiendaItem('${item.id}')" title="Canjear ${item.name} (${item.cost} XP)">
+                                    <i class="fa-solid fa-cart-shopping"></i>
                                 </button>
                             </div>
                         </div>
@@ -220,9 +296,12 @@
                 </div>
                 ` : ''}
 
-                <!-- CATÁLOGO REGULAR -->
+                <!-- REQUISITO Y ESTADO 2° PARCIAL PRÁCTICO -->
+                ${bannerTeoricoHTML}
+
+                <!-- CATÁLOGO DE BONIFICACIONES -->
                 <div class="section-header">
-                    <div class="section-title">Catálogo Regular</div>
+                    <div class="section-title">Puntos para el 2° Parcial Práctico</div>
                 </div>
                 <div class="store-grid">
                     ${regularHTML}
@@ -300,13 +379,13 @@
         }, 1000);
     };
 
-    // 4. Lógica de Compra
+    // 5. Lógica de Compra y Canje de Puntos
     window.buyTiendaItem = async (itemId) => {
         try {
             const items = await loadTiendaItems();
             const item = items.find(i => i.id === itemId);
             if (!item) {
-                Swal.fire('Error', 'Ítem no encontrado en la base de datos.', 'error');
+                Swal.fire('Error', 'Ítem no encontrado en el catálogo de la tienda.', 'error');
                 return;
             }
 
@@ -320,120 +399,222 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Acción no permitida',
-                    text: 'Solo puedes comprar ítems para tu propia cuenta.',
+                    text: 'Solo puedes canjear ítems para tu propia cuenta de estudiante.',
                     background: '#1a1a2e',
                     color: '#fff'
                 });
                 return;
             }
 
-            const studentData = window.currentStudentData || (window.fullData && window.fullData.students ? window.fullData.students.find(s => String(s.up) === String(targetUP)) : null);
+            const db = firebase.firestore();
+            let studentData = window.currentStudentData || (window.fullData && window.fullData.students ? window.fullData.students.find(s => String(s.up) === String(targetUP)) : null);
             
+            // Refrescar documento desde Firestore para validar con la última calificación oficial
+            try {
+                const docSnap = await db.collection('students').doc(String(targetUP).trim()).get();
+                if (docSnap.exists) {
+                    studentData = { ...(studentData || {}), ...docSnap.data() };
+                }
+            } catch(eRef) {
+                console.warn("Aviso: usando datos en memoria de studentData:", eRef);
+            }
+
             if (!studentData) {
-                Swal.fire('Error', 'No se encontraron tus datos de estudiante.', 'error');
+                Swal.fire('Error', 'No se encontraron tus datos de estudiante. Inicia sesión nuevamente.', 'error');
                 return;
             }
 
-            if ((studentData.xp || 0) < item.cost) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Puntos Insuficientes',
-                text: '¡Gana más XP participando en clase, aportando en los foros de Discord, respondiendo preguntas, calificando los videos de tus compañeros, completando tu perfil o ganando torneos!',
-                background: '#1a1a2e',
-                color: '#fff',
-                confirmButtonColor: '#FFA500'
-            });
-            return;
-        }
-
-        Swal.fire({
-            title: `¿Comprar "${item.name}"?`,
-            text: `Vas a gastar ${item.cost} XP. ¡Esta acción no se puede deshacer!`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#a855f7',
-            cancelButtonColor: '#d33',
-            confirmButtonText: '<i class="fas fa-shopping-cart"></i> Sí, comprar',
-            cancelButtonText: 'Cancelar',
-            background: '#1a1a2e',
-            color: '#fff'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    // Mostrar loading
+            // ========================================================
+            // VERIFICACIÓN OBLIGATORIA: 2° PARCIAL TEÓRICO NOTA >= 7
+            // ========================================================
+            const isPracticalPointsItem = item.category === 'parcial_practico' || item.requiresParcialTeorico || (item.name && item.name.includes('Parcial Práctico'));
+            
+            if (isPracticalPointsItem) {
+                const notaTeorica = getStudentTheoreticalGrade(studentData);
+                
+                if (notaTeorica === null || notaTeorica < 7) {
                     Swal.fire({
-                        title: 'Procesando compra...',
+                        icon: 'warning',
+                        title: '¡Requisito Obligatorio!',
+                        html: `
+                            <div style="text-align: center; padding: 6px;">
+                                <div style="font-size: 3.5rem; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.45));">🔒</div>
+                                <p style="font-size: 1.05rem; line-height: 1.5; color: #fff; font-weight: 700; margin-bottom: 15px;">
+                                    No puedes comprar puntos para el examen práctico a menos que tengas hecho y aprobado el <strong>2° Parcial Teórico con nota 7 o más</strong>.
+                                </p>
+                                <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px; margin-bottom: 15px;">
+                                    <span style="font-size: 0.85rem; color: #94a3b8;">Tu calificación registrada en el 2° Parcial Teórico:</span><br>
+                                    <strong style="font-size: 1.25rem; color: ${notaTeorica !== null ? '#ef4444' : '#f59e0b'};">
+                                        ${notaTeorica !== null ? `${notaTeorica.toFixed(1)} / 10 (Insuficiente)` : 'Examen aún no rendido'}
+                                    </strong>
+                                </div>
+                                <p style="font-size: 0.82rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0;">
+                                    📚 Repasa en la sección <strong>2° Parcial</strong> con las flashcards y rinde tus evaluaciones orales para desbloquear el canje de puntos.
+                                </p>
+                            </div>
+                        `,
                         background: '#1a1a2e',
                         color: '#fff',
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
+                        confirmButtonColor: '#FFA500',
+                        confirmButtonText: '<i class="fas fa-check"></i> Entendido'
                     });
+                    return;
+                }
 
-                    const db = firebase.firestore();
-                    
-                    // Actualizar localmente primero
-                    studentData.xp -= item.cost;
-                    if (!studentData.inventory) studentData.inventory = [];
-                    studentData.inventory.push({
-                        id: item.id,
-                        name: item.name,
-                        image: item.image || null,
-                        icon: item.icon || null,
-                        downloadUrl: item.downloadUrl || null,
-                        purchasedAt: new Date().toISOString()
-                    });
-
-                    if (!studentData.xpHistory) studentData.xpHistory = [];
-                    studentData.xpHistory.push({
-                        timestamp: new Date().toISOString(),
-                        reason: `Compra en tienda: ${item.name}`,
-                        amount: -item.cost,
-                        newXP: studentData.xp
-                    });
-
-                    // Actualizar en Firebase
-                    await db.collection('students').doc(String(targetUP).trim()).update({
-                        xp: studentData.xp,
-                        inventory: studentData.inventory,
-                        xpHistory: studentData.xpHistory
-                    });
-
-                    // Refrescar UI (cerrar loading)
-                    Swal.close();
-                    
-                    window.showTiendaToast(item.name, item.image, item.icon);
-                    if (typeof confetti === 'function') {
-                        confetti({
-                            particleCount: 100,
-                            spread: 70,
-                            origin: { y: 0.6 },
-                            colors: ['#FFA500', '#FF4500', '#9c27b0', '#ffffff']
-                        });
-                    }
-                    
-                    // Recargar el modal para reflejar cambios
-                    window.renderTiendaTab();
-
-                    // Intentar refrescar la página principal si las funciones existen
-                    if (typeof generateRanking === 'function') generateRanking();
-                    if (typeof displayStudentPortalView === 'function' && document.getElementById('portal-photo')) {
-                        displayStudentPortalView(studentData);
-                    }
-
-                } catch (error) {
-                    console.error("Error al procesar la compra:", error);
+                // Tope máximo de 5 puntos acumulados para el práctico
+                const existingPoints = (studentData.inventory || [])
+                    .filter(inv => inv.category === 'parcial_practico' || (inv.id && inv.id.startsWith('item_practico_')))
+                    .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+                
+                const pointsToAdd = Number(item.points) || 0;
+                if (existingPoints + pointsToAdd > 5) {
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Ocurrió un error al procesar tu compra. Intenta de nuevo.',
+                        icon: 'info',
+                        title: 'Tope Máximo Alcanzado',
+                        html: `
+                            <p style="color:#cbd5e1; font-size:0.95rem;">
+                                El tope máximo acumulable para el 2° Parcial Práctico es de <strong>5 puntos</strong>.
+                            </p>
+                            <p style="color:#fde047; font-size:1.05rem; font-weight:bold; margin: 10px 0;">
+                                Puntos canjeados hasta hoy: +${existingPoints} punto(s)
+                            </p>
+                            <p style="color:#94a3b8; font-size:0.85rem;">
+                                Esta compra de +${pointsToAdd} punto(s) superaría el límite de 5 puntos bonificables.
+                            </p>
+                        `,
                         background: '#1a1a2e',
-                        color: '#fff'
+                        color: '#fff',
+                        confirmButtonColor: '#FFA500'
                     });
+                    return;
                 }
             }
-        });
+
+            if ((studentData.xp || 0) < item.cost) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Puntos Insuficientes',
+                    html: `
+                        <p style="color:#fff;">Necesitas <strong style="color:#FFA500; font-size:1.15rem;">${item.cost} XP</strong> y actualmente tienes <strong style="color:#38bdf8;">${studentData.xp || 0} XP</strong>.</p>
+                        <p style="color:#94a3b8; font-size:0.85rem; margin-top:10px;">¡Gana más XP participando en clase, completando el repaso o destacando en la cátedra!</p>
+                    `,
+                    background: '#1a1a2e',
+                    color: '#fff',
+                    confirmButtonColor: '#FFA500'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: `¿Canjear "${item.name}"?`,
+                html: `
+                    <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 8px;">
+                        Vas a invertir <strong style="color: #FFA500; font-size: 1.2rem;">${item.cost} XP</strong> por este beneficio.
+                    </p>
+                    <p style="color: #34d399; font-weight: 700; font-size: 1.05rem;">
+                        +${item.points || 1} Punto(s) directos a tu 2° Parcial Práctico
+                    </p>
+                    <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 10px;">
+                        Esta acción descontará los XP de tu saldo y acreditará la bonificación en tu inventario oficial.
+                    </p>
+                `,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '<i class="fas fa-shopping-cart"></i> Sí, canjear puntos',
+                cancelButtonText: 'Cancelar',
+                background: '#1a1a2e',
+                color: '#fff'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        Swal.fire({
+                            title: 'Procesando canje...',
+                            background: '#1a1a2e',
+                            color: '#fff',
+                            allowOutsideClick: false,
+                            didOpen: () => Swal.showLoading()
+                        });
+
+                        const newXP = (studentData.xp || 0) - item.cost;
+                        studentData.xp = newXP;
+                        
+                        if (!studentData.inventory) studentData.inventory = [];
+                        studentData.inventory.push({
+                            id: item.id,
+                            name: item.name,
+                            image: item.image || null,
+                            icon: item.icon || null,
+                            points: Number(item.points) || 0,
+                            category: item.category || 'parcial_practico',
+                            cost: item.cost,
+                            purchasedAt: new Date().toISOString()
+                        });
+
+                        const totalPracticalPoints = studentData.inventory
+                            .filter(it => it.category === 'parcial_practico' || (it.id && it.id.startsWith('item_practico_')))
+                            .reduce((sum, it) => sum + (Number(it.points) || 0), 0);
+                        
+                        studentData.puntosParcialPractico2 = totalPracticalPoints;
+
+                        if (!studentData.xpHistory) studentData.xpHistory = [];
+                        studentData.xpHistory.push({
+                            timestamp: new Date().toISOString(),
+                            reason: `Canje en Tienda: ${item.name}`,
+                            amount: -item.cost,
+                            newXP: newXP
+                        });
+
+                        await db.collection('students').doc(String(targetUP).trim()).update({
+                            xp: newXP,
+                            inventory: studentData.inventory,
+                            puntosParcialPractico2: totalPracticalPoints,
+                            xpHistory: studentData.xpHistory
+                        });
+
+                        // Sincronizar en fullData en memoria
+                        if (window.fullData && window.fullData.students) {
+                            const localS = window.fullData.students.find(s => String(s.up).trim() === String(targetUP).trim());
+                            if (localS) {
+                                localS.xp = newXP;
+                                localS.inventory = studentData.inventory;
+                                localS.puntosParcialPractico2 = totalPracticalPoints;
+                                localS.xpHistory = studentData.xpHistory;
+                            }
+                        }
+
+                        Swal.close();
+                        window.showTiendaToast(item.name, item.image, item.icon);
+                        
+                        if (typeof confetti === 'function') {
+                            confetti({
+                                particleCount: 120,
+                                spread: 75,
+                                origin: { y: 0.6 },
+                                colors: ['#FFA500', '#10b981', '#38bdf8', '#ffffff']
+                            });
+                        }
+
+                        window.renderTiendaTab();
+                        if (typeof generateRanking === 'function') generateRanking();
+                        if (typeof displayStudentPortalView === 'function' && document.getElementById('portal-photo')) {
+                            displayStudentPortalView(studentData);
+                        }
+
+                    } catch (error) {
+                        console.error("Error al procesar la compra:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un error al procesar tu canje. Intenta nuevamente.',
+                            background: '#1a1a2e',
+                            color: '#fff'
+                        });
+                    }
+                }
+            });
+
         } catch (globalError) {
             console.error("Error global en buyTiendaItem:", globalError);
             Swal.fire('Error', 'Hubo un problema al inicializar la compra. Contacta al profesor.', 'error');

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <linearGradient id="ringGrad_2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <filter id="glow_2" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Outer Glow Ring -->
+  <circle cx="100" cy="100" r="92" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.4" filter="url(#glow_2)"/>
+  
+  <!-- Outer Metallic Border -->
+  <circle cx="100" cy="100" r="88" fill="url(#bgGrad)" stroke="url(#ringGrad_2)" stroke-width="6"/>
+
+  <!-- Inner Decorative Ring -->
+  <circle cx="100" cy="100" r="76" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+
+  <!-- Center Circle -->
+  <circle cx="100" cy="100" r="68" fill="#0b0f19" opacity="0.7"/>
+
+  <!-- Icon / Stars -->
+  <text x="100" y="58" font-family="'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="900" fill="#38bdf8" text-anchor="middle" letter-spacing="2">
+    ✦ ✦
+  </text>
+
+  <!-- Big Number -->
+  <text x="100" y="116" font-family="'Impact', 'Arial Black', sans-serif" font-size="56" font-weight="900" fill="url(#ringGrad_2)" text-anchor="middle" filter="url(#glow_2)">
+    +2
+  </text>
+
+  <!-- Subtitle Badge -->
+  <rect x="35" y="132" width="130" height="26" rx="13" fill="#0284c7" opacity="0.85"/>
+  <rect x="35" y="132" width="130" height="26" rx="13" fill="none" stroke="#38bdf8" stroke-width="1.5"/>
+  
+  <text x="100" y="149" font-family="'Segoe UI', Roboto, sans-serif" font-size="10.5" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="1.2">
+    2 PUNTOS
+  </text>
+
+  <text x="100" y="172" font-family="'Segoe UI', Roboto, sans-serif" font-size="8.5" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="1">
+    2° PARCIAL
+  </text>
+</svg>

@@ -12075,6 +12075,34 @@
                     </div>`;
                 }
 
+                const practicalBonusPoints = typeof student.puntosParcialPractico2 === 'number'
+                    ? student.puntosParcialPractico2
+                    : (student.inventory || [])
+                        .filter(inv => inv.category === 'parcial_practico' || (inv.id && String(inv.id).startsWith('item_practico_')))
+                        .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
+
+                let practicalBonusCardHTML = '';
+                if (practicalBonusPoints > 0) {
+                    practicalBonusCardHTML = `
+                    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(6, 78, 59, 0.3) 100%); border: 1.5px solid #10b981; border-radius: 20px; padding: 16px 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+                        <div style="display: flex; align-items: center; gap: 14px;">
+                            <div style="width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.45rem; font-weight: 900; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); flex-shrink: 0;">
+                                +${practicalBonusPoints}
+                            </div>
+                            <div>
+                                <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #6ee7b7; background: rgba(16, 185, 129, 0.2); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.4);">
+                                    Bonificación Acreditada
+                                </span>
+                                <h4 style="font-size: 1.05rem; font-weight: 800; color: #fff; margin: 3px 0 2px;">2° Parcial Práctico: +${practicalBonusPoints} Puntos</h4>
+                                <p style="font-size: 0.78rem; color: #cbd5e1; margin: 0;">Puntos canjeados en la Tienda con XP para sumar a tu nota práctica.</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="document.querySelector('[data-tab-target=\\'#panel-tienda\\']').click();" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #a7f3d0; padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-store"></i> Ver en Tienda
+                        </button>
+                    </div>`;
+                }
+
                 portalHTML += `
                 <div class="app-profile-container">
                     
@@ -12192,6 +12220,8 @@
                     </div>
                     
                     ${oralParcialCardHTML}
+                    
+                    ${practicalBonusCardHTML}
                     
                     ${groupCardHTML}
                     
@@ -19478,7 +19508,7 @@
             }
         }
     </script>
-    <script src="tienda.js?v=1.31"></script>
+    <script src="tienda.js?v=1.32"></script>
 </body>
 
 </html>

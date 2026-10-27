@@ -120,3 +120,22 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
           username = NutricionGerman
       ```
       Esto vacía la lista heredada de helpers para `github.com` en este repositorio específico y fuerza el uso directo de Git Credential Manager con la cuenta de `NutricionGerman`.
+
+15. **Apertura de la Tienda Online: Canje de Puntos para el 2° Parcial Práctico**:
+    - **Requerimiento Docente**: Habilitar en la Tienda Oficial la compra de puntos bonificables para el 2° Parcial Práctico canjeables con XP de cátedra.
+    - **Tabla Oficial de Canje**:
+      * 1 punto práctico = 10 XP
+      * 2 puntos prácticos = 15 XP
+      * 3 puntos prácticos = 20 XP
+      * 4 puntos prácticos = 25 XP
+      * 5 puntos prácticos = 30 XP
+    - **Regla Innegociable de Validación Pedagógica**:
+      * El alumno debe tener **aprobado el 2° Parcial Teórico con nota $\ge 7$** (`nota >= 7.0`).
+      * Se evalúa `parcial2`, `parcial2_teoria` o el promedio de exámenes orales en `oralExams`.
+      * Si la nota es inferior a 7 o el alumno aún no rindió el parcial teórico, la compra se bloquea inmediatamente y se dispara una alerta que informa la restricción.
+    - **Impacto y Persistencia**:
+      * Los ítems fueron actualizados en la colección `app_state/tienda_items` de Firestore eliminando la fecha de expiración pasada.
+      * Se crearon 5 distintivos vectoriales SVG optimizados en `tienda/badges/`.
+      * Se actualizó `tienda.js` con validación previa de nota teórica, banner dinámico informativo de estado (habilitado vs condicionado) y deducción segura de XP.
+      * Se agregó la tarjeta de acreditación de bonificación práctica en el perfil del alumno en `index.html` (indicando los puntos canjeados en verde esmeralda).
+
