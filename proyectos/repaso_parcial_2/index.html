@@ -85,18 +85,22 @@
 
     </div>
 
-    <!-- NAVEGACIÓN EN 3 GRANDES SECCIONES -->
-    <div class="bg-slate-900 border-t border-slate-800 px-4 py-2">
-      <div class="max-w-5xl mx-auto flex space-x-2">
-        <button id="tabBtn_repaso" onclick="window.switchTab && window.switchTab('repaso')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white cursor-pointer">
+    <!-- NAVEGACIÓN EN 4 GRANDES SECCIONES -->
+    <div class="bg-slate-900 border-t border-slate-800 px-3 sm:px-4 py-2">
+      <div class="max-w-5xl mx-auto flex space-x-1.5 sm:space-x-2">
+        <button id="tabBtn_repaso" onclick="window.switchTab && window.switchTab('repaso')" class="flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition shadow-md bg-indigo-600 text-white cursor-pointer">
           <i class="fa-solid fa-layer-group"></i>
           <span>Tarjetas</span>
         </button>
-        <button id="tabBtn_evaluacion" onclick="window.switchTab && window.switchTab('evaluacion')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
+        <button id="tabBtn_evaluacion" onclick="window.switchTab && window.switchTab('evaluacion')" class="flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
           <i class="fa-solid fa-microphone-lines"></i>
           <span>Examen Oral</span>
         </button>
-        <button id="tabBtn_ranking" onclick="window.switchTab && window.switchTab('ranking')" class="flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
+        <button id="tabBtn_juegos" onclick="window.switchTab && window.switchTab('juegos')" class="flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
+          <i class="fa-solid fa-gamepad text-emerald-400"></i>
+          <span>Juegos</span>
+        </button>
+        <button id="tabBtn_ranking" onclick="window.switchTab && window.switchTab('ranking')" class="flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
           <i class="fa-solid fa-trophy text-amber-400"></i>
           <span>Ranking</span>
         </button>
@@ -357,6 +361,28 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Acceso Rápido a los Juegos Didácticos -->
+        <div class="bg-gradient-to-r from-cyan-950/40 via-slate-900 to-emerald-950/40 border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-emerald-600 flex items-center justify-center text-xl flex-shrink-0">
+              🎮
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-extrabold text-white flex items-center gap-2">
+                <span>¿Querés entrenar antes del examen oral?</span>
+                <span class="text-[10px] font-bold text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-500/30">2 Simuladores</span>
+              </h4>
+              <p class="text-[11px] sm:text-xs text-slate-400">
+                Pon a prueba tus conocimientos en <strong>Consultorio del Club</strong> (suplementos en deportistas) y <strong>El Changuito</strong> (CAPA 2 & GAPA).
+              </p>
+            </div>
+          </div>
+          <button type="button" onclick="window.switchTab && window.switchTab('juegos')" class="px-4 py-2 bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>Ver Juegos</span>
+          </button>
         </div>
 
         <!-- Grilla de las 3 Unidades y 6 Parciales -->
@@ -700,7 +726,160 @@
     </section>
 
     <!-- ======================================================================
-         SECCIÓN 3: RANKING EN VIVO & CUADRO DE HONOR
+         SECCIÓN 3: JUEGOS Y SIMULADORES CLÍNICOS
+         ====================================================================== -->
+    <section id="section_juegos" class="hidden space-y-6">
+      
+      <!-- Banner de Cabecera -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/70 border border-indigo-500/30 rounded-3xl p-6 sm:p-8 space-y-3 relative overflow-hidden shadow-2xl">
+        <div class="absolute -right-8 -top-8 w-44 h-44 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-8 -bottom-8 w-44 h-44 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="flex items-center gap-2">
+          <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 inline-flex items-center gap-1.5">
+            <i class="fa-solid fa-gamepad text-emerald-400"></i>
+            <span>Simuladores Interactivos de Cátedra</span>
+          </span>
+          <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 hidden sm:inline-block">
+            2° Parcial
+          </span>
+        </div>
+
+        <h2 class="text-xl sm:text-2xl font-black text-white">Gimnasio Clínico y Epidemiológico</h2>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+          Pon a prueba tu criterio profesional con simuladores interactivos basados en los temas centrales del 2° Parcial. Puedes abrirlos en una pestaña externa o jugar en pantalla completa para afianzar tus conocimientos de manera lúdica.
+        </p>
+      </div>
+
+      <!-- Tarjetas de los 2 Juegos -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Juego 1: Consultorio del Club -->
+        <div class="bg-slate-900/90 border border-cyan-500/30 hover:border-cyan-400/60 rounded-3xl p-6 flex flex-col justify-between space-y-5 transition duration-300 hover:shadow-2xl hover:shadow-cyan-500/10 relative overflow-hidden group">
+          <div class="space-y-4">
+            <!-- Header Card -->
+            <div class="flex items-start justify-between gap-3">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-600/30 to-blue-600/30 border border-cyan-500/40 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-300 shadow-lg shadow-cyan-500/20">
+                🩺
+              </div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+                Adolescencia & Deporte
+              </span>
+            </div>
+
+            <div>
+              <h3 class="text-lg sm:text-xl font-black text-white group-hover:text-cyan-300 transition">
+                Consultorio del Club
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">
+                Simulador clínico de suplementación deportiva en adolescentes
+              </p>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Atiende a <strong>12 atletas adolescentes</strong> que consultan por creatina, whey protein, quemadores, pre-entrenos o BCAA. Aplica el principio de cátedra <em>"Food First"</em>, defiende el criterio clínico pediátrico y mantén alta tu reputación profesional.
+            </p>
+
+            <!-- Chips / Highlights -->
+            <div class="space-y-2 pt-1">
+              <div class="flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                <span>12 Casos clínicos con avatares y pacientes que vuelven si indicas mal</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                <span>Enfocado en las preguntas de examen oral de suplementos y deporte</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-check text-cyan-400 text-xs"></i>
+                <span>Atajos rápidos de teclado (teclas 1, 2, 3) y modo móvil responsive</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Acción -->
+          <div class="pt-3 border-t border-slate-800">
+            <a href="Consultorio%20del%20Club.html" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-lg shadow-cyan-600/30 transition active:scale-95 text-center">
+              <i class="fa-solid fa-play"></i>
+              <span>Abrir Consultorio del Club</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80 ml-1"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Juego 2: El Changuito -->
+        <div class="bg-slate-900/90 border border-emerald-500/30 hover:border-emerald-400/60 rounded-3xl p-6 flex flex-col justify-between space-y-5 transition duration-300 hover:shadow-2xl hover:shadow-emerald-500/10 relative overflow-hidden group">
+          <div class="space-y-4">
+            <!-- Header Card -->
+            <div class="flex items-start justify-between gap-3">
+              <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-600/30 to-teal-600/30 border border-emerald-500/40 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-300 shadow-lg shadow-emerald-500/20">
+                🛒
+              </div>
+              <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">
+                CAPA-2 & GAPA (CESNI)
+              </span>
+            </div>
+
+            <div>
+              <h3 class="text-lg sm:text-xl font-black text-white group-hover:text-emerald-300 transition">
+                El Changuito
+              </h3>
+              <p class="text-xs text-slate-400 mt-1">
+                Simulador de economía alimentaria y consumo aparente en Argentina
+              </p>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Llena el changuito del supermercado con presupuesto real ajustado a 2.000 kcal y adulto equivalente. Compara tus compras contra las metas GAPA y el patrón real de la mesa argentina (Dra. Zapata y Bioq. Rovirosa).
+            </p>
+
+            <!-- Chips / Highlights -->
+            <div class="space-y-2 pt-1">
+              <div class="flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
+                <span>3 Rondas: Changuito del súper, Quiz de brechas y Diagnóstico</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
+                <span>Enfocado en las 3 grandes brechas y grupos (Falta, Sobra, Mal elegido)</span>
+              </div>
+              <div class="flex items-center gap-2 text-xs text-slate-300">
+                <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
+                <span>Ticket interactivo con análisis de costo por 1.000 kcal</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Acción -->
+          <div class="pt-3 border-t border-slate-800">
+            <a href="El%20Changuito.html" target="_blank" rel="noopener noreferrer" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 transition active:scale-95 text-center">
+              <i class="fa-solid fa-play"></i>
+              <span>Abrir El Changuito</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-80 ml-1"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Banner de integración con el Examen Oral -->
+      <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-lightbulb text-amber-400 text-xl"></i>
+          <p class="text-xs text-slate-300">
+            <strong>¿Sabías que estos juegos cubren temas directos del parcial?</strong> Jugarlos te ayuda a responder con fluidez y solvencia las consignas de suplementos y de CAPA 2 en el examen oral.
+          </p>
+        </div>
+        <button onclick="window.switchTab && window.switchTab('evaluacion')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700 transition flex items-center gap-1.5 whitespace-nowrap cursor-pointer">
+          <span>Ir a Examen Oral</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         SECCIÓN 4: RANKING EN VIVO & CUADRO DE HONOR
          ====================================================================== -->
     <section id="section_ranking" class="hidden space-y-6">
 
@@ -768,13 +947,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts con Cache-Buster para Forzar Actualización Inmediata -->
-  <script src="js/config.js?v=4.6"></script>
-  <script src="js/data_flashcards.js?v=4.6"></script>
-  <script src="js/audio_engine.js?v=4.6"></script>
-  <script src="js/fix-webm-duration.js?v=4.6"></script>
-  <script src="js/audio_recorder.js?v=4.6"></script>
-  <script src="js/ai_evaluator.js?v=4.6"></script>
-  <script src="js/storage.js?v=4.6"></script>
-  <script src="js/app.js?v=4.6"></script>
+  <script src="js/config.js?v=4.7"></script>
+  <script src="js/data_flashcards.js?v=4.7"></script>
+  <script src="js/audio_engine.js?v=4.7"></script>
+  <script src="js/fix-webm-duration.js?v=4.7"></script>
+  <script src="js/audio_recorder.js?v=4.7"></script>
+  <script src="js/ai_evaluator.js?v=4.7"></script>
+  <script src="js/storage.js?v=4.7"></script>
+  <script src="js/app.js?v=4.7"></script>
 </body>
 </html>

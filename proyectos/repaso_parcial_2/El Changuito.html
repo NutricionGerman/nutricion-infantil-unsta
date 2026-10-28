@@ -1,0 +1,837 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>El Changuito</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;600;700&family=Courier+Prime:wght@400;700&display=swap">
+<style>
+/* Layout: una columna angosta pensada para el celu; HUD fijo arriba, botón de pagar fijo abajo, resultado como ticket de super */
+:root {
+  --bg: #E7EEEA; --surface: #FFFFFF; --ink: #12282C; --muted: #566B6C; --line: #C9D6D1; --track: #D9E3DF;
+  --accent: #0B7A63; --on-accent: #FFFFFF;
+  --tag: #FFD23F; --tag-ink: #12282C;
+  --ok: #1B8A4A; --warn: #B87500; --bad: #C2372A;
+  --g-vf: #2E9D4E; --g-leche: #3577D0; --g-queso: #D59A00; --g-fec: #A8722E; --g-carne: #CF4436; --g-pescado: #1E8FA3; --g-opc: #B13F8C;
+  --paper: #FFFFFF; --paper-ink: #1E1E1E; --paper-muted: #6B6B6B;
+  --f-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "Courier Prime", "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1A1C; --surface: #16272A; --ink: #E4EEEB; --muted: #94A8A6; --line: #2A3E41; --track: #22363A;
+    --accent: #45C3A2; --on-accent: #08231D;
+    --tag: #F6CB3B; --tag-ink: #12282C;
+    --ok: #4CC97F; --warn: #E7A938; --bad: #F06A5C;
+    --g-vf: #4CC46C; --g-leche: #64A0F0; --g-queso: #F0B92A; --g-fec: #D39A52; --g-carne: #F0675A; --g-pescado: #3FB9CE; --g-opc: #DC6BB6;
+    --paper: #EEECE6; --paper-ink: #1E1E1E; --paper-muted: #66645E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1A1C; --surface: #16272A; --ink: #E4EEEB; --muted: #94A8A6; --line: #2A3E41; --track: #22363A;
+  --accent: #45C3A2; --on-accent: #08231D;
+  --tag: #F6CB3B; --tag-ink: #12282C;
+  --ok: #4CC97F; --warn: #E7A938; --bad: #F06A5C;
+  --g-vf: #4CC46C; --g-leche: #64A0F0; --g-queso: #F0B92A; --g-fec: #D39A52; --g-carne: #F0675A; --g-pescado: #3FB9CE; --g-opc: #DC6BB6;
+  --paper: #EEECE6; --paper-ink: #1E1E1E; --paper-muted: #66645E;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.45; -webkit-tap-highlight-color: transparent; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 560px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.kicker { font-size: .74rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+.stack { display: flex; flex-direction: column; }
+
+/* Etiqueta de precio */
+.tag { display: inline-block; background: var(--tag); color: var(--tag-ink); font-family: var(--f-display); font-weight: 800; font-size: 1rem; line-height: 1; padding: 6px 10px 6px 16px; clip-path: polygon(9px 0, 100% 0, 100% 100%, 9px 100%, 0 50%); font-variant-numeric: tabular-nums; }
+
+/* ---------- Intro ---------- */
+#intro { padding-block: 28px 40px; gap: 26px; }
+.hero { gap: 12px; }
+.hero h1 { font-size: clamp(2.7rem, 13vw, 3.8rem); line-height: .92; letter-spacing: -.025em; font-weight: 800; }
+.hero h1 span { display: inline-block; background: var(--tag); color: var(--tag-ink); padding: 0 .12em; transform: rotate(-2deg); }
+.hero .lead { font-size: 1.08rem; max-width: 34ch; }
+.homes { gap: 10px; }
+.home { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; width: 100%; text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 14px 14px 16px; }
+.home:hover { border-color: var(--accent); }
+.home b { font-family: var(--f-display); font-size: 1.2rem; font-weight: 800; }
+.home small { grid-column: 1; color: var(--muted); font-size: .88rem; }
+.home .tag { grid-row: 1 / span 2; grid-column: 2; }
+.home .best { grid-column: 1 / -1; font-size: .78rem; color: var(--accent); font-weight: 700; }
+.how { gap: 10px; background: var(--surface); border-radius: 14px; padding: 16px; border: 1px solid var(--line); }
+.how ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; }
+.note { font-size: .8rem; color: var(--muted); }
+
+/* ---------- Tienda ---------- */
+#shop { padding-bottom: 120px; }
+.hud { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 12px 6px; border-bottom: 1px solid var(--line); gap: 10px; }
+.hud-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.hud-top h2 { font-size: 1.15rem; font-weight: 800; }
+.linkbtn { background: none; border: 0; padding: 6px 0; color: var(--muted); font-size: .88rem; text-decoration: underline; }
+.meters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.meter { gap: 4px; min-width: 0; }
+.meter-label { display: flex; justify-content: space-between; gap: 6px; font-size: .78rem; color: var(--muted); font-weight: 600; }
+.meter-val { font-family: var(--f-display); font-weight: 800; font-size: 1.15rem; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.meter-val small { font-family: var(--f-body); font-weight: 600; font-size: .75rem; color: var(--muted); }
+.track { height: 9px; border-radius: 99px; background: var(--track); overflow: hidden; }
+.fill { height: 100%; width: 0; border-radius: 99px; transition: width .25s ease, background-color .25s; }
+#moneyFill { background: var(--tag); }
+.state { font-size: .72rem; font-weight: 700; padding: 1px 7px; border-radius: 99px; color: var(--surface); background: var(--muted); }
+.state.bad { background: var(--bad); } .state.ok { background: var(--ok); } .state.warn { background: var(--warn); }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding-block: 2px 6px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 99px; padding: 6px 12px; font-size: .84rem; font-weight: 600; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.cat { gap: 10px; padding-top: 18px; scroll-margin-top: 190px; }
+.cat h3 { font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.cat .sub { font-size: .8rem; color: var(--muted); margin-top: -6px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.card { position: relative; }
+.add { width: 100%; height: 100%; min-height: 136px; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 12px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface); text-align: left; transition: transform .08s; }
+.add:active { transform: scale(.97); }
+.card.on .add { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.add:disabled { opacity: .38; cursor: not-allowed; }
+.emoji { font-size: 1.9rem; line-height: 1.1; }
+.pname { font-weight: 700; font-size: .92rem; line-height: 1.2; padding-right: 22px; }
+.kcal { font-size: .76rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.add .tag { margin-top: auto; font-size: .92rem; }
+.badge { position: absolute; top: 8px; right: 8px; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 99px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-weight: 800; font-size: .85rem; pointer-events: none; }
+.minus { position: absolute; bottom: 9px; right: 9px; width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--bg); font-size: 1.3rem; font-weight: 700; line-height: 1; display: grid; place-items: center; }
+.paybar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line); padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+.btn { display: block; width: 100%; border: 0; border-radius: 12px; padding: 14px 16px; font-family: var(--f-display); font-weight: 800; font-size: 1.05rem; background: var(--ink); color: var(--bg); text-align: center; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.warnline { font-size: .82rem; color: var(--bad); font-weight: 600; text-align: center; margin-bottom: 8px; }
+
+/* ---------- Resultado ---------- */
+#result { padding-block: 24px 48px; gap: 22px; }
+.scorebox { gap: 6px; }
+.score { display: flex; align-items: baseline; gap: 6px; font-family: var(--f-display); font-weight: 800; }
+.score b { font-size: 4.6rem; line-height: .9; font-variant-numeric: tabular-nums; }
+.score span { font-size: 1.3rem; color: var(--muted); }
+.verdict { font-family: var(--f-display); font-size: 1.45rem; font-weight: 800; }
+.verdict-sub { color: var(--muted); max-width: 40ch; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; gap: 14px; }
+.panel h2 { font-size: 1.15rem; font-weight: 800; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .76rem; color: var(--muted); }
+.legend i { display: inline-block; vertical-align: middle; margin-right: 5px; }
+.lg-goal { width: 2px; height: 12px; background: var(--ink); }
+.lg-real { width: 9px; height: 9px; background: var(--ink); transform: rotate(45deg); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--ink); }
+.row { gap: 5px; }
+.row-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.row-name { font-weight: 700; font-size: .95rem; min-width: 0; }
+.row-pct { font-family: var(--f-display); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.bt { position: relative; height: 16px; border-radius: 4px; background: var(--track); }
+.bf { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; width: 0; transition: width .7s cubic-bezier(.2,.8,.2,1); }
+.bf.over::after { content: "›"; position: absolute; right: 4px; top: -3px; color: var(--surface); font-weight: 800; }
+.goal { position: absolute; left: 40%; top: -4px; bottom: -4px; width: 2px; background: var(--ink); }
+.real { position: absolute; top: 50%; width: 11px; height: 11px; margin-left: -5.5px; margin-top: -5.5px; background: var(--ink); transform: rotate(45deg); border: 2px solid var(--surface); }
+.row-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; font-size: .76rem; color: var(--muted); }
+.pill { font-size: .7rem; font-weight: 700; padding: 1px 7px; border-radius: 99px; color: var(--surface); margin-left: 6px; vertical-align: 2px; }
+.pill.ok { background: var(--ok); } .pill.warn { background: var(--warn); } .pill.bad { background: var(--bad); }
+.axis { position: relative; height: 14px; font-size: .68rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.axis span { position: absolute; transform: translateX(-50%); }
+.axis span:first-child { transform: none; } .axis span:last-child { transform: translateX(-100%); }
+.insights { margin: 0; padding: 0; list-style: none; gap: 10px; }
+.insights li { padding: 12px 14px; border-radius: 12px; background: var(--bg); border-left: 4px solid var(--c, var(--accent)); font-size: .93rem; }
+.insights b { font-weight: 700; }
+.cost-row { display: grid; grid-template-columns: 8.5em 1fr 3.4em; align-items: center; gap: 8px; font-size: .85rem; }
+.cost-row .bt { height: 10px; }
+.cost-row b { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--f-display); }
+.ticket { background: var(--paper); color: var(--paper-ink); font-family: var(--f-mono); font-size: .86rem; padding: 18px 16px; border-radius: 4px; gap: 4px; box-shadow: 0 1px 0 var(--line); }
+.ticket .c { text-align: center; }
+.ticket hr { border: 0; border-top: 1.5px dashed var(--paper-muted); margin: 8px 0; width: 100%; }
+.tl { display: flex; gap: 8px; }
+.tl span:first-child { flex: 1; min-width: 0; }
+.tl span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tl.big { font-weight: 700; font-size: 1rem; }
+.ticket .muted { color: var(--paper-muted); }
+.actions { gap: 10px; }
+
+/* ---------- Rondas 2 y 3, ficha ---------- */
+.round { padding-block: 24px 48px; gap: 18px; }
+.round h1 { font-size: clamp(1.7rem, 7vw, 2.2rem); font-weight: 800; line-height: 1.05; }
+.intro-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; font-size: .93rem; }
+.dots { display: flex; gap: 5px; }
+.dots i { flex: 1; height: 5px; border-radius: 99px; background: var(--track); }
+.dots i.done { background: var(--accent); }
+.qtext { font-family: var(--f-display); font-size: 1.3rem; font-weight: 800; line-height: 1.2; text-wrap: balance; }
+.qctx { color: var(--muted); font-size: .9rem; margin-top: -8px; }
+.opts { gap: 10px; }
+.opt { width: 100%; text-align: left; padding: 14px 16px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); font-weight: 600; }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--ok); box-shadow: inset 0 0 0 1px var(--ok); }
+.opt.wrong { border-color: var(--bad); box-shadow: inset 0 0 0 1px var(--bad); opacity: .8; }
+.opt.right::after { content: "  ✓"; color: var(--ok); font-weight: 800; }
+.opt.wrong::after { content: "  ✗"; color: var(--bad); font-weight: 800; }
+.feedback { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--c, var(--accent)); border-radius: 12px; padding: 14px 16px; gap: 6px; font-size: .93rem; }
+.feedback b.title { font-family: var(--f-display); font-size: 1.05rem; }
+.dg-list { gap: 10px; }
+.dg-row { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; font-weight: 600; font-size: .92rem; }
+.dg-row.right { border-color: var(--ok); } .dg-row.wrong { border-color: var(--bad); }
+.dg-row .fix { grid-column: 1 / -1; font-size: .8rem; font-weight: 600; color: var(--bad); }
+.seg { display: flex; border: 1.5px solid var(--line); border-radius: 99px; overflow: hidden; }
+.seg button { flex: 1; border: 0; background: transparent; padding: 8px 12px; font-weight: 700; font-size: .84rem; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.seg button:disabled { cursor: default; }
+.ficha { gap: 16px; }
+.ficha section { gap: 8px; }
+.ficha h3 { font-size: 1.05rem; font-weight: 800; display: flex; gap: 10px; align-items: baseline; }
+.ficha h3 span { font-family: var(--f-mono); color: var(--accent); font-size: .9rem; }
+.ficha p, .ficha li { font-size: .93rem; }
+.ficha ul { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 8px; }
+.ficha .big-idea { background: var(--tag); color: var(--tag-ink); border-radius: 12px; padding: 14px 16px; font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) { .fill, .bf, .add { transition: none; } }
+</style>
+
+<!-- ============ INTRO ============ -->
+<section id="intro" class="wrap stack">
+  <div style="margin-bottom:-10px;padding-top:12px">
+    <a href="index.html" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:var(--surface); color:var(--accent); font-weight:700; font-size:12px; padding:6px 14px; border-radius:99px; border:1.5px solid var(--line); box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+      ← Volver al Repaso del Parcial
+    </a>
+  </div>
+  <div class="hero stack">
+    <p class="kicker">Juego · Guías Alimentarias para la Población Argentina</p>
+    <h1>El <span>Changuito</span></h1>
+    <p class="lead">Hacé las compras de una semana para una persona y descubrí por qué en Argentina comemos como comemos.</p>
+  </div>
+
+  <div class="stack" style="gap:10px">
+    <h2 style="font-size:1.2rem">Elegí tu hogar</h2>
+    <div class="homes stack" id="homes"></div>
+  </div>
+
+  <div class="how stack">
+    <h2 style="font-size:1.05rem">Cómo se juega</h2>
+    <ol>
+      <li><b>Ronda 1, el súper.</b> Tocá los productos para meterlos al changuito (con − los sacás). La persona tiene que comer toda la semana: llená la barra de energía (14.000 kcal, unas 2.000 por día) sin pasarte de la plata.</li>
+      <li><b>Ronda 2, ¿cómo compra Argentina?</b> Adiviná qué compran de verdad los hogares del país.</li>
+      <li><b>Ronda 3, el diagnóstico.</b> Clasificá cada grupo de alimentos: falta, sobra o está mal elegido.</li>
+    </ol>
+  </div>
+
+  <p class="note">Datos reales: estudio CAPA 2 (CESNI), consumo aparente de alimentos a nivel hogar según la ENGHo 2017-18, ajustado a 2.000 kcal y comparado con el plan alimentario de las GAPA. Los precios son del juego, no reales: respetan qué alimentos son más baratos que otros, no su valor en pesos. Las cantidades de cada producto están simplificadas.</p>
+</section>
+
+<!-- ============ TIENDA ============ -->
+<section id="shop" hidden>
+  <div class="hud wrap stack">
+    <div class="hud-top">
+      <h2 id="hudTitle">Hogar</h2>
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="linkbtn" id="backBtn" type="button">Cambiar hogar</button>
+        <a href="index.html" style="text-decoration:none;font-size:.85rem;font-weight:700;color:var(--accent);padding:2px 8px;border-radius:6px;border:1px solid var(--line);background:var(--surface)">Salir</a>
+      </div>
+    </div>
+    <div class="meters">
+      <div class="meter stack">
+        <div class="meter-label"><span>Plata que queda</span></div>
+        <div class="meter-val" id="moneyVal">$0</div>
+        <div class="track"><div class="fill" id="moneyFill"></div></div>
+      </div>
+      <div class="meter stack">
+        <div class="meter-label"><span>Energía semanal</span><span class="state bad" id="eState">Hambre</span></div>
+        <div class="meter-val" id="eVal">0 <small>/ 14.000 kcal</small></div>
+        <div class="track"><div class="fill" id="eFill"></div></div>
+      </div>
+    </div>
+    <nav class="chips" id="chips" aria-label="Secciones del super"></nav>
+  </div>
+  <div class="wrap stack" id="catalog"></div>
+  <div class="paybar">
+    <div class="wrap">
+      <p class="warnline" id="payWarn" hidden></p>
+      <button class="btn" id="payBtn" type="button">Pagar</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTADO ============ -->
+<section id="result" class="wrap stack" hidden>
+  <div class="scorebox stack">
+    <p class="kicker" id="rKicker">Resultado</p>
+    <div class="score"><b id="rScore">0</b><span>/ 100</span></div>
+    <p class="verdict" id="rVerdict"></p>
+    <p class="verdict-sub" id="rVerdictSub"></p>
+  </div>
+
+  <div class="panel stack">
+    <h2>Tu changuito frente a las GAPA</h2>
+    <div class="legend">
+      <span><i class="lg-goal"></i>Meta GAPA (100%)</span>
+      <span><i class="lg-real"></i>Hogares argentinos reales (CAPA 2, 2017-18)</span>
+    </div>
+    <div class="stack" style="gap:16px" id="rows"></div>
+    <div class="axis" aria-hidden="true"><span style="left:0">0%</span><span style="left:40%">100%</span><span style="left:80%">200%</span><span style="left:100%">250%</span></div>
+  </div>
+
+  <div class="panel stack">
+    <h2>Lo que muestra tu compra</h2>
+    <ul class="insights stack" id="insights"></ul>
+  </div>
+
+  <div class="panel stack">
+    <h2>¿Cuánto cuesta llenarse?</h2>
+    <p class="note" style="margin-top:-6px">Precio de 1.000 kcal según el alimento. Por eso los hogares con menos plata llenan el changuito de harinas.</p>
+    <div class="stack" style="gap:8px" id="costs"></div>
+  </div>
+
+  <div class="ticket stack" id="ticket"></div>
+
+  <div class="actions stack">
+    <button class="btn" id="toQuizBtn" type="button">Seguir a la ronda 2</button>
+    <button class="btn ghost" id="retryBtn" type="button">Probar de nuevo con este hogar</button>
+    <button class="btn ghost" id="otherBtn" type="button">Jugar con otro hogar</button>
+  </div>
+</section>
+
+<!-- ============ RONDA 2 ============ -->
+<section id="quiz" class="wrap stack round" hidden>
+  <p class="kicker">Ronda 2 de 3 · ¿Cómo compra Argentina?</p>
+  <div id="quizIntro" class="stack" style="gap:14px">
+    <h1>Vos hiciste lo mismo que el estudio CAPA 2</h1>
+    <div class="intro-card stack" style="gap:8px">
+      <p>El estudio <b>CAPA 2</b> del CESNI (Zapata y Rovirosa) analizó <b>lo que compran los hogares argentinos</b> con las Encuestas Nacionales de Gastos de los Hogares (ENGHo), de 1985/86 a 2017/18. A eso se le llama <b>consumo aparente</b>: lo que entra al hogar, no lo que come cada persona.</p>
+      <p>Para compararlo con el plan alimentario de las <b>GAPA</b>, pensado para <b>2.000 kcal</b>, pasaron el consumo a <b>adulto equivalente</b> y lo <b>ajustaron a 2.000 kcal</b>. Es lo mismo que hiciste con tu persona del juego.</p>
+      <p>Ahora adiviná qué encontraron.</p>
+    </div>
+    <button class="btn" id="quizStart" type="button">Empezar</button>
+  </div>
+  <div id="quizBody" class="stack" style="gap:16px" hidden>
+    <div class="dots" id="qDots"></div>
+    <p class="qtext" id="qText"></p>
+    <p class="qctx" id="qCtx"></p>
+    <div class="opts stack" id="qOpts"></div>
+    <div class="feedback stack" id="qFb" hidden></div>
+    <button class="btn" id="qNext" type="button" hidden>Siguiente</button>
+  </div>
+</section>
+
+<!-- ============ RONDA 3 ============ -->
+<section id="diag" class="wrap stack round" hidden>
+  <p class="kicker">Ronda 3 de 3 · El diagnóstico</p>
+  <h1>El diagnóstico de la mesa argentina</h1>
+  <div class="intro-card stack" style="gap:6px">
+    <p><b>Falta:</b> se consume menos de lo recomendado.</p>
+    <p><b>Sobra:</b> se consume más de lo recomendado.</p>
+    <p><b>Mal elegido:</b> la cantidad es cercana a la recomendada, pero la variedad o el tipo de alimento no es el adecuado.</p>
+  </div>
+  <div class="dg-list stack" id="dgList"></div>
+  <div class="feedback stack" id="dgFb" hidden></div>
+  <button class="btn" id="dgCheck" type="button">Comprobar</button>
+  <button class="btn" id="dgNext" type="button" hidden>Ver lo que descubriste</button>
+</section>
+
+<!-- ============ FICHA ============ -->
+<section id="ficha" class="wrap stack round" hidden>
+  <p class="kicker" id="fichaScore">Fin del juego</p>
+  <h1>Lo que descubriste</h1>
+  <p class="qctx" style="margin-top:0">Sacale una captura: es el resumen de todo el juego.</p>
+  <div class="panel stack ficha">
+    <section class="stack">
+      <h3><span>1</span>El estudio</h3>
+      <p>CAPA 2 (CESNI) analizó el <b>consumo aparente</b> de alimentos a nivel hogar con las ENGHo (1985/86 a 2017/18). Para compararlo con el plan alimentario de las <b>GAPA</b>, formulado sobre <b>2.000 kcal</b>, se usó el consumo por <b>adulto equivalente</b> y el dato <b>ajustado a 2.000 kcal</b>.</p>
+      <p>Plan GAPA por día: 5 porciones de verduras y frutas, 4 de legumbres, cereales, papa, pan y pastas, 3 de leche, yogur y queso, 2 de aceites, semillas y frutas secas, 1 de carnes y huevo, hasta 270 kcal de alimentos opcionales y 8 vasos de agua segura.</p>
+    </section>
+    <section class="stack">
+      <h3><span>2</span>Grupos con consumo menor a lo recomendado</h3>
+      <ul>
+        <li><b>Verduras y frutas:</b> se consume una tercera parte, con escasa variedad. Las frutas son el grupo que más se alejó de las recomendaciones a lo largo del tiempo.</li>
+        <li><b>Leche, yogur y quesos:</b> menos de la mitad. Predominan las variedades enteras, y las guías recomiendan preferir descremadas.</li>
+      </ul>
+    </section>
+    <section class="stack">
+      <h3><span>3</span>Grupos con consumo mayor a lo recomendado</h3>
+      <ul>
+        <li><b>Dulces y grasas (alimentos de consumo opcional):</b> casi el triple del máximo. Una cuarta parte es azúcar, dulces, postres y golosinas; otra cuarta parte galletitas y pastelería; otra cuarta parte comidas listas (pizza, empanadas, sándwiches, tartas); cerca del 10% jugos y gaseosas, 8% carnes procesadas, 6% grasas y 5% bebidas con alcohol.</li>
+      </ul>
+    </section>
+    <section class="stack">
+      <h3><span>4</span>Cantidad cercana, pero variedad y tipo inadecuados</h3>
+      <ul>
+        <li><b>Legumbres, cereales, papa, pan y pastas:</b> muy poco consumo de legumbres y cereales integrales.</li>
+        <li><b>Carnes y huevo:</b> predominan las carnes rojas y de mayor contenido graso; muy poco pescado.</li>
+        <li><b>Aceites, frutas secas y semillas:</b> sobre todo aceite de girasol; muy poca participación de semillas y frutos secos.</li>
+      </ul>
+    </section>
+    <section class="stack">
+      <h3><span>5</span>Según el nivel de ingresos (2017-18)</h3>
+      <ul>
+        <li><b>Los hogares de más ingresos consumen más</b> frutas (15% de la recomendación en el 1° quintil y 32% en el 5°), verduras (28% y 33%), quesos (47% y 109%) y alimentos opcionales (194% y 307%).</li>
+        <li><b>Consumen menos</b> pan (101% y 44%) y feculentos (122% y 74%).</li>
+        <li><b>Consumo parecido:</b> leche y yogur (23%) y carnes (118% y 116%). Aceites entre 20% y 30% por debajo del plan en ambos.</li>
+      </ul>
+    </section>
+    <section class="stack">
+      <h3><span>6</span>Según la región</h3>
+      <p>Metropolitana del Gran Buenos Aires, Pampeana y Noroeste tienen el mayor consumo de alimentos recomendados. En todas las regiones, la energía de los alimentos opcionales supera lo indicado por las GAPA.</p>
+    </section>
+    <section class="stack">
+      <h3><span>7</span>La idea central</h3>
+      <p class="big-idea">Hay importantes diferencias entre lo recomendado y la alimentación argentina. Y aun en los grupos donde la cantidad se acerca a la recomendada, la variedad y el tipo de alimentos no son los adecuados.</p>
+    </section>
+  </div>
+  <div class="actions stack">
+    <button class="btn" id="againBtn" type="button">Jugar de nuevo</button>
+  </div>
+</section>
+
+<script>
+const ENERGY = 14000;
+
+const HOMES = [
+  { q: 1, budget: 60,  title: "Hogar del 1° quintil", desc: "Los hogares con menos ingresos. El desafío más difícil." },
+  { q: 3, budget: 100, title: "Hogar del 3° quintil", desc: "Ingresos medios." },
+  { q: 5, budget: 150, title: "Hogar del 5° quintil", desc: "Los hogares con más ingresos." },
+];
+
+const GROUPS = [
+  { k: "vf",    name: "Verduras y frutas", sub: "Frescas, de estación" },
+  { k: "leche", name: "Leche y yogur", sub: "Lácteos fluidos" },
+  { k: "queso", name: "Quesos", sub: "Duros y semiduros" },
+  { k: "fec",   name: "Pan, cereales, papa, pastas y legumbres", sub: "Los que llenan" },
+  { k: "carne", name: "Carnes, pescado y huevos", sub: "" },
+  { k: "opc",   name: "Opcionales", sub: "Dulces, snacks, gaseosas, embutidos y comidas listas" },
+];
+
+// porc = cantidad en la unidad de su fila (g, ml o porciones); en opcionales se cuentan kcal
+const PRODUCTS = [
+  { id: "verd",   g: "vf",    e: "🥬", n: "Verduras surtidas 1 kg",  porc: 1000, kcal: 300,  p: 9 },
+  { id: "zap",    g: "vf",    e: "🥕", n: "Zapallo y zanahoria 1 kg", porc: 1000, kcal: 350, p: 6 },
+  { id: "fruta",  g: "vf",    e: "🍎", n: "Fruta de estación 1 kg",  porc: 1000, kcal: 550,  p: 8 },
+  { id: "ban",    g: "vf",    e: "🍌", n: "Bananas 1 kg",            porc: 1000, kcal: 900,  p: 7 },
+  { id: "leche",  g: "leche", e: "🥛", n: "Leche entera 1 L",        porc: 1000, kcal: 620,  p: 5 },
+  { id: "lechedes", g: "leche", e: "🥛", n: "Leche descremada 1 L",  porc: 1000, kcal: 350,  p: 5 },
+  { id: "yog",    g: "leche", e: "🥣", n: "Yogur 1 L",               porc: 1000, kcal: 800,  p: 8 },
+  { id: "qcrem",  g: "queso", e: "🧀", n: "Queso cremoso 300 g",     porc: 300,  kcal: 900,  p: 9 },
+  { id: "qduro",  g: "queso", e: "🧀", n: "Queso duro 150 g",        porc: 150,  kcal: 600,  p: 8 },
+  { id: "pan",    g: "fec",   e: "🥖", n: "Pan francés 1 kg",        porc: 16, kcal: 2700, p: 6 },
+  { id: "harina", g: "fec",   e: "🌾", n: "Harina 000 1 kg",         porc: 16, kcal: 3600, p: 3 },
+  { id: "fideos", g: "fec",   e: "🍝", n: "Fideos 500 g",            porc: 8,  kcal: 1750, p: 3 },
+  { id: "arroz",  g: "fec",   e: "🍚", n: "Arroz 1 kg",              porc: 16, kcal: 3600, p: 5 },
+  { id: "papa",   g: "fec",   e: "🥔", n: "Papa 2 kg",               porc: 12, kcal: 1500, p: 5 },
+  { id: "panint", g: "fec",   e: "🍞", n: "Pan integral 500 g",      porc: 8,  kcal: 1250, p: 6, integral: true },
+  { id: "lent",   g: "fec",   e: "🫘", n: "Lentejas 500 g",          porc: 8,  kcal: 1700, p: 5, legumbre: true },
+  { id: "pollo",  g: "carne", e: "🍗", n: "Pollo 1 kg",              porc: 1000, kcal: 1500, p: 8 },
+  { id: "picada", g: "carne", e: "🥩", n: "Carne picada 1 kg",       porc: 1000, kcal: 2500, p: 14 },
+  { id: "asado",  g: "carne", e: "🍖", n: "Asado 1 kg",              porc: 1000, kcal: 3000, p: 16 },
+  { id: "huevos", g: "carne", e: "🥚", n: "Huevos x 12",             porc: 600,  kcal: 900,  p: 6 },
+  { id: "merluza",g: "carne", e: "🐟", n: "Merluza 500 g",           porc: 500,  kcal: 450,  p: 9, pescado: true },
+  { id: "gas",    g: "opc",   e: "🥤", n: "Gaseosa 2,25 L",          porc: 0, kcal: 950,  p: 4 },
+  { id: "gall",   g: "opc",   e: "🍪", n: "Galletitas dulces 300 g", porc: 0, kcal: 1450, p: 4 },
+  { id: "alf",    g: "opc",   e: "🍫", n: "Alfajores x 3",           porc: 0, kcal: 750,  p: 3 },
+  { id: "snack",  g: "opc",   e: "🍟", n: "Papas fritas 150 g",      porc: 0, kcal: 800,  p: 3 },
+  { id: "fact",   g: "opc",   e: "🥐", n: "Facturas x 6",            porc: 0, kcal: 1500, p: 5 },
+  { id: "salch",  g: "opc",   e: "🌭", n: "Salchichas x 6",          porc: 0, kcal: 600,  p: 3 },
+  { id: "empa",   g: "opc",   e: "🥟", n: "Empanadas x 6",           porc: 0, kcal: 1600, p: 8 },
+];
+const BY_ID = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+
+// Metas semanales (GAPA × 7 días). Datos reales: CAPA 2, ENGHo 2017-18 ajustada a 2.000 kcal
+const ROWS = [
+  { k: "vf", name: "Verduras y frutas", meta: 4900, unit: "g", kind: "min", gapa: "700 g por día (400 g hortalizas y 300 g frutas)",
+    real: q => q === 1 ? { v: 22, t: "1° quintil real: verduras 28%, frutas 15%" }
+             : q === 5 ? { v: 33, t: "5° quintil real: verduras 33%, frutas 32%" }
+             : { v: 29, t: "Argentina real: hortalizas 32%, frutas 25%" } },
+  { k: "leche", name: "Leche y yogur", meta: 3500, unit: "ml", kind: "min", gapa: "500 ml por día",
+    real: () => ({ v: 23, t: "Argentina real: 23%, en todos los niveles de ingreso" }) },
+  { k: "queso", name: "Queso", meta: 210, unit: "g", kind: "max", gapa: "30 g por día",
+    real: q => q === 1 ? { v: 47, t: "1° quintil real: 47%" } : q === 5 ? { v: 109, t: "5° quintil real: 109%" } : { v: 77, t: "Argentina real: 77%" } },
+  { k: "fec", name: "Legumbres, cereales, papa, pan y pastas", meta: 28, unit: "porciones", kind: "range", hi: 120, gapa: "4 porciones por día",
+    real: q => q === 1 ? { v: 115, t: "1° quintil real: feculentos 122%, pan 101%" }
+             : q === 5 ? { v: 64, t: "5° quintil real: feculentos 74%, pan 44%" }
+             : { v: 88, t: "Argentina real: feculentos 97%, pan 70%" } },
+  { k: "carne", name: "Carnes y huevo", meta: 1085, unit: "g", kind: "range", hi: 130, gapa: "130 g de carne y 25 g de huevo por día",
+    real: q => q === 1 ? { v: 118, t: "1° quintil real: carnes 118%" } : q === 5 ? { v: 116, t: "5° quintil real: carnes 116%" }
+             : { v: 122, t: "Argentina real: carnes 122%, huevo 68%" } },
+  { k: "opc", name: "Opcionales", meta: 1890, unit: "kcal", kind: "max", gapa: "máximo 270 kcal por día",
+    real: q => q === 1 ? { v: 194, t: "1° quintil real: 194%, el doble" } : q === 5 ? { v: 307, t: "5° quintil real: 307%, el triple" }
+             : { v: 250, t: "Argentina real: 250%, casi el triple" } },
+];
+const COLOR = { vf: "--g-vf", leche: "--g-leche", queso: "--g-queso", fec: "--g-fec", carne: "--g-carne", opc: "--g-opc" };
+const SCALE = 250;
+
+const state = { home: null, cart: {} };
+const $ = s => document.querySelector(s);
+const fmt = n => Math.round(n).toLocaleString("es-AR");
+const money = n => "$" + fmt(n);
+
+function loadBest() { try { return JSON.parse(localStorage.getItem("changuito-best") || "{}"); } catch { return {}; } }
+function saveBest(q, s) {
+  try { const b = loadBest(); if (!(b[q] >= s)) { b[q] = s; localStorage.setItem("changuito-best", JSON.stringify(b)); } } catch {}
+}
+
+function show(id) {
+  ["intro", "shop", "result", "quiz", "diag", "ficha"].forEach(s => { $("#" + s).hidden = s !== id; });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Intro ---------- */
+function renderHomes() {
+  const best = loadBest();
+  $("#homes").innerHTML = HOMES.map(h => `
+    <button class="home" type="button" data-q="${h.q}">
+      <b>${h.title}</b>
+      <span class="tag">${money(h.budget)}</span>
+      <small>${h.desc}</small>
+      ${best[h.q] != null ? `<span class="best">Tu mejor puntaje: ${best[h.q]}/100</span>` : ""}
+    </button>`).join("");
+  document.querySelectorAll(".home").forEach(b => b.addEventListener("click", () => startShop(+b.dataset.q)));
+}
+
+/* ---------- Tienda ---------- */
+function buildCatalog() {
+  $("#chips").innerHTML = GROUPS.map(g =>
+    `<button class="chip" type="button" data-go="${g.k}"><span class="dot" style="background:var(${COLOR[g.k]})"></span>${g.name.split(",")[0]}</button>`).join("");
+  $("#catalog").innerHTML = GROUPS.map(g => `
+    <div class="cat stack" id="sec-${g.k}">
+      <h3><span class="dot" style="background:var(${COLOR[g.k]})"></span>${g.name}</h3>
+      ${g.sub ? `<p class="sub">${g.sub}</p>` : ""}
+      <div class="grid">
+        ${PRODUCTS.filter(p => p.g === g.k).map(p => `
+          <div class="card" data-id="${p.id}">
+            <button class="add" type="button" id="add-${p.id}" aria-label="Agregar ${p.n}">
+              <span class="emoji" aria-hidden="true">${p.e}</span>
+              <span class="pname">${p.n}</span>
+              <span class="kcal">${fmt(p.kcal)} kcal</span>
+              <span class="tag">${money(p.p)}</span>
+            </button>
+            <span class="badge" hidden></span>
+            <button class="minus" type="button" id="minus-${p.id}" aria-label="Sacar ${p.n}" hidden>−</button>
+          </div>`).join("")}
+      </div>
+    </div>`).join("");
+  document.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () =>
+    $("#sec-" + c.dataset.go).scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" })));
+  document.querySelectorAll(".card").forEach(card => {
+    const id = card.dataset.id;
+    card.querySelector(".add").addEventListener("click", () => change(id, 1));
+    card.querySelector(".minus").addEventListener("click", () => change(id, -1));
+  });
+}
+
+function totals() {
+  const t = { spent: 0, kcal: 0, items: 0, porc: { vf: 0, leche: 0, queso: 0, fec: 0, carne: 0, opc: 0 }, legum: 0, pescado: 0 };
+  for (const [id, n] of Object.entries(state.cart)) {
+    const p = BY_ID[id];
+    t.spent += p.p * n; t.kcal += p.kcal * n; t.items += n;
+    t.porc[p.g] += (p.g === "opc" ? p.kcal : p.porc) * n;
+    if (p.pescado) t.pescado += n;
+    if (p.legumbre) t.legum += p.porc * n;
+  }
+  return t;
+}
+
+function change(id, d) {
+  const t = totals(), p = BY_ID[id];
+  if (d > 0 && t.spent + p.p > state.home.budget) return;
+  state.cart[id] = Math.max(0, (state.cart[id] || 0) + d);
+  if (!state.cart[id]) delete state.cart[id];
+  updateShop();
+}
+
+function energyState(e) {
+  if (e < .85) return ["bad", "Hambre"];
+  if (e <= 1.3) return ["ok", "Alcanza"];
+  return ["warn", "De más"];
+}
+
+function updateShop() {
+  const t = totals(), b = state.home.budget, left = b - t.spent, e = t.kcal / ENERGY;
+  $("#moneyVal").innerHTML = `${money(left)} <small>de ${money(b)}</small>`;
+  $("#moneyFill").style.width = (left / b * 100) + "%";
+  $("#eVal").innerHTML = `${fmt(t.kcal)} <small>/ 14.000 kcal</small>`;
+  $("#eFill").style.width = Math.min(e, 1) * 100 + "%";
+  const [cls, label] = energyState(e);
+  $("#eFill").style.backgroundColor = `var(--${cls === "ok" ? "ok" : cls === "warn" ? "warn" : "bad"})`;
+  const st = $("#eState"); st.className = "state " + cls; st.textContent = label;
+  document.querySelectorAll(".card").forEach(card => {
+    const id = card.dataset.id, n = state.cart[id] || 0;
+    card.classList.toggle("on", n > 0);
+    card.querySelector(".badge").hidden = !n;
+    card.querySelector(".badge").textContent = n;
+    card.querySelector(".minus").hidden = !n;
+    card.querySelector(".add").disabled = BY_ID[id].p > left;
+  });
+  $("#payBtn").textContent = t.items ? `Pagar ${money(t.spent)} · ${t.items} producto${t.items > 1 ? "s" : ""}` : "Pagar";
+  const w = $("#payWarn");
+  w.hidden = !(t.items && e < .85);
+  w.textContent = "Con esto la persona pasa hambre esta semana.";
+}
+
+function startShop(q) {
+  state.home = HOMES.find(h => h.q === q);
+  state.cart = {};
+  $("#hudTitle").textContent = state.home.title;
+  updateShop();
+  show("shop");
+}
+
+/* ---------- Resultado ---------- */
+function pctOf(t, r) { return t.porc[r.k] / r.meta * 100; }
+
+function statusOf(r, pct) {
+  if (r.kind === "min") return pct >= 90 ? ["ok", "Bien"] : pct >= 50 ? ["warn", "Falta"] : ["bad", "Muy poco"];
+  if (r.kind === "max") return pct <= 100 ? ["ok", "Bien"] : pct <= 150 ? ["warn", "Se pasa"] : ["bad", "Exceso"];
+  if (pct < 50) return ["bad", "Muy poco"];
+  if (pct < 90) return ["warn", "Falta"];
+  return pct <= r.hi ? ["ok", "Bien"] : pct <= r.hi + 50 ? ["warn", "Se pasa"] : ["bad", "Exceso"];
+}
+
+function scoreOf(t) {
+  const p = k => pctOf(t, ROWS.find(r => r.k === k));
+  let s = 0;
+  s += Math.min(p("vf"), 100) * .30;
+  s += Math.min(p("leche"), 100) * .15;
+  const f = p("fec");   s += f < 90 ? f / 90 * 15 : f <= 120 ? 15 : Math.max(0, 15 - (f - 120) * .15);
+  const c = p("carne"); s += c < 90 ? c / 90 * 10 : c <= 130 ? 10 : Math.max(0, 10 - (c - 130) * .1);
+  s += Math.min(t.legum / 4, 1) * 5;
+  s += Math.min(t.pescado, 1) * 5;
+  const qs = p("queso"); s += qs <= 100 ? 5 : Math.max(0, 5 - (qs - 100) * .05);
+  const o = p("opc");    s += o <= 100 ? 15 : Math.max(0, 15 - (o - 100) * .15);
+  const e = t.kcal / ENERGY;
+  if (e < .85) s *= e / .85;
+  return Math.max(0, Math.min(100, Math.round(s)));
+}
+
+function verdictOf(s, e) {
+  if (e < .5) return ["Semana de hambre", "La persona no llega a comer ni la mitad de lo que necesita. Primero hay que llenar la barra de energía."];
+  if (s >= 85) return ["¡Changuito GAPA!", "Tu compra se parece mucho a lo que recomiendan las Guías Alimentarias."];
+  if (s >= 65) return ["Bastante bien", "Vas por buen camino, pero algunos grupos no llegan a la meta."];
+  if (s >= 40) return ["Changuito argentino promedio", "Tu compra se parece a la de muchos hogares del país: mucho de lo que llena, poco de lo que protege."];
+  return ["Changuito en rojo", "Tu compra está lejos de las GAPA en casi todos los grupos."];
+}
+
+function insightsOf(t, q) {
+  const out = [], p = k => Math.round(pctOf(t, ROWS.find(r => r.k === k)));
+  const e = t.kcal / ENERGY;
+  if (e < .85) out.push(["--bad", `<b>Faltó energía:</b> la persona comió ${Math.round(e * 100)}% de lo que necesita. Cuando la plata no alcanza, lo primero es no pasar hambre.`]);
+  if (p("vf") < 60) out.push(["--g-vf", `<b>Verduras y frutas: ${p("vf")}%.</b> Los hogares argentinos consumen una tercera parte de lo recomendado, con escasa variedad. Ningún nivel de ingreso llega a la meta: el 1° quintil cubre 15% en frutas y 28% en verduras.`]);
+  else if (p("vf") >= 90) out.push(["--g-vf", `<b>Verduras y frutas: ${p("vf")}%.</b> Lograste lo que no logra ningún nivel de ingreso en Argentina. Mirá cuánto de tu plata se fue en este grupo.`]);
+  if (p("leche") < 60) out.push(["--g-leche", `<b>Leche y yogur: ${p("leche")}%.</b> En el país se consume menos de la mitad de los lácteos recomendados. Leche y yogur llegan al 23%.`]);
+  if (state.cart.leche && !state.cart.lechedes) out.push(["--g-leche", "<b>Elegiste leche entera</b>, como la mayoría de los hogares. Las GAPA recomiendan elegir preferentemente variedades descremadas."]);
+  if (p("queso") > 100) out.push(["--g-queso", `<b>Queso: ${p("queso")}%.</b> En Argentina el 5° quintil llega al 109% de la recomendación, mientras que el 1° quintil consume la mitad (47%).`]);
+  if (t.porc.fec > 0) {
+    const share = Math.round(t.legum / t.porc.fec * 100), f = p("fec");
+    if (share < 10) out.push(["--g-fec", `<b>Legumbres: ${share}% del grupo.</b> En Argentina la cantidad de este grupo es cercana a la recomendada, pero el consumo de legumbres y cereales integrales es muy bajo.`]);
+    if (f > 120) out.push(["--g-fec", `<b>Pan, harinas y pastas: ${f}%.</b> El 1° quintil consume 122% de feculentos y 101% de pan; el 5° quintil, 74% y 44%. Son la energía más barata.`]);
+  }
+  if (p("carne") > 130) out.push(["--g-carne", `<b>Carnes y huevo: ${p("carne")}%.</b> En Argentina las carnes superan levemente la recomendación (118% en el 1° quintil, 116% en el 5°) y predominan las carnes rojas y de mayor contenido graso.`]);
+  if (!t.pescado) out.push(["--g-carne", "<b>Sin pescado.</b> En los hogares argentinos el consumo de pescado es muy bajo."]);
+  if (p("opc") > 100) out.push(["--g-opc", `<b>Opcionales: ${p("opc")}% del máximo de 270 kcal por día.</b> En Argentina se consume casi el triple: 194% en el 1° quintil y 307% en el 5°. Una cuarta parte es azúcar y golosinas, otra galletitas y pastelería, otra comidas listas.`]);
+  if (q === 1 && e >= .85 && p("vf") < 60) out.push(["--accent", `<b>Con ${money(state.home.budget)} no alcanza para todo.</b> Mirá abajo cuánto cuesta llenarse con cada alimento.`]);
+  if (!out.length) out.push(["--ok", "<b>Compra muy equilibrada.</b> Probá ahora con el hogar del 1° quintil: ¿se puede con menos plata?"]);
+  return out;
+}
+
+function renderResult() {
+  const t = totals(), q = state.home.q, e = t.kcal / ENERGY;
+  const s = scoreOf(t);
+  saveBest(q, s);
+  const [v, vs] = verdictOf(s, e);
+  $("#rKicker").textContent = `${state.home.title} · gastaste ${money(t.spent)} de ${money(state.home.budget)}`;
+  $("#rScore").textContent = s;
+  $("#rVerdict").textContent = v;
+  $("#rVerdictSub").textContent = vs;
+
+  $("#rows").innerHTML = ROWS.map(r => {
+    const pct = pctOf(t, r), [cls, lab] = statusOf(r, pct), real = r.real(q);
+    const w = Math.min(pct, SCALE) / SCALE * 100;
+    return `<div class="row stack">
+      <div class="row-head"><span class="row-name">${r.name}<span class="pill ${cls}">${lab}</span></span><span class="row-pct">${Math.round(pct)}%</span></div>
+      <div class="bt"><div class="bf${pct > SCALE ? " over" : ""}" data-w="${w}" style="background:var(${COLOR[r.k]})"></div>
+        <div class="goal"></div>${real.v != null ? `<div class="real" style="left:${Math.min(real.v, SCALE) / SCALE * 100}%" title="${real.t}"></div>` : ""}</div>
+      <div class="row-meta"><span>${fmt(t.porc[r.k])} de ${fmt(r.meta)} ${r.unit} por semana · GAPA: ${r.gapa}</span><span>${real.t}</span></div>
+    </div>`;
+  }).join("");
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    document.querySelectorAll(".bf").forEach(b => b.style.width = b.dataset.w + "%")));
+
+  $("#insights").innerHTML = insightsOf(t, q).map(([c, h]) => `<li style="--c:var(${c})">${h}</li>`).join("");
+
+  const costIds = ["harina", "fideos", "arroz", "pan", "lent", "leche", "pollo", "fruta", "verd"];
+  const costs = costIds.map(id => ({ p: BY_ID[id], c: BY_ID[id].p / BY_ID[id].kcal * 1000 }));
+  const maxC = Math.max(...costs.map(x => x.c));
+  $("#costs").innerHTML = costs.map(({ p, c }) => `
+    <div class="cost-row"><span>${p.e} ${p.n.replace(/ \d.*$/, "")}</span>
+      <div class="bt"><div class="bf" data-w="${c / maxC * 100}" style="background:var(${COLOR[p.g]})"></div></div>
+      <b>$${c.toLocaleString("es-AR", { maximumFractionDigits: c < 10 ? 1 : 0 })}</b></div>`).join("");
+
+  const lines = Object.entries(state.cart).map(([id, n]) => {
+    const p = BY_ID[id];
+    return `<div class="tl"><span>${n} x ${p.n}</span><span>${money(p.p * n)}</span></div>`;
+  }).join("") || `<div class="tl muted"><span>(changuito vacío)</span><span></span></div>`;
+  $("#ticket").innerHTML = `
+    <div class="c"><b>SUPER DEL BARRIO</b></div>
+    <div class="c muted">Compra semanal · 1 adulto equivalente</div>
+    <hr>${lines}<hr>
+    <div class="tl big"><span>TOTAL</span><span>${money(t.spent)}</span></div>
+    <div class="tl"><span>Presupuesto</span><span>${money(state.home.budget)}</span></div>
+    <div class="tl"><span>Vuelto</span><span>${money(state.home.budget - t.spent)}</span></div>
+    <div class="tl"><span>Energía</span><span>${fmt(t.kcal)} kcal</span></div>
+    <hr><div class="c muted">Puntaje GAPA: ${s}/100 · ¡Gracias por su compra!</div>`;
+
+  show("result");
+}
+
+/* ---------- Ronda 2: preguntas ---------- */
+// La primera opción de cada pregunta es la correcta; se mezclan al mostrar
+const QUIZ = [
+  { c: "--g-vf", q: "¿Cuánto de las verduras y frutas recomendadas consumen los hogares argentinos?",
+    ctx: "GAPA: 5 porciones por día (400 g de hortalizas y 300 g de frutas).",
+    o: ["Una tercera parte", "Dos tercios", "Casi todo", "Más de lo recomendado"],
+    fb: ["Consumo menor a lo recomendado", "Se consume una tercera parte, con escasa variedad. Las frutas son el grupo que más se alejó de las recomendaciones a lo largo del tiempo."] },
+  { c: "--g-vf", q: "En frutas, el 5° quintil cubre el 32% de la recomendación. ¿Y el 1° quintil?",
+    ctx: "Datos de 2017-18, ajustados a 2.000 kcal.",
+    o: ["El 15%", "El 32%, igual", "El 60%", "El 100%"],
+    fb: ["Ningún nivel de ingreso llega", "En verduras pasa lo mismo: 28% en el 1° quintil y 33% en el 5°. Los hogares de más ingresos consumen 20% más verduras, pero tampoco alcanzan la meta."] },
+  { c: "--g-leche", q: "¿Cuánto de la leche, yogur y quesos recomendados se consume?",
+    ctx: "GAPA: 3 porciones por día (500 ml de leche y yogur y 30 g de queso).",
+    o: ["Menos de la mitad", "Justo lo recomendado", "Un 80%", "El doble"],
+    fb: ["Consumo menor a lo recomendado", "Además predominan las variedades enteras, cuando las GAPA recomiendan elegir preferentemente descremadas. Leche y yogur llegan al 23% en todos los niveles de ingreso."] },
+  { c: "--g-queso", q: "¿Qué hogares consumen más queso?",
+    ctx: "Porcentaje de la recomendación de quesos (30 g por día).",
+    o: ["5° quintil: 109%. 1° quintil: 47%", "1° quintil: 109%. 5° quintil: 47%", "Todos igual: 23%", "Ninguno pasa del 30%"],
+    fb: ["El queso sube con el ingreso", "Los hogares de mayores ingresos superan la recomendación de quesos; los de menores ingresos consumen la mitad."] },
+  { c: "--g-opc", q: "Las GAPA ponen un máximo de 270 kcal por día de alimentos opcionales. ¿Cuánto se consume?",
+    ctx: "Dulces, grasas, golosinas, gaseosas, galletitas, comidas listas.",
+    o: ["Casi el triple del máximo", "La mitad del máximo", "Justo el máximo", "Un poco más del máximo"],
+    fb: ["Consumo mayor a lo recomendado", "Alrededor de una cuarta parte es azúcar, dulces, postres y golosinas; otra cuarta parte galletitas y pastelería; otra cuarta parte comidas listas (pizza, empanadas, sándwiches, tartas); cerca del 10% jugos y gaseosas."] },
+  { c: "--g-opc", q: "¿Qué hogares consumen más alimentos opcionales?",
+    ctx: "Contando comidas listas y bebidas con alcohol.",
+    o: ["5° quintil: el triple (307%). 1° quintil: el doble (194%)", "1° quintil: el triple. 5° quintil: el doble", "Solo el 1° quintil se pasa del máximo", "Ninguno se pasa del máximo"],
+    fb: ["Todos se pasan del máximo", "Ningún nivel de ingreso respeta el límite de las GAPA, pero los hogares de más ingresos lo triplican."] },
+  { c: "--g-fec", q: "Legumbres, cereales, papa, pan y pastas: ¿qué encontró el estudio?",
+    ctx: "GAPA: 4 porciones por día (250 g de feculentos cocidos y 120 g de pan).",
+    o: ["Cantidad cercana a la recomendada, pero muy pocas legumbres y cereales integrales", "Se consume la mitad de lo recomendado", "Se consume el triple", "Sobran legumbres"],
+    fb: ["Variedad y tipo inadecuados", "Cambia con el ingreso: el 1° quintil consume 122% de feculentos y 101% de pan; el 5° quintil, 74% y 44%."] },
+  { c: "--g-carne", q: "¿Y las carnes y el huevo?",
+    ctx: "GAPA: 1 porción por día (130 g de carne y 25 g de huevo).",
+    o: ["Cantidad cercana, pero predominan carnes rojas y grasas, y muy poco pescado", "Se consume una tercera parte", "Se consume el triple", "Sobra pescado"],
+    fb: ["Variedad y tipo inadecuados", "Las carnes superan levemente la recomendación en todos los niveles de ingreso: 118% en el 1° quintil y 116% en el 5°."] },
+  { c: "--accent", q: "¿Y los aceites, frutas secas y semillas?",
+    ctx: "GAPA: 2 porciones por día.",
+    o: ["Porciones adecuadas, pero casi todo es aceite de girasol", "Se consume el triple", "Casi no se consumen", "Casi todo son frutos secos"],
+    fb: ["Variedad y tipo inadecuados", "Las semillas y los frutos secos tienen muy baja participación."] },
+];
+const game = { qi: 0, qOk: 0, dOk: 0 };
+
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function startQuiz() {
+  game.qi = 0; game.qOk = 0;
+  $("#quizIntro").hidden = false; $("#quizBody").hidden = true;
+  show("quiz");
+}
+
+function renderQ() {
+  const it = QUIZ[game.qi];
+  $("#qDots").innerHTML = QUIZ.map((_, i) => `<i class="${i < game.qi ? "done" : ""}"></i>`).join("");
+  $("#qText").textContent = it.q;
+  $("#qCtx").textContent = it.ctx;
+  $("#qFb").hidden = true; $("#qNext").hidden = true;
+  $("#qOpts").innerHTML = shuffle(it.o.map((t, i) => ({ t, ok: i === 0 })))
+    .map((x, i) => `<button class="opt" type="button" id="opt-${i}" data-ok="${x.ok}">${x.t}</button>`).join("");
+  document.querySelectorAll(".opt").forEach(b => b.addEventListener("click", () => answerQ(b)));
+  window.scrollTo(0, 0);
+}
+
+function answerQ(btn) {
+  const it = QUIZ[game.qi], ok = btn.dataset.ok === "true";
+  if (ok) game.qOk++;
+  document.querySelectorAll(".opt").forEach(b => {
+    b.disabled = true;
+    if (b.dataset.ok === "true") b.classList.add("right");
+    else if (b === btn) b.classList.add("wrong");
+  });
+  const fb = $("#qFb");
+  fb.style.setProperty("--c", `var(${it.c})`);
+  fb.innerHTML = `<b class="title">${ok ? "¡Bien!" : "No."} ${it.fb[0]}</b><p>${it.fb[1]}</p>`;
+  fb.hidden = false;
+  $("#qNext").textContent = game.qi < QUIZ.length - 1 ? "Siguiente" : "Ir a la ronda 3";
+  $("#qNext").hidden = false;
+}
+
+/* ---------- Ronda 3: diagnóstico ---------- */
+const CATS = { falta: "Falta", sobra: "Sobra", tipo: "Mal elegido" };
+const DIAG = [
+  { t: "🥬 Verduras y frutas", a: "falta" },
+  { t: "🥛 Leche, yogur y quesos", a: "falta" },
+  { t: "🍪 Opcionales: dulces y grasas", a: "sobra" },
+  { t: "🥖 Legumbres, cereales, papa, pan y pastas", a: "tipo" },
+  { t: "🥩 Carnes y huevo", a: "tipo" },
+  { t: "🌻 Aceites, frutas secas y semillas", a: "tipo" },
+];
+let diagOrder = [], diagPick = {};
+
+function startDiag() {
+  diagOrder = shuffle(DIAG); diagPick = {};
+  $("#dgList").innerHTML = diagOrder.map((d, i) => `
+    <div class="dg-row" id="dg-${i}">
+      <span>${d.t}</span>
+      <div class="seg" role="group" aria-label="${d.t}">
+        ${Object.entries(CATS).map(([v, l]) => `<button type="button" id="dg-${i}-${v}" data-i="${i}" data-v="${v}" aria-pressed="false">${l}</button>`).join("")}
+      </div>
+    </div>`).join("");
+  document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+    diagPick[b.dataset.i] = b.dataset.v;
+    b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    $("#dgFb").hidden = true;
+  }));
+  $("#dgFb").hidden = true; $("#dgCheck").hidden = false; $("#dgNext").hidden = true;
+  show("diag");
+}
+
+function checkDiag() {
+  const fb = $("#dgFb");
+  if (Object.keys(diagPick).length < diagOrder.length) {
+    fb.style.setProperty("--c", "var(--warn)");
+    fb.innerHTML = `<p>Te faltan marcar ${diagOrder.length - Object.keys(diagPick).length} grupos.</p>`;
+    fb.hidden = false;
+    return;
+  }
+  game.dOk = 0;
+  diagOrder.forEach((d, i) => {
+    const row = $("#dg-" + i), ok = diagPick[i] === d.a;
+    if (ok) game.dOk++;
+    row.classList.add(ok ? "right" : "wrong");
+    if (!ok) row.insertAdjacentHTML("beforeend", `<span class="fix">En realidad: ${CATS[d.a]}.</span>`);
+    row.querySelectorAll("button").forEach(b => b.disabled = true);
+  });
+  fb.style.setProperty("--c", "var(--accent)");
+  fb.innerHTML = `<b class="title">${game.dOk} de ${diagOrder.length} bien.</b>
+    <p>Hay importantes diferencias entre lo recomendado y la alimentación argentina. Y aun en los grupos donde la cantidad se acerca a la recomendada, la variedad y el tipo de alimentos no son los adecuados.</p>`;
+  fb.hidden = false;
+  $("#dgCheck").hidden = true; $("#dgNext").hidden = false;
+}
+
+function showFicha() {
+  $("#fichaScore").textContent = `Ronda 2: ${game.qOk}/${QUIZ.length} · Ronda 3: ${game.dOk}/${DIAG.length}`;
+  show("ficha");
+}
+
+$("#toQuizBtn").addEventListener("click", startQuiz);
+$("#quizStart").addEventListener("click", () => { $("#quizIntro").hidden = true; $("#quizBody").hidden = false; renderQ(); });
+$("#qNext").addEventListener("click", () => { if (++game.qi < QUIZ.length) renderQ(); else startDiag(); });
+$("#dgCheck").addEventListener("click", checkDiag);
+$("#dgNext").addEventListener("click", showFicha);
+$("#againBtn").addEventListener("click", () => { renderHomes(); show("intro"); });
+
+$("#payBtn").addEventListener("click", renderResult);
+$("#backBtn").addEventListener("click", () => { renderHomes(); show("intro"); });
+$("#retryBtn").addEventListener("click", () => startShop(state.home.q));
+$("#otherBtn").addEventListener("click", () => { renderHomes(); show("intro"); });
+
+renderHomes();
+buildCatalog();
+</script>
+
+</body></html>

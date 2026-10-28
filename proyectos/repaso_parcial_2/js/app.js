@@ -92,6 +92,12 @@ document.addEventListener("DOMContentLoaded", () => {
         window.switchTab('ranking');
       }
     }, 50);
+  } else if (paramTab === 'juegos' || paramTab === 'games') {
+    setTimeout(() => {
+      if (typeof window.switchTab === 'function') {
+        window.switchTab('juegos');
+      }
+    }, 50);
   }
 
   // Animación del ecualizador cuando el sintetizador de voz está activo
@@ -162,22 +168,26 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupSectionNavigation() {
     const btnRepaso = document.getElementById("tabBtn_repaso");
     const btnEvaluacion = document.getElementById("tabBtn_evaluacion");
+    const btnJuegos = document.getElementById("tabBtn_juegos");
     const btnRanking = document.getElementById("tabBtn_ranking");
     const secRepaso = document.getElementById("section_repaso");
     const secEvaluacion = document.getElementById("section_evaluacion");
+    const secJuegos = document.getElementById("section_juegos");
     const secRanking = document.getElementById("section_ranking");
 
     const setActiveTab = (tab) => {
       currentSection = tab;
-      const activeClass = "flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition shadow-md bg-indigo-600 text-white cursor-pointer";
-      const inactiveClass = "flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1.5 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer";
+      const activeClass = "flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition shadow-md bg-indigo-600 text-white cursor-pointer";
+      const inactiveClass = "flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer";
 
       if (btnRepaso) btnRepaso.className = (tab === 'repaso') ? activeClass : inactiveClass;
       if (btnEvaluacion) btnEvaluacion.className = (tab === 'evaluacion') ? activeClass : inactiveClass;
+      if (btnJuegos) btnJuegos.className = (tab === 'juegos') ? activeClass : inactiveClass;
       if (btnRanking) btnRanking.className = (tab === 'ranking') ? activeClass : inactiveClass;
 
       if (secRepaso) secRepaso.classList.toggle("hidden", tab !== 'repaso');
       if (secEvaluacion) secEvaluacion.classList.toggle("hidden", tab !== 'evaluacion');
+      if (secJuegos) secJuegos.classList.toggle("hidden", tab !== 'juegos');
       if (secRanking) secRanking.classList.toggle("hidden", tab !== 'ranking');
     };
 
@@ -201,6 +211,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (btnEvaluacion) {
       btnEvaluacion.addEventListener("click", () => window.switchTab("evaluacion"));
+    }
+
+    if (btnJuegos) {
+      btnJuegos.addEventListener("click", () => window.switchTab("juegos"));
     }
 
     if (btnRanking) {

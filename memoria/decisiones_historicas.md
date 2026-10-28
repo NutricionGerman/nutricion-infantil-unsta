@@ -355,6 +355,18 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * **Calibración Heurística Inteligente**: Ponderación por longitud (>200-250 caracteres / >20s de voz) y coincidencia difusa de raíces clínicas (lexemas como `suplem`, `desaconsej`, `aliment`, `riesg`), garantizando que respuestas orales completas nunca caigan a notas arbitrarias (mínimo 8.5 a 10).
       * **Versionado anti-caché**: Elevado a `v=4.5` en `proyectos/repaso_parcial_2/index.html`.
 
+35. **Integración de Simuladores Interactivos en Repaso del 2° Parcial (`Juegos Clínicos`)**:
+    - **Criterio Pedagógico de Germán**: Incorporar dos juegos formativos directamente accesibles desde el gimnasio de repaso de la Unidad 6 (`proyectos/repaso_parcial_2/`) con opción de apertura en ventana externa:
+      1. *Consultorio del Club*: Simulador de atención nutricional para 12 adolescentes atletas que consultan por suplementos de moda (creatina, whey, pre-entrenos, BCAA, quemadores). Aplica el principio "Food First", criterio pediátrico y consecuencias en la reputación si el paciente empeora.
+      2. *El Changuito*: Simulador de compras familiares con presupuesto ajustado a 2.000 kcal y adulto equivalente basado en el estudio CAPA 2 (CESNI - Dra. Zapata, Bioq. Rovirosa) y metas GAPA. Incluye 3 rondas (Changuito del súper, Quiz de brechas y Diagnóstico de la mesa argentina).
+    - **Implementación Técnica**:
+      * Nueva pestaña formal `Juegos` (`tabBtn_juegos` -> `#section_juegos`) en la barra de navegación superior de `proyectos/repaso_parcial_2/index.html`.
+      * Tarjetas visuales de alto impacto con badges, descripción detallada y botón con apertura externa `target="_blank"`.
+      * Banner callout en el tablero de los 6 parciales orales para conectar el entrenamiento lúdico con las consignas orales.
+      * Barra de navegación y botón de retorno (`← Volver al Repaso`) añadidos en la cabecera de ambos juegos para evitar que el estudiante quede atrapado.
+      * Versionado anti-caché elevado a `v=4.7`.
+
+
 
 
 
