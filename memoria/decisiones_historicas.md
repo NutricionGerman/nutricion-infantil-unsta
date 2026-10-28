@@ -330,6 +330,16 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * Eficiencia de Cuota: Archivos livianos (<70 KB) que viajan al instante en redes móviles y aseguran una capacidad superior a 30 alumnos en simultáneo sin saturar las APIs de Groq.
       * Versionado anti-caché elevado a `v=4.4` en `proyectos/repaso_parcial_2/index.html`.
 
+33. **Mapa Mental Maestro Unificado de Integración Pediátrica**:
+    - **Criterio Pedagógico de Germán**: No fragmentar los mapas en "Tema 1" o "Tema 2", ni explicitar las preguntas literales de los parciales escritos/orales para no generar sesgo de memorización mecánica.
+    - **Estructura Creada**: Un solo mapa mental integral organizado en 5 grandes ejes cognitivos inmutables:
+      1. *Etapas del Desarrollo Pediátrico* (Preescolar vs Escolar, crecimiento, dentición, anorexia fisiológica, neofobia y rebote adiposo).
+      2. *Requerimientos Cuantitativos y Plan Alimentario* (Macronutrientes, micronutrientes de oro, regla "Edad + 5 g/d" de fibra y plato 50/25/25).
+      3. *Epidemiología y Diagnóstico Nacional* (CAPA-2 / CESNI: Enfoque tecnológico NOVA vs Enfoque de metas GAPA).
+      4. *Situaciones Especiales en la Adolescencia* (Gestación con doble demanda y +300 kcal/d; Deporte con principio pediátrico de no suplementar).
+      5. *Patrones Basados en Plantas en Pediatría* (Postura AND/SAP, 6 grupos, densidad gástrica, pool plasmático libre de 12 a 24 horas, protocolo de Vitamina B12 semanal al 1% y hierro por DMT-1).
+    - **Artefacto Generado**: `mapa_mental_maestro_nutricion_infantil.md` con diagramas Mermaid integrados y anclas nemotécnicas de bolsillo para estudio y consulta.
+
 
 
 
