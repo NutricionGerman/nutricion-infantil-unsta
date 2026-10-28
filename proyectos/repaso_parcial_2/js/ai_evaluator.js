@@ -13,14 +13,17 @@ class AIEvaluator {
   constructor() {
     this.config = window.UNSTA_AI_CONFIG || {};
     this.geminiApiKey = this.config.geminiApiKey || localStorage.getItem("unsta_gemini_key") || "";
-    this.geminiModel = this.config.geminiModel || "gemini-3.5-flash";
+    this.geminiModel = this.config.geminiModel || "gemini-3.5-flash-lite";
+    this.geminiModels = this.config.geminiModels || ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-flash-lite-latest", "gemini-3.5-flash"];
 
     this.deepseekApiKey = this.config.deepseekApiKey || localStorage.getItem("unsta_deepseek_key") || "";
     this.deepseekModel = this.config.deepseekModel || "deepseek-v4.1-flash:free";
     this.deepseekEndpoint = this.config.deepseekEndpoint || "https://tokenharbor.ai/v1/chat/completions";
 
     this.groqApiKey = this.config.groqApiKey || localStorage.getItem("unsta_groq_key") || "";
+    this.groqApiKeys = this.config.groqApiKeys || (this.groqApiKey ? [this.groqApiKey] : []);
     this.groqModel = this.config.groqModel || "openai/gpt-oss-120b";
+    this.groqModels = this.config.groqModels || ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"];
     this.groqEndpoint = this.config.groqEndpoint || "https://api.groq.com/openai/v1/chat/completions";
   }
 

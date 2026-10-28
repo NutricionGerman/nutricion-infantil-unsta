@@ -29,7 +29,8 @@
 
   window.UNSTA_AI_CONFIG = {
     geminiApiKey: _decode(_g, 57),
-    geminiModel: "gemini-3.5-flash",
+    geminiModel: "gemini-3.5-flash-lite",
+    geminiModels: ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-flash-lite-latest", "gemini-3.5-flash"],
 
     deepseekApiKey: _decode(_d, 57),
     deepseekModel: "deepseek-v4.1-flash:free",
@@ -38,8 +39,9 @@
     groqApiKey: groqPool[0],
     groqApiKeys: groqPool,
     groqModel: "openai/gpt-oss-120b",
+    groqModels: ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"],
     groqEndpoint: "https://api.groq.com/openai/v1/chat/completions",
 
-    cascadeOrder: ["gemini", "deepseek", "groq"]
+    cascadeOrder: ["gemini", "groq", "deepseek"]
   };
 })();
