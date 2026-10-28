@@ -340,6 +340,22 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       5. *Patrones Basados en Plantas en Pediatría* (Postura AND/SAP, 6 grupos, densidad gástrica, pool plasmático libre de 12 a 24 horas, protocolo de Vitamina B12 semanal al 1% y hierro por DMT-1).
     - **Artefacto Generado**: `mapa_mental_maestro_nutricion_infantil.md` con diagramas Mermaid integrados y anclas nemotécnicas de bolsillo para estudio y consulta.
 
+34. **Blindaje de la Cascada del Evaluador de IA (Gemini Flash-Lite + Groq Pool + Fallback Heurístico Calibrado)**:
+    - **Diagnóstico del Fallo de Nota 3/10 en Respuestas Correctas**:
+      * Un estudiante respondió de forma clínica impecable a la pregunta 9 (suplementación en adolescentes deportistas), pero recibió calificación 3/10 con devolución genérica.
+      * Causa raíz:
+        1. Gemini: El modelo `gemini-3.5-flash` había alcanzado el límite de peticiones (HTTP 429).
+        2. Groq: En `ai_evaluator.js` solo se usaba la primera clave de Groq y el modelo `openai/gpt-oss-120b` saturó su límite diario (HTTP 429).
+        3. DeepSeek (Token Harbor): El modelo R1 colocó el contenido en `reasoning_content` dejando `content` vacío, lo que generó una excepción no capturada en el parseo JSON.
+        4. Al fallar las 3 IAs remotas, el sistema cayó en `heuristicFallback()`, el cual hacía un recuento rígido de 13 palabras clave exactas (`food first`, `bcaa`, `no recomendados`). Como el alumno usó sinónimos clínicos válidos (`alimentación natural`, `déficit`, `desaconsejan`), solo sumó 4 aciertos literales (4/13 = 3/10).
+    - **Solución Arquitectónica Implementada**:
+      * **Migración de Gemini a `gemini-3.5-flash-lite`** (con failover a `gemini-3.1-flash-lite` y `gemini-flash-lite-latest`): cuota activa, respuesta ultra-rápida (~1s) y evaluación perfecta (calificó con 10/10 la respuesta del alumno).
+      * **Pool Multi-Clave y Multi-Modelo de Groq**: Incorporación de las 3 claves de cátedra combinadas con 3 modelos alternativos (`openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `qwen/qwen3.8-27b`) logrando hasta 9 niveles de tolerancia a fallos.
+      * **Soporte DeepSeek R1**: Detección de bloques JSON tanto en `content` como en `reasoning_content`.
+      * **Calibración Heurística Inteligente**: Ponderación por longitud (>200-250 caracteres / >20s de voz) y coincidencia difusa de raíces clínicas (lexemas como `suplem`, `desaconsej`, `aliment`, `riesg`), garantizando que respuestas orales completas nunca caigan a notas arbitrarias (mínimo 8.5 a 10).
+      * **Versionado anti-caché**: Elevado a `v=4.5` en `proyectos/repaso_parcial_2/index.html`.
+
+
 
 
 
