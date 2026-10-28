@@ -2069,35 +2069,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const currentXP = sm.state.xp || 0;
     const RECOVERY_COST_XP = 1;
+    const isBonified = (currentXP < RECOVERY_COST_XP);
 
-    if (currentXP < RECOVERY_COST_XP) {
-      if (typeof Swal !== 'undefined') {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Saldo de XP Insuficiente',
-          html: `
-            <div class="text-left text-xs sm:text-sm space-y-2 text-slate-300">
-              <p>Para recuperar esta pregunta necesitas al menos <strong>${RECOVERY_COST_XP} XP</strong>.</p>
-              <p>Tu saldo actual es de <strong class="text-amber-400 font-mono">${currentXP} XP</strong>.</p>
-              <div class="bg-indigo-950/40 p-2.5 rounded-xl border border-indigo-500/30 text-indigo-300 text-xs">
-                💡 <em>Tip: Asiste a las clases de la cátedra (+2 XP cada una) o domina tarjetas flashcards para sumar XP.</em>
-              </div>
-            </div>
-          `,
-          background: '#0f172a',
-          color: '#f8fafc',
-          confirmButtonColor: '#6366f1',
-          confirmButtonText: 'Entendido'
-        });
-      } else {
-        alert(`Necesitas al menos ${RECOVERY_COST_XP} XP para recuperar esta pregunta.`);
-      }
-      return;
-    }
+    const existingAns = oralStudentAnswers[qIdx] || {};
+    const prevTranscript = (existingAns.studentTranscript && !existingAns.studentTranscript.startsWith("El estudiante no") && !existingAns.studentTranscript.startsWith("El estudiante omitió"))
+      ? existingAns.studentTranscript
+      : "";
+    const prevAudioUrl = existingAns.audioUrl || null;
+    const prevDuration = existingAns.durationSecs || 0;
 
-    let recoveredAudioUrl = null;
-    let recoveredTranscript = "";
-    let recoveredDuration = 0;
+    let recoveredAudioUrl = prevAudioUrl;
+    let recoveredTranscript = prevTranscript;
+    let recoveredDuration = prevDuration;
 
     Swal.fire({
       title: `<span class="text-base font-black text-white flex items-center justify-center gap-2"><i class="fa-solid fa-rotate-right text-indigo-400"></i> Recuperar Pregunta ${qIdx + 1}</span>`,
@@ -2122,34 +2105,42 @@ document.addEventListener("DOMContentLoaded", () => {
               <i class="fa-solid fa-coins text-amber-400"></i>
               <span>Costo de recuperación:</span>
             </span>
-            <span class="font-mono font-black text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-md border border-amber-400/30">
-              1 XP (Tu saldo: ${currentXP} XP)
+            <span class="font-mono font-black ${isBonified ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/30' : 'text-amber-400 bg-amber-400/10 border-amber-400/30'} px-2 py-0.5 rounded-md border">
+              ${isBonified ? '0 XP (Bonificación de Cátedra)' : `1 XP (Tu saldo: ${currentXP} XP)`}
             </span>
           </div>
+
+          ${prevTranscript ? `
+          <div class="bg-indigo-950/50 border border-indigo-500/40 p-2.5 rounded-xl text-[11px] text-indigo-200 flex items-start gap-2">
+            <i class="fa-solid fa-sparkles text-amber-400 text-sm mt-0.5"></i>
+            <div>
+              <strong>Tu respuesta anterior ya está cargada:</strong> Puedes pulsar directamente en <em>"Calificar y Aplicar Mejora"</em> para re-evaluarla con el nuevo motor de IA sin volver a hablar, o presionar <em>"Grabar Nueva Respuesta"</em> si prefieres grabarla de nuevo.
+            </div>
+          </div>` : ''}
 
           <!-- Grabador de Voz en Modal -->
           <div class="text-center py-2 space-y-2">
             <div class="flex items-center justify-center gap-2">
               <button id="modalBtnRecord" type="button" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white font-extrabold text-xs flex items-center space-x-2 shadow-lg shadow-rose-600/30 transition active:scale-95 cursor-pointer">
                 <i class="fa-solid fa-microphone"></i>
-                <span id="modalBtnRecordText">Grabar Nueva Respuesta</span>
+                <span id="modalBtnRecordText">${prevTranscript ? 'Grabar Otra Respuesta' : 'Grabar Nueva Respuesta'}</span>
               </button>
               <span id="modalRecordTimerBadge" class="hidden text-xs font-mono font-bold text-rose-400 bg-rose-500/10 px-2.5 py-1.5 rounded-xl border border-rose-500/30 animate-pulse">
                 🔴 00:00
               </span>
             </div>
 
-            <!-- Reproductor de la nueva grabación -->
-            <div id="modalPlayerWrapper" class="hidden pt-1 max-w-sm mx-auto">
+            <!-- Reproductor de la grabación -->
+            <div id="modalPlayerWrapper" class="${prevAudioUrl ? '' : 'hidden'} pt-1 max-w-sm mx-auto">
               <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-                <span>Escucha tu nuevo audio:</span>
-                <span id="modalDurationBadge" class="font-mono text-xs text-indigo-300 font-bold">00:00</span>
+                <span>Audio a evaluar:</span>
+                <span id="modalDurationBadge" class="font-mono text-xs text-indigo-300 font-bold">${formatDuration(prevDuration || 0)}</span>
               </div>
-              <audio id="modalAudioPlayer" controls class="w-full h-8 rounded-lg"></audio>
+              <audio id="modalAudioPlayer" controls src="${prevAudioUrl || ''}" class="w-full h-8 rounded-lg"></audio>
             </div>
 
             <!-- Contenedor de Transcripción con Fichas de Palabras -->
-            <div id="modalTranscriptWrapper" class="hidden text-left bg-slate-950/90 p-3 rounded-xl border border-indigo-500/30 text-xs text-slate-200 shadow-inner space-y-1.5">
+            <div id="modalTranscriptWrapper" class="${prevTranscript ? '' : 'hidden'} text-left bg-slate-950/90 p-3 rounded-xl border border-indigo-500/30 text-xs text-slate-200 shadow-inner space-y-1.5">
               <div class="flex items-center justify-between flex-wrap gap-1">
                 <span class="text-indigo-400 text-[10px] uppercase font-extrabold flex items-center gap-1.5">
                   <i class="fa-solid fa-microphone-lines"></i> Transcripción Oficial:
@@ -2188,7 +2179,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const durationBadge = document.getElementById("modalDurationBadge");
 
         const confirmBtn = Swal.getConfirmButton();
-        if (confirmBtn) confirmBtn.disabled = true;
+        if (confirmBtn) {
+          confirmBtn.disabled = !recoveredTranscript || recoveredTranscript.trim().length === 0;
+        }
+
+        if (recoveredTranscript && recoveredTranscript.trim().length > 0) {
+          renderModalWords(recoveredTranscript);
+        }
 
         if (btnRec) {
           btnRec.addEventListener("click", async () => {
@@ -2320,32 +2317,34 @@ document.addEventListener("DOMContentLoaded", () => {
             payload.transcript
           );
 
-          // 1. Debitar 1 XP del alumno
-          sm.addXP(-1);
-          initHeaderStats();
+          // 1. Debitar 1 XP del alumno (solo si no fue bonificado por la cátedra)
+          if (!isBonified && sm.state.xp > 0) {
+            sm.addXP(-1);
+            initHeaderStats();
 
-          // Sincronizar débito de XP en Firestore y registrar en xpHistory
-          const up = String(sm.state.up || "").trim();
-          if (db && up && up !== "Sin Legajo" && up !== "UNSTA") {
-            try {
-              const sDoc = await db.collection('students').doc(up).get();
-              if (sDoc.exists) {
-                const curXP = Number(sDoc.data().xp || 0) - 1;
-                const hist = sDoc.data().xpHistory || [];
-                const pTitle = getOralExamTitle(currentOralPartialKey);
-                hist.push({
-                  timestamp: new Date().toISOString(),
-                  amount: -1,
-                  reason: `Recuperación de pregunta: ${pTitle}`,
-                  newXP: curXP
-                });
-                await db.collection('students').doc(up).update({
-                  xp: curXP,
-                  xpHistory: hist
-                });
+            // Sincronizar débito de XP en Firestore y registrar en xpHistory
+            const up = String(sm.state.up || "").trim();
+            if (db && up && up !== "Sin Legajo" && up !== "UNSTA") {
+              try {
+                const sDoc = await db.collection('students').doc(up).get();
+                if (sDoc.exists) {
+                  const curXP = Number(sDoc.data().xp || 0) - 1;
+                  const hist = sDoc.data().xpHistory || [];
+                  const pTitle = getOralExamTitle(currentOralPartialKey);
+                  hist.push({
+                    timestamp: new Date().toISOString(),
+                    amount: -1,
+                    reason: `Recuperación de pregunta: ${pTitle}`,
+                    newXP: curXP
+                  });
+                  await db.collection('students').doc(up).update({
+                    xp: curXP,
+                    xpHistory: hist
+                  });
+                }
+              } catch(eXp) {
+                console.warn("[Firestore] Error actualizando XP tras recuperación:", eXp);
               }
-            } catch(eXp) {
-              console.warn("[Firestore] Error actualizando XP tras recuperación:", eXp);
             }
           }
 
