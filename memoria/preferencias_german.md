@@ -6,8 +6,9 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
 
 ## 🎯 Criterios de Trabajo Generales
 
-1. **Ritmo de trabajo**:
+1. **Ritmo de trabajo y Publicación**:
    - Avanzar siempre **paso a paso**, validando con Germán antes de ejecutar cambios estructurales o masivos.
+   - **Regla estricta de publicación**: Si Germán pide crear o probar una herramienta, recurso, resumen o mapa mental ("primero quiero ver cómo queda"), debe generarse y visualizarse **únicamente en local o en el directorio privado** (`brain/`). **NUNCA hacer `git push` a GitHub ni publicarlo en la web/GitHub Pages** hasta que Germán dé la orden explícita de publicarlo.
 
 2. **Autoridad en el chat**:
    - La palabra e instrucción directa de Germán en el chat tiene **máxima autoridad y prioridad**.
