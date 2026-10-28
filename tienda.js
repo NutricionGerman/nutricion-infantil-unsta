@@ -31,10 +31,23 @@
         try {
             const db = firebase.firestore();
             const doc = await db.collection('app_state').doc('tienda_items').get();
+            let items = [];
             if (doc.exists && doc.data().items) {
-                return doc.data().items;
+                items = doc.data().items;
             }
-            return [];
+
+            // Prórroga Oficial de Cátedra: Extensión de plazo hasta las 22:00 hs (10:00 PM)
+            const extendedDeadline = new Date("2026-10-28T22:00:00-03:00");
+            items.forEach(item => {
+                const isPractical = item.category === 'parcial_practico' || !!item.points || (item.name && item.name.includes('Parcial Práctico'));
+                if (isPractical || item.type === 'direct') {
+                    if (item.expiresAt && new Date(item.expiresAt) < extendedDeadline) {
+                        item.expiresAt = extendedDeadline.toISOString();
+                    }
+                }
+            });
+
+            return items;
         } catch (error) {
             console.error("Error cargando ítems de la tienda:", error);
             return [];
@@ -205,8 +218,8 @@
                                 Canje Oficial · 2° Parcial Práctico
                             </span>
                             ${badgeOralHTML}
-                            <span style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.45); color: #fca5a5; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 1px 7px;">
-                                ⏰ Cierra Hoy 23:59 hs
+                            <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;">
+                                ⏰ Prórroga Oficial · Cierra hoy a las 22:00 hs (10:00 PM)
                             </span>
                         </div>
                         <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 4px 0 2px;">
@@ -612,12 +625,16 @@
                 return;
             }
 
-            // Verificación de expiración (Cierre de tienda)
-            if (item.expiresAt && new Date(item.expiresAt) <= new Date()) {
+            // Verificación de expiración (Cierre de tienda con prórroga oficial hasta las 22:00 hs)
+            const officialDeadline = new Date("2026-10-28T22:00:00-03:00");
+            const itemExpiry = item.expiresAt ? new Date(item.expiresAt) : null;
+            const effectiveExpiry = (itemExpiry && itemExpiry > officialDeadline) ? itemExpiry : officialDeadline;
+
+            if (item.expiresAt && effectiveExpiry <= new Date()) {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Tienda Cerrada',
-                    text: 'La tienda oficial cerró hoy a las 23:59 hs. El canje de puntos ya no se encuentra disponible.',
+                    text: 'La prórroga oficial de la tienda cerró a las 22:00 hs (10:00 PM). El canje de puntos ya no se encuentra disponible.',
                     background: '#1a1a2e',
                     color: '#fff'
                 });
@@ -1192,7 +1209,7 @@
             bonusRowsHTML = `
                 <tr>
                     <td colspan="7" style="text-align: center; padding: 22px; color: #94a3b8; font-size: 0.88rem;">
-                        <i class="fas fa-info-circle" style="margin-right: 6px;"></i> Aún no se han registrado canjes de puntos para el 2° Parcial Práctico. Los alumnos pueden canjear hasta hoy a las <strong>23:59 hs</strong>.
+                        <i class="fas fa-info-circle" style="margin-right: 6px;"></i> Aún no se han registrado canjes de puntos para el 2° Parcial Práctico. Los alumnos pueden canjear hasta las <strong>22:00 hs (10:00 PM)</strong>.
                     </td>
                 </tr>
             `;
@@ -1248,7 +1265,7 @@
                             🎯 Bonificaciones · 2° Parcial Práctico (${bonusStudents.length} Alumnos)
                         </h4>
                         <p style="font-size: 0.8rem; color: #cbd5e1; margin: 0;">
-                            La tienda cierra automáticamente hoy a las <strong style="color: #fca5a5;">23:59 hs (11:59 PM)</strong>. Puntos acreditados para sumar al acta práctica.
+                            Prórroga Oficial de Cátedra: La tienda cierra hoy a las <strong style="color: #6ee7b7;">22:00 hs (10:00 PM)</strong>. Puntos acreditados para sumar al acta práctica.
                         </p>
                     </div>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -1612,7 +1629,7 @@
             Swal.fire({
                 icon: 'info',
                 title: 'Sin Compras Registradas',
-                text: 'Aún no hay ningún alumno que haya canjeado puntos para el 2° Parcial Práctico. Los alumnos pueden canjear hasta hoy a las 23:59 hs.',
+                text: 'Aún no hay ningún alumno que haya canjeado puntos para el 2° Parcial Práctico. Los alumnos pueden canjear hasta las 22:00 hs (10:00 PM).',
                 background: '#1a1a2e',
                 color: '#fff'
             });

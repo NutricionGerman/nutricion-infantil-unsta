@@ -17,6 +17,7 @@ class AIEvaluator {
     this.geminiModels = this.config.geminiModels || ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-flash-lite-latest", "gemini-3.5-flash"];
 
     this.deepseekApiKey = this.config.deepseekApiKey || localStorage.getItem("unsta_deepseek_key") || "";
+    this.deepseekApiKeys = this.config.deepseekApiKeys || (this.deepseekApiKey ? [this.deepseekApiKey] : []);
     this.deepseekModel = this.config.deepseekModel || "deepseek-v4.1-flash:free";
     this.deepseekEndpoint = this.config.deepseekEndpoint || "https://tokenharbor.ai/v1/chat/completions";
 
@@ -236,34 +237,50 @@ Debes evaluar las 10 preguntas y responder EXCLUSIVAMENTE un objeto JSON válido
   }
 
   async callDeepSeek(systemPrompt, userPayload) {
-    const body = {
-      model: this.deepseekModel,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: JSON.stringify(userPayload) }
-      ],
-      temperature: 0.2,
-      max_tokens: 3500
-    };
+    const keys = (this.deepseekApiKeys && this.deepseekApiKeys.length > 0) ? this.deepseekApiKeys : [this.deepseekApiKey];
+    let lastError = null;
 
-    const resp = await fetch(this.deepseekEndpoint, {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${this.deepseekApiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    });
+    for (let k = 0; k < keys.length; k++) {
+      const apiKey = keys[k];
+      if (!apiKey) continue;
 
-    if (!resp.ok) {
-      const errText = await resp.text();
-      throw new Error(`DeepSeek Token Harbor API Error ${resp.status}: ${errText}`);
+      const body = {
+        model: this.deepseekModel,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: JSON.stringify(userPayload) }
+        ],
+        temperature: 0.2,
+        max_tokens: 3500
+      };
+
+      try {
+        const resp = await fetch(this.deepseekEndpoint, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${apiKey}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (!resp.ok) {
+          const errText = await resp.text();
+          throw new Error(`Token Harbor API Error ${resp.status}: ${errText}`);
+        }
+
+        const data = await resp.json();
+        const msg = data.choices?.[0]?.message || {};
+        const content = msg.content || msg.reasoning_content;
+        if (!content) throw new Error("DeepSeek no devolvió contenido de respuesta.");
+        return this.cleanAndParseJSON(content);
+      } catch (err) {
+        lastError = err;
+        console.warn(`[AIEvaluator] Intento DeepSeek falló con clave ${k + 1}/${keys.length}:`, err);
+      }
     }
 
-    const data = await resp.json();
-    const content = data.choices?.[0]?.message?.content;
-    if (!content) throw new Error("DeepSeek no devolvió contenido de respuesta.");
-    return this.cleanAndParseJSON(content);
+    throw lastError || new Error("No se pudo obtener respuesta de ningún endpoint de DeepSeek.");
   }
 
   async callGroq(systemPrompt, userPayload) {
