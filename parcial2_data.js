@@ -1,4 +1,4 @@
-// Calificaciones Oficiales del 2° Parcial Práctico - Cátedra Nutrición Infantil UNSTA
+// Datos consolidados del 2° Parcial Práctico (UNSTA Nutrición Infantil)
 window.parcialPractico2Data = {
   "344092": {
     "tema": "Tema 1",
@@ -3302,9 +3302,9 @@ window.parcialPractico2Data = {
     "group": "g_11",
     "base": "5",
     "baseNum": 5.0,
-    "bonus": "+3",
-    "total": "8",
-    "totalNum": 8.0,
+    "bonus": "+5",
+    "total": "10",
+    "totalNum": 10.0,
     "answers": [
       "A",
       "B",
@@ -3379,7 +3379,7 @@ window.parcialPractico2Data = {
         "key": "B"
       }
     ],
-    "obs": "Base 5 + 3 comprados = 8",
+    "obs": "Base 5 + 5 canjeados = ⭐ 10 (Sobresaliente)",
     "img": "parciales_practico/t1/crop_38.jpg"
   },
   "344033": {
@@ -6773,9 +6773,9 @@ window.parcialPractico2Data = {
     "group": "g_8",
     "base": "8",
     "baseNum": 8.0,
-    "bonus": "0",
-    "total": "8",
-    "totalNum": 8.0,
+    "bonus": "+2",
+    "total": "10",
+    "totalNum": 10.0,
     "answers": [
       "B",
       "B",
@@ -6850,7 +6850,7 @@ window.parcialPractico2Data = {
         "key": "C"
       }
     ],
-    "obs": "Nota docente en hoja: 8",
+    "obs": "Base 8 + 2 canjeados = ⭐ 10 (Sobresaliente)",
     "img": "parciales_practico/t2/crop_31.jpg"
   }
 };
