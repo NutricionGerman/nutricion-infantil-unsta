@@ -188,12 +188,26 @@
 
         const items = await loadTiendaItems();
         const currentXP = studentData.xp || 0;
-        const now = new Date();
-        const activeItems = items.filter(i => !i.expiresAt || new Date(i.expiresAt) > now);
 
         const oralStatus = getStudentOralExamStatus(studentData);
         const isTeoricoAprobado = oralStatus.isApproved;
         const notaTeorica = oralStatus.average;
+
+        // Criterio Docente UNSTA: Prórroga especial de puntos para el 2° Parcial Práctico
+        // Habilitada EXCLUSIVAMENTE para alumnos con los 6 parciales orales rendidos Y promedio general >= 7.5
+        const isEligibleForBonusPurchase = (oralStatus.completedCount >= 6 && notaTeorica !== null && notaTeorica >= 7.5);
+
+        const now = new Date();
+        const activeItems = items.filter(i => {
+            const isPractical = i.category === 'parcial_practico' || !!i.points || (i.name && i.name.includes('Parcial Práctico'));
+            if (isPractical) {
+                // Alumnos con mérito académico conservan la tienda de bonificación práctica abierta
+                if (isEligibleForBonusPurchase) return true;
+                // Para el resto de los alumnos, la tienda práctica ya finalizó
+                return false;
+            }
+            return !i.expiresAt || new Date(i.expiresAt) > now;
+        });
         const puntosCanjeadosActualmente = (studentData.inventory || [])
             .filter(inv => inv.category === 'parcial_practico' || (inv.id && inv.id.startsWith('item_practico_')))
             .reduce((sum, inv) => sum + (Number(inv.points) || 0), 0);
@@ -206,35 +220,61 @@
                 <i class="fas fa-lock"></i> Requiere 6/6 Orales (Llevas ${oralStatus.completedCount}/6${notaTeorica !== null ? ` · Prom: ${notaTeorica.toFixed(1)}` : ''})
                </span>`;
 
-        const bannerTeoricoHTML = `
-            <div style="background: linear-gradient(135deg, rgba(30,27,75,0.7) 0%, rgba(15,23,42,0.9) 100%); border: 1px solid rgba(99, 102, 241, 0.4); border-radius: 18px; padding: 18px 22px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
-                <div style="display: flex; align-items: center; gap: 16px;">
-                    <div style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(168,85,247,0.25)); border: 1px solid rgba(129,140,248,0.45); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(99,102,241,0.3);">
-                        🎯
+        const practicalDoc = (window.parcialPractico2Data && window.parcialPractico2Data[String(targetUP).trim()]) ? window.parcialPractico2Data[String(targetUP).trim()] : null;
+        let practicalNoteInfo = '';
+        if (practicalDoc) {
+            const currentTotalNum = Math.min(10, practicalDoc.baseNum + puntosCanjeadosActualmente);
+            const neededFor10 = Math.max(0, 10 - practicalDoc.baseNum);
+            practicalNoteInfo = `
+                <div style="margin-top: 10px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 10px; padding: 8px 12px; font-size: 0.8rem; color: #bae6fd;">
+                    <i class="fas fa-clipboard-check" style="margin-right: 6px; color: #38bdf8;"></i>
+                    Tu calificación en el 2° Parcial Práctico: Base <strong>${practicalDoc.baseNum} / 10</strong> | Nota actual con bonos: <strong style="color: ${currentTotalNum >= 10 ? '#fbbf24' : '#38bdf8'}; font-size: 0.95rem;">${currentTotalNum >= 10 ? '⭐ 10' : currentTotalNum}</strong>.
+                    ${neededFor10 > 0 && currentTotalNum < 10 ? ` · Necesitas canjear <strong>+${Math.max(0, 10 - currentTotalNum)} punto(s)</strong> para alcanzar el <strong>10 (Sobresaliente)</strong>.` : ''}
+                </div>`;
+        }
+
+        const bannerTeoricoHTML = isEligibleForBonusPurchase ? `
+            <div style="background: linear-gradient(135deg, rgba(6, 78, 59, 0.7) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1.5px solid #10b981; border-radius: 18px; padding: 18px 22px; margin-bottom: 25px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);">
+                            ⭐
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #6ee7b7; background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 8px; border-radius: 6px;">
+                                    Prórroga Exclusiva por Mérito Académico
+                                </span>
+                                ${badgeOralHTML}
+                            </div>
+                            <h4 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin: 4px 0 2px;">
+                                Canje Habilitado para tu 2° Parcial Práctico
+                            </h4>
+                            <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
+                                Por haber completado los 6 parciales orales con promedio de <strong>${notaTeorica !== null ? notaTeorica.toFixed(1) : ''} / 10</strong>, tienes habilitada la opción de comprar puntos con tus XP para sumarlos a tu examen práctico.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                ${practicalNoteInfo}
+            </div>
+        ` : `
+            <div style="background: rgba(15, 23, 42, 0.6); border: 1px dashed rgba(148, 163, 184, 0.3); border-radius: 18px; padding: 16px 20px; margin-bottom: 25px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(148, 163, 184, 0.1); border: 1px solid rgba(148, 163, 184, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #94a3b8; flex-shrink: 0;">
+                        🔒
                     </div>
                     <div>
                         <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                            <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #a5b4fc;">
-                                Canje Oficial · 2° Parcial Práctico
+                            <span style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: #94a3b8;">
+                                Canje de Puntos Prácticos Cerrado
                             </span>
                             ${badgeOralHTML}
-                            <span style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; font-size: 0.72rem; font-weight: 800; border-radius: 6px; padding: 2px 8px; display: inline-flex; align-items: center; gap: 4px;">
-                                ⏰ Prórroga Oficial · Cierra hoy a las 22:00 hs (10:00 PM)
-                            </span>
                         </div>
-                        <h4 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 4px 0 2px;">
-                            Canjea de 1 a 5 Puntos con tus XP
-                        </h4>
-                        <p style="font-size: 0.82rem; color: #cbd5e1; margin: 0; line-height: 1.4;">
-                            Suma bonificación a tu nota práctica con tus XP (6 parciales orales · +1 y +2 pts: prom ≥ 7.0 · +3 pts: prom ≥ 7.5 · +4 pts: prom ≥ 8.0 · +5 pts: prom ≥ 8.5).
-                            ${puntosCanjeadosActualmente > 0 ? ` · Ya canjeaste <strong style="color: #fde047;">+${puntosCanjeadosActualmente} punto(s)</strong>` : ' · 1 punto = 10 XP hasta 5 puntos = 30 XP'}
+                        <p style="font-size: 0.82rem; color: #94a3b8; margin: 3px 0 0; line-height: 1.4;">
+                            El canje general cerró el 28/10 a las 22:00 hs. La prórroga especial de canje es exclusiva para estudiantes que completaron los <strong>6 exámenes orales</strong> con promedio <strong>≥ 7.5</strong>.
                         </p>
                     </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <button onclick="goToRepasoParcial2('${targetUP}', '${encodeURIComponent(studentData.name || '')}', 'evaluacion')" style="background: linear-gradient(135deg, #4f46e5, #6366f1); border: 1px solid rgba(165, 180, 252, 0.4); color: #fff; padding: 10px 18px; border-radius: 12px; font-size: 0.84rem; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.35); transition: all 0.2s;">
-                        <i class="fas fa-microphone-alt"></i> ${isTeoricoAprobado ? 'Ver Exámenes Orales' : 'Rendir Parciales Faltantes'}
-                    </button>
                 </div>
             </div>
         `;
@@ -625,22 +665,6 @@
                 return;
             }
 
-            // Verificación de expiración (Cierre de tienda con prórroga oficial hasta las 22:00 hs)
-            const officialDeadline = new Date("2026-10-28T22:00:00-03:00");
-            const itemExpiry = item.expiresAt ? new Date(item.expiresAt) : null;
-            const effectiveExpiry = (itemExpiry && itemExpiry > officialDeadline) ? itemExpiry : officialDeadline;
-
-            if (item.expiresAt && effectiveExpiry <= new Date()) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Tienda Cerrada',
-                    text: 'La prórroga oficial de la tienda cerró a las 22:00 hs (10:00 PM). El canje de puntos ya no se encuentra disponible.',
-                    background: '#1a1a2e',
-                    color: '#fff'
-                });
-                return;
-            }
-
             let targetUP = window.loggedInStudentUP || sessionStorage.getItem('aw_authenticated_up') || localStorage.getItem('userUP');
             const loggedUserUP = targetUP;
             if (window.currentTeacherData && window.currentStudentUP) {
@@ -676,14 +700,37 @@
                 return;
             }
 
+            // Verificación de expiración (Cierre general el 28/10 a las 22:00 hs)
+            const officialDeadline = new Date("2026-10-28T22:00:00-03:00");
+            const itemExpiry = item.expiresAt ? new Date(item.expiresAt) : null;
+            const effectiveExpiry = (itemExpiry && itemExpiry > officialDeadline) ? itemExpiry : officialDeadline;
+
+            const isPracticalPointsItem = item.category === 'parcial_practico' || item.requiresParcialTeorico || (item.name && item.name.includes('Parcial Práctico'));
+            const oralStatusCheck = getStudentOralExamStatus(studentData);
+            const isEligibleForMeritBonus = (oralStatusCheck.completedCount >= 6 && oralStatusCheck.average !== null && oralStatusCheck.average >= 7.5);
+
+            if (item.expiresAt && effectiveExpiry <= new Date()) {
+                if (isPracticalPointsItem && isEligibleForMeritBonus) {
+                    // Autorizado exclusivamente por mérito académico por el profesor Germán
+                    console.log(`[Tienda XP] Canje autorizado por mérito académico para ${targetUP} (6/6 orales, promedio ${oralStatusCheck.average})`);
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Tienda Cerrada',
+                        text: 'La prórroga oficial de la tienda cerró el 28/10 a las 22:00 hs. El canje de puntos prácticos solo continúa habilitado para alumnos con los 6 parciales orales completados y promedio ≥ 7.5.',
+                        background: '#1a1a2e',
+                        color: '#fff'
+                    });
+                    return;
+                }
+            }
+
             // ========================================================
             // VERIFICACIÓN OBLIGATORIA: 6 EXÁMENES ORALES Y NOTA SEGÚN TIER
             // (+1/+2: Promedio >= 7.0 | +3: Promedio >= 7.5 | +4: Promedio >= 8.0 | +5: Promedio >= 8.5)
             // ========================================================
-            const isPracticalPointsItem = item.category === 'parcial_practico' || item.requiresParcialTeorico || (item.name && item.name.includes('Parcial Práctico'));
-            
             if (isPracticalPointsItem) {
-                const oralStatus = getStudentOralExamStatus(studentData);
+                const oralStatus = oralStatusCheck;
                 
                 // 1. Debe haber completado los 6 exámenes orales
                 if (oralStatus.completedCount < 6) {
@@ -949,6 +996,14 @@
                             }
                         }
 
+                        // Sincronizar en tiempo real la calificación del 2° Parcial Práctico
+                        if (window.parcialPractico2Data && window.parcialPractico2Data[String(targetUP).trim()]) {
+                            const pDoc = window.parcialPractico2Data[String(targetUP).trim()];
+                            pDoc.bonus = String(totalPracticalPoints);
+                            pDoc.totalNum = Math.min(10, pDoc.baseNum + totalPracticalPoints);
+                            pDoc.total = pDoc.totalNum >= 10 ? '⭐ 10' : String(pDoc.totalNum);
+                        }
+
                         Swal.close();
                         window.showTiendaToast(item.name, item.image, item.icon);
                         
@@ -963,8 +1018,12 @@
 
                         window.renderTiendaTab();
                         if (typeof generateRanking === 'function') generateRanking();
-                        if (typeof displayStudentPortalView === 'function' && document.getElementById('portal-photo')) {
-                            displayStudentPortalView(studentData);
+                        if (typeof displayStudentPortalView === 'function') {
+                            try {
+                                displayStudentPortalView(studentData);
+                            } catch (eRend) {
+                                console.warn("Aviso refrescando portal view:", eRend);
+                            }
                         }
 
                     } catch (error) {

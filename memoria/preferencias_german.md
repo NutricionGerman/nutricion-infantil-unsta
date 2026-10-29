@@ -270,6 +270,18 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Fisiología Real de Cátedra**: Todas las plantas contienen los 9 aminoácidos esenciales. Existen aminoácidos limitantes relativos (Lisina en cereales/semillas, Metionina en legumbres), pero el organismo humano dispone de un **pool metabólico plasmático e intrahepático de aminoácidos libres que recircula entre 12 y 24 horas**. Por ende, la complementación metabólica ocurre a lo largo del día con una dieta variada sin ninguna necesidad de combinarlos en la misma ingesta.
     - **Directiva Innegociable para la IA Evaluadora**: **PROHIBIDO taxativamente corregir a un alumno exigiéndole que hable de «elevar el valor biológico» o «combinar en el plato»**. La evaluación debe felicitar y puntuar con nota máxima al estudiante que mencione el pool plasmático de 12 a 24 horas y desmitifique activamente la falsa necesidad de combinación en la misma comida.
 
+33. **Prórroga Exclusiva de Puntos del 2° Parcial Práctico por Mérito Docente (6/6 Orales y Promedio $\ge 7.5$)**:
+    - **Criterio de Elegibilidad**: La tienda oficial cerró el 28/10 a las 22:00 hs. La prórroga especial para canjear puntos de bonificación práctica con XP queda reservada **exclusivamente para alumnos con los 6 parciales orales rendidos ($6/6$) y promedio general $\ge 7.5$** (ej. Sofía Barros, Pilar Padilla, Juan Pablo Rodríguez).
+    - **Bloqueo a Todo Alumno no Calificado**: Para cualquier estudiante que no cumpla estrictamente ambas condiciones, los ítems de bonificación práctica permanecen bloqueados y expirados.
+    - **Impacto Inmediato y Dinámico**: Al canjear puntos en la tienda:
+      * Se descuenta el XP correspondiente del saldo de Firestore (`xp` y `xpHistory`).
+      * Se acredita la bonificación en el inventario del alumno y en `puntosParcialPractico2`.
+      * Se recalcula y refleja en tiempo real en la tarjeta del 2° Parcial Práctico en su perfil (ej. nota base 8 + 2 bonos = 10 Sobresaliente) sin requerir recarga de página.
+
+34. **Auditoría Docente y Reparación de Fallbacks Heurísticos en Evaluaciones Orales con IA**:
+    - Si un proveedor de IA se satura o arroja error y el evaluador entra en fallback heurístico asignando devoluciones genéricas (ej. *"Faltó mayor precisión en las cifras de la bibliografía oficial"* con puntajes 3 a 6), **se debe intervenir de inmediato para reevaluar con IA real y la rúbrica oficial de cátedra**.
+    - La calificación debe ajustarse al mérito estricto de la transcripción oral del alumno, actualizando tanto la entrega individual (`oral_submissions`) como el promedio y estado en el perfil del alumno en Firestore (`students`).
+
 
 
 

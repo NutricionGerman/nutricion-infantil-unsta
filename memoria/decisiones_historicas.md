@@ -458,3 +458,18 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
            * Desglose interactivo de preguntas P1 a P10 (marcas vs clave con ✓ y ✗).
            * Botón modal *"Ver Mi Examen Físico"* para desplegar la foto limpia de su hoja manuscrita.
       4. *Actualización del Pop-up de Entrada*: Se reemplazó el cartel anterior de repaso de mesa oral por el aviso de bienvenida: *"¡Calificaciones del 2° Parcial Práctico Publicadas!"* con botón directo *"Ver Mi Nota en Mi Perfil"*, que navega a su ficha privada con un solo clic.
+
+40. **Prórroga Exclusiva de Puntos del 2° Parcial Práctico por Mérito Docente y Reevaluación de Exámenes Orales con IA (29/10/2026)**:
+    - **Contexto**: Tras el cierre general de la Tienda de Puntos (28/10 a las 22:00 hs), Germán dispuso habilitar una excepción docente exclusiva para los alumnos con rendimiento destacado en la instancia oral teórica.
+    - **Criterio de Habilitación de Canje**:
+      * Requisito ineludible: Haber completado los **6 parciales orales ($6/6$)** con **promedio general $\ge 7.5$**.
+      * Para cualquier otro alumno, los ítems de bonificación práctica permanecen bloqueados y expirados.
+      * Estudiantes habilitados para comprar puntos y alcanzar el 10:
+        1. *BARROS, Sofía Abigail (UP 344009)*: 6/6 orales, prom 8.7, 51 XP. Base práctica 8 -> Puede canjear +2 pts (10 XP) para llegar a **10 (Sobresaliente)**.
+        2. *PADILLA, Pilar María (UP 344083)*: 6/6 orales, prom 8.6, 37 XP. Base práctica 7 -> Puede canjear +3 pts (20 XP) para llegar a **10 (Sobresaliente)**.
+        3. *RODRÍGUEZ, Juan Pablo (UP 343244)*: 6/6 orales, prom 9.3, 23 XP. Base práctica 9 -> Puede canjear +1 pt (10 XP) para llegar a **10 (Sobresaliente)**.
+      * Dinamismo en la Plataforma: Al comprar en la tienda, el sistema deduce los XP de Firestore, acredita la bonificación en su inventario y `puntosParcialPractico2`, actualiza en tiempo real `window.parcialPractico2Data` y refresca el perfil privado (`displayStudentPortalView`) mostrando la nota actualizada al instante.
+    - **Reevaluación Integral de Fallbacks Heurísticos de IA**:
+      * En momentos de saturación de red o cuotas de tokens, el evaluador oral (`ai_evaluator.js`) cayó en la heurística offline asignando la devolución genérica *"Faltó mayor precisión en las cifras de la bibliografía oficial"* con notas de 3 a 6.
+      * Se auditaron las 29 evaluaciones orales afectadas correspondientes a 19 estudiantes en `oral_submissions`.
+      * Se reevaluaron todas las respuestas con DeepSeek/TokenHarbor aplicando la rúbrica oficial de cátedra, restaurando calificaciones de 8 a 10 de acuerdo a sus transcripciones verbales reales, e impactando las notas individuales y promedios en Firestore (`oral_submissions` y `students`).
