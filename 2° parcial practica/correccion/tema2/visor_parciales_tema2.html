@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corrección 2° Parcial Práctico (TEMA 2) — UNSTA</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --border: #334155;
+            --primary: #38bdf8;
+            --accent: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+        h1 { margin: 0 0 8px 0; font-size: 24px; color: var(--primary); }
+        .meta { color: var(--text-muted); font-size: 14px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: var(--surface); padding: 15px 20px; border-radius: 10px; border: 1px solid var(--border); }
+        .stat-val { font-size: 28px; font-weight: bold; color: var(--text); }
+        .stat-lbl { color: var(--text-muted); font-size: 13px; text-transform: uppercase; margin-top: 4px; }
+        .main-layout { display: grid; grid-template-columns: 1fr 480px; gap: 20px; }
+        @media (max-width: 1000px) { .main-layout { grid-template-columns: 1fr; } }
+        .table-wrap { background: var(--surface); border-radius: 10px; border: 1px solid var(--border); overflow-x: auto; max-height: 80vh; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { background: #1e293b; position: sticky; top: 0; color: var(--primary); font-weight: 600; }
+        tr:hover { background: rgba(56, 189, 248, 0.08); cursor: pointer; }
+        tr.active { background: rgba(56, 189, 248, 0.18); font-weight: bold; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .badge-10 { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+        .badge-bonus { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+        .badge-regular { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; }
+        .preview-pane { position: sticky; top: 20px; background: var(--surface); border-radius: 10px; border: 1px solid var(--border); padding: 15px; display: flex; flex-direction: column; align-items: center; max-height: 80vh; overflow-y: auto; }
+        .preview-pane img { max-width: 100%; max-height: 65vh; object-fit: contain; border-radius: 8px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .preview-info { width: 100%; margin-top: 12px; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📋 Auditoría y Calificaciones — 2° Parcial Práctico (TEMA 2)</h1>
+        <div class="meta">Cátedra Nutrición Infantil — UNSTA | Clave Oficial: <b>B - C - B - C - B - C - B - C - B - C</b></div>
+    </header>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-val">31</div>
+            <div class="stat-lbl">Exámenes Evaluados</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" style="color: #4ade80;">31 (100%)</div>
+            <div class="stat-lbl">Aprobados (&ge; 4 pts)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" style="color: #38bdf8;">22 (71.0%)</div>
+            <div class="stat-lbl">Sobresalientes (&ge; 8 pts)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-val" style="color: #fbbf24;">17</div>
+            <div class="stat-lbl">Notas Máximas (10)</div>
+        </div>
+    </div>
+    
+    <div class="main-layout">
+        <div class="table-wrap">
+            <table id="examTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>UP</th>
+                        <th>Alumno</th>
+                        <th>Grupo</th>
+                        <th>Base</th>
+                        <th>Tienda</th>
+                        <th>Total</th>
+                        <th>Respuestas</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr onclick="showPreview('1', 'DIP, Luciano Ivan', '343725', '8', '0', '8', 'B,C,B,D,B,C,B,C,B,B', 'P4 marcó D y P10 marcó B', '01')">
+                        <td>1</td>
+                        <td><code>343725</code></td>
+                        <td><b>DIP, Luciano Ivan</b></td>
+                        <td>g_2</td>
+                        <td>8</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">8</span></td>
+                        <td><code>B,C,B,D,B,C,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('2', 'CASTELLANOS, PAULA', '340602', '7', '0', '7', 'B,C,B,A,B,C,A,C,B,B', 'Nota docente en hoja: 7', '02')">
+                        <td>2</td>
+                        <td><code>340602</code></td>
+                        <td><b>CASTELLANOS, PAULA</b></td>
+                        <td>g_10</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>B,C,B,A,B,C,A,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('3', 'RUIZ, Lucia Emilia', '344050', '8', '0', '8', 'B,C,B,C,B,C,A,C,B,B', 'Nota docente en hoja: 7 u 8 (P7 A, P10 B)', '03')">
+                        <td>3</td>
+                        <td><code>344050</code></td>
+                        <td><b>RUIZ, Lucia Emilia</b></td>
+                        <td>g_8</td>
+                        <td>8</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">8</span></td>
+                        <td><code>B,C,B,C,B,C,A,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('4', 'DELANI, Luca', '344036', '6', '+5', '10', 'A,C,A,C,B,C,A,C,B,B', 'Base 6 + 5 comprados = 11 -> Tope 10 (convalidado en hoja como 10)', '04')">
+                        <td>4</td>
+                        <td><code>344036</code></td>
+                        <td><b>DELANI, Luca</b></td>
+                        <td>g_1</td>
+                        <td>6</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>A,C,A,C,B,C,A,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('5', 'CORTEZ, Florencia del Pilar', '343690', '7', '0', '7', 'B,C,B,A,B,B,B,C,B,B', 'P4 marcó A, P6 B y P10 B', '05')">
+                        <td>5</td>
+                        <td><code>343690</code></td>
+                        <td><b>CORTEZ, Florencia del Pilar</b></td>
+                        <td>g_2</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>B,C,B,A,B,B,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('6', 'DIAZ Romero, María Sofía', '343950', '7', '0', '7', 'A,C,A,C,B,C,B,C,B,B', 'Nota docente en hoja: 7', '06')">
+                        <td>6</td>
+                        <td><code>343950</code></td>
+                        <td><b>DIAZ Romero, María Sofía</b></td>
+                        <td>g_14</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>A,C,A,C,B,C,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('7', 'CORDOBA DIAZ, Román Augusto', '343911', '7', '0', '7', 'B,C,B,B,B,B,B,A,B,C', 'Nota docente en hoja: 7', '07')">
+                        <td>7</td>
+                        <td><code>343911</code></td>
+                        <td><b>CORDOBA DIAZ, Román Augusto</b></td>
+                        <td>g_14</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>B,C,B,B,B,B,B,A,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('8', 'ORTIZ, Anna Lucia', '343783', '7', '0', '7', 'A,C,A,C,B,C,B,C,B,B', 'Nota docente en hoja: 7', '08')">
+                        <td>8</td>
+                        <td><code>343783</code></td>
+                        <td><b>ORTIZ, Anna Lucia</b></td>
+                        <td>g_16</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>A,C,A,C,B,C,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('9', 'GUZMAN SINER, Joaquin Emiliano', '343962', '6', '0', '6', 'A,C,A,C,A,C,B,C,B,B', 'Nota docente en hoja: 6', '09')">
+                        <td>9</td>
+                        <td><code>343962</code></td>
+                        <td><b>GUZMAN SINER, Joaquin Emiliano</b></td>
+                        <td>g_14</td>
+                        <td>6</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">6</span></td>
+                        <td><code>A,C,A,C,A,C,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('10', 'COLOMBRES GARMENDIA, Amparo', '344134', '10', '0', '10', 'B,C,B,C,B,C,B,C,B,C', 'Examen perfecto (10/10)', '10')">
+                        <td>10</td>
+                        <td><code>344134</code></td>
+                        <td><b>COLOMBRES GARMENDIA, Amparo</b></td>
+                        <td>g_12</td>
+                        <td>10</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('11', 'RODRIGUEZ, Juan Pablo', '343244', '9', '+5', '10', 'B,C,A,C,B,C,B,C,B,C', 'Base 9 + 5 comprados = 14 -> Tope 10 (convalidado en hoja como 10)', '11')">
+                        <td>11</td>
+                        <td><code>343244</code></td>
+                        <td><b>RODRIGUEZ, Juan Pablo</b></td>
+                        <td>g_11</td>
+                        <td>9</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,A,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('12', 'AVILA LUCENA, Antonella', '343269', '6', '+5', '10', 'A,C,B,C,A,A,B,C,B,B', 'Base 6 + 5 comprados = 11 -> Tope 10 (convalidado en hoja como 10)', '12')">
+                        <td>12</td>
+                        <td><code>343269</code></td>
+                        <td><b>AVILA LUCENA, Antonella</b></td>
+                        <td>g_11</td>
+                        <td>6</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>A,C,B,C,A,A,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('13', 'VAZQUEZ, Santiago Jesús', '343815', '7', '+5', '10', 'B,C,A,C,B,B,A,C,B,C', 'Base 7 + 5 comprados = 12 -> Tope 10 (convalidado en hoja como 10)', '13')">
+                        <td>13</td>
+                        <td><code>343815</code></td>
+                        <td><b>VAZQUEZ, Santiago Jesús</b></td>
+                        <td>g_1</td>
+                        <td>7</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,A,C,B,B,A,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('14', 'RIVAS, Mirta Yolanda', '344130', '10', '0', '10', 'B,C,B,C,B,C,B,C,B,C', 'Examen perfecto (10/10 - convalidado en hoja como 10)', '14')">
+                        <td>14</td>
+                        <td><code>344130</code></td>
+                        <td><b>RIVAS, Mirta Yolanda</b></td>
+                        <td>g_5</td>
+                        <td>10</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('15', 'PAZ, Juan Martin', '344022', '6', '+5', '10', 'B,C,A,C,B,B,A,C,A,C', 'Base 6 + 5 comprados = 11 -> Tope 10 (convalidado en hoja como 10)', '15')">
+                        <td>15</td>
+                        <td><code>344022</code></td>
+                        <td><b>PAZ, Juan Martin</b></td>
+                        <td>g_6</td>
+                        <td>6</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,A,C,B,B,A,C,A,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('16', 'DHAIBES MÚKDISE, Agostina', '344026', '7', '0', '7', 'B,C,A,B,B,C,A,C,B,C', 'Nota docente en hoja: 7', '16')">
+                        <td>16</td>
+                        <td><code>344026</code></td>
+                        <td><b>DHAIBES MÚKDISE, Agostina</b></td>
+                        <td>g_3</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>B,C,A,B,B,C,A,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('17', 'VARGIU, Gianluca', '344056', '5', '+5', '10', 'B,C,A,B,B,A,A,B,B,C', 'Base 5 + 5 comprados = 10 -> Tope 10 (convalidado en hoja como 10)', '17')">
+                        <td>17</td>
+                        <td><code>344056</code></td>
+                        <td><b>VARGIU, Gianluca</b></td>
+                        <td>g_1</td>
+                        <td>5</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,A,B,B,A,A,B,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('18', 'MOVANE, SOFIA', '343896', '5', '0', '5', 'B,C,B,C,D,A,D,D,A,C', 'Nota docente en hoja: 5', '18')">
+                        <td>18</td>
+                        <td><code>343896</code></td>
+                        <td><b>MOVANE, SOFIA</b></td>
+                        <td>g_17</td>
+                        <td>5</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">5</span></td>
+                        <td><code>B,C,B,C,D,A,D,D,A,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('19', 'ROLDÁN JAIMEZ, Mariana', '344012', '10', '0', '10', 'B,C,B,C,B,C,B,C,B,C', 'Examen perfecto (10/10)', '19')">
+                        <td>19</td>
+                        <td><code>344012</code></td>
+                        <td><b>ROLDÁN JAIMEZ, Mariana</b></td>
+                        <td>g_13</td>
+                        <td>10</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('20', 'REGUERA, Rodrigo Leonel', '344048', '9', '+5', '10', 'B,C,B,C,B,A,B,C,B,C', 'Base 9 + 5 comprados = 14 -> Tope 10 (convalidado en hoja como 10)', '20')">
+                        <td>20</td>
+                        <td><code>344048</code></td>
+                        <td><b>REGUERA, Rodrigo Leonel</b></td>
+                        <td>g_10</td>
+                        <td>9</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,A,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('21', 'JEREZ, Marcelo Matias', '343270', '9', '+5', '10', 'B,C,B,C,B,C,B,C,B,B', 'Base 9 + 5 comprados = 14 -> Tope 10 (convalidado en hoja como 10)', '21')">
+                        <td>21</td>
+                        <td><code>343270</code></td>
+                        <td><b>JEREZ, Marcelo Matias</b></td>
+                        <td>g_11</td>
+                        <td>9</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('22', 'CARRIZO, FABRICIO EZEQUIEL', '344144', '8', '0', '8', 'B,C,A,C,B,C,A,C,B,C', 'Nota docente en hoja: 8', '22')">
+                        <td>22</td>
+                        <td><code>344144</code></td>
+                        <td><b>CARRIZO, FABRICIO EZEQUIEL</b></td>
+                        <td>g_9</td>
+                        <td>8</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">8</span></td>
+                        <td><code>B,C,A,C,B,C,A,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('23', 'PAEZ DE LA TORRE, Lourdes', '344074', '10', '+5', '10', 'B,C,B,C,B,C,B,C,B,C', 'Examen perfecto (10/10) + 5 comprados -> Tope 10', '23')">
+                        <td>23</td>
+                        <td><code>344074</code></td>
+                        <td><b>PAEZ DE LA TORRE, Lourdes</b></td>
+                        <td>g_8</td>
+                        <td>10</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('24', 'Zavaleta, Juan Pablo', '343940', '9', '+5', '10', 'B,C,B,C,B,C,A,C,B,C', 'Base 9 + 5 comprados = 14 -> Tope 10 (convalidado en hoja como 10)', '24')">
+                        <td>24</td>
+                        <td><code>343940</code></td>
+                        <td><b>Zavaleta, Juan Pablo</b></td>
+                        <td>g_15</td>
+                        <td>9</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,A,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('25', 'OCARANZA, Laureana', '344058', '10', '0', '10', 'B,C,B,C,B,C,B,C,B,C', 'Examen perfecto (10/10 - convalidado en hoja como 10)', '25')">
+                        <td>25</td>
+                        <td><code>344058</code></td>
+                        <td><b>OCARANZA, Laureana</b></td>
+                        <td>g_7</td>
+                        <td>10</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('26', 'LAZARTE, Tomás Benjamin', '343300', '10', '+5', '10', 'B,C,B,C,B,C,B,C,B,C', 'Examen perfecto (10/10) + 5 comprados -> Tope 10', '26')">
+                        <td>26</td>
+                        <td><code>343300</code></td>
+                        <td><b>LAZARTE, Tomás Benjamin</b></td>
+                        <td>g_11</td>
+                        <td>10</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('27', 'FERNANDEZ, Ignacio', '344077', '9', '0', '9', 'B,C,B,A,B,C,B,C,B,C', 'Base 9 (P4 marcó A; en la hoja figuraba un 10 manuscrito, nota estricta es 9)', '27')">
+                        <td>27</td>
+                        <td><code>344077</code></td>
+                        <td><b>FERNANDEZ, Ignacio</b></td>
+                        <td>g_10</td>
+                        <td>9</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">9</span></td>
+                        <td><code>B,C,B,A,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('28', 'SANTUCCI, Massimo', '344098', '9', '+5', '10', 'B,C,A,C,B,C,B,C,B,C', 'Base 9 + 5 comprados = 14 -> Tope 10 (convalidado en hoja como 10)', '28')">
+                        <td>28</td>
+                        <td><code>344098</code></td>
+                        <td><b>SANTUCCI, Massimo</b></td>
+                        <td>g_1</td>
+                        <td>9</td>
+                        <td><span class='badge badge-bonus'>+5</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,A,C,B,C,B,C,B,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('29', 'OJEDA, Yamila Dayana', '343870', '7', '0', '7', 'B,C,A,C,B,A,B,C,A,C', 'Base 7 (errores en P3, P6 y P9; aciertos: P1, P2, P4, P5, P7, P8, P10)', '29')">
+                        <td>29</td>
+                        <td><code>343870</code></td>
+                        <td><b>OJEDA, Yamila Dayana</b></td>
+                        <td>g_18</td>
+                        <td>7</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">7</span></td>
+                        <td><code>B,C,A,C,B,A,B,C,A,C</code></td>
+                    </tr>
+                    <tr onclick="showPreview('30', 'CUEVAS, Nicole Jennifer', '344055', '9', '+2', '10', 'B,C,B,C,B,C,B,C,B,B', 'Base 9 + 2 comprados = 11 -> Tope 10 (convalidado en hoja como 10)', '30')">
+                        <td>30</td>
+                        <td><code>344055</code></td>
+                        <td><b>CUEVAS, Nicole Jennifer</b></td>
+                        <td>g_8</td>
+                        <td>9</td>
+                        <td><span class='badge badge-bonus'>+2</span></td>
+                        <td><span class="badge badge-10">10</span></td>
+                        <td><code>B,C,B,C,B,C,B,C,B,B</code></td>
+                    </tr>
+                    <tr onclick="showPreview('31', 'BARROS, Sofia Abigail', '344009', '8', '0', '8', 'B,B,B,C,B,C,A,C,B,C', 'Nota docente en hoja: 8', '31')">
+                        <td>31</td>
+                        <td><code>344009</code></td>
+                        <td><b>BARROS, Sofia Abigail</b></td>
+                        <td>g_8</td>
+                        <td>8</td>
+                        <td><span style='color:gray;'>0</span></td>
+                        <td><span class="badge badge-regular">8</span></td>
+                        <td><code>B,B,B,C,B,C,A,C,B,C</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="preview-pane" id="previewPane">
+            <div id="pvTitle" style="font-weight:bold; font-size:16px; margin-bottom:10px; color:var(--primary);">Seleccione un alumno</div>
+            <img id="pvImg" src="parciales_alumnos/recortes_grilla/crop_01.jpg" alt="Examen" style="display:none;">
+            <div class="preview-info" id="pvInfo"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function showPreview(num, name, up, base, bonus, total, ans, obs, padNum) {
+    document.querySelectorAll('tr').forEach(tr => tr.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    document.getElementById('pvTitle').innerText = '#' + num + ' — ' + name;
+    const img = document.getElementById('pvImg');
+    img.src = 'parciales_alumnos/recortes_grilla/crop_' + padNum + '.jpg';
+    img.style.display = 'block';
+    
+    document.getElementById('pvInfo').innerHTML = `
+        <p><b>UP:</b> ${up}</p>
+        <p><b>Puntaje Base:</b> ${base} / 10</p>
+        <p><b>Puntos Tienda:</b> ${bonus}</p>
+        <p><b>Puntaje Total:</b> <span style="font-size:18px; color:#4ade80; font-weight:bold;">${total}</span> / 10</p>
+        <p><b>Respuestas:</b> <code>${ans}</code></p>
+        ${obs ? `<p style="color:#fbbf24; font-size:12px;"><b>Obs:</b> ${obs}</p>` : ''}
+    `;
+}
+window.onload = function() {
+    const firstRow = document.querySelector('tbody tr');
+    if (firstRow) firstRow.click();
+}
+</script>
+</body>
+</html>

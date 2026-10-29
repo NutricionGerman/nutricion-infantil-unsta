@@ -1,0 +1,250 @@
+[
+  {
+    "num": 1,
+    "frame": 1,
+    "name": "DIP, Luciano Ivan",
+    "up": "343725",
+    "group": "g_2",
+    "puntosComprados": 0
+  },
+  {
+    "num": 2,
+    "frame": 5,
+    "name": "CASTELLANOS, PAULA",
+    "up": "340602",
+    "group": "g_10",
+    "puntosComprados": 0
+  },
+  {
+    "num": 3,
+    "frame": 9,
+    "name": "RUIZ, Lucia Emilia",
+    "up": "344050",
+    "group": "g_8",
+    "puntosComprados": 0
+  },
+  {
+    "num": 4,
+    "frame": 13,
+    "name": "DELANI, Luca",
+    "up": "344036",
+    "group": "g_1",
+    "puntosComprados": 5
+  },
+  {
+    "num": 5,
+    "frame": 17,
+    "name": "CORTEZ, Florencia del Pilar",
+    "up": "343690",
+    "group": "g_2",
+    "puntosComprados": 0
+  },
+  {
+    "num": 6,
+    "frame": 22,
+    "name": "DIAZ Romero, María Sofía",
+    "up": "343950",
+    "group": "g_14",
+    "puntosComprados": 0
+  },
+  {
+    "num": 7,
+    "frame": 25,
+    "name": "CORDOBA DIAZ, Román Augusto",
+    "up": "343911",
+    "group": "g_14",
+    "puntosComprados": 0
+  },
+  {
+    "num": 8,
+    "frame": 28,
+    "name": "ORTIZ, Anna Lucia",
+    "up": "343783",
+    "group": "g_16",
+    "puntosComprados": 0
+  },
+  {
+    "num": 9,
+    "frame": 33,
+    "name": "GUZMAN SINER, Joaquin Emiliano",
+    "up": "343962",
+    "group": "g_14",
+    "puntosComprados": 0
+  },
+  {
+    "num": 10,
+    "frame": 37,
+    "name": "COLOMBRES GARMENDIA, Amparo",
+    "up": "344134",
+    "group": "g_12",
+    "puntosComprados": 0
+  },
+  {
+    "num": 11,
+    "frame": 39,
+    "name": "RODRIGUEZ, Juan Pablo",
+    "up": "343244",
+    "group": "g_11",
+    "puntosComprados": 5
+  },
+  {
+    "num": 12,
+    "frame": 43,
+    "name": "AVILA LUCENA, Antonella",
+    "up": "343269",
+    "group": "g_11",
+    "puntosComprados": 5
+  },
+  {
+    "num": 13,
+    "frame": 46,
+    "name": "VAZQUEZ, Santiago Jesús",
+    "up": "343815",
+    "group": "g_1",
+    "puntosComprados": 5
+  },
+  {
+    "num": 14,
+    "frame": 51,
+    "name": "RIVAS, Mirta Yolanda",
+    "up": "344130",
+    "group": "g_5",
+    "puntosComprados": 0
+  },
+  {
+    "num": 15,
+    "frame": 57,
+    "name": "PAZ, Juan Martin",
+    "up": "344022",
+    "group": "g_6",
+    "puntosComprados": 5
+  },
+  {
+    "num": 16,
+    "frame": 60,
+    "name": "DHAIBES MÚKDISE, Agostina",
+    "up": "344026",
+    "group": "g_3",
+    "puntosComprados": 0
+  },
+  {
+    "num": 17,
+    "frame": 62,
+    "name": "VARGIU, Gianluca",
+    "up": "344056",
+    "group": "g_1",
+    "puntosComprados": 5
+  },
+  {
+    "num": 18,
+    "frame": 65,
+    "name": "MOVANE, SOFIA",
+    "up": "343896",
+    "group": "g_17",
+    "puntosComprados": 0
+  },
+  {
+    "num": 19,
+    "frame": 68,
+    "name": "ROLDÁN JAIMEZ, Mariana",
+    "up": "344012",
+    "group": "g_13",
+    "puntosComprados": 0
+  },
+  {
+    "num": 20,
+    "frame": 70,
+    "name": "REGUERA, Rodrigo Leonel",
+    "up": "344048",
+    "group": "g_10",
+    "puntosComprados": 5
+  },
+  {
+    "num": 21,
+    "frame": 73,
+    "name": "JEREZ, Marcelo Matias",
+    "up": "343270",
+    "group": "g_11",
+    "puntosComprados": 5
+  },
+  {
+    "num": 22,
+    "frame": 76,
+    "name": "CARRIZO, FABRICIO EZEQUIEL",
+    "up": "344144",
+    "group": "g_9",
+    "puntosComprados": 0
+  },
+  {
+    "num": 23,
+    "frame": 79,
+    "name": "PAEZ DE LA TORRE, Lourdes",
+    "up": "344074",
+    "group": "g_8",
+    "puntosComprados": 5
+  },
+  {
+    "num": 24,
+    "frame": 82,
+    "name": "Zavaleta, Juan Pablo",
+    "up": "343940",
+    "group": "g_15",
+    "puntosComprados": 5
+  },
+  {
+    "num": 25,
+    "frame": 88,
+    "name": "OCARANZA, Laureana",
+    "up": "344058",
+    "group": "g_7",
+    "puntosComprados": 0
+  },
+  {
+    "num": 26,
+    "frame": 91,
+    "name": "LAZARTE, Tomás Benjamin",
+    "up": "343300",
+    "group": "g_11",
+    "puntosComprados": 5
+  },
+  {
+    "num": 27,
+    "frame": 93,
+    "name": "FERNANDEZ, Ignacio",
+    "up": "344077",
+    "group": "g_10",
+    "puntosComprados": 0
+  },
+  {
+    "num": 28,
+    "frame": 96,
+    "name": "SANTUCCI, Massimo",
+    "up": "344098",
+    "group": "g_1",
+    "puntosComprados": 5
+  },
+  {
+    "num": 29,
+    "frame": 99,
+    "name": "OJEDA, Yamila Dayana",
+    "up": "343870",
+    "group": "g_18",
+    "puntosComprados": 0
+  },
+  {
+    "num": 30,
+    "frame": 101,
+    "name": "CUEVAS, Nicole Jennifer",
+    "up": "344055",
+    "group": "g_8",
+    "puntosComprados": 2
+  },
+  {
+    "num": 31,
+    "frame": 104,
+    "name": "BARROS, Sofia Abigail",
+    "up": "344009",
+    "group": "g_8",
+    "puntosComprados": 0
+  }
+]

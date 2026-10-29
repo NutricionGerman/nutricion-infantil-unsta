@@ -376,3 +376,85 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
 
 
 
+
+
+35. **Corrección Automatizada y Extracción de Fotogramas del 2° Parcial Práctico (29/10/2026)**:
+    - **Procesamiento de Video 4K**: Se procesó el video `20261029_135558.mp4` (185 segundos), detectando y aislando con precisión los **46 exámenes físicos** presentados por los alumnos.
+    - **Fotogramas y Recortes Guardados**:
+      * `2° parcial practica/correccion/parciales_alumnos/`: 46 fotogramas individuales en alta resolución, nombrados con número de orden, nombre completo y UP.
+      * `recortes_grilla/`: 46 recortes enfocados en la grilla de respuestas y datos filiatorios con banner identificatorio.
+      * `hojas_inspeccion/`: 8 hojas de contacto compuestas para auditoría visual inmediata.
+      * `visor_parciales.html`: Visor web interactivo para consultar cada examen con un solo clic.
+      * `resultados_parcial2_practica.csv`: Planilla oficial exportable a Excel.
+    - **Clave Oficial Aplicada (Tema 1)**: `B - B - C - C - B - B - C - C - B - B`. Se verificó que todos los exámenes del lote corresponden a la versión Tema 1.
+    - **Cruce con Bonificaciones de Tienda (Firestore)**: Se consultó la colección `students` en tiempo real y se sumaron los puntos prácticos canjeados con XP (+1 a +5 pts), aplicando el tope máximo de **10 Puntos**.
+    - **Auditoría de Anotaciones Docentes Previas**: Se documentaron las notas previas manuscritas para total transparencia (ej. Cerviño Joaquín tenía un 6 anotado por cruce preliminar con el patrón en zigzag de Tema 2, pero tiene 9/10 bajo la clave oficial; Nanterne Victoria tenía anotado un 3 correspondiente a sus 3 errores, con 7/10 de base; Lazarte Máximo Daniel tenía el UP en blanco en la hoja pero fue verificado con el cartel exhibido al final del video).
+
+
+36. **Corrección Automatizada y Extracción de Fotogramas del 2° Parcial Práctico — TEMA 2 (29/10/2026)**:
+    - **Procesamiento de Video 4K (tema2.mp4)**: Se procesó el video en 4K `tema2.mp4` (106.9 segundos), detectando e individualizando con precisión quirúrgica los **31 exámenes físicos** del Tema 2.
+    - **Clave Oficial Aplicada (Tema 2)**: `B - C - B - C - B - C - B - C - B - C` (patrón mnemotécnico alternado de cátedra).
+    - **Archivos y Entregables**:
+      * `2° parcial practica/correccion/tema2/parciales_alumnos/`: 31 fotogramas clave en alta definición.
+      * `recortes_grilla/`: 31 recortes de la grilla de respuestas con membrete filiatorio.
+      * `hojas_inspeccion/`: 6 hojas de contacto compuestas para auditoría visual directa.
+      * `resultados_parcial2_practica_tema2.csv`: Planilla oficial de calificaciones exportable a Excel.
+      * `INFORME_CORRECCION_TEMA_2.md`: Acta y reporte docente en Markdown.
+      * `visor_parciales_tema2.html`: Visor web interactivo con previsualización fotográfica al clic.
+    - **Cruce con Bonificaciones de Tienda (Firestore)**: Se validaron los puntos prácticos de la Tienda de XP (+1 a +5 pts) para los alumnos que rindieron Tema 2 (ej. Luca Delani, Juan Pablo Rodriguez, Antonella Avila Lucena, Santiago Vázquez, Juan Martin Paz, Gianluca Vargiu, Rodrigo Reguera, Marcelo Jerez, Lourdes Páez de la Torre, Juan Pablo Zavaleta, Tomás Lazarte, Massimo Santucci, Nicole Cuevas), aplicando el tope máximo de **10 Puntos**.
+    - **Métricas Globales Consolidadas**:
+      * Tema 1: 46 alumnos evaluados (18 dieces).
+      * Tema 2: 31 alumnos evaluados (17 dieces).
+      * **Total Cátedra**: 77 exámenes físicos procesados y auditados digitalmente.
+
+
+37. **Estandarización Visual de Parciales: Recorte Enfocado Grilla + Banner Institucional (29/10/2026)**:
+    - **Criterio Pedagógico y de Transparencia de Germán**:
+      * En varios exámenes físicos existían anotaciones manuscritas con lápiz en el recuadro de *NOTA FINAL* (ej. número de errores cometidos como el "3" de Nanterne, notas preliminares cruzadas con la clave equivocada como el "6" de Cerviño, o notas previas a la suma de puntos comprados como el "9" de Fernández).
+      * Germán solicitó ocultar o eliminar las marcas de lápiz para evitar confusiones en los alumnos y asegurar un diseño homogéneo, limpio e institucional para todos los 77 parciales evaluados.
+    - **Decisión de Diseño**:
+      * Se optó por la **Opción 1 (Recorte Enfocado de Columna Izquierda + Banner Digital Superior)** por sobre el parche/sello digital sobre el casillero.
+      * *Ventajas*: La hoja manuscrita del alumno se preserva 100% natural y genuina (Apellido y Nombre + grilla con sus 10 cruces originales), sin sensación de retoques con Photoshop sobre el papel.
+      * La columna derecha (Instrucciones y recuadro físico de *NOTA FINAL*) se descarta por completo, eliminando de raíz cualquier trazo de lápiz o borrón.
+    - **Banner Institucional Estandarizado**:
+      * Fondo azul noche `#0f172a` con acento cromático según la calificación final.
+      * Fila 1: `#N° | Apellido y Nombre — UP: XXXXXX (Grupo)`
+      * Fila 2: `Puntaje Base: X/10 | Puntos Tienda: +Y pts | NOTA FINAL: Z / 10` (con código de color: Oro para 10, Verde para 8-9, Celeste para 6-7, Ámbar para 4-5, Rojo para <4).
+    - **Alcance de la Ejecución**:
+      * Aplicado a los **46 exámenes de Tema 1** (`2° parcial practica/correccion/parciales_alumnos/recortes_grilla/`).
+      * Aplicado a los **31 exámenes de Tema 2** (`2° parcial practica/correccion/tema2/parciales_alumnos/recortes_grilla/`).
+      * Regeneradas las **14 hojas de contacto compuestas** (8 de Tema 1 y 6 de Tema 2) en `hojas_inspeccion/`.
+      * Sincronizados ambos visores web interactivos (`visor_parciales.html` y `visor_parciales_tema2.html`).
+
+
+38. **Refinamiento de Recortes y Visor Unificado Integral (29/10/2026)**:
+    - **Corrección de Encuadre en Parciales Desplazados**:
+      * En la filmación, algunos exámenes estaban desplazados hacia la derecha o más cerca de la lente:
+        - `ROLDÁN JAIMEZ, Mariana` (Tema 2, #19): la grilla estaba desplazada hacia la derecha ($x \in [0.24, 0.77]$). Se recalibraron las coordenadas personalizadas para capturar el 100% de la tabla y sus 10 respuestas correctas sin cortes.
+        - `COLOMBRES GARMENDIA, Amparo` (Tema 2, #10): la hoja estaba desplazada a la derecha ($x \in [0.28, 0.80]$). Se recalibró el encuadre para mostrar la totalidad de la grilla y el nombre.
+        - `LESCANO, Rodrigo Jesús` (Tema 1, #08): toma más cercana a la cámara; se amplió el ancho a $0.72$ y el alto a $0.76$ para no cortar la Columna D ni las preguntas 8-10.
+        - `NANTERNE MARTIN, Victoria` (Tema 1, #02): se ajustó el margen izquierdo a $0.00$ para no rozar la línea de la columna Pregunta.
+    - **Eliminación del Encabezado Digital Sintético**:
+      * A pedido de Germán, se removió la barra azul superior sobre las fotos de los 77 exámenes. Las imágenes son ahora recortes fotográficos 100% puros y auténticos del papel manuscrito del alumno, dejando que los datos filiatorios y calificaciones se presenten en la interfaz del visor interactivo.
+    - **Visor Unificado de Cátedra (`visor_parciales_unificado.html`)**:
+      * Consolida los **77 exámenes físicos** (46 de Tema 1 + 31 de Tema 2) en una sola plataforma.
+      * **Ordenamiento por defecto**: Alfábetico por Apellido (A-Z).
+      * **Controles Interactivos**:
+        - Ordenamiento: Por Apellido (A-Z), Por Tema (Tema 1 / Tema 2), Por Nota Final (Mayor a Menor) y Por N° de Video.
+        - Filtros rápidos: Todos (77), Tema 1 (46), Tema 2 (31) y Notas Máximas 10 (35).
+        - Buscador en tiempo real por apellido, nombre o UP.
+      * **Panel de Inspección**: Muestra la foto limpia del examen, notas desglosadas (Base, Tienda y Final), badges oficiales y auditoría interactiva pregunta por pregunta (P1-P10) contrastando la clave oficial con la marca del estudiante.
+
+
+39. **Integración de Notas del 2° Parcial Práctico en Perfil Privado y Portal Oficial (29/10/2026)**:
+    - **Requerimientos Cumplidos de Germán**:
+      1. *Simplificación del Visor Docente*: Se quitaron las columnas N° de video, UP, Grupo y Respuestas de la tabla en `visor_parciales_unificado.html`, dejando únicamente `#`, `Tema`, `Apellido y Nombre`, `Puntaje Base`, `Puntos Tienda` y `Nota Final`. Se eliminó el botón de ordenamiento "N° de Video".
+      2. *Aclaración Pedagógica*: Se incorporó el mensaje oficial: *"⚠️ Aclaración de Cátedra: Las notas del 2° Parcial Práctico se promedian con la instancia teórica únicamente si la teoría se encuentra APROBADA"*, visible en el visor general y en la tarjeta del perfil de cada estudiante.
+      3. *Privacidad Total en el Perfil del Estudiante*:
+         - Se generó el dataset estático `parcial2_data.js` con las 77 evaluaciones (46 de Tema 1 y 31 de Tema 2).
+         - Las imágenes de recortes limpios se alojan en la ruta estática web-safe `parciales_practico/t1/` y `parciales_practico/t2/`.
+         - Al ingresar a `Mi Perfil` (`displayStudentPortalView` en `index.html`), cada alumno consulta **exclusivamente su propia nota y examen físico**:
+           * Píldoras con Base (/10), Tienda XP y Nota Final.
+           * Desglose interactivo de preguntas P1 a P10 (marcas vs clave con ✓ y ✗).
+           * Botón modal *"Ver Mi Examen Físico"* para desplegar la foto limpia de su hoja manuscrita.
+      4. *Actualización del Pop-up de Entrada*: Se reemplazó el cartel anterior de repaso de mesa oral por el aviso de bienvenida: *"¡Calificaciones del 2° Parcial Práctico Publicadas!"* con botón directo *"Ver Mi Nota en Mi Perfil"*, que navega a su ficha privada con un solo clic.

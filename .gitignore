@@ -54,3 +54,14 @@ PROYECTO_AISLADO/
 discurso_ensayo.html
 Trabajos integradores finales/
 
+
+# Archivos temporales de corrección y caché
+*.bak
+students_cache.json
+students_list.txt
+**/muestras_1s/
+**/headers/
+**/header_strips/
+**/montajes/
+**/verificaciones/
+**/pruebas_diseno/
