@@ -2588,11 +2588,11 @@ window.parcialPractico2Data = {
     "up": "344024",
     "name": "WAUNOUS, Milagros",
     "group": "g_3",
-    "base": "7",
-    "baseNum": 7.0,
+    "base": "8",
+    "baseNum": 8.0,
     "bonus": "0",
-    "total": "7",
-    "totalNum": 7.0,
+    "total": "8",
+    "totalNum": 8.0,
     "answers": [
       "A",
       "B",
@@ -2600,7 +2600,7 @@ window.parcialPractico2Data = {
       "C",
       "B",
       "B",
-      "B",
+      "C",
       "C",
       "A",
       "B"
@@ -2644,8 +2644,8 @@ window.parcialPractico2Data = {
       },
       {
         "q": 7,
-        "ans": "B",
-        "correct": false,
+        "ans": "C",
+        "correct": true,
         "key": "C"
       },
       {
