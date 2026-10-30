@@ -6852,5 +6852,22 @@ window.parcialPractico2Data = {
     ],
     "obs": "Base 8 + 2 canjeados = ⭐ 10 (Sobresaliente)",
     "img": "parciales_practico/t2/crop_31.jpg"
+  },
+  "344038": {
+    "tema": "Tema 1",
+    "temaCode": "T1",
+    "num": 78,
+    "up": "344038",
+    "name": "ALBANIL , Maria Lujan",
+    "group": "g_10",
+    "base": "7",
+    "baseNum": 7.0,
+    "bonus": "+5",
+    "total": "10",
+    "totalNum": 10.0,
+    "answers": [],
+    "checks": [],
+    "obs": "Base 7 confirmada por docente + 5 puntos comprados = 12 -> tope 10",
+    "img": ""
   }
 };
