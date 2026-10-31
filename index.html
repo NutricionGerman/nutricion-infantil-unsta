@@ -23934,6 +23934,16 @@
 
 
 
+                // --- VISUALIZACIÓN DE PARCIALES Y NOTAS EN PERFIL ---
+                // Período de visualización y revisión finalizado (ya se terminó el tiempo para verla)
+                const SHOW_PARCIALES_IN_PROFILE = false;
+
+                let oralParcialCardHTML = '';
+                let practicalExamCardHTML = '';
+                let practicalBonusCardHTML = '';
+
+                if (SHOW_PARCIALES_IN_PROFILE) {
+
                 // --- TARJETA DEL 2° PARCIAL TEÓRICO (MESA ORAL) ---
 
                 const oral = student.oralExams || {};
@@ -24408,6 +24418,10 @@
 
 
 
+                } // Fin if (SHOW_PARCIALES_IN_PROFILE)
+
+
+
                 portalHTML += `
 
                 <div class="app-profile-container">
@@ -24612,6 +24626,7 @@
 
                         </div>
 
+                        ${SHOW_PARCIALES_IN_PROFILE ? `
                         <div class="app-stat-box">
 
                             <div class="app-stat-icon"><i class="fas fa-file-signature" style="color: #3b82f6;"></i></div>
@@ -24634,7 +24649,7 @@
 
                             <div class="app-stat-sublabel">${student.parcial2 !== undefined && student.parcial2 !== null ? 'Calificado' : 'Sin calificar'}</div>
 
-                        </div>
+                        </div>` : ''}
 
                     </div>
 
@@ -25071,6 +25086,8 @@
             // ================================================================
 
             window.checkAndShowParcial2Announcement = function(student) {
+                // Período de anuncio y revisión finalizado
+                return;
 
                 if (sessionStorage.getItem('parcial2_popup_dismissed')) return;
 

@@ -473,3 +473,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       * En momentos de saturación de red o cuotas de tokens, el evaluador oral (`ai_evaluator.js`) cayó en la heurística offline asignando la devolución genérica *"Faltó mayor precisión en las cifras de la bibliografía oficial"* con notas de 3 a 6.
       * Se auditaron las 29 evaluaciones orales afectadas correspondientes a 19 estudiantes en `oral_submissions`.
       * Se reevaluaron todas las respuestas con DeepSeek/TokenHarbor aplicando la rúbrica oficial de cátedra, restaurando calificaciones de 8 a 10 de acuerdo a sus transcripciones verbales reales, e impactando las notas individuales y promedios en Firestore (`oral_submissions` y `students`).
+
+
+41. **Cierre de Visualización de Calificaciones y Parciales en el Perfil de Alumnos (30/10/2026)**:
+    - **Contexto**: Tras cumplirse el plazo límite de revisión docente acordado con los alumnos vía Discord hasta la noche del 30/10/2026 para revisar exámenes prácticos y formular reclamos previos al promediado con la teoría:
+    - **Acciones Implementadas**:
+      1. *Exportación Final a Excel*: Se generó el archivo consolidado `notas_2do_parcial_practico.xlsx` ordenado alfabéticamente (A-Z) con las 94 UP totales de la cátedra, detallando número de orden, apellido y nombre, UP y nota final oficial (78 con nota y 16 ausentes/sin rendir).
+      2. *Ocultamiento en el Perfil del Estudiante (`displayStudentPortalView`)*:
+         - Se implementó la bandera `SHOW_PARCIALES_IN_PROFILE = false`.
+         - Se ocultaron las tarjetas de calificación del 2° Parcial Práctico (`practicalExamCardHTML`), la tarjeta de bonificación de puntos comprados (`practicalBonusCardHTML`) y la tarjeta del 2° Parcial Teórico / Mesa Oral (`oralParcialCardHTML`).
+         - Se ocultaron los casilleros de "1er Parcial" y "2do Parcial" del bloque de estadísticas (`app-stats-2x2`), conservando un diseño limpio y equilibrado con Asistencia y TPs Aprobados.
+      3. *Desactivación del Pop-up de Bienvenida*: Se canceló la apertura del modal `checkAndShowParcial2Announcement` para no alertar sobre calificaciones a los usuarios al ingresar a la plataforma.
+      4. *Preservación de Datos*: Toda la base de datos (`parcial2_data.js`, Firestore `oralExams`, visor unificado y backups) permanece intacta e inalterada para fines administrativos y auditoría docente.
