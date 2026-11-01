@@ -1,1 +1,4 @@
-{ "v": "2026.10.30.v115", "msg": "Cierre de visualización de notas y parciales en el perfil de alumnos (finalizó período de revisión)" }
+{
+  "v": "2026.11.01.v116",
+  "msg": "Fix: sincronización y cálculo robusto de condición académica y Trabajos Prácticos en perfiles de alumnos"
+}

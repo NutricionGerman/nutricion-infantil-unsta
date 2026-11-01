@@ -282,6 +282,17 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - Si un proveedor de IA se satura o arroja error y el evaluador entra en fallback heurístico asignando devoluciones genéricas (ej. *"Faltó mayor precisión en las cifras de la bibliografía oficial"* con puntajes 3 a 6), **se debe intervenir de inmediato para reevaluar con IA real y la rúbrica oficial de cátedra**.
     - La calificación debe ajustarse al mérito estricto de la transcripción oral del alumno, actualizando tanto la entrega individual (`oral_submissions`) como el promedio y estado en el perfil del alumno en Firestore (`students`).
 
+35. **Alumnos y Equipos de Rendimiento y Compromiso Destacado**:
+    - Germán reconoció explícitamente a 3 grupos y 1 alumno individual por su destacada dedicación, entrega y compromiso académico constante desde el inicio del año:
+      1. **Grupo 1 — Gianluca Vargiu** (Vargiu, Vázquez, Santucci, Delani, Lescano y Ávila Lucena Antonella oficialmente asignada).
+      2. **Grupo 5 — Constanza Usandivaras** (Usandivaras, Rivas, Pérez Martínez, Tapia).
+      3. **Grupo 6 — Juan Martín Paz** (Paz, Bazán, Ávila Rondoletto, Giuliano Avellaneda, Gallardo Elhall y Guzmán Siner Joaquín Emiliano oficialmente asignado).
+      4. **Agustín Octavio Linares González** (UP 34 4031 - evaluación individual destacada).
+      5. **Roberto Diego Hardie** (UP 34 1726 - alumno destacado agregado individualmente).
+    - **Estado de Trabajo Integrador Final**: Todos los alumnos tienen el Trabajo Integrador presentado. Los integrantes de los Grupos 1, 5 y 6 lo tienen además defendido exitosamente. A Roberto Hardie y Agustín Linares les falta defenderlo (Presentado: Sí, Defendido: No).
+    - Priorizar y tener siempre presente este reconocimiento en auditorías, seguimiento pedagógico y cuadros de honor.
+
+
 
 
 

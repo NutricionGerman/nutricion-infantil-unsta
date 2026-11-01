@@ -485,3 +485,19 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
          - Se ocultaron los casilleros de "1er Parcial" y "2do Parcial" del bloque de estadísticas (`app-stats-2x2`), conservando un diseño limpio y equilibrado con Asistencia y TPs Aprobados.
       3. *Desactivación del Pop-up de Bienvenida*: Se canceló la apertura del modal `checkAndShowParcial2Announcement` para no alertar sobre calificaciones a los usuarios al ingresar a la plataforma.
       4. *Preservación de Datos*: Toda la base de datos (`parcial2_data.js`, Firestore `oralExams`, visor unificado y backups) permanece intacta e inalterada para fines administrativos y auditoría docente.
+
+
+42. **Corrección de Cálculo de Condición Académica y Sincronización de Trabajos Prácticos (01/11/2026)**:
+    - **Problema Reportado**: Estudiantes (ej. Santiago Álvarez, UP 344064, Grupo 9) visualizaban erróneamente en su perfil la leyenda `Condición: Libre` y `TPs: 0% -> mínimo 75% ✗`, a pesar de tener 94% de asistencia y los 3 Trabajos Prácticos grupales entregados. En el modal de detalle de TPs, los Trabajos Prácticos 1, 2 y 3 figuraban con `Obligatorio: No` y `Estado: Entregado`.
+    - **Causa Raíz Identificada**:
+      1. La configuración de los TPs evaluables (`isEvaluable: true`) residía únicamente en el documento `config/tp_settings`. En el arranque de la app (`initializeApp`), no se precargaba dicho documento en `window.tpGlobalConfig`.
+      2. Cuando un estudiante abría su perfil en móviles (iOS Safari / Android), si la lectura de Firestore `config/tp_settings` se demoraba o se leía desde caché IndexedDB no sincronizada, el objeto `tpConfig` quedaba vacío `{}`.
+      3. Al ser `tpConfig` un objeto vacío, `isEvaluable` resultaba `undefined` para todos los slots, provocando que `denominator = 0`, `approvedTPsCount = 0`, `tpPercentage = 0%` y que en la tabla modal figurara `Obligatorio: No`.
+    - **Solución Implementada**:
+      1. *Sincronización de Firestore*: Se inyectó `tpGlobalConfig` directamente dentro de `app_state/main`, garantizando que en la primera lectura atómica de la app ya venga disponible.
+      2. *Precarga en `initializeApp`*: Se añadió la precarga explícita de `config/tp_settings` en paralelo al inicio.
+      3. *Resguardo de Seguridad en Cliente*: En `displayStudentPortalView` y `displayRegularityAnalytics`, si por cualquier contingencia remota `denominator === 0`, el sistema aplica el resguardo oficial de cátedra asignando como evaluables los 3 TPs prácticos del ciclo lectivo (TP 1, TP 2 y TP 3).
+      4. *Corrección en Modal de TPs*: `isEval` utiliza como fallback `(i <= denominator)`, asegurando que siempre se muestre `Obligatorio: Sí` para los 3 TPs dictados.
+      5. *Sincronización en Panel Docente*: Al guardar cambios en el modal global de TPs (`openGlobalTpModal`), se guardan simultáneamente en `config/tp_settings` y en `app_state/main`.
+      6. *Estadísticas Globales y PDF*: Se actualizó el cálculo de TPs en `displayGlobalStats` y `generatePdfReport` para evaluar las entregas de videos grupales en vez del campo deprecado individual `r.tpNote`.
+      7. *Caché de Navegador*: Se actualizó `version.json` a la versión `2026.11.01.v116` para forzar la recarga en los dispositivos de los estudiantes.

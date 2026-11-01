@@ -12200,6 +12200,19 @@
 
                     let masterData = configDoc.exists ? configDoc.data() : { config: { totalTpCount: 1 } };
 
+                    if (masterData.tpGlobalConfig) {
+                        window.tpGlobalConfig = masterData.tpGlobalConfig;
+                    }
+                    try {
+                        const tpConfigDoc = await db.collection('config').doc('tp_settings').get();
+                        if (tpConfigDoc.exists) {
+                            window.tpGlobalConfig = tpConfigDoc.data();
+                            masterData.tpGlobalConfig = tpConfigDoc.data();
+                        }
+                    } catch (e) {
+                        console.warn('Precarga tp_settings:', e);
+                    }
+
                     
 
                     // 2. CARGA DE LA COLECCIÓN DE ALUMNOS (CASILLEROS)
@@ -12864,9 +12877,31 @@
 
 
 
-                    const approvedTPsCount = studentRecords.filter(r => r.tpNote !== null && typeof r.tpNote === 'number' && r.tpNote >= 4).length;
+                    const sGId = student.group ? String(student.group).trim() : '';
 
-                    const tpPercentage = totalSessionsForStudent > 0 ? (approvedTPsCount / totalSessionsForStudent) * 100 : 0;
+                    const sGWithG = sGId.startsWith('g_') ? sGId : (sGId ? 'g_' + sGId : '');
+
+                    const sGNoG = sGId.startsWith('g_') ? sGId.substring(2) : sGId;
+
+                    const gMetaRef = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {});
+
+                    const gData = sGId ? (gMetaRef[sGWithG] || gMetaRef[sGNoG] || gMetaRef[sGId]) : null;
+
+                    const gVideos = (gData && gData.videos) ? gData.videos : {};
+
+                    let approvedTPsCount = 0;
+
+                    [0, 1, 2].forEach(vIdx => {
+
+                        if (gVideos[vIdx] !== undefined || gVideos[String(vIdx)] !== undefined || gVideos[vIdx + 1] !== undefined || gVideos[String(vIdx + 1)] !== undefined) {
+
+                            approvedTPsCount++;
+
+                        }
+
+                    });
+
+                    const tpPercentage = Math.round((approvedTPsCount / 3) * 100);
 
 
 
@@ -18620,9 +18655,31 @@
 
                     const attendancePercentage = totalSessionsForStudent > 0 ? (presentCount / totalSessionsForStudent) * 100 : 0;
 
-                    const approvedTPsCount = studentRecords.filter(r => r.tpNote !== null && typeof r.tpNote === 'number' && r.tpNote >= 4).length;
+                    const sGId = student.group ? String(student.group).trim() : '';
 
-                    const tpPercentage = totalSessionsForStudent > 0 ? (approvedTPsCount / totalSessionsForStudent) * 100 : 0;
+                    const sGWithG = sGId.startsWith('g_') ? sGId : (sGId ? 'g_' + sGId : '');
+
+                    const sGNoG = sGId.startsWith('g_') ? sGId.substring(2) : sGId;
+
+                    const gMetaRef = (typeof sharedGroupMetadata !== 'undefined' && Object.keys(sharedGroupMetadata).length > 0) ? sharedGroupMetadata : (fullData.sharedGroupMetadata || {});
+
+                    const gData = sGId ? (gMetaRef[sGWithG] || gMetaRef[sGNoG] || gMetaRef[sGId]) : null;
+
+                    const gVideos = (gData && gData.videos) ? gData.videos : {};
+
+                    let approvedTPsCount = 0;
+
+                    [0, 1, 2].forEach(vIdx => {
+
+                        if (gVideos[vIdx] !== undefined || gVideos[String(vIdx)] !== undefined || gVideos[vIdx + 1] !== undefined || gVideos[String(vIdx + 1)] !== undefined) {
+
+                            approvedTPsCount++;
+
+                        }
+
+                    });
+
+                    const tpPercentage = Math.round((approvedTPsCount / 3) * 100);
 
                     if (attendancePercentage >= 50 && tpPercentage >= 75) {
 
@@ -21652,9 +21709,7 @@
 
                     const rawConfig = window.tpGlobalConfig || (fullData && fullData.tpGlobalConfig) || (fullData && fullData.config) || {};
 
-                    const tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
-
-                    
+                    let tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
 
                     let denominator = 0;
 
@@ -21662,13 +21717,23 @@
 
                     for (let i = 1; i <= 10; i++) {
 
-                        if (tpConfig[i] && tpConfig[i].isEvaluable) {
+                        const tpEntry = tpConfig[i] || tpConfig[String(i)] || null;
+
+                        if (tpEntry && tpEntry.isEvaluable) {
 
                             denominator++;
 
                             evaluableIndices.push(i);
 
                         }
+
+                    }
+
+                    if (denominator === 0) {
+
+                        denominator = (fullData && fullData.config && fullData.config.totalTpCount) ? fullData.config.totalTpCount : 3;
+
+                        for (let i = 1; i <= denominator; i++) evaluableIndices.push(i);
 
                     }
 
@@ -23078,23 +23143,18 @@
 
                 const rawConfig = window.tpGlobalConfig || (fullData && fullData.tpGlobalConfig) || (fullData && fullData.config) || {};
 
-                const tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
-
-                window.tpConfig = tpConfig;
-
-                
+                let tpConfig = rawConfig.tps || (rawConfig.config && rawConfig.config.tps) || {};
 
                 // Calculamos el denominador: cuántos TPs tienen isEvaluable == true
-
                 let denominator = 0;
 
                 const evaluableIndices = [];
 
                 for (let i = 1; i <= 10; i++) {
 
-                    const tpEntry = tpConfig[i] || tpConfig[String(i)] || tpConfig[i-1] || {};
+                    const tpEntry = tpConfig[i] || tpConfig[String(i)] || null;
 
-                    if (tpEntry.isEvaluable) {
+                    if (tpEntry && tpEntry.isEvaluable) {
 
                         denominator++;
 
@@ -23103,6 +23163,31 @@
                     }
 
                 }
+
+                // Resguardo de seguridad oficial: la cátedra evalúa 3 TPs prácticos
+                if (denominator === 0) {
+
+                    denominator = (fullData && fullData.config && fullData.config.totalTpCount) ? fullData.config.totalTpCount : 3;
+
+                    for (let i = 1; i <= denominator; i++) evaluableIndices.push(i);
+
+                    if (!tpConfig || Object.keys(tpConfig).length === 0) {
+
+                        tpConfig = {
+
+                            "1": { isEvaluable: true },
+
+                            "2": { isEvaluable: true },
+
+                            "3": { isEvaluable: true }
+
+                        };
+
+                    }
+
+                }
+
+                window.tpConfig = tpConfig;
 
 
 
@@ -23402,7 +23487,7 @@
 
                     const tpEntry = tpConfig[i] || tpConfig[String(i)] || {};
 
-                    const isEval = tpEntry.isEvaluable;
+                    const isEval = (tpEntry && typeof tpEntry.isEvaluable === 'boolean') ? tpEntry.isEvaluable : (i <= denominator);
 
                     const videoIdx = i - 1;
 
@@ -30387,7 +30472,7 @@
 
                         fullData.config.totalTpCount = evaluableCount;
 
-                        await db.collection('app_state').doc('main').set({ config: fullData.config }, { merge: true });
+                        await db.collection('app_state').doc('main').set({ config: fullData.config, tpGlobalConfig: { tps: newTps } }, { merge: true });
 
 
 
