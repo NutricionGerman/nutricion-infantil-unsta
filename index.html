@@ -14679,6 +14679,206 @@
 
 
 
+                        <!-- ======================================================= -->
+                        <!-- BUZÓN PRIVADO DE ENTREGA — TP INTEGRADOR (PDF)            -->
+                        <!-- ======================================================= -->
+                        <div class="tp-section-card" id="tpi-buzon-card" style="border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 4px 25px rgba(245, 158, 11, 0.1); margin-bottom: 24px; background: rgba(18, 22, 30, 0.92); border-radius: 16px; padding: 22px;">
+                            
+                            <!-- CABECERA CON TOGGLE ALUMNO / DOCENTE -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.4); display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 1.3rem;">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                            <h3 style="margin: 0; font-size: 1.2rem; color: #fff; font-weight: 800; letter-spacing: -0.3px;">Entrega del Trabajo Integrador (PDF)</h3>
+                                            <span class="tp-badge-gold" style="font-size: 0.72rem; padding: 2px 10px;"><i class="fas fa-lock"></i> Buzón Privado y Confidencial</span>
+                                        </div>
+                                        <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: #94a3b8;">
+                                            Recepción del informe final del Caso Clínico asignado a tu grupo. Ningún compañero puede ver tu trabajo.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- SWITCH DE VISTA PARA TESTING LOCAL -->
+                                <div style="display: flex; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px; padding: 3px; gap: 4px;">
+                                    <button type="button" id="tpi-tab-btn-student" onclick="window.switchTpiView('student')" style="padding: 7px 14px; border-radius: 8px; border: none; background: #f59e0b; color: #000; font-weight: 700; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                                        <i class="fas fa-paper-plane"></i> Formulario de Entrega
+                                    </button>
+                                    <button type="button" id="tpi-tab-btn-teacher" onclick="window.switchTpiView('teacher')" style="padding: 7px 14px; border-radius: 8px; border: none; background: transparent; color: #94a3b8; font-weight: 600; font-size: 0.78rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                                        <i class="fas fa-clipboard-check"></i> Planilla Docente (20 Grupos)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- VISTA 1: FORMULARIO DE ENTREGA PARA ALUMNOS -->
+                            <div id="tpi-view-student" style="display: block;">
+                                
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                                    <!-- GRUPO -->
+                                    <div>
+                                        <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #f59e0b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <i class="fas fa-users" style="margin-right: 4px;"></i> 1. Tu Grupo
+                                        </label>
+                                        <select id="tpi-group-select" onchange="window.onTpiGroupSelected()" style="width: 100%; padding: 10px 12px; background: #0d1117; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 8px; color: #ffffff; font-size: 0.88rem; outline: none; box-sizing: border-box; cursor: pointer;">
+                                            <option value="" style="background: #161b22; color: #94a3b8;">-- Seleccioná tu grupo (1 al 20) --</option>
+                                            <option value="1" style="background: #161b22; color: #ffffff;">Grupo 1 — Caso 1: Camila y Tomás</option>
+                                            <option value="2" style="background: #161b22; color: #ffffff;">Grupo 2 — Caso 2: Lucía y Benjamín</option>
+                                            <option value="3" style="background: #161b22; color: #ffffff;">Grupo 3 — Caso 3: Florencia y Mateo</option>
+                                            <option value="4" style="background: #161b22; color: #ffffff;">Grupo 4 — Caso 4: Sofía y Valentín</option>
+                                            <option value="5" style="background: #161b22; color: #ffffff;">Grupo 5 — Caso 1: Camila y Tomás</option>
+                                            <option value="6" style="background: #161b22; color: #ffffff;">Grupo 6 — Caso 2: Lucía y Benjamín</option>
+                                            <option value="7" style="background: #161b22; color: #ffffff;">Grupo 7 — Caso 3: Florencia y Mateo</option>
+                                            <option value="8" style="background: #161b22; color: #ffffff;">Grupo 8 — Caso 4: Sofía y Valentín</option>
+                                            <option value="9" style="background: #161b22; color: #ffffff;">Grupo 9 — Caso 1: Camila y Tomás</option>
+                                            <option value="10" style="background: #161b22; color: #ffffff;">Grupo 10 — Caso 2: Lucía y Benjamín</option>
+                                            <option value="11" style="background: #161b22; color: #ffffff;">Grupo 11 — Caso 3: Florencia y Mateo</option>
+                                            <option value="12" style="background: #161b22; color: #ffffff;">Grupo 12 — Caso 4: Sofía y Valentín</option>
+                                            <option value="13" style="background: #161b22; color: #ffffff;">Grupo 13 — Caso 1: Camila y Tomás</option>
+                                            <option value="14" style="background: #161b22; color: #ffffff;">Grupo 14 — Caso 2: Lucía y Benjamín</option>
+                                            <option value="15" style="background: #161b22; color: #ffffff;">Grupo 15 — Caso 3: Florencia y Mateo</option>
+                                            <option value="16" style="background: #161b22; color: #ffffff;">Grupo 16 — Caso 4: Sofía y Valentín</option>
+                                            <option value="17" style="background: #161b22; color: #ffffff;">Grupo 17 — Caso 1: Camila y Tomás</option>
+                                            <option value="18" style="background: #161b22; color: #ffffff;">Grupo 18 — Caso 2: Lucía y Benjamín</option>
+                                            <option value="19" style="background: #161b22; color: #ffffff;">Grupo 19 — Caso 3: Florencia y Mateo</option>
+                                            <option value="20" style="background: #161b22; color: #ffffff;">Grupo 20 — Caso 4: Sofía y Valentín</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- CONTRASEÑA DE GRUPO -->
+                                    <div>
+                                        <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #f59e0b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <i class="fas fa-key" style="margin-right: 4px;"></i> 2. Contraseña del Grupo
+                                        </label>
+                                        <input type="password" id="tpi-group-pass" placeholder="Ingresá la clave de tu grupo (ej: g1)" style="width: 100%; padding: 10px 12px; background: rgba(13, 17, 23, 0.9); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none; box-sizing: border-box;">
+                                    </div>
+                                </div>
+
+                                <!-- ENLACE AL TRABAJO PDF (GOOGLE DRIVE) -->
+                                <div style="margin-bottom: 16px;">
+                                    <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #10b981; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        <i class="fab fa-google-drive" style="margin-right: 4px;"></i> 3. Enlace al Informe Final en PDF (Google Drive / OneDrive) *
+                                    </label>
+                                    <input type="url" id="tpi-pdf-url" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" style="width: 100%; padding: 11px 14px; background: rgba(13, 17, 23, 0.9); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px; color: #fff; font-size: 0.9rem; outline: none; box-sizing: border-box;" required>
+                                    <small style="display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 5px;">
+                                        <i class="fas fa-info-circle"></i> Debe ser un enlace de Google Drive o OneDrive con acceso en modo <strong>Lector ("Cualquiera con el enlace")</strong>.
+                                    </small>
+                                </div>
+
+                                <!-- SELECTOR DINÁMICO DE INTEGRANTES PARTICIPANTES -->
+                                <div style="background: rgba(13, 17, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                                        <label style="font-size: 0.82rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">
+                                            <i class="fas fa-users" style="margin-right: 6px;"></i> 4. Integrantes que participaron en este Trabajo <span id="tpi-members-count" style="color: #94a3b8; font-size: 0.75rem; text-transform: none; font-weight: 600;">(0 integrantes)</span>
+                                        </label>
+                                        <small style="color: #94a3b8; font-size: 0.74rem;">Podés agregar compañeros nuevos o quitar con &times; a los que no trabajaron</small>
+                                    </div>
+
+                                    <!-- LISTA DE CHIPS / BADGES DE INTEGRANTES -->
+                                    <div id="tpi-selected-members-container" style="min-height: 40px; padding: 10px 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; margin-bottom: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+                                        <!-- Chips generados dinámicamente -->
+                                    </div>
+
+                                    <!-- BUSCADOR / DESPLEGABLE PARA AGREGAR CUALQUIER INTEGRANTE -->
+                                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                        <div style="flex: 1; min-width: 250px;">
+                                            <select id="tpi-add-member-select" onchange="window.onTpiAddMemberSelect()" style="width: 100%; padding: 9px 12px; background: rgba(22, 27, 34, 0.95); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; color: #fff; font-size: 0.82rem; outline: none;">
+                                                <option value="">+ Seleccionar y agregar integrante (94 alumnos de la cátedra)...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                                    <!-- ENLACE ANEXO CANVA / VIDEO (OPCIONAL) -->
+                                    <div>
+                                        <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #a78bfa; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <i class="fas fa-palette" style="margin-right: 4px;"></i> 5. Enlace a Presentación / Anexo Canva (Opcional)
+                                        </label>
+                                        <input type="url" id="tpi-anexo-url" placeholder="https://www.canva.com/design/... (opcional)" style="width: 100%; padding: 10px 12px; background: rgba(13, 17, 23, 0.9); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none; box-sizing: border-box;">
+                                    </div>
+
+                                    <!-- NOTA U OBSERVACIÓN ADICIONAL -->
+                                    <div>
+                                        <label style="display: block; font-size: 0.78rem; font-weight: 700; color: #cbd5e1; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <i class="fas fa-comment-dots" style="margin-right: 4px;"></i> 6. Nota u Observación para el Docente (Opcional)
+                                        </label>
+                                        <input type="text" id="tpi-comments" placeholder="Ej: Ajustamos curva de crecimiento y menú vegetariano" style="width: 100%; padding: 10px 12px; background: rgba(13, 17, 23, 0.9); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none; box-sizing: border-box;">
+                                    </div>
+                                </div>
+
+                                <!-- GUÍA PLEGABLE DE CÓMO COMPARTIR EN DRIVE SIN DESCONFIGURAR -->
+                                <details style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; font-size: 0.8rem; color: #cbd5e1;">
+                                    <summary style="cursor: pointer; font-weight: 700; color: #f59e0b; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-lightbulb"></i> ¿Cómo compartir el PDF desde Google Drive sin que se desconfigure? (Ver 3 pasos)
+                                    </summary>
+                                    <div style="margin-top: 10px; line-height: 1.6; padding-left: 20px;">
+                                        <ol style="margin: 0; padding-left: 15px;">
+                                            <li>En Word o Docs, guardá tu informe como <strong>PDF</strong> (así las tablas de CAPA-2, menús y curvas quedan fijas y no se desalinean).</li>
+                                            <li>Subí el archivo <strong>PDF</strong> a tu Google Drive.</li>
+                                            <li>Hacé clic derecho en el archivo → <strong>Compartir</strong> → en <em>Acceso general</em> seleccioná <strong>"Cualquier persona con el enlace"</strong> (en rol <strong>Lector</strong>).</li>
+                                            <li>Hacé clic en <strong>"Copiar enlace"</strong> y pegalo en el casillero verde de arriba.</li>
+                                        </ol>
+                                    </div>
+                                </details>
+
+                                <!-- CAJA DE ESTADO DE ENTREGA DEL GRUPO -->
+                                <div id="tpi-status-box" style="margin-bottom: 16px; padding: 12px 16px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); font-size: 0.85rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                                    <div id="tpi-status-text" style="color: #94a3b8;">
+                                        <i class="fas fa-clock" style="margin-right: 6px;"></i> Seleccioná tu grupo e ingresá tu clave para verificar si ya tenés una entrega registrada.
+                                    </div>
+                                    <div id="tpi-status-action"></div>
+                                </div>
+
+                                <!-- BOTÓN DE ENVÍO -->
+                                <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                                    <button type="button" id="tpi-submit-btn" onclick="window.submitTpIntegrador()" style="padding: 12px 24px; background: linear-gradient(135deg, #f59e0b, #d97706); border: none; border-radius: 10px; color: #000; font-weight: 800; font-size: 0.92rem; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); transition: all 0.2s;">
+                                        <i class="fas fa-paper-plane"></i> Enviar Trabajo Integrador
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <!-- VISTA 2: PLANILLA DOCENTE DE CONTROL (20 GRUPOS) -->
+                            <div id="tpi-view-teacher" style="display: none;">
+                                
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; padding: 12px 16px; background: rgba(13, 17, 23, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
+                                    <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.85rem;">
+                                        <span style="color: #cbd5e1;">Total Cátedra: <strong style="color: #fff;">20 Grupos</strong></span>
+                                        <span style="color: #10b981;">Entregados: <strong id="tpi-stat-delivered">0</strong></span>
+                                        <span style="color: #f87171;">Pendientes: <strong id="tpi-stat-pending">20</strong></span>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <button type="button" onclick="window.exportTpiSubmissionsCSV()" style="padding: 6px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <i class="fas fa-file-csv"></i> Descargar CSV
+                                        </button>
+                                        <button type="button" onclick="window.loadTpIntegradorTeacherTable()" style="padding: 6px 12px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <i class="fas fa-sync-alt"></i> Actualizar
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div style="overflow-x: auto; max-height: 520px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.84rem; text-align: left;">
+                                        <thead style="background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 0.75rem; text-transform: uppercase;">
+                                            <tr>
+                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1);">Grupo / Caso</th>
+                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1);">Estado</th>
+                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center;">Informe PDF</th>
+                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center;">Anexo / Canva</th>
+                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1);">Fecha y Nota</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tpi-teacher-table-body">
+                                            <!-- Filas 1 a 20 generadas dinámicamente -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                        </div>
                         <!-- SELECTOR INTERACTIVO DE CASOS CLÍNICOS (DISTRIBUCIÓN 20 GRUPOS) -->
 
                         <div style="margin-bottom: 24px;">
@@ -18403,7 +18603,568 @@
 
 
 
-            function displayTpIntegradorDashboardView() {
+                        // =======================================================
+            // LÓGICA DEL BUZÓN DE ENTREGA DE TP INTEGRADOR
+            // =======================================================
+
+            window.tpiCurrentMembers = [];
+
+            window.getTpiCaseInfo = function(gNum) {
+                const num = parseInt(gNum, 10);
+                if (isNaN(num) || num < 1) return { caseNum: 0, name: "Caso no asignado", color: "#94a3b8" };
+                const caseNum = ((num - 1) % 4) + 1;
+                const cases = {
+                    1: { name: "Caso 1: Camila y Tomás", color: "#f59e0b" },
+                    2: { name: "Caso 2: Lucía y Benjamín", color: "#14b8a6" },
+                    3: { name: "Caso 3: Florencia y Mateo", color: "#60a5fa" },
+                    4: { name: "Caso 4: Sofía y Valentín", color: "#a78bfa" }
+                };
+                return { caseNum, ...cases[caseNum] };
+            };
+
+            window.getStudentFormattedName = function(st) {
+                if (!st) return 'Alumno Desconocido';
+                if (st.lastName || st.firstName) {
+                    const last = (st.lastName || st.apellido || '').trim();
+                    const first = (st.firstName || st.nombre || '').trim();
+                    if (last && first) return `${last}, ${first}`;
+                    return last || first;
+                }
+                return (st.name || st.nombre || `UP ${st.up || 's/d'}`).trim();
+            };
+
+            window.populateTpiStudentDropdown = function() {
+                const addSelect = document.getElementById('tpi-add-member-select');
+                if (!addSelect) return;
+
+                const students = (window.fullData && Array.isArray(window.fullData.students)) ? window.fullData.students : [];
+                if (students.length === 0) {
+                    addSelect.innerHTML = '<option value="" style="background: #161b22; color: #94a3b8;">Cargando listado de alumnos...</option>';
+                    return;
+                }
+
+                // Ordenar alfabéticamente por apellido / nombre
+                const sorted = [...students].filter(s => s && s.up).sort((a, b) => {
+                    const nameA = window.getStudentFormattedName(a).toLowerCase();
+                    const nameB = window.getStudentFormattedName(b).toLowerCase();
+                    return nameA.localeCompare(nameB, 'es');
+                });
+
+                let html = '<option value="" style="background: #161b22; color: #94a3b8;">+ Seleccionar y agregar integrante (94 alumnos de la cátedra)...</option>';
+                sorted.forEach(s => {
+                    const dispName = window.getStudentFormattedName(s);
+                    const cleanGrpNum = s.group ? parseInt(String(s.group).replace(/\D/g, ''), 10) : null;
+                    const grpTag = (cleanGrpNum && !isNaN(cleanGrpNum)) ? `Grupo ${cleanGrpNum}` : 'Sin Grupo';
+                    html += `<option value="${s.up}" style="background: #161b22; color: #ffffff;">${dispName} (UP: ${s.up}) — [${grpTag}]</option>`;
+                });
+
+                addSelect.innerHTML = html;
+                addSelect.value = '';
+            };
+
+            window.renderTpiMembersChips = function() {
+                const container = document.getElementById('tpi-selected-members-container');
+                const countEl = document.getElementById('tpi-members-count');
+                if (!container) return;
+
+                const members = window.tpiCurrentMembers || [];
+                if (countEl) {
+                    countEl.textContent = `(${members.length} integrante${members.length === 1 ? '' : 's'})`;
+                }
+
+                if (members.length === 0) {
+                    container.innerHTML = `
+                        <div style="width: 100%; color: #94a3b8; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; padding: 4px 2px;">
+                            <i class="fas fa-user-plus" style="color: #f59e0b;"></i>
+                            <span>No hay integrantes seleccionados. Podés agregar compañeros usando el desplegable de abajo.</span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = members.map(m => `
+                    <span style="display: inline-flex; align-items: center; gap: 8px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 20px; padding: 4px 10px 4px 12px; font-size: 0.82rem; color: #fff; margin: 2px; box-shadow: 0 1px 4px rgba(0,0,0,0.3);">
+                        <i class="fas fa-user-graduate" style="color: #f59e0b; font-size: 0.75rem;"></i>
+                        <span style="font-weight: 700;">${m.name}</span>
+                        <span style="font-size: 0.72rem; color: #94a3b8; font-weight: 500;">(UP ${m.up})</span>
+                        <button type="button" onclick="window.removeTpiMember('${m.up}')" title="Quitar de este trabajo" style="background: rgba(239, 68, 68, 0.25); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; border-radius: 50%; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.75rem; padding: 0; line-height: 1; margin-left: 2px; transition: all 0.15s;" onmouseover="this.style.background='#ef4444'; this.style.color='#fff';" onmouseout="this.style.background='rgba(239, 68, 68, 0.25)'; this.style.color='#f87171';">&times;</button>
+                    </span>
+                `).join('');
+            };
+
+            window.onTpiAddMemberSelect = function() {
+                const addSelect = document.getElementById('tpi-add-member-select');
+                if (!addSelect) return;
+                const up = String(addSelect.value || '').trim();
+                if (!up) return;
+
+                if (!window.tpiCurrentMembers) window.tpiCurrentMembers = [];
+
+                // Verificar si ya está en la lista
+                const already = window.tpiCurrentMembers.some(m => String(m.up) === up);
+                if (already) {
+                    alert('Este/a compañero/a ya se encuentra en la lista de integrantes del trabajo.');
+                    addSelect.value = '';
+                    return;
+                }
+
+                // Buscar datos del alumno en fullData
+                const students = (window.fullData && Array.isArray(window.fullData.students)) ? window.fullData.students : [];
+                const found = students.find(s => String(s.up) === up);
+                const name = found ? window.getStudentFormattedName(found) : `Alumno UP ${up}`;
+                const initialGroup = found ? found.group : '';
+
+                window.tpiCurrentMembers.push({ up, name, initialGroup });
+                window.renderTpiMembersChips();
+                addSelect.value = '';
+            };
+
+            window.removeTpiMember = function(up) {
+                if (!window.tpiCurrentMembers) return;
+                const upStr = String(up);
+                window.tpiCurrentMembers = window.tpiCurrentMembers.filter(m => String(m.up) !== upStr);
+                window.renderTpiMembersChips();
+            };
+
+            window.switchTpiView = function(view) {
+                const sView = document.getElementById('tpi-view-student');
+                const tView = document.getElementById('tpi-view-teacher');
+                const sBtn = document.getElementById('tpi-tab-btn-student');
+                const tBtn = document.getElementById('tpi-tab-btn-teacher');
+                if (!sView || !tView) return;
+
+                if (view === 'teacher') {
+                    const isTeacherSession = sessionStorage.getItem('is_teacher') === 'true' || sessionStorage.getItem('is_teacher_tpi_verified') === 'true';
+                    if (!isTeacherSession) {
+                        const pass = prompt('🔒 Acceso restringido exclusivamente al Docente.\nIngresá la contraseña docente de la cátedra para ver la planilla:');
+                        if (!pass || (pass.trim().toLowerCase() !== 'catedra2026' && pass.trim().toLowerCase() !== 'trabajofinal')) {
+                            alert('❌ Contraseña docente incorrecta. Acceso denegado a la planilla de entregas.');
+                            return;
+                        }
+                        sessionStorage.setItem('is_teacher_tpi_verified', 'true');
+                    }
+
+                    sView.style.display = 'none';
+                    tView.style.display = 'block';
+                    if (sBtn) { sBtn.style.background = 'transparent'; sBtn.style.color = '#94a3b8'; }
+                    if (tBtn) { tBtn.style.background = '#f59e0b'; tBtn.style.color = '#000'; }
+                    window.loadTpIntegradorTeacherTable();
+                } else {
+                    tView.style.display = 'none';
+                    sView.style.display = 'block';
+                    if (tBtn) { tBtn.style.background = 'transparent'; tBtn.style.color = '#94a3b8'; }
+                    if (sBtn) { sBtn.style.background = '#f59e0b'; sBtn.style.color = '#000'; }
+                }
+            };
+
+            window.getTpiSubmissionsMap = function() {
+                let cache = {};
+                try {
+                    const raw = localStorage.getItem('tpi_submissions_cache');
+                    if (raw) cache = JSON.parse(raw);
+                } catch(e) {}
+
+                // Merge con metadata de grupos si ya existe en memoria
+                const gMeta = (typeof sharedGroupMetadata !== 'undefined' && sharedGroupMetadata) ? sharedGroupMetadata : ((fullData && fullData.sharedGroupMetadata) || {});
+                for (let i = 1; i <= 20; i++) {
+                    const gKey = 'g_' + i;
+                    if (gMeta[gKey] && gMeta[gKey].tp_integrador) {
+                        cache[i] = { ...gMeta[gKey].tp_integrador, ...cache[i] };
+                    }
+                }
+                return cache;
+            };
+
+            window.initTpIntegradorSubmissions = function() {
+                const select = document.getElementById('tpi-group-select');
+                if (!select) return;
+
+                let html = '<option value="" style="background: #161b22; color: #94a3b8;">-- Seleccioná tu grupo (1 al 20) --</option>';
+                for (let i = 1; i <= 20; i++) {
+                    const cInfo = window.getTpiCaseInfo(i);
+                    html += `<option value="${i}" style="background: #161b22; color: #ffffff;">Grupo ${i} — ${cInfo.name}</option>`;
+                }
+                select.innerHTML = html;
+
+                // Autoseleccionar si hay grupo logueado
+                let detectedGroupNum = null;
+                const userGroup = (window.currentUserData && window.currentUserData.group) || sessionStorage.getItem('aw_authenticated_group') || window.loggedInStudentGroup || (typeof currentStudentData !== 'undefined' && currentStudentData && currentStudentData.group);
+                if (userGroup) {
+                    const num = parseInt(String(userGroup).replace(/\D/g, ''), 10);
+                    if (!isNaN(num) && num >= 1 && num <= 20) {
+                        detectedGroupNum = num;
+                    }
+                } else if (window.currentStudentUP && window.fullData && Array.isArray(window.fullData.students)) {
+                    const me = window.fullData.students.find(s => String(s.up) === String(window.currentStudentUP));
+                    if (me && me.group) {
+                        const num = parseInt(String(me.group).replace(/\D/g, ''), 10);
+                        if (!isNaN(num) && num >= 1 && num <= 20) {
+                            detectedGroupNum = num;
+                        }
+                    }
+                }
+
+                if (detectedGroupNum) {
+                    select.value = String(detectedGroupNum);
+                } else {
+                    select.value = "";
+                }
+
+                // Cargar listado de los 94 alumnos para agregar
+                window.populateTpiStudentDropdown();
+
+                // Actualizar estado del grupo seleccionado y la tabla docente
+                window.onTpiGroupSelected();
+                window.loadTpIntegradorTeacherTable();
+            };
+
+            window.onTpiGroupSelected = function() {
+                const select = document.getElementById('tpi-group-select');
+                const statusText = document.getElementById('tpi-status-text');
+                const statusAction = document.getElementById('tpi-status-action');
+                const pdfInput = document.getElementById('tpi-pdf-url');
+                const anexoInput = document.getElementById('tpi-anexo-url');
+                const commentsInput = document.getElementById('tpi-comments');
+                if (!select || !statusText) return;
+
+                const gVal = select.value;
+                const gNum = parseInt(gVal, 10);
+
+                if (!gVal || isNaN(gNum) || gNum < 1 || gNum > 20) {
+                    statusText.innerHTML = '<span style="color:#94a3b8;"><i class="fas fa-info-circle"></i> Seleccioná tu grupo arriba para cargar los datos y entregar tu TP.</span>';
+                    if (statusAction) statusAction.innerHTML = '';
+                    if (pdfInput) pdfInput.value = '';
+                    if (anexoInput) anexoInput.value = '';
+                    if (commentsInput) commentsInput.value = '';
+                    window.tpiCurrentMembers = [];
+                    window.renderTpiMembersChips();
+                    return;
+                }
+
+                const subs = window.getTpiSubmissionsMap();
+                const sub = subs[gNum];
+
+                // Cargar integrantes: si ya se envió y guardaron integrantes, restaurar esos.
+                // Si no, auto-poblar con los integrantes oficiales de ese grupo en la cátedra.
+                if (sub && Array.isArray(sub.members) && sub.members.length > 0) {
+                    window.tpiCurrentMembers = [...sub.members];
+                } else {
+                    const students = (window.fullData && Array.isArray(window.fullData.students)) ? window.fullData.students : [];
+                    window.tpiCurrentMembers = students
+                        .filter(s => {
+                            if (!s.group) return false;
+                            const num = parseInt(String(s.group).replace(/\D/g, ''), 10);
+                            return num === gNum;
+                        })
+                        .map(s => ({
+                            up: String(s.up),
+                            name: window.getStudentFormattedName(s),
+                            initialGroup: s.group || `g_${gNum}`
+                        }));
+                }
+                window.renderTpiMembersChips();
+
+                const isTeacher = sessionStorage.getItem('is_teacher') === 'true' || sessionStorage.getItem('is_teacher_tpi_verified') === 'true';
+                const userGroup = (window.currentUserData && window.currentUserData.group) || sessionStorage.getItem('aw_authenticated_group') || window.loggedInStudentGroup || (typeof currentStudentData !== 'undefined' && currentStudentData && currentStudentData.group);
+                const userGrpNum = userGroup ? parseInt(String(userGroup).replace(/\D/g, ''), 10) : null;
+                const isOwnGroup = (userGrpNum && userGrpNum === gNum);
+
+                if (sub && sub.pdfUrl) {
+                    statusText.innerHTML = `<span style="color:#10b981; font-weight:700;"><i class="fas fa-check-circle"></i> Grupo ${gNum} — Entrega registrada</span> <span style="color:#94a3b8; font-size:0.8rem; margin-left:6px;">(${sub.submittedAtStr || 'Fecha registrada'})</span>`;
+                    
+                    if (isTeacher || isOwnGroup) {
+                        if (statusAction) {
+                            statusAction.innerHTML = `<a href="${sub.pdfUrl}" target="_blank" style="padding: 6px 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #10b981; border-radius: 6px; text-decoration: none; font-size: 0.78rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;"><i class="fas fa-external-link-alt"></i> Probar enlace PDF</a>`;
+                        }
+                        if (pdfInput) { pdfInput.value = sub.pdfUrl || ''; pdfInput.readOnly = false; }
+                        if (anexoInput) { anexoInput.value = sub.anexoUrl || ''; anexoInput.readOnly = false; }
+                        if (commentsInput) { commentsInput.value = sub.comments || ''; commentsInput.readOnly = false; }
+                    } else {
+                        // BLOQUEO ANTI-COPIA: Estudiantes de otros grupos no pueden ver el enlace de Drive
+                        if (statusAction) {
+                            statusAction.innerHTML = `<span style="padding: 6px 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; border-radius: 6px; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-shield-alt" style="color: #10b981;"></i> Entrega protegida contra copia</span>`;
+                        }
+                        if (pdfInput) {
+                            pdfInput.value = '•••••••••••••••••••••••••••••••••••••••• (Enlace privado y protegido)';
+                            pdfInput.readOnly = true;
+                        }
+                        if (anexoInput) {
+                            anexoInput.value = sub.anexoUrl ? '•••••••••••••••••••••••••••••••••••••••• (Enlace privado)' : '';
+                            anexoInput.readOnly = true;
+                        }
+                        if (commentsInput) {
+                            commentsInput.value = sub.comments ? 'Nota interna guardada para el docente' : '';
+                            commentsInput.readOnly = true;
+                        }
+                    }
+                } else {
+                    statusText.innerHTML = `<span style="color:#94a3b8;"><i class="fas fa-clock"></i> Grupo ${gNum} — Pendiente de entrega. Pegá tu enlace abajo.</span>`;
+                    if (statusAction) statusAction.innerHTML = '';
+                    if (pdfInput) { pdfInput.value = ''; pdfInput.readOnly = false; }
+                    if (anexoInput) { anexoInput.value = ''; anexoInput.readOnly = false; }
+                    if (commentsInput) { commentsInput.value = ''; commentsInput.readOnly = false; }
+                }
+            };
+
+            window.submitTpIntegrador = async function() {
+                const select = document.getElementById('tpi-group-select');
+                const passInput = document.getElementById('tpi-group-pass');
+                const pdfInput = document.getElementById('tpi-pdf-url');
+                const anexoInput = document.getElementById('tpi-anexo-url');
+                const commentsInput = document.getElementById('tpi-comments');
+                const btn = document.getElementById('tpi-submit-btn');
+
+                if (!select || !passInput || !pdfInput) return;
+
+                const gVal = select.value;
+                const gNum = parseInt(gVal, 10);
+                const pass = (passInput.value || '').trim();
+                const pdfUrl = (pdfInput.value || '').trim();
+                const anexoUrl = (anexoInput ? anexoInput.value : '').trim();
+                const comments = (commentsInput ? commentsInput.value : '').trim();
+
+                if (!gVal || isNaN(gNum) || gNum < 1 || gNum > 20) {
+                    alert('Por favor, seleccioná tu grupo (del 1 al 20).');
+                    select.focus();
+                    return;
+                }
+
+                if (!pdfUrl) {
+                    alert('Por favor, ingresá el enlace a tu informe en PDF de Google Drive o OneDrive.');
+                    pdfInput.focus();
+                    return;
+                }
+
+                if (!pdfUrl.startsWith('http://') && !pdfUrl.startsWith('https://')) {
+                    alert('El enlace al PDF debe comenzar con https:// (ejemplo: https://drive.google.com/...)');
+                    pdfInput.focus();
+                    return;
+                }
+
+                if (!pass) {
+                    alert('Por favor, ingresá la contraseña de tu grupo para validar tu identidad.');
+                    passInput.focus();
+                    return;
+                }
+
+                if (!window.tpiCurrentMembers || window.tpiCurrentMembers.length === 0) {
+                    alert('Debe haber al menos 1 integrante asignado al trabajo. Podés agregarlos usando el desplegable.');
+                    const addSel = document.getElementById('tpi-add-member-select');
+                    if (addSel) addSel.focus();
+                    return;
+                }
+
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando y guardando...';
+
+                try {
+                    // Validar clave del grupo (Firestore o fallback gN o clave docente)
+                    let isValidPass = false;
+                    const expectedKey = 'g' + gNum;
+                    const isDocente = pass.toLowerCase() === 'catedra2026' || pass.toLowerCase() === 'trabajofinal';
+
+                    if (isDocente || pass.toLowerCase() === expectedKey.toLowerCase()) {
+                        isValidPass = true;
+                    } else {
+                        try {
+                            const db = firebase.firestore();
+                            const keyDoc = await db.collection('group_keys').doc(String(gNum)).get();
+                            if (keyDoc.exists && keyDoc.data().key) {
+                                if (keyDoc.data().key.toLowerCase() === pass.toLowerCase()) isValidPass = true;
+                            }
+                        } catch(e) {}
+                    }
+
+                    if (!isValidPass) {
+                        alert(`Contraseña incorrecta para el Grupo ${gNum}. Verificá con tus compañeros de grupo.`);
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Trabajo Integrador';
+                        return;
+                    }
+
+                    const nowStr = new Date().toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    const payload = {
+                        group: gNum,
+                        groupId: 'g_' + gNum,
+                        pdfUrl: pdfUrl,
+                        anexoUrl: anexoUrl,
+                        comments: comments,
+                        members: window.tpiCurrentMembers,
+                        membersCount: window.tpiCurrentMembers.length,
+                        submittedAtStr: nowStr,
+                        submittedAtTimestamp: Date.now()
+                    };
+
+                    // 1. Guardar en caché local para prueba instantánea
+                    let cache = {};
+                    try {
+                        const raw = localStorage.getItem('tpi_submissions_cache');
+                        if (raw) cache = JSON.parse(raw);
+                    } catch(e) {}
+                    cache[gNum] = payload;
+                    localStorage.setItem('tpi_submissions_cache', JSON.stringify(cache));
+
+                    // 2. Guardar en Firestore si hay conexión
+                    try {
+                        const db = firebase.firestore();
+                        await db.collection('tp_integrador_submissions').doc('g_' + gNum).set(payload, { merge: true });
+                        await db.collection('grupos').doc('g_' + gNum).set({ tp_integrador: payload }, { merge: true });
+                    } catch(e) {
+                        console.warn("Nota: Guardado local completado. Guardado remoto diferido:", e);
+                    }
+
+                    window.onTpiGroupSelected();
+                    window.loadTpIntegradorTeacherTable();
+
+                    const memNames = window.tpiCurrentMembers.map(m => m.name.split(',')[0]).join(', ');
+                    alert(`¡Éxito! El Trabajo Integrador del Grupo ${gNum} (${window.tpiCurrentMembers.length} integrantes: ${memNames}) fue registrado correctamente.`);
+
+                } catch(err) {
+                    console.error("Error al enviar TP Integrador:", err);
+                    alert("Ocurrió un error al procesar el envío. Intentá de nuevo.");
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Trabajo Integrador';
+                }
+            };
+
+            window.loadTpIntegradorTeacherTable = function() {
+                const tbody = document.getElementById('tpi-teacher-table-body');
+                const deliveredEl = document.getElementById('tpi-stat-delivered');
+                const pendingEl = document.getElementById('tpi-stat-pending');
+                if (!tbody) return;
+
+                const subs = window.getTpiSubmissionsMap();
+                let deliveredCount = 0;
+                let html = '';
+
+                for (let i = 1; i <= 20; i++) {
+                    const cInfo = window.getTpiCaseInfo(i);
+                    const sub = subs[i];
+                    const isDelivered = !!(sub && sub.pdfUrl);
+
+                    if (isDelivered) deliveredCount++;
+
+                    // Obtener lista de integrantes para mostrar
+                    let membersDisplay = '';
+                    if (sub && Array.isArray(sub.members) && sub.members.length > 0) {
+                        membersDisplay = `
+                            <div style="margin-top: 6px; font-size: 0.74rem; color: #cbd5e1;">
+                                <span style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #f59e0b; padding: 2px 7px; border-radius: 10px; font-weight: 700; font-size: 0.7rem; margin-right: 4px;">
+                                    <i class="fas fa-users"></i> ${sub.members.length} integrantes
+                                </span>
+                                <span style="color: #e2e8f0;">${sub.members.map(m => m.name.split(',')[0].trim()).join(', ')}</span>
+                            </div>
+                        `;
+                    } else {
+                        const defaultMems = (window.fullData && Array.isArray(window.fullData.students))
+                            ? window.fullData.students.filter(s => s.group && parseInt(String(s.group).replace(/\D/g, ''), 10) === i)
+                            : [];
+                        if (defaultMems.length > 0) {
+                            membersDisplay = `
+                                <div style="margin-top: 6px; font-size: 0.72rem; color: #64748b;">
+                                    <i class="fas fa-users" style="margin-right: 3px;"></i> Base: ${defaultMems.map(m => (m.lastName || m.name || '').split(',')[0].trim()).slice(0, 3).join(', ')}${defaultMems.length > 3 ? '...' : ''} (${defaultMems.length})
+                                </div>
+                            `;
+                        }
+                    }
+
+                    html += `
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 14px; vertical-align: top;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-weight: 800; color: #fff; font-size: 0.92rem;">Grupo ${i}</span>
+                                    <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 12px; background: ${cInfo.color}22; color: ${cInfo.color}; border: 1px solid ${cInfo.color}55; font-weight: 700;">
+                                        ${cInfo.name}
+                                    </span>
+                                </div>
+                                ${membersDisplay}
+                            </td>
+                            <td style="padding: 12px 14px; vertical-align: top;">
+                                ${isDelivered ? `
+                                    <span style="color: #10b981; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-check-circle"></i> Entregado
+                                    </span>
+                                ` : `
+                                    <span style="color: #64748b; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-clock"></i> Pendiente
+                                    </span>
+                                `}
+                            </td>
+                            <td style="padding: 12px 14px; text-align: center; vertical-align: top;">
+                                ${isDelivered ? `
+                                    <a href="${sub.pdfUrl}" target="_blank" style="padding: 6px 12px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border-radius: 6px; font-weight: 700; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(16,185,129,0.25);">
+                                        <i class="fas fa-external-link-alt"></i> Abrir / Descargar PDF
+                                    </a>
+                                ` : `
+                                    <span style="color: #475569; font-size: 0.78rem;">-</span>
+                                `}
+                            </td>
+                            <td style="padding: 12px 14px; text-align: center; vertical-align: top;">
+                                ${(isDelivered && sub.anexoUrl) ? `
+                                    <a href="${sub.anexoUrl}" target="_blank" style="padding: 6px 12px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-radius: 6px; font-weight: 600; font-size: 0.78rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                                        <i class="fas fa-palette"></i> Canva / Anexo
+                                    </a>
+                                ` : `
+                                    <span style="color: #475569; font-size: 0.78rem;">-</span>
+                                `}
+                            </td>
+                            <td style="padding: 12px 14px; vertical-align: top;">
+                                ${isDelivered ? `
+                                    <div style="font-size: 0.78rem; color: #94a3b8;">${sub.submittedAtStr || '-'}</div>
+                                    ${sub.comments ? `<div style="font-size: 0.75rem; color: #cbd5e1; margin-top: 2px; font-style: italic;">"${sub.comments}"</div>` : ''}
+                                ` : `
+                                    <span style="color: #475569; font-size: 0.78rem;">Esperando envío</span>
+                                `}
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                tbody.innerHTML = html;
+                if (deliveredEl) deliveredEl.innerText = `${deliveredCount} / 20`;
+                if (pendingEl) pendingEl.innerText = `${20 - deliveredCount} / 20`;
+            };
+
+            window.exportTpiSubmissionsCSV = function() {
+                const subs = window.getTpiSubmissionsMap();
+                let csv = 'Grupo,Caso Asignado,Estado,Cant Integrantes,Integrantes,Enlace PDF,Enlace Anexo,Fecha Entrega,Comentarios\r\n';
+                for (let i = 1; i <= 20; i++) {
+                    const cInfo = window.getTpiCaseInfo(i);
+                    const sub = subs[i] || {};
+                    const isDelivered = !!sub.pdfUrl;
+                    const pdf = (sub.pdfUrl || '').replace(/,/g, ';');
+                    const anexo = (sub.anexoUrl || '').replace(/,/g, ';');
+                    const fecha = sub.submittedAtStr || '';
+                    const comments = (sub.comments || '').replace(/,/g, ';').replace(/\r?\n/g, ' ');
+
+                    let membersCount = 0;
+                    let membersStr = '';
+                    if (sub.members && Array.isArray(sub.members)) {
+                        membersCount = sub.members.length;
+                        membersStr = sub.members.map(m => `${m.name} (UP: ${m.up})`).join(' | ');
+                    } else {
+                        const defaultMems = (window.fullData && Array.isArray(window.fullData.students))
+                            ? window.fullData.students.filter(s => s.group && parseInt(String(s.group).replace(/\D/g, ''), 10) === i)
+                            : [];
+                        membersCount = defaultMems.length;
+                        membersStr = defaultMems.map(m => `${window.getStudentFormattedName(m)} (UP: ${m.up})`).join(' | ');
+                    }
+                    membersStr = membersStr.replace(/"/g, '""');
+
+                    csv += `Grupo ${i},"${cInfo.name}","${isDelivered ? 'Entregado' : 'Pendiente'}",${membersCount},"${membersStr}","${pdf}","${anexo}","${fecha}","${comments}"\r\n`;
+                }
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Entregas_TP_Integrador_UNSTA_${new Date().toISOString().slice(0,10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+
+
+function displayTpIntegradorDashboardView() {
 
                 const container = document.getElementById('tp-integrador-container');
 
@@ -18416,6 +19177,10 @@
                     container.innerHTML = renderTpIntegradorCaseHTML();
 
                     setTimeout(() => {
+
+                        if (typeof window.initTpIntegradorSubmissions === 'function') {
+                            window.initTpIntegradorSubmissions();
+                        }
 
                         let stGroup = (window.currentUserData && window.currentUserData.group) || sessionStorage.getItem('aw_authenticated_group') || window.loggedInStudentGroup;
 

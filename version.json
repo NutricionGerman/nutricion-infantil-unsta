@@ -1,4 +1,4 @@
 {
-  "v": "2026.11.01.v116",
-  "msg": "Fix: sincronización y cálculo robusto de condición académica y Trabajos Prácticos en perfiles de alumnos"
+  "v": "2026.11.01.v117",
+  "msg": "Feat: activación del buzón oficial de entrega del TP Integrador con selector dinámico de integrantes y protección anti-copia"
 }
