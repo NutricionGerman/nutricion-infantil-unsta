@@ -501,3 +501,21 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       5. *Sincronización en Panel Docente*: Al guardar cambios en el modal global de TPs (`openGlobalTpModal`), se guardan simultáneamente en `config/tp_settings` y en `app_state/main`.
       6. *Estadísticas Globales y PDF*: Se actualizó el cálculo de TPs en `displayGlobalStats` y `generatePdfReport` para evaluar las entregas de videos grupales en vez del campo deprecado individual `r.tpNote`.
       7. *Caché de Navegador*: Se actualizó `version.json` a la versión `2026.11.01.v116` para forzar la recarga en los dispositivos de los estudiantes.
+
+
+43. **Buzón Oficial de Entrega de TP Integrador con Selector Dinámico y Blindaje Anti-Copia (01/11/2026)**:
+    - **Contexto**: Finalización del cursado y necesidad de habilitar la entrega del Trabajo Práctico Integrador (Dossier Clínico en PDF) garantizando estricta confidencialidad entre grupos para evitar plagio y adaptándose a la realidad de grupos con más de 5 integrantes o alumnos que cambiaron de equipo.
+    - **Acciones Implementadas**:
+      1. *Buzón de Entrega en el Portal*: Integrado dentro de la vista del TP Integrador (`index.html`) bajo la clave de acceso de cátedra (`trabajofinal`).
+      2. *Selector Dinámico de Integrantes*:
+         - Pre-carga automática de los miembros oficiales del grupo seleccionado.
+         - Eliminación individual de integrantes mediante botón `✕`.
+         - Desplegable de búsqueda con los 94 alumnos de la cátedra ordenados de la A a la Z para sumar integrantes sin límite numérico.
+         - Validación obligatoria de al menos 1 integrante antes de permitir el envío.
+      3. *Blindaje Anti-Copia de Tres Capas*:
+         - *Enmascaramiento de Enlaces*: Si un alumno selecciona un grupo ajeno, el enlace de Google Drive se oculta como `•••••••••••••••• (Enlace privado y protegido)` y se desactiva el botón de apertura.
+         - *Acceso a Planilla Docente Protegido*: La pestaña de control docente con los 20 grupos exige autenticación docente o clave de cátedra (`catedra2026` / `trabajofinal`).
+         - *Validación de Clave*: Se exige la contraseña del grupo para registrar o actualizar el trabajo.
+      4. *Persistencia*: Registro dual en Firestore (`tp_integrador_submissions/g_X` y `grupos/g_X`) y almacenamiento en caché local.
+      5. *Herramientas Docentes*: Visualización en tiempo real de entregas, botón directo a PDF, enlace Canva/anexo, lista de integrantes y exportación a planilla CSV/Excel.
+      6. *Despliegue*: Se actualizó `version.json` a `2026.11.01.v117`, comiteado con prefijo `Feat:` y pusheado a GitHub Pages (`master`).
