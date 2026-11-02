@@ -1,4 +1,4 @@
 {
-  "v": "2026.11.01.v117",
-  "msg": "Feat: activación del buzón oficial de entrega del TP Integrador con selector dinámico de integrantes y protección anti-copia"
+  "v": "2026.11.01.v118",
+  "msg": "Fix: soporte de clave docente para desbloqueo del TP Integrador y confirmación preventiva de bloqueo"
 }

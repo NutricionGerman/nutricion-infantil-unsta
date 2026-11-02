@@ -14131,11 +14131,11 @@
 
                 const typedPassword = (inputEl.value || '').trim().toLowerCase().replace(/\s+/g, '');
 
-                const correctPassword = 'trabajofinal';
+                const isValid = typedPassword === 'trabajofinal' || typedPassword === 'catedra2026';
 
 
 
-                if (typedPassword === correctPassword) {
+                if (isValid) {
 
                     localStorage.setItem('tp_integrador_unlocked', 'true');
 
@@ -14191,11 +14191,15 @@
 
             window.lockTpIntegrador = function() {
 
-                localStorage.removeItem('tp_integrador_unlocked');
+                if (confirm('¿Deseas bloquear el acceso al TP Integrador en este dispositivo? Tendrás que ingresar la clave oficial para volver a entrar.')) {
 
-                sessionStorage.removeItem('tp_integrador_unlocked');
+                    localStorage.removeItem('tp_integrador_unlocked');
 
-                displayTpIntegradorDashboardView();
+                    sessionStorage.removeItem('tp_integrador_unlocked');
+
+                    displayTpIntegradorDashboardView();
+
+                }
 
             };
 
