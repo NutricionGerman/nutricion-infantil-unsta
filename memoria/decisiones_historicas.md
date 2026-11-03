@@ -667,3 +667,11 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       2. *Supresión de Menciones a 'Whisper' en la Interfaz*: Los mensajes hacia el estudiante se simplificaron a *"Transcribiendo audio..."*, ocultando detalles de implementación interna irrelevantes para el alumno.
       3. *Títulos y Mensajes Más Claros*: Se renombró el modal a *"Corregir Palabra"* y se actualizaron los mensajes de validación a textos directos y amables (*"Solo se permite escribir la palabra directamente."* y *"Solo 1 palabra (sin espacios)."*).
       4. *Sincronización en Parcial 1 y Parcial 2*: Se aplicó la misma limpieza en ambos parciales y se actualizaron los cache-busters a `?v=5.1`.
+
+57. **Protección Anti Doble-Clic y Pantalla de Carga de Corrección con IA (03/11/2026)**:
+    - **Contexto**: Germán solicitó: *"para que no aprieten 2 veces el boton podrias poner el mensaje la ia esta corrigiendo o corrigiendo en unos segundos estara listo o algo asi"*. Al finalizar el examen oral, la evaluación mediante IA remota toma unos segundos, lo que provocaba que estudiantes impacientes pulsaran el botón múltiples veces, duplicando llamadas y peticiones concurrentes.
+    - **Solución Implementada**:
+      1. *Bloqueo de Doble Clic (Debounce Guard)*: Variable de control `isSubmittingOralExam` que rechaza cualquier clic posterior de forma inmediata.
+      2. *Deshabilitación Visual y Feedback Instantáneo en el Botón*: En el primer clic, el botón `#btnSubmitOralExam` se desactiva (`disabled = true`, `opacity-75`, `cursor-not-allowed`) y cambia su texto de forma inmediata a: `"<i class='fa-solid fa-spinner fa-spin mr-2'></i> La IA está corrigiendo... en unos segundos estará listo"`.
+      3. *Pantalla Oficial de Carga (`#oralExamLoadingScreen`)*: Se integró en el 1° Parcial la pantalla dedicada con spinner giratorio y mensajes claros: *"La IA está corrigiendo tu examen..."* y *"En unos segundos estará listo tu resultado oficial y la retroalimentación detallada de cada pregunta"*. Se homogeneizó el mismo texto en el 2° Parcial.
+      4. *Restauración Segura en Bloque Finally*: En caso de cualquier error de contingencia o finalización, el flag se restablece de forma segura. Cache busters incrementados a `?v=5.2`.

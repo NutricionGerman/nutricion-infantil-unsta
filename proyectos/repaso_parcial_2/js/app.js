@@ -1309,6 +1309,7 @@ document.addEventListener("DOMContentLoaded", () => {
         promptMsg = `⚠️ Atención: Tienes ${missingTranscriptCount} de las 10 preguntas sin respuesta de voz registrada o transcrita. La IA las calificará como preguntas no respondidas. ¿Deseas entregar el examen de todos modos?`;
       }
       if (confirm(promptMsg)) {
+        if (isSubmittingOralExam) return;
         submitOralExamToAI();
       }
     }
@@ -1324,11 +1325,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  let isSubmittingOralExam = false;
+
   async function submitOralExamToAI() {
+    if (isSubmittingOralExam) return;
+    isSubmittingOralExam = true;
     oralExamActive = false;
 
-    document.getElementById("oralExamActiveScreen").classList.add("hidden");
-    document.getElementById("oralExamLoadingScreen").classList.remove("hidden");
+    document.getElementById("oralExamActiveScreen")?.classList.add("hidden");
+    document.getElementById("oralExamLoadingScreen")?.classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     const studentName = sm.state.studentName || "Estudiante UNSTA";
     const up = sm.state.up || "UNSTA";
@@ -1355,6 +1361,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.warn("Error en evaluación con IA remota, activando respaldo heurístico:", err);
       const fallback = ai.heuristicFallback(oralStudentAnswers);
       renderOralExamResults(fallback);
+    } finally {
+      isSubmittingOralExam = false;
     }
   }
 

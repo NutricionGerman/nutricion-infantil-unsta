@@ -527,6 +527,22 @@
         </div>
       </div>
 
+      
+      <!-- Pantalla 2.2b: Cargando Evaluación con IA -->
+      <div id="oralExamLoadingScreen" class="hidden max-w-lg mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-8 text-center space-y-4 shadow-2xl my-8">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto text-3xl animate-spin">
+          <i class="fa-solid fa-circle-notch"></i>
+        </div>
+        <h3 class="text-xl font-black text-white">La IA está corrigiendo tu examen...</h3>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          En unos segundos estará listo tu resultado oficial y la retroalimentación detallada de cada pregunta.
+        </p>
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold animate-pulse">
+          <i class="fa-solid fa-brain"></i>
+          <span>Analizando respuestas con rigor clínico UNSTA...</span>
+        </div>
+      </div>
+
       <!-- Pantalla 2.3: RESULTADOS DEL EXAMEN ORAL CON IA -->
       <div id="oralExamResultsScreen" class="hidden space-y-6">
         <div class="bg-slate-900 border-2 border-indigo-500/40 rounded-3xl p-6 sm:p-8 space-y-6 shadow-2xl">
@@ -898,13 +914,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts en Orden de Carga -->
-  <script src="js/config.js?v=5.1"></script>
-  <script src="js/fix-webm-duration.js?v=5.1"></script>
-  <script src="js/storage.js?v=5.1"></script>
-  <script src="js/audio_engine.js?v=5.1"></script>
-  <script src="js/audio_recorder.js?v=5.1"></script>
-  <script src="js/data_flashcards.js?v=5.1"></script>
-  <script src="js/ai_evaluator.js?v=5.1"></script>
-  <script src="js/app.js?v=5.1"></script>
+  <script src="js/config.js?v=5.2"></script>
+  <script src="js/fix-webm-duration.js?v=5.2"></script>
+  <script src="js/storage.js?v=5.2"></script>
+  <script src="js/audio_engine.js?v=5.2"></script>
+  <script src="js/audio_recorder.js?v=5.2"></script>
+  <script src="js/data_flashcards.js?v=5.2"></script>
+  <script src="js/ai_evaluator.js?v=5.2"></script>
+  <script src="js/app.js?v=5.2"></script>
 </body>
 </html>

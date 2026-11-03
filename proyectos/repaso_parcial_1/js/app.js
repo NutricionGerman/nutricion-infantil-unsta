@@ -1390,6 +1390,7 @@ function setupOralExamDashboard() {
 
     if (btnSubmit) {
       btnSubmit.addEventListener("click", () => {
+        if (isSubmittingOralExam) return;
         if (recorder && recorder.isRecording) recorder.stopRecording();
         saveCurrentOralAnswer();
         submitOralExamToAI();
@@ -1538,6 +1539,7 @@ function setupOralExamDashboard() {
   }
 
   function showOralDashboardScreen() {
+    document.getElementById("oralExamLoadingScreen")?.classList.add("hidden");
     oralExamActive = false;
     practicalQuizActive = false;
     document.getElementById("oralDashboardScreen")?.classList.remove("hidden");
@@ -1548,6 +1550,7 @@ function setupOralExamDashboard() {
   }
 
   function showOralActiveScreen() {
+    document.getElementById("oralExamLoadingScreen")?.classList.add("hidden");
     oralExamActive = true;
     practicalQuizActive = false;
     document.getElementById("oralDashboardScreen")?.classList.add("hidden");
@@ -1558,6 +1561,7 @@ function setupOralExamDashboard() {
   }
 
   function showOralResultsScreen() {
+    document.getElementById("oralExamLoadingScreen")?.classList.add("hidden");
     oralExamActive = false;
     practicalQuizActive = false;
     document.getElementById("oralDashboardScreen")?.classList.add("hidden");
@@ -1965,7 +1969,11 @@ function setupOralExamDashboard() {
     }
   }
 
+  let isSubmittingOralExam = false;
+
   async function submitOralExamToAI() {
+    if (isSubmittingOralExam) return;
+
     saveCurrentOralAnswer();
 
     const emptyAnswers = oralStudentAnswers.filter(a => {
@@ -1974,13 +1982,23 @@ function setupOralExamDashboard() {
     });
 
     if (emptyAnswers.length === oralStudentAnswers.length) {
-      alert("No has respondido ninguna pregunta aún. Graba tu voz o escribe tus respuestas antes de evaluar.");
+      alert("No has respondido ninguna pregunta aún. Graba tu voz o responde las consignas antes de evaluar.");
       return;
     }
 
     if (emptyAnswers.length > 0) {
       const confirmProceed = confirm(`Tienes ${emptyAnswers.length} pregunta(s) sin responder. ¿Deseas enviar el examen para evaluación docente de todas formas?`);
       if (!confirmProceed) return;
+    }
+
+    // Bloquear inmediatamente para prevenir doble envío
+    isSubmittingOralExam = true;
+
+    const btnSubmit = document.getElementById("btnSubmitOralExam");
+    if (btnSubmit) {
+      btnSubmit.disabled = true;
+      btnSubmit.classList.add("opacity-75", "cursor-not-allowed");
+      btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> La IA está corrigiendo... en unos segundos estará listo';
     }
 
     const studentName = sm.state.studentName || "Estudiante UNSTA";
@@ -2001,11 +2019,11 @@ function setupOralExamDashboard() {
       };
     });
 
-    // Pantalla de carga
-    const transcriptStatus = document.getElementById("transcriptionStatus");
-    if (transcriptStatus) {
-      transcriptStatus.innerHTML = `<span class="text-indigo-400 font-bold animate-pulse"><i class="fa-solid fa-brain mr-2"></i>Evaluando respuestas con IA Oficial UNSTA...</span>`;
-    }
+    // Activar Pantalla de Carga Oficial
+    oralExamActive = false;
+    document.getElementById("oralExamActiveScreen")?.classList.add("hidden");
+    document.getElementById("oralExamLoadingScreen")?.classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
     try {
       const result = await ai.evaluateExam(studentName, up, examItems);
@@ -2015,6 +2033,13 @@ function setupOralExamDashboard() {
       alert("Ocurrió un inconveniente al conectar con el Evaluador Docente de IA. Se utilizará la evaluación de contingencia.");
       const fallbackResult = ai.evaluateLocally(studentName, up, examItems);
       displayOralResults(fallbackResult);
+    } finally {
+      isSubmittingOralExam = false;
+      if (btnSubmit) {
+        btnSubmit.disabled = false;
+        btnSubmit.classList.remove("opacity-75", "cursor-not-allowed");
+        btnSubmit.innerHTML = '<i class="fa-solid fa-sparkles mr-1.5"></i> Finalizar y Evaluar con IA';
+      }
     }
   }
 
