@@ -675,3 +675,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       2. *Deshabilitación Visual y Feedback Instantáneo en el Botón*: En el primer clic, el botón `#btnSubmitOralExam` se desactiva (`disabled = true`, `opacity-75`, `cursor-not-allowed`) y cambia su texto de forma inmediata a: `"<i class='fa-solid fa-spinner fa-spin mr-2'></i> La IA está corrigiendo... en unos segundos estará listo"`.
       3. *Pantalla Oficial de Carga (`#oralExamLoadingScreen`)*: Se integró en el 1° Parcial la pantalla dedicada con spinner giratorio y mensajes claros: *"La IA está corrigiendo tu examen..."* y *"En unos segundos estará listo tu resultado oficial y la retroalimentación detallada de cada pregunta"*. Se homogeneizó el mismo texto en el 2° Parcial.
       4. *Restauración Segura en Bloque Finally*: En caso de cualquier error de contingencia o finalización, el flag se restablece de forma segura. Cache busters incrementados a `?v=5.2`.
+
+58. **Resolución de Apertura de Diapositivas en Pantalla Completa y Móviles (03/11/2026)**:
+    - **Contexto**: Germán reportó: *"otra cosa al apretar sobre las diapositivas no se abren"*.
+    - **Causas Raíz Diagnosticadas**:
+      1. *Excepción por readyState al resetear Audio*: En navegadores móviles (Chrome Android/WebKit), invocar `audio.currentTime = 0` sobre un elemento `Audio` recién instanciado o sin fuente cargada dispara una excepción de tipo `InvalidStateError` / `DOMException`, interrumpiendo la ejecución antes de alcanzar la instrucción que quita la clase `hidden`.
+      2. *Eventos de Toque en Elementos Div No Interactivos*: En dispositivos táctiles, los `div` con atributo `onclick` inline suelen sufrir bloqueos de propagación o no sintetizan el evento `click` si el toque cae sobre la imagen interna (`img`) o distintivos visuales.
+      3. *Conflictos de Especificidad CSS y Z-Index*: El modal `#slideModal` tenía `z-50` (mismo valor que el encabezado pegajoso) y carecía de forzado explícito `style.display = 'flex'`.
+    - **Solución Implementada**:
+      1. *Blindaje Seguro de Audio*: El reseteo del reproductor se encapsuló en `try...catch` y valida `readyState > 0` antes de manipular `currentTime`.
+      2. *Delegación de Eventos en Cuadrícula*: Se asignó `data-slide-index` a cada tarjeta y se añadió delegación de eventos con `galleryGrid.addEventListener("click", ...)` junto con `pointer-events-none` en las imágenes internas para garantizar detección del toque en cualquier punto de la tarjeta.
+      3. *Apertura Inmune con Display Flex y Z-[100]*: `openSlideModal` aplica directamente `modal.style.display = "flex"` y `modal.classList.remove("hidden")` con `z-[100]`.
+      4. *Búsqueda Flexible de Diapositivas*: Se mejoró el comparador de rutas para aceptar URLs absolutas y relativas (`cleanSrc.endsWith(s.src)`). Cache buster actualizado a `?v=5.3`.

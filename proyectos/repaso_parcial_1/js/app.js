@@ -2630,10 +2630,10 @@ function setupOralExamDashboard() {
     if (!galleryGrid) return;
 
     galleryGrid.innerHTML = ALL_SLIDES.map((slide, idx) => `
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition cursor-pointer group shadow-lg flex flex-col justify-between" onclick="window.openSlideModalByIndex && window.openSlideModalByIndex(${idx})">
+      <div data-slide-index="${idx}" class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition cursor-pointer group shadow-lg flex flex-col justify-between" onclick="window.openSlideModalByIndex && window.openSlideModalByIndex(${idx})">
         <div class="relative bg-black/50 p-2 overflow-hidden aspect-video flex items-center justify-center">
-          <img src="${slide.src}" alt="${slide.title.replace(/"/g, '&quot;')}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
-          <div class="absolute bottom-2 right-2 w-7 h-7 rounded-lg bg-slate-950/90 text-amber-400 border border-amber-500/30 flex items-center justify-center shadow backdrop-blur-sm group-hover:bg-amber-500 group-hover:text-slate-950 transition" title="Audio explicativo de cátedra">
+          <img src="${slide.src}" alt="${slide.title.replace(/"/g, '&quot;')}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300 pointer-events-none">
+          <div class="absolute bottom-2 right-2 w-7 h-7 rounded-lg bg-slate-950/90 text-amber-400 border border-amber-500/30 flex items-center justify-center shadow backdrop-blur-sm group-hover:bg-amber-500 group-hover:text-slate-950 transition pointer-events-none" title="Audio explicativo de cátedra">
             <i class="fa-solid fa-volume-high text-xs"></i>
           </div>
         </div>
@@ -2645,13 +2645,26 @@ function setupOralExamDashboard() {
             </div>
             <h5 class="text-xs font-semibold text-slate-200 line-clamp-2 leading-snug group-hover:text-amber-200 transition">${slide.title}</h5>
           </div>
-          <button class="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-slate-800/80 group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-300 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-700/60" onclick="event.stopPropagation(); window.openSlideModalByIndex && window.openSlideModalByIndex(${idx})">
+          <button type="button" data-slide-index="${idx}" class="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-slate-800/80 group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-300 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-700/60 cursor-pointer" onclick="event.stopPropagation(); window.openSlideModalByIndex && window.openSlideModalByIndex(${idx})">
             <i class="fa-solid fa-expand text-[11px]"></i>
             <span>Abrir Diapositiva</span>
           </button>
         </div>
       </div>
     `).join("");
+
+    if (!galleryGrid.dataset.boundClicks) {
+      galleryGrid.dataset.boundClicks = "true";
+      galleryGrid.addEventListener("click", (e) => {
+        const targetCard = e.target.closest("[data-slide-index]");
+        if (targetCard) {
+          const idx = targetCard.getAttribute("data-slide-index");
+          if (idx !== null && window.openSlideModalByIndex) {
+            window.openSlideModalByIndex(idx);
+          }
+        }
+      });
+    }
   }
 
     /* ==========================================================================
@@ -3266,6 +3279,27 @@ function setupOralExamDashboard() {
     });
   }
 
+  window.closeSlideModal = () => {
+    const modal = document.getElementById("slideModal");
+    if (slideModalAudioPlayer) {
+      try {
+        slideModalAudioPlayer.pause();
+        if (slideModalAudioPlayer.src && slideModalAudioPlayer.readyState > 0) {
+          slideModalAudioPlayer.currentTime = 0;
+        }
+      } catch(e) {}
+    }
+    isSlideAudioPlaying = false;
+    const btnPlayIcon = document.getElementById("btnPlaySlideAudioIcon");
+    const ping = document.getElementById("slideAudioPulsePing");
+    if (btnPlayIcon) btnPlayIcon.className = "fa-solid fa-play ml-0.5 text-sm sm:text-base";
+    if (ping) ping.classList.add("hidden");
+    if (modal) {
+      modal.classList.add("hidden");
+      modal.style.display = "none";
+    }
+  };
+
   window.openSlideModalByIndex = (index) => {
     const idx = parseInt(index, 10);
     if (!isNaN(idx) && ALL_SLIDES[idx]) {
@@ -3289,10 +3323,14 @@ function setupOralExamDashboard() {
 
     if (!modal || !img) return;
 
-    // Pausar y resetear audio anterior
+    // Pausar y resetear audio anterior de forma segura
     if (slideModalAudioPlayer) {
-      slideModalAudioPlayer.pause();
-      slideModalAudioPlayer.currentTime = 0;
+      try {
+        slideModalAudioPlayer.pause();
+        if (slideModalAudioPlayer.src && slideModalAudioPlayer.readyState > 0) {
+          slideModalAudioPlayer.currentTime = 0;
+        }
+      } catch(e) {}
     }
     isSlideAudioPlaying = false;
     if (btnPlayIcon) btnPlayIcon.className = "fa-solid fa-play ml-0.5 text-sm sm:text-base";
@@ -3300,16 +3338,17 @@ function setupOralExamDashboard() {
     if (slider) slider.value = 0;
     if (currTimeEl) currTimeEl.textContent = "0:00";
 
-    // Buscar slide en ALL_SLIDES por índice, src o título
+    // Buscar slide en ALL_SLIDES por índice, src (relativo o absoluto) o título
     let slide = null;
     const numIdx = parseInt(index, 10);
     if (!isNaN(numIdx) && ALL_SLIDES[numIdx]) {
       slide = ALL_SLIDES[numIdx];
     } else if (src) {
-      slide = ALL_SLIDES.find(s => s.src === src);
+      const cleanSrc = String(src).split('?')[0];
+      slide = ALL_SLIDES.find(s => cleanSrc.endsWith(s.src) || s.src === cleanSrc);
     }
     if (!slide && caption) {
-      slide = ALL_SLIDES.find(s => s.title === caption);
+      slide = ALL_SLIDES.find(s => s.title === caption || (caption && caption.includes(s.title)) || (s.title && s.title.includes(caption)));
     }
 
     const finalSrc = src || (slide ? slide.src : "");
@@ -3324,29 +3363,25 @@ function setupOralExamDashboard() {
     if (keyPointText) keyPointText.textContent = finalKeyPoint;
 
     if (slide && slide.audio) {
-      if (audioContainer) audioContainer.classList.remove("hidden");
-      slideModalAudioPlayer.src = slide.audio;
-      slideModalAudioPlayer.playbackRate = slidePlaybackSpeed;
+      if (audioContainer) {
+        audioContainer.classList.remove("hidden");
+        audioContainer.style.display = "block";
+      }
+      try {
+        slideModalAudioPlayer.src = slide.audio;
+        slideModalAudioPlayer.playbackRate = slidePlaybackSpeed;
+      } catch(e) {}
       if (totalTimeEl) totalTimeEl.textContent = "--:--";
     } else {
-      if (audioContainer) audioContainer.classList.add("hidden");
+      if (audioContainer) {
+        audioContainer.classList.add("hidden");
+        audioContainer.style.display = "none";
+      }
     }
 
+    // ABRIR MODAL CON MÁXIMA PRIORIDAD Y DISPLAY FLEX
     modal.classList.remove("hidden");
-  };
-
-  window.closeSlideModal = () => {
-    const modal = document.getElementById("slideModal");
-    if (slideModalAudioPlayer) {
-      slideModalAudioPlayer.pause();
-      slideModalAudioPlayer.currentTime = 0;
-    }
-    isSlideAudioPlaying = false;
-    const btnPlayIcon = document.getElementById("btnPlaySlideAudioIcon");
-    const ping = document.getElementById("slideAudioPulsePing");
-    if (btnPlayIcon) btnPlayIcon.className = "fa-solid fa-play ml-0.5 text-sm sm:text-base";
-    if (ping) ping.classList.add("hidden");
-    if (modal) modal.classList.add("hidden");
+    modal.style.display = "flex";
   };
 
   // Click fuera del modal para cerrar
