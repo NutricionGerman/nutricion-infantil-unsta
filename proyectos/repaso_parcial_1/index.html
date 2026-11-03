@@ -455,12 +455,17 @@
           <!-- Grabación de Voz & Transcripción -->
           <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3">
-              <span class="text-xs font-bold text-slate-300 flex items-center gap-2">
-                <i class="fa-solid fa-microphone text-rose-500 animate-pulse"></i>
-                <span>Tu Respuesta Oral (Grabación & Transcripción)</span>
-              </span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-2">
+                  <i class="fa-solid fa-microphone text-rose-500 animate-pulse"></i>
+                  <span>Tu Respuesta Oral (Grabación & Transcripción)</span>
+                </span>
+                <span id="oralAudioSavedBadge" class="hidden font-bold text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                  <i class="fa-solid fa-check mr-1"></i> Audio Registrado
+                </span>
+              </div>
               <div id="oralTimerBadge" class="text-xs font-mono font-bold text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
-                00:00
+                00:00 / 00:40
               </div>
             </div>
 
@@ -468,23 +473,33 @@
             <div class="flex flex-wrap items-center gap-3">
               <button id="btnStartRecord" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-lg shadow-rose-600/20 transition flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-circle"></i>
-                <span>Comenzar a Hablar</span>
+                <span id="btnStartRecordText">Comenzar a Hablar</span>
               </button>
               <button id="btnStopRecord" class="hidden px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white font-bold text-xs rounded-xl transition flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-stop"></i>
-                <span>Terminar de Hablar</span>
+                <span id="btnStopRecordText">Terminar de Hablar</span>
               </button>
               <span id="transcriptionStatus" class="text-xs text-slate-400 italic">
                 Presiona "Comenzar a Hablar" y responde con tus palabras.
               </span>
             </div>
 
+            <!-- Reproductor de Audio Grabado (Replicado de Parcial 2) -->
+            <div id="oralPlaybackWrapper" class="hidden max-w-md mx-auto pt-1 pb-1">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-headphones text-indigo-400"></i> Escucha tu respuesta grabada:</span>
+                <span id="oralPlaybackDurationText" class="font-mono text-xs text-indigo-300 font-bold">00:00</span>
+              </div>
+              <audio id="oralRecordedPlayer" controls class="w-full h-8 rounded-lg"></audio>
+            </div>
+
             <!-- Caja de Transcripción con Edición Libre -->
             <div>
-              <label for="oralTranscriptTextarea" class="block text-[11px] text-slate-400 mb-1 font-semibold">
-                Texto Transcrito (puedes corregir o escribir directamente si no tienes micrófono):
+              <label for="oralTranscriptTextarea" class="block text-[11px] text-slate-400 mb-1 font-semibold flex items-center justify-between">
+                <span>Texto Transcrito con Whisper (puedes verificar o ajustar antes de calificar):</span>
+                <span class="text-[10px] text-slate-500 italic">IA Fonética</span>
               </label>
-              <textarea id="oralTranscriptTextarea" rows="3" placeholder="Tu respuesta aparecerá aquí mientras hablas..." class="w-full bg-slate-900 text-slate-100 text-xs sm:text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+              <textarea id="oralTranscriptTextarea" rows="3" placeholder="Al terminar de hablar, tu transcripción precisa con Whisper aparecerá aquí..." class="w-full bg-slate-900 text-slate-100 text-xs sm:text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
           </div>
 

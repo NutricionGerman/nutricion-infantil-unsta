@@ -628,3 +628,12 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       3. *Foco de Examen y Criterio Clave*: Panel callout inferior que resalta en texto claro y conciso lo más importante que exige la cátedra sobre esa diapositiva.
       4. *Aislamiento y Pausa Segura*: Al cerrar el modal con Escape, con el botón X o haciendo click fuera del recuadro, el audio se detiene y se reinicia instantáneamente para evitar cualquier reproducción accidental en segundo plano.
       5. *Galería de Diapositivas Enriquecida*: Cada tarjeta de la cuadrícula muestra el distintivo 'Audio Docente' y botón de acceso rápido 'Ver y Escuchar Resumen'.
+
+53. **Replicación de Grabación y Transcripción de 2° Parcial en 1° Parcial (03/11/2026)**:
+    - **Contexto**: A solicitud de Germán tras detectar repeticiones sucesivas de texto en dispositivos móviles Android ("Se toma muchas veces el audio, en el 2 parcial salía bien. Podrías replicar como se hizo en el 2 parcial"), se migró la arquitectura de grabación oral para replicar de forma exacta el flujo del 2° Parcial.
+    - **Causa Raíz Diagnosticada**:
+      - En Android Chrome, la API nativa de voz (`SpeechRecognition`) entrega eventos acumulativos continuos de texto intermedio si se conecta en vivo al `textarea`, generando ecos del tipo "comprando desde comprando desde la...".
+    - **Solución y Replicación del 2° Parcial**:
+      1. *Grabación Limpia sin Duplicaciones*: Durante la grabación, `onTranscript` pasa como `null`, permitiendo que el alumno hable con naturalidad mientras corre el cronómetro con límite de 40 segundos sin contaminar el cuadro de texto.
+      2. *Transcripción de Máxima Precisión con Whisper*: Al pulsar 'Terminar de Hablar', el archivo de audio real (`audioBlob`) es procesado en una sola pasada mediante **Whisper (`whisper-large-v3-turbo` vía Groq API)**, entregando una transcripción limpia, ortográficamente impecable y sin palabras repetidas.
+      3. *Reproductor Integrado y Verificación*: Se añadió el reproductor de audio (`<audio controls>`) y la insignia verde de `Audio Registrado` para que el estudiante pueda escuchar su grabación y corregir cualquier término antes de pasar a la siguiente pregunta.

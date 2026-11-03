@@ -1211,7 +1211,14 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ==========================================================================
      3. SECCIÓN 2: TABLERO DE LOS 10 PARCIALES & EXAMEN ORAL CON IA
      ========================================================================== */
-  function setupOralExamDashboard() {
+    function formatDuration(secs) {
+    const s = Math.max(0, Math.round(secs || 0));
+    const m = Math.floor(s / 60).toString().padStart(2, "0");
+    const remS = (s % 60).toString().padStart(2, "0");
+    return `${m}:${remS}`;
+  }
+
+function setupOralExamDashboard() {
     renderPartialsGrid();
     updateOralDashboardUI();
 
@@ -1236,57 +1243,100 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Botones de Grabación
+    // Botones de Grabación (Replicado exactamente como en 2° Parcial)
     const btnStart = document.getElementById("btnStartRecord");
     const btnStop = document.getElementById("btnStopRecord");
     const timerBadge = document.getElementById("oralTimerBadge");
     const transcriptStatus = document.getElementById("transcriptionStatus");
     const transcriptTextarea = document.getElementById("oralTranscriptTextarea");
+    const savedBadge = document.getElementById("oralAudioSavedBadge");
+    const playerWrapper = document.getElementById("oralPlaybackWrapper");
+    const player = document.getElementById("oralRecordedPlayer");
+    const durationText = document.getElementById("oralPlaybackDurationText");
 
     if (btnStart && btnStop) {
       btnStart.addEventListener("click", async () => {
         if (!recorder) return;
         isRecordingCurrent = true;
+        if (savedBadge) savedBadge.classList.add("hidden");
+        if (playerWrapper) playerWrapper.classList.add("hidden");
         btnStart.classList.add("hidden");
         btnStop.classList.remove("hidden");
         btnStop.classList.add("recording-pulse");
-        if (transcriptStatus) transcriptStatus.textContent = "Grabando tu voz... Habla con claridad.";
+        if (timerBadge) {
+          timerBadge.className = "font-mono font-bold text-xs text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-lg border border-rose-500/30 animate-pulse";
+          timerBadge.textContent = "00:00 / 00:40";
+        }
+        if (transcriptStatus) {
+          transcriptStatus.innerHTML = '<span class="text-rose-400 font-bold animate-pulse flex items-center gap-1.5"><i class="fa-solid fa-microphone-lines"></i> Grabando tu voz... Habla con tranquilidad.</span>';
+        }
 
+        let autoStopping = false;
         await recorder.startRecording(
           (elapsedSecs) => {
             const mm = String(Math.floor(elapsedSecs / 60)).padStart(2, '0');
             const ss = String(elapsedSecs % 60).padStart(2, '0');
-            if (timerBadge) timerBadge.textContent = `${mm}:${ss}`;
+            if (timerBadge) {
+              timerBadge.textContent = `${mm}:${ss} / 00:40`;
+              if (elapsedSecs >= 30) {
+                timerBadge.className = "font-mono font-bold text-xs text-amber-300 bg-amber-500/20 px-2.5 py-1 rounded-lg border border-amber-500/40 animate-pulse";
+              } else {
+                timerBadge.className = "font-mono font-bold text-xs text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-lg border border-rose-500/30 animate-pulse";
+              }
+            }
+
+            // Límite de 40s (igual que en 2° Parcial)
+            if (elapsedSecs >= 40 && !autoStopping) {
+              autoStopping = true;
+              if (recorder.isRecording) {
+                btnStop.click();
+              }
+            }
           },
-          (liveTranscript) => {
-            if (transcriptTextarea) transcriptTextarea.value = liveTranscript;
-          },
+          null, // EXACTO COMO EN 2° PARCIAL: null evita que Web Speech API repita palabras continuamente en Android Chrome!
           (err) => {
             console.warn("Error en grabación:", err);
+            isRecordingCurrent = false;
             btnStart.classList.remove("hidden");
             btnStop.classList.add("hidden");
             btnStop.classList.remove("recording-pulse");
-            if (transcriptStatus) transcriptStatus.textContent = "Error al acceder al micrófono.";
+            if (transcriptStatus) transcriptStatus.textContent = "No se pudo acceder al micrófono. Revisa los permisos.";
           }
         );
       });
 
       btnStop.addEventListener("click", async () => {
         if (!recorder || !recorder.isRecording) return;
+        btnStop.disabled = true;
+        btnStop.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo audio con Whisper...';
         btnStop.classList.remove("recording-pulse");
-        if (transcriptStatus) transcriptStatus.textContent = "Procesando audio con Whisper...";
+        if (transcriptStatus) {
+          transcriptStatus.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Procesando audio con alta precisión fonética...</span>';
+        }
 
         const recData = await recorder.stopRecording();
         isRecordingCurrent = false;
+        btnStop.disabled = false;
+        btnStop.innerHTML = '<i class="fa-solid fa-stop"></i> <span>Terminar de Hablar</span>';
         btnStart.classList.remove("hidden");
         btnStop.classList.add("hidden");
 
+        if (timerBadge) {
+          timerBadge.className = "text-xs font-mono font-bold text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800";
+        }
+
         if (recData) {
           if (transcriptTextarea) {
-            transcriptTextarea.value = recData.transcript || transcriptTextarea.value;
+            transcriptTextarea.value = (recData.transcript || "").trim();
           }
+          if (playerWrapper && player && recData.audioUrl) {
+            player.src = recData.audioUrl;
+            if (durationText) durationText.textContent = formatDuration(recData.durationSecs || 0);
+            playerWrapper.classList.remove("hidden");
+          }
+          if (savedBadge) savedBadge.classList.remove("hidden");
           if (transcriptStatus) {
-            transcriptStatus.textContent = "Respuesta registrada. Puedes editarla antes de avanzar.";
+            transcriptStatus.innerHTML = '<span class="text-emerald-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check"></i> Audio registrado y transcrito con éxito. Puedes verificar o editar antes de avanzar.</span>';
           }
           saveCurrentOralAnswer(recData.audioUrl, recData.durationSecs);
         }
@@ -1555,20 +1605,40 @@ document.addEventListener("DOMContentLoaded", () => {
     const timerBadge = document.getElementById("oralTimerBadge");
     const transcriptTextarea = document.getElementById("oralTranscriptTextarea");
     const transcriptStatus = document.getElementById("transcriptionStatus");
+    const savedBadge = document.getElementById("oralAudioSavedBadge");
+    const playerWrapper = document.getElementById("oralPlaybackWrapper");
+    const player = document.getElementById("oralRecordedPlayer");
+    const durationText = document.getElementById("oralPlaybackDurationText");
 
     if (pTitle) pTitle.textContent = deck ? `${deck.title} (${deck.badge})` : "Examen Oral";
     if (qTitle) qTitle.textContent = `Pregunta ${oralExamCurrentIndex + 1} de ${oralExamQuestions.length}`;
     if (qStatement) qStatement.textContent = q.question;
     if (qHint) qHint.textContent = `Pista docente: ${q.hint || "Responde con rigor clínico basado en diapositivas."}`;
-    if (timerBadge) timerBadge.textContent = "00:00";
+    if (timerBadge) {
+      timerBadge.className = "text-xs font-mono font-bold text-slate-400 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800";
+      timerBadge.textContent = "00:00 / 00:40";
+    }
 
     const saved = oralStudentAnswers[oralExamCurrentIndex];
     if (transcriptTextarea) {
       transcriptTextarea.value = (saved && saved.transcript) ? saved.transcript : "";
     }
+
+    if (saved && saved.audioUrl) {
+      if (playerWrapper && player) {
+        player.src = saved.audioUrl;
+        if (durationText) durationText.textContent = formatDuration(saved.durationSecs || 0);
+        playerWrapper.classList.remove("hidden");
+      }
+      if (savedBadge) savedBadge.classList.remove("hidden");
+    } else {
+      if (playerWrapper) playerWrapper.classList.add("hidden");
+      if (savedBadge) savedBadge.classList.add("hidden");
+    }
+
     if (transcriptStatus) {
-      if (saved && saved.transcript) {
-        transcriptStatus.textContent = "Respuesta guardada. Puedes modificarla o volver a grabar.";
+      if (saved && (saved.transcript || saved.audioUrl)) {
+        transcriptStatus.textContent = "Respuesta registrada. Puedes modificarla o volver a grabar si lo deseas.";
       } else {
         transcriptStatus.textContent = 'Presiona "Comenzar a Hablar" y responde con tus palabras.';
       }
