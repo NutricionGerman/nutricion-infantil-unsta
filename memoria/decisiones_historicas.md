@@ -616,3 +616,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       3. *Tabla de Posiciones Completa*: Lista dinámica con fotos/avatares iniciales, grupo universitario, promedio ponderado, contador de parciales completados sobre 11 y XP total.
       4. *Filtros de Ordenamiento*: Selector para ordenar por "1° Parcial" o por "XP Global", con botón de refresco en vivo.
       5. *Sincronización con Firestore (`students`)*: Actualización automática de calificaciones tanto para los 10 parciales orales como para el test práctico de mamaderas.
+
+52. **Audio Explicativo Docente en todas las Diapositivas de 'Calculadora y Slides' (03/11/2026)**:
+    - **Contexto**: A solicitud expresa de Germán ("una cosa mas le podrias poner audios a las slides que salen en (calculadora y Slides) el audio de la profesora explicando lo mas importante de cada slide"), se integró un sistema integral de audio explicativo docente para las 54 diapositivas del catálogo oficial en la pestaña *Calculadora y Slides* (`section_herramientas`).
+    - **Cobertura y Curaduría Pedagógica**:
+      1. *Catálogo Completo de 54 Diapositivas*: Todas las diapositivas de las Unidades 1 a 5 y del Módulo Práctico cuentan ahora con archivo de audio propio (`audio`) y síntesis clínica de examen (`keyPoint`).
+      2. *Generación de Audios Faltantes*: Se grabaron 19 nuevos clips de audio docente de alta fidelidad con acento y cadencia pedagógica argentina (`es-AR-ElenaNeural` con modulación de velocidad) para cubrir la totalidad de las láminas complementarias y el taller práctico de reconstitución de mamaderas a 70 °C, gráfica de Calvo 2009 y metas IOM 2009.
+    - **Interfaz y Reproductor en el Modal Lightbox (`#slideModal`)**:
+      1. *Reproductor Estilo Mensajería Docente*: Botón circular prominente de Play/Pause con halo de animación activa, contador en minutos:segundos y barra deslizadora interactiva (scrubber) para avanzar o retroceder libremente.
+      2. *Control de Velocidad Dinámica*: Selector de velocidad ciclable (1.0x, 1.25x, 1.5x, 2.0x).
+      3. *Foco de Examen y Criterio Clave*: Panel callout inferior que resalta en texto claro y conciso lo más importante que exige la cátedra sobre esa diapositiva.
+      4. *Aislamiento y Pausa Segura*: Al cerrar el modal con Escape, con el botón X o haciendo click fuera del recuadro, el audio se detiene y se reinicia instantáneamente para evitar cualquier reproducción accidental en segundo plano.
+      5. *Galería de Diapositivas Enriquecida*: Cada tarjeta de la cuadrícula muestra el distintivo 'Audio Docente' y botón de acceso rápido 'Ver y Escuchar Resumen'.

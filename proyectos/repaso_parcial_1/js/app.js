@@ -70,73 +70,440 @@ document.addEventListener("DOMContentLoaded", () => {
   let practQuizCurrentIndex = 0;
   let practQuizUserAnswers = [];
 
-  // CATÁLOGO DE TODAS LAS DIAPOSITIVAS OFICIALES (45 SLIDES DE CLASE)
+  // CATÁLOGO DE TODAS LAS DIAPOSITIVAS OFICIALES (54 SLIDES CON AUDIO DOCENTE Y CRITERIOS CLÍNICOS)
   const ALL_SLIDES = [
-    // Unidad 1
-    { src: "assets/slides/u1_1000dias_concepto.png", title: "Primeros 1000 Días: Concepto y Periodos (270d + 365d + 365d)", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_1000dias_ventana_oportunidad.png", title: "Ventana de Oportunidad Única y Neurodesarrollo", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_rn_definicion_vital.png", title: "Definición de Nacido Vivo y Límites de Viabilidad", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_rn_caracteristicas_fisiologicas.png", title: "RN Fisiología: Descenso de Peso y Capacidad Gástrica", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_prematuro_definicion.png", title: "Clasificación Gestacional del Recién Nacido", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_prematuro_semanas_clasificacion.png", title: "Clasificación de Prematuros por Semanas Gestacionales", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_prematuro_peso_nacimiento.png", title: "Clasificación por Peso al Nacer (BPN, MBPN, EBPN)", unit: "u1", unitName: "Unidad 1" },
-    { src: "assets/slides/u1_rci_tipos_armonico_disarmonico.png", title: "RCI: Tipo I Armónico (1°T) vs Tipo III Disarmónico (3°T)", unit: "u1", unitName: "Unidad 1" },
-
-    // Unidad 2
-    { src: "assets/slides/u2_poblacion_referencia_oms_sap.png", title: "Poblaciones de Referencia: OMS 0-6a vs SAP >6a", unit: "u2", unitName: "Unidad 2" },
-    { src: "assets/slides/u2_tipos_valoracion_transversal_longitudinal.png", title: "Valoración Transversal vs Longitudinal", unit: "u2", unitName: "Unidad 2" },
-    { src: "assets/slides/u2_diagnostico_zscore_oms.png", title: "Diagnóstico Nutricional por Puntuación Z (OMS 2006)", unit: "u2", unitName: "Unidad 2" },
-    { src: "assets/slides/u2_curva_peso_edad_oms.png", title: "Curvas de Crecimiento OMS (Peso/Edad, Talla/Edad)", unit: "u2", unitName: "Unidad 2" },
-    { src: "assets/slides/u2_adiposidad_percentilos.png", title: "Percentilos de Adiposidad e IMC/Edad (Sobrepeso ≥85, Obesidad ≥97)", unit: "u2", unitName: "Unidad 2" },
-    { src: "assets/slides/u2_requerimientos_caloricos_fao.png", title: "Requerimientos Energéticos y Proteicos Pediátricos (FAO/OMS)", unit: "u2", unitName: "Unidad 2" },
-
-    // Unidad 3
-    { src: "assets/slides/u3_lme_definicion_oms.png", title: "Definición Oficial de Lactancia Materna Exclusiva (OMS)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_control_endocrino_prolactina_oxitocina.png", title: "Control Endocrino: Prolactina (Síntesis) vs Oxitocina (Eyección)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_mantenimiento_fil.png", title: "Control Autócrino: Factor Inhibidor de la Lactancia (FIL)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_cronologia_leches.png", title: "Cronología de la Leche Materna (Calostro, Transición, Madura)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_calostro_composicion.png", title: "Composición Bioquímica del Calostro (IgA, Sodio, Betacarotenos)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_calostro_ventajas.png", title: "Ventajas Inmunológicas y Efecto Laxante del Calostro", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_leche_transicion_pretermino.png", title: "Leche Pretérmino y Necesidad de Fortificadores (FLM)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_leche_madura_propiedades.png", title: "Leche Madura: Fracción Inicial vs Fracción Final (Grasa)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_comparacion_humana_vaca.png", title: "Comparación Crítica: Leche Humana vs Leche de Vaca (40/60 vs 80/20)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_hierro_biodisponibilidad.png", title: "Biodisponibilidad de Hierro (50% en leche humana vs 10% en vaca)", unit: "u3", unitName: "Unidad 3" },
-    { src: "assets/slides/u3_contraindicaciones_lactancia.png", title: "Contraindicaciones Absolutas de la Lactancia (VIH, HTLV, Galactosemia)", unit: "u3", unitName: "Unidad 3" },
-
-    // Unidad 4
-    { src: "assets/slides/u4_peso_medidas_enrase.png", title: "Gramaje por Medida (4.5g vs 5g) y Enrase al Ras Oficial", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_dilucion_biberones.png", title: "Reglas de Reconstitución: 1 medida cada 30 cc de agua", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_calculo_dilucion_13_15.png", title: "Cálculo de Dilución Estándar: Inicio 13.5% vs Continuación 15%", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_concentraciones_modulos_sonda.png", title: "Dilución Concentrada (4 med), Tope (5 med) y Prohibición AR en SNG", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_formulas_especiales_aplv.png", title: "Fórmulas Especiales para APLV (Extensamente Hidrolizadas y Aminoácidos)", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_formulas_especiales_monogen_ar.png", title: "Fórmulas Especiales (Monogen con TCM y Anti-Reflujo)", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_modulos_nutrientes.png", title: "Módulos de Nutrientes (Calóricos, Proteicos y Lipídicos)", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_suplementos_pediatricos.png", title: "Suplementos Pediátricos y Densidad Energética", unit: "u4", unitName: "Unidad 4" },
-    { src: "assets/slides/u4_tabla_comparativa_marcas.png", title: "Tabla Comparativa de Fórmulas y Marcas de Mercado", unit: "u4", unitName: "Unidad 4" },
-
-    // Unidad 5
-    { src: "assets/slides/u5_proporcion_leche_alimentos.png", title: "Proporción Energética: Leche vs Alimentos Complementarios", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_biberones_datos_clave.png", title: "Datos Clave de Biberones y Densidad Calórica", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_consistencias_5_etapas.png", title: "Las 5 Consistencias Progresivas de los Alimentos", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_cronograma_introduccion.png", title: "Cronograma Oficial de Introducción de Alimentos", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_comida_completa_cuadrantes.png", title: "El Plato Completo y Cuadrantes de Nutrientes", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_diversidad_dietetica_mdd.png", title: "Puntuación de Diversidad Dietética Mínima (MDD: 5 de 8 grupos)", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_alimentos_atencion_prohibidos.png", title: "Tabla de 'Atención': Miel, Sal, Azúcar y Carne Molida <5 años (SUH)", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_alimentos_esfericos_asfixia.png", title: "Alimentos Esféricos Críticos y Prevención de Asfixia", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_blw_definicion.png", title: "Concepto y Beneficios del Método BLW (Baby-Led Weaning)", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_blw_seguridad_pautas.png", title: "6 Pautas de Seguridad Estricta para Práctica de BLW", unit: "u5", unitName: "Unidad 5" },
-    { src: "assets/slides/u5_alimentacion_perceptiva_3pasos.png", title: "Los 3 Pasos de la Alimentación Perceptiva", unit: "u5", unitName: "Unidad 5" },
-
-    // Módulo Práctico (Taller de Mamaderas & Curvas Calvo / IOM)
-    { src: "assets/slides/pract_mamadera_agua_primero.png", title: "Taller Práctico: Protocolo y Regla del Agua Primero", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_mamadera_agua_70c.png", title: "Taller Práctico: Temperatura Bactericida de 70 °C (Cronobacter/Salmonella)", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_mamadera_medida_polvo.png", title: "Taller Práctico: Medida al Ras sin Compactar (1 medida / 30 ml)", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_mamadera_temperatura.png", title: "Taller Práctico: Comprobación de Temperatura en Muñeca (~37 °C)", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_mamadera_descarte.png", title: "Taller Práctico: Descarte Obligatorio del Sobrante a los 60 Minutos", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_calvo_curva_imc.png", title: "Gráfica de Calvo et al. (2009): IMC materno según Edad Gestacional (-1 SD a +2 SD)", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_calvo_utilidad_clinica.png", title: "Utilidad Clínica de Calvo: Diagnóstico en Cualquier Semana y Riesgo Perinatal", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_iom_metas_peso.png", title: "Metas IOM (2009): Ganancia de Peso Gestacional Total y Tasa Semanal", unit: "pract", unitName: "Módulo Práctico" },
-    { src: "assets/slides/pract_calvo_vs_iom_cuadro.png", title: "Complementariedad Clínica: Calvo (¿Dónde está?) vs. IOM (¿Cuánto debe subir?)", unit: "pract", unitName: "Módulo Práctico" }
+    {
+      src: "assets/slides/u1_1000dias_concepto.png",
+      title: "Primeros 1000 Días: Concepto y Periodos (270d + 365d + 365d)",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_1.mp3",
+      keyPoint: "Suma los días de gestación más los primeros dos años de vida."
+    },
+    {
+      src: "assets/slides/u1_1000dias_ventana_oportunidad.png",
+      title: "Ventana de Oportunidad Única y Neurodesarrollo",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_ventana.mp3",
+      keyPoint: "Período de máxima plasticidad biológica (concepción a 2 años). La agresión nutricional temprana causa daños irreversibles y programa el riesgo de diabetes, obesidad e hipertensión en la vida adulta (Hipótesis de Barker)."
+    },
+    {
+      src: "assets/slides/u1_rn_definicion_vital.png",
+      title: "Definición de Nacido Vivo y Límites de Viabilidad",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_6.mp3",
+      keyPoint: "Muestra de sangre del talón en papel de filtro entre las 48 y 72 hs de vida."
+    },
+    {
+      src: "assets/slides/u1_rn_caracteristicas_fisiologicas.png",
+      title: "RN Fisiología: Descenso de Peso y Capacidad Gástrica",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_3.mp3",
+      keyPoint: "Ocurre en los primeros 3 a 5 días por redistribución hídrica y meconio."
+    },
+    {
+      src: "assets/slides/u1_prematuro_definicion.png",
+      title: "Clasificación Gestacional del Recién Nacido",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_2.mp3",
+      keyPoint: "Semana 37 y semana 42 son los puntos de corte."
+    },
+    {
+      src: "assets/slides/u1_prematuro_semanas_clasificacion.png",
+      title: "Clasificación de Prematuros por Semanas Gestacionales",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_6.mp3",
+      keyPoint: "Puntos de corte gestacionales: 28, 32 y 37 semanas. Puntos de peso: 2500g, 1500g y 1000g."
+    },
+    {
+      src: "assets/slides/u1_prematuro_peso_nacimiento.png",
+      title: "Clasificación por Peso al Nacer (BPN, MBPN, EBPN)",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_9.mp3",
+      keyPoint: "En menores de 1500g o 32 semanas, la leche humana sola no cubre calcio, fósforo ni proteínas."
+    },
+    {
+      src: "assets/slides/u1_rci_tipos_armonico_disarmonico.png",
+      title: "RCI: Tipo I Armónico (1°T) vs Tipo III Disarmónico (3°T)",
+      unit: "u1",
+      unitName: "Unidad 1",
+      audio: "assets/audio_profesora/profe_u1_5.mp3",
+      keyPoint: "Tipo I: 1° trim; Tipo II: 2° trim; Tipo III: 3° trim. Observa qué parámetros se van sumando o preservando."
+    },
+    {
+      src: "assets/slides/u2_poblacion_referencia_oms_sap.png",
+      title: "Poblaciones de Referencia: OMS 0-6a vs SAP >6a",
+      unit: "u2",
+      unitName: "Unidad 2",
+      audio: "assets/audio_profesora/profe_u2_2.mp3",
+      keyPoint: "Hasta los 6 años se usa una referencia internacional; luego se complementa con tablas nacionales."
+    },
+    {
+      src: "assets/slides/u2_tipos_valoracion_transversal_longitudinal.png",
+      title: "Valoración Transversal vs Longitudinal",
+      unit: "u2",
+      unitName: "Unidad 2",
+      audio: "assets/audio_profesora/profe_u2_1.mp3",
+      keyPoint: "Una es una fotografía instantánea, la otra es una película del crecimiento en el tiempo."
+    },
+    {
+      src: "assets/slides/u2_diagnostico_zscore_oms.png",
+      title: "Diagnóstico Nutricional por Puntuación Z (OMS 2006)",
+      unit: "u2",
+      unitName: "Unidad 2",
+      audio: "assets/audio_profesora/profe_u2_3.mp3",
+      keyPoint: "Puntos de corte: Mediana (0), por debajo de -1, debajo de -2 y debajo de -3."
+    },
+    {
+      src: "assets/slides/u2_curva_peso_edad_oms.png",
+      title: "Curvas de Crecimiento OMS (Peso/Edad, Talla/Edad)",
+      unit: "u2",
+      unitName: "Unidad 2",
+      audio: "assets/audio_profesora/profe_u2_curvas_oms.mp3",
+      keyPoint: "Patrones OMS 2006 (0 a 5 años). Peso/Edad alerta bajo peso global pero no distingue agudo de crónico; Talla/Edad evalúa desnutrición crónica (acortamiento); Peso/Talla e IMC/Edad detectan emaciación aguda y sobrepeso."
+    },
+    {
+      src: "assets/slides/u2_adiposidad_percentilos.png",
+      title: "Percentilos de Adiposidad e IMC/Edad (Sobrepeso ≥85, Obesidad ≥97)",
+      unit: "u2",
+      unitName: "Unidad 2",
+      audio: "assets/audio_profesora/profe_u2_4.mp3",
+      keyPoint: "Percentilo 85 y percentilo 97."
+    },
+    {
+      src: "assets/slides/u2_requerimientos_caloricos_fao.png",
+      title: "Requerimientos Energéticos y Proteicos Pediátricos (FAO/OMS)",
+      unit: "u2",
+      unitName: "Unidad 2",
+      audio: "assets/audio_profesora/profe_u2_5.mp3",
+      keyPoint: "La mayor tasa calórica por kilo ocurre en los primeros meses y va descendiendo progresivamente."
+    },
+    {
+      src: "assets/slides/u3_lme_definicion_oms.png",
+      title: "Definición Oficial de Lactancia Materna Exclusiva (OMS)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_lme_def.mp3",
+      keyPoint: "Lactancia Materna Exclusiva (OMS): únicamente leche humana (directa o extraída) y ningún otro líquido ni sólido (ni agua ni té), excepto suero oral, vitaminas, minerales o medicinas. Recomendada hasta los 6 meses."
+    },
+    {
+      src: "assets/slides/u3_control_endocrino_prolactina_oxitocina.png",
+      title: "Control Endocrino: Prolactina (Síntesis) vs Oxitocina (Eyección)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_1.mp3",
+      keyPoint: "Una produce la leche en los alvéolos y la otra la eyecta contrayendo las células mioepiteliales."
+    },
+    {
+      src: "assets/slides/u3_mantenimiento_fil.png",
+      title: "Control Autócrino: Factor Inhibidor de la Lactancia (FIL)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_2.mp3",
+      keyPoint: "Pasa de un control hormonal a un control local o autócrino dependiente del vaciamiento."
+    },
+    {
+      src: "assets/slides/u3_cronologia_leches.png",
+      title: "Cronología de la Leche Materna (Calostro, Transición, Madura)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_3.mp3",
+      keyPoint: "Calostro, leche intermedia y leche final."
+    },
+    {
+      src: "assets/slides/u3_calostro_composicion.png",
+      title: "Composición Bioquímica del Calostro (IgA, Sodio, Betacarotenos)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_4.mp3",
+      keyPoint: "Líquido espeso amarillento, bajo volumen por mamada y rico en proteínas protectoras."
+    },
+    {
+      src: "assets/slides/u3_calostro_ventajas.png",
+      title: "Ventajas Inmunológicas y Efecto Laxante del Calostro",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_calostro_ventajas.mp3",
+      keyPoint: "Calostro (primeros 3-4 días): 'primera vacuna' por su alta concentración de IgA secretoria y lactoferrina. Su suave efecto laxante ayuda a expulsar rápidamente el meconio y previene la ictericia por reabsorción de bilirrubina."
+    },
+    {
+      src: "assets/slides/u3_leche_transicion_pretermino.png",
+      title: "Leche Pretérmino y Necesidad de Fortificadores (FLM)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u1_8.mp3",
+      keyPoint: "La naturaleza la adapta con mayores proteínas y electrolitos, pero menos de un azúcar."
+    },
+    {
+      src: "assets/slides/u3_leche_madura_propiedades.png",
+      title: "Leche Madura: Fracción Inicial vs Fracción Final (Grasa)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_leche_madura.mp3",
+      keyPoint: "La leche inicial es rica en agua y lactosa (calma la sed y aporta energía rápida); la leche final multiplica 4 a 5 veces su tenor de grasa, aportando saciedad y calorías. Por ello el bebé debe vaciar un pecho antes de pasar al otro."
+    },
+    {
+      src: "assets/slides/u3_comparacion_humana_vaca.png",
+      title: "Comparación Crítica: Leche Humana vs Leche de Vaca (40/60 vs 80/20)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_5.mp3",
+      keyPoint: "Revisa proteínas, calorías, calcio y relación caseína/suero en 100g."
+    },
+    {
+      src: "assets/slides/u3_hierro_biodisponibilidad.png",
+      title: "Biodisponibilidad de Hierro (50% en leche humana vs 10% en vaca)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_6.mp3",
+      keyPoint: "Intervienen la lactoferrina, la vitamina C, la lactosa y el bajo fósforo."
+    },
+    {
+      src: "assets/slides/u3_contraindicaciones_lactancia.png",
+      title: "Contraindicaciones Absolutas de la Lactancia (VIH, HTLV, Galactosemia)",
+      unit: "u3",
+      unitName: "Unidad 3",
+      audio: "assets/audio_profesora/profe_u3_7.mp3",
+      keyPoint: "Menciona patologías infecciosas maternas, metabólicas del lactante y toxicología."
+    },
+    {
+      src: "assets/slides/u4_peso_medidas_enrase.png",
+      title: "Gramaje por Medida (4.5g vs 5g) y Enrase al Ras Oficial",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_1.mp3",
+      keyPoint: "Inicio pesa 4.5g y continuación 5g; la cuchara debe estar al ras."
+    },
+    {
+      src: "assets/slides/u4_dilucion_biberones.png",
+      title: "Reglas de Reconstitución: 1 medida cada 30 cc de agua",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_4.mp3",
+      keyPoint: "Pasan de 3 medidas a 4 y a 5 medidas en 100 cc."
+    },
+    {
+      src: "assets/slides/u4_calculo_dilucion_13_15.png",
+      title: "Cálculo de Dilución Estándar: Inicio 13.5% vs Continuación 15%",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_2.mp3",
+      keyPoint: "La regla es 3 medidas por cada 100 cc de agua."
+    },
+    {
+      src: "assets/slides/u4_concentraciones_modulos_sonda.png",
+      title: "Dilución Concentrada (4 med), Tope (5 med) y Prohibición AR en SNG",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_7.mp3",
+      keyPoint: "Maltodextrina 10% vs 7%; Caseinato 5-10% vs 3%; Grasas 3-5%."
+    },
+    {
+      src: "assets/slides/u4_formulas_especiales_aplv.png",
+      title: "Fórmulas Especiales para APLV (Extensamente Hidrolizadas y Aminoácidos)",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_5.mp3",
+      keyPoint: "Distingue hidrolizados extensos de fórmulas monoméricas de aminoácidos libres."
+    },
+    {
+      src: "assets/slides/u4_formulas_especiales_monogen_ar.png",
+      title: "Fórmulas Especiales (Monogen con TCM y Anti-Reflujo)",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_6.mp3",
+      keyPoint: "Tiene que ver con los espesantes y el diámetro de la sonda."
+    },
+    {
+      src: "assets/slides/u4_modulos_nutrientes.png",
+      title: "Módulos de Nutrientes (Calóricos, Proteicos y Lipídicos)",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_modulos.mp3",
+      keyPoint: "Módulos para enriquecer fórmulas sin aumentar volumen: Maltodextrina (CH de baja osmolaridad), Caseinato/Suero (proteínas) y TCM/Aceites (lípidos). Exigen monitoreo estricto de osmolaridad y carga renal de solutos."
+    },
+    {
+      src: "assets/slides/u4_suplementos_pediatricos.png",
+      title: "Suplementos Pediátricos y Densidad Energética",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_suplementos.mp3",
+      keyPoint: "Fórmulas hipercalóricas y suplementos (1.0 a 1.5 kcal/ml) indicados en cardiopatías congénitas, restricción hídrica severa, displasia broncopulmonar y desnutrición grave. Requieren estricto control de tolerancia digestiva e hidratación."
+    },
+    {
+      src: "assets/slides/u4_tabla_comparativa_marcas.png",
+      title: "Tabla Comparativa de Fórmulas y Marcas de Mercado",
+      unit: "u4",
+      unitName: "Unidad 4",
+      audio: "assets/audio_profesora/profe_u4_std_def.mp3",
+      keyPoint: "Es nutricionalmente completa y los tres macronutrientes están en forma compleja."
+    },
+    {
+      src: "assets/slides/u5_proporcion_leche_alimentos.png",
+      title: "Proporción Energética: Leche vs Alimentos Complementarios",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_2.mp3",
+      keyPoint: "6-8 meses: 70/30; 9-11 meses: 45/55; 12-23 meses: 30/70."
+    },
+    {
+      src: "assets/slides/u5_biberones_datos_clave.png",
+      title: "Datos Clave de Biberones y Densidad Calórica",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u4_3.mp3",
+      keyPoint: "Va de 7-8 tomas al inicio hasta 2-3 tomas al año."
+    },
+    {
+      src: "assets/slides/u5_consistencias_5_etapas.png",
+      title: "Las 5 Consistencias Progresivas de los Alimentos",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_3.mp3",
+      keyPoint: "Puré procesado a los 6m hasta comida familiar al año."
+    },
+    {
+      src: "assets/slides/u5_cronograma_introduccion.png",
+      title: "Cronograma Oficial de Introducción de Alimentos",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_4.mp3",
+      keyPoint: "A los 6m frutas y verduras básicas, aceite crudo y yema; carnes rojas y pollo entran a los 7m."
+    },
+    {
+      src: "assets/slides/u5_comida_completa_cuadrantes.png",
+      title: "El Plato Completo y Cuadrantes de Nutrientes",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_plato_cuadrantes.mp3",
+      keyPoint: "Estructura del plato a partir de los 6 meses: 1/2 hortalizas y frutas variadas, 1/4 fuentes de energía (cereales/tubérculos) y 1/4 proteínas de alto valor biológico (carnes bien cocidas, huevo, legumbres) + 1 cdita de aceite crudo."
+    },
+    {
+      src: "assets/slides/u5_diversidad_dietetica_mdd.png",
+      title: "Puntuación de Diversidad Dietética Mínima (MDD: 5 de 8 grupos)",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_diversidad_mdd.mp3",
+      keyPoint: "Diversidad Dietética Mínima (OMS/UNICEF): consumir al menos 5 de los 8 grupos de alimentos en 24 horas asegura suficiencia de micronutrientes esenciales (hierro, zinc, vit A) y previene la desnutrición oculta."
+    },
+    {
+      src: "assets/slides/u5_alimentos_atencion_prohibidos.png",
+      title: "Tabla de 'Atención': Miel, Sal, Azúcar y Carne Molida <5 años (SUH)",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_5.mp3",
+      keyPoint: "Miel >2 años (o >1), Azúcar >2 años, Sal >1 año, Carne molida >5 años."
+    },
+    {
+      src: "assets/slides/u5_alimentos_esfericos_asfixia.png",
+      title: "Alimentos Esféricos Críticos y Prevención de Asfixia",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_6.mp3",
+      keyPoint: "Uvas, tomates cherry, aceitunas, frutos secos; deben cortarse longitudinalmente."
+    },
+    {
+      src: "assets/slides/u5_blw_definicion.png",
+      title: "Concepto y Beneficios del Método BLW (Baby-Led Weaning)",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_blw_concepto.mp3",
+      keyPoint: "Baby-Led Weaning (BLW): alimentación autorregulada en trozos blandos tomados por el bebé. Fomenta autonomía, motricidad y saciedad. Requiere sedestación estable independiente y pérdida del reflejo de extrusión."
+    },
+    {
+      src: "assets/slides/u5_blw_seguridad_pautas.png",
+      title: "6 Pautas de Seguridad Estricta para Práctica de BLW",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_7.mp3",
+      keyPoint: "Autorregulación del bebé, postura erguida, arcada normal vs ahogo."
+    },
+    {
+      src: "assets/slides/u5_alimentacion_perceptiva_3pasos.png",
+      title: "Los 3 Pasos de la Alimentación Perceptiva",
+      unit: "u5",
+      unitName: "Unidad 5",
+      audio: "assets/audio_profesora/profe_u5_8.mp3",
+      keyPoint: "Reciprocidad entre las señales del niño y la respuesta predecible del cuidador."
+    },
+    {
+      src: "assets/slides/pract_mamadera_agua_primero.png",
+      title: "Taller Práctico: Protocolo y Regla del Agua Primero",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_agua_primero.mp3",
+      keyPoint: "Regla de oro: El agua va SIEMPRE primero en el biberón antes del polvo. Si se coloca el polvo primero, la lectura del menisco es errónea y la fórmula queda hiperconcentrada, arriesgando sobrecarga renal y deshidratación."
+    },
+    {
+      src: "assets/slides/pract_mamadera_agua_70c.png",
+      title: "Taller Práctico: Temperatura Bactericida de 70 °C (Cronobacter/Salmonella)",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_agua_70c.mp3",
+      keyPoint: "Temperatura de reconstitución: Agua a no menos de 70 °C (reposar 5-10 min tras hervor). Temperatura bactericida indispensable para inactivar Cronobacter sakazakii y Salmonella, ya que las fórmulas en polvo NO son estériles."
+    },
+    {
+      src: "assets/slides/pract_mamadera_medida_polvo.png",
+      title: "Taller Práctico: Medida al Ras sin Compactar (1 medida / 30 ml)",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_medida_polvo.mp3",
+      keyPoint: "Dosificación estándar: 1 medida al ras cada 30 ml de agua. Llenar la cuchara y enrasar al ras sin compactar ni presionar contra la lata con el lomo de un cuchillo limpio y seco, preservando la densidad correcta."
+    },
+    {
+      src: "assets/slides/pract_mamadera_temperatura.png",
+      title: "Taller Práctico: Comprobación de Temperatura en Muñeca (~37 °C)",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_temperatura.mp3",
+      keyPoint: "Enfriamiento y seguridad: Tras preparar a 70 °C, enfriar bajo chorro de agua fría hasta ~37 °C (temperatura corporal). Probar SIEMPRE unas gotas en la cara interna de la muñeca para evitar quemaduras graves en boca y esófago."
+    },
+    {
+      src: "assets/slides/pract_mamadera_descarte.png",
+      title: "Taller Práctico: Descarte Obligatorio del Sobrante a los 60 Minutos",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_descarte.mp3",
+      keyPoint: "Inocuidad alimentaria estricta: Todo sobrante de fórmula que haya tocado la boca del lactante debe ser descartado indefectiblemente a los 60 minutos (1 hora). La saliva inocula bacterias bucales que proliferan en la leche tibia."
+    },
+    {
+      src: "assets/slides/pract_calvo_curva_imc.png",
+      title: "Gráfica de Calvo et al. (2009): IMC materno según Edad Gestacional (-1 SD a +2 SD)",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_calvo_curva.mp3",
+      keyPoint: "Patrón argentino (Calvo et al., 2009): IMC según Edad Gestacional (10 a 42 sem). Clasifica en: Bajo peso (< -1 DE), Peso normal (-1 DE a +1 DE), Sobrepeso (+1 DE a +2 DE) y Obesidad (> +2 DE)."
+    },
+    {
+      src: "assets/slides/pract_calvo_utilidad_clinica.png",
+      title: "Utilidad Clínica de Calvo: Diagnóstico en Cualquier Semana y Riesgo Perinatal",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_calvo_clinica.mp3",
+      keyPoint: "Ventaja clínica de Calvo: Permite diagnosticar el estado nutricional materno en cualquier momento de la gestación, aun si la embarazada acude tardíamente a la consulta y desconoce su peso pregestacional."
+    },
+    {
+      src: "assets/slides/pract_iom_metas_peso.png",
+      title: "Metas IOM (2009): Ganancia de Peso Gestacional Total y Tasa Semanal",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_iom_metas.mp3",
+      keyPoint: "Metas IOM 2009 según IMC previo: Bajo peso (IMC <18.5): 12.5 a 18 kg; Peso normal (18.5-24.9): 11.5 a 16 kg; Sobrepeso (25-29.9): 7 a 11.5 kg; Obesidad (≥30): 5 a 9 kg de ganancia ponderal total."
+    },
+    {
+      src: "assets/slides/pract_calvo_vs_iom_cuadro.png",
+      title: "Complementariedad Clínica: Calvo (¿Dónde está?) vs. IOM (¿Cuánto debe subir?)",
+      unit: "pract",
+      unitName: "Módulo Práctico",
+      audio: "assets/audio_profesora/profe_pract_calvo_vs_iom.mp3",
+      keyPoint: "Complementariedad clínica: Calvo evalúa situación puntual transversal ('¿dónde está hoy la gestante?'); IOM prescribe meta ponderal longitudinal ('¿cuántos kilos debe subir y a qué ritmo semanal?')."
+    }
   ];
 
   // METADATOS DE LAS 5 UNIDADES DIDÁCTICAS
@@ -218,6 +585,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupRankingSection();
   setupCalculadora();
   setupSlidesGallery();
+  setupSlideAudioControls();
   setupKeyboardShortcuts();
 
   // Animación del ecualizador cuando el sintetizador de voz está activo
@@ -1852,14 +2220,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const galleryGrid = document.getElementById("slidesGalleryGrid");
     if (!galleryGrid) return;
 
-    galleryGrid.innerHTML = ALL_SLIDES.map(slide => `
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition cursor-pointer group shadow-lg flex flex-col justify-between" onclick="window.openSlideModal && window.openSlideModal('${slide.src}', '${slide.title}')">
-        <div class="bg-black/40 p-2 overflow-hidden aspect-video flex items-center justify-center">
+    galleryGrid.innerHTML = ALL_SLIDES.map((slide, idx) => `
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition cursor-pointer group shadow-lg flex flex-col justify-between" onclick="window.openSlideModal && window.openSlideModal('${slide.src}', '${slide.title.replace(/'/g, "\\'")}', ${idx})">
+        <div class="relative bg-black/50 p-2 overflow-hidden aspect-video flex items-center justify-center">
           <img src="${slide.src}" alt="${slide.title}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+          <div class="absolute bottom-2 right-2 bg-slate-950/90 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold flex items-center gap-1 shadow backdrop-blur-sm group-hover:bg-amber-500 group-hover:text-slate-950 transition">
+            <i class="fa-solid fa-volume-high text-[10px]"></i>
+            <span>Audio Docente</span>
+          </div>
         </div>
-        <div class="p-3 bg-slate-950/80 border-t border-slate-800/80 space-y-1">
-          <span class="text-[9px] uppercase font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">${slide.unitName}</span>
-          <h5 class="text-xs font-semibold text-slate-200 line-clamp-2 leading-tight">${slide.title}</h5>
+        <div class="p-3 bg-slate-950/80 border-t border-slate-800/80 space-y-2 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[9px] uppercase font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">${slide.unitName}</span>
+              <span class="text-[10px] text-slate-500 font-mono">#${idx + 1}</span>
+            </div>
+            <h5 class="text-xs font-semibold text-slate-200 line-clamp-2 leading-snug group-hover:text-amber-200 transition">${slide.title}</h5>
+          </div>
+          <button class="w-full mt-1.5 py-1 px-2 rounded-lg bg-slate-800/80 group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-300 text-[11px] font-bold transition flex items-center justify-center gap-1.5 border border-slate-700/60">
+            <i class="fa-solid fa-play text-[10px]"></i>
+            <span>Ver y Escuchar Resumen</span>
+          </button>
         </div>
       </div>
     `).join("");
@@ -2363,23 +2744,196 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================================
-     6. MODAL LIGHTBOX PARA DIAPOSITIVAS & ATAJOS DE TECLADO
+     6. MODAL LIGHTBOX PARA DIAPOSITIVAS Y REPRODUCTOR DE AUDIO DOCENTE
      ========================================================================== */
-  window.openSlideModal = (src, caption) => {
+  let slideModalAudioPlayer = new Audio();
+  let isSlideAudioPlaying = false;
+  let isScrubbingSlideAudio = false;
+  let slidePlaybackSpeed = 1.0;
+
+  function setupSlideAudioControls() {
+    const btnPlay = document.getElementById("btnPlaySlideAudio");
+    const btnPlayIcon = document.getElementById("btnPlaySlideAudioIcon");
+    const ping = document.getElementById("slideAudioPulsePing");
+    const slider = document.getElementById("slideAudioSlider");
+    const btnSpeed = document.getElementById("btnSlideAudioSpeed");
+    const currTimeEl = document.getElementById("slideAudioCurrentTime");
+    const totalTimeEl = document.getElementById("slideAudioTotalDuration");
+
+    if (!btnPlay) return;
+
+    function updatePlayUI(playing) {
+      isSlideAudioPlaying = playing;
+      if (btnPlayIcon) {
+        btnPlayIcon.className = playing ? "fa-solid fa-pause text-sm sm:text-base" : "fa-solid fa-play ml-0.5 text-sm sm:text-base";
+      }
+      if (ping) {
+        if (playing) ping.classList.remove("hidden");
+        else ping.classList.add("hidden");
+      }
+    }
+
+    function formatTime(seconds) {
+      if (isNaN(seconds) || seconds < 0) return "0:00";
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    }
+
+    btnPlay.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (!slideModalAudioPlayer.src) return;
+
+      if (isSlideAudioPlaying) {
+        slideModalAudioPlayer.pause();
+        updatePlayUI(false);
+      } else {
+        // Silenciar reproductor de flashcards y TTS para evitar solapamientos
+        if (profAudioPlayer) {
+          profAudioPlayer.pause();
+          isProfAudioPlaying = false;
+          if (typeof updateProfAudioUI === "function") updateProfAudioUI(false);
+        }
+        if (audio) audio.stop();
+
+        if (slideModalAudioPlayer.ended) {
+          slideModalAudioPlayer.currentTime = 0;
+        }
+        slideModalAudioPlayer.playbackRate = slidePlaybackSpeed;
+        slideModalAudioPlayer.play().then(() => {
+          updatePlayUI(true);
+        }).catch(err => {
+          console.warn("Error reproduciendo audio de diapositiva:", err);
+        });
+      }
+    });
+
+    if (btnSpeed) {
+      btnSpeed.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (slidePlaybackSpeed === 1.0) slidePlaybackSpeed = 1.25;
+        else if (slidePlaybackSpeed === 1.25) slidePlaybackSpeed = 1.5;
+        else if (slidePlaybackSpeed === 1.5) slidePlaybackSpeed = 2.0;
+        else slidePlaybackSpeed = 1.0;
+
+        btnSpeed.textContent = `${slidePlaybackSpeed.toFixed(1)}x`;
+        if (slideModalAudioPlayer) slideModalAudioPlayer.playbackRate = slidePlaybackSpeed;
+      });
+    }
+
+    if (slider) {
+      slider.addEventListener("input", (e) => {
+        isScrubbingSlideAudio = true;
+        if (slideModalAudioPlayer && slideModalAudioPlayer.duration) {
+          const previewSec = (parseFloat(e.target.value) / 100) * slideModalAudioPlayer.duration;
+          if (currTimeEl) currTimeEl.textContent = formatTime(previewSec);
+        }
+      });
+
+      slider.addEventListener("change", (e) => {
+        if (slideModalAudioPlayer && slideModalAudioPlayer.duration) {
+          slideModalAudioPlayer.currentTime = (parseFloat(e.target.value) / 100) * slideModalAudioPlayer.duration;
+        }
+        isScrubbingSlideAudio = false;
+      });
+    }
+
+    slideModalAudioPlayer.addEventListener("timeupdate", () => {
+      if (isScrubbingSlideAudio) return;
+      const duration = slideModalAudioPlayer.duration;
+      const current = slideModalAudioPlayer.currentTime;
+      if (!isNaN(duration) && duration > 0) {
+        const progressPercent = (current / duration) * 100;
+        if (slider) slider.value = progressPercent;
+        if (currTimeEl) currTimeEl.textContent = formatTime(current);
+        if (totalTimeEl) totalTimeEl.textContent = formatTime(duration);
+      }
+    });
+
+    slideModalAudioPlayer.addEventListener("loadedmetadata", () => {
+      if (totalTimeEl && !isNaN(slideModalAudioPlayer.duration)) {
+        totalTimeEl.textContent = formatTime(slideModalAudioPlayer.duration);
+      }
+    });
+
+    slideModalAudioPlayer.addEventListener("ended", () => {
+      updatePlayUI(false);
+      if (slider) slider.value = 0;
+      if (currTimeEl) currTimeEl.textContent = "0:00";
+    });
+  }
+
+  window.openSlideModal = (src, caption, index) => {
     const modal = document.getElementById("slideModal");
     const img = document.getElementById("slideModalImage");
     const title = document.getElementById("slideModalTitle");
+    const badge = document.getElementById("slideModalBadge");
+    const keyPointText = document.getElementById("slideKeyPointText");
+    const audioContainer = document.getElementById("slideAudioContainer");
+    const slider = document.getElementById("slideAudioSlider");
+    const currTimeEl = document.getElementById("slideAudioCurrentTime");
+    const totalTimeEl = document.getElementById("slideAudioTotalDuration");
+    const btnPlayIcon = document.getElementById("btnPlaySlideAudioIcon");
+    const ping = document.getElementById("slideAudioPulsePing");
 
-    if (modal && img) {
-      img.src = src;
-      img.alt = caption || "Diapositiva Oficial";
-      if (title) title.textContent = caption || "Diapositiva Oficial de Cátedra";
-      modal.classList.remove("hidden");
+    if (!modal || !img) return;
+
+    // Pausar y resetear audio anterior
+    if (slideModalAudioPlayer) {
+      slideModalAudioPlayer.pause();
+      slideModalAudioPlayer.currentTime = 0;
     }
+    isSlideAudioPlaying = false;
+    if (btnPlayIcon) btnPlayIcon.className = "fa-solid fa-play ml-0.5 text-sm sm:text-base";
+    if (ping) ping.classList.add("hidden");
+    if (slider) slider.value = 0;
+    if (currTimeEl) currTimeEl.textContent = "0:00";
+
+    // Buscar slide en ALL_SLIDES por índice, src o título
+    let slide = null;
+    if (typeof index === "number" && ALL_SLIDES[index]) {
+      slide = ALL_SLIDES[index];
+    } else if (src) {
+      slide = ALL_SLIDES.find(s => s.src === src);
+    }
+    if (!slide && caption) {
+      slide = ALL_SLIDES.find(s => s.title === caption);
+    }
+
+    const finalSrc = src || (slide ? slide.src : "");
+    const finalTitle = (slide && slide.title) || caption || "Diapositiva Oficial de Cátedra";
+    const finalUnit = (slide && slide.unitName) || "Cátedra Nutrición Infantil";
+    const finalKeyPoint = (slide && slide.keyPoint) || "Foco de examen y criterio pedagógico oficial de cátedra.";
+
+    img.src = finalSrc;
+    img.alt = finalTitle;
+    if (title) title.textContent = finalTitle;
+    if (badge) badge.textContent = finalUnit;
+    if (keyPointText) keyPointText.textContent = finalKeyPoint;
+
+    if (slide && slide.audio) {
+      if (audioContainer) audioContainer.classList.remove("hidden");
+      slideModalAudioPlayer.src = slide.audio;
+      slideModalAudioPlayer.playbackRate = slidePlaybackSpeed;
+      if (totalTimeEl) totalTimeEl.textContent = "--:--";
+    } else {
+      if (audioContainer) audioContainer.classList.add("hidden");
+    }
+
+    modal.classList.remove("hidden");
   };
 
   window.closeSlideModal = () => {
     const modal = document.getElementById("slideModal");
+    if (slideModalAudioPlayer) {
+      slideModalAudioPlayer.pause();
+      slideModalAudioPlayer.currentTime = 0;
+    }
+    isSlideAudioPlaying = false;
+    const btnPlayIcon = document.getElementById("btnPlaySlideAudioIcon");
+    const ping = document.getElementById("slideAudioPulsePing");
+    if (btnPlayIcon) btnPlayIcon.className = "fa-solid fa-play ml-0.5 text-sm sm:text-base";
+    if (ping) ping.classList.add("hidden");
     if (modal) modal.classList.add("hidden");
   };
 
