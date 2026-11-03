@@ -1312,7 +1312,7 @@ function setupOralExamDashboard() {
       btnStop.addEventListener("click", async () => {
         if (!recorder || !recorder.isRecording) return;
         btnStop.disabled = true;
-        btnStop.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo audio con Whisper...';
+        btnStop.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo audio...';
         btnStop.classList.remove("recording-pulse");
         if (transcriptStatus) {
           transcriptStatus.innerHTML = '<span class="text-indigo-400 font-semibold animate-pulse flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Procesando audio con alta precisión fonética...</span>';
@@ -1734,7 +1734,7 @@ function setupOralExamDashboard() {
     }
 
     Swal.fire({
-      title: '<span class="text-base font-black text-white">Corrección Quirúrgica de Palabra</span>',
+      title: '<span class="text-base font-black text-white">Corregir Palabra</span>',
       html: `
         <div class="text-left text-xs space-y-3">
           <p class="text-slate-300">
@@ -1754,13 +1754,6 @@ function setupOralExamDashboard() {
                    spellcheck="false" 
                    placeholder="Ej: bioequivalente" 
                    class="w-full px-3 py-2 bg-slate-900 border border-indigo-500/70 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center">
-          </div>
-          <div class="text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 flex items-start gap-2">
-            <i class="fa-solid fa-shield-halved text-amber-400 mt-0.5"></i>
-            <div>
-              <p class="font-bold">Seguridad Anti-Copia Activa:</p>
-              <p class="text-slate-400">Pegar texto (Ctrl+V) y barra espaciadora están estrictamente bloqueados. Solo puedes escribir una palabra concreta.</p>
-            </div>
           </div>
         </div>
       `,
@@ -1782,14 +1775,14 @@ function setupOralExamDashboard() {
         // 1. Anti-Paste: Bloquear pegado absoluto
         input.addEventListener('paste', (e) => {
           e.preventDefault();
-          Swal.showValidationMessage('⚠️ Prohibido pegar texto en el examen oral. Debes escribir la palabra.');
+          Swal.showValidationMessage('Solo se permite escribir la palabra directamente.');
         });
 
         // 2. Anti-Space: Bloquear barra espaciadora
         input.addEventListener('keydown', (e) => {
           if (e.key === ' ' || e.code === 'Space') {
             e.preventDefault();
-            Swal.showValidationMessage('⚠️ Solo 1 palabra concreta. Los espacios no están permitidos.');
+            Swal.showValidationMessage('Solo 1 palabra (sin espacios).');
           }
         });
 

@@ -659,3 +659,11 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
          - El evento `keydown` intercepta la barra espaciadora (`e.key === ' ' || e.code === 'Space'`), prohibiendo oraciones completas y limitando la edición a un vocablo puntual.
       5. *Sustitución Quirúrgica y Persistencia en Memoria*: La función `applyWordCorrection` reemplaza únicamente la palabra seleccionada en el índice exacto dentro de `currentQuestionTranscript`, actualiza el contador de correcciones `#oralWordEditCounter`, persiste la respuesta en `oralStudentAnswers` y actualiza la visualización de chips al instante.
       6. *SweetAlert2 y Cache Busters*: Se añadió SweetAlert2 (`cdn.jsdelivr.net/npm/sweetalert2@11`) en el `<head>` de ambos parciales (1° y 2°) y se versionaron los scripts con `?v=5.0` en `index.html` para evitar caché en navegadores móviles.
+
+56. **Limpieza de Avisos de Seguridad y Desacople de Menciones Técnicas de Whisper (03/11/2026)**:
+    - **Contexto**: Germán indicó expresamente: *"podrias eliminar ese cartel de seguridad anti copia activa. y lo que dice whisper no es informacion relevante"*. Se requería una interfaz docente limpia, minimalista y libre de ruidos técnicos o alertas intimidatorias innecesarias para el estudiante.
+    - **Ajustes Realizados**:
+      1. *Eliminación del Cartel de Seguridad Anti-Copia*: Se suprimió el bloque visual ámbar (`Seguridad Anti-Copia Activa`) dentro del modal SweetAlert2, así como el texto inferior con ícono de candado en `#oralLiveTranscriptWrapper`. Las restricciones de integridad académica (bloqueo de pegado de texto y restricción a palabra individual) se mantienen activas de forma silenciosa en segundo plano.
+      2. *Supresión de Menciones a 'Whisper' en la Interfaz*: Los mensajes hacia el estudiante se simplificaron a *"Transcribiendo audio..."*, ocultando detalles de implementación interna irrelevantes para el alumno.
+      3. *Títulos y Mensajes Más Claros*: Se renombró el modal a *"Corregir Palabra"* y se actualizaron los mensajes de validación a textos directos y amables (*"Solo se permite escribir la palabra directamente."* y *"Solo 1 palabra (sin espacios)."*).
+      4. *Sincronización en Parcial 1 y Parcial 2*: Se aplicó la misma limpieza en ambos parciales y se actualizaron los cache-busters a `?v=5.1`.
