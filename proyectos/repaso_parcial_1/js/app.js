@@ -1249,6 +1249,13 @@ function setupOralExamDashboard() {
     const timerBadge = document.getElementById("oralTimerBadge");
     const transcriptStatus = document.getElementById("transcriptionStatus");
     const transcriptTextarea = document.getElementById("oralTranscriptTextarea");
+    if (transcriptTextarea && !transcriptTextarea.dataset.boundInput) {
+      transcriptTextarea.dataset.boundInput = "true";
+      transcriptTextarea.addEventListener("input", () => {
+        saveCurrentOralAnswer();
+      });
+    }
+
     const savedBadge = document.getElementById("oralAudioSavedBadge");
     const playerWrapper = document.getElementById("oralPlaybackWrapper");
     const player = document.getElementById("oralRecordedPlayer");
@@ -1582,8 +1589,10 @@ function setupOralExamDashboard() {
       question: q.question,
       officialAnswer: q.answer,
       keyPoints: q.keyPoints || [],
+      keywords: q.keywords || [],
       slideImage: q.slideImage || null,
       slideCaption: q.slideCaption || null,
+      studentTranscript: "",
       transcript: "",
       audioUrl: null,
       durationSecs: 0
@@ -1663,6 +1672,7 @@ function setupOralExamDashboard() {
     const currentText = transcriptTextarea.value.trim();
     if (oralStudentAnswers[oralExamCurrentIndex]) {
       oralStudentAnswers[oralExamCurrentIndex].transcript = currentText;
+      oralStudentAnswers[oralExamCurrentIndex].studentTranscript = currentText;
       if (audioUrl) oralStudentAnswers[oralExamCurrentIndex].audioUrl = audioUrl;
       if (durationSecs) oralStudentAnswers[oralExamCurrentIndex].durationSecs = durationSecs;
     }
@@ -1671,7 +1681,11 @@ function setupOralExamDashboard() {
   async function submitOralExamToAI() {
     saveCurrentOralAnswer();
 
-    const emptyAnswers = oralStudentAnswers.filter(a => !a.transcript || a.transcript.trim().length === 0);
+    const emptyAnswers = oralStudentAnswers.filter(a => {
+      const t = (a.studentTranscript || a.transcript || "").trim();
+      return !t || t.length === 0;
+    });
+
     if (emptyAnswers.length === oralStudentAnswers.length) {
       alert("No has respondido ninguna pregunta aún. Graba tu voz o escribe tus respuestas antes de evaluar.");
       return;
@@ -1685,13 +1699,20 @@ function setupOralExamDashboard() {
     const studentName = sm.state.studentName || "Estudiante UNSTA";
     const up = sm.state.up || "UNSTA";
 
-    const examItems = oralExamQuestions.map((q, idx) => ({
-      questionNumber: idx + 1,
-      question: q.question,
-      officialAnswer: q.answer,
-      keyPoints: q.keyPoints || [],
-      studentAnswer: oralStudentAnswers[idx]?.transcript || "Sin respuesta oral registrada."
-    }));
+    const examItems = oralExamQuestions.map((q, idx) => {
+      const ans = oralStudentAnswers[idx];
+      const text = (ans?.studentTranscript || ans?.transcript || "").trim();
+      return {
+        questionNumber: idx + 1,
+        question: q.question,
+        officialAnswer: q.answer,
+        keyPoints: q.keyPoints || [],
+        keywords: q.keywords || [],
+        studentTranscript: text || "Sin respuesta oral registrada.",
+        studentAnswer: text || "Sin respuesta oral registrada.",
+        durationSecs: ans?.durationSecs || 0
+      };
+    });
 
     // Pantalla de carga
     const transcriptStatus = document.getElementById("transcriptionStatus");
@@ -1705,7 +1726,7 @@ function setupOralExamDashboard() {
     } catch (err) {
       console.error("Error evaluando examen con IA:", err);
       alert("Ocurrió un inconveniente al conectar con el Evaluador Docente de IA. Se utilizará la evaluación de contingencia.");
-      const fallbackResult = ai.localFallbackEvaluation(examItems);
+      const fallbackResult = ai.evaluateLocally(studentName, up, examItems);
       displayOralResults(fallbackResult);
     }
   }

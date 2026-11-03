@@ -637,3 +637,13 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       1. *Grabación Limpia sin Duplicaciones*: Durante la grabación, `onTranscript` pasa como `null`, permitiendo que el alumno hable con naturalidad mientras corre el cronómetro con límite de 40 segundos sin contaminar el cuadro de texto.
       2. *Transcripción de Máxima Precisión con Whisper*: Al pulsar 'Terminar de Hablar', el archivo de audio real (`audioBlob`) es procesado en una sola pasada mediante **Whisper (`whisper-large-v3-turbo` vía Groq API)**, entregando una transcripción limpia, ortográficamente impecable y sin palabras repetidas.
       3. *Reproductor Integrado y Verificación*: Se añadió el reproductor de audio (`<audio controls>`) y la insignia verde de `Audio Registrado` para que el estudiante pueda escuchar su grabación y corregir cualquier término antes de pasar a la siguiente pregunta.
+
+54. **Sincronización del Payload de Transcripciones hacia el Evaluador de IA (03/11/2026)**:
+    - **Contexto**: Germán reportó que al rendir el examen oral del 1° Parcial la evaluación devolvía 1 punto alegando que no se había registrado respuesta, a pesar de que la transcripción y el audio se visualizaban correctamente en pantalla.
+    - **Causa Raíz Diagnosticada**:
+      - Discrepancia en la denominación de la propiedad en el payload: `app.js` empaquetaba la respuesta del estudiante bajo la clave `studentAnswer`, mientras que `ai_evaluator.js` construía el prompt leyendo `item.studentTranscript`. Al llegar como `undefined`, el evaluador interpretaba que el alumno guardó silencio y evaluaba la respuesta como vacía.
+      - Además, la llamada de emergencia en caso de caída de API invocaba `ai.localFallbackEvaluation` en vez del método real `ai.evaluateLocally`.
+    - **Solución Implementada**:
+      1. *Contrato de Datos Unificado y Polimórfico*: `app.js` ahora despacha tanto `studentTranscript` como `studentAnswer`. En `ai_evaluator.js`, la lectura se blindó para resolver `item.studentTranscript || item.studentAnswer || item.transcript`.
+      2. *Sincronización Reactiva en Tiempo Real*: Se enlazó el evento `input` al `oralTranscriptTextarea` para que cualquier tipeo o transcripción se asiente de inmediato en el estado en memoria (`oralStudentAnswers`).
+      3. *Corrección del Fallback Local*: Se enlazó correctamente `ai.evaluateLocally(studentName, up, examItems)`.

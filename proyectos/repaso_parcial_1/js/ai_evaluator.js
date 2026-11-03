@@ -158,7 +158,7 @@ Enunciado: "${item.question}"
 Respuesta Oficial de Cátedra: "${item.officialAnswer}"
 Criterios Clave Exigidos: ${JSON.stringify(item.keyPoints || [])}
 Palabras Clave: ${JSON.stringify(item.keywords || [])}
-Respuesta Oral del Estudiante (Transcripción): "${item.studentTranscript || '(Sin respuesta / silencio)'}"
+Respuesta Oral del Estudiante (Transcripción): "${(item.studentTranscript || item.studentAnswer || item.transcript || "").trim() || '(Sin respuesta / silencio)'}"
 `).join("\n---\n") +
       `\n\nEvalúa rigurosamente cada pregunta y responde ÚNICAMENTE con el bloque JSON solicitado.`;
 
@@ -295,7 +295,7 @@ Respuesta Oral del Estudiante (Transcripción): "${item.studentTranscript || '(S
 
   evaluateLocally(studentName, up, examItems) {
     const reviews = examItems.map((item, idx) => {
-      const trans = (item.studentTranscript || "").toLowerCase();
+      const trans = (item.studentTranscript || item.studentAnswer || item.transcript || "").toLowerCase();
       const keywords = item.keywords || [];
       let matches = 0;
       keywords.forEach(kw => {
