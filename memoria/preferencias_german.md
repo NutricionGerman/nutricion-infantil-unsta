@@ -292,6 +292,11 @@ Este archivo registra las preferencias generales de trabajo de Germán para la C
     - **Estado de Trabajo Integrador Final**: Todos los alumnos tienen el Trabajo Integrador presentado. Los integrantes de los Grupos 1, 5 y 6 lo tienen además defendido exitosamente. A Roberto Hardie y Agustín Linares les falta defenderlo (Presentado: Sí, Defendido: No).
     - Priorizar y tener siempre presente este reconocimiento en auditorías, seguimiento pedagógico y cuadros de honor.
 
+36. **Diseño de Herramientas de Repaso y Flashcards (Concisión y Primacía de Diapositivas · 02/11/2026)**:
+    - **Respuestas Concisas y Puntuales**: Evitar textos largos o explicaciones teóricas extensas. Las tarjetas y respuestas deben contener información directa, precisa y al grano (bullet points concisos con datos clínicos exactos).
+    - **Primacía Absoluta de Diapositivas sobre PDFs**: El material evaluable prioritario es lo presentado explícitamente en las diapositivas de clase por la docente (tablas de diluciones, medidas al ras, porcentajes, tiempos de introducción y clasificaciones prácticas).
+    - **Recortes Visuales Integrados**: Incorporar capturas y recortes visuales de las diapositivas de clase directamente en las tarjetas y respuestas formativas para anclaje visual y reconocimiento inmediato de gráficos, tablas y esquemas explicados en clase.
+
 
 
 

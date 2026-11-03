@@ -8870,6 +8870,8 @@
 
                     <li><button class="nav-button" data-tab-target="#panel-contacto"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
 
+                    <li><button class="nav-button" onclick="goToRepasoParcial1()" style="color: #38bdf8; font-weight: 700; border: 1px solid rgba(56, 189, 248, 0.5); background: rgba(14, 165, 233, 0.18); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);"><i class="fas fa-graduation-cap"></i> 1° Parcial <span style="display:inline-block; width:7px; height:7px; background:#38bdf8; border-radius:50%; box-shadow:0 0 8px #38bdf8;"></span></button></li>
+
                     <li><button class="nav-button" onclick="goToRepasoParcial2()" style="color: #a5b4fc; font-weight: 700; border: 1px solid rgba(129, 140, 248, 0.5); background: rgba(99, 102, 241, 0.18); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);"><i class="fas fa-microphone-alt"></i> 2° Parcial <span style="display:inline-block; width:7px; height:7px; background:#818cf8; border-radius:50%; box-shadow:0 0 8px #818cf8;"></span></button></li>
 
                 </ul>
@@ -8889,6 +8891,8 @@
         <div class="mobile-logo">Nutrición Infantil</div>
 
         <div style="display: flex; align-items: center; gap: 8px;">
+
+            <button onclick="goToRepasoParcial1()" style="background: rgba(14, 165, 233, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8; font-size: 0.75rem; font-weight: 700; border-radius: 6px; padding: 5px 8px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><i class="fas fa-graduation-cap"></i> 1° Parcial</button>
 
             <button onclick="goToRepasoParcial2()" style="background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(129, 140, 248, 0.5); color: #a5b4fc; font-size: 0.78rem; font-weight: 700; border-radius: 6px; padding: 5px 9px; display: flex; align-items: center; gap: 5px; cursor: pointer;"><i class="fas fa-microphone-alt"></i> 2° Parcial</button>
 
@@ -8915,6 +8919,8 @@
         </div>
 
         <ul class="mobile-side-nav-list">
+
+            <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); goToRepasoParcial1();" style="color: #38bdf8; font-weight: 700; background: rgba(14, 165, 233, 0.15); border-color: rgba(56, 189, 248, 0.4);"><i class="fas fa-graduation-cap"></i> 📚 1° Parcial Teórico & Práctico</button></li>
 
             <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); goToRepasoParcial2(null, null, 'evaluacion');" style="color: #a5b4fc; font-weight: 700; background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4);"><i class="fas fa-microphone-alt"></i> 🎙️ 2° Parcial Teórico (Mesa Oral)</button></li>
 
@@ -20056,6 +20062,42 @@ function displayTpIntegradorDashboardView() {
 
                                 <div class="dashboard-grid">
 
+                    <!-- 1° Parcial Teórico & Práctico · Repaso & Taller - ¡DESTACADO CYAN NEÓN! -->
+
+                    <div class="dash-interactive-row stat-card" onclick="goToRepasoParcial1()" style="--card-rgb: 14, 165, 233; border: 1.5px solid rgba(56, 189, 248, 0.7); background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%); box-shadow: 0 4px 22px rgba(14, 165, 233, 0.35); cursor: pointer; position: relative;">
+
+                        <div class="di-icon-box" style="background: rgba(14, 165, 233, 0.28); color: #38bdf8; font-size: 1.25rem;"><i class="fas fa-graduation-cap"></i></div>
+
+                        <div class="di-content">
+
+                            <div style="display:flex; align-items:center; gap:8px;">
+
+                                <h3 class="di-title" style="color: #bae6fd; font-weight: 800;">📚 1° Parcial Teórico & Práctico</h3>
+
+                                <span style="background: #0284c7; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 999px; text-transform: uppercase;">Nuevo</span>
+
+                            </div>
+
+                            <p class="di-subtitle" style="color: #94a3b8;">49 tarjetas Anki, 10 parciales orales IA y test práctico de mamaderas</p>
+
+                        </div>
+
+                        <div class="di-stat-box">
+
+                            <span class="di-stat" style="background: rgba(14, 165, 233, 0.25); color: #bae6fd; border-color: rgba(56, 189, 248, 0.5); font-weight: 700;">
+
+                                <i class="fas fa-play" style="font-size: 10px; margin-right: 4px;"></i> Ingresar
+
+                            </span>
+
+                            <i class="fas fa-arrow-right di-chevron" style="color: #38bdf8;"></i>
+
+                        </div>
+
+                    </div>
+
+
+
                     <!-- 2° Parcial Teórico · Mesa Oral & Repaso - ¡DESTACADO VIOLETA NEÓN! -->
 
                     <div class="dash-interactive-row stat-card" onclick="goToRepasoParcial2()" style="--card-rgb: 99, 102, 241; border: 1.5px solid rgba(129, 140, 248, 0.7); background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%); box-shadow: 0 4px 22px rgba(99, 102, 241, 0.35); cursor: pointer; position: relative;">
@@ -26094,6 +26136,58 @@ function displayTpIntegradorDashboardView() {
                     searchStudentPortal(up);
 
                 }
+
+            };
+
+
+
+            window.goToRepasoParcial1 = function(up, name, tab) {
+
+                if (!up || up === 'undefined' || up === 'null') {
+
+                    const activeUP = sessionStorage.getItem('aw_authenticated_up') || window.loggedInStudentUP || window.currentStudentUP || localStorage.getItem('userUP');
+
+                    if (activeUP) {
+
+                        up = activeUP;
+
+                        const student = (window.fullData && window.fullData.students) ? window.fullData.students.find(s => String(s.up).trim() === String(activeUP).trim()) : window.currentStudentData;
+
+                        if (student && (!name || name === 'undefined')) {
+
+                            name = student.name || student.nombre || '';
+
+                        }
+
+                    }
+
+                }
+
+                let target = 'proyectos/repaso_parcial_1/index.html';
+
+                const queryParts = [];
+
+                if (up && up !== 'undefined' && up !== 'null') {
+
+                    queryParts.push(`up=${encodeURIComponent(up)}`);
+
+                }
+
+                if (name && name !== 'undefined' && name !== 'null') {
+
+                    queryParts.push(`name=${encodeURIComponent(name)}`);
+
+                }
+
+                if (tab) {
+
+                    queryParts.push(`tab=${encodeURIComponent(tab)}`);
+
+                }
+
+                const query = queryParts.join('&');
+
+                window.location.href = query ? `${target}?${query}` : target;
 
             };
 

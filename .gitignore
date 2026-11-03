@@ -65,3 +65,7 @@ students_list.txt
 **/montajes/
 **/verificaciones/
 **/pruebas_diseno/
+ 
+# Material crudo y planillas locales
+1 parcial/
+*.xlsx

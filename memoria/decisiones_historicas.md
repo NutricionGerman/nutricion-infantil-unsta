@@ -519,3 +519,91 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       4. *Persistencia*: Registro dual en Firestore (`tp_integrador_submissions/g_X` y `grupos/g_X`) y almacenamiento en caché local.
       5. *Herramientas Docentes*: Visualización en tiempo real de entregas, botón directo a PDF, enlace Canva/anexo, lista de integrantes y exportación a planilla CSV/Excel.
       6. *Despliegue*: Se actualizó `version.json` a `2026.11.01.v117`, comiteado con prefijo `Feat:` y pusheado a GitHub Pages (`master`).
+
+44. **Arquitectura y Preparación del Repaso del 1° Parcial Teórico (02/11/2026)**:
+    - **Contexto**: A solicitud de Germán, se procesó todo el material teórico subido por la profesora Mariana Mohedano correspondiente al Primer Parcial (carpeta `1 parcial/`).
+    - **Material Procesado**:
+      * Extracción de texto completo de los 7 PDFs oficiales (Guía Crianzas 1000 Días, Nutrición Prematuros 2016, Guía 0 a 2 años, Libro Verde SAP 2013, AEP Dificultades en Lactancia, Alimentación Complementaria) archivados en `1 parcial/textos_extraidos/`.
+      * Análisis exhaustivo de los fotogramas y diapositivas de las clases grabadas (Primeros 1000 Días, Recién Nacido, Prematuros RNPT, Valoración Nutricional, Lactancia Materna, Formulación Pediátrica y Alimentación Complementaria).
+    - **Diseño Arquitectónico Modular**:
+      * Carpeta independiente: `proyectos/repaso_parcial_1/` (respetando aislamiento estricto de producción sin tocar `index.html`).
+      * 5 Unidades Temáticas y 10 Módulos de Dominio con tarjetas interactivas Anki (con audio TTS) y simulador de Examen Oral con IA (10 preguntas por parcial, rúbricas de cátedra y cascada silenciosa Gemini 3.5 Flash -> DeepSeek -> Groq -> Heurístico).
+    - **Directiva de Despliegue**: Probar exclusivamente en local antes de publicar a los alumnos.
+
+45. **Construcción y Lanzamiento Local del Módulo de Repaso 1° Parcial con Recortes de Diapositivas y Respuestas Clínicas Puntuales (02/11/2026)**:
+    - **Contexto**: Siguiendo las directivas pedagógicas de Germán (respuestas directas y concisas en viñetas, prioridad a las diapositivas oficiales de la Lic. Mariana Mohedano por sobre los PDFs, e incorporación de recortes visuales de las diapositivas en las respuestas y devoluciones de la IA).
+    - **Componentes Construidos**:
+      1. *Banco de Tarjetas Concisas con Recortes (`js/data_flashcards.js`)*: 37 tarjetas organizadas en 10 sub-mazos (5 unidades). Cada tarjeta cuenta con viñetas clínicas de alto impacto, puntos clave exigidos en examen y referencia al recorte visual oficial de la diapositiva (`assets/slides/`).
+      2. *Motor de Interfaz y Lógica (`js/app.js`)*:
+         - Navegación en 4 pestañas: Tarjetas & Recortes, Examen Oral con IA, Calculadora & Slides, y Dominio & XP.
+         - Visor 3D Anki con audio TTS (pregunta y respuesta), ecualizador animado, sistema Leitner (Repetir, Dudé +3 XP, Dominada +10 XP) y atajos de teclado (Espacio, 1, 2, 3, flechas).
+         - Modal Lightbox para ampliar diapositivas en alta resolución (`openSlideModal`).
+         - Tablero de 10 Parciales con cálculo automático de promedio general, insignia de Cuadro de Honor ($\ge 9.0$) y registro de intentos.
+         - Simulador de Examen Oral con grabación MediaRecorder, transcripción de alta precisión vía Whisper (Groq) con edición manual opcional, y evaluación con IA oficial UNSTA (Gemini / DeepSeek / Groq fallback).
+         - **Inclusión Visual de Recortes en las Respuestas**: Cada pregunta evaluada en el informe oral despliega el recorte oficial de la diapositiva que sustenta la consigna con opción de zoom.
+         - *Calculadora Clínica de Biberones y Diluciones*: Cálculo en tiempo real de medidas al ras (4.5g inicio vs 5g continuación), gramos de polvo, porcentaje de dilución (13.5% vs 15%) y aporte calórico.
+         - *Galería de Diapositivas Oficiales*: Catálogo completo de las 45 diapositivas categorizadas por unidad con visualizador.
+      3. *Servidor Local de Pruebas*: Levantado en `http://localhost:8000/proyectos/repaso_parcial_1/index.html` para verificación previa sin tocar el portal central (`index.html`).
+
+46. **Integración de Recortes de Audio Reales de la Profesora (Mariana Mohedano) en las Tarjetas (02/11/2026)**:
+    - **Contexto**: Germán solicitó incorporar pequeños fragmentos de audio reales de la docente explicando los conceptos en al menos 20 tarjetas, aprovechando los videos grabados.
+    - **Implementación Técnica**:
+      * Extracción precisa con `ffmpeg` de **38 clips de audio originales** (formato MP3 mono 64 kbps, ~300 KB cada uno, entre 22s y 45s de duración) sincronizados con los fotogramas de cambio de diapositiva de cada clase.
+      * Almacenados en `proyectos/repaso_parcial_1/assets/audio_profesora/profe_[card_id].mp3`.
+      * Botón interactivo de reproducción en el dorso de cada tarjeta: `[ 🎙️ Explicación de la Profe Mariana (0:45) ▶ ]` con control de pausa, onda animada y detención automática al voltear o cambiar de tarjeta.
+      * Actualización de `data_flashcards.js`, `index.html` y `app.js`.
+
+47. **Re-extracción de Audios Completos de Clase sin Cortes y Mini-Reproductor Interactivo (02/11/2026)**:
+    - **Contexto**: Germán detectó en las pruebas que los audios de la docente se cortaban a los 45s antes de que terminara de explicar el punto (ej. en RCIU, Diluciones o 1000 Días la explicación dura de 1 a 2 minutos).
+    - **Solución Implementada**:
+      * Se eliminó el tope artificial de 45 segundos y se re-extrajeron los **38 audios con la duración completa y natural** de cada diapositiva (hasta el cambio exacto de filmina en la clase grabada).
+      * Se integró un **Mini-Reproductor de Audio Avanzado** en el dorso de la tarjeta con:
+        - Botón de Reproducción / Pausa.
+        - Contador de tiempo en vivo (`0:15 / 1:49`).
+        - **Barra de Progreso Interactiva**: Permite adelantar o rebobinar el audio haciendo clic sobre la barra.
+
+48. **Corrección de Pausa/Reanudación y Deslizador de Audio Interactivo Estilo WhatsApp (02/11/2026)**:
+    - **Problema Reportado por Germán**:
+      1. Al pausar el audio de la profesora y presionar nuevamente play, el reproductor volvía a comenzar desde el segundo 0 en vez de reanudar donde se había pausado.
+      2. Se solicitó que funcione como los audios de WhatsApp: con un deslizador (*seeker / scrubber*) arrastrable para adelantar o retroceder libremente.
+    - **Causa Raíz Identificada**:
+      - En el manejador del botón de reproducción se re-asignaba `profAudioPlayer.src = currentCard.profAudio;` en cada clic, lo que reinicializaba el elemento `HTMLMediaElement` y restablecía `currentTime = 0`.
+    - **Solución Implementada**:
+      1. *Reanudación Perfecta*: Ahora solo se asigna `src` al cargar la tarjeta en `renderCurrentCard()` o si el audio finalizó (`ended`), permitiendo pausar y reanudar exactamente en el segundo donde quedó.
+      2. *Deslizador Tipo WhatsApp (`wa-slider`)*:
+         - Control deslizante interactivo con `<input type="range">` estilizado con degradado dinámico (púrpura a la izquierda para la porción reproducida y pizarra a la derecha).
+         - Botón circular de arrastre (*thumb*) con efecto resplandor que responde fluidamente tanto a clic directo como a arrastre continuo con el dedo (móvil) o con el ratón.
+         - Actualización en tiempo real del tiempo transcurrido (`0:35 / 1:49`) durante el arrastre sin saltos ni interrupciones.
+      3. *Selector de Velocidad de Reproducción (1x, 1.25x, 1.5x, 2x)*:
+         - Botón integrado en el reproductor que permite acelerar la explicación de la docente tal como en WhatsApp.
+
+49. **Incorporación del Módulo Práctico: Taller de Armado de Mamaderas y Curvas Gestacionales (Calvo et al. vs IOM 2009) (02/11/2026)**:
+    - **Contexto**: A solicitud de Germán, se incorporó la instancia práctica al repaso del Primer Parcial (`proyectos/repaso_parcial_1/`), articulando los puntos críticos del taller presencial y las herramientas clínicas oficiales (`valora-gest` y calculadora de mamaderas).
+    - **Ejes Integrados**:
+      1. *Taller de Armado de Mamaderas (Biberones)*:
+         - 7 pasos secuenciales y técnica antiséptica previa.
+         - Temperatura bactericida de 70 °C (inactivación de *Cronobacter sakazakii* y *Salmonella* en polvos no estériles; máximo 30 min de enfriamiento).
+         - Regla innegociable de agua caliente primero a la altura de los ojos en superficie plana (prevenir hiperconcentración y deshidratación hipernatrémica).
+         - Medición al ras sin compactar (1 medida por 30 ml de agua, ~13.5% a 15%).
+         - Rotación suave entre palmas evitando efecto coctelera (prevención de aerofagia, meteorismo y cólicos).
+         - Prueba térmica en cara interna de muñeca a ~37 °C.
+         - Descarte obligatorio e innegociable de cualquier sobrante a los 60 minutos (prohibido guardar, recalentar o reutilizar).
+      2. *Valoración Antropométrica Gestacional (Calvo 2009 vs. IOM 2009)*:
+         - *Gráfica de Calvo et al. (2009)*: IMC para Edad Gestacional (semanas 6 a 42), referencia argentina en puntajes Z (-1 SD bajo peso/RCIU, +1 SD sobrepeso/macrosomía). Diagnóstico de situación actual y canalización longitudinal sin requerir peso pregravídico.
+         - *Recomendaciones IOM (2009)*: Metas de ganancia ponderal total en kg y tasa semanal según IMC pregestacional. Fija la meta cuantitativa al término y gradúa el superávit calórico trimestral (+340 kcal / +452 kcal).
+         - *Complementariedad Clínica*: Calvo responde "¿Dónde está hoy parada la gestante?" vs IOM que responde "¿Cuánto y a qué ritmo debe subir de peso?".
+    - **Componentes Creados**:
+      - 10 nuevas tarjetas Anki de alto impacto clasificadas como "🔥 Foco de Examen" (`pract_1` a `pract_10`).
+      - Fotogramas reales extraídos de la clase grabada (`pract_mamadera_*.png`) e infografías clínicas de curvas gestacionales (`pract_calvo_*.png` y `pract_iom_*.png`).
+      - Habilitación del **Parcial 11 (Módulo Práctico)** con **Evaluación de Opción Móltiple (10 preguntas, determinística y sin IA)**:
+        - A solicitud expresa de Germán, la evaluación del Módulo Práctico se realiza mediante un test de selección móltiple de 4 opciones (A, B, C, D) con 10 preguntas de alta precisión clínica.
+        - Cuenta con navegación por botones y puntos interactivos (1 al 10), recortes de diapositivas vinculados a cada pregunta, corrección automática inmediata, otorgamiento de XP, devolución cualitativa y desglose con la justificación docente oficial de cada opción.
+
+50. **Puesta Online del Repaso 1° Parcial e Integración en Portal Central (03/11/2026)**:
+    - **Contexto**: A solicitud explícita de Germán ("muy bien lo puedes poner online, como repaso 1° parcial. seria otro boton distinto al del 2° parcial"), se integró el acceso al 1° Parcial en el portal central oficial (`index.html`) y se desplegó a producción en GitHub Pages.
+    - **Integración de Accesos Diferenciados**:
+      1. *Barra de Navegación de Escritorio*: Botón cian neón (`#38bdf8`) con ícono de birrete (`fas fa-graduation-cap`) y punto de resplandor para "1° Parcial", ubicado inmediatamente antes del botón violeta de "2° Parcial".
+      2. *Cabecera Móvil*: Botón compacto `1° Parcial` visible en teléfonos junto a `2° Parcial`.
+      3. *Menú Lateral Móvil*: Ítem estilizado `📚 1° Parcial Teórico & Práctico`.
+      4. *Fila Interactiva del Dashboard Central*: Tarjeta destacada con gradiente cian y badge "Nuevo" que resume el contenido (49 flashcards Anki, 10 parciales orales IA y test práctico de mamaderas).
+      5. *Función `goToRepasoParcial1()`*: Traspaso transparente de sesión (UP, Nombre del alumno y pestaña activa) hacia `proyectos/repaso_parcial_1/index.html`.
