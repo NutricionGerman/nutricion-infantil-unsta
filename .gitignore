@@ -17,6 +17,8 @@ node_modules/
 !bibliografia/*.pdf
 !catedra/bibliografia/*.pdf
 !catedra/bibliografia/**/*.pdf
+!evaluacion_practica_*.pdf
+!proyectos/**/evaluacion_practica_*.pdf
 
 # Archivos de entorno y logs
 .env

@@ -695,3 +695,20 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       2. *Filtro Sanitizador Preventivo en el Motor de Renderizado (`cleanLatexSymbols`)*: Se incorporó la función defensiva `cleanLatexSymbols(str)` en `app.js` tanto de 1° Parcial como de 2° Parcial, transformando de forma automática símbolos matemáticos comunes (`\rightarrow` / `\to` → `→`, `\leftarrow` → `←`, `\ge` / `\geq` → `≥`, `\le` / `\leq` → `≤`, `\approx` → `≈`, `\pm` → `±`, `\times` → `×`, `^\circ` → `°`, y limpiando delimitadores de dólar sueltos).
       3. *Blindaje de Visualización en Preguntas, Pistas, Respuestas y Puntos Clave*: Se aplicó `cleanLatexSymbols` al asignar el texto de preguntas (`qTextEl`), pistas (`hintEl`), respuestas (`aTextEl`) y lista de puntos clave (`keyPointsContainer`).
       4. *Actualización de Cache Busters*: Se incrementaron a `?v=5.4` en Parcial 1 y `?v=5.3` en Parcial 2 para garantizar la actualización en navegadores móviles.
+
+60. **Generación de Instrumento de Evaluación Práctica en PDF de 1 Sola Carilla (03/11/2026)**:
+    - **Contexto**: Germán solicitó: *"ahora puedes generar un pdf de 1 sola carilla para preguntas de la parte practica (saca 5 preguntas de las que subimos a la plataforma) y dejame el archivo pdf en la carpeta del proyecto"*. Se requería un instrumento impreso o digital de evaluación rápida (1 sola carilla A4) basado estrictamente en el banco oficial de preguntas prácticas de la plataforma (`PRACTICAL_QUIZ_DATA`).
+    - **Selección de Preguntas Prácticas**:
+      1. *Seguridad Microbiológica y Temperatura (OMS/FAO)*: Necesidad de agua a ~70 °C para inactivar *Cronobacter sakazakii* y *Salmonella*.
+      2. *Osmolaridad y Fisiología Renal*: Regla estricta de verter agua antes que polvo para evitar fórmulas hiperconcentradas y deshidratación hipernatrémica.
+      3. *Dosificación y Dilución Reglamentaria*: Medida al ras sin compactar (1 medida cada 30 ml de agua potable).
+      4. *Técnica de Mezcla Palmar vs Coctelera*: Prohibición de agitación vertical vigorosa para evitar incorporación de microburbujas, aerofagia y cólicos.
+      5. *Evaluación Antropométrica Gestacional (Calvo et al., 2009)*: Diagnóstico nutricional puntual por edad gestacional sin requerir peso pregestacional.
+    - **Diseño Tipográfico y Estricto Límite de 1 Carilla**:
+      - Desarrollado con ReportLab en Python (`proyectos/repaso_parcial_1/generar_pdf_evaluacion.py`).
+      - Identidad institucional oficial de la UNSTA con escudo/logo oficial (`iconos/logo.png`), campos de identificación del alumno (Nombre, Legajo/DNI, Comisión, Fecha, Calificación).
+      - Tabla de control de respuestas y firmas (Estudiante y Docente) en el pie para agilizar la corrección presencial.
+      - Ajuste milimétrico de tipografía, leading e interlineado para garantizar que la carilla finalice exactamente a 802.49 pt de 841.89 pt (margen inferior libre de 39.4 pt), asegurando el 100% de cumplimiento de 1 sola carilla.
+    - **Entregables**:
+      - Hoja de Examen del Alumno: `proyectos/repaso_parcial_1/evaluacion_practica_1_parcial.pdf` y `evaluacion_practica_1_parcial.pdf`.
+      - Hoja de Corrección y Clave Docente: `evaluacion_practica_1_parcial_CLAVE_DOCENTE.pdf`.
