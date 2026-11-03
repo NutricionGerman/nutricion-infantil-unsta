@@ -739,3 +739,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
     - **Criterio Institucional Establecido**:
       - La obtención de un aplazo (nota 2) en primera instancia en uno de los parciales **NO inhabilita la promoción** si en la instancia de recuperación se obtiene una calificación de 7 o superior.
       - Al no existir ninguna cláusula restrictiva por escrito en el programa ni advertencia reglamentaria previa, y mediando confirmación escrita formal por la titular, el recuperatorio reemplaza la nota reprobada a todos los efectos del régimen de promoción directa.
+
+63. **Estandarización de Grilla con Marcado en 'X', Clave 'C' Unificada y Carpeta `recuperatorios/` (03/11/2026)**:
+    - **Contexto**: Germán solicitó: *"en este podrias modificar la grilla para que sea que tengan que poner una x al igual que el recuperatorio del 2 parcial. una cosa mas ponme ambos parciales en una carpeta que diga recuperatorios. y que las opciones coincidan siempre que las respuestas correctas sean todas C"*.
+    - **Ajustes y Reingeniería Aplicada**:
+      1. *Estandarización de Grilla*: Se unificó el encabezado del Recuperatorio 1° Parcial para que coincida exactamente con el formato oficial del 2° Parcial: grilla superior con filas para Pregunta 1 a 5 y columnas A, B, C, D con casilleros `[ ] A`, `[ ] B`, `[ ] C`, `[ ] D`, recuadro de calificación `NOTA FINAL / 10 PUNTOS` e instrucciones claras de marcado con 'X'.
+      2. *Patrón de Corrección Unificado (Todas Respuestas 'C')*: En AMBOS recuperatorios (1° y 2° Parcial), todas las 5 preguntas prácticas fueron reordenadas para que la opción correcta sea siempre y sin excepción la letra **`c)`**. En las versiones de Clave Docente, la grilla superior resalta `[X] C` en negrita en todas las filas y en el cuerpo del examen aparece `[X]` en la opción c).
+      3. *Carpeta Centralizada `recuperatorios/`*: Se creó el directorio dedicado `recuperatorios/` en la raíz del proyecto conteniendo:
+         - `recuperatorio_1_parcial_practica.pdf` (Versión Alumno)
+         - `recuperatorio_1_parcial_practica_CLAVE_DOCENTE.pdf` (Versión Docente)
+         - `recuperatorio_2_parcial_practica.pdf` (Versión Alumno)
+         - `recuperatorio_2_parcial_practica_CLAVE_DOCENTE.pdf` (Versión Docente)
+      4. *Cumplimiento Estricto de 1 Carilla*: Verificado mediante script `generar_recuperatorios.py` y PyMuPDF asegurando 1 página exacta en cada PDF.
