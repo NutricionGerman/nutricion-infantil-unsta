@@ -102,7 +102,7 @@
         </button>
         <button id="tabBtn_ranking" onclick="window.switchTab && window.switchTab('ranking')" class="flex-1 py-2.5 px-2 sm:px-4 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center space-x-1 sm:space-x-2 transition text-slate-400 hover:bg-slate-800 cursor-pointer">
           <i class="fa-solid fa-trophy text-amber-400"></i>
-          <span>Dominio & XP</span>
+          <span>Ranking</span>
         </button>
       </div>
     </div>
@@ -731,14 +731,64 @@
     </section>
 
     <!-- ======================================================================
-         SECCIÓN 4: RANKING & DOMINIO
+         SECCIÓN 4: RANKING EN VIVO & CUADRO DE HONOR
          ====================================================================== -->
     <section id="section_ranking" class="hidden space-y-6">
+
+      <!-- Encabezado de la Sección de Ranking -->
+      <div class="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 border-2 border-indigo-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+              UNSTA · Nutrición Infantil
+            </span>
+            <h2 class="text-xl sm:text-2xl font-black text-white mt-2 flex items-center space-x-2">
+              <i class="fa-solid fa-trophy text-amber-400"></i>
+              <span>Ranking de Estudiantes en Vivo · 1° Parcial</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl">
+              Posiciones y calificaciones en tiempo real. Quienes alcanzan promedio <strong>≥ 9.0</strong> ingresan al <strong>Cuadro de Honor</strong> con medalla dorada.
+            </p>
+          </div>
+
+          <!-- Filtros de Orden y Botón Actualizar -->
+          <div class="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
+            <div class="bg-slate-950/80 p-1 rounded-xl border border-slate-800 flex space-x-1 text-xs">
+              <button id="rankFilterOral" class="px-3 py-1.5 rounded-lg font-bold bg-indigo-600 text-white transition flex items-center space-x-1.5 shadow-sm">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>1° Parcial</span>
+              </button>
+              <button id="rankFilterXp" class="px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-bolt"></i>
+                <span>XP Global</span>
+              </button>
+            </div>
+            <button id="btnRefreshRanking" title="Actualizar en vivo" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition flex items-center space-x-1.5">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              <span class="hidden sm:inline">Actualizar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-end text-xs text-slate-400">
+          <div>
+            <span class="text-amber-300 font-bold">👑 Cuadro de Honor:</span> Promedio ≥ 9.0 (+10 XP)
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenedor del Podio Olímpico y la Tabla de Posiciones -->
+      <div id="rankingContainer" class="space-y-6">
+        <!-- Renderizado dinámico desde app.js -->
+      </div>
+
+      <!-- Dominio Temático por Unidad (Progreso de Cátedra) -->
       <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5 shadow-2xl">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-lg font-black text-white">Dominio Integral del 1° Parcial</h3>
-            <p class="text-xs text-slate-400 mt-0.5">Estado de avance en las 5 Unidades Temáticas oficiales de cátedra</p>
+            <h3 class="text-lg font-black text-white">Dominio Temático por Unidad</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Estado de avance en las 5 Unidades Teóricas y el Módulo Práctico</p>
           </div>
           <span id="rankingTotalXpBadge" class="text-xs font-mono font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded-xl border border-indigo-500/20">
             0 XP Acumulados
@@ -746,9 +796,10 @@
         </div>
 
         <div id="masteryProgressBars" class="space-y-3 pt-2">
-          <!-- Barras de progreso de las 5 unidades -->
+          <!-- Barras de progreso de las unidades -->
         </div>
       </div>
+
     </section>
 
   </main>
@@ -769,6 +820,10 @@
       </div>
     </div>
   </div>
+
+  <!-- Firebase SDK para Sincronización Oficial -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts en Orden de Carga -->
   <script src="js/config.js"></script>

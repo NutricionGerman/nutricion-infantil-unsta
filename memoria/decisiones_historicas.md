@@ -607,3 +607,12 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       3. *Menú Lateral Móvil*: Ítem estilizado `📚 1° Parcial Teórico & Práctico`.
       4. *Fila Interactiva del Dashboard Central*: Tarjeta destacada con gradiente cian y badge "Nuevo" que resume el contenido (49 flashcards Anki, 10 parciales orales IA y test práctico de mamaderas).
       5. *Función `goToRepasoParcial1()`*: Traspaso transparente de sesión (UP, Nombre del alumno y pestaña activa) hacia `proyectos/repaso_parcial_1/index.html`.
+
+51. **Incorporación del Ranking en Vivo y Sincronización Firestore en el 1° Parcial (03/11/2026)**:
+    - **Contexto**: A solicitud de Germán ("una cosa mas falta el ranking al igual que en el primer parcial"), se dotó al 1° Parcial de la misma arquitectura de Leaderboard y Cuadro de Honor en tiempo real existente en el 2° Parcial.
+    - **Características Implementadas**:
+      1. *Pestaña Oficial de Ranking*: Renombrada a "Ranking" con ícono de trofeo dorado en la barra de navegación principal.
+      2. *Podio Olímpico de Estudiantes*: Tarjetas destacadas con coronas y medallas para 1° Puesto (Oro), 2° Puesto (Plata) y 3° Puesto (Bronce), con cálculo de distinción de Cuadro de Honor (promedio ≥ 9.0).
+      3. *Tabla de Posiciones Completa*: Lista dinámica con fotos/avatares iniciales, grupo universitario, promedio ponderado, contador de parciales completados sobre 11 y XP total.
+      4. *Filtros de Ordenamiento*: Selector para ordenar por "1° Parcial" o por "XP Global", con botón de refresco en vivo.
+      5. *Sincronización con Firestore (`students`)*: Actualización automática de calificaciones tanto para los 10 parciales orales como para el test práctico de mamaderas.

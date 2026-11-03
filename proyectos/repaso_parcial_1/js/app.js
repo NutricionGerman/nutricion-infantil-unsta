@@ -21,6 +21,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sm.setCardBox) sm.setCardBox = sm.setCardState.bind(sm);
   }
 
+  // Inicialización Segura de Firebase Firestore para Ranking y Sincronización
+  let db = null;
+  if (typeof firebase !== 'undefined') {
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp({
+          projectId: "nutricion-gamificada",
+          appId: "1:811386131905:web:130318ef481274efc1cb40",
+          storageBucket: "nutricion-gamificada.firebasestorage.app",
+          apiKey: "AIzaSyBgt8rf4v_gYbNll7qf8ZRwZonge-8Tty0",
+          authDomain: "nutricion-gamificada.firebaseapp.com",
+          messagingSenderId: "811386131905",
+          projectNumber: "811386131905"
+        });
+      }
+      db = firebase.firestore();
+      console.log("[Firebase] Conectado a nutricion-gamificada para ranking 1° Parcial.");
+    } catch(err) {
+      console.warn("[Firebase] No se pudo inicializar Firebase:", err);
+    }
+  }
+
   // ESTADO GLOBAL DE PESTAÑAS
   let currentSection = "repaso";
 
@@ -193,6 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupRepasoDeck();
   setupOralExamDashboard();
   setupPracticalQuiz();
+  setupRankingSection();
   setupCalculadora();
   setupSlidesGallery();
   setupKeyboardShortcuts();
@@ -1272,6 +1295,9 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: oralStudentAnswers
     });
 
+    // Sincronizar calificación con Firebase Firestore
+    syncExamToFirestore(currentOralPartialKey, { finalGrade, passed: result.passed, isHonor: result.isHonor }, oralStudentAnswers);
+
     // Otorgar XP
     if (finalGrade >= 9.0) sm.addXP(120);
     else if (finalGrade >= 8.0) sm.addXP(80);
@@ -1672,6 +1698,9 @@ document.addEventListener("DOMContentLoaded", () => {
       answers: practQuizUserAnswers
     });
 
+    // Sincronizar calificación con Firebase Firestore
+    syncExamToFirestore("pract_1", { finalGrade, passed, isHonor }, practQuizUserAnswers);
+
     // Otorgar XP
     if (finalGrade >= 9.0) sm.addXP(120);
     else if (finalGrade >= 8.0) sm.addXP(80);
@@ -1837,9 +1866,453 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ==========================================================================
-     5. SECCIÓN 4: DOMINIO & XP
+     5. SECCIÓN 4: RANKING EN VIVO & DOMINIO TEMÁTICO
      ========================================================================== */
+  let rankingSortMode = "oral"; // "oral" o "xp"
+  let cachedStudentsList = null;
+  let cachedPhotosMap = {};
+
+  function setupRankingSection() {
+    const btnFilterOral = document.getElementById("rankFilterOral");
+    const btnFilterXp = document.getElementById("rankFilterXp");
+    const btnRefresh = document.getElementById("btnRefreshRanking");
+
+    if (btnFilterOral && btnFilterXp) {
+      btnFilterOral.addEventListener("click", () => {
+        rankingSortMode = "oral";
+        btnFilterOral.className = "px-3 py-1.5 rounded-lg font-bold bg-indigo-600 text-white transition flex items-center space-x-1.5 shadow-sm";
+        btnFilterXp.className = "px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white transition flex items-center space-x-1.5";
+        if (cachedStudentsList) renderRankingUI(cachedStudentsList);
+      });
+
+      btnFilterXp.addEventListener("click", () => {
+        rankingSortMode = "xp";
+        btnFilterXp.className = "px-3 py-1.5 rounded-lg font-bold bg-indigo-600 text-white transition flex items-center space-x-1.5 shadow-sm";
+        btnFilterOral.className = "px-3 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white transition flex items-center space-x-1.5";
+        if (cachedStudentsList) renderRankingUI(cachedStudentsList);
+      });
+    }
+
+    if (btnRefresh) {
+      btnRefresh.addEventListener("click", () => {
+        const icon = btnRefresh.querySelector("i");
+        if (icon) icon.classList.add("fa-spin");
+        loadRankingData(true).finally(() => {
+          if (icon) icon.classList.remove("fa-spin");
+        });
+      });
+    }
+  }
+
+  function getInitials(name) {
+    if (!name) return "UN";
+    const cleaned = String(name).replace(/[,;]/g, ' ').trim();
+    const parts = cleaned.split(/\s+/).filter(p => p.length > 0);
+    if (parts.length === 0) return "UN";
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function renderInitialsAvatar(name, sizeClass = "w-10 h-10", ringClass = "border border-slate-700") {
+    const initials = getInitials(name);
+    const colors = [
+      "from-indigo-600 to-purple-600",
+      "from-emerald-600 to-teal-700",
+      "from-blue-600 to-cyan-700",
+      "from-rose-600 to-pink-700",
+      "from-amber-600 to-orange-700"
+    ];
+    let hash = 0;
+    const str = String(name || "");
+    for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    const color = colors[Math.abs(hash) % colors.length];
+    return `<div class="${sizeClass} rounded-full bg-gradient-to-br ${color} ${ringClass} flex items-center justify-center font-bold text-white text-xs sm:text-sm shadow-inner shrink-0 select-none">${initials}</div>`;
+  }
+
+  function renderAvatarHtml(student, sizeClass = "w-10 h-10", ringClass = "border border-slate-700") {
+    const safeName = (student.name || 'Estudiante').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const initialsDiv = renderInitialsAvatar(student.name, sizeClass, ringClass);
+
+    if (student.photo && typeof student.photo === 'string' && (student.photo.startsWith('http') || student.photo.startsWith('data:image'))) {
+      return `
+        <div class="relative ${sizeClass} shrink-0 inline-block overflow-hidden rounded-full">
+          ${initialsDiv}
+          <img src="${student.photo}" alt="${safeName}" class="absolute inset-0 w-full h-full rounded-full object-cover ${ringClass} bg-slate-800" onerror="this.remove();">
+        </div>
+      `;
+    }
+    return initialsDiv;
+  }
+
+  async function syncExamToFirestore(partialKey, result, answers) {
+    if (!db) return;
+    const up = String(sm.state.up || "").trim();
+    if (!up || up === "Sin Legajo" || up === "UNSTA") return;
+
+    try {
+      const avgStr = sm.getOverallAverage();
+      const numAvg = (avgStr !== "-") ? parseFloat(avgStr) : 0;
+      const completed = sm.getCompletedPartialsCount();
+      const isHonor = (numAvg >= 9.0 && completed >= 11);
+
+      const studentRef = db.collection('students').doc(up);
+      const studentDoc = await studentRef.get();
+
+      if (studentDoc.exists) {
+        const updateData = {
+          "parcial1OralExams.completedCount": completed,
+          "parcial1OralExams.average": numAvg,
+          "parcial1OralExams.isHonor": isHonor,
+          "parcial1OralExams.lastUpdated": new Date().toISOString(),
+          [`parcial1OralExams.partials.${partialKey}`]: {
+            grade: result.finalGrade,
+            passed: result.passed,
+            date: new Date().toLocaleDateString()
+          }
+        };
+
+        await studentRef.update(updateData);
+        console.log(`[Firestore] Calificación 1° Parcial ${partialKey} guardada en students/${up}.`);
+      }
+
+      await db.collection('parcial1_submissions').doc(`${up}_${partialKey}`).set({
+        up,
+        studentName: sm.state.studentName || "Estudiante UNSTA",
+        partialKey,
+        grade: result.finalGrade,
+        passed: result.passed,
+        timestamp: new Date().toISOString()
+      }, { merge: true });
+
+      cachedStudentsList = null;
+    } catch(err) {
+      console.warn("[Firestore] Error al sincronizar 1° Parcial:", err);
+    }
+  }
+
+  async function loadRankingData(forceRefresh = false) {
+    const container = document.getElementById("rankingContainer");
+    if (!container) return;
+
+    if (cachedStudentsList && !forceRefresh) {
+      renderRankingUI(cachedStudentsList);
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="py-16 text-center space-y-3">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-indigo-400"></i>
+        <p class="text-sm text-slate-400 font-medium">Sincronizando notas y estudiantes en vivo...</p>
+      </div>
+    `;
+
+    try {
+      if (!db) {
+        container.innerHTML = `<div class="p-8 text-center text-rose-400 bg-slate-900 border border-slate-800 rounded-2xl">No se pudo conectar a la base de datos de la cátedra.</div>`;
+        return;
+      }
+
+      // 1. Fotos auxiliares
+      if (Object.keys(cachedPhotosMap).length === 0 || forceRefresh) {
+        try {
+          const photosSnap = await db.collection("student_photos").get();
+          photosSnap.forEach(doc => {
+            const data = doc.data() || {};
+            if (data.photo) cachedPhotosMap[doc.id] = data.photo;
+          });
+          const profilesSnap = await db.collection("student_profiles").get();
+          profilesSnap.forEach(doc => {
+            const data = doc.data() || {};
+            if (data.photo && !cachedPhotosMap[doc.id]) cachedPhotosMap[doc.id] = data.photo;
+          });
+        } catch(e) {
+          console.warn("Carga de fotos auxiliares opcional:", e);
+        }
+      }
+
+      // 2. Colección de estudiantes
+      const studentsSnap = await db.collection("students").get();
+      let list = [];
+
+      studentsSnap.forEach(doc => {
+        const d = doc.data() || {};
+        const up = String(d.up || doc.id).trim();
+
+        if (d.role === 'admin' || up === 'test' || up === 'docente') return;
+
+        const firstName = d.firstName || d.nombre || "";
+        const lastName = d.lastName || d.apellido || "";
+        let fullName = d.name || `${firstName} ${lastName}`.trim();
+        if (!fullName) fullName = `Estudiante (UP ${up})`;
+
+        const photo = cachedPhotosMap[up] || d.avatar || d.photo || null;
+        const xp = Number(d.xp || 0);
+        let group = d.group || d.grupo || "UNSTA";
+        if (typeof group === 'string' && group.startsWith('g_')) {
+          group = `Grupo ${group.replace('g_', '')}`;
+        }
+
+        const p1Data = d.parcial1OralExams || d.oralExams1 || {};
+        let oralAverage = null;
+        if (typeof p1Data.average === 'number') oralAverage = p1Data.average;
+        else if (p1Data.average !== undefined && p1Data.average !== null && p1Data.average !== '') {
+          oralAverage = parseFloat(p1Data.average);
+        } else if (typeof d.parcial1 === 'number') {
+          oralAverage = d.parcial1;
+        }
+
+        const completedCount = Number(p1Data.completedCount || (typeof d.parcial1 === 'number' ? 11 : 0));
+        const isHonor = Boolean(p1Data.isHonor || (oralAverage !== null && oralAverage >= 9.0));
+
+        list.push({
+          up,
+          name: fullName,
+          group,
+          photo,
+          xp,
+          oralAverage,
+          completedCount,
+          isHonor
+        });
+      });
+
+      // Si el estudiante actual tiene datos locales en sm, fusionar
+      const currentUp = String(sm.state.up || "").trim();
+      if (currentUp) {
+        const localAvg = sm.getOverallAverage();
+        const localCompleted = sm.getCompletedPartialsCount();
+        if (localCompleted > 0 && localAvg !== "-") {
+          const numAvg = parseFloat(localAvg);
+          const me = list.find(s => s.up === currentUp);
+          if (me) {
+            if (me.oralAverage === null || localCompleted >= me.completedCount) {
+              me.oralAverage = numAvg;
+              me.completedCount = localCompleted;
+              me.isHonor = (numAvg >= 9.0 && localCompleted >= 11);
+            }
+          } else {
+            list.push({
+              up: currentUp,
+              name: sm.state.studentName || "Estudiante UNSTA",
+              group: "Cátedra",
+              photo: cachedPhotosMap[currentUp] || null,
+              xp: sm.state.xp || 0,
+              oralAverage: numAvg,
+              completedCount: localCompleted,
+              isHonor: (numAvg >= 9.0 && localCompleted >= 11)
+            });
+          }
+        }
+      }
+
+      cachedStudentsList = list;
+      renderRankingUI(list);
+    } catch(err) {
+      console.error("Error al cargar ranking:", err);
+      container.innerHTML = `
+        <div class="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl text-slate-300 space-y-3">
+          <i class="fa-solid fa-triangle-exclamation text-amber-400 text-3xl"></i>
+          <p class="text-sm">Ocurrió un inconveniente al cargar el ranking desde Firestore.</p>
+          <button id="btnRetryRankLoad" class="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-500">
+            Reintentar Conexión
+          </button>
+        </div>
+      `;
+      document.getElementById("btnRetryRankLoad")?.addEventListener("click", () => loadRankingData(true));
+    }
+  }
+
+  function renderRankingUI(students) {
+    const container = document.getElementById("rankingContainer");
+    if (!container) return;
+
+    if (!students || students.length === 0) {
+      container.innerHTML = `
+        <div class="p-8 text-center bg-slate-900 border border-slate-800 rounded-2xl text-slate-400 text-sm">
+          No hay estudiantes registrados actualmente.
+        </div>
+      `;
+      return;
+    }
+
+    const sorted = [...students].sort((a, b) => {
+      if (rankingSortMode === "oral") {
+        if (a.oralAverage !== null && b.oralAverage === null) return -1;
+        if (a.oralAverage === null && b.oralAverage !== null) return 1;
+        if (a.oralAverage !== null && b.oralAverage !== null) {
+          if (b.oralAverage !== a.oralAverage) return b.oralAverage - a.oralAverage;
+          if (b.completedCount !== a.completedCount) return b.completedCount - a.completedCount;
+        }
+        return b.xp - a.xp;
+      } else {
+        if (b.xp !== a.xp) return b.xp - a.xp;
+        if (a.oralAverage !== null && b.oralAverage !== null) return b.oralAverage - a.oralAverage;
+        return 0;
+      }
+    });
+
+    const currentUp = String(sm.state.up || "").trim();
+
+    const top1 = sorted[0];
+    const top2 = sorted[1];
+    const top3 = sorted[2];
+    const rest = sorted.slice(3);
+
+    const renderPodiumCard = (student, place) => {
+      if (!student) {
+        const orderCls = place === 1 ? 'order-1 sm:order-2 mt-0 sm:-mt-6' : (place === 2 ? 'order-2 sm:order-1' : 'order-3 sm:order-3');
+        return `
+          <div class="${orderCls} opacity-40 p-6 border border-dashed border-slate-800 rounded-3xl text-center text-xs text-slate-500 flex flex-col items-center justify-center min-h-[160px] bg-slate-950/30">
+            <i class="fa-solid fa-trophy text-slate-600 text-2xl mb-2"></i>
+            <span class="font-bold text-slate-400">${place}º Puesto</span>
+            <span class="text-[10px] text-slate-600 mt-1">Vacante</span>
+          </div>
+        `;
+      }
+      
+      const isCurrent = currentUp && student.up === currentUp;
+      let placeClass = "";
+      let ringClass = "";
+      let medalIcon = "";
+      let titleBadge = "";
+      let glowClass = "";
+
+      if (place === 1) {
+        placeClass = "order-1 sm:order-2 mt-0 sm:-mt-6 border-amber-500/50 bg-gradient-to-b from-amber-950/30 via-slate-900 to-slate-900";
+        ringClass = "ring-4 ring-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.5)]";
+        medalIcon = '<i class="fa-solid fa-crown text-amber-400 text-xl animate-bounce"></i>';
+        titleBadge = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-amber-400 text-slate-950 tracking-wider">1º Puesto</span>';
+        glowClass = "shadow-[0_0_35px_rgba(245,158,11,0.15)]";
+      } else if (place === 2) {
+        placeClass = "order-2 sm:order-1 border-slate-700 bg-gradient-to-b from-slate-800/40 via-slate-900 to-slate-900";
+        ringClass = "ring-2 ring-slate-300 shadow-[0_0_15px_rgba(203,213,225,0.3)]";
+        medalIcon = '<i class="fa-solid fa-medal text-slate-300 text-lg"></i>';
+        titleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-slate-300 text-slate-950 tracking-wider">2º Puesto</span>';
+      } else {
+        placeClass = "order-3 sm:order-3 border-amber-800/40 bg-gradient-to-b from-amber-950/20 via-slate-900 to-slate-900";
+        ringClass = "ring-2 ring-amber-700 shadow-[0_0_15px_rgba(217,119,6,0.3)]";
+        medalIcon = '<i class="fa-solid fa-medal text-amber-600 text-lg"></i>';
+        titleBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-amber-700 text-amber-100 tracking-wider">3º Puesto</span>';
+      }
+
+      const scoreDisplay = rankingSortMode === "oral"
+        ? (student.oralAverage !== null ? `${student.oralAverage.toFixed(1)} <span class="text-xs font-normal text-slate-400">/ 10</span>` : '<span class="text-xs text-slate-500">Sin rendir</span>')
+        : `${student.xp.toLocaleString()} <span class="text-xs font-normal text-amber-400">XP</span>`;
+
+      return `
+        <div class="relative rounded-3xl border ${placeClass} p-4 sm:p-6 text-center flex flex-col items-center justify-between transition hover:scale-[1.02] ${glowClass}">
+          <div class="w-full">
+            <div class="flex items-center justify-between w-full mb-3">
+              ${titleBadge}
+              ${medalIcon}
+            </div>
+
+            <!-- Avatar -->
+            <div class="relative my-2 inline-block">
+              ${renderAvatarHtml(student, place === 1 ? "w-16 h-16 sm:w-20 sm:h-20" : "w-14 h-14 sm:w-16 sm:h-16", ringClass)}
+              ${student.isHonor ? '<span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold ring-2 ring-slate-900" title="Cuadro de Honor">👑</span>' : ''}
+            </div>
+
+            <!-- Nombre -->
+            <h4 class="font-extrabold text-slate-100 text-xs sm:text-sm mt-1 truncate max-w-full px-1" title="${student.name}">
+              ${student.name}
+            </h4>
+            <span class="text-[11px] text-slate-400 block">${student.group}</span>
+            ${isCurrent ? '<span class="inline-block mt-1 text-[9px] font-extrabold px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">TÚ</span>' : ''}
+          </div>
+
+          <!-- Métrica -->
+          <div class="mt-4 pt-3 border-t border-slate-800/80 w-full">
+            <span class="text-[9px] uppercase font-bold text-slate-500 block">
+              ${rankingSortMode === "oral" ? "Promedio 1° Parcial" : "Puntaje Total"}
+            </span>
+            <div class="text-lg sm:text-xl font-black font-mono text-indigo-300 mt-0.5">
+              ${scoreDisplay}
+            </div>
+            ${rankingSortMode === "oral" && student.completedCount > 0 ? `<span class="text-[10px] text-slate-500 block">${student.completedCount}/11 parciales</span>` : ''}
+          </div>
+        </div>
+      `;
+    };
+
+    let podiumHtml = `
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 items-end pt-4">
+        ${renderPodiumCard(top2, 2)}
+        ${renderPodiumCard(top1, 1)}
+        ${renderPodiumCard(top3, 3)}
+      </div>
+    `;
+
+    let restListHtml = "";
+    if (rest.length > 0) {
+      restListHtml = `
+        <div class="space-y-2 mt-4">
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 mb-2">
+            Posiciones Siguientes (${rest.length} estudiantes)
+          </h4>
+          <div class="space-y-2">
+            ${rest.map((student, idx) => {
+              const rank = idx + 4;
+              const isCurrent = currentUp && student.up === currentUp;
+              const gradeColor = (student.oralAverage !== null)
+                ? (student.oralAverage >= 9 ? "text-amber-400" : (student.oralAverage >= 7 ? "text-emerald-400" : "text-rose-400"))
+                : "text-slate-500";
+
+              return `
+                <div class="flex items-center justify-between p-3 sm:p-4 rounded-2xl bg-slate-900 border ${isCurrent ? 'border-indigo-500 bg-indigo-950/30 shadow-md' : 'border-slate-800'} hover:border-slate-700 transition">
+                  <div class="flex items-center space-x-3 min-w-0">
+                    <span class="font-mono font-bold text-xs sm:text-sm text-slate-400 w-6 text-center shrink-0">#${rank}</span>
+                    <div class="relative shrink-0">
+                      ${renderAvatarHtml(student, "w-10 h-10", "border border-slate-700")}
+                      ${student.isHonor ? '<span class="absolute -top-1 -right-1 bg-amber-500 text-slate-950 text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">👑</span>' : ''}
+                    </div>
+                    <div class="truncate">
+                      <div class="flex items-center space-x-2">
+                        <span class="text-xs sm:text-sm font-bold text-slate-100 truncate">${student.name}</span>
+                        ${isCurrent ? '<span class="text-[9px] px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold shrink-0">TÚ</span>' : ''}
+                      </div>
+                      <div class="flex items-center space-x-2 text-[11px] text-slate-400 mt-0.5">
+                        <span>${student.group}</span>
+                        ${student.isHonor ? '<span class="text-amber-400 font-semibold flex items-center space-x-1 shrink-0"><i class="fa-solid fa-crown text-[10px]"></i><span>Cuadro de Honor</span></span>' : ''}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center space-x-4 sm:space-x-6 shrink-0 text-right">
+                    <div>
+                      <span class="text-[9px] uppercase font-bold text-slate-500 block">Promedio</span>
+                      <span class="font-mono font-bold text-xs sm:text-sm ${gradeColor}">
+                        ${student.oralAverage !== null ? `${student.oralAverage.toFixed(1)} / 10` : 'Sin rendir'}
+                      </span>
+                      ${student.completedCount > 0 ? `<span class="text-[10px] text-slate-500 block">${student.completedCount}/11 rendidos</span>` : ''}
+                    </div>
+                    <div class="min-w-[65px]">
+                      <span class="text-[9px] uppercase font-bold text-slate-500 block">XP</span>
+                      <span class="font-mono font-bold text-xs sm:text-sm text-indigo-300 flex items-center justify-end space-x-1">
+                        <i class="fa-solid fa-bolt text-[10px] text-amber-400"></i>
+                        <span>${student.xp.toLocaleString()}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    container.innerHTML = `
+      ${podiumHtml}
+      ${restListHtml}
+    `;
+  }
+
   function updateRankingUI() {
+    // Sincronizar y renderizar Ranking de estudiantes
+    loadRankingData();
+
+    // Actualizar barras de dominio temático de cátedra
     const xpBadge = document.getElementById("rankingTotalXpBadge");
     const barsContainer = document.getElementById("masteryProgressBars");
 
@@ -1849,7 +2322,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let html = "";
     UNITS_META.forEach(u => {
-      // Calcular tarjetas dominadas en la unidad
       let totalUnitCards = 0;
       let masteredUnitCards = 0;
       let partialGrades = [];
