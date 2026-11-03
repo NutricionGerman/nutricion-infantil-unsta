@@ -68,8 +68,10 @@ Cada rango tiene su insignia gráfica correspondiente en la carpeta `iconos/` (e
 
 ---
 
-## 📋 Régimen de Asistencia y Regularidad
+## 📋 Régimen de Asistencia, Regularidad y Promoción
 
-- Las asistencias oficiales se toman clase a clase y se guardan como archivos de texto en la carpeta `catedra/asistencias/` (ej: `asistencia 19-08 Evaluacion Antropometrica.txt`, `asistencia 10-09.txt`).
-- Estos archivos son la **fuente de verdad indiscutible** para sincronizar con Firestore.
-- El panel de control calcula el porcentaje de asistencia de cada alumno respecto al total de clases dictadas para determinar la condición de regularidad.
+- **Asistencias**: Se toman clase a clase y se guardan como archivos de texto en la carpeta `catedra/asistencias/` (ej: `asistencia 19-08 Evaluacion Antropometrica.txt`, `asistencia 10-09.txt`). Son la **fuente de verdad indiscutible** para sincronizar con Firestore.
+- **Condición de Regularidad**: Se requiere al menos un 75-80% de asistencia y aprobar los parciales / recuperatorios con nota 5 o 6 (según escala de cátedra) o promedio de aprobación reglamentario.
+- **Condición de Promoción Directa**:
+  - Nota **7 o más** en los parciales (y $\ge 80\%$ de asistencia).
+  - **Recuperatorios y Promoción**: Si un alumno obtiene un aplazo (ej. nota 2) en un parcial, **NO pierde la promoción**; si en el recuperatorio obtiene **7 o más**, promociona la materia (ratificado por escrito por la titular Mariana Mohedano: *"Si sacas 7 o mas promocionas / Si sacas, 5 o 6 regularizas / Si sacas menos de 2 quedas libre"*).

@@ -712,3 +712,30 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
     - **Entregables**:
       - Hoja de Examen del Alumno: `proyectos/repaso_parcial_1/evaluacion_practica_1_parcial.pdf` y `evaluacion_practica_1_parcial.pdf`.
       - Hoja de Corrección y Clave Docente: `evaluacion_practica_1_parcial_CLAVE_DOCENTE.pdf`.
+
+61. **Generación de Instrumento Oficial para "Recuperatorio 2° Parcial Práctica" (03/11/2026)**:
+    - **Contexto**: Germán solicitó: *"muy bien ahora podrias hacer el mismo formato para sacar un parcial del tema 2 combinando preguntas entre el tema 1 y 2 (solo 5 preguntas) ponle de titulo recuperatorio 2 parcial"* y con el formato sobrio idéntico al examen impreso real (blanco y negro estricto, sin colores, con la grilla de corrección `[ ] A [ ] B [ ] C [ ] D` arriba junto con las instrucciones y el casillero de nota final / 10 puntos, ocupando estrictamente 1 sola carilla).
+    - **Banco de Preguntas Oficiales Utilizadas**:
+      1. *Circunferencia de Cintura según OMS*: Localización en punto medio entre última costilla palpable y cresta ilíaca (Tema 2, Q4).
+      2. *Punto Mesobraquial para Perímetro Braquial*: Medición entre acromion y olécranon con brazo flexionado a 90° (Tema 1, Q3 / Tema 2, Q10).
+      3. *Fase Respiratoria para Medición de Cintura*: Al final de una espiración normal, no forzada (Tema 1, Q4 / Tema 2, Q2).
+      4. *Algas y Vitamina B12*: Presencia mayoritaria de pseudovitamina B12 (análogos inactivos biológicamente) (Tema 1, Q6 / Tema 2, Q5).
+      5. *Biodisponibilidad de Hierro No Hémico*: Asociación con vitamina C (ácido ascórbico) en crudo para reducir férrico a ferroso (Tema 1, Q10 / Tema 2, Q9).
+    - **Arquitectura y Formato**:
+      - Script: `catedra/parciales/generar_pdf_recuperatorio.py`.
+      - Diseño: Encabezado institucional de la UNSTA a la izquierda, título en mayúsculas a la derecha (`RECUPERATORIO 2° PARCIAL`), línea para Apellido y Nombre y UP.
+      - Grilla superior dividida en dos bloques: izquierda con tabla compacta de marcado de opciones A, B, C, D; derecha con instrucciones breves y recuadro de calificación (`NOTA FINAL: ___ / 10 PUNTOS (Cada pregunta vale 2 puntos)`).
+      - Altura total ajustada a 679.68 pt (de 841.89 pt), garantizando un margen libre amplio y 1 sola carilla sin desbordes.
+    - **Entregables**:
+      - Versión Alumno: `recuperatorio_2_parcial_practica.pdf` (en raíz y en `catedra/parciales/`).
+      - Versión Docente con Clave: `recuperatorio_2_parcial_practica_CLAVE_DOCENTE.pdf`.
+
+62. **Criterio Vinculante de Promoción y Recuperatorios (Precedente Mohedano - Gallardo)**:
+    - **Contexto**: Consulta y captura de correo oficial enviada por una alumna (Felicitas Gallardo) a la profesora titular Mariana Mohedano: *"Que tal profe, yo en el primer parcial de nutrición me saqué un 2 y en este me saqué un 8, y el miércoles 4 recupero el primer parcial. Tengo una duda, me saque la nota que me saque igualmente ya perdí la promoción? Es decir debo aprobar para regular?"*.
+    - **Respuesta Escrita Oficial de la Titular (Mariana Mohedano)**:
+      - *"Si sacas 7 o mas promocionas"*
+      - *"Si sacas, 5 o 6 regularizas"*
+      - *"Si sacas menos de 2 quedas libre"*
+    - **Criterio Institucional Establecido**:
+      - La obtención de un aplazo (nota 2) en primera instancia en uno de los parciales **NO inhabilita la promoción** si en la instancia de recuperación se obtiene una calificación de 7 o superior.
+      - Al no existir ninguna cláusula restrictiva por escrito en el programa ni advertencia reglamentaria previa, y mediando confirmación escrita formal por la titular, el recuperatorio reemplaza la nota reprobada a todos los efectos del régimen de promoción directa.

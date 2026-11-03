@@ -19,6 +19,9 @@ node_modules/
 !catedra/bibliografia/**/*.pdf
 !evaluacion_practica_*.pdf
 !proyectos/**/evaluacion_practica_*.pdf
+!recuperatorio_*.pdf
+!catedra/parciales/*.pdf
+!proyectos/**/recuperatorio_*.pdf
 
 # Archivos de entorno y logs
 .env
