@@ -57,6 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let isScrubbingProfAudio = false;
   let profPlaybackSpeed = 1.0;
 
+  // REPRODUCTOR DE AUDIO DE DIAPOSITIVAS (LIGHTBOX MODAL)
+  let slideModalAudioPlayer = new Audio();
+  let isSlideAudioPlaying = false;
+  let isScrubbingSlideAudio = false;
+  let slidePlaybackSpeed = 1.0;
+
   // ESTADO: SECCIÓN 2 - EXÁMENES ORALES (10 PARCIALES)
   let currentOralPartialKey = "u1_p1";
   let oralExamActive = false;
@@ -2221,12 +2227,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!galleryGrid) return;
 
     galleryGrid.innerHTML = ALL_SLIDES.map((slide, idx) => `
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition cursor-pointer group shadow-lg flex flex-col justify-between" onclick="window.openSlideModal && window.openSlideModal('${slide.src}', '${slide.title.replace(/'/g, "\\'")}', ${idx})">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-amber-500/50 hover:shadow-xl hover:shadow-amber-500/5 transition cursor-pointer group shadow-lg flex flex-col justify-between" onclick="window.openSlideModalByIndex && window.openSlideModalByIndex(${idx})">
         <div class="relative bg-black/50 p-2 overflow-hidden aspect-video flex items-center justify-center">
-          <img src="${slide.src}" alt="${slide.title}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
-          <div class="absolute bottom-2 right-2 bg-slate-950/90 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded-lg text-[10px] font-bold flex items-center gap-1 shadow backdrop-blur-sm group-hover:bg-amber-500 group-hover:text-slate-950 transition">
-            <i class="fa-solid fa-volume-high text-[10px]"></i>
-            <span>Audio Docente</span>
+          <img src="${slide.src}" alt="${slide.title.replace(/"/g, '&quot;')}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+          <div class="absolute bottom-2 right-2 w-7 h-7 rounded-lg bg-slate-950/90 text-amber-400 border border-amber-500/30 flex items-center justify-center shadow backdrop-blur-sm group-hover:bg-amber-500 group-hover:text-slate-950 transition" title="Audio explicativo de cátedra">
+            <i class="fa-solid fa-volume-high text-xs"></i>
           </div>
         </div>
         <div class="p-3 bg-slate-950/80 border-t border-slate-800/80 space-y-2 flex-1 flex flex-col justify-between">
@@ -2237,16 +2242,16 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <h5 class="text-xs font-semibold text-slate-200 line-clamp-2 leading-snug group-hover:text-amber-200 transition">${slide.title}</h5>
           </div>
-          <button class="w-full mt-1.5 py-1 px-2 rounded-lg bg-slate-800/80 group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-300 text-[11px] font-bold transition flex items-center justify-center gap-1.5 border border-slate-700/60">
-            <i class="fa-solid fa-play text-[10px]"></i>
-            <span>Ver y Escuchar Resumen</span>
+          <button class="w-full mt-1.5 py-1.5 px-2 rounded-lg bg-slate-800/80 group-hover:bg-amber-500 group-hover:text-slate-950 text-slate-300 text-xs font-bold transition flex items-center justify-center gap-1.5 border border-slate-700/60" onclick="event.stopPropagation(); window.openSlideModalByIndex && window.openSlideModalByIndex(${idx})">
+            <i class="fa-solid fa-expand text-[11px]"></i>
+            <span>Abrir Diapositiva</span>
           </button>
         </div>
       </div>
     `).join("");
   }
 
-  /* ==========================================================================
+    /* ==========================================================================
      5. SECCIÓN 4: RANKING EN VIVO & DOMINIO TEMÁTICO
      ========================================================================== */
   let rankingSortMode = "oral"; // "oral" o "xp"
@@ -2746,11 +2751,6 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ==========================================================================
      6. MODAL LIGHTBOX PARA DIAPOSITIVAS Y REPRODUCTOR DE AUDIO DOCENTE
      ========================================================================== */
-  let slideModalAudioPlayer = new Audio();
-  let isSlideAudioPlaying = false;
-  let isScrubbingSlideAudio = false;
-  let slidePlaybackSpeed = 1.0;
-
   function setupSlideAudioControls() {
     const btnPlay = document.getElementById("btnPlaySlideAudio");
     const btnPlayIcon = document.getElementById("btnPlaySlideAudioIcon");
@@ -2788,7 +2788,7 @@ document.addEventListener("DOMContentLoaded", () => {
         slideModalAudioPlayer.pause();
         updatePlayUI(false);
       } else {
-        // Silenciar reproductor de flashcards y TTS para evitar solapamientos
+        // Silenciar otros reproductores
         if (profAudioPlayer) {
           profAudioPlayer.pause();
           isProfAudioPlaying = false;
@@ -2863,6 +2863,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  window.openSlideModalByIndex = (index) => {
+    const idx = parseInt(index, 10);
+    if (!isNaN(idx) && ALL_SLIDES[idx]) {
+      const s = ALL_SLIDES[idx];
+      window.openSlideModal(s.src, s.title, idx);
+    }
+  };
+
   window.openSlideModal = (src, caption, index) => {
     const modal = document.getElementById("slideModal");
     const img = document.getElementById("slideModalImage");
@@ -2891,8 +2899,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Buscar slide en ALL_SLIDES por índice, src o título
     let slide = null;
-    if (typeof index === "number" && ALL_SLIDES[index]) {
-      slide = ALL_SLIDES[index];
+    const numIdx = parseInt(index, 10);
+    if (!isNaN(numIdx) && ALL_SLIDES[numIdx]) {
+      slide = ALL_SLIDES[numIdx];
     } else if (src) {
       slide = ALL_SLIDES.find(s => s.src === src);
     }
