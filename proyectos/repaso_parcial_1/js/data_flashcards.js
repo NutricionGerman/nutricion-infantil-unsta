@@ -108,7 +108,7 @@ const FLASHCARDS_DECKS = {
         deck: "u1_p1",
         question: "Complete la clasificación de RCIU (Retraso del Crecimiento Intrauterino): ¿Cuáles son los parámetros antropométricos afectados y en qué trimestre actúa la noxa en Tipo I, II y III?",
         hint: "Tipo I: 1° trim; Tipo II: 2° trim; Tipo III: 3° trim. Observa qué parámetros se van sumando o preservando.",
-        answer: "• TIPO I (Armónico): Afecta Peso, Talla y Perímetro Cefálico (PC) $\\rightarrow$ La noxa actúa en el 1° TRIMESTRE (causas genéticas, cromosomopatías, infecciones congénitas TORCH).\n• TIPO II: Afecta Peso y Talla (preserva Perímetro Cefálico) $\\rightarrow$ La noxa actúa en el 2° TRIMESTRE.\n• TIPO III (Disarmónico): Afecta únicamente el Peso (preserva Talla y Perímetro Cefálico) $\\rightarrow$ La noxa actúa en el 3° TRIMESTRE (insuficiencia placentaria vascular, preeclampsia, desnutrición materna tardía).",
+        answer: "• TIPO I (Armónico): Afecta Peso, Talla y Perímetro Cefálico (PC) → La noxa actúa en el 1° TRIMESTRE (causas genéticas, cromosomopatías, infecciones congénitas TORCH).\n• TIPO II: Afecta Peso y Talla (preserva Perímetro Cefálico) → La noxa actúa en el 2° TRIMESTRE.\n• TIPO III (Disarmónico): Afecta únicamente el Peso (preserva Talla y Perímetro Cefálico) → La noxa actúa en el 3° TRIMESTRE (insuficiencia placentaria vascular, preeclampsia, desnutrición materna tardía).",
         slideImage: "assets/slides/u1_rci_tipos_armonico_disarmonico.png",
         slideCaption: "Diapositiva Oficial: Crecimiento Intrauterino y Tipos de Retraso (RCI - Tipo I, II y III)",
         keyPoints: [
@@ -584,7 +584,7 @@ const FLASHCARDS_DECKS = {
         deck: "u4_p1",
         question: "¿Cómo se calcula la Dilución Estándar para una Fórmula de Inicio (13.5%) vs Continuación (15%)?",
         hint: "La regla es 3 medidas por cada 100 cc de agua.",
-        answer: "• Regla estándar: Se usan 3 medidas cada 100 cc de agua.\n• Fórmula de Inicio: 4,5 g × 3 medidas = 13,5 g de polvo en 100 cc $\\rightarrow$ Dilución al 13,5%.\n• Fórmula de Continuación: 5 g × 3 medidas = 15 g de polvo en 100 cc $\\rightarrow$ Dilución al 15%.\n• Ambas aportan ~70 kcal / 100 ml en dilución estándar.",
+        answer: "• Regla estándar: Se usan 3 medidas cada 100 cc de agua.\n• Fórmula de Inicio: 4,5 g × 3 medidas = 13,5 g de polvo en 100 cc → Dilución al 13,5%.\n• Fórmula de Continuación: 5 g × 3 medidas = 15 g de polvo en 100 cc → Dilución al 15%.\n• Ambas aportan ~70 kcal / 100 ml en dilución estándar.",
         slideImage: "assets/slides/u4_calculo_dilucion_13_15.png",
         slideCaption: "Diapositiva Oficial: Cálculo Matemático de Diluciones Estándar (13.5% y 15%)",
         keyPoints: [
@@ -845,7 +845,7 @@ const FLASHCARDS_DECKS = {
         deck: "u5_p2",
         question: "¿A partir de qué edad se permiten la Miel, el Azúcar, la Sal y la Carne Picada y cuál es la justificación de cada una?",
         hint: "Miel >2 años (o >1), Azúcar >2 años, Sal >1 año, Carne molida >5 años.",
-        answer: "• Miel: Después de los 2 años (mínimo 1 año) $\\rightarrow$ Riesgo letal de BOTULISMO del lactante (*Clostridium botulinum*).\n• Azúcar agregada: Después de los 2 años $\\rightarrow$ Previene alteración del umbral del dulzor, caries y síndrome metabólico.\n• Sal agregada: Después del año $\\rightarrow$ Protege la función renal inmadura de la sobrecarga de sodio.\n• Carne Molida / Picada: A partir de los 5 AÑOS $\\rightarrow$ Prevención estricta de SÍNDROME URÉMICO HEMOLÍTICO (SUH) por *E. coli* productora de toxina Shiga.",
+        answer: "• Miel: Después de los 2 años (mínimo 1 año) → Riesgo letal de BOTULISMO del lactante (*Clostridium botulinum*).\n• Azúcar agregada: Después de los 2 años → Previene alteración del umbral del dulzor, caries y síndrome metabólico.\n• Sal agregada: Después del año → Protege la función renal inmadura de la sobrecarga de sodio.\n• Carne Molida / Picada: A partir de los 5 AÑOS → Prevención estricta de SÍNDROME URÉMICO HEMOLÍTICO (SUH) por *E. coli* productora de toxina Shiga.",
         slideImage: "assets/slides/u5_alimentos_atencion_prohibidos.png",
         slideCaption: "Diapositiva Oficial: Tabla de 'Atención' — Alimentos Prohibidos y Edades de Seguridad",
         keyPoints: [

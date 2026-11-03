@@ -355,6 +355,23 @@ document.addEventListener("DOMContentLoaded", () => {
     if (elMastered) elMastered.textContent = masteredCount;
   }
 
+  function cleanLatexSymbols(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/($\\rightarrow$|\\rightarrow|$\\to$|\\to\b)/g, "→")
+      .replace(/($\\leftarrow$|\\leftarrow)/g, "←")
+      .replace(/($\\leftrightarrow$|\\leftrightarrow)/g, "↔")
+      .replace(/($\\ge$|\\ge\b|$\\geq$|\\geq\b)/g, "≥")
+      .replace(/($\\le$|\\le\b|$\\leq$|\\leq\b)/g, "≤")
+      .replace(/($\\approx$|\\approx\b)/g, "≈")
+      .replace(/($\\neq?$|\\neq?\b)/g, "≠")
+      .replace(/($\\pm$|\\pm\b)/g, "±")
+      .replace(/($\\times$|\\times\b)/g, "×")
+      .replace(/($\\cdot$|\\cdot\b)/g, "·")
+      .replace(/($\\circ$|\\circ\b|\^\\circ)/g, "°")
+      .replace(/\$([^\$\n]+)\$/g, "$1");
+  }
+
   function renderCurrentCard() {
     const cardView = document.getElementById("deckCardViewContainer");
     const finishedScreen = document.getElementById("deckFinishedScreen");
@@ -384,23 +401,23 @@ document.addEventListener("DOMContentLoaded", () => {
       counterEl.textContent = `${studyQueue.length} restantes`;
     }
     if (qTextEl) {
-      qTextEl.textContent = currentCard.question;
+      qTextEl.textContent = cleanLatexSymbols(currentCard.question);
     }
     if (hintEl) {
-      hintEl.textContent = currentCard.hint || "Piensa en los criterios oficiales de cátedra antes de voltear.";
+      hintEl.textContent = cleanLatexSymbols(currentCard.hint || "Piensa en los criterios oficiales de cátedra antes de voltear.");
     }
 
     const aTextEl = document.getElementById("flashcardAnswerText");
     const keyPointsContainer = document.getElementById("flashcardKeyPointsList");
 
     if (aTextEl) {
-      aTextEl.textContent = currentCard.answer;
+      aTextEl.textContent = cleanLatexSymbols(currentCard.answer);
     }
     if (keyPointsContainer && currentCard.keyPoints) {
       keyPointsContainer.innerHTML = currentCard.keyPoints.map(p => `
         <div class="flex items-start space-x-1.5">
           <span class="text-amber-400 font-bold">•</span>
-          <span>${p}</span>
+          <span>${cleanLatexSymbols(p)}</span>
         </div>
       `).join("");
     }
