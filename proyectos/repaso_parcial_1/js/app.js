@@ -70,6 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let oralExamCurrentIndex = 0;
   let oralStudentAnswers = []; // [ { question, officialAnswer, keyPoints, slideImage, slideCaption, studentTranscript, audioUrl, durationSecs } ]
   let isRecordingCurrent = false;
+  let currentQuestionAudioUrl = null;
+  let currentQuestionAudioBlob = null;
+  let currentQuestionTranscript = "";
+  let currentQuestionDuration = 0;
+  let oralWordEditsPerQuestion = {};
 
   // ESTADO: SECCIÓN 2.1 - EVALUACIÓN PRÁCTICA (OPCIÓN MÚLTIPLE - SIN IA)
   let practicalQuizActive = false;
@@ -1248,14 +1253,6 @@ function setupOralExamDashboard() {
     const btnStop = document.getElementById("btnStopRecord");
     const timerBadge = document.getElementById("oralTimerBadge");
     const transcriptStatus = document.getElementById("transcriptionStatus");
-    const transcriptTextarea = document.getElementById("oralTranscriptTextarea");
-    if (transcriptTextarea && !transcriptTextarea.dataset.boundInput) {
-      transcriptTextarea.dataset.boundInput = "true";
-      transcriptTextarea.addEventListener("input", () => {
-        saveCurrentOralAnswer();
-      });
-    }
-
     const savedBadge = document.getElementById("oralAudioSavedBadge");
     const playerWrapper = document.getElementById("oralPlaybackWrapper");
     const player = document.getElementById("oralRecordedPlayer");
@@ -1333,9 +1330,15 @@ function setupOralExamDashboard() {
         }
 
         if (recData) {
-          if (transcriptTextarea) {
-            transcriptTextarea.value = (recData.transcript || "").trim();
-          }
+          currentQuestionAudioUrl = recData.audioUrl;
+          currentQuestionAudioBlob = recData.audioBlob || null;
+          currentQuestionTranscript = (recData.transcript || "").trim();
+          currentQuestionDuration = recData.durationSecs || 0;
+
+          const transcriptWrapper = document.getElementById("oralLiveTranscriptWrapper");
+          if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
+          renderInteractiveTranscriptWords();
+
           if (playerWrapper && player && recData.audioUrl) {
             player.src = recData.audioUrl;
             if (durationText) durationText.textContent = formatDuration(recData.durationSecs || 0);
@@ -1343,7 +1346,7 @@ function setupOralExamDashboard() {
           }
           if (savedBadge) savedBadge.classList.remove("hidden");
           if (transcriptStatus) {
-            transcriptStatus.innerHTML = '<span class="text-emerald-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check"></i> Audio registrado y transcrito con éxito. Puedes verificar o editar antes de avanzar.</span>';
+            transcriptStatus.innerHTML = '<span class="text-emerald-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check"></i> Audio registrado y transcrito con éxito. Toca cualquier palabra si necesitas corregir términos puntuales.</span>';
           }
           saveCurrentOralAnswer(recData.audioUrl, recData.durationSecs);
         }
@@ -1357,9 +1360,14 @@ function setupOralExamDashboard() {
 
     if (btnPrevQ) {
       btnPrevQ.addEventListener("click", () => {
+        if (recorder && recorder.isRecording) recorder.stopRecording();
         saveCurrentOralAnswer();
         if (oralExamCurrentIndex > 0) {
           oralExamCurrentIndex--;
+          currentQuestionAudioUrl = null;
+          currentQuestionAudioBlob = null;
+          currentQuestionTranscript = "";
+          currentQuestionDuration = 0;
           renderOralExamQuestion();
         }
       });
@@ -1367,9 +1375,14 @@ function setupOralExamDashboard() {
 
     if (btnNextQ) {
       btnNextQ.addEventListener("click", () => {
+        if (recorder && recorder.isRecording) recorder.stopRecording();
         saveCurrentOralAnswer();
         if (oralExamCurrentIndex < oralExamQuestions.length - 1) {
           oralExamCurrentIndex++;
+          currentQuestionAudioUrl = null;
+          currentQuestionAudioBlob = null;
+          currentQuestionTranscript = "";
+          currentQuestionDuration = 0;
           renderOralExamQuestion();
         }
       });
@@ -1377,6 +1390,7 @@ function setupOralExamDashboard() {
 
     if (btnSubmit) {
       btnSubmit.addEventListener("click", () => {
+        if (recorder && recorder.isRecording) recorder.stopRecording();
         saveCurrentOralAnswer();
         submitOralExamToAI();
       });
@@ -1575,6 +1589,268 @@ function setupOralExamDashboard() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function renderInteractiveTranscriptWords() {
+    const container = document.getElementById("oralLiveTranscriptContainer");
+    const counterEl = document.getElementById("oralWordEditCounter");
+    if (!container) return;
+
+    const transcript = (currentQuestionTranscript || "").trim();
+    if (!transcript) {
+      container.innerHTML = `
+        <div class="space-y-2 py-1 w-full text-left">
+          <div class="flex items-center gap-2 text-amber-400 text-xs font-semibold">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>Audio registrado con éxito, pero la transcripción automática tardó o se saturó.</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            <button id="btnRetryTranscribeNow" type="button" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-1.5 shadow transition cursor-pointer">
+              <i class="fa-solid fa-rotate-right"></i> <span>Reintentar Transcribir</span>
+            </button>
+            <button id="btnManualTypeAudioText" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center gap-1.5 border border-slate-700 transition cursor-pointer">
+              <i class="fa-solid fa-keyboard text-amber-400"></i> <span>Escribir lo que dije en el audio</span>
+            </button>
+          </div>
+        </div>
+      `;
+      if (counterEl) counterEl.textContent = "";
+
+      const btnRetry = document.getElementById("btnRetryTranscribeNow");
+      if (btnRetry) {
+        btnRetry.addEventListener("click", async () => {
+          btnRetry.disabled = true;
+          btnRetry.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Transcribiendo...';
+          try {
+            if (currentQuestionAudioBlob && recorder) {
+              const text = await recorder.transcribeWithWhisper(currentQuestionAudioBlob);
+              if (text && text.trim().length > 0) {
+                currentQuestionTranscript = text.trim();
+                saveCurrentOralAnswer();
+                renderInteractiveTranscriptWords();
+                return;
+              }
+            }
+            alert("El servidor de transcripción está saturado por la cantidad de alumnos rindiendo a la vez. Por favor toca el botón 'Escribir lo que dije en el audio' para guardar tu respuesta.");
+          } catch(e) {
+            console.error(e);
+          } finally {
+            btnRetry.disabled = false;
+            btnRetry.innerHTML = '<i class="fa-solid fa-rotate-right mr-1"></i> Reintentar Transcribir';
+          }
+        });
+      }
+
+      const btnManual = document.getElementById("btnManualTypeAudioText");
+      if (btnManual) {
+        btnManual.addEventListener("click", () => {
+          if (typeof Swal === 'undefined') {
+            const manualText = prompt("Escribe lo que respondiste en tu grabación de audio:");
+            if (manualText && manualText.trim().length > 5) {
+              currentQuestionTranscript = manualText.trim();
+              saveCurrentOralAnswer();
+              renderInteractiveTranscriptWords();
+            }
+            return;
+          }
+
+          Swal.fire({
+            title: '<span class="text-base font-bold text-white">Ingresar Texto de tu Respuesta de Voz</span>',
+            html: `
+              <div class="text-left text-xs space-y-2 text-slate-300">
+                <p>Tu grabación de audio ya quedó registrada en el sistema. Escribe con tus palabras lo que dijiste para que la IA lo evalúe:</p>
+                <textarea id="swalManualAudioText" rows="4" class="w-full p-2.5 bg-slate-900 border border-indigo-500/50 rounded-xl text-white text-xs leading-relaxed focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Escribe aquí lo que dijiste en el audio..."></textarea>
+              </div>
+            `,
+            background: '#0f172a',
+            color: '#f8fafc',
+            showCancelButton: true,
+            confirmButtonText: 'Guardar Respuesta',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#6366f1',
+            cancelButtonColor: '#475569',
+            preConfirm: () => {
+              const val = document.getElementById("swalManualAudioText")?.value?.trim();
+              if (!val || val.length < 5) {
+                Swal.showValidationMessage("Por favor escribe tu respuesta completa.");
+                return false;
+              }
+              return val;
+            }
+          }).then((res) => {
+            if (res.isConfirmed && res.value) {
+              currentQuestionTranscript = res.value;
+              saveCurrentOralAnswer();
+              renderInteractiveTranscriptWords();
+            }
+          });
+        });
+      }
+      return;
+    }
+
+    const usedEdits = oralWordEditsPerQuestion[oralExamCurrentIndex] || 0;
+
+    if (counterEl) {
+      if (usedEdits > 0) {
+        counterEl.innerHTML = `<span class="text-indigo-300 font-medium">Correcciones realizadas: <b>${usedEdits}</b> (toca cualquier palabra para editar)</span>`;
+      } else {
+        counterEl.innerHTML = `<span class="text-indigo-300/80 font-medium">Toca cualquier palabra para corregirla</span>`;
+      }
+    }
+
+    container.innerHTML = "";
+    const words = transcript.split(/\s+/);
+    words.forEach((word, index) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "inline-flex items-center px-2 py-0.5 m-0.5 rounded-lg bg-slate-800/90 hover:bg-indigo-600 hover:text-white text-slate-200 text-xs sm:text-sm font-medium border border-slate-700/70 hover:border-indigo-400 transition cursor-pointer select-none active:scale-95";
+      chip.title = "Toca para corregir esta palabra";
+      chip.textContent = word;
+
+      chip.addEventListener("click", () => {
+        openWordCorrectionModal(index, word);
+      });
+
+      container.appendChild(chip);
+    });
+  }
+
+  function openWordCorrectionModal(wordIndex, oldWord) {
+    if (typeof Swal === 'undefined') {
+      const userWord = prompt(`Corregir palabra "${oldWord}" (solo 1 palabra, sin espacios):`, oldWord);
+      if (userWord && !/\s/.test(userWord.trim())) {
+        applyWordCorrection(wordIndex, userWord.trim());
+      }
+      return;
+    }
+
+    Swal.fire({
+      title: '<span class="text-base font-black text-white">Corrección Quirúrgica de Palabra</span>',
+      html: `
+        <div class="text-left text-xs space-y-3">
+          <p class="text-slate-300">
+            Palabra captada por el micrófono:
+          </p>
+          <div class="text-sm font-extrabold text-rose-300 bg-rose-950/40 border border-rose-500/40 p-2.5 rounded-xl text-center font-mono select-none">
+            "${escapeHtml(oldWord)}"
+          </div>
+          <div class="space-y-1">
+            <label class="block font-bold text-slate-200">
+              Palabra correcta médica / técnica (1 sola palabra):
+            </label>
+            <input id="swalInputSingleWord" 
+                   type="text" 
+                   maxlength="30" 
+                   autocomplete="off" 
+                   spellcheck="false" 
+                   placeholder="Ej: bioequivalente" 
+                   class="w-full px-3 py-2 bg-slate-900 border border-indigo-500/70 rounded-xl text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 text-center">
+          </div>
+          <div class="text-[11px] text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 flex items-start gap-2">
+            <i class="fa-solid fa-shield-halved text-amber-400 mt-0.5"></i>
+            <div>
+              <p class="font-bold">Seguridad Anti-Copia Activa:</p>
+              <p class="text-slate-400">Pegar texto (Ctrl+V) y barra espaciadora están estrictamente bloqueados. Solo puedes escribir una palabra concreta.</p>
+            </div>
+          </div>
+        </div>
+      `,
+      background: '#0f172a',
+      color: '#f8fafc',
+      showCancelButton: true,
+      confirmButtonText: '<i class="fa-solid fa-check mr-1.5"></i> Aplicar Corrección',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#6366f1',
+      cancelButtonColor: '#475569',
+      customClass: {
+        popup: 'border border-indigo-500/30 rounded-2xl'
+      },
+      didOpen: () => {
+        const input = document.getElementById('swalInputSingleWord');
+        if (!input) return;
+        input.focus();
+
+        // 1. Anti-Paste: Bloquear pegado absoluto
+        input.addEventListener('paste', (e) => {
+          e.preventDefault();
+          Swal.showValidationMessage('⚠️ Prohibido pegar texto en el examen oral. Debes escribir la palabra.');
+        });
+
+        // 2. Anti-Space: Bloquear barra espaciadora
+        input.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.code === 'Space') {
+            e.preventDefault();
+            Swal.showValidationMessage('⚠️ Solo 1 palabra concreta. Los espacios no están permitidos.');
+          }
+        });
+
+        // Resetear advertencias al teclear
+        input.addEventListener('input', () => {
+          Swal.resetValidationMessage();
+        });
+      },
+      preConfirm: () => {
+        const input = document.getElementById('swalInputSingleWord');
+        if (!input) return false;
+        const cleanVal = input.value.trim();
+        if (!cleanVal) {
+          Swal.showValidationMessage('Por favor escribe la palabra corregida.');
+          return false;
+        }
+        if (/\s/.test(cleanVal)) {
+          Swal.showValidationMessage('⚠️ Solo puedes ingresar una sola palabra (sin espacios).');
+          return false;
+        }
+        if (cleanVal.length > 35) {
+          Swal.showValidationMessage('Palabra demasiado larga.');
+          return false;
+        }
+        return cleanVal;
+      }
+    }).then((res) => {
+      if (res.isConfirmed && res.value) {
+        applyWordCorrection(wordIndex, res.value);
+      }
+    });
+  }
+
+  function applyWordCorrection(wordIndex, newWord) {
+    const transcript = (currentQuestionTranscript || "").trim();
+    if (!transcript) return;
+
+    const words = transcript.split(/\s+/);
+    if (words[wordIndex] !== undefined) {
+      // Reemplazar quirúrgicamente la palabra
+      words[wordIndex] = newWord;
+      currentQuestionTranscript = words.join(" ");
+
+      oralWordEditsPerQuestion[oralExamCurrentIndex] = (oralWordEditsPerQuestion[oralExamCurrentIndex] || 0) + 1;
+      saveCurrentOralAnswer();
+      renderInteractiveTranscriptWords();
+
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: `Palabra actualizada: "${newWord}"`,
+          showConfirmButton: false,
+          timer: 1800,
+          timerProgressBar: true
+        });
+      }
+    }
+  }
+
   function startOralExamForPartial(partialKey) {
     const deck = window.FLASHCARDS_DECKS[partialKey];
     if (!deck || !deck.cards || deck.cards.length === 0) {
@@ -1585,6 +1861,11 @@ function setupOralExamDashboard() {
     currentOralPartialKey = partialKey;
     oralExamQuestions = [...deck.cards];
     oralExamCurrentIndex = 0;
+    oralWordEditsPerQuestion = {};
+    currentQuestionAudioUrl = null;
+    currentQuestionAudioBlob = null;
+    currentQuestionTranscript = "";
+    currentQuestionDuration = 0;
     oralStudentAnswers = oralExamQuestions.map(q => ({
       question: q.question,
       officialAnswer: q.answer,
@@ -1612,12 +1893,12 @@ function setupOralExamDashboard() {
     const qStatement = document.getElementById("oralQuestionStatement");
     const qHint = document.getElementById("oralQuestionHint");
     const timerBadge = document.getElementById("oralTimerBadge");
-    const transcriptTextarea = document.getElementById("oralTranscriptTextarea");
     const transcriptStatus = document.getElementById("transcriptionStatus");
     const savedBadge = document.getElementById("oralAudioSavedBadge");
     const playerWrapper = document.getElementById("oralPlaybackWrapper");
     const player = document.getElementById("oralRecordedPlayer");
     const durationText = document.getElementById("oralPlaybackDurationText");
+    const transcriptWrapper = document.getElementById("oralLiveTranscriptWrapper");
 
     if (pTitle) pTitle.textContent = deck ? `${deck.title} (${deck.badge})` : "Examen Oral";
     if (qTitle) qTitle.textContent = `Pregunta ${oralExamCurrentIndex + 1} de ${oralExamQuestions.length}`;
@@ -1629,26 +1910,36 @@ function setupOralExamDashboard() {
     }
 
     const saved = oralStudentAnswers[oralExamCurrentIndex];
-    if (transcriptTextarea) {
-      transcriptTextarea.value = (saved && saved.transcript) ? saved.transcript : "";
-    }
+    if (saved && (saved.audioUrl || saved.studentTranscript || saved.transcript)) {
+      currentQuestionAudioUrl = saved.audioUrl;
+      currentQuestionTranscript = (saved.studentTranscript || saved.transcript || "").trim();
+      currentQuestionDuration = saved.durationSecs || 0;
 
-    if (saved && saved.audioUrl) {
-      if (playerWrapper && player) {
+      if (saved.audioUrl && playerWrapper && player) {
         player.src = saved.audioUrl;
         if (durationText) durationText.textContent = formatDuration(saved.durationSecs || 0);
         playerWrapper.classList.remove("hidden");
+      } else if (playerWrapper) {
+        playerWrapper.classList.add("hidden");
       }
+
       if (savedBadge) savedBadge.classList.remove("hidden");
+      if (transcriptWrapper) transcriptWrapper.classList.remove("hidden");
+      renderInteractiveTranscriptWords();
+
+      if (transcriptStatus) {
+        transcriptStatus.innerHTML = '<span class="text-emerald-400 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-check"></i> Respuesta registrada. Puedes tocar cualquier palabra para corregirla o volver a grabar.</span>';
+      }
     } else {
+      currentQuestionAudioUrl = null;
+      currentQuestionTranscript = "";
+      currentQuestionDuration = 0;
       if (playerWrapper) playerWrapper.classList.add("hidden");
       if (savedBadge) savedBadge.classList.add("hidden");
-    }
-
-    if (transcriptStatus) {
-      if (saved && (saved.transcript || saved.audioUrl)) {
-        transcriptStatus.textContent = "Respuesta registrada. Puedes modificarla o volver a grabar si lo deseas.";
-      } else {
+      if (transcriptWrapper) transcriptWrapper.classList.add("hidden");
+      const container = document.getElementById("oralLiveTranscriptContainer");
+      if (container) container.innerHTML = '<span id="oralLiveTranscriptText">...</span>';
+      if (transcriptStatus) {
         transcriptStatus.textContent = 'Presiona "Comenzar a Hablar" y responde con tus palabras.';
       }
     }
@@ -1666,15 +1957,18 @@ function setupOralExamDashboard() {
   }
 
   function saveCurrentOralAnswer(audioUrl = null, durationSecs = 0) {
-    const transcriptTextarea = document.getElementById("oralTranscriptTextarea");
-    if (!transcriptTextarea) return;
-
-    const currentText = transcriptTextarea.value.trim();
     if (oralStudentAnswers[oralExamCurrentIndex]) {
+      const currentText = (currentQuestionTranscript || "").trim();
       oralStudentAnswers[oralExamCurrentIndex].transcript = currentText;
       oralStudentAnswers[oralExamCurrentIndex].studentTranscript = currentText;
-      if (audioUrl) oralStudentAnswers[oralExamCurrentIndex].audioUrl = audioUrl;
-      if (durationSecs) oralStudentAnswers[oralExamCurrentIndex].durationSecs = durationSecs;
+      if (audioUrl) {
+        currentQuestionAudioUrl = audioUrl;
+        oralStudentAnswers[oralExamCurrentIndex].audioUrl = audioUrl;
+      }
+      if (durationSecs) {
+        currentQuestionDuration = durationSecs;
+        oralStudentAnswers[oralExamCurrentIndex].durationSecs = durationSecs;
+      }
     }
   }
 

@@ -647,3 +647,15 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
       1. *Contrato de Datos Unificado y Polimórfico*: `app.js` ahora despacha tanto `studentTranscript` como `studentAnswer`. En `ai_evaluator.js`, la lectura se blindó para resolver `item.studentTranscript || item.studentAnswer || item.transcript`.
       2. *Sincronización Reactiva en Tiempo Real*: Se enlazó el evento `input` al `oralTranscriptTextarea` para que cualquier tipeo o transcripción se asiente de inmediato en el estado en memoria (`oralStudentAnswers`).
       3. *Corrección del Fallback Local*: Se enlazó correctamente `ai.evaluateLocally(studentName, up, examItems)`.
+
+55. **Replicación del Sistema Anti-Copia y Edición Palabra por Palabra del 2° Parcial en 1° Parcial (03/11/2026)**:
+    - **Contexto**: Germán especificó: *"bien pero ahora se puede editar todo el texto y no solo palabras especificas como en el 2° parcial que se podia editar solamente palabra por palabra para que el alumno no copie y pegue texto"*. En el examen oral de la UNSTA, el rigor pedagógico exige que el contenido sea exclusivamente fruto de la voz del alumno procesada por Whisper, permitiendo únicamente corregir palabras técnicas individuales mal captadas por el micrófono (ej: términos farmacológicos o clínicos), impidiendo que el estudiante pegue párrafos completos generados externamente o resúmenes preescritos.
+    - **Modificaciones de Seguridad e Interfaz**:
+      1. *Eliminación del Textarea Libre*: Se removió por completo el elemento `<textarea id="oralTranscriptTextarea">` en `index.html`.
+      2. *Contenedor Interactivo de Palabras (Chips)*: Se implementó `#oralLiveTranscriptWrapper` y `#oralLiveTranscriptContainer`. La transcripción oficial se divide en palabras individuales, cada una renderizada como un botón interactivo/chip (`renderInteractiveTranscriptWords`).
+      3. *Modal Quirúrgico Anti-Copia (SweetAlert2)*: Al tocar cualquier palabra, se despliega un modal (`openWordCorrectionModal`) que muestra la palabra original y solicita la corrección médica/técnica (1 sola palabra).
+      4. *Blindaje Estricto Anti-Pegado y Anti-Espacio*:
+         - El evento `paste` en el campo de texto está estrictamente interceptado y cancelado (`e.preventDefault()`), mostrando la alerta: *"⚠️ Prohibido pegar texto en el examen oral. Debes escribir la palabra."*
+         - El evento `keydown` intercepta la barra espaciadora (`e.key === ' ' || e.code === 'Space'`), prohibiendo oraciones completas y limitando la edición a un vocablo puntual.
+      5. *Sustitución Quirúrgica y Persistencia en Memoria*: La función `applyWordCorrection` reemplaza únicamente la palabra seleccionada en el índice exacto dentro de `currentQuestionTranscript`, actualiza el contador de correcciones `#oralWordEditCounter`, persiste la respuesta en `oralStudentAnswers` y actualiza la visualización de chips al instante.
+      6. *SweetAlert2 y Cache Busters*: Se añadió SweetAlert2 (`cdn.jsdelivr.net/npm/sweetalert2@11`) en el `<head>` de ambos parciales (1° y 2°) y se versionaron los scripts con `?v=5.0` en `index.html` para evitar caché en navegadores móviles.

@@ -32,6 +32,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
+  <!-- SweetAlert2 (Para Corrección Quirúrgica de Palabras con Anti-Copia) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="css/styles.css">
   <style>
     body { font-family: 'Inter', sans-serif; }
@@ -493,13 +495,22 @@
               <audio id="oralRecordedPlayer" controls class="w-full h-8 rounded-lg"></audio>
             </div>
 
-            <!-- Caja de Transcripción con Edición Libre -->
-            <div>
-              <label for="oralTranscriptTextarea" class="block text-[11px] text-slate-400 mb-1 font-semibold flex items-center justify-between">
-                <span>Texto Transcrito con Whisper (puedes verificar o ajustar antes de calificar):</span>
-                <span class="text-[10px] text-slate-500 italic">IA Fonética</span>
-              </label>
-              <textarea id="oralTranscriptTextarea" rows="3" placeholder="Al terminar de hablar, tu transcripción precisa con Whisper aparecerá aquí..." class="w-full bg-slate-900 text-slate-100 text-xs sm:text-sm rounded-xl p-3 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            <!-- Transcripción Oficial de tu Voz (Palabra por Palabra - Anti-Copia) -->
+            <div id="oralLiveTranscriptWrapper" class="hidden text-left bg-slate-900/90 p-3.5 rounded-2xl border border-indigo-500/30 text-xs text-slate-200 shadow-md">
+              <div class="flex items-center justify-between mb-1.5 flex-wrap gap-1">
+                <span class="text-indigo-400 text-[10px] uppercase font-extrabold flex items-center gap-1.5">
+                  <i class="fa-solid fa-microphone-lines"></i> Transcripción Oficial de tu Voz:
+                </span>
+                <span id="oralWordEditCounter" class="text-[10px] text-indigo-300/80 font-bold">
+                  Toca cualquier palabra para corregirla
+                </span>
+              </div>
+              <div id="oralLiveTranscriptContainer" class="leading-relaxed font-sans text-xs sm:text-sm text-slate-100 bg-slate-950/70 p-3 rounded-xl border border-slate-800 min-h-[48px] flex flex-wrap gap-1 items-center">
+                <span id="oralLiveTranscriptText">...</span>
+              </div>
+              <p class="text-[10px] text-slate-500 mt-1.5 flex items-center gap-1">
+                <span>🔒</span> <span>Por seguridad del examen oral no se permite pegar texto. Solo puedes corregir palabras individuales mal captadas por el micrófono.</span>
+              </p>
             </div>
           </div>
 
@@ -890,13 +901,13 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <!-- Scripts en Orden de Carga -->
-  <script src="js/config.js"></script>
-  <script src="js/fix-webm-duration.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/audio_engine.js"></script>
-  <script src="js/audio_recorder.js"></script>
-  <script src="js/data_flashcards.js"></script>
-  <script src="js/ai_evaluator.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/config.js?v=5.0"></script>
+  <script src="js/fix-webm-duration.js?v=5.0"></script>
+  <script src="js/storage.js?v=5.0"></script>
+  <script src="js/audio_engine.js?v=5.0"></script>
+  <script src="js/audio_recorder.js?v=5.0"></script>
+  <script src="js/data_flashcards.js?v=5.0"></script>
+  <script src="js/ai_evaluator.js?v=5.0"></script>
+  <script src="js/app.js?v=5.0"></script>
 </body>
 </html>
