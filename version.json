@@ -1,4 +1,4 @@
 {
-  "v": "2026.11.01.v118",
-  "msg": "Fix: soporte de clave docente para desbloqueo del TP Integrador y confirmación preventiva de bloqueo"
+  "v": "2026.11.08.v119",
+  "msg": "Feat: Buzón de Entrega TP Integrador prioritario, cartel emergente de entrega y retiro de botones de parciales 1 y 2"
 }

@@ -751,3 +751,21 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
          - `recuperatorio_2_parcial_practica.pdf` (Versión Alumno)
          - `recuperatorio_2_parcial_practica_CLAVE_DOCENTE.pdf` (Versión Docente)
       4. *Cumplimiento Estricto de 1 Carilla*: Verificado mediante script `generar_recuperatorios.py` y PyMuPDF asegurando 1 página exacta en cada PDF.
+
+
+---
+
+### [2026-11-08] Optimización y Corrección del Buzón de Entrega del TP Integrador Final
+
+1. **Diagnóstico del Envío de TPs Integradores**:
+   - **Envío registrado**: El Grupo 1 ya había entregado correctamente el 01/11/2026 a las 17:04 hs con 6 integrantes y enlace a Google Drive.
+   - **Falla de Firestore Rules corregida**: La colección `tp_integrador_submissions` no contaba con regla explícita de creación/actualización para estudiantes sin rol docente en `firestore.rules`. Al intentar enviar, arrojaba error de permisos que detenía la persistencia en `grupos`. Se agregaron las reglas pertinentes y se desplegaron a Firebase (`firebase deploy --only firestore:rules`).
+   - **Sincronización en Vivo**: Se integró `window.syncTpIntegradorSubmissions()` y escucha activa (`onSnapshot`) sobre `tp_integrador_submissions` para que tanto la planilla docente como el estado de entrega reflejen la base de datos de Firestore en tiempo real.
+
+2. **Retiro de Evaluaciones Parciales Pasadas**:
+   - A pedido de Germán, se removieron los accesos y botones al **1° Parcial** y **2° Parcial** de la barra de navegación superior (desktop y mobile), del menú lateral desplegable y del grid interactivo del dashboard principal.
+
+3. **Cartel de Entrada y Priorización Visual**:
+   - Se implementó un cartel emergente grande (`#modal-tpi-announcement`) con diseño glassmorphism ámbar/dorado, que avisa a los alumnos sobre la apertura del buzón de entrega del TP Integrador con instrucciones claras (enlace en Google Drive en modo Lector, clave de grupo y confirmación de integrantes).
+   - Se colocó un banner superior persistente en el Inicio (`#tpi-urgent-top-banner`) y se posicionó la tarjeta del **TP Integrador Final** en el primer lugar destacado de la cuadrícula interactiva.
+   - Se añadió un botón de acceso directo en la barra superior tanto para computadoras como para celulares.

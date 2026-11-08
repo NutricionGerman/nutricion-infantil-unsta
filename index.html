@@ -8870,9 +8870,7 @@
 
                     <li><button class="nav-button" data-tab-target="#panel-contacto"><i class="fas fa-shield-alt"></i> Panel Docente</button></li>
 
-                    <li><button class="nav-button" onclick="goToRepasoParcial1()" style="color: #38bdf8; font-weight: 700; border: 1px solid rgba(56, 189, 248, 0.5); background: rgba(14, 165, 233, 0.18); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(14, 165, 233, 0.3);"><i class="fas fa-graduation-cap"></i> 1° Parcial <span style="display:inline-block; width:7px; height:7px; background:#38bdf8; border-radius:50%; box-shadow:0 0 8px #38bdf8;"></span></button></li>
-
-                    <li><button class="nav-button" onclick="goToRepasoParcial2()" style="color: #a5b4fc; font-weight: 700; border: 1px solid rgba(129, 140, 248, 0.5); background: rgba(99, 102, 241, 0.18); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);"><i class="fas fa-microphone-alt"></i> 2° Parcial <span style="display:inline-block; width:7px; height:7px; background:#818cf8; border-radius:50%; box-shadow:0 0 8px #818cf8;"></span></button></li>
+                    <li><button class="nav-button" onclick="window.goToTpIntegradorSection()" style="color: #f59e0b; font-weight: 700; border: 1px solid rgba(245, 158, 11, 0.6); background: rgba(245, 158, 11, 0.18); border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);"><i class="fas fa-file-invoice"></i> TP Integrador <span style="display:inline-block; width:7px; height:7px; background:#f59e0b; border-radius:50%; box-shadow:0 0 8px #f59e0b;"></span></button></li>
 
                 </ul>
 
@@ -8892,9 +8890,7 @@
 
         <div style="display: flex; align-items: center; gap: 8px;">
 
-            <button onclick="goToRepasoParcial1()" style="background: rgba(14, 165, 233, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); color: #38bdf8; font-size: 0.75rem; font-weight: 700; border-radius: 6px; padding: 5px 8px; display: flex; align-items: center; gap: 4px; cursor: pointer;"><i class="fas fa-graduation-cap"></i> 1° Parcial</button>
-
-            <button onclick="goToRepasoParcial2()" style="background: rgba(99, 102, 241, 0.2); border: 1px solid rgba(129, 140, 248, 0.5); color: #a5b4fc; font-size: 0.78rem; font-weight: 700; border-radius: 6px; padding: 5px 9px; display: flex; align-items: center; gap: 5px; cursor: pointer;"><i class="fas fa-microphone-alt"></i> 2° Parcial</button>
+            <button onclick="window.goToTpIntegradorSection()" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #f59e0b; font-size: 0.78rem; font-weight: 700; border-radius: 6px; padding: 5px 9px; display: flex; align-items: center; gap: 5px; cursor: pointer;"><i class="fas fa-file-invoice"></i> TP Integrador</button>
 
             <button id="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
 
@@ -8920,9 +8916,7 @@
 
         <ul class="mobile-side-nav-list">
 
-            <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); goToRepasoParcial1();" style="color: #38bdf8; font-weight: 700; background: rgba(14, 165, 233, 0.15); border-color: rgba(56, 189, 248, 0.4);"><i class="fas fa-graduation-cap"></i> 📚 1° Parcial Teórico & Práctico</button></li>
-
-            <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); goToRepasoParcial2(null, null, 'evaluacion');" style="color: #a5b4fc; font-weight: 700; background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.4);"><i class="fas fa-microphone-alt"></i> 🎙️ 2° Parcial Teórico (Mesa Oral)</button></li>
+            <li><button class="nav-button mobile-nav-item" onclick="toggleMobileMenu(); window.goToTpIntegradorSection();" style="color: #f59e0b; font-weight: 700; background: rgba(245, 158, 11, 0.18); border-color: rgba(245, 158, 11, 0.5);"><i class="fas fa-file-invoice"></i> 📑 TP Integrador Final (PDF)</button></li>
 
             <li><button class="nav-button mobile-nav-item" data-tab-target="#panel-clases" onclick="toggleMobileMenu()"><i class="fas fa-chalkboard-teacher"></i> Clases</button></li>
 
@@ -12401,9 +12395,9 @@
 
                                 try {
 
-                                    if (typeof checkAndShowParcial2Announcement === 'function') {
+                                    if (typeof window.checkAndShowTpIntegradorAnnouncement === 'function') {
 
-                                        checkAndShowParcial2Announcement(matchedStudent);
+                                        window.checkAndShowTpIntegradorAnnouncement();
 
                                     }
 
@@ -14863,8 +14857,8 @@
                                         <button type="button" onclick="window.exportTpiSubmissionsCSV()" style="padding: 6px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                                             <i class="fas fa-file-csv"></i> Descargar CSV
                                         </button>
-                                        <button type="button" onclick="window.loadTpIntegradorTeacherTable()" style="padding: 6px 12px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                                            <i class="fas fa-sync-alt"></i> Actualizar
+                                        <button type="button" onclick="window.syncTpIntegradorSubmissions(true)" style="padding: 6px 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #f59e0b; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                            <i class="fas fa-sync-alt"></i> Sincronizar en Vivo
                                         </button>
                                     </div>
                                 </div>
@@ -18767,6 +18761,8 @@
                 }
             };
 
+            window.tpiSubmissionsRemote = window.tpiSubmissionsRemote || {};
+
             window.getTpiSubmissionsMap = function() {
                 let cache = {};
                 try {
@@ -18779,11 +18775,81 @@
                 for (let i = 1; i <= 20; i++) {
                     const gKey = 'g_' + i;
                     if (gMeta[gKey] && gMeta[gKey].tp_integrador) {
-                        cache[i] = { ...gMeta[gKey].tp_integrador, ...cache[i] };
+                        cache[i] = { ...cache[i], ...gMeta[gKey].tp_integrador };
+                    }
+                    if (window.tpiSubmissionsRemote && window.tpiSubmissionsRemote[i]) {
+                        cache[i] = { ...cache[i], ...window.tpiSubmissionsRemote[i] };
                     }
                 }
                 return cache;
             };
+
+            window.syncTpIntegradorSubmissions = async function(userTriggered) {
+                try {
+                    if (typeof firebase === 'undefined' || !firebase.firestore) return;
+                    const db = firebase.firestore();
+
+                    // 1. Obtener todas las entregas registradas en tp_integrador_submissions
+                    const snap = await db.collection('tp_integrador_submissions').get();
+                    snap.forEach(doc => {
+                        const d = doc.data();
+                        const gNum = d.group || parseInt(String(doc.id).replace(/\D/g, ''), 10);
+                        if (gNum && !isNaN(gNum) && gNum >= 1 && gNum <= 20) {
+                            window.tpiSubmissionsRemote[gNum] = d;
+                        }
+                    });
+
+                    // 2. Revisar colección grupos por compatibilidad
+                    const grpSnap = await db.collection('grupos').get();
+                    grpSnap.forEach(doc => {
+                        const d = doc.data();
+                        if (d && d.tp_integrador) {
+                            const gNum = d.tp_integrador.group || parseInt(String(doc.id).replace(/\D/g, ''), 10);
+                            if (gNum && !isNaN(gNum) && gNum >= 1 && gNum <= 20) {
+                                window.tpiSubmissionsRemote[gNum] = {
+                                    ...d.tp_integrador,
+                                    ...(window.tpiSubmissionsRemote[gNum] || {})
+                                };
+                            }
+                        }
+                    });
+
+                    try {
+                        localStorage.setItem('tpi_submissions_cache', JSON.stringify(window.tpiSubmissionsRemote));
+                    } catch(e) {}
+
+                    if (typeof window.loadTpIntegradorTeacherTable === 'function') {
+                        window.loadTpIntegradorTeacherTable();
+                    }
+                    if (typeof window.onTpiGroupSelected === 'function') {
+                        window.onTpiGroupSelected();
+                    }
+
+                    if (userTriggered) {
+                        const count = Object.values(window.getTpiSubmissionsMap()).filter(s => s && s.pdfUrl).length;
+                        alert(`Planilla docente sincronizada con Firestore.\nEntregas registradas: ${count} de 20 grupos.`);
+                    }
+                } catch(err) {
+                    console.warn("Error en syncTpIntegradorSubmissions:", err);
+                }
+            };
+
+            // Escuchar cambios en tiempo real en la colección
+            try {
+                if (typeof firebase !== 'undefined' && firebase.firestore) {
+                    firebase.firestore().collection('tp_integrador_submissions').onSnapshot(snap => {
+                        snap.forEach(doc => {
+                            const d = doc.data();
+                            const gNum = d.group || parseInt(String(doc.id).replace(/\D/g, ''), 10);
+                            if (gNum && !isNaN(gNum) && gNum >= 1 && gNum <= 20) {
+                                window.tpiSubmissionsRemote[gNum] = d;
+                            }
+                        });
+                        if (typeof window.loadTpIntegradorTeacherTable === 'function') window.loadTpIntegradorTeacherTable();
+                        if (typeof window.onTpiGroupSelected === 'function') window.onTpiGroupSelected();
+                    }, e => console.warn("Snapshot tpi listener:", e));
+                }
+            } catch(e) {}
 
             window.initTpIntegradorSubmissions = function() {
                 const select = document.getElementById('tpi-group-select');
@@ -18826,6 +18892,7 @@
                 // Actualizar estado del grupo seleccionado y la tabla docente
                 window.onTpiGroupSelected();
                 window.loadTpIntegradorTeacherTable();
+                window.syncTpIntegradorSubmissions();
             };
 
             window.onTpiGroupSelected = function() {
@@ -18968,25 +19035,29 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando y guardando...';
 
                 try {
-                    // Validar clave del grupo (Firestore o fallback gN o clave docente)
+                    // Validar clave del grupo (Firestore o fallback gN o clave docente o número)
                     let isValidPass = false;
                     const expectedKey = 'g' + gNum;
-                    const isDocente = pass.toLowerCase() === 'catedra2026' || pass.toLowerCase() === 'trabajofinal';
+                    const passLower = pass.toLowerCase().replace(/\s+/g, '');
+                    const isDocente = passLower === 'catedra2026' || passLower === 'trabajofinal';
 
-                    if (isDocente || pass.toLowerCase() === expectedKey.toLowerCase()) {
+                    if (isDocente || 
+                        passLower === expectedKey.toLowerCase() || 
+                        passLower === ('grupo' + gNum) || 
+                        passLower === String(gNum)) {
                         isValidPass = true;
                     } else {
                         try {
                             const db = firebase.firestore();
                             const keyDoc = await db.collection('group_keys').doc(String(gNum)).get();
                             if (keyDoc.exists && keyDoc.data().key) {
-                                if (keyDoc.data().key.toLowerCase() === pass.toLowerCase()) isValidPass = true;
+                                if (keyDoc.data().key.toLowerCase() === passLower) isValidPass = true;
                             }
                         } catch(e) {}
                     }
 
                     if (!isValidPass) {
-                        alert(`Contraseña incorrecta para el Grupo ${gNum}. Verificá con tus compañeros de grupo.`);
+                        alert(`Contraseña incorrecta para el Grupo ${gNum}. Verificá con tus compañeros o con la cátedra (ejemplo: ${expectedKey}).`);
                         btn.disabled = false;
                         btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Trabajo Integrador';
                         return;
@@ -19005,7 +19076,8 @@
                         submittedAtTimestamp: Date.now()
                     };
 
-                    // 1. Guardar en caché local para prueba instantánea
+                    // 1. Guardar en memoria y caché local
+                    window.tpiSubmissionsRemote[gNum] = payload;
                     let cache = {};
                     try {
                         const raw = localStorage.getItem('tpi_submissions_cache');
@@ -19014,20 +19086,25 @@
                     cache[gNum] = payload;
                     localStorage.setItem('tpi_submissions_cache', JSON.stringify(cache));
 
-                    // 2. Guardar en Firestore si hay conexión
+                    // 2. Guardar en Firestore en ambas colecciones en paralelo
                     try {
                         const db = firebase.firestore();
-                        await db.collection('tp_integrador_submissions').doc('g_' + gNum).set(payload, { merge: true });
-                        await db.collection('grupos').doc('g_' + gNum).set({ tp_integrador: payload }, { merge: true });
+                        const p1 = db.collection('tp_integrador_submissions').doc('g_' + gNum).set(payload, { merge: true });
+                        const p2 = db.collection('grupos').doc('g_' + gNum).set({ tp_integrador: payload }, { merge: true });
+                        await Promise.all([p1, p2]);
                     } catch(e) {
-                        console.warn("Nota: Guardado local completado. Guardado remoto diferido:", e);
+                        console.error("Error al persistir en Firestore:", e);
+                        alert("⚠️ Advertencia: No se pudo sincronizar en la nube (" + (e.message || e) + "). Por favor verificá tu conexión e intentá de nuevo.");
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Trabajo Integrador';
+                        return;
                     }
 
                     window.onTpiGroupSelected();
                     window.loadTpIntegradorTeacherTable();
 
                     const memNames = window.tpiCurrentMembers.map(m => m.name.split(',')[0]).join(', ');
-                    alert(`¡Éxito! El Trabajo Integrador del Grupo ${gNum} (${window.tpiCurrentMembers.length} integrantes: ${memNames}) fue registrado correctamente.`);
+                    alert(`¡Éxito! El Trabajo Integrador del Grupo ${gNum} (${window.tpiCurrentMembers.length} integrantes: ${memNames}) fue registrado y guardado exitosamente en la plataforma.`);
 
                 } catch(err) {
                     console.error("Error al enviar TP Integrador:", err);
@@ -20060,159 +20137,70 @@ function displayTpIntegradorDashboardView() {
 
 
 
-                                <div class="dashboard-grid">
-
-                    <!-- 1° Parcial Teórico & Práctico · Repaso & Taller - ¡DESTACADO CYAN NEÓN! -->
-
-                    <div class="dash-interactive-row stat-card" onclick="goToRepasoParcial1()" style="--card-rgb: 14, 165, 233; border: 1.5px solid rgba(56, 189, 248, 0.7); background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%); box-shadow: 0 4px 22px rgba(14, 165, 233, 0.35); cursor: pointer; position: relative;">
-
-                        <div class="di-icon-box" style="background: rgba(14, 165, 233, 0.28); color: #38bdf8; font-size: 1.25rem;"><i class="fas fa-graduation-cap"></i></div>
-
-                        <div class="di-content">
-
-                            <div style="display:flex; align-items:center; gap:8px;">
-
-                                <h3 class="di-title" style="color: #bae6fd; font-weight: 800;">📚 1° Parcial Teórico & Práctico</h3>
-
-                                <span style="background: #0284c7; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 999px; text-transform: uppercase;">Nuevo</span>
-
+                                <div id="tpi-urgent-top-banner" onclick="window.goToTpIntegradorSection()" style="cursor: pointer; margin-bottom: 22px; padding: 16px 20px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(217, 119, 6, 0.12)); border: 1.5px solid rgba(245, 158, 11, 0.7); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: 0 4px 25px rgba(245, 158, 11, 0.22); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(245, 158, 11, 0.38)';" onmouseout="this.style.transform='none'; this.style.boxShadow='0 4px 25px rgba(245, 158, 11, 0.22)';">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(245, 158, 11, 0.25); border: 1.5px solid rgba(245, 158, 11, 0.55); display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 1.4rem; flex-shrink: 0;">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <span style="font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #000; background: #f59e0b; padding: 2px 8px; border-radius: 999px;">Buzón Abierto</span>
+                                <strong style="color: #fff; font-size: 1rem; letter-spacing: -0.2px;">Entrega Obligatoria del Trabajo Integrador (PDF)</strong>
                             </div>
-
-                            <p class="di-subtitle" style="color: #94a3b8;">Mesa de práctica y repaso interactivo de cátedra</p>
-
+                            <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: #cbd5e1;">Hacé clic aquí para cargar el enlace de tu grupo (Google Drive / OneDrive) y registrar a los integrantes.</p>
                         </div>
-
-                        <div class="di-stat-box">
-
-                            <span class="di-stat" style="background: rgba(14, 165, 233, 0.25); color: #bae6fd; border-color: rgba(56, 189, 248, 0.5); font-weight: 700;">
-
-                                <i class="fas fa-play" style="font-size: 10px; margin-right: 4px;"></i> Ingresar
-
-                            </span>
-
-                            <i class="fas fa-arrow-right di-chevron" style="color: #38bdf8;"></i>
-
-                        </div>
-
                     </div>
+                    <div style="flex-shrink: 0;">
+                        <span style="padding: 9px 16px; background: #f59e0b; color: #000; font-weight: 800; font-size: 0.82rem; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 10px rgba(245,158,11,0.3);">
+                            Entregar Ahora <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </div>
+                </div>
 
+                <div class="dashboard-grid">
 
-
-                    <!-- 2° Parcial Teórico · Mesa Oral & Repaso - ¡DESTACADO VIOLETA NEÓN! -->
-
-                    <div class="dash-interactive-row stat-card" onclick="goToRepasoParcial2()" style="--card-rgb: 99, 102, 241; border: 1.5px solid rgba(129, 140, 248, 0.7); background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%); box-shadow: 0 4px 22px rgba(99, 102, 241, 0.35); cursor: pointer; position: relative;">
-
-                        <div class="di-icon-box" style="background: rgba(99, 102, 241, 0.28); color: #818cf8; font-size: 1.25rem;"><i class="fas fa-microphone-alt"></i></div>
-
+                    <!-- TP Integrador (Dorado / Ámbar Neón) - PRIMER PUESTO PRIORITARIO -->
+                    <div class="dash-interactive-row stat-card" data-dashboard-tab="tp-integrador" style="--card-rgb: 245, 158, 11; border: 1.5px solid rgba(245, 158, 11, 0.75); background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%); box-shadow: 0 4px 24px rgba(245, 158, 11, 0.35); cursor: pointer; position: relative;">
+                        <div class="di-icon-box" style="background: rgba(245, 158, 11, 0.28); color: #f59e0b; font-size: 1.3rem;"><i class="fas fa-file-medical-alt"></i></div>
                         <div class="di-content">
-
                             <div style="display:flex; align-items:center; gap:8px;">
-
-                                <h3 class="di-title" style="color: #c7d2fe; font-weight: 800;">🎙️ 2° Parcial Teórico · Mesa Oral</h3>
-
-                                <span style="background: #6366f1; color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 999px; text-transform: uppercase;">Nuevo</span>
-
+                                <h3 class="di-title" style="color: #fef3c7; font-weight: 800;">📑 TP Integrador Final (PDF)</h3>
+                                <span style="background: #f59e0b; color: #000; font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 999px; text-transform: uppercase;">Recepción Activa</span>
                             </div>
-
-                            <p class="di-subtitle" style="color: #94a3b8;">Mesa de práctica y repaso interactivo de cátedra</p>
-
+                            <p class="di-subtitle" style="color: #cbd5e1;">Buzón privado de entrega, expedientes clínicos y planilla de control docente</p>
                         </div>
-
                         <div class="di-stat-box">
-
-                            <span class="di-stat" style="background: rgba(99, 102, 241, 0.25); color: #c7d2fe; border-color: rgba(99, 102, 241, 0.5); font-weight: 700;">
-
-                                <i class="fas fa-play" style="font-size: 10px; margin-right: 4px;"></i> Ingresar
-
+                            <span class="di-stat" style="background: rgba(245, 158, 11, 0.25); color: #fef3c7; border-color: rgba(245, 158, 11, 0.5); font-weight: 700;">
+                                <i class="fas fa-upload" style="font-size: 10px; margin-right: 4px;"></i> Ingresar
                             </span>
-
-                            <i class="fas fa-arrow-right di-chevron" style="color: #818cf8;"></i>
-
+                            <i class="fas fa-arrow-right di-chevron" style="color: #f59e0b;"></i>
                         </div>
-
                     </div>
-
-
 
                     <!-- Galería de Proyectos (Cian) -->
-
                     <div class="dash-interactive-row stat-card" data-dashboard-tab="hitos" style="--card-rgb: 255, 165, 0;">
-
                         <div class="di-icon-box"><i class="fas fa-folder-open"></i></div>
-
                         <div class="di-content">
-
                             <h3 class="di-title">Galería de Proyectos</h3>
-
                             <p class="di-subtitle">Explora los TPs de todos los grupos</p>
-
                         </div>
-
                         <div class="di-stat-box">
-
                             <i class="fas fa-chevron-right di-chevron"></i>
-
                         </div>
-
                     </div>
-
-
 
                     <!-- Clases de la Cátedra (Púrpura / Violeta Neón) -->
-
                     <div class="dash-interactive-row stat-card" data-dashboard-tab="clases" style="--card-rgb: 139, 92, 246;">
-
                         <div class="di-icon-box"><i class="fas fa-graduation-cap"></i></div>
-
                         <div class="di-content">
-
                             <h3 class="di-title">Clases de la Cátedra</h3>
-
                             <p class="di-subtitle">Material teórico, talleres y bibliografía</p>
-
                         </div>
-
                         <div class="di-stat-box">
-
                             <span class="di-stat">6 Clases</span>
-
                             <i class="fas fa-chevron-right di-chevron"></i>
-
                         </div>
-
                     </div>
-
-
-
-                    <!-- TP Integrador (Dorado / Ámbar Neón) -->
-
-                    <div class="dash-interactive-row stat-card" data-dashboard-tab="tp-integrador" style="--card-rgb: 245, 158, 11;">
-
-                        <div class="di-icon-box"><i class="fas fa-file-medical-alt"></i></div>
-
-                        <div class="di-content">
-
-                            <h3 class="di-title">TP Integrador</h3>
-
-                            <p class="di-subtitle">Caso clínico longitudinal, consignas PAN y rúbrica</p>
-
-                        </div>
-
-                        <div class="di-stat-box">
-
-                            <span class="di-stat" style="display: flex; align-items: center; gap: 5px;">
-
-                                <i class="fas ${window.isTpIntegradorUnlocked && window.isTpIntegradorUnlocked() ? 'fa-lock-open' : 'fa-lock'}" style="font-size: 10px;"></i> Final
-
-                            </span>
-
-                            <i class="fas fa-chevron-right di-chevron"></i>
-
-                        </div>
-
-                    </div>
-
-
 
                     <!-- Ranking Alumnos (Naranja) -->
 
@@ -20324,9 +20312,9 @@ function displayTpIntegradorDashboardView() {
 
                     setTimeout(() => {
 
-                        if (typeof window.checkAndShowParcial2Announcement === 'function') {
+                        if (typeof window.checkAndShowTpIntegradorAnnouncement === 'function') {
 
-                            window.checkAndShowParcial2Announcement();
+                            window.checkAndShowTpIntegradorAnnouncement();
 
                         }
 
@@ -25981,8 +25969,90 @@ function displayTpIntegradorDashboardView() {
 
             // ================================================================
 
+            window.goToTpIntegradorSection = function() {
+                localStorage.setItem('tp_integrador_unlocked', 'true');
+                sessionStorage.setItem('tp_integrador_unlocked', 'true');
+                const honorBtn = document.querySelector('.nav-button[data-tab-target="#panel-honor"]');
+                if (honorBtn) honorBtn.click();
+                if (typeof switchDashboardTab === 'function') {
+                    switchDashboardTab('tp-integrador');
+                }
+                setTimeout(() => {
+                    const el = document.getElementById('tp-integrador-dashboard-content');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    if (typeof window.syncTpIntegradorSubmissions === 'function') {
+                        window.syncTpIntegradorSubmissions();
+                    }
+                }, 150);
+            };
+
+            window.dismissTpAnnouncementAndGo = function() {
+                window.dismissTpAnnouncement();
+                window.goToTpIntegradorSection();
+            };
+
+            window.dismissTpAnnouncement = function() {
+                sessionStorage.setItem('tpi_announcement_dismissed', 'true');
+                const modal = document.getElementById('modal-tpi-announcement');
+                if (modal) modal.remove();
+            };
+
+            window.checkAndShowTpIntegradorAnnouncement = function() {
+                if (sessionStorage.getItem('tpi_announcement_dismissed')) return;
+                if (document.getElementById('modal-tpi-announcement')) return;
+
+                const modalHTML = `
+                <div id="modal-tpi-announcement" style="position: fixed; inset: 0; z-index: 99999; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px;">
+                    <div style="background: linear-gradient(135deg, #0d1117 0%, #1c1402 100%); border: 2px solid rgba(245, 158, 11, 0.6); border-radius: 26px; max-width: 530px; width: 100%; padding: 30px; text-align: center; box-shadow: 0 25px 65px rgba(245, 158, 11, 0.3); position: relative;">
+                        <button onclick="window.dismissTpAnnouncement()" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.08); border: none; color: #94a3b8; width: 34px; height: 34px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;" title="Cerrar">&times;</button>
+                        
+                        <div style="width: 72px; height: 72px; border-radius: 22px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.15)); border: 1.5px solid rgba(245, 158, 11, 0.6); display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 16px; box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3); color: #f59e0b;">
+                            📑
+                        </div>
+
+                        <span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #f59e0b; background: rgba(245, 158, 11, 0.15); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(245, 158, 11, 0.35);">
+                            CÁTEDRA DE NUTRICIÓN INFANTIL · UNSTA
+                        </span>
+
+                        <h3 style="font-size: 1.45rem; font-weight: 900; color: #fff; margin: 14px 0 8px; letter-spacing: -0.3px;">
+                            ¡Buzón de Entrega del TP Integrador Abierto!
+                        </h3>
+
+                        <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5; margin: 0 0 18px;">
+                            Ya podés cargar el informe final en formato <strong>PDF</strong> de tu Caso Clínico asignado (PAN, tablas y planes dietéticos).
+                        </p>
+
+                        <div style="background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 14px 16px; text-align: left; margin-bottom: 22px; font-size: 0.82rem; color: #e2e8f0; line-height: 1.55;">
+                            <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                                <i class="fas fa-users" style="color: #f59e0b; margin-top: 3px;"></i>
+                                <div><strong>1 Entrega por Grupo:</strong> Un solo integrante sube el trabajo indicando su grupo y contraseña (ej: <code style="color: #f59e0b;">g1</code>, <code style="color: #f59e0b;">g2</code>...).</div>
+                            </div>
+                            <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                                <i class="fab fa-google-drive" style="color: #10b981; margin-top: 3px;"></i>
+                                <div><strong>Enlace a Drive / OneDrive:</strong> Formato PDF con permiso en modo <em>Lector ("Cualquiera con el enlace")</em>.</div>
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <i class="fas fa-user-check" style="color: #38bdf8; margin-top: 3px;"></i>
+                                <div><strong>Confirmación de Integrantes:</strong> Podés verificar y marcar a los compañeros que trabajaron en el TP.</div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button onclick="window.dismissTpAnnouncementAndGo()" style="width: 100%; padding: 14px 20px; font-size: 0.95rem; font-weight: 800; background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; border: none; border-radius: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 20px rgba(245,158,11,0.4); transition: transform 0.15s;">
+                                <i class="fas fa-paper-plane"></i> IR AL FORMULARIO DE ENTREGA
+                            </button>
+                            <button onclick="window.dismissTpAnnouncement()" style="width: 100%; padding: 10px 16px; font-size: 0.82rem; font-weight: 600; background: transparent; color: #94a3b8; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; cursor: pointer;">
+                                Continuar al Portal Principal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            };
+
             window.checkAndShowParcial2Announcement = function(student) {
-                // Período de anuncio y revisión finalizado
                 return;
 
                 if (sessionStorage.getItem('parcial2_popup_dismissed')) return;
