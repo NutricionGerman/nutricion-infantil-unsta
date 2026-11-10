@@ -769,3 +769,17 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
    - Se implementó un cartel emergente grande (`#modal-tpi-announcement`) con diseño glassmorphism ámbar/dorado, que avisa a los alumnos sobre la apertura del buzón de entrega del TP Integrador con instrucciones claras (enlace en Google Drive en modo Lector, clave de grupo y confirmación de integrantes).
    - Se colocó un banner superior persistente en el Inicio (`#tpi-urgent-top-banner`) y se posicionó la tarjeta del **TP Integrador Final** en el primer lugar destacado de la cuadrícula interactiva.
    - Se añadió un botón de acceso directo en la barra superior tanto para computadoras como para celulares.
+
+---
+
+### [2026-11-10] Selector Manual de Caso Clínico en Entrega de TP Integrador y Corrección de Auto-detección de Grupo
+
+1. **Bug de Detección Automática de Caso (`parseInt("g_X")`)**:
+   - En `displayTpIntegradorDashboardView()`, `parseInt(stGroup)` devolvía `NaN` porque los grupos en Firestore tienen formato `"g_1"`, `"g_17"`, etc., provocando que a todos los estudiantes se les abriera por defecto el Caso 1.
+   - Se corrigió extrayendo el número con `.replace(/\D/g, '')` y priorizando el `caseNum` guardado en la entrega del grupo si ya existe.
+
+2. **Selector Libre de Caso Clínico (Criterio de Germán)**:
+   - A pedido de Germán (*"que puedan seleccionar"*), se desacopló la asignación fija de caso por número de grupo en el formulario de entrega.
+   - Se agregó el desplegable obligatorio `#tpi-case-select` (*"3. Caso Clínico Trabajado"*) con los 4 casos reales (incluida la unificación de nombre del Caso 4 a *"Caso 4: Mariana y Sofía"* en `getTpiCaseByNum`).
+   - Los campos `caseNum` y `caseName` se persisten en `tp_integrador_submissions` y `grupos`, y tanto la **Planilla Docente** (`loadTpIntegradorTeacherTable`) como la exportación CSV (`exportTpiSubmissionsCSV`) muestran el caso efectivamente elegido por cada grupo.
+   - Se actualizaron `version.json` a `2026.11.10.v120` y los rótulos de las pestañas de casos (`Grupos base: ...`).

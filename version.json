@@ -1,4 +1,4 @@
 {
-  "v": "2026.11.08.v119",
-  "msg": "Feat: Buzón de Entrega TP Integrador prioritario, cartel emergente de entrega y retiro de botones de parciales 1 y 2"
+  "v": "2026.11.10.v120",
+  "msg": "Feat: Selector manual de Caso Clínico (1 al 4) en formulario de entrega del TP Integrador y corrección de detección automática de grupo g_X"
 }
