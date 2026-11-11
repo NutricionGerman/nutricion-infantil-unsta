@@ -1,4 +1,4 @@
 {
-  "v": "2026.11.10.v120",
-  "msg": "Feat: Selector manual de Caso Clínico (1 al 4) en formulario de entrega del TP Integrador y corrección de detección automática de grupo g_X"
+  "v": "2026.11.11.v121",
+  "msg": "Security/Feat: Planilla Docente TP Integrador protegida por Firebase Auth (sin clave trabajofinal), columnas privadas de Defendido y Nota"
 }

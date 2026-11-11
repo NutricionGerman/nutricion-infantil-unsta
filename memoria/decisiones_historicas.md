@@ -783,3 +783,20 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
    - Se agregó el desplegable obligatorio `#tpi-case-select` (*"3. Caso Clínico Trabajado"*) con los 4 casos reales (incluida la unificación de nombre del Caso 4 a *"Caso 4: Mariana y Sofía"* en `getTpiCaseByNum`).
    - Los campos `caseNum` y `caseName` se persisten en `tp_integrador_submissions` y `grupos`, y tanto la **Planilla Docente** (`loadTpIntegradorTeacherTable`) como la exportación CSV (`exportTpiSubmissionsCSV`) muestran el caso efectivamente elegido por cada grupo.
    - Se actualizaron `version.json` a `2026.11.10.v120` y los rótulos de las pestañas de casos (`Grupos base: ...`).
+
+---
+
+### [2026-11-11] Seguridad Estricta en Planilla Docente TP Integrador (Firebase Auth + Firestore Rules) y Columnas Privadas de Defendido y Nota
+
+1. **Cierre de Brecha de Seguridad en Planilla Docente**:
+   - Se eliminó por completo la aceptación de `trabajofinal` y `catedra2026` como claves válidas en `switchTpiView('teacher')`, `onTpiGroupSelected()` y `submitTpIntegrador()`.
+   - El acceso a **Planilla Docente (20 Grupos)** ahora exige autenticación real de **Firebase Auth** (`window.isTpiFirebaseTeacher()`, modal `#modal-tpi-teacher-auth` si aún no inició sesión).
+
+2. **Blindaje de Reglas de Firestore (`firestore.rules`)**:
+   - Se corrigió la regla comodín `match /{document=**}` que antes permitía lectura pública global (`allow read: if true;`), restringiéndola a `allow read, write: if isDocente();` y manteniendo reglas explícitas para colecciones públicas/estudiantiles (`students`, `app_state`, `config` excepto `master_key`, `grupos`, `tp_integrador_submissions`, etc.).
+   - Se creó la colección privada `tp_integrador_evaluations/{docId}` con `allow read, write: if isDocente();` y se desplegó con `firebase deploy --only firestore:rules`.
+   - Verificado con pruebas reales de cliente no autenticado: lectura/escritura en `tp_integrador_evaluations` y `config/master_key` bloqueadas con `permission-denied`, mientras todas las colecciones estudiantiles continúan operativas.
+
+3. **Columnas Privadas de Control Docente ("Defendido" y "Nota")**:
+   - Se incorporaron en `#tpi-view-teacher` las columnas **Defendido** (checkbox/píldora interactiva `toggleTpiDefended`) y **Nota** (input numérico 0–10 con autoguardado `saveTpiGrade`) junto a los contadores superiores **Defendidos** y **Con Nota**, más la exportación en `exportTpiSubmissionsCSV()`.
+   - Los datos se almacenan exclusivamente en `tp_integrador_evaluations` y memoria volátil (`window.tpiEvaluationsMap`), nunca en `localStorage` ni en `tp_integrador_submissions`.

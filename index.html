@@ -14864,23 +14864,29 @@
                             <!-- VISTA 2: PLANILLA DOCENTE DE CONTROL (20 GRUPOS) -->
                             <div id="tpi-view-teacher" style="display: none;">
                                 
+                                <div style="margin-bottom: 12px; padding: 10px 14px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 0.78rem; color: #a7f3d0;">
+                                    <span><i class="fas fa-user-shield" style="margin-right: 6px; color: #10b981;"></i> <strong>Planilla Privada Docente (Firebase Auth)</strong> — Los checks de defensa y notas están protegidos y los alumnos no pueden verlos.</span>
+                                </div>
+
                                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; padding: 12px 16px; background: rgba(13, 17, 23, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
-                                    <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.85rem;">
+                                    <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.84rem;">
                                         <span style="color: #cbd5e1;">Total Cátedra: <strong style="color: #fff;">20 Grupos</strong></span>
                                         <span style="color: #10b981;">Entregados: <strong id="tpi-stat-delivered">0</strong></span>
                                         <span style="color: #f87171;">Pendientes: <strong id="tpi-stat-pending">20</strong></span>
+                                        <span style="color: #38bdf8;">Defendidos: <strong id="tpi-stat-defended">0 / 20</strong></span>
+                                        <span style="color: #fbbf24;">Con Nota: <strong id="tpi-stat-graded">0</strong></span>
                                     </div>
                                     <div style="display: flex; gap: 8px;">
                                         <button type="button" onclick="window.exportTpiSubmissionsCSV()" style="padding: 6px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                                             <i class="fas fa-file-csv"></i> Descargar CSV
                                         </button>
-                                        <button type="button" onclick="window.syncTpIntegradorSubmissions(true)" style="padding: 6px 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #f59e0b; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                                        <button type="button" onclick="window.syncTpIntegradorAll(true)" style="padding: 6px 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #f59e0b; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                                             <i class="fas fa-sync-alt"></i> Sincronizar en Vivo
                                         </button>
                                     </div>
                                 </div>
 
-                                <div style="overflow-x: auto; max-height: 520px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+                                <div style="overflow-x: auto; max-height: 540px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
                                     <table style="width: 100%; border-collapse: collapse; font-size: 0.84rem; text-align: left;">
                                         <thead style="background: rgba(255,255,255,0.05); color: #94a3b8; font-size: 0.75rem; text-transform: uppercase;">
                                             <tr>
@@ -14888,7 +14894,9 @@
                                                 <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1);">Estado</th>
                                                 <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center;">Informe PDF</th>
                                                 <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center;">Anexo / Canva</th>
-                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1);">Fecha y Nota</th>
+                                                <th style="padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.1);">Fecha y Comentario</th>
+                                                <th style="padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; color: #38bdf8;">Defendido</th>
+                                                <th style="padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; color: #fbbf24;">Nota</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tpi-teacher-table-body">
@@ -18752,6 +18760,96 @@
                 window.renderTpiMembersChips();
             };
 
+            window.tpiEvaluationsMap = window.tpiEvaluationsMap || {};
+
+            window.isTpiFirebaseTeacher = function() {
+                try {
+                    const u = (typeof firebase !== 'undefined' && firebase.auth) ? firebase.auth().currentUser : null;
+                    return !!(u && (u.uid === 'v2EXY2PeEhYRjyh096El4iXry073' || (u.email && u.email.toLowerCase() === 'cristian.auad@unsta.edu.ar') || (u.email && u.email.toLowerCase().endsWith('@unsta.edu.ar'))));
+                } catch(e) {
+                    return false;
+                }
+            };
+
+            window.openTpiTeacherAuthModal = function() {
+                const existing = document.getElementById('modal-tpi-teacher-auth');
+                if (existing) existing.remove();
+
+                const modalHTML = `
+                <div id="modal-tpi-teacher-auth" style="position: fixed; inset: 0; z-index: 999999; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 16px;">
+                    <div style="background: linear-gradient(135deg, #0d1117 0%, #161b22 100%); border: 1.5px solid rgba(245, 158, 11, 0.5); border-radius: 20px; max-width: 420px; width: 100%; padding: 26px; box-shadow: 0 25px 60px rgba(0,0,0,0.75); position: relative;">
+                        <button type="button" onclick="document.getElementById('modal-tpi-teacher-auth')?.remove()" style="position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.08); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem; cursor: pointer;">&times;</button>
+
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                            <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.45); display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 1.25rem;">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.12rem; color: #fff; font-weight: 800;">Acceso Exclusivo Docente</h3>
+                                <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: #94a3b8;">Autenticación Firebase requerida para ver la planilla y notas.</p>
+                            </div>
+                        </div>
+
+                        <form onsubmit="window.submitTpiTeacherAuth(event)">
+                            <div style="margin-bottom: 12px;">
+                                <label style="display: block; font-size: 0.74rem; font-weight: 700; color: #cbd5e1; margin-bottom: 5px; text-transform: uppercase;">Email Docente</label>
+                                <input type="email" id="tpi-auth-email" value="cristian.auad@unsta.edu.ar" required style="width: 100%; box-sizing: border-box; padding: 10px 12px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none;">
+                            </div>
+                            <div style="margin-bottom: 14px;">
+                                <label style="display: block; font-size: 0.74rem; font-weight: 700; color: #cbd5e1; margin-bottom: 5px; text-transform: uppercase;">Contraseña de Firebase</label>
+                                <input type="password" id="tpi-auth-pass" placeholder="Tu contraseña docente de Firebase" required style="width: 100%; box-sizing: border-box; padding: 10px 12px; background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.18); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none;">
+                            </div>
+                            <div id="tpi-auth-error" style="display: none; color: #f87171; font-size: 0.8rem; font-weight: 600; margin-bottom: 12px;"></div>
+                            <button type="submit" id="tpi-auth-submit" style="width: 100%; padding: 11px 16px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; font-weight: 800; border: none; border-radius: 10px; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <i class="fas fa-unlock-alt"></i> Ingresar a Planilla Docente
+                            </button>
+                        </form>
+                    </div>
+                </div>`;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                setTimeout(() => document.getElementById('tpi-auth-pass')?.focus(), 80);
+            };
+
+            window.submitTpiTeacherAuth = async function(event) {
+                if (event) event.preventDefault();
+                const emailEl = document.getElementById('tpi-auth-email');
+                const passEl = document.getElementById('tpi-auth-pass');
+                const errEl = document.getElementById('tpi-auth-error');
+                const btnEl = document.getElementById('tpi-auth-submit');
+                if (!emailEl || !passEl) return;
+
+                const email = emailEl.value.trim();
+                const pass = passEl.value;
+                if (!email || !pass) return;
+
+                if (errEl) errEl.style.display = 'none';
+                if (btnEl) {
+                    btnEl.disabled = true;
+                    btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+                }
+
+                try {
+                    await firebase.auth().signInWithEmailAndPassword(email, pass);
+                    if (!window.isTpiFirebaseTeacher()) {
+                        await firebase.auth().signOut();
+                        throw new Error('Esta cuenta no tiene permisos de docente.');
+                    }
+                    sessionStorage.setItem('is_teacher', 'true');
+                    document.getElementById('modal-tpi-teacher-auth')?.remove();
+                    window.switchTpiView('teacher');
+                } catch(err) {
+                    if (errEl) {
+                        errEl.style.display = 'block';
+                        errEl.textContent = '❌ Credenciales inválidas o sin permiso docente.';
+                    }
+                } finally {
+                    if (btnEl) {
+                        btnEl.disabled = false;
+                        btnEl.innerHTML = '<i class="fas fa-unlock-alt"></i> Ingresar a Planilla Docente';
+                    }
+                }
+            };
+
             window.switchTpiView = function(view) {
                 const sView = document.getElementById('tpi-view-student');
                 const tView = document.getElementById('tpi-view-teacher');
@@ -18760,14 +18858,9 @@
                 if (!sView || !tView) return;
 
                 if (view === 'teacher') {
-                    const isTeacherSession = sessionStorage.getItem('is_teacher') === 'true' || sessionStorage.getItem('is_teacher_tpi_verified') === 'true';
-                    if (!isTeacherSession) {
-                        const pass = prompt('🔒 Acceso restringido exclusivamente al Docente.\nIngresá la contraseña docente de la cátedra para ver la planilla:');
-                        if (!pass || (pass.trim().toLowerCase() !== 'catedra2026' && pass.trim().toLowerCase() !== 'trabajofinal')) {
-                            alert('❌ Contraseña docente incorrecta. Acceso denegado a la planilla de entregas.');
-                            return;
-                        }
-                        sessionStorage.setItem('is_teacher_tpi_verified', 'true');
+                    if (!window.isTpiFirebaseTeacher()) {
+                        window.openTpiTeacherAuthModal();
+                        return;
                     }
 
                     sView.style.display = 'none';
@@ -18775,6 +18868,9 @@
                     if (sBtn) { sBtn.style.background = 'transparent'; sBtn.style.color = '#94a3b8'; }
                     if (tBtn) { tBtn.style.background = '#f59e0b'; tBtn.style.color = '#000'; }
                     window.loadTpIntegradorTeacherTable();
+                    if (typeof window.syncTpIntegradorEvaluations === 'function') {
+                        window.syncTpIntegradorEvaluations();
+                    }
                 } else {
                     tView.style.display = 'none';
                     sView.style.display = 'block';
@@ -18973,7 +19069,7 @@
                 }
                 window.renderTpiMembersChips();
 
-                const isTeacher = sessionStorage.getItem('is_teacher') === 'true' || sessionStorage.getItem('is_teacher_tpi_verified') === 'true';
+                const isTeacher = window.isTpiFirebaseTeacher();
                 const userGroup = (window.currentUserData && window.currentUserData.group) || sessionStorage.getItem('aw_authenticated_group') || window.loggedInStudentGroup || (typeof currentStudentData !== 'undefined' && currentStudentData && currentStudentData.group);
                 const userGrpNum = userGroup ? parseInt(String(userGroup).replace(/\D/g, ''), 10) : null;
                 const isOwnGroup = (userGrpNum && userGrpNum === gNum);
@@ -19094,7 +19190,7 @@
                     let isValidPass = false;
                     const expectedKey = 'g' + gNum;
                     const passLower = pass.toLowerCase().replace(/\s+/g, '');
-                    const isDocente = passLower === 'catedra2026' || passLower === 'trabajofinal';
+                    const isDocente = window.isTpiFirebaseTeacher();
 
                     if (isDocente || 
                         passLower === expectedKey.toLowerCase() || 
@@ -19174,18 +19270,187 @@
                 }
             };
 
+            window.syncTpIntegradorEvaluations = async function() {
+                if (!window.isTpiFirebaseTeacher()) {
+                    window.tpiEvaluationsMap = {};
+                    return;
+                }
+                try {
+                    const db = firebase.firestore();
+                    const snap = await db.collection('tp_integrador_evaluations').get();
+                    const map = {};
+                    snap.forEach(doc => {
+                        const d = doc.data() || {};
+                        const gNum = d.group || parseInt(String(doc.id).replace(/\D/g, ''), 10);
+                        if (gNum && !isNaN(gNum) && gNum >= 1 && gNum <= 20) {
+                            map[gNum] = d;
+                        }
+                    });
+                    window.tpiEvaluationsMap = map;
+                    if (typeof window.loadTpIntegradorTeacherTable === 'function') {
+                        window.loadTpIntegradorTeacherTable();
+                    }
+                } catch(e) {
+                    console.warn("syncTpIntegradorEvaluations error:", e);
+                }
+            };
+
+            window.syncTpIntegradorAll = async function(userTriggered) {
+                await window.syncTpIntegradorSubmissions(false);
+                if (window.isTpiFirebaseTeacher()) {
+                    await window.syncTpIntegradorEvaluations();
+                }
+                if (userTriggered) {
+                    const count = Object.values(window.getTpiSubmissionsMap()).filter(s => s && s.pdfUrl).length;
+                    const defCount = Object.values(window.tpiEvaluationsMap || {}).filter(e => e && e.defended).length;
+                    alert(`Planilla docente sincronizada con Firestore.\nEntregas: ${count} de 20 grupos | Defendidos: ${defCount}`);
+                }
+            };
+
+            window.flashTpiEvalStatus = function(gNum, msg, isError) {
+                const el = document.getElementById('tpi-eval-status-' + gNum);
+                if (!el) return;
+                el.style.color = isError ? '#f87171' : '#10b981';
+                el.textContent = msg;
+                if (!isError) {
+                    setTimeout(() => {
+                        const cur = document.getElementById('tpi-eval-status-' + gNum);
+                        if (cur && cur.textContent === msg) cur.textContent = '';
+                    }, 2200);
+                }
+            };
+
+            window.updateTpiTeacherEvalStats = function() {
+                const defendedEl = document.getElementById('tpi-stat-defended');
+                const gradedEl = document.getElementById('tpi-stat-graded');
+                const evals = window.tpiEvaluationsMap || {};
+                let defCount = 0;
+                let gradedCount = 0;
+                for (let i = 1; i <= 20; i++) {
+                    const ev = evals[i];
+                    if (ev && ev.defended) defCount++;
+                    if (ev && ev.grade !== undefined && ev.grade !== null && ev.grade !== '') gradedCount++;
+                }
+                if (defendedEl) defendedEl.innerText = `${defCount} / 20`;
+                if (gradedEl) gradedEl.innerText = String(gradedCount);
+            };
+
+            window.toggleTpiDefended = async function(gNum, isChecked) {
+                if (!window.isTpiFirebaseTeacher()) {
+                    alert('🔒 Sesión docente requerida.');
+                    return;
+                }
+                const pill = document.getElementById('tpi-def-pill-' + gNum);
+                if (pill) {
+                    pill.style.borderColor = isChecked ? 'rgba(16, 185, 129, 0.55)' : 'rgba(255,255,255,0.15)';
+                    pill.style.background = isChecked ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.04)';
+                    pill.style.color = isChecked ? '#34d399' : '#94a3b8';
+                    const sp = pill.querySelector('span');
+                    if (sp) sp.textContent = isChecked ? 'Defendido' : 'Pendiente';
+                }
+
+                window.tpiEvaluationsMap[gNum] = {
+                    ...(window.tpiEvaluationsMap[gNum] || {}),
+                    group: gNum,
+                    defended: !!isChecked
+                };
+                window.updateTpiTeacherEvalStats();
+                window.flashTpiEvalStatus(gNum, 'Guardando...', false);
+
+                try {
+                    const user = firebase.auth().currentUser;
+                    const nowStr = new Date().toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    await firebase.firestore().collection('tp_integrador_evaluations').doc('g_' + gNum).set({
+                        group: gNum,
+                        defended: !!isChecked,
+                        updatedAtStr: nowStr,
+                        updatedAtTimestamp: Date.now(),
+                        updatedBy: user ? user.email : 'docente'
+                    }, { merge: true });
+                    window.flashTpiEvalStatus(gNum, '✓ Guardado', false);
+                } catch(e) {
+                    console.error('Error guardando estado defendido:', e);
+                    window.flashTpiEvalStatus(gNum, 'Error al guardar', true);
+                    alert('❌ Error al guardar en Firestore: ' + (e.message || e));
+                }
+            };
+
+            window.saveTpiGrade = async function(gNum, rawVal) {
+                if (!window.isTpiFirebaseTeacher()) {
+                    alert('🔒 Sesión docente requerida.');
+                    return;
+                }
+                const inputEl = document.getElementById('tpi-grade-' + gNum);
+                const trimmed = String(rawVal === undefined || rawVal === null ? '' : rawVal).trim().replace(',', '.');
+                let gradeToSave = null;
+
+                if (trimmed !== '') {
+                    const parsed = parseFloat(trimmed);
+                    if (isNaN(parsed) || parsed < 0 || parsed > 10) {
+                        alert('La nota debe estar entre 0 y 10.');
+                        if (inputEl) {
+                            const prev = window.tpiEvaluationsMap[gNum]?.grade;
+                            inputEl.value = (prev !== undefined && prev !== null) ? prev : '';
+                            inputEl.focus();
+                        }
+                        return;
+                    }
+                    gradeToSave = Math.round(parsed * 100) / 100;
+                    if (inputEl) inputEl.value = gradeToSave;
+                }
+
+                if (inputEl) {
+                    inputEl.style.borderColor = gradeToSave !== null ? 'rgba(245, 158, 11, 0.65)' : 'rgba(255,255,255,0.18)';
+                    inputEl.style.color = gradeToSave !== null ? '#fbbf24' : '#fff';
+                }
+
+                window.tpiEvaluationsMap[gNum] = {
+                    ...(window.tpiEvaluationsMap[gNum] || {}),
+                    group: gNum,
+                    grade: gradeToSave
+                };
+                window.updateTpiTeacherEvalStats();
+                window.flashTpiEvalStatus(gNum, 'Guardando...', false);
+
+                try {
+                    const user = firebase.auth().currentUser;
+                    const nowStr = new Date().toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    await firebase.firestore().collection('tp_integrador_evaluations').doc('g_' + gNum).set({
+                        group: gNum,
+                        grade: gradeToSave,
+                        updatedAtStr: nowStr,
+                        updatedAtTimestamp: Date.now(),
+                        updatedBy: user ? user.email : 'docente'
+                    }, { merge: true });
+                    window.flashTpiEvalStatus(gNum, '✓ Guardado', false);
+                } catch(e) {
+                    console.error('Error guardando nota:', e);
+                    window.flashTpiEvalStatus(gNum, 'Error al guardar', true);
+                    alert('❌ Error al guardar nota en Firestore: ' + (e.message || e));
+                }
+            };
+
             window.loadTpIntegradorTeacherTable = function() {
                 const tbody = document.getElementById('tpi-teacher-table-body');
                 const deliveredEl = document.getElementById('tpi-stat-delivered');
                 const pendingEl = document.getElementById('tpi-stat-pending');
                 if (!tbody) return;
 
+                if (!window.isTpiFirebaseTeacher()) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="padding: 20px; text-align: center; color: #f87171;"><i class="fas fa-lock"></i> Acceso restringido: iniciá sesión con tu cuenta docente de Firebase Auth.</td></tr>';
+                    return;
+                }
+
                 const subs = window.getTpiSubmissionsMap();
+                const evals = window.tpiEvaluationsMap || {};
                 let deliveredCount = 0;
                 let html = '';
 
                 for (let i = 1; i <= 20; i++) {
                     const sub = subs[i];
+                    const ev = evals[i] || {};
+                    const isDefended = !!ev.defended;
+                    const gradeVal = (ev.grade !== undefined && ev.grade !== null && ev.grade !== '') ? ev.grade : '';
                     const cInfo = (sub && sub.caseNum) ? window.getTpiCaseByNum(sub.caseNum) : window.getTpiCaseInfo(i);
                     const isDelivered = !!(sub && sub.pdfUrl);
 
@@ -19218,7 +19483,7 @@
                     html += `
                         <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 14px; vertical-align: top;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                     <span style="font-weight: 800; color: #fff; font-size: 0.92rem;">Grupo ${i}</span>
                                     <span style="font-size: 0.72rem; padding: 2px 8px; border-radius: 12px; background: ${cInfo.color}22; color: ${cInfo.color}; border: 1px solid ${cInfo.color}55; font-weight: 700;">
                                         ${cInfo.name}
@@ -19263,6 +19528,18 @@
                                     <span style="color: #475569; font-size: 0.78rem;">Esperando envío</span>
                                 `}
                             </td>
+                            <td style="padding: 12px 10px; text-align: center; vertical-align: top;">
+                                <label id="tpi-def-pill-${i}" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 0.76rem; font-weight: 700; transition: all 0.2s; border: 1px solid ${isDefended ? 'rgba(16, 185, 129, 0.55)' : 'rgba(255,255,255,0.15)'}; background: ${isDefended ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.04)'}; color: ${isDefended ? '#34d399' : '#94a3b8'};">
+                                    <input type="checkbox" id="tpi-defended-${i}" ${isDefended ? 'checked' : ''} onchange="window.toggleTpiDefended(${i}, this.checked)" style="width: 15px; height: 15px; accent-color: #10b981; cursor: pointer; margin: 0;">
+                                    <span>${isDefended ? 'Defendido' : 'Pendiente'}</span>
+                                </label>
+                            </td>
+                            <td style="padding: 12px 10px; text-align: center; vertical-align: top;">
+                                <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 3px;">
+                                    <input type="number" id="tpi-grade-${i}" min="0" max="10" step="0.5" placeholder="-" value="${gradeVal}" onchange="window.saveTpiGrade(${i}, this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault(); this.blur();}" style="width: 68px; padding: 6px 8px; text-align: center; background: rgba(13, 17, 23, 0.95); border: 1.5px solid ${gradeVal !== '' ? 'rgba(245, 158, 11, 0.65)' : 'rgba(255,255,255,0.18)'}; border-radius: 8px; color: ${gradeVal !== '' ? '#fbbf24' : '#fff'}; font-size: 0.88rem; font-weight: 800; outline: none; box-sizing: border-box;">
+                                    <span id="tpi-eval-status-${i}" style="font-size: 0.68rem; color: #10b981; min-height: 13px; display: block;"></span>
+                                </div>
+                            </td>
                         </tr>
                     `;
                 }
@@ -19270,15 +19547,24 @@
                 tbody.innerHTML = html;
                 if (deliveredEl) deliveredEl.innerText = `${deliveredCount} / 20`;
                 if (pendingEl) pendingEl.innerText = `${20 - deliveredCount} / 20`;
+                window.updateTpiTeacherEvalStats();
             };
 
             window.exportTpiSubmissionsCSV = function() {
+                if (!window.isTpiFirebaseTeacher()) {
+                    alert('🔒 Acceso docente requerido.');
+                    return;
+                }
                 const subs = window.getTpiSubmissionsMap();
-                let csv = 'Grupo,Caso Clínico,Estado,Cant Integrantes,Integrantes,Enlace PDF,Enlace Anexo,Fecha Entrega,Comentarios\r\n';
+                const evals = window.tpiEvaluationsMap || {};
+                let csv = 'Grupo,Caso Clínico,Estado,Defendido,Nota Final,Cant Integrantes,Integrantes,Enlace PDF,Enlace Anexo,Fecha Entrega,Comentarios\r\n';
                 for (let i = 1; i <= 20; i++) {
                     const sub = subs[i] || {};
+                    const ev = evals[i] || {};
                     const cInfo = sub.caseNum ? window.getTpiCaseByNum(sub.caseNum) : window.getTpiCaseInfo(i);
                     const isDelivered = !!sub.pdfUrl;
+                    const defendedTxt = ev.defended ? 'Sí' : 'No';
+                    const gradeTxt = (ev.grade !== undefined && ev.grade !== null && ev.grade !== '') ? String(ev.grade) : '';
                     const pdf = (sub.pdfUrl || '').replace(/,/g, ';');
                     const anexo = (sub.anexoUrl || '').replace(/,/g, ';');
                     const fecha = sub.submittedAtStr || '';
@@ -19298,7 +19584,7 @@
                     }
                     membersStr = membersStr.replace(/"/g, '""');
 
-                    csv += `Grupo ${i},"${cInfo.name}","${isDelivered ? 'Entregado' : 'Pendiente'}",${membersCount},"${membersStr}","${pdf}","${anexo}","${fecha}","${comments}"\r\n`;
+                    csv += `Grupo ${i},"${cInfo.name}","${isDelivered ? 'Entregado' : 'Pendiente'}","${defendedTxt}","${gradeTxt}",${membersCount},"${membersStr}","${pdf}","${anexo}","${fecha}","${comments}"\r\n`;
                 }
                 const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
@@ -31231,6 +31517,26 @@ function displayTpIntegradorDashboardView() {
                 } else {
 
                     window.updateTeacherToolsVisibility(false);
+
+                }
+
+
+
+                if (typeof window.isTpiFirebaseTeacher === 'function' && window.isTpiFirebaseTeacher()) {
+
+                    if (typeof window.syncTpIntegradorEvaluations === 'function') window.syncTpIntegradorEvaluations();
+
+                } else {
+
+                    window.tpiEvaluationsMap = {};
+
+                    const tViewEl = document.getElementById('tpi-view-teacher');
+
+                    if (tViewEl && tViewEl.style.display !== 'none' && typeof window.switchTpiView === 'function') {
+
+                        window.switchTpiView('student');
+
+                    }
 
                 }
 
