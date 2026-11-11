@@ -1,4 +1,4 @@
 {
-  "v": "2026.11.11.v121",
-  "msg": "Security/Feat: Planilla Docente TP Integrador protegida por Firebase Auth (sin clave trabajofinal), columnas privadas de Defendido y Nota"
+  "v": "2026.11.11.v122",
+  "msg": "Feat: Botón Excel por Alumno (.xlsx) en Planilla Docente con integrantes declarados, enlaces y notas propagadas a cada alumno"
 }

@@ -800,3 +800,16 @@ Registro breve de decisiones técnicas del sistema para evitar romper configurac
 3. **Columnas Privadas de Control Docente ("Defendido" y "Nota")**:
    - Se incorporaron en `#tpi-view-teacher` las columnas **Defendido** (checkbox/píldora interactiva `toggleTpiDefended`) y **Nota** (input numérico 0–10 con autoguardado `saveTpiGrade`) junto a los contadores superiores **Defendidos** y **Con Nota**, más la exportación en `exportTpiSubmissionsCSV()`.
    - Los datos se almacenan exclusivamente en `tp_integrador_evaluations` y memoria volátil (`window.tpiEvaluationsMap`), nunca en `localStorage` ni en `tp_integrador_submissions`.
+
+---
+
+### [2026-11-11] Exportador Excel por Alumno (Integrantes Declarados + Notas Propagadas + Enlaces)
+
+1. **Planilla Local Generada (`seguimiento_tp_integrador_alumnos.xlsx`)**:
+   - Generado desde snapshot en vivo de Firestore (14 grupos entregados: 1, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 17 y 18; 93 alumnos reales sin duplicados).
+   - Agrupado estrictamente por los **integrantes declarados al momento de entregar** (`sub.members`), reflejando incorporaciones como Antonella Avila Lucena en Grupo 1, Joaquín Guzmán Siner en Grupo 6, Ana Belén Gerez en Grupo 8 y Victoria Nanterne Martin en Grupo 10.
+   - Incluye hipervínculos directos al trabajo PDF, desplegables `Sí/No` para `Entregado` y `Defendido`, casillero de `Nota Individual` y hoja de `Resumen por Grupo` con fórmulas dinámicas.
+
+2. **Botón Exportador en Vivo dentro de Planilla Docente (`exportTpiDeclaredStudentsExcel`)**:
+   - Añadido en `#tpi-view-teacher` (`index.html`, versión `v122`) mediante carga dinámica de SheetJS (`xlsx.full.min.js`).
+   - Al ejecutarse dentro de la sesión autenticada del docente, combina las entregas declaradas con la colección protegida `tp_integrador_evaluations`, manteniendo automáticamente la nota de cada grupo calificado en todos sus integrantes declarados.

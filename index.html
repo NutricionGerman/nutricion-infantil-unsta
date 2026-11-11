@@ -14877,8 +14877,11 @@
                                         <span style="color: #fbbf24;">Con Nota: <strong id="tpi-stat-graded">0</strong></span>
                                     </div>
                                     <div style="display: flex; gap: 8px;">
+                                        <button type="button" id="tpi-btn-export-xlsx" onclick="window.exportTpiDeclaredStudentsExcel()" style="padding: 6px 12px; background: linear-gradient(135deg, #10b981, #059669); border: none; color: #fff; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 8px rgba(16,185,129,0.25);">
+                                            <i class="fas fa-file-excel"></i> Excel por Alumno (.xlsx)
+                                        </button>
                                         <button type="button" onclick="window.exportTpiSubmissionsCSV()" style="padding: 6px 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px;">
-                                            <i class="fas fa-file-csv"></i> Descargar CSV
+                                            <i class="fas fa-file-csv"></i> CSV Grupos
                                         </button>
                                         <button type="button" onclick="window.syncTpIntegradorAll(true)" style="padding: 6px 12px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.5); color: #f59e0b; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                                             <i class="fas fa-sync-alt"></i> Sincronizar en Vivo
@@ -19593,6 +19596,191 @@
                 a.download = `Entregas_TP_Integrador_UNSTA_${new Date().toISOString().slice(0,10)}.csv`;
                 a.click();
                 URL.revokeObjectURL(url);
+            };
+
+            window.loadSheetJsForTpi = function() {
+                if (typeof window.XLSX !== 'undefined') return Promise.resolve(window.XLSX);
+                return new Promise((resolve, reject) => {
+                    const s = document.createElement('script');
+                    s.src = 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js';
+                    s.onload = () => window.XLSX ? resolve(window.XLSX) : reject(new Error('XLSX no disponible'));
+                    s.onerror = () => reject(new Error('Error cargando SheetJS'));
+                    document.head.appendChild(s);
+                });
+            };
+
+            window.exportTpiDeclaredStudentsExcel = async function() {
+                if (!window.isTpiFirebaseTeacher()) {
+                    alert('🔒 Acceso docente requerido.');
+                    return;
+                }
+                const btn = document.getElementById('tpi-btn-export-xlsx');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando Excel...';
+                }
+                try {
+                    await window.syncTpIntegradorAll(false);
+                    const subs = window.getTpiSubmissionsMap();
+                    const evals = window.tpiEvaluationsMap || {};
+                    const allStudents = (window.fullData && Array.isArray(window.fullData.students)) ? window.fullData.students : [];
+                    const stuByUp = {};
+                    allStudents.forEach(s => { if (s && s.up) stuByUp[String(s.up).trim()] = s; });
+
+                    const declaredUps = new Set();
+                    const studentRows = [];
+
+                    // 1. Grupos que ya entregaron -> estrictamente por integrantes declarados en la entrega
+                    for (let i = 1; i <= 20; i++) {
+                        const sub = subs[i];
+                        if (!sub || !sub.pdfUrl) continue;
+                        const ev = evals[i] || {};
+                        const cInfo = sub.caseNum ? window.getTpiCaseByNum(sub.caseNum) : window.getTpiCaseInfo(i);
+                        const groupGrade = (ev.grade !== undefined && ev.grade !== null && ev.grade !== '') ? Number(ev.grade) : '';
+                        const defendedTxt = ev.defended ? 'Sí' : 'No';
+                        const members = Array.isArray(sub.members) ? sub.members : [];
+
+                        members.forEach(m => {
+                            const upStr = String(m.up || '').trim();
+                            if (upStr) declaredUps.add(upStr);
+                            const st = stuByUp[upStr];
+                            const fullName = st ? window.getStudentFormattedName(st) : (m.name || ('UP ' + upStr));
+                            const initG = (m.initialGroup || '').trim();
+                            const origen = (initG && initG !== ('g_' + i))
+                                ? ('Agregado al entregar (antes ' + initG.replace('g_', 'Grupo ') + ')')
+                                : ('Integrante Grupo ' + i);
+
+                            studentRows.push({
+                                Grupo: 'Grupo ' + i,
+                                'Caso Clínico': cInfo.name,
+                                'Apellido y Nombre': fullName,
+                                UP: upStr,
+                                'Origen / Movimiento': origen,
+                                Entregado: 'Sí',
+                                Defendido: defendedTxt,
+                                'Nota Individual': groupGrade,
+                                'Enlace del Trabajo (PDF)': sub.pdfUrl || '',
+                                'Fecha de Entrega': sub.submittedAtStr || ''
+                            });
+                        });
+                    }
+
+                    // 2. Alumnos restantes (grupos pendientes o no incluidos en la entrega de su grupo original)
+                    const pendingByGroup = {};
+                    const unassignedOrExcluded = [];
+                    allStudents.forEach(s => {
+                        const upStr = String(s.up || '').trim();
+                        if (!upStr || upStr === '999999' || declaredUps.has(upStr)) return;
+                        const gNum = s.group ? parseInt(String(s.group).replace(/\D/g, ''), 10) : 0;
+                        const fullName = window.getStudentFormattedName(s);
+                        if (gNum >= 1 && !(subs[gNum] && subs[gNum].pdfUrl)) {
+                            if (!pendingByGroup[gNum]) pendingByGroup[gNum] = [];
+                            pendingByGroup[gNum].push({ name: fullName, up: upStr });
+                        } else {
+                            unassignedOrExcluded.push({ gNum, name: fullName, up: upStr });
+                        }
+                    });
+
+                    Object.keys(pendingByGroup).map(Number).sort((a, b) => a - b).forEach(gNum => {
+                        const ev = evals[gNum] || {};
+                        const cInfo = window.getTpiCaseInfo(gNum);
+                        const groupGrade = (ev.grade !== undefined && ev.grade !== null && ev.grade !== '') ? Number(ev.grade) : '';
+                        const defendedTxt = ev.defended ? 'Sí' : 'No';
+                        pendingByGroup[gNum].sort((a, b) => a.name.localeCompare(b.name)).forEach(item => {
+                            studentRows.push({
+                                Grupo: 'Grupo ' + gNum,
+                                'Caso Clínico': cInfo.name,
+                                'Apellido y Nombre': item.name,
+                                UP: item.up,
+                                'Origen / Movimiento': 'Nómina base Grupo ' + gNum + ' (sin entrega)',
+                                Entregado: 'No',
+                                Defendido: defendedTxt,
+                                'Nota Individual': groupGrade,
+                                'Enlace del Trabajo (PDF)': '',
+                                'Fecha de Entrega': '-'
+                            });
+                        });
+                    });
+
+                    unassignedOrExcluded.sort((a, b) => (a.gNum || 999) - (b.gNum || 999) || a.name.localeCompare(b.name)).forEach(item => {
+                        studentRows.push({
+                            Grupo: item.gNum > 0 ? ('Sin entrega (ex G' + item.gNum + ')') : 'Sin grupo',
+                            'Caso Clínico': '-',
+                            'Apellido y Nombre': item.name,
+                            UP: item.up,
+                            'Origen / Movimiento': item.gNum > 0 ? ('Original de Grupo ' + item.gNum + ' (entregó sin incluirlo)') : 'Sin grupo asignado',
+                            Entregado: 'No',
+                            Defendido: 'No',
+                            'Nota Individual': '',
+                            'Enlace del Trabajo (PDF)': '',
+                            'Fecha de Entrega': '-'
+                        });
+                    });
+
+                    // Hoja 2: Resumen por Grupo
+                    const groupRows = [];
+                    for (let i = 1; i <= 20; i++) {
+                        const sub = subs[i];
+                        const ev = evals[i] || {};
+                        const cInfo = (sub && sub.caseNum) ? window.getTpiCaseByNum(sub.caseNum) : window.getTpiCaseInfo(i);
+                        const hasDelivery = !!(sub && sub.pdfUrl);
+                        const count = hasDelivery
+                            ? (Array.isArray(sub.members) ? sub.members.length : 0)
+                            : (pendingByGroup[i] ? pendingByGroup[i].length : 0);
+                        if (i > 18 && !hasDelivery && count === 0) continue;
+                        groupRows.push({
+                            Grupo: 'Grupo ' + i,
+                            'Caso Clínico': cInfo.name,
+                            'Cant. Integrantes': count,
+                            Entregado: hasDelivery ? 'Sí' : 'No',
+                            Defendido: ev.defended ? 'Sí' : 'No',
+                            'Nota Grupo': (ev.grade !== undefined && ev.grade !== null && ev.grade !== '') ? Number(ev.grade) : '',
+                            'Enlace del Trabajo (PDF)': hasDelivery ? sub.pdfUrl : '',
+                            'Fecha de Entrega': hasDelivery ? (sub.submittedAtStr || '') : '-'
+                        });
+                    }
+
+                    const XLSX = await window.loadSheetJsForTpi();
+                    const wb = XLSX.utils.book_new();
+                    const ws1 = XLSX.utils.json_to_sheet(studentRows);
+                    ws1['!cols'] = [
+                        { wch: 18 }, { wch: 26 }, { wch: 34 }, { wch: 11 }, { wch: 36 },
+                        { wch: 11 }, { wch: 11 }, { wch: 15 }, { wch: 52 }, { wch: 22 }
+                    ];
+                    // Agregar hipervínculos clicables en la columna I (índice 8: Enlace del Trabajo)
+                    studentRows.forEach((row, idx) => {
+                        const url = row['Enlace del Trabajo (PDF)'];
+                        if (url) {
+                            const ref = XLSX.utils.encode_cell({ r: idx + 1, c: 8 });
+                            if (ws1[ref]) ws1[ref].l = { Target: url, Tooltip: 'Abrir trabajo en Drive/OneDrive' };
+                        }
+                    });
+                    XLSX.utils.book_append_sheet(wb, ws1, 'Alumnos por Entrega');
+
+                    const ws2 = XLSX.utils.json_to_sheet(groupRows);
+                    ws2['!cols'] = [
+                        { wch: 12 }, { wch: 26 }, { wch: 16 }, { wch: 11 }, { wch: 11 }, { wch: 12 }, { wch: 52 }, { wch: 22 }
+                    ];
+                    groupRows.forEach((row, idx) => {
+                        const url = row['Enlace del Trabajo (PDF)'];
+                        if (url) {
+                            const ref = XLSX.utils.encode_cell({ r: idx + 1, c: 6 });
+                            if (ws2[ref]) ws2[ref].l = { Target: url, Tooltip: 'Abrir trabajo en Drive/OneDrive' };
+                        }
+                    });
+                    XLSX.utils.book_append_sheet(wb, ws2, 'Resumen por Grupo');
+
+                    const filename = `Seguimiento_TP_Integrador_Alumnos_${new Date().toISOString().slice(0,10)}.xlsx`;
+                    XLSX.writeFile(wb, filename);
+                } catch(err) {
+                    console.error('Error exportando Excel por alumno:', err);
+                    alert('❌ Error al generar Excel: ' + (err.message || err));
+                } finally {
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fas fa-file-excel"></i> Excel por Alumno (.xlsx)';
+                    }
+                }
             };
 
 
